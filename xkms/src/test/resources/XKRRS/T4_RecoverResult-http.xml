@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<km:RecoverResult Id="I352be50ada529a43afa70d28970ab8d1" RequestId="A_O68NYrlvdPx9qLw1bvu0wA22" ResultMajor="http://www.w3.org/2002/03/xkms#Success" Service="http://62.77.172.83:4080/xkms/service/plain-http" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:km="http://www.w3.org/2002/03/xkms#">
+	<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+		<ds:SignedInfo>
+			<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+			<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+			<ds:Reference Id="I4c06f0af760e9380c5103a04be4c5962" URI="#I352be50ada529a43afa70d28970ab8d1">
+				<ds:Transforms>
+					<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+					<ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</ds:Transforms>
+				<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+				<ds:DigestValue>m+smoqbGtZks/4uy76yH2FRocHk=</ds:DigestValue>
+			</ds:Reference>
+		</ds:SignedInfo>
+		<ds:SignatureValue>j506FiSfFi3eejSv2mXHHFhRxATsk8U1TUPD7iIOwcrnNUWj9YUBBgTa0/lB9Zv60I5Z+VdN62KHpU6m74ElmaP6udQsI849kk7BnA17lBB7iHKv+54QWr1CUhVgWaosbENoqw1VaNQgZk/spknupaDkStLg1tz5v8n5bM7JTUw=</ds:SignatureValue>
+		<ds:KeyInfo>
+			<ds:X509Data>
+				<ds:X509Certificate>MIICvTCCAiagAwIBAgIBZTANBgkqhkiG9w0BAQUFADBDMQswCQYDVQQGEwJJRTEPMA0GA1UECBMGRHVibGluMSMwIQYDVQQDExpSU0EgVGVzdCBDQSAtIE5vIExpYWJpbGl0eTAeFw0wNDAzMDIwMTIxNDZaFw0wNTAzMDIwMTIxNDZaMGcxCzAJBgNVBAYTAklFMQ8wDQYDVQQIEwZEdWJsaW4xFzAVBgNVBAoTDlRydXN0IENvcnAgTHRkMRUwEwYDVQQLEwxLZXkgU2VydmljZXMxFzAVBgNVBAMTDlhLTVMgUmVzcG9uZGVyMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx2+tSgfZVZXu8hS3nSX/WjL+bOSgZVSrFULNEt0tE55xlAjDD4b3k13ImJJ2aGpIzrZJeHYAGYU4yBxEVWq/V9LwsNKnNnO7SrM5QfUbU5rOlmsxI5IX5VDWJipF0ZGGV5KJnYDdjjOQuf7TAz6OM0tX+XJU69RIiPjNsRLd6wwIDAQABo4GcMIGZMB0GA1UdDgQWBBRRAPsBJF7q4Ek2nTY2MEGCwbbFazBrBgNVHSMEZDBigBTW+VLknCxzznGFMlyAZlR8KIKhWqFHpEUwQzELMAkGA1UEBhMCSUUxDzANBgNVBAgTBkR1YmxpbjEjMCEGA1UEAxMaUlNBIFRlc3QgQ0EgLSBObyBMaWFiaWxpdHmCAWQwCwYDVR0PBAQDAgeAMA0GCSqGSIb3DQEBBQUAA4GBAHF8JSQqodvU2UotCUGL8Sg2ciZyyob6qGdgplfDZVZZjU+GADPNpJrpdehGp1mj0S0WRg/wr//B6a0KlLF8PpE1aj4VSM/4X6Vv7os5BLdqhQFxKEOlLIOQdkcPPqLx/r4hjonhrnAeh3yPsVPQV1AQ6DS0/TTyjeTgFZE1yhj0</ds:X509Certificate>
+			</ds:X509Data>
+		</ds:KeyInfo>
+	</ds:Signature>
+	<km:KeyBinding Id="Ifaf0d7002e366f13c14b69f95a6a6563">
+		<ds:KeyInfo>
+			<ds:KeyName>Motukuru</ds:KeyName>
+			<ds:KeyValue>
+				<ds:RSAKeyValue>
+					<ds:Modulus>/Bg9AB3hn36UB2eTJeVSQX+PH7JFucd7ue0eKKBv2+OaM2csAcHdU+zt0t/5JkpQbXWQ/eG9WetCl9MbXOgGkHys0iSqFn0kr98DekN2lrfvBGSo7eVbBHfHwBsutNUVDLI5tLgZ5blde6fyBYDd+HxG9NdRmvYaKkbu3daw9Es=</ds:Modulus>
+					<ds:Exponent>AQAB</ds:Exponent>
+				</ds:RSAKeyValue>
+			</ds:KeyValue>
+			<ds:X509Data>
+				<ds:X509Certificate>MIICtDCCAh2gAwIBAgIGAQFOKZmZMA0GCSqGSIb3DQEBBQUAMEMxCzAJBgNVBAYTAklFMQ8wDQYDVQQIEwZEdWJsaW4xIzAhBgNVBAMTGlJTQSBUZXN0IENBIC0gTm8gTGlhYmlsaXR5MB4XDTA1MDEwNzE3MTIyMVoXDTA1MDIwNjE3MTIyMVowWjERMA8GA1UEAxMITW90dWt1cnUxDTALBgNVBAsTBFhLTVMxDjAMBgNVBAoTBVlhaG9vMQwwCgYDVQQHEwNOWUMxCzAJBgNVBAgTAk5ZMQswCQYDVQQGEwJVUzCBnjANBgkqhkiG9w0BAQEFAAOBjAAwgYgCgYD8GD0AHeGffpQHZ5Ml5VJBf48fskW5x3u57R4ooG/b45ozZywBwd1T7O3S3/kmSlBtdZD94b1Z60KX0xtc6AaQfKzSJKoWfSSv3wN6Q3aWt+8EZKjt5VsEd8fAGy601RUMsjm0uBnluV17p/IFgN34fEb011Ga9hoqRu7d1rD0SwIDAQABo4GcMIGZMB0GA1UdDgQWBBQ2Fk/i/jtf6gJHIRi4bqcqJ6ajlTBrBgNVHSMEZDBigBTW+VLknCxzznGFMlyAZlR8KIKhWqFHpEUwQzELMAkGA1UEBhMCSUUxDzANBgNVBAgTBkR1YmxpbjEjMCEGA1UEAxMaUlNBIFRlc3QgQ0EgLSBObyBMaWFiaWxpdHmCAWQwCwYDVR0PBAQDAgeAMA0GCSqGSIb3DQEBBQUAA4GBAJCIK67qEjYKIh5pnYcOVedPuACsdmB4d/CoKFITPO29nP2HgAw1rNBHj02sFPjB8ICFjlSahbi9vpmcLDilfS8tvX2YuE+pFrEbENrSoQAEMmS6nLPMXtj6OgrdWWl7gxokCRDtGRiJ0KQDN8mYa3K3jQYTejz8B1Gv/f/LyZH0</ds:X509Certificate>
+			</ds:X509Data>
+		</ds:KeyInfo>
+		<km:KeyUsage>http://www.w3.org/2002/03/xkms#Signature</km:KeyUsage>
+		<km:UseKeyWith Application="urn:ietf:rfc:2633" Identifier="motukuru@yahoo.com"/>
+		<km:UseKeyWith Application="urn:ietf:rfc:2459" Identifier="CN=Motukuru,OU=XKMS,O=Yahoo,L=NYC,ST=NY,C=US"/>
+		<km:ValidityInterval NotBefore="2005-01-07T17:12:21Z" NotOnOrAfter="2005-02-06T17:12:21Z"/>
+		<km:Status StatusValue="http://www.w3.org/2002/03/xkms#Valid">
+			<km:ValidReason>http://www.w3.org/2002/03/xkms#RevocationStatus</km:ValidReason>
+		</km:Status>
+	</km:KeyBinding>
+	<km:PrivateKey>
+		<ed:EncryptedData Type="http://www.w3.org/2001/04/xmlenc#Content" xmlns:ed="http://www.w3.org/2001/04/xmlenc#">
+			<ed:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+			<ed:CipherData>
+				<ed:CipherValue>zRkzFMsuiifgfl7kGntbQKXIyXbtg0o26ay99zY6U8aJgF0ixWmSWOIL/v/E4t9BBQqLaZd+kz4x7eDmBDaGgDsztMVdHwh25fSf0NtS6W9E8IW5WDabaBkqFSlUofaiMkt0a7py91XeIf3Cx0lQjCQIbbL9AfLt0rhiUh4OZiU3e9ZnKs1/Ewru0q1RMFBtb4U3Wn10qg0h901zErwiz38qIzvCmjFGQxu/Erf0E2SbqjLwC/93Bqo3WABNW+913zif5a+gfa8xm/Fbg7CnugHZjfVA75yU775xUO6v0rNa9UxLO2HJbkRDnr2UBMQs6qyeETH4xFcPHKQP5vu2tbwYOLUp+2lfaz5OGvuSe4aY5SBtL5x5foKiFLsl/wqdQ3K5SLBKua5Yx9BxD+KCCxbtL8ybpBlOsaU00LaFlsJCw8k3bKZl4IqDKHLZf9+fjfycTQVaSsn1LvBvsmGbHCaYug4GOlhOmPEGbGq0D/olMzIMFXhI5E+zPKo1fXZJJGTChCV8UsxzR4mMbo80OCjp+wMiHnV4ft2F+j0O47gGZTYsOgjuJHL5RuRg8LQB7G03PSUg4gZ/2f9XncxjrOOkAurqZuStAJy1P+43EIauW/OSQj4rfrjkjVVSHEb4+c7xV6zbtzlDHN6dyQ1hZXIw7uIjXbMaDu0XfXdzWgb6CrflViexMthODdjP7j7RLVkxmweHjpUXTdNX1liaMAuYExEqfLqFur5xMr2u1sRewhym8DX3vLMQRdE/nfWIu8fMmWzqp6tCCTssq5N9u4iCTWI7CWYi/v+5YUCcR3lSc3FEXU0ykBdkUp0T/6i7tNJgGfQPz69+8bI0haP133qoBRavbs/v6KQo5dO3B+P17BfRQ8olBLDJbJ871pMkddDsnJYw2ZUT5xjgK+T/9sW6ubtqxbsyx0N9wc4nNHHpiLFzzmnhdbn/1csixbXKabrhySm0V2oV7RZQJACDxDoDXDnfg5DGbLqAMljJa02dkl9toFE+wmntWT/cP80J88ED7tBX7q7VEun0jlv80QuI5VFTcj+dDgHr7ZAlfBXemY7pLUJn6/ekd6fMm1x5PZ3ROHYg5TTM1CIuWw50E1K02gYZRQPUNSl70gHW26bF/+HOJg0Te/v1NOeBpatGeQw4n92/rAw7bmp0JQkGs5RXh5T1oOZB8YgZwJ4m+ps6pzUwp0e0SmgUuKbVo/kdjSYdLdjfOrO6NjxQhGGVubvIDlffiNJMiUUdzZLLDRgfVt4rvelaDlhtWkuE1200iYGRqrKFV/Otnhi43y03K4H6ZcUV3+XsyMxqlRgZHl18hHhEFSFVon0kIpbJnJYZo0V+zfD21pU3+g5Tk8/659QS7mBY5Irgu3/kjRaM1ZI=</ed:CipherValue>
+			</ed:CipherData>
+		</ed:EncryptedData>
+	</km:PrivateKey>
+</km:RecoverResult>

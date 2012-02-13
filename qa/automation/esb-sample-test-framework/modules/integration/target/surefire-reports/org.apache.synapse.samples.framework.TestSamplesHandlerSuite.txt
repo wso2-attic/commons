@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.synapse.samples.framework.TestSamplesHandlerSuite
+-------------------------------------------------------------------------------
+Tests run: 44, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1,582.682 sec

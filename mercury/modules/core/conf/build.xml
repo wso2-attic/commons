@@ -1,0 +1,47 @@
+<project name="mercury_module" default="create" basedir="..">
+
+    <target name="init">
+        <property name="module_home" value="${basedir}"/>
+        <property name="classes_dir" value="${module_home}/classes"/>
+        <property name="src_dir" value="${module_home}/src/main/java"/>
+        <property name="lib_dir" value="/home/amila/downloads/axis2-SNAPSHOT/lib"/>
+        <property name="deploy_dir" value="${module_home}/deploy"/>
+        <property name="module_file" value="${module_home}/../test/repository/modules/Mercury.mar"/>
+    </target>
+
+    <target name="create" depends="clean" description="creating the module mar">
+        <echo message="creating the module mar from ${module_home}"/>
+
+        <!-- creates deploy and class directoris -->
+        <mkdir dir="${deploy_dir}"/>
+        <mkdir dir="${deploy_dir}/META-INF"/>
+
+        <!-- compiling the classes -->
+        <!--<javac destdir="${classes_dir}" srcdir="${src_dir}">-->
+            <!--<classpath>-->
+                <!--<fileset dir="${lib_dir}" includes="*.jar"/>-->
+                <!--<fileset dir="/home/amila/share/java/junit3.8.1" includes="*.jar"/>-->
+            <!--</classpath>-->
+        <!--</javac>-->
+
+        <!-- copy the classes -->
+        <!--<copy todir="${deploy_dir}">-->
+            <!--<fileset dir="${classes_dir}"/>-->
+        <!--</copy>-->
+
+        <!-- copy services file -->
+        <copy file="src/main/resources/module.xml" todir="${deploy_dir}/META-INF"/>
+
+        <!-- create TestService.aar file -->
+        <jar destfile="${module_file}">
+            <zipfileset dir="${deploy_dir}" prefix=""/>
+        </jar>
+
+    </target>
+
+    <target name="clean" depends="init" description="deletes the old contentst">
+        <!--<delete dir="${classes_dir}"/>-->
+        <delete dir="${deploy_dir}"/>
+    </target>
+
+</project>

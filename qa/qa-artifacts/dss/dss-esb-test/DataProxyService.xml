@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="DataProxyService" transports="https http" startOnLoad="true" trace="disable">
+    <target>
+        <inSequence>
+            <send>
+                <endpoint key="DS_endpoint"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </target>
+</proxy>

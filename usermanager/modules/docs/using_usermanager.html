@@ -1,0 +1,114 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+<title>UserManager Guide</title>
+<body>
+<h1>WSO2 UserManager SNAPSHOT, Guide to using User Manager</h1>
+
+<p>[<a
+href="http://wso2.org/downloads/commons/usermanager">Download</a>]
+| [<a href="index_docs.html">Documentation Home</a>] | [<a
+href="release_notes.html">Release Note</a>]</p>
+
+<p><strong>Table of Contents</strong></p>
+<ul>
+<li><a href="#t1">Overview of UserManager</a></li>
+<li><a href="#t2">Compiling with UserManager</a></li>
+<li><a href="#t3">Coding with UserManager</a></li>
+<li><a href="#t4">Connecting to Existing User Stores</a></li>
+<li><a href="#t5">Creating your own User Stores</a></li>
+<li><a href="#t6">Using a AuthorizingRealm</a></li>
+</ul>
+<h3><a name="t1">Overview of UserManager</a></h3>
+<p>WSO2 UserManager uses Realms to connect to user stores. For example org.wso2.usermanager.custom.jdbc.JDBCRealm can connect to relational databases to authenticate users. Following is the list of Realms with their speciality. All Realms implement the org.wso2.usermanager.Realm interface. Therefore your application can switch back and forth between Realms.</p>
+
+<table>
+<tbody>
+<tr><th>Realm Name</th><th>Description</th></tr>
+<tr><td>JDBCRealm</td><td>Authenticate users in relational databases</td></tr>
+<tr><td>LDAPRealm</td><td>Authenticate users in company LDAP to Authenticate users</td></tr>
+<tr><td>AcegiRealm</td><td>Authenticate users in Acegi user stores</td></tr>
+<tr><td>DefaultRealm</td><td>Create/manage/querry users. The database can be created using the scripts provided or by calling utility methods.</td></tr>
+<tr><td>AuthorizingRealm</td><td>This realm wraps other realms. It calls isUserAuthorized() method before performing actions.</td></tr>
+</tbody>
+</table>
+
+<h3><a name="t2">Coding with UserManager</a></h3>
+
+<p>Using the Realm interface is accompanied by 5 other interfaces. Using the Realm interface we can get objects that implement these 
+interfaces. They can manipute or read UserStore.</p>
+
+<table>
+<tbody>
+<tr><th>Interface</th><th>Realm Interface Method</th><th>Description</th></tr>
+<tr><td>org.wso2.usermanager.Authenticator</td><th>getAuthenticator()</th><td>Authenticate users.</td></tr>
+<tr><td>org.wso2.usermanager.AccessControlAdmin</td><th>getAccessControlAdmin()</th><td>Add/edit/delete Authorization on users/roles/resources</td></tr>
+<tr><td>org.wso2.usermanager.Authorizer</td><th></th>getAuthorizer()<td>Can check for authorizations</td></tr>
+<tr><td>org.wso2.usermanager.UserStoreAdmin</td><th>getUserStoreAdmin()</th><td>Add/edit/delete users.</td></tr>
+<tr><td>org.wso2.usermanager.UserStoreReader</td><th>getUserStoreReader()</th><td>Querry user details.</td></tr>
+</tbody>
+</table>
+
+
+<p>This is how you initialize and use the realm.</p>
+<pre>
+        Realm realm = new XYZRealm();
+        XYZRealmConfig config = (XYZRealmConfig) realm
+                .getRealmConfiguration();
+	/*Call setter methods on the configuration object*/
+        config.set.......
+        config.set.......
+	realm.init(config);
+	realm.getAuthenticator().authenticate("anne", "annepass");
+	
+</pre>
+
+<p>For more details on configuration baen parameters please refer <a href="configuration_manual.html">Configuration Manual</a></p>
+
+<h3><a name="t3">Compiling with UserManager</a></h3>
+
+<p>You only need the usermanager-core.jar and usemanager-config.jar. Other libraries depends on the type of Realm that you are using.</p>
+
+<table>
+<tbody>
+<tr><th>Realm Name</th><th>Required Additional Libraries</th></tr>
+<tr><td>JDBCRealm</td><td>Only the jar containing the JDBC driver of your choice</td></tr>
+<tr><td>LDAPRealm</td><td> naming-factory.jar, naming-factory-dbcp.jar, naming-resources.jar</td></tr>
+<tr><td>AcegiRealm</td><td>spring.jar, acegi-security.jar</td></tr>
+<tr><td>DefaultRealm</td><td>Only the jar containing the JDBC driver of your choice</td></tr>
+<tr><td>AuthorizingRealm</td><td> - None - </td></tr>
+</tbody>
+</table>
+
+
+<h3><a name="t4">Connecting to Existing User Stores</a></h3>
+
+<p>When connecting to existing user stores you only perform Authentication. The following realms are the Realms that you can use for this purpose</p>
+<ul>
+	<li>JDBCRealm</li>
+	<li>LDAPRealm</li>
+	<li>AcegiRealm</li>
+</ul>
+
+<h3><a name="t5">Creating your own User Stores</a></h3>
+<p>When your application wants to create and maintain users in your own database Default Realm can be used. It is a fully pleged Realm where users/roles and permissions can be created/managed and querried.</p>
+
+<h3><a name="t6">Using a AuthorizingRealm</a></h3>
+<p>AuthorizingRealm wraps another Realm inside it along with a username. Before calling the actions it calls isUserAuthorized() method for the authenticated user.</p>
+
+</body>
+</html>

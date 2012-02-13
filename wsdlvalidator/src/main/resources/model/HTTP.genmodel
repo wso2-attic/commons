@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-http"
+    editDirectory="/org.eclipse.wst.wsdl/src" editorDirectory="/org.eclipse.wst.wsdl/src"
+    modelPluginID="org.eclipse.wst.wsdl" modelName="HTTP" editPluginClass="" editorPluginClass=""
+    nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    usedGenPackages="WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
+  <foreignModel>HTTP.mdl</foreignModel>
+  <foreignModel>VABASE_PLUGINS_PATH</foreignModel>
+  <foreignModel>../../..</foreignModel>
+  <genPackages prefix="HTTP" basePackage="org.eclipse.wst.wsdl.binding" classPackageSuffix="internal.impl"
+      utilityPackageSuffix="internal.util" ecorePackage="HTTP.ecore#/">
+    <genClasses ecoreClass="HTTP.ecore#//HTTPBinding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HTTP.ecore#//HTTPBinding/verb"/>
+    </genClasses>
+    <genClasses ecoreClass="HTTP.ecore#//HTTPOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HTTP.ecore#//HTTPOperation/locationURI"/>
+    </genClasses>
+    <genClasses ecoreClass="HTTP.ecore#//HTTPUrlReplacement"/>
+    <genClasses ecoreClass="HTTP.ecore#//HTTPUrlEncoded"/>
+    <genClasses ecoreClass="HTTP.ecore#//HTTPAddress">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HTTP.ecore#//HTTPAddress/locationURI"/>
+    </genClasses>
+    <genClasses ecoreClass="HTTP.ecore#//IHTTPAddress"/>
+    <genClasses ecoreClass="HTTP.ecore#//IHTTPBinding"/>
+    <genClasses ecoreClass="HTTP.ecore#//IHTTPOperation"/>
+    <genClasses ecoreClass="HTTP.ecore#//IHTTPUrlEncoded"/>
+    <genClasses ecoreClass="HTTP.ecore#//IHTTPUrlReplacement"/>
+  </genPackages>
+</genmodel:GenModel>

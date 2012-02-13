@@ -1,0 +1,1 @@
+<resource name="http" isCollection="true" path="/_system/governance/wsdls/http" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>870</version><creator>admin</creator><createdTime>1296273423553</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296273423553</lastModified><description></description></resource>

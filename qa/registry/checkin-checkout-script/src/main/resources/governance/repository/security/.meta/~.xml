@@ -1,0 +1,1 @@
+<resource name="security" isCollection="true" path="/_system/governance/repository/security" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>109</version><creator>wso2.system.user</creator><createdTime>1296273118969</createdTime><lastUpdater>wso2.system.user</lastUpdater><lastModified>1296273118970</lastModified><description></description></resource>

@@ -1,0 +1,12 @@
+This is a web app to perform user verification using Emails
+
+	*This consist of 3 jsp files and a single class. Extract the webapp and integrate register.jsp, signon.jsp and validate.jsp to your application. 
+
+	*Add the WEB-INF/lib files and classes directory to your war file or classpath. 
+
+	*When your application starts up please call the below method.
+	
+		EmailVerifier.init(Realm realmInstance, EmailVerifierConfig verifierConfig)
+		
+			- this realmInstance will be used to add users
+			- verifierConfig will have details about the SMTP server

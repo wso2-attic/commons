@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
+    <parent>
+        <groupId>org.wso2.caching</groupId>
+        <artifactId>wso2caching</artifactId>
+        <version>3.5.0</version>
+	<relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>wso2caching-core</artifactId>
+    <packaging>bundle</packaging>
+    <name>WSO2 Caching Module - Core</name>
+
+    <build>
+        <plugins>
+           <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>mar</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <copy file="target/${pom.artifactId}-${wso2caching.version}.jar"
+                                      tofile="target/wso2caching-${wso2caching.version}.mar"/>
+				<!--<copy file="target/${pom.artifactId}-${wso2caching.version}.jar"-->
+                                      <!--tofile="target/wso2caching.mar"/>-->
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>mar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/wso2caching-${wso2caching.version}.mar</file>
+                                    <!--<file>target/${pom.artifactId}-${wso2caching.version}.mar</file>-->
+                                    <type>mar</type>
+                                </artifact>
+                            </artifacts>
+                            <finalName>wso2caching-${pom.version}</finalName>                            
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>1.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>org.wso2.caching</Bundle-SymbolicName>
+                        <Bundle-Name>org.wso2.caching</Bundle-Name>
+                        <Bundle-Description>
+                            ${pom.description}
+                        </Bundle-Description>
+                        <Bundle-Version>1.6.2</Bundle-Version>
+                        <Export-Package>
+                            org.wso2.caching.*,
+                        </Export-Package>
+                        <Import-Package>
+                            !org.wso2.caching.*,
+                            *;resolution:=optional
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

@@ -1,0 +1,254 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<process name="HelloWorld2"
+    targetNamespace="http://ode/bpel/unit-test" 
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:tns="http://ode/bpel/unit-test"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:test="http://ode/bpel/unit-test.wsdl"
+    xmlns:b4p="http://www.example.org/BPEL4People"
+    xmlns:test1="http://www.wso2.org/types"
+    xmlns:test2="http://wso2.org/bps/samples/CreditRating"
+    xmlns:test3="http://wso2.org/bps/samples/loan_process/schema"
+    xmlns:test4="http://www.insurance.example.com/claims"
+    xmlns:test5="http://www.insurance.example.com/claims/schema"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+    
+    <extensions>
+	  <extension
+	    namespace="http://www.example.org/BPEL4People"
+	    mustUnderstand="yes"/>
+    </extensions>
+
+
+  <import location="HelloWorld2.wsdl"
+     namespace="http://ode/bpel/unit-test.wsdl"
+     importType="http://schemas.xmlsoap.org/wsdl/" />
+  <!--import location="HelloAARService.wsdl"
+     namespace="http://www.wso2.org/types"
+     importType="http://schemas.xmlsoap.org/wsdl/" /-->
+  <!--import location="CreditRating.wsdl"
+     namespace="http://wso2.org/bps/samples/CreditRating"
+     importType="http://schemas.xmlsoap.org/wsdl/" /-->
+  <import location="sample.wsdl"
+     namespace="http://www.insurance.example.com/claims"
+     importType="http://schemas.xmlsoap.org/wsdl/" />   
+
+   <partnerLinks>
+      <partnerLink name="helloPartnerLink" 
+         partnerLinkType="test:HelloPartnerLinkType" 
+         myRole="me" />
+      <partnerLink name="b4pPartnerLink" 
+         partnerLinkType="test4:b4pPartnerLinkType" 
+         partnerRole="hi"
+         myRole="bpel" />
+      <partnerLink name="b4pNPartnerLink" 
+         partnerLinkType="test4:b4pNPartnerLinkType" 
+         partnerRole="hi" />   
+   </partnerLinks>
+    
+   <variables>
+     <variable name="myVar" messageType="test:HelloMessage"/>
+     <variable name="myVar1" messageType="test:HelloMessage"/>
+     <variable name="myVar2" messageType="test:HelloMessage"/>
+     <!--variable name="b4pInput" messageType="test1:greetRequest"/>
+     <variable name="b4pOutput" messageType="test1:greetResponse"/-->
+     <!--variable name="b4pInput" messageType="test2:getCreditRatingRequest"/>
+     <variable name="b4pOutput" messageType="test2:getCreditRatingResponse"/-->
+     <variable name="b4pInput" messageType="test4:ClaimApprovalRequest"/>
+     <variable name="b4pOutput" messageType="test4:ClaimApprovalResponse"/>
+     <variable name="b4pNInput" messageType="test4:notifyRequest"/>
+     <variable name="tmpVar" type="xsd:string"/>
+     <variable name="tmpVar2" type="xsd:string"/>
+     <variable name="tmpVar3" type="xsd:string"/>
+     <variable name="tmpDate" type="xsd:dateTime"/>
+   </variables>
+        
+   <sequence>   
+       <receive 
+          name="start"
+          partnerLink="helloPartnerLink"
+          portType="test:HelloPortType"
+          operation="hello"
+          variable="myVar"
+          createInstance="yes"/>
+
+      <assign name="assign1">
+         <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to variable="tmpVar"/>
+         </copy>
+         <copy>
+             <from>concat($tmpVar,' World')</from>
+             <to variable="myVar" part="TestPart"/>
+         </copy>
+      </assign>
+      
+      <assign name="initB4PVars">
+         <!--copy>
+			 <from>
+				<literal>
+				    <test1:greet>
+				        <test1:name></test1:name>
+				    </test1:greet>
+				</literal>
+			</from>
+			<to>$b4pInput.parameters</to>
+        </copy-->
+        <!--copy>
+			 <from>
+				<literal>
+				    <test3:CustomerSSN>
+				        <test3:SSN></test3:SSN>
+				    </test3:CustomerSSN>
+				</literal>
+			</from>
+			<to>$b4pInput.part</to>
+        </copy-->
+        <copy>
+			 <from>
+				<literal>
+					<test5:ClaimApprovalData>
+						<test5:cust>
+						    <test5:id>002</test5:id>
+						    <test5:firstname>FNAME</test5:firstname>
+						    <test5:lastname>LNAME</test5:lastname>
+						</test5:cust>
+						<test5:amount>1000</test5:amount>
+						<test5:region>Colombo</test5:region>
+						<test5:priority>3</test5:priority>
+						<test5:activateAt></test5:activateAt>
+					</test5:ClaimApprovalData>
+				</literal>
+			</from>
+			<to>$b4pInput.ClaimApprovalRequest</to>
+        </copy>
+      </assign>
+      
+      <assign name="initNotificationInput">
+      	<copy>
+			 <from>
+				<literal>
+					<test5:Notify>
+						<test5:firstname>FNNAME</test5:firstname>
+						<test5:lastname>LNNAME</test5:lastname>
+						<test5:taskId>TASKID</test5:taskId>
+					</test5:Notify>
+				</literal>
+			</from>
+			<to>$b4pNInput.NotifyPart</to>
+        </copy>
+        <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to>$b4pNInput.NotifyPart/test5:firstname</to>
+         </copy>
+      </assign>
+      
+      <assign name="assign2">
+         <!--copy>
+            <from variable="myVar" part="TestPart"/>
+            <to>$b4pInput.part/test3:SSN</to>
+         </copy-->
+         <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to>$b4pInput.ClaimApprovalRequest/test5:cust/test5:id</to>
+         </copy>
+         <copy>
+            <from>
+				<literal>
+					<test5:ClaimApprovalResponseData>
+						<test5:response></test5:response>
+					</test5:ClaimApprovalResponseData>
+				</literal>
+            </from>
+            <to>$b4pOutput.part</to>
+         </copy>
+         <!--copy>
+            <from variable="myVar" part="TestPart"/>
+            <to>$b4pOutput.ClaimApprovalResponse/test4:ClaimApprovalResponseData</to>
+         </copy-->
+      </assign>
+      
+      <!--assign name="assign2">
+         <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to variable="myVar1" part="TestPart"/>
+         </copy>
+         <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to variable="myVar2" part="TestPart"/>
+         </copy>
+      </assign-->
+      
+      <extensionActivity>
+	  <b4p:peopleActivity name="TestNotificationActivity"
+		              inputVariable="b4pNInput">
+	    <b4p:remoteNotification partnerLink="b4pNPartnerLink"
+		            operation="notify">
+		<!--b4p:remoteTask partnerLink="b4pPartnerLink"
+		            operation="getCreditRating"
+		            responseOperation="getCreditRatingResponse"-->
+	      <!--htd:priority>0</htd:priority>
+	      <htd:peopleAssignments>
+		<htd:potentialOwners>
+		  <htd:from>$electionResult/winner</htd:from>
+		</htd:potentialOwners>
+	      </htd:peopleAssignments-->
+	    </b4p:remoteNotification>
+	  </b4p:peopleActivity>
+      </extensionActivity>
+      
+      <extensionActivity>
+	  <b4p:peopleActivity name="TestTASKPeopleActivity"
+		              inputVariable="b4pInput"
+		              outputVariable="b4pOutput"
+		              isSkipable="no">
+	    <b4p:remoteTask partnerLink="b4pPartnerLink"
+		            operation="approve"
+		            responseOperation="approvalResponse">
+		<!--b4p:remoteTask partnerLink="b4pPartnerLink"
+		            operation="getCreditRating"
+		            responseOperation="getCreditRatingResponse"-->
+	      <!--htd:priority>0</htd:priority>
+	      <htd:peopleAssignments>
+		<htd:potentialOwners>
+		  <htd:from>$electionResult/winner</htd:from>
+		</htd:potentialOwners>
+	      </htd:peopleAssignments-->
+	    </b4p:remoteTask>
+	  </b4p:peopleActivity>
+       </extensionActivity>
+       
+      <assign name="assignOutput">
+         <copy>
+            <from>$b4pOutput.part/test5:response</from>
+            <to variable="myVar" part="TestPart"/>
+         </copy>
+      </assign>
+
+      
+       <reply name="end"  
+              partnerLink="helloPartnerLink"
+              portType="test:HelloPortType" 
+              operation="hello"
+              variable="myVar"/>
+   </sequence>
+</process>

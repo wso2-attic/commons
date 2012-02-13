@@ -1,0 +1,147 @@
+-addressing enabled in both deploy.xml and axis2 server
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287117277403/859626278</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/output1</wsa:Action>
+      <wsa:RelatesTo>http://identifiers.wso2.com/messageid/1287117277403/859626278</wsa:RelatesTo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <functionProcessServiceResponse xmlns="http://www.example.org/messages">	  			
+         <tns:return xmlns:tns="http://www.example.org/messages">3</tns:return>			
+      </functionProcessServiceResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+-------------------------------------------------------------------------------------------
+-addressing enabled in axis2 server and addressing disabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287125719101/5244683714</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+[2010-10-15 12:25:19,689]  WARN -  triggerActionNotSupportedFault: messageContext: [MessageContext: logID=urn:uuid:853FD5F83E71848CEC1287125719711] problemAction: urn:anonOutInOpResponse
+[2010-10-15 12:25:20,977] ERROR -  The [action] cannot be processed at the receiver.
+org.apache.axis2.AxisFault: The [action] cannot be processed at the receiver.
+	at org.apache.axis2.addressing.AddressingFaultsHelper.triggerAddressingFault(AddressingFaultsHelper.java:373)
+	at org.apache.axis2.addressing.AddressingFaultsHelper.triggerActionNotSupportedFault(AddressingFaultsHelper.java:336)
+	at org.apache.axis2.dispatchers.AddressingBasedDispatcher.checkAction(AddressingBasedDispatcher.java:144)
+	at org.apache.axis2.dispatchers.AddressingBasedDispatcher.invoke(AddressingBasedDispatcher.java:129)
+	at org.apache.axis2.engine.Phase.invoke(Phase.java:318)
+	at org.apache.axis2.engine.AxisEngine.invoke(AxisEngine.java:259)
+	at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:165)
+	at org.apache.axis2.transport.http.HTTPTransportUtils.processHTTPPostRequest(HTTPTransportUtils.java:173)
+	at org.apache.axis2.transport.http.HTTPWorker.service(HTTPWorker.java:272)
+	at org.apache.axis2.transport.http.server.AxisHttpService.doService(AxisHttpService.java:281)
+	at org.apache.axis2.transport.http.server.AxisHttpService.handleRequest(AxisHttpService.java:187)
+	at org.apache.axis2.transport.http.server.HttpServiceProcessor.run(HttpServiceProcessor.java:82)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+-addressing disabled in axis2 server and enabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287129200578/1938264858</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/output1</wsa:Action>
+      <wsa:RelatesTo>http://identifiers.wso2.com/messageid/1287129200578/1938264858</wsa:RelatesTo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <functionProcessServiceResponse xmlns="http://www.example.org/messages">	  			
+         <tns:return xmlns:tns="http://www.example.org/messages">3</tns:return>			
+      </functionProcessServiceResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+-----------------------------------------------------------------------------------------------------------------
+
+-addressing disabled in both axis2 server and deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287129059693/1509105923</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+[2010-10-15 13:21:00,665]  WARN -  triggerActionNotSupportedFault: messageContext: [MessageContext: logID=urn:uuid:A63CE9683E2235CFA81287129060694] problemAction: urn:anonOutInOpResponse
+[2010-10-15 13:21:00,714] ERROR -  The [action] cannot be processed at the receiver.
+org.apache.axis2.AxisFault: The [action] cannot be processed at the receiver.
+	at org.apache.axis2.addressing.AddressingFaultsHelper.triggerAddressingFault(AddressingFaultsHelper.java:373)
+	at org.apache.axis2.addressing.AddressingFaultsHelper.triggerActionNotSupportedFault(AddressingFaultsHelper.java:336)
+	at org.apache.axis2.dispatchers.AddressingBasedDispatcher.checkAction(AddressingBasedDispatcher.java:144)
+	at org.apache.axis2.dispatchers.AddressingBasedDispatcher.invoke(AddressingBasedDispatcher.java:129)
+	at org.apache.axis2.engine.Phase.invoke(Phase.java:318)
+	at org.apache.axis2.engine.AxisEngine.invoke(AxisEngine.java:259)
+	at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:165)
+	at org.apache.axis2.transport.http.HTTPTransportUtils.processHTTPPostRequest(HTTPTransportUtils.java:173)
+	at org.apache.axis2.transport.http.HTTPWorker.service(HTTPWorker.java:272)
+	at org.apache.axis2.transport.http.server.AxisHttpService.doService(AxisHttpService.java:281)
+	at org.apache.axis2.transport.http.server.AxisHttpService.handleRequest(AxisHttpService.java:187)
+	at org.apache.axis2.transport.http.server.HttpServiceProcessor.run(HttpServiceProcessor.java:82)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:885)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:619)
+

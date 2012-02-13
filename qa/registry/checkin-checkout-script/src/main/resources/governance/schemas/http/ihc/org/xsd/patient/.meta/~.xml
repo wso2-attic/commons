@@ -1,0 +1,1 @@
+<resource name="patient" isCollection="true" path="/_system/governance/schemas/http/ihc/org/xsd/patient" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>895</version><creator>admin</creator><createdTime>1296273460026</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296273460115</lastModified><description></description></resource>

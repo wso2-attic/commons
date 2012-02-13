@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Hello World">
+    <Require feature="opensocial-templates">
+    </Require>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+       <!-- A simple inline template -->
+       <script type="text/os-template"> 
+        <div style="font-size: 20px">Hello world!</div>
+       </script>    
+    ]]>
+  </Content>
+</Module>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="sslProxy" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+        <target>
+            <inSequence>
+                <send>
+                    <endpoint>
+                        <address uri="https://localhost:9002/services/SimpleStockQuoteService" />
+                    </endpoint>
+                </send>
+            </inSequence>
+        </target>
+    </proxy>
+</definitions>

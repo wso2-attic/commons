@@ -1,0 +1,72 @@
+<project name="Echoclient" default="run.client">
+
+    <property environment="env"/>
+    
+    <property name="base.dir" value="${project.base.dir}/mtom/file-download/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="endpoint" value="http://${wsas.envt.hostname}:${wsas.envt.httpport}/services/MtomFileDownloadService"/>
+    <property name="input.image" value="${wsas.envt.WSAS_HOME}/samples/Chad/www/images/wsas-logo.gif"/>
+    <property name="output.image" value="${wsas.envt.WSAS_HOME}/tmp/mtom_downloaded.jpg"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="client.lib" value="${wsas.envt.WSAS_HOME}/repository/lib"/>
+             
+         
+    <target name="run.client" depends="clean">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/MtomDownloadservice-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.wsas.client.MtomDownloadClient" fork="true">
+                    <arg value="${input.image}"/>
+                    <arg value="${output.image}"/>
+                    <arg value="${endpoint}"/>
+                    
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+        
+        
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

@@ -1,0 +1,56 @@
+<!-- ========================================
+ * Purpose	:	This is a build files to call the client to test "documentation" annotation of WSO2 Mashup Server.
+ * Author	: 	Yumani Ranaweera
+============================================-->
+
+<project name="DocumentationClient" default="run.client">
+
+	<!-- where the global property file is -->   
+    <xmlproperty file="${project.base.dir}\global_config.xml"/>  
+	
+	<!-- where the base directory is -->
+   	<property name="base.dir" value="${project.base.dir}\annotations\serviceLevel\documentation\positive\client"/>
+	
+	<!-- where the target is created -->   
+    <property name="target" value="${base.dir}\target"/>
+    <property name="target.java" value="${target}\src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="target.stub" value="${target}/stub"/>
+	
+
+	<!-- ========== run.client Target ===================================-->             
+    <target name="run.client" depends="clean">   
+	
+        <!-- Compile the client -->
+        <mkdir dir="${target}/classes"/>
+		<echo message="${base.dir}\src"/>
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true" destdir="${target}/classes">
+			<src path="${base.dir}\src"/>
+            <classpath>
+                <fileset dir="${mashup.envt.MASHUP_HOME}\lib"><include name="*.jar"/></fileset>
+				<fileset dir="${target}"><include name="*.jar"/></fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/documentation-client.jar">
+            <fileset dir="${target}/classes"></fileset>
+        </jar>        
+        <java classname="org.wso2.mashup.client.clientDocumentation">
+            <classpath>
+                <fileset dir="${mashup.envt.MASHUP_HOME}\lib"><include name="*.jar"/></fileset>
+				<fileset dir="${mashup.envt.AXIS_HOME}\lib"><include name="*.jar"/></fileset>
+                <fileset dir="${target}"><include name="*.jar"/></fileset>
+            </classpath>
+        </java>
+		
+    </target>
+	
+
+	<!-- ========== clean Target ===================================-->    
+	<target name="clean">
+		<echo message= "-------------------------------- Running the client for documentation.js ---------------------------"/>    
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

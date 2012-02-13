@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+     <soapenv:Body>
+   <p:toString xmlns:p="http://services.mashup.wso2.org/test?xsd">
+      <param>hi</param>
+   </p:toString>
+     </soapenv:Body>
+  </soapenv:Envelope>

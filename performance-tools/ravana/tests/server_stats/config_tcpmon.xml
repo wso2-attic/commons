@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<performance_test>
+	<product1>		
+		<product_name>axis2c-1.7.0</product_name>
+		<server-config>
+			<host>localhost</host>
+			<port>9090</port>
+            <uri>/axis2/services/POService</uri>		
+		</server-config>	
+	</product1>
+	<scenario>
+		<name>server_stats</name>		
+		<method>POST</method>
+		<timeout>30</timeout>
+		<high_rate>1</high_rate>
+		<low_rate>1</low_rate>
+		<rate_step>1</rate_step>
+		<max_piped_calls>1</max_piped_calls>		
+		<max_connections>1</max_connections>				
+		<no_of_sessions>1</no_of_sessions>
+		<user_think_time>0</user_think_time>	
+	</scenario>
+	<extra>
+        <header>Content-Type: application/soap+xml; charset=utf-8; action=m:buyStocks\n</header>
+		<debug>true</debug>
+		<sort>true</sort>	
+	</extra>
+</performance_test>
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+	<api name="AccountManagementAPI" context="/am">		
+		<resource uri-template="/account/{accountId}" methods="GET" inSequence="GetAccountIn" outSequence="GetAccountOut"/>					
+		<resource uri-template="/account/{accountId}" methods="PUT" inSequence="UpdateAccountIn" outSequence="UpdateAccountOut"/>
+		<resource uri-template="/account/{accountId}" methods="DELETE" inSequence="DeleteAccountIn" outSequence="DeleteAccountOut"/>		
+		<resource url-mapping="/" methods="POST" inSequence="CreateAccountIn" outSequence="CreateAccountOut"/>										
+		<resource url-mapping="/" methods="GET" inSequence="ListAccountsIn" outSequence="ListAccountsOut"/>			
+	</api>	
+
+</definitions>

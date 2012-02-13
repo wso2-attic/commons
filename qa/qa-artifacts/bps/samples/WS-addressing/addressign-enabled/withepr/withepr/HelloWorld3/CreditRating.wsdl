@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CreditRating" targetNamespace="http://wso2.org/bps/samples/CreditRating"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://wso2.org/bps/samples/CreditRating" 
+    xmlns:ns="http://wso2.org/bps/samples/loan_process/schema" 
+    xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://wso2.org/bps/samples/CreditRating">
+            <xsd:import namespace="http://wso2.org/bps/samples/loan_process/schema" schemaLocation="loan.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="getCreditRatingRequest">
+        <part name="part" element="ns:CustomerSSN"/>
+    </message>
+    <message name="getCreditRatingResponse">
+        <part name="part" element="ns:CreditRating"/>
+    </message>
+    <portType name="CreditRatingPortType">
+        <operation name="getCreditRating">
+            <input name="input" message="tns:getCreditRatingRequest"/>
+            <!--output name="output" message="tns:getCreditRatingResponse"/-->
+        </operation>
+    </portType>
+    <portType name="CreditRatingCallbackPortType">
+        <operation name="getCreditRatingCallback">
+            <input name="inputCallback" message="tns:getCreditRatingResponse"/>
+        </operation>
+    </portType>
+    <binding name="CreditRatingBinding" type="tns:CreditRatingPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getCreditRating">
+                   <soap:operation soapAction="urn:test" style="document"/>
+            <input name="input">
+                <soap:body use="literal"/>
+            </input>
+            <!--output name="output">
+                <soap:body use="literal"/>
+            </output-->
+        </operation>
+    </binding>
+    <binding name="CreditRatingCallbackBinding" type="tns:CreditRatingCallbackPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getCreditRatingCallback">
+            <input name="inputCallback">
+                <soap:body use="literal"/>
+            </input>
+        </operation>
+    </binding>
+    <service name="CreditRatingService">
+        <port name="CreditRatingPort" binding="tns:CreditRatingBinding">
+            <soap:address location="test"/>
+        </port>
+    </service>
+    <service name="CreditRatingCallbackService">
+        <port name="CreditRatingCallbackPort" binding="tns:CreditRatingCallbackBinding">
+            <soap:address location="http://localhost:9763/services/CreditRatingCallbackService"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="CreditRating">        
+        <plnk:role name="CreditRatingService" portType="tns:CreditRatingPortType"/>
+        <plnk:role name="CreditRatingCallbackService" portType="tns:CreditRatingCallbackPortType"/>
+    </plnk:partnerLinkType>
+</definitions>

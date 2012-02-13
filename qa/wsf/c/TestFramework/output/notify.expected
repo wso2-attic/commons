@@ -1,0 +1,5 @@
+Using endpoint : http://localhost:9090/axis2/services/notify
+
+Sending OM node in XML : <m:notify xmlns:m="http://example.org/notify">notify5</m:notify> 
+
+notify client invoke SUCCESSFUL!

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:tns="http://example.com/bpel/counter">
+  <process name="tns:counter">
+    <in-memory>false</in-memory>>
+
+    <provide partnerLink="operations">
+      <service name="tns:counter" port="port"/>
+    </provide>
+  </process>
+</deploy>

@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>system-test-framework</artifactId>
+        <version>3.2.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.carbon</groupId>
+    <artifactId>system-test</artifactId>
+    <version>3.2.1</version>
+    <packaging>pom</packaging>
+
+    <name>WSO2 Carbon - System Test Scenarios</name>
+
+    <modules>
+        <module>org.wso2.carbon.system.test.common</module>         
+        <module>org.wso2.carbon.system.test.scenario</module>
+        <module>org.wso2.stratos.test.scenario</module>
+        <module>org.wso2.stratos.perf.test</module>
+        <module>org.wso2.stratos.test.auto</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.5</source>
+                        <target>1.5</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>                
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <inherited>false</inherited>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                        <disableXmlReport>true</disableXmlReport>
+                        <failIfNoTests>false</failIfNoTests>
+                        <excludes>
+                            <exclude>**/*Abstract*.java</exclude>
+                            <exclude>**/*CryptoUtilTest*.java</exclude>
+                        </excludes>
+                        <includes>
+                            <include>**/*Scenario*.java</include>
+                            <include>**/*Client*.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>                                                                
+</project>

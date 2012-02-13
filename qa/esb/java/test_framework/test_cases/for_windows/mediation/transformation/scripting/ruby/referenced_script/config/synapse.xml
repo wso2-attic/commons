@@ -1,0 +1,20 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <localEntry key="addNumrbScript" src="file:repository/conf/sample/resources/script/addNumTransform.rb"/>
+    <in>
+
+        <script language="rb" key="addNumrbScript" function="transformRequest"/>
+
+
+        <send>
+            <endpoint name="stockquote">
+                <address uri="http://10.100.1.228:9762/services/Adding"/>
+            </endpoint>
+        </send>
+    </in>
+    <out>
+
+        <script language="rb" key="addNumrbScript" function="transformResponse"/>
+        <send/>
+    </out>
+</definitions>

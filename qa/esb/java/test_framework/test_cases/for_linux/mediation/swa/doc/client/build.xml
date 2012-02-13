@@ -1,0 +1,88 @@
+<project name="SWAclient" default="run.client">
+
+    <property name="base.dir" value="${project.base.dir}/mediation/swa/doc/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="ESB_HOME" value="${esb.envt.ESB_HOME}"/>
+    <property name="endpoint" value="http://${esb.envt.hostname}:${esb.envt.httpport}/soap"/>
+ 
+    <!--Copy the synapse.xml to ESB_HOME/webapp/WEB-INF/classes/conf-->
+    <target name="copy_synapse_xml">
+        <delete file="${ESB_HOME}/conf/synapse.xml"/>
+        <copy file="${build.dir}/../../config/synapse.xml" tofile="${ESB_HOME}/conf/synapse.xml" overwrite="true"/>
+    </target>	
+
+    <target name="copy_mtom_service">
+        <delete file="${ESB_HOME}/samples/axis2Server/repository/services/MTOMSwASampleService.aar"/>
+        <copy file="${build.dir}/../../resources/MTOMSwASampleService.aar" tofile="${ESB_HOME}/samples/axis2Server/repository/services/MTOMSwASampleService.aar" overwrite="true"/>
+    </target>
+ 
+    <target name="copy_document">
+        <delete dir="${ESB_HOME}/repository/samples/resources/swa/doc"/>
+        <mkdir dir="${ESB_HOME}/repository/samples/resources/swa/doc"/>
+        <copy file="${build.dir}/../../resources/WSO2-ESB-AdministratorGuide.doc" tofile="${ESB_HOME}/repository/samples/resources/swa/doc/WSO2-ESB-AdministratorGuide.doc" overwrite="true"/>
+    </target>
+
+    <target name="start_synapse_server" depends="copy_synapse_xml, copy_mtom_service, copy_document">
+        <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="true">
+            <arg value="console"/>
+       </exec> 
+    </target>
+           
+    <target name="run.client" depends="clean">
+
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/SWAClient.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.esb.client.SWAClient" fork="true">
+            <arg value="${endpoint}"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+        <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="false">
+            <arg value="stop"/>
+       </exec>
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

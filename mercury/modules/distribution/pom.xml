@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>org.wso2.mercury</groupId>
+		<artifactId>mercury-parent</artifactId>
+		<version>SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.wso2.mercury</groupId>
+	<artifactId>mercury-distribution</artifactId>
+	<packaging>jar</packaging>
+	<version>SNAPSHOT</version>
+
+	<name>WSO2 Mercury Distribution</name>
+	<url>http://wso2.org/projects/commons/mercury</url>
+	<description>WSO2 Mercury Distribution</description>
+
+ 
+	<build>
+	  <plugins>
+	   <plugin>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-antrun-plugin</artifactId>
+	    <version>1.1</version>
+	    <inherited>false</inherited>
+	    <executions>
+		    <execution>
+			    <id>javadoc-generation</id>
+			    <phase>package</phase>
+			    <configuration>
+				    <tasks>
+					    <mkdir dir="${basedir}/target/docs/apidocs"/>
+					    <javadoc packagenames="org.wso2.mercury.*"
+							     destdir="${basedir}/target/docs/apidocs"
+							     classpathref="maven.runtime.classpath"
+							     author="true"
+							     version="true"
+							     use="true"
+							     windowtitle="Mercury API"
+							     doctitle="Mercury"
+							     bottom="~~~~~~~~~~~~~~~~~~~ Mercury ~~~~~~~~~~~~~~~~~~~~~"
+							     >
+							    <packageset dir="../../modules/core/src/main/java" defaultexcludes="yes">
+								    <include name="org/wso2/mercury/**"/>
+							    </packageset>
+							    <packageset dir="../../modules/persistence/src/main/java" defaultexcludes="yes">
+								    <include name="org/wso2/mercury/**"/>
+							    </packageset>    
+					      </javadoc>
+				        </tasks>
+				    </configuration>
+				    <goals>
+					    <goal>run</goal>
+				    </goals>
+			    </execution>
+		    </executions>
+        </plugin>
+		
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.1</version>
+            <executions>
+                <execution>
+                    <id>distribution-package</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                    <configuration>
+                        <descriptors>
+                            <descriptor>src/main/assembly/bin.xml</descriptor>
+                            <descriptor>src/main/assembly/src.xml</descriptor>
+                        </descriptors>
+                        <finalName>mercury-${version}</finalName>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>     
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="hello world example" />
+<Content type="html"><![CDATA[
+<div style="width: 250px; padding: 0; margin: 0; text-align: center">
+<embed src="http://petswf.bunnyherolabs.com/adopt/swf/tiger" 
+width="250" height="300" quality="high" bgcolor="ffffff" 
+pluginspage="http://www.macromedia.com/go/getflashplayer" 
+flashvars="cn=lil%20tiger&an=gadzi&clr=0xff9900" type="application/x-shockwave-flash">
+</embed><br />
+<small>
+<a href="http://www.gadzi.com/animals/virtual-pets.html" target="_blank">
+See more virtual pets</a></small></div>
+]]></Content>
+</Module>

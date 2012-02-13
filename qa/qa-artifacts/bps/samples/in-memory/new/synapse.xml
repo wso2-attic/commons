@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syn:definitions xmlns:syn="http://ws.apache.org/ns/synapse">
+    <syn:registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <syn:parameter name="cachableDuration">15000</syn:parameter>
+    </syn:registry>
+    <syn:proxy name="HelloWorld3Proxy" transports="https http" startOnLoad="true" trace="disable">
+        <syn:target>
+            <syn:inSequence>
+                <syn:send>
+                    <syn:endpoint name="H3Epr">
+                        <syn:address uri="http://localhost:9763/services/HelloService3"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+        <syn:parameter name="disableAddressingForInMessages">true</syn:parameter>
+    </syn:proxy>
+    <syn:proxy name="CreditRatingProxy" transports="https http" startOnLoad="true" trace="disable">
+        <syn:target>
+            <syn:inSequence>
+                <syn:send>
+                    <syn:endpoint name="CreditEpr">
+                        <syn:address uri="http://localhost:8280/services/CreditRatingService"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+        <syn:parameter name="disableAddressingForInMessages">true</syn:parameter>
+    </syn:proxy>
+    <syn:proxy name="HelloWorld2Proxy" transports="https http" startOnLoad="true" trace="disable">
+        <syn:target>
+            <syn:inSequence>
+                <syn:send>
+                    <syn:endpoint name="Hello2Epr">
+                        <syn:address uri="http://localhost:9763/services/HelloService"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:sequence name="fault">
+        <syn:log/>
+    </syn:sequence>
+    <syn:sequence name="main">
+        <syn:in>
+            <syn:log level="full"/>
+            <syn:filter source="get-property('To')" regex="http://localhost:9000.*">
+                <syn:send/>
+            </syn:filter>
+        </syn:in>
+        <syn:out>
+            <syn:send/>
+        </syn:out>
+    </syn:sequence>
+</syn:definitions>

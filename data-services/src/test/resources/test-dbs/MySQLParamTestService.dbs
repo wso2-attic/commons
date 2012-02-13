@@ -1,0 +1,59 @@
+<data name="MySQLParamTestService">
+   <config>
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/classicmodels?autoReconnect=true</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">password</property>
+      <property name="org.wso2.ws.dataservice.minpoolsize">2</property>
+      <property name="org.wso2.ws.dataservice.maxpoolsize">100</property>
+   </config>
+
+   <query id="query1">
+      <sql>select customerNumber, customerName, contactLastName, phone, city from customers
+      where customerNumber = ? and contactLastName = ?
+      </sql>
+
+      <result element="Customers" rowName="Customer">
+         <element name="customerNumber" column="customerNumber" />
+         <element name="customerName" column="customerName" />
+         <element name="contactLastName" column="contactLastName" />
+         <element name="phone" column="phone" />
+         <element name="city" column="city" />
+      </result>
+      <param name="cusNo" sqlType="INTEGER" />
+      <param name="lastName" sqlType="STRING" />      
+      
+   </query>
+
+   <operation name="results1">
+      <call-query href="query1">
+        <with-param name="cusNo" query-param="cusNo" />
+        <with-param name="lastName" query-param="lastName" />      
+      </call-query>
+   </operation>
+   
+   
+   <query id="query2">
+      <sql>select customerNumber, customerName, contactLastName, phone, city from customers
+      where customerName like ?
+      </sql>
+
+      <result element="Customers" rowName="Customer">
+         <element name="customerNumber" column="customerNumber" />
+         <element name="customerName" column="customerName" />
+         <element name="contactLastName" column="contactLastName" />
+         <element name="phone" column="phone" />
+         <element name="city" column="city" />
+      </result>
+      <param name="customerName" sqlType="STRING" />      
+      
+   </query>
+
+   <operation name="results2">
+      <call-query href="query2">
+        <with-param name="customerName" query-param="customerName" />      
+      </call-query>
+   </operation>
+   
+</data>
+

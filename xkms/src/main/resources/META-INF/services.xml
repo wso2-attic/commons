@@ -1,0 +1,35 @@
+<service>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                         class="org.wso2.xkms2.core.XKMSMessageReceiver"/>
+    </messageReceivers>
+
+    <operation name="LocateRequest"/>
+    <operation name="ValidateRequest"/>
+    <operation name="RegisterRequest"/>
+    <operation name="ReissueRequest"/>
+    <operation name="RevokeRequest"/>
+    <operation name="RecoverRequest"/>
+    
+    <!-- XKMS server authentication code -->
+    <parameter name="org.wso2.xkms2.service.crypto.authen.code">secret</parameter>
+    <!-- XKMS server keystore (to which registered keys will be uploaded)  -->
+    <parameter name="org.wso2.xkms2.service.crypto.keystore.location">keystore.jks</parameter>
+    <!-- XKMS server keystore password-->
+    <parameter name="org.wso2.xkms2.service.crypto.keystore.password">password</parameter>
+    <!-- XKMS server certificate alias -->
+    <parameter name="org.wso2.xkms2.service.crypto.server.cert.aliase">bob</parameter>
+    <!-- XKMS server private key password -->
+    <parameter name="org.wso2.xkms2.service.crypto.server.key.password">password</parameter>
+    <!-- XKMS server issuer certificate alias-->
+    <parameter name="org.wso2.xkms2.service.crypto.issuer.cert.aliase">alice</parameter>
+    <!-- XKMS server issuer private key password -->
+    <parameter name="org.wso2.xkms2.service.crypto.issuer.key.password">password</parameter>
+    <!-- XKMS server default private key password. (Server-side private keys 
+         will be stored using this as the password)-->
+    <parameter name="org.wso2.xkms2.service.crypto.default.private.key.password">password</parameter>
+    <!-- Validitity period of issued certificates (from issued date) -->
+    <parameter name="org.wso2.xkms2.service.crypto.default.expriy.interval">365</parameter>
+    <!-- XKMS server persistence enabled flag -->
+    <parameter name="org.wso2.xkms2.service.crypto.persistence.enabled">true</parameter>
+</service>

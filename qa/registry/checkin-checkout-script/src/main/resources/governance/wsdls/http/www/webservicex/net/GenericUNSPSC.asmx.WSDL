@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.webservicex.net/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.webservicex.net/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The United Nations Standard Products and Services Code® (UNSPSC®) provides an open, global multi-sector standard for efficient, accurate classification of products and services. Search the code on this website to locate commodity codes that can be used by your company. The UNSPSC offers a single global classification system that can be used for: Company-wide visibility of spend analysis,Cost-effective procurement optimization,	Full exploitation of electronic commerce capabilities </wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.webservicex.net/">
+      <s:element name="GetUNSPSCSegments">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetUNSPSCSegmentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="GetUNSPSCSegmentsResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="UNSPSCSegmentData" type="tns:UNSPSCSegmentList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UNSPSCSegmentList">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Records" type="s:int"/>
+          <s:element maxOccurs="1" minOccurs="0" name="UNSPSCSegmenData" type="tns:ArrayOfUNSPSCSegment"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUNSPSCSegment">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="UNSPSCSegment" type="tns:UNSPSCSegment"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UNSPSCSegment">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Segment" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="SegmentTitle" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUNSPSCFamilyBySegment">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Segment" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUNSPSCFamilyBySegmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="GetUNSPSCFamilyBySegmentResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="UNSPSCFamilyData" type="tns:UNSPSCFamilyList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UNSPSCFamilyList">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Records" type="s:int"/>
+          <s:element maxOccurs="1" minOccurs="0" name="UNSPSCFamilyData" type="tns:ArrayOfUNSPSCFamily"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUNSPSCFamily">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="UNSPSCFamily" type="tns:UNSPSCFamily"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UNSPSCFamily">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Family" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="FamilyTitle" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUNSPSCClassByFamily">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Family" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUNSPSCClassByFamilyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="GetUNSPSCClassByFamilyResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="UNSPSCClassData" type="tns:UNSPSCClassList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UNSPSCClassList">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Records" type="s:int"/>
+          <s:element maxOccurs="1" minOccurs="0" name="UNSPSCClassData" type="tns:ArrayOfUNSPSCClass"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUNSPSCClass">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="UNSPSCClass" type="tns:UNSPSCClass"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UNSPSCClass">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Class" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ClassTitle" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUNSPSCCommodityByClass">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Class" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUNSPSCCommodityByClassResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="GetUNSPSCCommodityByClassResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="UNSPSCCommodityData" type="tns:UNSPSCCommodityList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="UNSPSCCommodityList">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Records" type="s:int"/>
+          <s:element maxOccurs="1" minOccurs="0" name="UNSPSCCommodityData" type="tns:ArrayOfUNSPSCCommodity"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUNSPSCCommodity">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="UNSPSCCommodity" type="tns:UNSPSCCommodity"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UNSPSCCommodity">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Commodity" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="CommodityTitle" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetUNSPSCByCommodityByTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="CommodityTitle" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUNSPSCByCommodityByTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="GetUNSPSCByCommodityByTitleResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="UNSPSCCommodityData" type="tns:UNSPSCCommodityList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetUNSPSCByCommodityByTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCByCommodityByTitleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCCommodityByClassSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCCommodityByClass">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCCommodityByClassSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCCommodityByClassResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCFamilyBySegmentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCFamilyBySegmentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCClassByFamilySoapOut">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCClassByFamilyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCSegmentsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCSegments">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCSegmentsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCSegmentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCByCommodityByTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCByCommodityByTitle">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCClassByFamilySoapIn">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCClassByFamily">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetUNSPSCFamilyBySegmentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUNSPSCFamilyBySegment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="GenericUNSPSCHttpPost">
+  </wsdl:portType>
+  <wsdl:portType name="GenericUNSPSCSoap">
+    <wsdl:operation name="GetUNSPSCSegments">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get UNSPSC Segment details</wsdl:documentation>
+      <wsdl:input message="tns:GetUNSPSCSegmentsSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetUNSPSCSegmentsSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCFamilyBySegment">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get UNSPSC Family details by Segment</wsdl:documentation>
+      <wsdl:input message="tns:GetUNSPSCFamilyBySegmentSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetUNSPSCFamilyBySegmentSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCClassByFamily">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get UNSPSC Family details by Family</wsdl:documentation>
+      <wsdl:input message="tns:GetUNSPSCClassByFamilySoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetUNSPSCClassByFamilySoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCCommodityByClass">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get UNSPSC Commodity details by Class</wsdl:documentation>
+      <wsdl:input message="tns:GetUNSPSCCommodityByClassSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetUNSPSCCommodityByClassSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCByCommodityByTitle">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get UNSPSC Commodity details by Commodity Title</wsdl:documentation>
+      <wsdl:input message="tns:GetUNSPSCByCommodityByTitleSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetUNSPSCByCommodityByTitleSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="GenericUNSPSCHttpGet">
+  </wsdl:portType>
+  <wsdl:binding name="GenericUNSPSCHttpPost" type="tns:GenericUNSPSCHttpPost">
+    <http:binding verb="POST"/>
+  </wsdl:binding>
+  <wsdl:binding name="GenericUNSPSCSoap" type="tns:GenericUNSPSCSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetUNSPSCSegments">
+      <soap:operation soapAction="http://www.webservicex.net/GetUNSPSCSegments" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCFamilyBySegment">
+      <soap:operation soapAction="http://www.webservicex.net/GetUNSPSCFamilyBySegment" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCClassByFamily">
+      <soap:operation soapAction="http://www.webservicex.net/GetUNSPSCClassByFamily" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCCommodityByClass">
+      <soap:operation soapAction="http://www.webservicex.net/GetUNSPSCCommodityByClass" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCByCommodityByTitle">
+      <soap:operation soapAction="http://www.webservicex.net/GetUNSPSCByCommodityByTitle" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="GenericUNSPSCSoap12" type="tns:GenericUNSPSCSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetUNSPSCSegments">
+      <soap12:operation soapAction="http://www.webservicex.net/GetUNSPSCSegments" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCFamilyBySegment">
+      <soap12:operation soapAction="http://www.webservicex.net/GetUNSPSCFamilyBySegment" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCClassByFamily">
+      <soap12:operation soapAction="http://www.webservicex.net/GetUNSPSCClassByFamily" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCCommodityByClass">
+      <soap12:operation soapAction="http://www.webservicex.net/GetUNSPSCCommodityByClass" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUNSPSCByCommodityByTitle">
+      <soap12:operation soapAction="http://www.webservicex.net/GetUNSPSCByCommodityByTitle" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="GenericUNSPSCHttpGet" type="tns:GenericUNSPSCHttpGet">
+    <http:binding verb="GET"/>
+  </wsdl:binding>
+  <wsdl:service name="GenericUNSPSC">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The United Nations Standard Products and Services Code® (UNSPSC®) provides an open, global multi-sector standard for efficient, accurate classification of products and services. Search the code on this website to locate commodity codes that can be used by your company. The UNSPSC offers a single global classification system that can be used for: Company-wide visibility of spend analysis,Cost-effective procurement optimization,	Full exploitation of electronic commerce capabilities </wsdl:documentation>
+    <wsdl:port name="GenericUNSPSCHttpGet" binding="tns:GenericUNSPSCHttpGet">
+      <http:address location="http://www.webservicex.net/GenericUNSPSC.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="GenericUNSPSCSoap12" binding="tns:GenericUNSPSCSoap12">
+      <soap12:address location="http://www.webservicex.net/GenericUNSPSC.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="GenericUNSPSCHttpPost" binding="tns:GenericUNSPSCHttpPost">
+      <http:address location="http://www.webservicex.net/GenericUNSPSC.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="GenericUNSPSCSoap" binding="tns:GenericUNSPSCSoap">
+      <soap:address location="http://www.webservicex.net/GenericUNSPSC.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

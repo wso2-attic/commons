@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mule-configuration PUBLIC "-//MuleSource //DTD mule-configuration XML V1.0//EN"
+        "http://mule.mulesource.org/dtds/mule-configuration.dtd">
+
+<mule-configuration id="Mule_Echo_Sample" version="1.0">
+
+    <description>
+        This configuration performs transformations from custom quote to standard quote.
+    </description>
+
+    <transformers>
+
+        <transformer name="Xsltin" className="org.mule.transformers.xml.XsltTransformer">
+            <properties>
+                <property name="xslFile" value="xslt/transform.xslt"/>
+            </properties>
+        </transformer>
+
+        <transformer name="Xsltout" className="org.mule.transformers.xml.XsltTransformer">
+            <properties>
+                <property name="xslFile" value="xslt/transform_back.xslt"/>
+            </properties>
+        </transformer>
+    </transformers>
+
+    <model name="MyMuleModel">
+
+        <mule-descriptor name="MyMule" implementation="org.mule.components.simple.BridgeComponent">
+
+            <inbound-router>
+                <endpoint address="http://localhost:8090/services" transformers="Xsltin" responseTransformers="Xsltout" synchronous="true"/>
+            </inbound-router>
+
+            <outbound-router>
+                <router className="org.mule.routing.outbound.OutboundPassThroughRouter">
+                    <endpoint address="http://10.100.1.121:9002/soap/SimpleStockQuoteService" synchronous="true"/>
+                </router>
+            </outbound-router>
+
+        </mule-descriptor>
+
+    </model>
+
+</mule-configuration>
+

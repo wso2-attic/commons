@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="false" />
+
+    <package name="default" namespace="/" extends="struts-default">
+
+		<interceptors>
+	        <interceptor-stack name="defaultInterceptorStack">
+	            <interceptor-ref name="exception"/>
+	            <interceptor-ref name="servlet-config" />
+	            <interceptor-ref name="params" />
+	            <interceptor-ref name="prepare" />
+	            <interceptor-ref name="chain" />
+	            <interceptor-ref name="model-driven" />
+	            <interceptor-ref name="fileUpload" />
+	            <interceptor-ref name="checkbox"/>
+	            <interceptor-ref name="static-params" />
+	            <interceptor-ref name="params" />
+	            <interceptor-ref name="conversionError" />
+	            <interceptor-ref name="validation" />
+	            <interceptor-ref name="workflow" />
+	        </interceptor-stack>
+	        
+	        <interceptor-stack name="exWrk">
+	            <interceptor-ref name="exception"/>
+                <interceptor-ref name="servlet-config" />
+                <interceptor-ref name="params" />
+                <interceptor-ref name="prepare" />
+                <interceptor-ref name="chain" />
+                <interceptor-ref name="model-driven" />
+                <interceptor-ref name="fileUpload" />
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="static-params" />
+                <interceptor-ref name="params" />
+                <interceptor-ref name="conversionError" />
+                <interceptor-ref name="validation" />
+                <interceptor-ref name="workflow" />
+                <interceptor-ref name="execAndWait" />
+            </interceptor-stack>
+	        
+        </interceptors>
+        
+        <default-interceptor-ref name="defaultInterceptorStack" />
+        
+       	<action name="ShowMain" class="org.wso2.tools.ksexplorer.action.ShowMainAction">
+			<result name="success">jsp/main.jsp</result>
+		</action>
+       	<action name="UploadKeyStore" class="org.wso2.tools.ksexplorer.action.UploadKeyStoreAction">
+			<result name="success" type="redirect">ShowMain.action</result>
+		</action>
+		<action name="ShowPEMPrivateKey" class="org.wso2.tools.ksexplorer.action.ShowPEMPrivateKeyAction">
+			<result name="success">jsp/showpem.jsp</result>
+		</action>     
+		<action name="uploadCovert" class="org.wso2.tools.ksexplorer.action.ConvertPfx2JksAction">
+		    <exception-mapping exception="java.io.IOException" result="ioError"/>
+            <result name="success">jsp/listKeys.jsp</result>
+            <result name="ioError">jsp/error.jsp</result>
+        </action>
+		<action name="startConvert" class="com.opensymphony.xwork2.ActionSupport">
+		     <exception-mapping exception="java.lang.Exception" result="error"/>
+            <result name="success">jsp/jks2pfx.jsp</result>
+             <result name="error">jsp/error.jsp</result>
+        </action>
+        <action name="generateZip" class="org.wso2.tools.ksexplorer.action.GenerateZipAction">
+            <interceptor-ref name="exWrk" />
+            <exception-mapping exception="org.wso2.tools.ksexplorer.KeyExplorerException" result="test"/>
+	        <result name="wait">jsp/waiting.jsp</result>
+	        <result name="test">jsp/error.jsp</result>
+	        <result name="success" type="stream">
+	                <param name="contentType">application/zip</param>
+	                <param name="inputName">inputStream</param>
+	                <param name="contentDisposition">filename="KeyStores.zip"</param>
+	        </result> 
+        </action>
+		
+    </package>
+</struts>

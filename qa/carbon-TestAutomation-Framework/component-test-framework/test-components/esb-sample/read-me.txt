@@ -1,0 +1,169 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+################# README ############################################################################################################################################################
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+before running the esb-samples
+deploy ESB
+    add ESB_HOME to carbon.home in the component-test-framework/config/framework.properties
+    e.g.
+        for linux
+        ----------
+        carbon.home = /home/suho/proj/wso2/esb/wso2esb
+
+        for windows
+        ------------
+        carbon.home = C:\\Documents and Settings\\proj\\wso2\\esb\\wso2esb\\
+
+To run sample100 and sample153
+    Download and install the unlimited strength policy files for your JDK  ( see http://java.sun.com/javase/downloads/index_jdk5.jsp)
+
+Add the necessary services to the axis2server. To add this,
+    run 'ant' command from the directories
+        ESB_HOME/samples/axis2Server/src/FastStockQuoteService
+        ESB_HOME/samples/axis2Server/src/ReliableStockQuoteService
+        ESB_HOME/samples/axis2Server/src/SecureStockQuoteService
+        ESB_HOME/samples/axis2Server/src/MTOMSwASampleService
+        ESB_HOME/samples/axis2Server/src/SimpleStockQuoteService
+
+Start the axis2server on port 9000 (with default configurations)
+Start ESB with default configurations
+
+Run the esb-samples
+    run "mvn clean install" from directory
+    component-test-framework/authenticator/
+    component-test-framework/common/
+    component-test-framework/synapse-config-admin-service/
+     component-test-framework/test-setup-config
+    and then run "mvn clean install" from directory component-test-framework/esb-sample/
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#######################The details of the ESB Samples as fellows#####################################################################################################################
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Message mediation samples
+
+    * Sample 0: Introduction to ESB
+    * Sample 1: Simple content based routing (CBR) of messages
+    * Sample 2: CBR with the Switch-case mediator, using message properties
+    * Sample 3: Local Registry entry definitions, reusable endpoints and sequences
+    * Sample 4: Introduction to error handling                                          //not fully tested (ESB log not checked)
+    * Sample 5: Creating SOAP fault messages and changing the direction of a message
+    * Sample 6: Manipulating SOAP headers, and filtering incoming and outgoing messages
+    * Sample 7: Introduction to local Registry entries and using Schema validation
+    * Sample 8: Introduction to static and dynamic registry resources, and using XSLT transformations
+    * Sample 9: Introduction to dynamic sequences with the Registry
+    * Sample 10: Introduction to dynamic endpoints with the Registry
+    * Sample 11: A full registry based configuration, and sharing a configuration between multiple instances
+    * Sample 12: One way messaging / fireAndForget through ESB                          //not tested (sout)
+    * Sample 13: Dual channel invocation through synapse                                //fail case is not tested for windows
+
+# Advanced mediations with endpoints
+
+    * Sample 50: POX to SOAP conversion
+    * Sample 51: MTOM and SwA optimizations and request/response correlation          //fail case is not tested for windows
+    * Sample 52: Session less load balancing between 3 endpoints                      //not tested (axis2server not automated)
+    * Sample 53: Failover sending among 3 endpoints                                   //not tested (axis2server not automated)
+    * Sample 54: Session affinity load balancing between 3 endpoints                  //not tested (axis2server not automated)
+    * Sample 55: Session affinity load balancing between fail over endpoints          //not tested (axis2server not automated)
+    * Sample 56: WSDL endpoint
+    * Sample 57: Dynamic load balancing between 3 nodes                               //not tested (axis2server not automated)
+    * Sample 58: Sample 58: Static load balancing between 3 nodes                     //not tested (axis2server not automated)
+
+# Quality of Service addition or deduction samples in message mediation
+
+    * Sample 100: Using WS-Security for outgoing messages
+    * Sample 101: Reliable message exchange between ESB and the back-end server using WS-ReliableMessaging
+    * Sample 102: Reliable message exchange between ESB and the back-end server using WS-ReliableMessaging 1.1
+
+# ESB Proxy service samples
+
+    * Sample 150: Introduction to proxy services
+    * Sample 151: Custom sequences and endpoints with proxy services
+    * Sample 152: Switching transports and message format from SOAP to REST/POX
+    * Sample 153: Routing the messages arrived to a proxy service without processing the security headers
+    * Sample 154: Load Balancing with Proxy Service
+    * Sample 155: Dual channel invocation on both client side and server side of synapse with Proxy Services
+
+# QoS addition and deduction for service mediation (proxy) samples
+
+    * Sample 200: Using WS-Security with policy attachments for proxy services        
+    * Sample 201: Reliable message exchange between the client and proxy services using WS-ReliableMessaging
+    * Sample 202: Reliable message exchange between the client and proxy services using WS-ReliableMessaging
+
+# Transport samples and switching transports                                               //not automated
+
+    * Sample 250: Introduction to switching transports - JMS to http/s
+    * Sample 251: Switching from http/s to JMS
+    * Sample 252: Pure text/binary and POX message support with JMS
+    * Sample 253: One way bridging from JMS to http and replying with a 202 Accepted response
+    * Sample 254: Using the file system as transport medium using VFS transport listener and sender
+    * Sample 255: Switching from ftp transport listener to mail transport sender
+    * Sample 256: Proxy services with the mail transport
+    * Sample 257: Proxy services with the FIX transport
+    * Sample 258: Switching from HTTP to FIX
+    * Sample 259: Switch from FIX to HTTP
+    * Sample 260: Switch from FIX to AMQP
+    * Sample 261: Switch between FIX versions
+    * Sample 262: CBR of FIX messages
+    * Sample 263: Transport switching - JMS to http/s using JBoss Messaging(JBM)
+    * Sample 264: Sending Two-Way Messages Using JMS transport
+    * Sample 265: Accessing a windows share using vfs transport
+
+# Introduction to ESB tasks
+
+    * Sample 300: Introduction to tasks with simple trigger                                 //not automated
+
+# Advanced mediations with advanced mediators
+
+    * Using scripts in mediation (Script Mediator)
+          o Sample 350: Introduction to the script mediator using js scripts
+          o Sample 351: In-line script mediation with JavaScript
+          o Sample 352: Accessing Synapse message context API methods using scripting language
+          o Sample 353: Using Ruby scripts for mediation
+          o Sample 354: Using In-lined Ruby scripts for mediation
+    * Database interactions in mediation (DBLookup / DBReport)
+              o Sample 360: Introduction to dblookup mediator                                   //Done.
+              o Sample 361: Introduction to dbreport mediator                                  //Done.
+              o Sample 362: Action of dbreport and dblookup mediators together                 //Done.
+              o Sample 363: Reusable database connection pools                                  //not automated
+    * Throttling messages (Throttle Mediator)
+          o Sample 370: Introduction to throttle mediator and concurrency throttling
+          o Sample 371: Restricting requests based on policies
+          o Sample 372: Use of both concurrency throttling and request rate based throttling
+    * Extending the mediation in java (Class Mediator)
+          o Sample 380: Writing your own custom mediation in Java     // ESB log not checked
+    * Evaluating XQuery for mediation (XQuery Mediator)
+          o Sample 390: Introduction to the XQuery mediator
+          o Sample 391: How to use the data from an external XML document with in XQuery
+    * Splitting messages in to parts and process in parallel (Iterate / Clone)
+          o Sample 400: Message splitting and aggregating the responses
+    * Caching the responses over the requests
+          o Sample 420: Simple cache implemented on ESB for the actual service
+    * Synchronize web service invocation with Callout mediator
+          o Sample 430: Simple Callout Mediator for Synchronize web service invocation
+
+# Introduction to Eventing
+
+    * Sample 500: Introduction to Eventing
+    * Sample 501: EventSource with static subscriptions
+    * Sample 502: Transform events before publish
+    * Sample 503: Using topic based remote registry as subscription manager                    //not automated
+
+# Introduction to Rule Mediator
+
+    * Sample 600: Rule mediator as a Filter - Simple rule based routing using an in-lined rule script
+    * Sample 601: Rule mediator as a Filter - Simple rule based routing using rule script from registry
+    * Sample 602: Rule mediator as a Filter - Simple rule based routing using an Drools native language
+    * Sample 603: Advance rule based routing - Switching routing decision according to the rules - Rule mediator as a Switch mediator
+    * Sample 604: Simple message transformation - Rule mediator for message transformation
+    * Sample 605: Simple message transformation - Rule mediator for message transformation
+    * Sample 606: Advanced transformation and use of custom Java objects
+
+# miscellaneous Samples
+
+    * Sample 650: File hierarchy based configuration builder                                   
+    * Sample 651: Using Synapse observers                                                      //not automated
+    * Sample 652: Priority Based Message Mediation                                             //not automated
+    * Sample 653: NHTTP Transport Priority Based Dispatching                                   //not automated
+    * Sample 654: Smooks mediator                                                              //not automated
+

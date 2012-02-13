@@ -1,0 +1,3 @@
+<serviceMetaData xmlns="http://www.wso2.org/governance/metadata"><overview><name>EnterprisePersonService</name><namespace>http://ihc.org/services/EnterprisePersonService</namespace><description>
+		Add some documentation about the service here
+	</description></overview><interface><wsdlURL>/_system/governance/wsdls/http/ihc/org/services/EnterprisePersonService/EnterprisePersonService.wsdl</wsdlURL></interface><axis2ns3:endpoints xmlns:axis2ns3="http://www.wso2.org/governance/metadata"><axis2ns4:entry xmlns:axis2ns4="http://www.wso2.org/governance/metadata">:http://159.212.166.88:80/axis2/services/EnterprisePersonService/</axis2ns4:entry></axis2ns3:endpoints></serviceMetaData>

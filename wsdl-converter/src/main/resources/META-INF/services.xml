@@ -1,0 +1,33 @@
+<serviceGroup>
+
+    <!-- Disabling MTOM for tooling services. If MTOM is enabled globally
+    this will case an adverse effect on these services when calling
+    through the AJAX admin console.
+    -->
+    <parameter name="enableMTOM">false</parameter>
+
+    <service name="WSDLConverter" scope="transportsession">
+        <schema schemaNamespace="http://org.wso2.wsf/tools" elementFormDefaultQualified="false"/>
+        <transports>
+            <transport>https</transport>
+            <transport>http</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">org.wso2.wsdlconverter.WSDLConverter</parameter>
+    </service>
+    <service name="GenericAJAXClient" scope="transportsession">
+        <schema schemaNamespace="http://org.wso2.wsf/tools" elementFormDefaultQualified="false"/>
+        <transports>
+            <transport>https</transport>
+            <transport>http</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">org.wso2.tryit.GenericAJAXClient</parameter>
+    </service>
+</serviceGroup>

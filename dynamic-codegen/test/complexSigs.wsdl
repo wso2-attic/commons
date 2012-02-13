@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description xmlns="http://www.w3.org/ns/wsdl" xmlns:data="mailto:jonathan@wso2.com"
+             xmlns:c="http://complexSigs.services.wsas.wso2.org"
+             xmlns:sig="http://complexSigs.services.wsas.wso2.org/xsd"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc"
+             xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+             targetNamespace="http://complexSigs.services.wsas.wso2.org">
+    <documentation>This service tests complex signatures.</documentation>
+    <types>
+        <xs:schema elementFormDefault="unqualified" attributeFormDefault="qualified"
+                   targetNamespace="http://complexSigs.services.wsas.wso2.org/xsd">
+            <xs:element name="echoanyType">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:anyType" name="testanyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoanyTypeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:anyType" name="returnanyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoanyURI">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:anyURI" name="testanyURI"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoanyURIResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:anyURI" name="returnanyURI"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echobase64Binary">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:base64Binary" name="testbase64Binary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echobase64BinaryResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:base64Binary" name="returnbase64Binary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoboolean">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:boolean" name="testboolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echobooleanResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:boolean" name="returnboolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echobyte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:byte" name="testbyte"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echobyteResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:byte" name="returnbyte"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodate">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:date" name="testdate"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodateResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:date" name="returndate"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodateTime">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:dateTime" name="testdateTime"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodateTimeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:dateTime" name="returndateTime"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodecimal">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:decimal" name="testdecimal"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodecimalResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:decimal" name="returndecimal"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodouble">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:double" name="testdouble"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodoubleResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:double" name="returndouble"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoduration">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:duration" name="testduration"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echodurationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:duration" name="returnduration"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoENTITIES">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ENTITIES" name="testENTITIES"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoENTITIESResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ENTITIES" name="returnENTITIES"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoENTITY">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ENTITY" name="testENTITY"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoENTITYResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ENTITY" name="returnENTITY"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echofloat">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:float" name="testfloat"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echofloatResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:float" name="returnfloat"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogDay">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gDay" name="testgDay"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogDayResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gDay" name="returngDay"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogMonth">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gMonth" name="testgMonth"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogMonthResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gMonth" name="returngMonth"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogMonthDay">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gMonthDay" name="testgMonthDay"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogMonthDayResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gMonthDay" name="returngMonthDay"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogYear">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gYear" name="testgYear"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogYearResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gYear" name="returngYear"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogYearMonth">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gYearMonth" name="testgYearMonth"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echogYearMonthResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:gYearMonth" name="returngYearMonth"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echohexBinary">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:hexBinary" name="testhexBinary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echohexBinaryResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:hexBinary" name="returnhexBinary"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoID">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ID" name="testID"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIDResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:ID" name="returnID"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIDREF">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:IDREF" name="testIDREF"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIDREFResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:IDREF" name="returnIDREF"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIDREFS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:IDREFS" name="testIDREFS"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIDREFSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:IDREFS" name="returnIDREFS"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoint">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:int" name="testint"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echointResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:int" name="returnint"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echointeger">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:integer" name="testinteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echointegerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:integer" name="returninteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echolanguage">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:language" name="testlanguage"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echolanguageResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:language" name="returnlanguage"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echolong">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:long" name="testlong"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echolongResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:long" name="returnlong"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoName">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:Name" name="testName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNameResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:Name" name="returnName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNCName">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NCName" name="testNCName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNCNameResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NCName" name="returnNCName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echonegativeInteger">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:negativeInteger" name="testnegativeInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echonegativeIntegerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:negativeInteger" name="returnnegativeInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNMTOKEN">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NMTOKEN" name="testNMTOKEN"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNMTOKENResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NMTOKEN" name="returnNMTOKEN"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNMTOKENS">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NMTOKENS" name="testNMTOKENS"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNMTOKENSResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NMTOKENS" name="returnNMTOKENS"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echononNegativeInteger">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:nonNegativeInteger" name="testnonNegativeInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echononNegativeIntegerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:nonNegativeInteger" name="returnnonNegativeInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echononPositiveInteger">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:nonPositiveInteger" name="testnonPositiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echononPositiveIntegerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:nonPositiveInteger" name="returnnonPositiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echonormalizedString">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:normalizedString" name="testnormalizedString"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echonormalizedStringResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:normalizedString" name="returnnormalizedString"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNOTATION">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NOTATION" name="testNOTATION"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoNOTATIONResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:NOTATION" name="returnNOTATION"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echopositiveInteger">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:positiveInteger" name="testpositiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echopositiveIntegerResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:positiveInteger" name="returnpositiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoQName">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:QName" name="testQName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoQNameResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:QName" name="returnQName"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoshort">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:short" name="testshort"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoshortResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:short" name="returnshort"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echostring">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:string" name="teststring"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echostringResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:string" name="returnstring"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echotime">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:time" name="testtime"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echotimeResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:time" name="returntime"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echotoken">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:token" name="testtoken"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echotokenResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:token" name="returntoken"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedByte">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedByte" name="testunsignedByte"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedByteResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedByte" name="returnunsignedByte"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedInt">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedInt" name="testunsignedInt"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedIntResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedInt" name="returnunsignedInt"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedLong">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedLong" name="testunsignedLong"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedLongResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedLong" name="returnunsignedLong"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedShort">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedShort" name="testunsignedShort"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echounsignedShortResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="xs:unsignedShort" name="returnunsignedShort"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </types>
+    <interface name="echoInterface">
+        <operation wrpc:signature="testanyType #in returnanyType #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoanyType">
+            <input element="sig:echoanyType"/>
+            <output element="sig:echoanyTypeResponse"/>
+        </operation>
+        <operation wrpc:signature="testanyURI #in returnanyURI #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoanyURI">
+            <input element="sig:echoanyURI"/>
+            <output element="sig:echoanyURIResponse"/>
+        </operation>
+        <operation wrpc:signature="testbase64Binary #in returnbase64Binary #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echobase64Binary">
+            <input element="sig:echobase64Binary"/>
+            <output element="sig:echobase64BinaryResponse"/>
+        </operation>
+        <operation wrpc:signature="testboolean #in returnboolean #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoboolean">
+            <input element="sig:echoboolean"/>
+            <output element="sig:echobooleanResponse"/>
+        </operation>
+        <operation wrpc:signature="testbyte #in returnbyte #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echobyte">
+            <input element="sig:echobyte"/>
+            <output element="sig:echobyteResponse"/>
+        </operation>
+        <operation wrpc:signature="testdate #in returndate #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echodate">
+            <input element="sig:echodate"/>
+            <output element="sig:echodateResponse"/>
+        </operation>
+        <operation wrpc:signature="testdateTime #in returndateTime #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echodateTime">
+            <input element="sig:echodateTime"/>
+            <output element="sig:echodateTimeResponse"/>
+        </operation>
+        <operation wrpc:signature="testdecimal #in returndecimal #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echodecimal">
+            <input element="sig:echodecimal"/>
+            <output element="sig:echodecimalResponse"/>
+        </operation>
+        <operation wrpc:signature="testdouble #in returndouble #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echodouble">
+            <input element="sig:echodouble"/>
+            <output element="sig:echodoubleResponse"/>
+        </operation>
+        <operation wrpc:signature="testduration #in returnduration #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoduration">
+            <input element="sig:echoduration"/>
+            <output element="sig:echodurationResponse"/>
+        </operation>
+        <operation wrpc:signature="testENTITIES #in returnENTITIES #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoENTITIES">
+            <input element="sig:echoENTITIES"/>
+            <output element="sig:echoENTITIESResponse"/>
+        </operation>
+        <operation wrpc:signature="testENTITY #in returnENTITY #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoENTITY">
+            <input element="sig:echoENTITY"/>
+            <output element="sig:echoENTITYResponse"/>
+        </operation>
+        <operation wrpc:signature="testfloat #in returnfloat #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echofloat">
+            <input element="sig:echofloat"/>
+            <output element="sig:echofloatResponse"/>
+        </operation>
+        <operation wrpc:signature="testgDay #in returngDay #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echogDay">
+            <input element="sig:echogDay"/>
+            <output element="sig:echogDayResponse"/>
+        </operation>
+        <operation wrpc:signature="testgMonth #in returngMonth #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echogMonth">
+            <input element="sig:echogMonth"/>
+            <output element="sig:echogMonthResponse"/>
+        </operation>
+        <operation wrpc:signature="testgMonthDay #in returngMonthDay #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echogMonthDay">
+            <input element="sig:echogMonthDay"/>
+            <output element="sig:echogMonthDayResponse"/>
+        </operation>
+        <operation wrpc:signature="testgYear #in returngYear #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echogYear">
+            <input element="sig:echogYear"/>
+            <output element="sig:echogYearResponse"/>
+        </operation>
+        <operation wrpc:signature="testgYearMonth #in returngYearMonth #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echogYearMonth">
+            <input element="sig:echogYearMonth"/>
+            <output element="sig:echogYearMonthResponse"/>
+        </operation>
+        <operation wrpc:signature="testhexBinary #in returnhexBinary #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echohexBinary">
+            <input element="sig:echohexBinary"/>
+            <output element="sig:echohexBinaryResponse"/>
+        </operation>
+        <operation wrpc:signature="testID #in returnID #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoID">
+            <input element="sig:echoID"/>
+            <output element="sig:echoIDResponse"/>
+        </operation>
+        <operation wrpc:signature="testIDREF #in returnIDREF #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoIDREF">
+            <input element="sig:echoIDREF"/>
+            <output element="sig:echoIDREFResponse"/>
+        </operation>
+        <operation wrpc:signature="testIDREFS #in returnIDREFS #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoIDREFS">
+            <input element="sig:echoIDREFS"/>
+            <output element="sig:echoIDREFSResponse"/>
+        </operation>
+        <operation wrpc:signature="testint #in returnint #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoint">
+            <input element="sig:echoint"/>
+            <output element="sig:echointResponse"/>
+        </operation>
+        <operation wrpc:signature="testinteger #in returninteger #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echointeger">
+            <input element="sig:echointeger"/>
+            <output element="sig:echointegerResponse"/>
+        </operation>
+        <operation wrpc:signature="testlanguage #in returnlanguage #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echolanguage">
+            <input element="sig:echolanguage"/>
+            <output element="sig:echolanguageResponse"/>
+        </operation>
+        <operation wrpc:signature="testlong #in returnlong #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echolong">
+            <input element="sig:echolong"/>
+            <output element="sig:echolongResponse"/>
+        </operation>
+        <operation wrpc:signature="testName #in returnName #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoName">
+            <input element="sig:echoName"/>
+            <output element="sig:echoNameResponse"/>
+        </operation>
+        <operation wrpc:signature="testNCName #in returnNCName #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoNCName">
+            <input element="sig:echoNCName"/>
+            <output element="sig:echoNCNameResponse"/>
+        </operation>
+        <operation wrpc:signature="testnegativeInteger #in returnnegativeInteger #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echonegativeInteger">
+            <input element="sig:echonegativeInteger"/>
+            <output element="sig:echonegativeIntegerResponse"/>
+        </operation>
+        <operation wrpc:signature="testNMTOKEN #in returnNMTOKEN #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoNMTOKEN">
+            <input element="sig:echoNMTOKEN"/>
+            <output element="sig:echoNMTOKENResponse"/>
+        </operation>
+        <operation wrpc:signature="testNMTOKENS #in returnNMTOKENS #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoNMTOKENS">
+            <input element="sig:echoNMTOKENS"/>
+            <output element="sig:echoNMTOKENSResponse"/>
+        </operation>
+        <operation wrpc:signature="testnonNegativeInteger #in returnnonNegativeInteger #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echononNegativeInteger">
+            <input element="sig:echononNegativeInteger"/>
+            <output element="sig:echononNegativeIntegerResponse"/>
+        </operation>
+        <operation wrpc:signature="testnonPositiveInteger #in returnnonPositiveInteger #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echononPositiveInteger">
+            <input element="sig:echononPositiveInteger"/>
+            <output element="sig:echononPositiveIntegerResponse"/>
+        </operation>
+        <operation wrpc:signature="testnormalizedString #in returnnormalizedString #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echonormalizedString">
+            <input element="sig:echonormalizedString"/>
+            <output element="sig:echonormalizedStringResponse"/>
+        </operation>
+        <operation wrpc:signature="testNOTATION #in returnNOTATION #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoNOTATION">
+            <input element="sig:echoNOTATION"/>
+            <output element="sig:echoNOTATIONResponse"/>
+        </operation>
+        <operation wrpc:signature="testpositiveInteger #in returnpositiveInteger #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echopositiveInteger">
+            <input element="sig:echopositiveInteger"/>
+            <output element="sig:echopositiveIntegerResponse"/>
+        </operation>
+        <operation wrpc:signature="testQName #in returnQName #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoQName">
+            <input element="sig:echoQName"/>
+            <output element="sig:echoQNameResponse"/>
+        </operation>
+        <operation wrpc:signature="testshort #in returnshort #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echoshort">
+            <input element="sig:echoshort"/>
+            <output element="sig:echoshortResponse"/>
+        </operation>
+        <operation wrpc:signature="teststring #in returnstring #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echostring">
+            <input element="sig:echostring"/>
+            <output element="sig:echostringResponse"/>
+        </operation>
+        <operation wrpc:signature="testtime #in returntime #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echotime">
+            <input element="sig:echotime"/>
+            <output element="sig:echotimeResponse"/>
+        </operation>
+        <operation wrpc:signature="testtoken #in returntoken #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echotoken">
+            <input element="sig:echotoken"/>
+            <output element="sig:echotokenResponse"/>
+        </operation>
+        <operation wrpc:signature="testunsignedByte #in returnunsignedByte #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echounsignedByte">
+            <input element="sig:echounsignedByte"/>
+            <output element="sig:echounsignedByteResponse"/>
+        </operation>
+        <operation wrpc:signature="testunsignedInt #in returnunsignedInt #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echounsignedInt">
+            <input element="sig:echounsignedInt"/>
+            <output element="sig:echounsignedIntResponse"/>
+        </operation>
+        <operation wrpc:signature="testunsignedLong #in returnunsignedLong #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echounsignedLong">
+            <input element="sig:echounsignedLong"/>
+            <output element="sig:echounsignedLongResponse"/>
+        </operation>
+        <operation wrpc:signature="testunsignedShort #in returnunsignedShort #return"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   pattern="http://www.w3.org/ns/wsdl/in-out" name="echounsignedShort">
+            <input element="sig:echounsignedShort"/>
+            <output element="sig:echounsignedShortResponse"/>
+        </operation>
+    </interface>
+    <binding wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP" wsoap:version="1.2"
+             type="http://www.w3.org/ns/wsdl/soap" interface="c:echoInterface"
+             name="echoSOAPBinding">
+        <operation ref="echoanyType"/>
+        <operation ref="echoanyURI"/>
+        <operation ref="echobase64Binary"/>
+        <operation ref="echoboolean"/>
+        <operation ref="echobyte"/>
+        <operation ref="echodate"/>
+        <operation ref="echodateTime"/>
+        <operation ref="echodecimal"/>
+        <operation ref="echodouble"/>
+        <operation ref="echoduration"/>
+        <operation ref="echoENTITIES"/>
+        <operation ref="echoENTITY"/>
+        <operation ref="echofloat"/>
+        <operation ref="echogDay"/>
+        <operation ref="echogMonth"/>
+        <operation ref="echogMonthDay"/>
+        <operation ref="echogYear"/>
+        <operation ref="echogYearMonth"/>
+        <operation ref="echohexBinary"/>
+        <operation ref="echoID"/>
+        <operation ref="echoIDREF"/>
+        <operation ref="echoIDREFS"/>
+        <operation ref="echoint"/>
+        <operation ref="echointeger"/>
+        <operation ref="echolanguage"/>
+        <operation ref="echolong"/>
+        <operation ref="echoName"/>
+        <operation ref="echoNCName"/>
+        <operation ref="echonegativeInteger"/>
+        <operation ref="echoNMTOKEN"/>
+        <operation ref="echoNMTOKENS"/>
+        <operation ref="echononNegativeInteger"/>
+        <operation ref="echononPositiveInteger"/>
+        <operation ref="echonormalizedString"/>
+        <operation ref="echoNOTATION"/>
+        <operation ref="echopositiveInteger"/>
+        <operation ref="echoQName"/>
+        <operation ref="echoshort"/>
+        <operation ref="echostring"/>
+        <operation ref="echotime"/>
+        <operation ref="echotoken"/>
+        <operation ref="echounsignedByte"/>
+        <operation ref="echounsignedInt"/>
+        <operation ref="echounsignedLong"/>
+        <operation ref="echounsignedShort"/>
+    </binding>
+    <service interface="c:echoInterface" name="complexSigsService">
+        <endpoint address="http://192.168.1.53:9762/soap/complexSigs" binding="c:echoSOAPBinding"
+                  name="echoEndpoint_http"/>
+    </service>
+</description>

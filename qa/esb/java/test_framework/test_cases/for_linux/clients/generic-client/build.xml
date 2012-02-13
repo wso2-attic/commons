@@ -1,0 +1,66 @@
+<project name="Addclient" default="run.client">
+
+    <!--exec dir="/home/evanthika/WSO2/releases/wso2esb-1.7/bin" executable="/home/evanthika/WSO2/releases/wso2esb-1.7/bin/wso2-esb.sh">
+    </exec-->
+ 
+    <property name="base.dir" value="."/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+             
+    <target name="run.client" depends="clean">
+
+        <copy file="${build.dir}/../../../mediation/cbr/cbr_with_filtering/config/synapse.xml" tofile="/home/evanthika/WSO2/releases/wso2esb-1.7/webapp/WEB-INF/classes/conf/synapse.xml" overwrite="true"/>
+        <!--exec dir="/home/evanthika/WSO2/releases/wso2esb-1.7/bin" executable="/home/evanthika/WSO2/releases/wso2esb-1.7/bin/wso2-esb.sh" output="esb.log" fork="yes">
+        </exec-->
+
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="/home/evanthika/WSO2/releases/wso2esb-1.7/webapp/WEB-INF/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="/home/evanthika/WSO2/releases/wso2esb-1.7/webapp/WEB-INF/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/AddService-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.esb.client.Axiomclient">
+            <classpath>
+                <fileset dir="/home/evanthika/WSO2/releases/wso2esb-1.7/webapp/WEB-INF/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="/home/evanthika/WSO2/releases/wso2esb-1.7/webapp/WEB-INF/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="Axis2Proxy" transports="https http" startOnLoad="true" trace="disable" statistics="enable">
+    <target>
+        <endpoint>
+            <address uri="http://192.168.71.1:9774/as/services/Axis2Service"/>
+        </endpoint>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </target>
+    <publishWSDL uri="http://192.168.71.1:9774/as/services/Axis2Service?wsdl"/>
+</proxy>

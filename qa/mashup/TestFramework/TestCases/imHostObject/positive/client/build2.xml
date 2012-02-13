@@ -1,0 +1,21 @@
+<project name="startServer" default="start.server">
+
+	<!-- where the global property file is -->   
+    <xmlproperty file="${project.base.dir}\global_config.xml"/> 
+   
+	<!-- where the base directory is -->
+	<property name="base.dir" value="${project.base.dir}\annotations\operationalLevel\operationName\positive\client"/>
+
+<!-- ==========start.server Target ===================================--> 
+	<!-- ===todo=== have the script starting in the same cmd it was running before. Now it starts in the cmd which the build script is running ==--> 
+	<target name="start.server"> 
+		<echo message="starting the server"/>	
+		<exec executable="cmd" dir="${mashup.envt.MASHUP_HOME}\bin" os="Windows XP">
+			<arg value="/c"/>
+			<arg value="startup.bat"/> 			
+		</exec> 
+	</target>
+	
+	
+	
+</project>

@@ -1,0 +1,8 @@
+<dependencySets>
+        <dependencySet>
+          <outputDirectory>remote-wso2registry-${test.version}/lib</outputDirectory>
+            <includes>
+                <include>junit:junit:jar</include>              
+            </includes>
+        </dependencySet>
+</dependencySets>

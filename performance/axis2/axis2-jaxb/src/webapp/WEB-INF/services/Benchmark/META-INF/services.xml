@@ -1,0 +1,69 @@
+<!-- This file was auto-generated from WSDL -->
+        <!-- by the Apache Axis2 version: #axisVersion# #today# -->
+<serviceGroup>
+    <service name="Benchmark" scope="application">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="edu.indiana.extreme.www.wsdl.benchmark1.BenchmarkMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass" locked="false">
+            edu.indiana.extreme.www.wsdl.benchmark1.BenchmarkSkeleton</parameter>
+        <operation name="echoVoid" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoVoid</actionMapping>
+        </operation>
+        <operation name="echoStrings" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoStrings</actionMapping>
+        </operation>
+        <operation name="sendInts" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendInts</actionMapping>
+        </operation>
+        <operation name="receiveBase64" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveBase64</actionMapping>
+        </operation>
+        <operation name="receiveDoubles" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveDoubles</actionMapping>
+        </operation>
+        <operation name="sendMeshInterfaceObjects" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendMeshInterfaceObjects</actionMapping>
+        </operation>
+        <operation name="receiveMeshInterfaceObjects" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveMeshInterfaceObjects</actionMapping>
+        </operation>
+        <operation name="echoBase64" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoBase64</actionMapping>
+        </operation>
+        <operation name="echoSimpleEvents" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoSimpleEvents</actionMapping>
+        </operation>
+        <operation name="receiveStrings" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveStrings</actionMapping>
+        </operation>
+        <operation name="echoInts" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoInts</actionMapping>
+        </operation>
+        <operation name="receiveInts" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveInts</actionMapping>
+        </operation>
+        <operation name="sendDoubles" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendDoubles</actionMapping>
+        </operation>
+        <operation name="sendBase64" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendBase64</actionMapping>
+        </operation>
+        <operation name="echoDoubles" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoDoubles</actionMapping>
+        </operation>
+        <operation name="sendSimpleEvents" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendSimpleEvents</actionMapping>
+        </operation>
+        <operation name="sendStrings" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>sendStrings</actionMapping>
+        </operation>
+        <operation name="echoMeshInterfaceObjects" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>echoMeshInterfaceObjects</actionMapping>
+        </operation>
+        <operation name="receiveSimpleEvents" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>receiveSimpleEvents</actionMapping>
+        </operation>
+    </service>
+</serviceGroup>

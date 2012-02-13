@@ -1,0 +1,15 @@
+Installing the proxy into servicemix
+
+    run servicemix (sh bin/servicemix)
+    mvn clean install
+    cd proxy-sa
+    mvn jbi:projectDeploy
+
+Invocation of the proxy should be done with the following url
+
+    http://localhost:8192/DirectProxy/
+
+Do not use addressing when invoking the proxy through servicemix.
+Refer the following link for more detials;
+
+    http://servicemix.apache.org/servicemix-http.html

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+      <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+         <wsa:To>http://localhost:9765/services/Axis2Service</wsa:To>
+         <wsa:Action>urn:echoString</wsa:Action>
+         <wsa:MessageID>urn:uuid:01C552D89B3A2C5D441280300868447</wsa:MessageID>
+      </soapenv:Header>
+   <soapenv:Body>
+      <ser:echoString xmlns:ser="http://service.carbon.wso2.org">
+         <ser:s>echo</ser:s>
+      </ser:echoString>
+   </soapenv:Body>
+</soapenv:Envelope>

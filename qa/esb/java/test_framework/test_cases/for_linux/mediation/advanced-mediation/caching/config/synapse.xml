@@ -1,0 +1,17 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <in>
+        <cache timeout="30" scope="per-host" collector="false"
+               hashGenerator="org.wso2.caching.digest.DOMHASHGenerator" maxMessageSize="1000">
+            <implementation type="memory" maxSize="2"/>
+        </cache>
+        <send>
+            <endpoint>
+                <address uri="http://localhost:9000/soap/Adding"/>
+            </endpoint>
+        </send>
+    </in>
+    <out>
+        <cache collector="true"/>
+        <send/>
+    </out>
+</definitions> 

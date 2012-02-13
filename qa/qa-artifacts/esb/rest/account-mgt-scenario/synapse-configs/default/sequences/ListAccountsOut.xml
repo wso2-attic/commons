@@ -1,0 +1,4 @@
+<sequence name="ListAccountsOut" xmlns="http://ws.apache.org/ns/synapse">
+	<xslt key="AccountListXSLT" />
+	<send />
+</sequence>

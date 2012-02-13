@@ -1,0 +1,33 @@
+<data name="Rest_Sample">  
+  <config>
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://wso2-rnd-db1.cd3cwezibdu8.us-east-1.rds.amazonaws.com/REST_SAMPLE</property>
+      <property name="org.wso2.ws.dataservice.user">wso2admin</property>
+      <property name="org.wso2.ws.dataservice.password">dss261temp</property>
+      <property name="org.wso2.ws.dataservice.minpoolsize">1</property>
+      <property name="org.wso2.ws.dataservice.maxpoolsize">25</property>
+   </config>
+
+   <query id="productQuery">
+      <sql>select productCode,productName,productLine,productScale,productVendor,productDescription,quantityInStock,buyPrice          
+           from Products 
+           where productCode= ?</sql>
+      <result element="Product" rowName="Details" defaultNamespace="http://product.abc.com">
+         <element name="ProductCode" column="productCode" />
+         <element name="Name" column="productName" />
+         <element name="ProductLine" column="productLine" />
+         <element name="Scale" column="productScale" />
+         <element name="Vendor" column="productVendor" />
+         <element name="Description" column="productDescription" />
+         <element name="quantityInStock" column="quantityInStock" />
+         <element name="Price" column="buyPrice" />
+      </result>
+      <param name="productCode" sqlType="STRING" />
+   </query>
+
+   <resource path="product/{productCode}" method="GET">
+      <call-query href="productQuery">
+         <with-param name="productCode" query-param="productCode" />
+      </call-query>
+   </resource>
+</data>

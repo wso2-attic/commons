@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="Rampart_SecureConversation_Echo_service">
+	<operation name="echoString">
+		<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+	</operation>    
+	<parameter name="ServiceClass" locked="false">org.wso2.wsas.service.EchoSecureCon</parameter>
+	
+	<module ref="rampart" />
+	<module ref="rahas" />
+	<module ref="addressing" />
+
+	<wsp:Policy wsu:Id="SecConvPolicy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+		<wsp:ExactlyOne>
+			<wsp:All>
+				<sp:SymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:ProtectionToken>
+							<wsp:Policy>
+								<sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+									<wsp:Policy>
+										<sp:RequireDerivedKeys/>
+										<sp:BootstrapPolicy>
+											<wsp:Policy>
+												<sp:EncryptedParts>
+													<sp:Body/>
+												</sp:EncryptedParts>
+												<sp:SymmetricBinding>
+													<wsp:Policy>
+														<sp:ProtectionToken>
+															<wsp:Policy>
+																<sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+																	<wsp:Policy>
+																		<sp:RequireDerivedKeys/>
+																		<sp:RequireThumbprintReference/>
+																		<sp:WssX509V3Token10/>
+																	</wsp:Policy>
+																</sp:X509Token>
+															</wsp:Policy>
+														</sp:ProtectionToken>
+														<sp:AlgorithmSuite>
+															<wsp:Policy>
+																<sp:Basic128Rsa15/>
+															</wsp:Policy>
+														</sp:AlgorithmSuite>
+														<sp:Layout>
+															<wsp:Policy>
+																<sp:Strict/>
+															</wsp:Policy>
+														</sp:Layout>
+														<sp:IncludeTimestamp/>
+														<sp:EncryptSignature/>
+														<sp:OnlySignEntireHeadersAndBody/>
+													</wsp:Policy>
+												</sp:SymmetricBinding>
+												<sp:EndorsingSupportingTokens>
+													<wsp:Policy>
+														<sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+															<wsp:Policy>
+																<sp:RequireThumbprintReference/>
+																<sp:WssX509V3Token10/>
+															</wsp:Policy>
+														</sp:X509Token>
+													</wsp:Policy>
+												</sp:EndorsingSupportingTokens>
+												<sp:Wss11>
+													<wsp:Policy>
+														<sp:MustSupportRefKeyIdentifier/>
+														<sp:MustSupportRefIssuerSerial/>
+														<sp:MustSupportRefThumbprint/>
+														<sp:MustSupportRefEncryptedKey/>
+														<sp:RequireSignatureConfirmation/>
+													</wsp:Policy>
+												</sp:Wss11>
+												<sp:Trust10>
+													<wsp:Policy>
+														<sp:MustSupportIssuedTokens/>
+														<sp:RequireClientEntropy/>
+														<sp:RequireServerEntropy/>
+													</wsp:Policy>
+												</sp:Trust10>
+											</wsp:Policy>
+										</sp:BootstrapPolicy>
+									</wsp:Policy>
+								</sp:SecureConversationToken>
+							</wsp:Policy>
+						</sp:ProtectionToken>
+						<sp:AlgorithmSuite>
+							<wsp:Policy>
+								<sp:Basic128Rsa15/>
+							</wsp:Policy>
+						</sp:AlgorithmSuite>
+						<sp:Layout>
+							<wsp:Policy>
+								<sp:Strict/>
+							</wsp:Policy>
+						</sp:Layout>
+						<sp:IncludeTimestamp/>
+						<sp:EncryptSignature/>
+						<sp:OnlySignEntireHeadersAndBody/>
+					</wsp:Policy>
+				</sp:SymmetricBinding>
+				<sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:MustSupportRefKeyIdentifier/>
+						<sp:MustSupportRefIssuerSerial/>
+						<sp:MustSupportRefThumbprint/>
+						<sp:MustSupportRefEncryptedKey/>
+					</wsp:Policy>
+				</sp:Wss11>
+				<sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<wsp:Policy>
+						<sp:MustSupportIssuedTokens/>
+						<sp:RequireClientEntropy/>
+						<sp:RequireServerEntropy/>
+					</wsp:Policy>
+				</sp:Trust10>
+				<sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+					<sp:Body/>
+				</sp:EncryptedParts>
+				<ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy"> 
+					<ramp:user>qaserver</ramp:user>
+					<ramp:encryptionUser>qaclient</ramp:encryptionUser>
+					<ramp:passwordCallbackClass>org.wso2.wsas.security.PWCBHandler</ramp:passwordCallbackClass>
+					
+					<ramp:signatureCrypto>
+						<ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+							<ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+							<ramp:property name="org.apache.ws.security.crypto.merlin.file">qaserver.jks</ramp:property>
+							<ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">qaserver</ramp:property>
+						</ramp:crypto>
+					</ramp:signatureCrypto>
+					<ramp:encryptionCypto>
+						<ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+							<ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+							<ramp:property name="org.apache.ws.security.crypto.merlin.file">qaserver.jks</ramp:property>
+							<ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">qaserver</ramp:property>
+						</ramp:crypto>
+					</ramp:encryptionCypto>
+
+				</ramp:RampartConfig>
+			</wsp:All>
+		</wsp:ExactlyOne>
+	</wsp:Policy>
+	
+    <parameter name="sct-issuer-config">
+		<sct-issuer-config>
+			<cryptoProperties>
+               <crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                    <property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</property>
+                    <property name="org.apache.ws.security.crypto.merlin.file">qaserver.jks</property>
+                    <property name="org.apache.ws.security.crypto.merlin.keystore.password">qaserver</property>
+                </crypto>
+			</cryptoProperties>
+			<addRequestedAttachedRef />
+			<addRequestedUnattachedRef />
+
+            <!--
+               Key computation mechanism
+               1 - Use Request Entropy
+               2 - Provide Entropy
+               3 - Use Own Key
+            -->
+            <keyComputation>3</keyComputation>
+
+            <!--
+               proofKeyType element is valid only if the keyComputation is set to 3
+               i.e. Use Own Key
+
+               Valid values are: EncryptedKey & BinarySecret
+            -->
+            <proofKeyType>BinarySecret</proofKeyType>
+        </sct-issuer-config>
+    </parameter>
+	
+	<parameter name="token-canceler-config">
+		<token-canceler-config>
+
+		</token-canceler-config>
+    </parameter>
+	
+</service>

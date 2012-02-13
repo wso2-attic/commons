@@ -1,0 +1,79 @@
+
+<project name="MTOMFileUploadService" default="gen.skeleton">    
+    
+    <property name="base.dir" value="${project.base.dir}/mtom/file-upload/service"/>
+    <property name="wsdl.uri" value="${project.base.dir}/mtom/file-upload/service/resources/MTOMFileUpload.wsdl"/>
+    <property name="client.lib" value="${wsas.envt.WSAS_HOME}/repository/lib"/>
+    
+    <property name="target" value="${base.dir}/target"/>
+
+    <path id="wsas.classpath">
+        <fileset dir="${client.lib}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+     <target name="gen.skeleton">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <mkdir dir="${target}\skeleton"/>
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+            <arg line="-uri ${wsdl.uri}"/>
+            <arg line="-o ${target}"/>
+            <arg line="-ss"/>
+            <arg line="-sd"/>
+            
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    
+    <!-- Copy the pre-written skeleton class -->        
+        <copy todir="${target}/src/"
+              overwrite="yes">
+            <fileset dir="${base.dir}\resources">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <!--First let's compile the classes-->
+        
+         <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/skeleton">
+            <src path="${target}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+
+        <!--aar them up -->
+       <copy toDir="${target}/skeleton/META-INF" failonerror="false">
+            <fileset dir="${target}/resources">
+                <include name="*.xml"/>
+                <include name="*.wsdl"/>
+                <include name="*.xsd"/>
+            </fileset>
+        </copy>
+        <jar destfile="${target}/MTOMFileUploadService.aar">
+            <fileset excludes="**/Test.class" dir="${target}/classes"/>
+            <fileset dir="${target}/skeleton">
+                <!--include name="lib/*.jar"/-->
+            </fileset>
+        </jar>
+
+        <copy file="${target}/MTOMFileUploadService.aar" tofile="${wsas.envt.WSAS_HOME}/repository/services/MTOMFileUploadService.aar"
+              overwrite="true"/>
+         
+    </target>
+    
+    <target name="clean">
+        <delete dir="${target}"/>
+    </target>
+</project>

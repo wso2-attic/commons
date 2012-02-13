@@ -1,0 +1,15 @@
+Installing the router into servicemix
+
+    run servicemix (sh bin/servicemix)
+    mvn clean install
+    cd router-sa
+    mvn jbi:projectDeploy
+
+Invocation of the proxy should be done with the following url
+
+    http://localhost:8193/CBRProxy/
+
+Do not use addressing when invoking the proxy through servicemix.
+Refer the following link for more detials;
+
+    http://servicemix.apache.org/servicemix-http.html

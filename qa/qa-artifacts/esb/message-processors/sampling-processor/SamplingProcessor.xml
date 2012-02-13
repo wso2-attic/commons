@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messageProcessor xmlns="http://ws.apache.org/ns/synapse" class="org.apache.synapse.message.processors.sampler.SamplingProcessor" name="SamplingProcessor" messageStore="MyStore">
+    <parameter name="interval">20000</parameter>
+    <parameter name="sequence">send_seq</parameter>
+</messageProcessor>

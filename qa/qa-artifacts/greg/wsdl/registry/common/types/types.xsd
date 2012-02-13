@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.dr.dk/namespaces/schemas/common/types" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.dr.dk/namespaces/schemas/common/types">
+<xsd:annotation>
+<xsd:documentation>
+			Changes from previous version:
+			
+		</xsd:documentation>
+</xsd:annotation>
+<xsd:simpleType name="booleanS">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="TRUE"/>
+<xsd:enumeration value="FALSE"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="booleanI">
+<xsd:annotation>
+<xsd:documentation>
+				
+				
+			</xsd:documentation>
+</xsd:annotation>
+<xsd:restriction base="xsd:int">
+<xsd:enumeration value="0"/>
+<xsd:enumeration value="1"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="DRAMS_id">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="100"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="CRUD">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="CREATE"/>
+<xsd:enumeration value="RETRIEVE"/>
+<xsd:enumeration value="UPDATE"/>
+<xsd:enumeration value="DELETE"/>
+<xsd:enumeration value="N_A"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="ACTION">
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="CREATE"/>
+<xsd:enumeration value="RETRIEVE"/>
+<xsd:enumeration value="UPDATE"/>
+<xsd:enumeration value="DELETE"/>
+<xsd:enumeration value="START"/>
+<xsd:enumeration value="STOP"/>
+<xsd:enumeration value="STANDBY"/>
+<xsd:enumeration value="CONFIRM"/>
+<xsd:enumeration value="UNCONFIRM"/>
+<xsd:enumeration value="INVALIDATE"/>
+<xsd:enumeration value="N_A"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="ric_code">
+<xsd:annotation>
+<xsd:documentation>
+				
+				
+				
+				
+			</xsd:documentation>
+</xsd:annotation>
+<xsd:restriction base="xsd:string">
+<xsd:enumeration value="A"/>
+<xsd:enumeration value="B"/>
+<xsd:enumeration value="C"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:complexType name="name_and_role">
+<xsd:sequence>
+<xsd:element minOccurs="0" name="nam_name" type="char100"/>
+<xsd:element minOccurs="0" name="nam_characteristics" type="char100"/>
+<xsd:element minOccurs="0" name="nam_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="nam_email" type="char100"/>
+<xsd:element minOccurs="0" name="nam_phone" type="char100"/>
+<xsd:element minOccurs="0" name="nam_address" type="char512"/>
+<xsd:element minOccurs="0" name="rol_role_dk" type="char100"/>
+<xsd:element minOccurs="0" name="rol_role_dc" type="char100"/>
+<xsd:element minOccurs="0" name="country" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:simpleType name="char100">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="100"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="char512">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="512"/>
+</xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

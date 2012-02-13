@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:Ping>
+         <!--Optional:-->
+         <ser:s>this</ser:s>
+      </ser:Ping>
+   </soapenv:Body>
+</soapenv:Envelope>

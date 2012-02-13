@@ -1,0 +1,16 @@
+
+<project name="SafeService" default="deploy.service">
+
+      
+    <property name="base.dir" value="."/>
+    <property name="MASHUP_HOME" value="C:\projects\Mashup_\modules\distribution\target\dist\wso2-mashup-server-SNAPSHOT"/>
+
+       
+    <target name="deploy.service">
+        
+     <copy file="${base.dir}/src/safeNegative.js" tofile="${MASHUP_HOME}/scripts/samples/safeNegative.js"
+              overwrite="true"/>
+    </target>
+
+    
+</project>

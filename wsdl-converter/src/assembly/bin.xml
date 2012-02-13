@@ -1,0 +1,29 @@
+<assembly>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>www</directory>
+            <outputDirectory>extensions/tools_wc/xslt</outputDirectory>
+            <includes>
+                <include>**/**.xsl</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>www</directory>
+            <outputDirectory>extensions/tools_wc/js</outputDirectory>
+            <includes>
+                <include>**/**.js</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>www</directory>
+            <outputDirectory>extensions/tools_wc</outputDirectory>
+            <includes>
+                <include>**/**.html</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

@@ -1,0 +1,17 @@
+<type-map>
+	<forward>
+		<!-- <script-type>xsd type</script-type> -->
+		<string>string</string>
+		<int>int</int>
+		<dateTime>dateTime</dateTime>
+		<float>float</float>
+	</forward>
+
+	<reverse>
+		<!-- <xsd-type>best matched script type</xsd-type> -->
+		<string>string</string>
+		<int>long</int>
+		<float>float</float>
+		<dateTime>dateTime</dateTime>
+	</reverse>
+</type-map>

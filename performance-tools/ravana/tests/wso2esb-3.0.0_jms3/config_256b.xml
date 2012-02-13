@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<performance_test>
+	<product1>		
+		<product_name>wso2esb-3.0.0</product_name>
+		<server-config>
+            <transport>
+                <jms>
+                    <name>activemq</name>
+                    <sender_queue_lookup>MyQueue</sender_queue_lookup>
+                    <receiver_queue_lookup>MyQueue</receiver_queue_lookup>
+                    <persistent>true</persistent>
+                    <listener_only>false</listener_only>
+                </jms>
+            </transport>
+		</server-config>	
+	</product1>
+	<scenario>
+		<name>wso2esb-3.0.0_jms3</name>		
+		<method>POST</method>
+		<timeout>30</timeout>
+		<high_rate>5000</high_rate>
+		<low_rate>100</low_rate>
+		<rate_step>400</rate_step>
+		<warmup_rate>2000</warmup_rate>
+		<max_piped_calls>1</max_piped_calls>		
+		<max_connections>4</max_connections>				
+		<no_of_sessions>13000</no_of_sessions>
+		<user_think_time>0</user_think_time>	
+	</scenario>
+	<client>10.0.0.4:4600</client>
+	<client>10.0.0.2:4600</client>
+	<extra>
+        <header>Content-Type: application/soap+xml; charset=utf-8; action=m:buyStocks\n</header>
+		<debug>true</debug>
+		<sort>true</sort>	
+		<tool>jms</tool>	
+        <mode>single</mode>
+        <remote>false</remote>
+	</extra>
+</performance_test>
+
+

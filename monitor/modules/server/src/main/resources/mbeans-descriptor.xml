@@ -1,0 +1,43 @@
+<mbeans-descriptors>
+    <mbean name="ServerMonitor"
+            description="WSO2 Server Monitoring MBean"
+            domain="WSO2"
+            type="org.wso2.monitor.mbeans.ServerMonitor">
+
+        <operation name="getMessages"
+                description="Returns any pending operator messages queued in the server."
+                impact="ACTION"
+                return="java.lang.String">
+        </operation>
+
+        <operation name="notifyMonitor"
+                description="Notifies the event monitor, delivering the provided message."
+                impact="ACTION"
+                return="void">
+            <parameter name="title"
+                    description="String containing title of message."
+                    type="java.lang.String"/>
+            <parameter name="message"
+                    description="String containing message to be notified."
+                    type="java.lang.String"/>
+            <parameter name="severity"
+                    description="Used to specify message severity."
+                    type="int"/>
+        </operation>
+
+        <operation name="isServerRunning"
+                description="Indicates if the monitored server is running."
+                impact="ACTION"
+                return="boolean">
+        </operation>
+
+        <operation name="setServerRunning"
+                description="Sets the server status indication."
+                impact="ACTION"
+                return="void">
+           <parameter name="serverRunning"
+                description="Used to specify server status."
+                type="boolean"/>
+        </operation>
+    </mbean>
+</mbeans-descriptors>

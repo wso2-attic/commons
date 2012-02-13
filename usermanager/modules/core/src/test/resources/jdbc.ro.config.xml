@@ -1,0 +1,14 @@
+<configuration xmlns="http://usermanager.commons.wso2.org/ns">
+
+<realm class="org.wso2.commons.usermanager.realm.ro.JDBCRealmRO" 
+           configClass="org.wso2.commons.usermanager.realm.ro.JDBCConfigurationRO">
+   <realmConfiguration>
+        <property name="jdbc.driverName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+		<property name="jdbc.userTable" value="users"/>
+		<property name="jdbc.userNameCol" value="username"/>
+		<property name="jdbc.userCredential" value="pass"/> 
+		<property name="jdbc.connectionURL" value="jdbc:derby:target/UserDatabase"/>
+		<property name="jdbc.attributeIds" value="status, username"/>
+    </realmConfiguration>
+</realm>
+</configuration>

@@ -1,0 +1,18 @@
+<service name="MercuryAdding">
+    <description>
+        This service is created to add two numbers with Mercury.
+    </description>
+
+    <parameter name="ServiceClass" locked="false">org.wso2.esb.service.MercuryAdding</parameter>
+    <!--operation name="add">
+    	<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation-->
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only" class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+
+    <module ref="sandesha2"/>
+
+</service>
+

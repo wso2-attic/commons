@@ -1,0 +1,55 @@
+<!--
+  ~  Copyright (c) 2006, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<module name="wso2caching" class="org.wso2.caching.CachingModule">
+    
+    <Description>
+        This is a Web service response caching module for WSO2 Carbon and Apache Axis2.
+        This implements both the server side caching
+    </Description>
+    
+    <InFlow>
+        <handler name="CachingInHandler" class="org.wso2.caching.handlers.CachingInHandler">
+            <order phase="OperationInPhase"/>
+        </handler>
+    </InFlow>
+    
+    <OutFlow>
+        <handler name="CachingOutHandler" class="org.wso2.caching.handlers.CachingOutHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFlow>
+
+    <operation name="CachedOperation" mep="http://www.w3.org/2006/01/wsdl/in-out">
+        <messageReceiver class="org.wso2.caching.receivers.CacheMessageReceiver"/>
+    </operation>
+
+    <supported-policy-namespaces namespaces="http://www.wso2.org/ns/commons/caching"/>
+    <wsp:Policy wsu:Id="WSO2CachingPolicy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                xmlns:wsch="http://www.wso2.org/ns/2007/06/commons/caching"
+                xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+        <wsch:CachingAssertion>
+            <wsp:Policy>
+                <wsp:All>
+                    <wsch:XMLIdentifier>org.wso2.caching.digest.DOMHASHGenerator</wsch:XMLIdentifier>
+                    <wsch:ExpireTime>60000</wsch:ExpireTime>
+                    <wsch:MaxCacheSize>1000</wsch:MaxCacheSize>
+                    <wsch:MaxMessageSize>1000</wsch:MaxMessageSize>
+                </wsp:All>
+            </wsp:Policy>
+        </wsch:CachingAssertion>
+    </wsp:Policy>
+</module>

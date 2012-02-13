@@ -1,0 +1,341 @@
+#!/usr/bin/perl -w
+
+# WSO2 Ravana - tool to benchmark WSO2 server products
+
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+use strict;
+use Getopt::Long;
+use XML::Simple;
+use List::Util qw[min max]; #To get minimum and maximum of a list
+
+my $VERSION="1.0.0";
+
+my $DEBUG = 0;
+
+#--------------------------------------------------------------------------
+# test_host ($data, $rate, $warmup_rate)
+sub
+test_host 
+{
+    my ($data, $rate, $server, $uri, $port) = @_;
+    my %results;
+    my $keep_alive="";
+    my $f_errors = 0;
+    my $w_errors = 0;
+    my $time_per_request_count = 0;
+
+    my $content_type = $data->{'extra'}->{'content_type'};
+    my $header = $data->{'extra'}->{'header'};
+	my $method = $data->{'scenario'}->{'method'};
+	my $timeout = $data->{'scenario'}->{'timeout'};
+	my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};
+    if($max_piped_calls > 1)
+    {
+        $keep_alive=" -k";
+    }
+	my $max_connections = $data->{'scenario'}->{'max_connections'};	
+	my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+	my $user_think_time = $data->{'scenario'}->{'user_think_time'};
+	my $scenario = $data->{'scenario'}->{'name'};
+    my $n1 = $no_of_sessions/$rate; #I assume here that rate is non-zero
+    my $n = sprintf("%d", $n1);
+    my $ab_command="";	
+	if (defined $header && $header eq "''")
+    {
+        $header='x';
+    }
+    
+    $ab_command = "java -jar ./lib/benchmark.jar".$keep_alive.
+      " -T\"".$content_type."\""." -H'".$header."'".
+      " -n ".$n." -c $rate".
+      " -p scenario/".$scenario."/inputfile".
+      " http://$server:$port/$uri";
+    
+    #print STDERR "$ab_command\n" if $DEBUG;
+    print STDERR "$ab_command\n";
+
+    open (IN,  "$ab_command |")
+	or die "Cannot execute ab\n";
+
+    $results{tps} = 0;
+    $results{errors} = 0;
+    my $temp = 0;
+    
+    while(<IN>) 
+    {
+        #print STDERR $_;
+        if (/^Requests per second:\t*(\d+,\d+\.\d+)/ | /^Requests per second:\t*(\d+\.\d+)/ ) 
+        {
+            $temp = $1;
+            $temp =~ s/,//g;
+            print STDERR "tps : $temp \n";
+            $results{tps}=$temp;
+        }
+        if (/^Time per request:\t*(\d+,\d+\.\d+)/ | /^Time per request:\t*(\d+\.\d+)/ ) 
+        {
+            $temp = $1;
+            $temp =~ s/,//g;
+            print STDERR "time per request : $temp \n";
+            $time_per_request_count++;
+            if($time_per_request_count == 1)
+            {
+                $results{time_per_request} = $temp;
+            }
+            elsif($time_per_request_count == 2)
+            {
+                $results{time_per_request_avg} = $temp;
+            }
+        }
+        if (/^Complete requests:\t*(\d+)/) 
+        {
+            print STDERR "completed:$1\n";
+            $results{completed_requests} = $1;
+        }
+        if (/^Failed requests:\t*(\d+)/) 
+        {
+            print STDERR "failed:$1\n";
+            $f_errors = $1;
+            #$results{errors} = $1;
+        }
+        if (/^Write errors:\t*(\d+)/) 
+        {
+            print STDERR "write errors:$1\n";
+            $w_errors = $1;
+            #$results{errors} = $1;
+        }
+        $results{errors}= $f_errors;
+	    print $_;
+    }
+    close (IN);
+    
+    if ($results{tps} == 0) 
+    {
+        print STDERR "Zero requests per second, test invalid: rate $rate\n";
+        $results{percent_errors} = 101;
+    }
+    else 
+    {
+        $results{percent_errors} = ( 100 * $results{errors} / $results{completed_requests} );
+    }
+    return \%results;
+}
+
+sub 
+print_header
+{
+    my ($data, $sep, $out_stream) = @_;
+    my $host1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+    my $host2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+
+    # The following is really quite ugly...
+    print $out_stream "concurrency".$sep.
+        "trans_ps_$host1".$sep.
+        "avg_time_pr_$host1".$sep.
+        "errors_$host1";
+
+    if ($data->{'single-host'} eq 'true') {
+        print $out_stream "\n";
+    }
+    else {
+        print $out_stream $sep."trans_ps_$host2".$sep.
+            "avg_time_pr_$host2".$sep.
+            "errors_$host2\n";
+    }
+}
+
+#--------------------------------------------------------------------------
+# Main
+
+# Declarations
+my ($curr_rate, $sep);
+my (%res_host1, %res_host2);
+
+# Get configuration from config file
+
+my $xml = XML::Simple->new;
+my $data = $xml->XMLin("./conf/config.xml");
+
+$DEBUG = 1 if ($data->{'extra'}->{'debug'} eq 'true');
+
+$sep = "\t";
+
+# Check that apache bench is in our path
+system("which ab > /dev/null") == 0 
+    or die 'Cannot find apache bench in $PATH; please ensure it is installed and your PATH is'."\ncorrectly set\n";
+
+#get the server details for the config.xml
+my $host1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+my $host2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+
+#check single server or two servers
+if(!(defined($data->{'product1'})&&defined($data->{'product2'})))
+{
+	$data->{'single-host'} = 'true';	
+} else 
+{
+	$data->{'single-host'} = 'false';
+} 
+
+$data->{'single-host'} = 'true';
+
+#get scenario details
+my $scenario = $data->{'scenario'}->{'name'};
+# Set the output stream
+open(OUT, ">scenario/$scenario/results/results.tsv") or die "Cannot open output file for writing\n";
+
+#print the header of the tsv file
+print_header($data, $sep, \*OUT);
+
+my $high_rate = $data->{'scenario'}->{'high_rate'};
+my $low_rate = $data->{'scenario'}->{'low_rate'};
+my $rate_step = $data->{'scenario'}->{'rate_step'};
+my $warmup_rate = $data->{'scenario'}->{'warmup_rate'};
+my $max_connections = $data->{'scenario'}->{'max_connections'};	
+my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};
+my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+my $user_think_time = $data->{'scenario'}->{'user_think_time'};
+
+my $requests_per_second_h1 = 0; 
+my $i1 = 0;
+my $requests_per_second_h2 = 0; 
+my $i2 = 0;
+my $time_per_request_h1 = 0; 
+my $time_per_request_h2 = 0;
+my @tps_list1; #list to contain transactions per second for host1
+my @tpr_list1; #list to contain time per request for host1
+my @tps_list2; #list to contain transactions per second for host2
+my @tpr_list2; #list to contain time per request for host2
+my $last_tps_h1 = 0;
+my $last_tps_h2 = 0;
+
+
+# Conduct the tests
+
+#warm up the servers
+#this can be used when the low demand rate is more than 400 
+#test_host ($data, $warmup_rate, $host1, $uri1, $port1);
+
+# Conduct the tests
+#testing for demand rates, from low_rate to high_rate with the step of rate_step
+for ($curr_rate = $low_rate; $curr_rate <= $high_rate; 
+     $curr_rate += $rate_step) 
+ {
+    # Test Host 1	
+    %res_host1 = %{test_host ($data, $curr_rate, $host1, $uri1, $port1)};
+    if($res_host1{tps})
+    {
+        push(@tps_list1, $res_host1{tps});
+        push(@tpr_list1, $res_host1{time_per_request_avg});
+        $last_tps_h1 = $res_host1{tps};
+    }
+
+    
+    # Test Host 2
+    if ($data->{'single-host'} eq 'false') 
+    {
+	    sleep(20);  
+    	%res_host2 = %{test_host ($data, $curr_rate, $host2, $uri2, $port2)};
+	    if($res_host2{tps})
+        {
+            push(@tps_list2, $res_host2{tps});
+            push(@tpr_list2, $res_host2{time_per_request_avg});
+            $last_tps_h2 = $res_host2{tps};
+	    }
+    }
+
+    # Merge and Display Results
+    if($res_host1{tps})
+    {
+	    print OUT
+		  $curr_rate.$sep.
+		  $res_host1{tps}.$sep.
+	      $res_host1{time_per_request_avg}.$sep.
+		  $res_host1{percent_errors};
+	    if ($data->{'single-host'} eq 'true') 
+        {
+	   	    print OUT "\n";
+	    }
+	    else {
+	    	print OUT 
+              $res_host2{tps}.$sep.
+	    	  $res_host2{time_per_request_avg}.$sep.
+		      $res_host2{percent_errors}."\n";	   
+	    }
+    }
+	sleep(5);
+}
+$requests_per_second_h1 = max(@tps_list1); #take max
+$time_per_request_h1 = min(@tpr_list1); #take min
+$requests_per_second_h2 = max(@tps_list2); #take max
+$time_per_request_h2 = min(@tpr_list2); #take min
+#calculate message size
+my $message_size = -s "scenario/$scenario/inputfile";
+
+if(! -e "scenario/$scenario/results/transactions_per_second_vs_message_size.tsv")
+{
+	open(MAXRATE, ">scenario/$scenario/results/transactions_per_second_vs_message_size.tsv") or die "Cannot open output file for writing\n";
+	if ( $data->{'single-host'} eq 'false' ) 
+    {
+		print MAXRATE "message_size".$sep."tps_$data->{'product1'}->{product_name}".$sep."tps_$data->{'product2'}->{product_name}";	
+	} 
+    else 
+    {
+		print MAXRATE "message_size".$sep."dem_rate_$data->{'product1'}->{product_name}";
+	}
+	print MAXRATE "\n";
+}else{
+	open(MAXRATE, ">>scenario/$scenario/results/transactions_per_second_vs_message_size.tsv") or die "Cannot open output file for writing\n";	
+}
+
+#print data to transactions_per_second_vs_message_size.tsv
+if ( $data->{'single-host'} eq 'false' ) 
+{
+	print MAXRATE "$message_size".$sep."$requests_per_second_h1".$sep."$requests_per_second_h2";
+    print STDERR "******************************tps_h1:$requests_per_second_h1\n";
+    print STDERR "******************************last_rate_h1:$last_tps_h1\n";
+    print STDERR "******************************tps_h2:$requests_per_second_h2\n";
+    print STDERR "******************************last_rate_h2:$last_tps_h2\n";
+	if($requests_per_second_h1 == $last_tps_h1)
+    {
+		print STDERR "**************************You can go for higher concurrency and test $data->{'product1'}->{product_name}\n";
+	}
+	if($requests_per_second_h2 == $last_tps_h2)
+    {
+		print STDERR "**************************You can go for higher concurrency and test $data->{'product2'}->{product_name}\n";
+    }
+} 
+else 
+{
+	print MAXRATE "$message_size".$sep."$requests_per_second_h1";
+    print STDERR "******************************tps:$requests_per_second_h1\n";
+    print STDERR "******************************last_rate:$last_tps_h1\n";
+	if($requests_per_second_h1 == $last_tps_h1)
+    {
+		print STDERR "**************************You can go for higher concurrency and test $data->{'product1'}->{product_name}\n";
+	}
+}
+print MAXRATE "\n";
+
+close (OUT);
+close (MAXRATE);
+
+print STDERR "Benchmark complete\n";

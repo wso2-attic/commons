@@ -1,0 +1,127 @@
+body{
+padding:0px;
+margin:0px;
+background-image:url(../images/keystore-background.jpg);
+background-repeat:repeat-x;
+background-position:0px 0px;
+}
+body, td, tr, input{
+font: 11px Verdana, Arial, Helvetica, sans-serif;
+line-height:18px;
+}
+.header-back{
+background-image:url(../images/logo.jpg);
+background-repeat:no-repeat;
+background-position:0px 0px;
+height:150px;
+}
+.header-back2{
+background-image:url(../images/logo-Converter.jpg);
+background-repeat:no-repeat;
+background-position:0px 0px;
+height:150px;
+}
+.menu{
+position:absolute;
+right:20px;
+top:40px;
+padding-top:0px;
+margin-top:0px;
+}
+.menu td{
+padding-left:15px;
+}
+.menu a{
+color:#ffffff;
+text-decoration:none;
+line-height:20px;
+}
+.content{
+margin-left:20px;
+margin-right:20px;
+background-color:#e7eeed;
+border:solid 1px #585858;
+padding-left:10px;
+}
+.content-results{
+margin-left:20px;
+margin-right:20px;
+background-color:#ffffff;
+border:solid 1px #585858;
+margin-top:10px;
+}
+.button{
+background-image:url(../images/button-background.gif);
+background-repeat:repeat-x;
+background-position:0px 0px;
+color:#ffffff;
+margin-top:5px;
+margin-bottom:5px;
+}
+h1{
+background-color:#2d2d2d;
+padding:0px;
+margin:0px;
+margin-bottom:20px;
+margin-left:-10px;
+padding-top:5px;
+padding-bottom:5px;
+color:#ffffff;
+font-size:16px;
+height:22px;
+font-weight:normal;
+text-indent:10px;
+}
+h2{
+background-color:#7D7D7D;
+color:#FFFFFF;
+font-size:12px;
+font-weight:normal;
+height:18px;
+margin:0px 0px 20px 10px;
+padding:5px 0px;
+text-indent:10px;
+}
+h3{
+padding:0px;
+margin:0px;
+padding-top:5px;
+padding-bottom:5px;
+color:#5a6370;
+font-size:12px;
+margin-left:10px;
+}
+.table-top{
+background-color:#dadada;
+font-size:12px;
+font-weight:bold;
+padding:0px;
+margin:0px;
+color:#2e2e2e;
+padding-top:5px;
+padding-bottom:5px;
+}
+.entryBox{
+background-color:#ececec;
+margin:10px;
+margin-top:0px;
+width:99%;
+border:dotted 1px #9b9b9b;
+}
+.entryBox td{
+padding-left:5px;
+padding-top:3px;
+padding-bottom:3px;
+}
+.attribute-name{
+font-weight:bold;
+width:200px;
+}
+.footer{
+
+height:30px;
+color:#5c5c5c;
+font-size:10px;
+padding-top:25px;
+padding-left:30px;
+}

@@ -1,0 +1,7 @@
+Using endpoint : http://localhost:9090/axis2/services/echo
+
+Sending OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/services/echo"><text>Hello World!</text></ns1:echoString>
+
+Received OM : <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"><soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:To>http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__</wsa:To><wsa:Action>http://ws.apache.org/axis2/c/samples/echoString</wsa:Action><wsa:From><wsa:Address>http://localhost:9090/axis2/services/echo</wsa:Address></wsa:From><wsa:MessageID>cf19ad2b-20fe-424e-89cb-e939d4e956ba</wsa:MessageID><wsa:RelatesTo wsa:RelationshipType="http://www.w3.org/2005/08/addressing/reply">05e240ca-2a18-426a-83d5-dd154cd9528d</wsa:RelatesTo></soapenv:Header><soapenv:Body><ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/c/samples"><text>Hello World!</text></ns1:echoString></soapenv:Body></soapenv:Envelope>
+
+echo client invoke SUCCESSFUL!

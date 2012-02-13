@@ -1,0 +1,234 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>WSAS-docs-installation-guide</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">WSAS-docs-installation-guide</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/docs/index_docs.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Installation Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Installation Guide</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h2[1]</td>
+	<td>Content</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[4]/div/div/strong[1]</td>
+	<td>WSO2 Web Services Application Server in Standalone Mode</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[4]/div/div/strong[2]</td>
+	<td>WSO2 Web Services Application Server in a Servlet Container</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div[4]/div/div/strong[3]</td>
+	<td>WSO2 Web Services Application Server as an Eclipse WTP Plugin</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Eclipse WTP Integration Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Eclipse WTP Integration</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Installation Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Standalone Mode</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installing on Microsoft Windows</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Running the Installation Wizard</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installing using Binary Distribution</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installing on Linux</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installing using Binary Distribution</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installing using Binary Installers (deb/rpm)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Troubleshooting Installation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>Modify</td>
+	<td>Modify/ Repair/ Remove Installation</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Accessing the Management Console</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[15]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>User Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Installation Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>in a Servlet Container</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>J2EE Application Servers</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Application Server Specific Information</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installation Instructions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[15]</td>
+	<td>JBoss AS:</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Advanced Configuration Instructions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Apache Tomcat Server:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>2. JBoss AS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>3. Apache Geronimo AS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Issues to Note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Generic Web Application Server</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installation Instructions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Advanced Configuration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Post Installation Modifications</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1. The wso2wsas.properties file</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>2. Changing the WSO2 WSAS database configurations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>3. Changing HTTP/HTTPS ports</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Accessing the Management Console</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[41]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>User Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Installation Guide</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

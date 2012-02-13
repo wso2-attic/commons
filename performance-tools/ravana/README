@@ -1,0 +1,181 @@
+Ravana 
+===========================
+WSO2 Ravana is a platform to run performance benchmarks against WSO2 server products or any any other competing products.
+Special thanks goes to Autobench project[1] and Jboss Inc.,[2] from where code is used with modifications.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+
+Perl modules need to run the test:
+----------------------------------	
+	XML::Simple 
+
+Other modules needed:
+---------------------
+	gawk (sudo apt-get install gawk)
+	gnuplot
+	httperf or apache bench(ab) or java bench(java-ab)
+
+From here onwards I assume the name RAVANA_HOME for the folder where you extracted WSO2 Ravana.
+Run the test:
+-------------
+	Put your scenario test folder in the RAVANA_HOME/scenario folder.
+	Set the configuration you need in the RAVANA_HOME/conf/config.xml
+	run Test.pl by executing 
+    
+    RUN COMMAND - perl Test.pl 
+
+What is a test Scenario:
+-----------------------
+To use WSO2 Ravana you must first define a scenario. A scenario consist of a configuration file called config.xml and a scenario test folder under RAVANA_HOME/scenario
+	scenario folder must consist of the soap messages(in xml format) or a inputfile which consist of the bench compatible content.When a soap message xml file is present in the scenario folder inputfile is ignored and an inputfile is created using that message file. If more than one message xml files are present Ravana will test for all of them one at a time. If there is no xml files then Ravana takes the inputfile as its input.
+
+Configuration file
+------------------
+Following is a sample configuration file.
+
+<?xml version="1.0"?>
+<performance_test>
+    <product1>
+        <product_name>wso2esb-3.0.1</product_name>
+        <server-config>
+            <transport>
+                <http>
+                    <host>localhost</host>
+                    <port>8280</port>
+                    <uri>/services/POProxy</uri>
+                </http>
+            </transport>
+        </server-config>
+    </product1>
+    <scenario>
+        <name>wso2esb-3.0.0</name>
+        <method>POST</method>
+        <timeout>240</timeout>
+        <high_rate>100</high_rate>
+        <low_rate>20</low_rate>
+        <rate_step>10</rate_step>
+        <max_piped_calls>4</max_piped_calls>
+        <max_connections>1</max_connections>
+        <no_of_sessions>10000</no_of_sessions>
+        <user_think_time>0</user_think_time>
+    </scenario>
+    <extra>
+        <content_type>application/soap+xml; charset=utf-8; action=m:buyStocks</content_type>
+        <header>''</header>
+        <debug>false</debug>
+        <sort>true</sort>
+        <tool>java-ab</tool> <!-- The value can be one of java-ab, ab, httperf or jms -->
+        <mode>single</mode> <!-- The value can be one of cluster or single -->
+        <remote>false</remote> <!-- Whether to control remote server tested. Eg. start it beforehand, copy scripts etc -->
+
+    </extra>
+</performance_test>
+
+The parameters high_rate, low_rate, rate_step, max_piped_calls, no_of_sessions has slightly different meanings according to the tool selected under extra section.
+
+Performance Tests could be run basically under two modes.
+Single mode
+-----------
+In the single mode a single client load generator machine is used. To run in this mode you need to set the mode in configuration file to value 'single'.
+Then after filling in appropriate values in config.xml run
+perl Test.pl
+
+Cluster mode
+------------
+	Run bench admin: 
+        To run Ravana in cluster mode you need to set the mode in configuration xml to value 'cluster'.
+		This actives the bench_admin which can monitor several bench clients(bench deamons).
+		you can specify multiple clients in the config.xml as following
+        <client>10.0.0.4:4600</client>
+        <client>10.0.0.2:4600</client>
+        
+        In the machine bench admin is running you need to have the conf/config.xml with the client entries
+        as above and the scenario folder for which you run the test. Note that in this mode, the scenario folder
+        can have only one xml input message.
+        The machines where the bench daemon run should also have the same scenario folder as the bench
+        admin machine. In adition it should have the conf/config.xml pointing the scenario folder.
+
+        To run the bench admin, make sure mode is set to value 'cluster' and then run
+
+        perl Test.pl
+
+        Note that bench_admin and an bench daemon can share the same machine.
+        The bench_admin will distribute the load generation among the bench daemons. It then collate
+        the results from each client daemon and generate the results.
+	
+	Run bench-deamon:
+		This act as the client to the bench_admin. 
+		This must be running before bench_admin start.
+		To start you should execute 
+        
+        perl bench_deamon.pl. 	
+
+Run remote server method:
+------------------------
+To control the remote server user can write your own scripts and put it into the corresponding scenario folder. After that in the
+configuration file set the value of remote element to true.
+To do this you need to copy the script to your scenario folder.
+Then run 
+perl Test.pl
+This will copy and execute a shell script(server-script.sh) in a remote machine.
+You can use this to start remote server. Get server CPU and Memory usage.(see the example server-script.sh)
+To do this first you should execute the following commands,
+
+			ssh-keygen -t rsa
+			cat .ssh/id_rsa.pub | ssh user@remote.host 'cat >>.ssh/authorized_keys'
+
+NOTE:You can compare the xml file and inputfile to know about the bench compatible mode.
+
+Output:
+-------
+    Results generated depend on the kind of tool you used. But following results files are common to all tools.
+	A results.tsv file which include the result summery for every demand rate
+	Four graphs will be genarated according to the results in your_scenario/results folder
+		response_time.ps- graph response time against demand rate(demand rate is the rate which bench send messages to the httperf).	
+		respons_rate.ps- graph average response rate ageains demand rate 
+		net_io.ps- average input output rate agains demand rate 
+		errors.ps- number of errors agains demand rate  
+	Demand_Rate(@Maximum_Response_Rate)_vs_Message_Size.tsv file- Include Demand Rate at the maximum response rate against Message size.
+	Output.txt- Output of the httperf
+	top.txt- CPU and memory consumption of the server
+    
+    httperf
+    -------
+    TODO    
+    java-ab
+    -------
+    TODO
+
+Comparing two scenarios
+=======================
+
+You can use this option if you need to compare results of the two scenarios.
+
+	perl compareScenarios.pl -scenario1:scenario_name1 -scenario2:scenario_name2
+
+	You can see the results in the compare_scenarios folder
+
+			
+References
+
+[1] http://www.xenoclast.org/autobench/
+[2] http://www.jboss.org/jbossmessaging/downloads
+
+		
+
+	  	
+ 

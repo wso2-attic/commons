@@ -1,0 +1,30 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="SplitAggregateProxy">
+        <target>
+            <inSequence>
+                <iterate expression="//m0:add" preservePayload="true"
+                         attachPath="//m0:add"
+                         xmlns:m0="http://add.math.com">
+                    <target>
+                        <sequence>
+                            <send>
+                                <endpoint>
+                                    <address
+                                        uri="http://localhost:9762/services/Adding"/>
+                                </endpoint>
+                            </send>
+                        </sequence>
+                    </target>
+                </iterate>
+            </inSequence>
+            <outSequence>
+                <aggregate>
+                    <onComplete expression="//m0:addResponse"
+                                xmlns:m0="http://add.math.com">
+                        <send/>
+                    </onComplete>
+                </aggregate>
+            </outSequence>
+        </target>
+    </proxy>
+</definitions>

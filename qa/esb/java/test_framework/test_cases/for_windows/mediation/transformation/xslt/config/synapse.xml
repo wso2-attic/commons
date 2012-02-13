@@ -1,0 +1,18 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <localEntry key="xslt-add-req" src="file:repository/samples/resources/transform/xslt_add_req.xslt"/>
+    <localEntry key="xslt-add-res" src="file:repository/samples/resources/transform/xslt_add_res.xslt"/>
+        <in>
+            <xslt key="xslt-add-req"/>
+            <log level="full" separator=","/>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/Adding"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <xslt key="xslt-add-res"/>
+            <send/>
+        </out>
+</definitions>
+

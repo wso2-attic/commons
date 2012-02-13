@@ -1,0 +1,15 @@
+<sequence name="GetAccountIn" xmlns="http://ws.apache.org/ns/synapse">
+	<payloadFactory>
+		<format>
+			<m:getAccount xmlns:m="http://mgt.accounts.etrade.com">
+				<m:id>$1</m:id>
+			</m:getAccount>
+		</format>
+		<args>
+			<arg expression="get-property('uri.var.accountId')" />
+		</args>
+	</payloadFactory>
+	<send>
+		<endpoint key="AccountSvc" />
+	</send>
+</sequence>

@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_wsdlc", "test_wsdlc\test_wsdlc.vcproj", "{4842EF6F-5C3A-4F2F-98B3-504CA008FC38}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59642D76-E0EE-42FD-9040-E19B0B0B54C1} = {59642D76-E0EE-42FD-9040-E19B0B0B54C1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wsdlc", "wsdlc\wsdlc.vcproj", "{59642D76-E0EE-42FD-9040-E19B0B0B54C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4842EF6F-5C3A-4F2F-98B3-504CA008FC38}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4842EF6F-5C3A-4F2F-98B3-504CA008FC38}.Debug|Win32.Build.0 = Debug|Win32
+		{4842EF6F-5C3A-4F2F-98B3-504CA008FC38}.Release|Win32.ActiveCfg = Release|Win32
+		{4842EF6F-5C3A-4F2F-98B3-504CA008FC38}.Release|Win32.Build.0 = Release|Win32
+		{59642D76-E0EE-42FD-9040-E19B0B0B54C1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{59642D76-E0EE-42FD-9040-E19B0B0B54C1}.Debug|Win32.Build.0 = Debug|Win32
+		{59642D76-E0EE-42FD-9040-E19B0B0B54C1}.Release|Win32.ActiveCfg = Release|Win32
+		{59642D76-E0EE-42FD-9040-E19B0B0B54C1}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

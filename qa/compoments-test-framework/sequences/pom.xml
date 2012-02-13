@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>compoments-test-framework</artifactId>
+        <groupId>org.wso2.carbon</groupId>
+        <version>SNAPSHOT</version>
+
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sequences</artifactId>
+    <name>Sequences Module</name>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>source-code-generation</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri  src/test/resources/SequenceAdminService.wsdl -u -uw -o target/generated-code
+                                                                        -p org.wso2.carbon.sequences.ui.types
+                                                                        -ns2p http://to.common.sequences.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common.to,http://common.sequences.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common,http://mgt.dependency.mediation.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common,http://org.apache.synapse/xsd=org.wso2.carbon.sequences.ui.types.axis2"/>
+                                    <!--<arg line="-uri http://localhost:8280/services/SequenceAdminService?wsdl -u -uw -o target/generated-code-->
+                                    <!---p org.wso2.carbon.sequences.ui.types-->
+                                    <!---ns2p http://to.common.sequences.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common.to,http://common.sequences.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common,http://mgt.dependency.mediation.carbon.wso2.org/xsd=org.wso2.carbon.sequences.ui.types.common,http://org.apache.synapse/xsd=org.wso2.carbon.sequences.ui.types.axis2"/>-->
+                                    <classpath refid="maven.dependency.classpath"/>
+                                    <classpath refid="maven.compile.classpath"/>
+                                    <classpath refid="maven.runtime.classpath"/>
+                                </java>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-code/src</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>core</artifactId>
+            <version>SNAPSHOT</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>core</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>endpoint</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
+        </dependency>
+    </dependencies>
+
+</project>

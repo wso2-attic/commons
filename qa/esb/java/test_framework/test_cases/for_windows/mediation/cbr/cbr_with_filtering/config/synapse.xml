@@ -1,0 +1,11 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+	<filter xmlns:m0="http://service.esb.wso2.org" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xpath="//m0:add/m0:x">
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/Adding"/>
+                </endpoint>
+            </send>
+            <drop/>
+        </filter>
+        <send/>
+</definitions>

@@ -1,0 +1,1 @@
+<m:buyStocks xmlns:m="http://po.services.core.carbon.wso2.org"><m:order><m:symbol>IBM</m:symbol><m:buyerID>asankha</m:buyerID><m:price>140.34</m:price><m:volume>200000</m:volume></m:order></m:buyStocks>

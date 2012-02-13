@@ -1,0 +1,24 @@
+In this README I assume PERFTET_HOME is where Ravana unarchived.
+These tests are designed to automate the performance tests.
+The normal way of doing a performance test is by placing a required config.xml file in conf folder
+and then from RAVANA_HOME run 
+perl Test.pl
+
+This is great. However when you have to organize different tests, the best thing is to write a simple script and organize tests
+in a folder. Each test folder here do that purpose.
+
+Suppose for example you need to performance test WSO2 ESB 3.0.1 for direct proxy scenario. In order to organize your test scenario you
+can follow the steps below.
+Steps
+-----
+
+1. Create the scenario folder which contain the messages you want to test in the scenario folder naming it as wso2esb-3.0.1_pass
+2. create a folder called wso2esb-3.0.1_pass inside tests folder.
+3. Create config_<messagesize>.xml and test<messagesize>.sh for each message size. In the config files give the appropriate
+   values for parameters. In the test files do the required handling of the test. Note that these test scripts are supposed
+   to be run from RAVANA_HOME folder.
+4. Copy each test script from the corresponding test folder to the RAVANA_HOME folder and run them.
+
+In the each test folder in RAVANA_HOME/tests, scripts are provided to run that test scenario. In each scenario folder in 
+RAVANA_HOME/scenario the messages for the test scenario with the same name, is provided.
+

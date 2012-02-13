@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syn:definitions xmlns:syn="http://ws.apache.org/ns/synapse">
+    <syn:registry provider="org.wso2.esb.registry.WSO2Registry"/>
+    <syn:proxy name="DirectProxy" transports="https http" startOnLoad="true">
+        <syn:target endpoint="RealService"/>
+        <syn:publishWSDL key="WSDL/EchoService.wsdl"/>
+    </syn:proxy>
+    <syn:proxy name="XSLTProxy" transports="https http" startOnLoad="true" trace="disable">
+        <syn:target endpoint="RealService">
+            <syn:inSequence>
+                <syn:xslt key="XSLT/transform.xslt">
+                    <syn:feature name="http://ws.apache.org/ns/synapse/transform/feature/dom" value="true"/>
+                </syn:xslt>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:xslt key="XSLT/transform_back.xslt">
+                    <syn:feature name="http://ws.apache.org/ns/synapse/transform/feature/dom" value="true"/>
+                </syn:xslt>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+        <syn:publishWSDL key="WSDL/ReverseService.wsdl"/>
+    </syn:proxy>
+    <syn:proxy name="CBRProxy" transports="https http" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:filter xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//order[1]/symbol" regex="IBM">
+                    <syn:then>
+                        <syn:send>
+                            <syn:endpoint key="RealService"/>
+                        </syn:send>
+                    </syn:then>
+                    <syn:else>
+                        <syn:makefault version="soap11">
+                            <syn:code xmlns:sf11="http://schemas.xmlsoap.org/soap/envelope/" value="sf11:Server"/>
+                            <syn:reason value="First order must be for the symbol IBM"/>
+                        </syn:makefault>
+                        <syn:header name="To" action="remove"/>
+                        <syn:property name="RESPONSE" value="true"/>
+                        <syn:send/>
+                    </syn:else>
+                </syn:filter>
+            </syn:inSequence>
+        </syn:target>
+        <syn:publishWSDL key="WSDL/EchoService.wsdl"/>
+    </syn:proxy>
+    <syn:endpoint name="RealService">
+        <syn:address uri="http://testc.wso2.com:8080/MockServices/EchoService"/>
+    </syn:endpoint>
+    <syn:sequence name="main">
+        <syn:in>
+            <syn:log level="full"/>
+            <syn:filter source="get-property('To')" regex="http://localhost:9000.*">
+                <syn:send/>
+            </syn:filter>
+        </syn:in>
+        <syn:out>
+            <syn:send/>
+        </syn:out>
+    </syn:sequence>
+    <syn:sequence name="fault">
+        <syn:log/>
+    </syn:sequence>
+</syn:definitions>

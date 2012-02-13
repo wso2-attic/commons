@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <proxy xmlns="http://ws.apache.org/ns/synapse" name="pinned_servers_proxy" transports="https,http" pinnedServers="ESB2" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log>
+            <property name="text" value="***INCOMING MESSAGE***" />
+         </log>
+      </inSequence>
+      <outSequence>
+         <log>
+            <property name="text" value="***OUTGOING MESSAGE***" />
+         </log>
+         <send />
+      </outSequence>
+      <endpoint name="endpoint_urn_uuid_3D2987155107DF65585800148523540172762292">
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService" />
+      </endpoint>
+   </target>
+   <publishWSDL uri="http://localhost:9000/services/SimpleStockQuoteService?wsdl" />
+</proxy>
+                                

@@ -1,0 +1,209 @@
+<!--
+    ~ Licensed to the Apache Software Foundation (ASF) under one
+    ~ or more contributor license agreements.  See the NOTICE file
+    ~ distributed with this work for additional information
+    ~ regarding copyright ownership.  The ASF licenses this file
+    ~ to you under the Apache License, Version 2.0 (the
+    ~ "License"); you may not use this file except in compliance
+    ~ with the License.  You may obtain a copy of the License at
+    ~
+    ~    http://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing,
+    ~ software distributed under the License is distributed on an
+    ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    ~ KIND, either express or implied.  See the License for the
+    ~ specific language governing permissions and limitations
+    ~ under the License.
+-->
+
+<process xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://docs.oasis-open.org/wsbpel/2.0/process/executable ../../../../../../../bpel-schemas/src/main/resources/wsbpel_executable.xsd"
+         xmlns:tns="http://ode/bpel/unit-test/TestStaticOnMessage"
+         xmlns:wns="http://ode/bpel/unit-test/TestStaticOnMessage.wsdl"
+         xmlns:ns0="http://AdderService.wsdl"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         name="TestStaticOnMessageProcess"
+         targetNamespace="http://ode/bpel/unit-test/TestStaticOnMessage"
+         queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+         expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+         suppressJoinFailure="yes">
+
+    <!-- test onMessage with static correlation key -->
+
+    <import location="TestStaticOnMessage.wsdl"
+            namespace="http://ode/bpel/unit-test/TestStaticOnMessage.wsdl"
+            importType="http://schemas.xmlsoap.org/wsdl/" />
+   <import namespace="http://AdderService.wsdl" 
+	location="AdderService.wsdl" 
+	importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+
+    <partnerLinks>
+        <partnerLink name="request1" partnerLinkType="wns:TestStaticOnMessage1Request" myRole="TestStaticOnMessage1Service"/>
+        <partnerLink name="AdderPartnerLink" xmlns:ns0="http://AdderService.wsdl" partnerLinkType="ns0:AdderServicePartnerlinkType" partnerRole="adderRole"/>
+    </partnerLinks>
+
+    <variables>
+        <variable name="request"
+                  messageType="wns:requestMessage"/>
+        <variable name="AddOutput" xmlns:ns0="http://AdderService.wsdl" messageType="ns0:addResponse"/>
+        <variable name="AddInput" xmlns:ns0="http://AdderService.wsdl" messageType="ns0:addRequest"/>
+        <variable name="reply"
+                  messageType="wns:replyMessage"/>
+    </variables>
+
+    <correlationSets>
+        <correlationSet name="testCorr1" properties="wns:testProbeID"/>
+    </correlationSets>
+
+    <sequence>
+
+        <receive name="receive1" partnerLink="request1"
+                 portType="wns:TestStaticOnMessage1PT"
+                 operation="request" variable="request"
+                 createInstance="yes">
+            <correlations>
+                <correlation set="testCorr1" initiate="yes"/>
+            </correlations>
+        </receive>
+
+        <scope name="scopeOne">
+            <eventHandlers>
+
+                <onEvent partnerLink="request1"  messageType="wns:requestMessage"
+                         portType="wns:TestStaticOnMessage1PT" operation="event1" variable="request">
+
+                    <correlations>
+                        <correlation set="testCorr1"/>
+                    </correlations>
+
+                    <scope>
+                        <sequence>
+                            <assign>
+                                <copy>
+                                    <from>
+                                        <literal><![CDATA[1]]></literal>
+                                    </from>
+                                    <to variable="AddInput" part="parameters"/>
+                                </copy>
+                            </assign>
+
+                            <invoke name="InvokeAdderService1" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+                        </sequence>
+                    </scope>
+                </onEvent>
+                <onEvent partnerLink="request1" messageType="wns:requestMessage"
+                         portType="wns:TestStaticOnMessage1PT" operation="event2" variable="request">
+
+                    <correlations>
+                        <correlation set="testCorr1"/>
+                    </correlations>
+
+                    <scope>
+                        <sequence>
+                            <assign>
+                                <copy>
+                                    <from>
+                                        <literal><![CDATA[2]]></literal>
+                                    </from>
+                                    <to variable="AddInput" part="parameters"/>
+                                </copy>
+                            </assign>
+
+                            <invoke name="InvokeAdderService2" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+                        </sequence>
+                    </scope>
+                </onEvent>
+
+
+            </eventHandlers>
+
+            <sequence>
+
+
+
+                <!-- Copy input variables to internal accumulators -->
+
+                <assign name="assign1">
+                    <copy>
+                        <from variable="request" property="wns:testProbeID"/>
+                        <to variable="AddInput" part="AddInput"/>
+                    </copy>
+                    <copy>
+                        <from variable="request" property="wns:testProbeData"/>
+                        <to variable="AddInput" part="AddInput"/>
+                    </copy>
+                </assign>
+
+
+                <assign>
+                    <copy>
+                        <from>
+                            <literal><![CDATA[3]]></literal>
+                        </from>
+                        <to variable="AddInput" part="parameters"/>
+                    </copy>
+                </assign>
+
+                 <invoke name="InvokeAdderService3" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+
+                <!-- block the process here while test messages are sent to the eventHandlers -->
+
+                <receive name="receive2" partnerLink="request1"
+                         portType="wns:TestStaticOnMessage1PT"
+                         operation="continue1" variable="request">
+                    <correlations>
+                        <correlation set="testCorr1"/>
+                    </correlations>
+                </receive>
+
+            </sequence>
+        </scope>
+
+        <assign>
+            <copy>
+                <from>
+                    <literal><![CDATA[4]]></literal>
+                </from>
+                <to variable="AddInput" part="parameters"/>
+            </copy>
+        </assign>
+
+        <invoke name="InvokeAdderService4" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+
+        <receive name="receive3" partnerLink="request1"
+                 portType="wns:TestStaticOnMessage1PT"
+                 operation="continue2" variable="request">
+            <correlations>
+                <correlation set="testCorr1"/>
+            </correlations>
+        </receive>
+
+        <assign>
+            <copy>
+                <from>
+                    <literal><![CDATA[5]]></literal>
+                </from>
+                <to variable="AddInput" part="parameters"/>
+            </copy>
+        </assign>
+
+        <invoke name="InvokeAdderService5" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+        <assign name="assign2">
+            <copy>
+                <from variable="AddInput" part="parameters"/>
+                <to variable="reply" part="replyID"/>
+            </copy>
+            <copy>
+                <from variable="AddInput" part="parameters"/>
+                <to variable="reply" part="replyText"/>
+            </copy>
+        </assign>
+
+        <reply name="reply" partnerLink="request1" portType="wns:TestStaticOnMessage1PT"
+               operation="continue2" variable="reply">
+        </reply>
+
+    </sequence>
+</process>

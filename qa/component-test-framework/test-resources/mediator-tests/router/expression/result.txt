@@ -1,0 +1,3 @@
+Set the expression - "//m0:getQuote/m0:request/m0:symbol" and see whether the log text = *********FIRST ROUTE********* is printed.
+
+If the expression doesn't match the above mentioned log should not be printed

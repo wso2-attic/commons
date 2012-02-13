@@ -1,0 +1,206 @@
+Jul 26, 2010 2:58:20 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testAddProxy
+INFO: NonAuthenticateTest Session ID: null
+Jul 26, 2010 2:58:21 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testDeleteProxy
+INFO: testDeleteProxy Session ID: null
+Jul 26, 2010 2:58:21 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testEnableStat
+INFO: testEnableStat Session ID: null
+Jul 26, 2010 2:58:22 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testDisableStat
+INFO: testDisableStat Session ID: null
+Jul 26, 2010 2:58:23 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testEnableTracing
+INFO: testEnableTracing Session ID: null
+Jul 26, 2010 2:58:23 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testDisableTracing
+INFO: testDisableTracing Session ID: null
+Jul 26, 2010 2:58:24 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testGetEndpoints
+INFO: testGetEndpoints Session ID: null
+Jul 26, 2010 2:58:25 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testGetSequences
+INFO: testGetSequences Session ID: null
+Jul 26, 2010 2:58:25 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testGetTransport
+INFO: testGetTransport Session ID: null
+Jul 26, 2010 2:58:26 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testGetMetadata
+INFO: testGetMetadata Session ID: null
+Jul 26, 2010 2:58:26 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testGetProxy
+INFO: testGetProxy Session ID: null
+Jul 26, 2010 2:58:27 PM org.wso2.carbon.proxyservices.test.service.NonAuthenticateTest testRedeployProxy
+INFO: testRedeployProxy Session ID: null
+Jul 26, 2010 2:58:32 PM org.wso2.carbon.proxyservices.test.functional.LogForwardTest testFullLevelLogProxy
+INFO: testFullLevelLogProxy Session ID: JSESSIONID=E79F3641102F72248BEFBCB82B8E797B; Path=/; Secure=null
+Oct 4, 2010 2:31:07 PM org.wso2.carbon.proxyservices.test.PassThroughServiceTest init
+INFO: Initializing PassThrough proxy class 
+Oct 4, 2010 2:31:07 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session null
+Oct 4, 2010 2:31:08 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=16D3B66D092CFFD8C059646A84BF7116; Path=/; Secure=null
+Oct 4, 2010 2:31:09 PM org.wso2.carbon.service.mgt.test.commands.InitializeServiceAdminCommand executeAdminStub
+INFO: ServiceAdminStub created
+Oct 4, 2010 2:31:09 PM org.wso2.carbon.proxyservices.test.PassThroughServiceTest runSuccessCase
+INFO: StockQuoteProxyTest deleted
+Oct 4, 2010 2:31:10 PM org.wso2.carbon.proxyservices.test.PassThroughServiceTest runSuccessCase
+INFO: Proxy service added
+Oct 4, 2010 2:31:10 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:10 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:12 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=16D3B66D092CFFD8C059646A84BF7116; Path=/; Secure=null
+Oct 4, 2010 2:31:12 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest init
+INFO: Initializing ProxyAdminServiceTest 
+Oct 4, 2010 2:31:12 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session null
+Oct 4, 2010 2:31:12 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=462FD232B7B1E956D94AA8F2BC6D0155; Path=/; Secure=null
+Oct 4, 2010 2:31:12 PM org.wso2.carbon.service.mgt.test.commands.InitializeServiceAdminCommand executeAdminStub
+INFO: ServiceAdminStub created
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Proxy service added
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Stat enabled
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Stat disabled
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: tracing enabled
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: tracing disabled
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Service Redeployed
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Proxy Service Stopped
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.ProxyAdminServiceTest runSuccessCase
+INFO: Proxy Service Stopped
+Oct 4, 2010 2:31:13 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=462FD232B7B1E956D94AA8F2BC6D0155; Path=/; Secure=null
+Oct 4, 2010 2:31:14 PM org.wso2.carbon.proxyservices.test.WSDLBasedTest init
+INFO: Initializing ProxyAdminServiceTest 
+Oct 4, 2010 2:31:14 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session null
+Oct 4, 2010 2:31:14 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=0A649F8512687494C1958D8C58BC62FF; Path=/; Secure=null
+Oct 4, 2010 2:31:14 PM org.wso2.carbon.service.mgt.test.commands.InitializeServiceAdminCommand executeAdminStub
+INFO: ServiceAdminStub created
+Oct 4, 2010 2:31:15 PM org.wso2.carbon.proxyservices.test.WSDLBasedTest runSuccessCase
+INFO: Proxy service added
+Oct 4, 2010 2:31:15 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:15 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.proxyservices.test.WSDLBasedTest runSuccessCase
+INFO: <ns:getQuoteResponse xmlns:ns="http://services.samples"><ns:return xmlns:ax25="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax25:GetQuoteResponse"><ax25:change>4.298495754940367</ax25:change><ax25:earnings>-9.771089120708178</ax25:earnings><ax25:high>-93.8156652247657</ax25:high><ax25:last>94.26614953292673</ax25:last><ax25:lastTradeTimestamp>Mon Oct 04 14:31:15 IST 2010</ax25:lastTradeTimestamp><ax25:low>-93.6751033855872</ax25:low><ax25:marketCap>4.1116653073671326E7</ax25:marketCap><ax25:name>IBM Company</ax25:name><ax25:open>-92.64434377412196</ax25:open><ax25:peRatio>-17.692352118846117</ax25:peRatio><ax25:percentageChange>-4.588737061177893</ax25:percentageChange><ax25:prevClose>-93.67491964852256</ax25:prevClose><ax25:symbol>IBM</ax25:symbol><ax25:volume>19846</ax25:volume></ns:return></ns:getQuoteResponse>
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=0A649F8512687494C1958D8C58BC62FF; Path=/; Secure=null
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest init
+INFO: Initializing Secure proxy class 
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session null
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=F3ECADF9BFEB4CFD30ED3BA675BEF3BC; Path=/; Secure=null
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.service.mgt.test.commands.InitializeServiceAdminCommand executeAdminStub
+INFO: ServiceAdminStub created
+Oct 4, 2010 2:31:16 PM org.wso2.carbon.registry.resource.test.commands.InitializeResourceAdminCommand executeAdminStub
+INFO: ResourceAdminServiceStub created
+Oct 4, 2010 2:31:27 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: Checking security scenario : 2
+Oct 4, 2010 2:31:27 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: SecureProxy deleted
+Oct 4, 2010 2:31:32 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:32 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:34 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Id-20574044"
+Oct 4, 2010 2:31:34 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Timestamp-1"
+Oct 4, 2010 2:31:36 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: <ns:getQuoteResponse xmlns:ns="http://services.samples"><ns:return xmlns:ax25="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax25:GetQuoteResponse"><ax25:change>-2.6431461283318383</ax25:change><ax25:earnings>-8.543951371130822</ax25:earnings><ax25:high>-79.13819416121055</ax25:high><ax25:last>80.75069661813599</ax25:last><ax25:lastTradeTimestamp>Mon Oct 04 14:31:34 IST 2010</ax25:lastTradeTimestamp><ax25:low>83.85759085085137</ax25:low><ax25:marketCap>-7598649.96143306</ax25:marketCap><ax25:name>IBM Company</ax25:name><ax25:open>-79.82272462895712</ax25:open><ax25:peRatio>-17.96855989068344</ax25:peRatio><ax25:percentageChange>-2.996580574550782</ax25:percentageChange><ax25:prevClose>88.20540821693317</ax25:prevClose><ax25:symbol>IBM</ax25:symbol><ax25:volume>16061</ax25:volume></ns:return></ns:getQuoteResponse>
+Oct 4, 2010 2:31:36 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: Checking security scenario : 3
+Oct 4, 2010 2:31:37 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: SecureProxy deleted
+Oct 4, 2010 2:31:41 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:41 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:41 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Id-15177691"
+Oct 4, 2010 2:31:41 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Timestamp-3"
+Oct 4, 2010 2:31:41 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#SigConf-4"
+Oct 4, 2010 2:31:43 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: <ns:getQuoteResponse xmlns:ns="http://services.samples"><ns:return xmlns:ax25="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax25:GetQuoteResponse"><ax25:change>4.496077638829229</ax25:change><ax25:earnings>13.960459618313372</ax25:earnings><ax25:high>-167.6995695320549</ax25:high><ax25:last>171.13774154064322</ax25:last><ax25:lastTradeTimestamp>Mon Oct 04 14:31:41 IST 2010</ax25:lastTradeTimestamp><ax25:low>-170.3621623236105</ax25:low><ax25:marketCap>231283.6666014325</ax25:marketCap><ax25:name>IBM Company</ax25:name><ax25:open>-169.10326504183192</ax25:open><ax25:peRatio>-18.9434786350283</ax25:peRatio><ax25:percentageChange>-2.745931634654641</ax25:percentageChange><ax25:prevClose>-163.7359642201983</ax25:prevClose><ax25:symbol>IBM</ax25:symbol><ax25:volume>16905</ax25:volume></ns:return></ns:getQuoteResponse>
+Oct 4, 2010 2:31:43 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: Checking security scenario : 4
+Oct 4, 2010 2:31:43 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: SecureProxy deleted
+Oct 4, 2010 2:31:48 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:48 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:48 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Timestamp-6"
+Oct 4, 2010 2:31:48 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#SigConf-7"
+Oct 4, 2010 2:31:50 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: <ns:getQuoteResponse xmlns:ns="http://services.samples" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><ns:return xmlns:ax25="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax25:GetQuoteResponse"><ax25:change>3.8471673834100875</ax25:change><ax25:earnings>13.003291901458521</ax25:earnings><ax25:high>85.80729566528822</ax25:high><ax25:last>83.22370376622357</ax25:last><ax25:lastTradeTimestamp>Mon Oct 04 14:31:48 IST 2010</ax25:lastTradeTimestamp><ax25:low>85.60669870901016</ax25:low><ax25:marketCap>4.2841934015175216E7</ax25:marketCap><ax25:name>IBM Company</ax25:name><ax25:open>-81.54373922613631</ax25:open><ax25:peRatio>-17.19293625438655</ax25:peRatio><ax25:percentageChange>4.245592554143713</ax25:percentageChange><ax25:prevClose>90.61555800156185</ax25:prevClose><ax25:symbol>IBM</ax25:symbol><ax25:volume>6082</ax25:volume></ns:return></ns:getQuoteResponse>
+Oct 4, 2010 2:31:50 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: Checking security scenario : 5
+Oct 4, 2010 2:31:50 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: SecureProxy deleted
+Oct 4, 2010 2:31:55 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:55 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:55 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Id-20946736"
+Oct 4, 2010 2:31:55 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#Timestamp-10"
+Oct 4, 2010 2:31:55 PM org.apache.xml.security.signature.Reference verify
+INFO: Verification successful for URI "#SigConf-11"
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.proxyservices.test.SecurityScenarioTest runSuccessCase
+INFO: <ns:getQuoteResponse xmlns:ns="http://services.samples" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><ns:return xmlns:ax25="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax25:GetQuoteResponse"><ax25:change>4.1784006004209955</ax25:change><ax25:earnings>-8.08565784569535</ax25:earnings><ax25:high>59.39263138479209</ax25:high><ax25:last>57.153343094132204</ax25:last><ax25:lastTradeTimestamp>Mon Oct 04 14:31:55 IST 2010</ax25:lastTradeTimestamp><ax25:low>-55.87945142873341</ax25:low><ax25:marketCap>-8917786.68739774</ax25:marketCap><ax25:name>IBM Company</ax25:name><ax25:open>-56.574348120756866</ax25:open><ax25:peRatio>24.98137019783241</ax25:peRatio><ax25:percentageChange>-7.496121649091629</ax25:percentageChange><ax25:prevClose>-55.74083233997849</ax25:prevClose><ax25:symbol>IBM</ax25:symbol><ax25:volume>9441</ax25:volume></ns:return></ns:getQuoteResponse>
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=F3ECADF9BFEB4CFD30ED3BA675BEF3BC; Path=/; Secure=null
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.proxyservices.test.ThrottlleTest init
+INFO: Initializing Throttlle-Test proxy class 
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session null
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=D997B4DDE99B8968D99270308A90DEF6; Path=/; Secure=null
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.service.mgt.test.commands.InitializeServiceAdminCommand executeAdminStub
+INFO: ServiceAdminStub created
+Oct 4, 2010 2:31:57 PM org.wso2.carbon.throttle.test.commands.InitializeThrottleAdminCommand throttleAdminServiceStub
+INFO: endpointAdminStub created
+Oct 4, 2010 2:31:58 PM org.wso2.carbon.proxyservices.test.ThrottlleTest runSuccessCase
+INFO: Proxy service added
+Oct 4, 2010 2:31:58 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:58 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:31:59 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:31:59 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:00 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:32:00 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:02 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:32:02 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:03 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:32:03 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:04 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:32:04 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:05 PM org.apache.axis2.deployment.DeploymentEngine prepareRepository
+INFO: No services directory was found under /chamara/project/esb/wso2esb-3.0.1/samples/axis2Client/client_repo.
+Oct 4, 2010 2:32:05 PM org.apache.sandesha2.SandeshaModule init
+SEVERE: Could not load module policies. Using default values.
+Oct 4, 2010 2:32:06 PM org.wso2.carbon.proxyservices.test.ThrottlleTest runSuccessCase
+SEVERE: java.lang.NullPointerException
+Oct 4, 2010 2:32:06 PM org.wso2.carbon.proxyservices.test.ThrottlleTest runSuccessCase
+INFO: Throttlling Done.
+Oct 4, 2010 2:32:06 PM org.wso2.carbon.proxyservices.test.commands.InitializeProxyAdminCommand executeAdminStub
+INFO: InitializeProxyAdminCommand : ProxyAdminStub created with session JSESSIONID=D997B4DDE99B8968D99270308A90DEF6; Path=/; Secure=null

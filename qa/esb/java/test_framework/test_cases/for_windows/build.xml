@@ -1,0 +1,51 @@
+<!--project name="Runall" default="deploy.services"-->
+<project name="Runall">
+<taskdef resource="net/sf/antcontrib/antlib.xml">  
+	<classpath>
+		<pathelement location="ant-contrib-1.0b3.jar"/>
+	</classpath>
+</taskdef>
+   
+    <xmlproperty file="global_config.xml"/>
+    <property name="project.base.dir" value="."/>
+
+    <target name="clients">
+     <for list="${esb.clients.client}" param="name">
+	<sequential>
+          <ant antfile="@{name}/client/build.xml" target ="start_synapse_server"/>
+	      <sleep seconds="20"/>
+          <ant antfile="@{name}/client/build.xml" target ="run.client"/>
+        </sequential>
+     </for>
+    </target>
+    
+    
+    <target name="clean.services">
+     <for list="${esb.services.service}" param="name">
+	<sequential>
+          <ant antfile="@{name}\service\build.xml" target ="clean"/>
+        </sequential>
+     </for>
+    </target>
+    
+     <target name="deploy.services">
+     
+      	<!--condition property="esb.env.ok">
+            <and>
+                <isset property="${esb.envt.ESB_HOME}"/>
+                <isset property="${esb.envt.hostname}"/>
+                <isset property="${esb.envt.httpport}"/>
+                <isset property="${esb.envt.httpsport}"/>
+            </and>
+        </condition>
+
+        <fail message="Configuration error!!!!!!!!!! The WSO2 ESB environment is not configured. Please update global_config.xml according to your local settings." unless="esb.env.ok"/-->
+     
+	<for list="${esb.services.service}" param="name">
+		<sequential>
+			<ant antfile="@{name}\build.xml"/> 
+			<record name="deploy-services.log"/>   			
+		</sequential>
+	</for>
+    </target>    
+</project>

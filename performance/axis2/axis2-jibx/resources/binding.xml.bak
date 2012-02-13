@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<binding force-classes="true">
+  <mapping name="echoVoid" class="edu.indiana.extreme.wsdl.benchmark1.EchoVoid">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+  </mapping>
+  <mapping name="echoVoidResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoVoidResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+  </mapping>
+  <mapping name="echoBase64" class="edu.indiana.extreme.wsdl.benchmark1.EchoBase64">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="input" field="input" usage="required"/>
+  </mapping>
+  <mapping name="echoBase64Response" class="edu.indiana.extreme.wsdl.benchmark1.EchoBase64Response">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="echoBase64Return" field="echoBase64Return" usage="required"/>
+  </mapping>
+  <mapping name="echoStrings" class="edu.indiana.extreme.wsdl.benchmark1.EchoStrings">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping name="echoStringsResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoStringsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="echoStringsReturnList">
+      <value name="echoStringsReturn" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping name="echoInts" class="edu.indiana.extreme.wsdl.benchmark1.EchoInts">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+  <mapping name="echoIntsResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoIntsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="echoIntsReturnList">
+      <value name="echoIntsReturn" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+  <mapping name="echoDoubles" class="edu.indiana.extreme.wsdl.benchmark1.EchoDoubles">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.Double"/>
+    </collection>
+  </mapping>
+  <mapping name="echoDoublesResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoDoublesResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="echoDoublesReturnList">
+      <value name="echoDoublesReturn" type="java.lang.Double"/>
+    </collection>
+  </mapping>
+  <mapping name="echoSimpleEvents" class="edu.indiana.extreme.wsdl.benchmark1.EchoSimpleEvents">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <structure name="input" type="edu.indiana.extreme.wsdl.benchmark1.SimpleEvent"></structure>
+    </collection>
+  </mapping>
+  <mapping name="echoSimpleEventsResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoSimpleEventsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="echoSimpleEventsReturnList">
+      <structure name="echoSimpleEventsReturn" type="edu.indiana.extreme.wsdl.benchmark1.SimpleEvent"></structure>
+    </collection>
+  </mapping>
+  <mapping name="echoMeshInterfaceObjects" class="edu.indiana.extreme.wsdl.benchmark1.EchoMeshInterfaceObjects">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <structure name="input" type="edu.indiana.extreme.wsdl.benchmark1.MeshInterfaceObject"></structure>
+    </collection>
+  </mapping>
+  <mapping name="echoMeshInterfaceObjectsResponse" class="edu.indiana.extreme.wsdl.benchmark1.EchoMeshInterfaceObjectsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="itemList">
+      <structure name="item" type="edu.indiana.extreme.wsdl.benchmark1.MeshInterfaceObject"></structure>
+    </collection>
+  </mapping>
+  <mapping name="receiveBase64" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveBase64">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="input" field="input" usage="required"/>
+  </mapping>
+  <mapping name="receiveBase64Response" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveBase64Response">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveBase64Return" field="receiveBase64Return" usage="required"/>
+  </mapping>
+  <mapping name="receiveStrings" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveStrings">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping name="receiveStringsResponse" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveStringsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveStringsReturn" field="receiveStringsReturn" usage="required"/>
+  </mapping>
+  <mapping name="receiveInts" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveInts">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+  <mapping name="receiveIntsResponse" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveIntsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveIntsReturn" field="receiveIntsReturn" usage="required"/>
+  </mapping>
+  <mapping name="receiveDoubles" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveDoubles">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <value name="input" type="java.lang.Double"/>
+    </collection>
+  </mapping>
+  <mapping name="receiveDoublesResponse" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveDoublesResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveDoublesReturn" field="receiveDoublesReturn" usage="required"/>
+  </mapping>
+  <mapping name="receiveSimpleEvents" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveSimpleEvents">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <structure name="input" type="edu.indiana.extreme.wsdl.benchmark1.SimpleEvent"></structure>
+    </collection>
+  </mapping>
+  <mapping name="receiveMeshInterfaceObjects" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveMeshInterfaceObjects">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="inputList">
+      <structure name="input" type="edu.indiana.extreme.wsdl.benchmark1.MeshInterfaceObject"></structure>
+    </collection>
+  </mapping>
+  <mapping name="receiveSimpleEventsResponse" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveSimpleEventsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveSimpleEventsReturn" field="receiveSimpleEventsReturn" usage="required"/>
+  </mapping>
+  <mapping name="receiveMeshInterfaceObjectsResponse" class="edu.indiana.extreme.wsdl.benchmark1.ReceiveMeshInterfaceObjectsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="receiveMeshInterfaceObjectsReturn" field="receiveMeshInterfaceObjectsReturn" usage="required"/>
+  </mapping>
+  <mapping name="sendBase64" class="edu.indiana.extreme.wsdl.benchmark1.SendBase64">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendBase64Response" class="edu.indiana.extreme.wsdl.benchmark1.SendBase64Response">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="sendBase64Return" field="sendBase64Return" usage="required"/>
+  </mapping>
+  <mapping name="sendStrings" class="edu.indiana.extreme.wsdl.benchmark1.SendStrings">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendStringsResponse" class="edu.indiana.extreme.wsdl.benchmark1.SendStringsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="sendStringsReturnList">
+      <value name="sendStringsReturn" type="java.lang.String"/>
+    </collection>
+  </mapping>
+  <mapping name="sendInts" class="edu.indiana.extreme.wsdl.benchmark1.SendInts">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendIntsResponse" class="edu.indiana.extreme.wsdl.benchmark1.SendIntsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="sendIntsReturnList">
+      <value name="sendIntsReturn" type="java.lang.Integer"/>
+    </collection>
+  </mapping>
+  <mapping name="sendDoubles" class="edu.indiana.extreme.wsdl.benchmark1.SendDoubles">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendDoublesResponse" class="edu.indiana.extreme.wsdl.benchmark1.SendDoublesResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="sendDoublesReturnList">
+      <value name="sendDoublesReturn" type="java.lang.Double"/>
+    </collection>
+  </mapping>
+  <mapping name="sendSimpleEvents" class="edu.indiana.extreme.wsdl.benchmark1.SendSimpleEvents">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendSimpleEventsResponse" class="edu.indiana.extreme.wsdl.benchmark1.SendSimpleEventsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="itemList">
+      <structure name="item" type="edu.indiana.extreme.wsdl.benchmark1.SimpleEvent"></structure>
+    </collection>
+  </mapping>
+  <mapping name="sendMeshInterfaceObjects" class="edu.indiana.extreme.wsdl.benchmark1.SendMeshInterfaceObjects">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <value name="size" field="size" usage="required"/>
+  </mapping>
+  <mapping name="sendMeshInterfaceObjectsResponse" class="edu.indiana.extreme.wsdl.benchmark1.SendMeshInterfaceObjectsResponse">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+    <collection field="itemList">
+      <structure name="item" type="edu.indiana.extreme.wsdl.benchmark1.MeshInterfaceObject"></structure>
+    </collection>
+  </mapping>
+  <mapping class="edu.indiana.extreme.wsdl.benchmark1.SimpleEvent" abstract="true">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+  </mapping>
+  <mapping class="edu.indiana.extreme.wsdl.benchmark1.MeshInterfaceObject" abstract="true">
+    <namespace uri="http://www.extreme.indiana.edu/wsdl/Benchmark1" default="elements"/>
+  </mapping>
+</binding>

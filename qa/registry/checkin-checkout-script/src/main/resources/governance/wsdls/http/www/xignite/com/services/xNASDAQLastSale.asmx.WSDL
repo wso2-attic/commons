@@ -1,0 +1,1398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.xignite.com/services/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.xignite.com/services/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Provides real-time access to last sale NASDAQ, AMEX, and NYSE information.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.xignite.com/services/">
+      <s:element name="GetLastSale">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleResult" type="tns:LastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="LastSaleQuote">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Common">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="CompanyName" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Date" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Time" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Open" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Close" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="PreviousClose" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="High" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Low" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Last" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Change" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="PercentChange" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Volume" type="s:double"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Common">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Outcome" type="tns:OutcomeTypes"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Message" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Identity" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="1" name="Delay" type="s:double"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="OutcomeTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Success"/>
+          <s:enumeration value="SystemError"/>
+          <s:enumeration value="RequestError"/>
+          <s:enumeration value="RegistrationError"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="Header" type="tns:Header"/>
+      <s:complexType name="Header">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="Username" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Password" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Tracer" type="s:string"/>
+        </s:sequence>
+        <s:anyAttribute/>
+      </s:complexType>
+      <s:element name="GetLastSales">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbols" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSalesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSalesResult" type="tns:ArrayOfLastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfLastSaleQuote">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="LastSaleQuote" nillable="true" type="tns:LastSaleQuote"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetLastSaleByIdentifier">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Identifier" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="IdentifierType" type="tns:IdentifierTypes"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="IdentifierTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Symbol"/>
+          <s:enumeration value="CIK"/>
+          <s:enumeration value="CUSIP"/>
+          <s:enumeration value="ISIN"/>
+          <s:enumeration value="Valoren"/>
+          <s:enumeration value="SEDOL"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetLastSaleByIdentifierResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleByIdentifierResult" type="tns:LastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleChart">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="AdditionalSymbols" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="StartTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="EndTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Style" type="tns:StockChartStyles"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Width" type="s:int"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Height" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="StockChartStyles">
+        <s:restriction base="s:string">
+          <s:enumeration value="Line"/>
+          <s:enumeration value="Candle"/>
+          <s:enumeration value="Stick"/>
+          <s:enumeration value="Area"/>
+          <s:enumeration value="Percentage"/>
+          <s:enumeration value="LinePercentage"/>
+          <s:enumeration value="CandlePercentage"/>
+          <s:enumeration value="StickPercentage"/>
+          <s:enumeration value="AreaPercentage"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GetLastSaleChartResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleChartResult" type="tns:IntradayChart"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="IntradayChart">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Common">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="0" name="Design" type="tns:ChartDesign"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Security" type="tns:Security"/>
+              <s:element maxOccurs="1" minOccurs="0" name="StartTime" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="EndTime" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Width" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Height" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Style" type="tns:StockChartStyles"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Url" type="s:string"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ChartDesign">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Common">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="1" name="Secure" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextTitle" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextHeader" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextFooter" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextPriceLine" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextVolumeBar" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextHighest" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextLowest" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextOpen" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextClose" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextUp" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="TextDown" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorBackground" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorBackWall" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorVolumeBackWall" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowVolumeBackWall" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorHighlight" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorPriceLine" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorVolumeBar" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorVolumeBarFill" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorHigh" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorStickUp" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorStickLow" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorConstant" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorLow" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorPoint" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorTitle" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorFooter" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorHeader" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorAxis" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorGrid" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorFonts" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorStripe" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorOpen" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorClose" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorVerticalGrid" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorHorizontalGrid" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorUp" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorDown" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorHighLowLine" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorCollection" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GridHorizontalStyle" type="tns:LinePattern"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GridVerticalStyle" type="tns:LinePattern"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GridHorizontalWidth" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GridVerticalWidth" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorFrame" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="FrameBorder" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="FormatPriceLine" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="FormatVolume" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="FormatDate" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GradeBackground" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="GradeBackwall" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="0" name="WaterMark" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="WaterMarkTopMargin" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="WaterMarkLeftMargin" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="WaterMarkTransparency" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="PointSize" type="s:float"/>
+              <s:element maxOccurs="1" minOccurs="1" name="StackVariationLabels" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowAxisLabelInLegend" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="LineWidth" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="SplitPercent" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowHigh" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowLow" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowOpen" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowClose" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowVolume" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowUpVariation" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowDownVariation" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowLegend" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="VariationYear" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="VolumeDivider" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="VolumeTextOffset" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="PriceTextOffset" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FrameType" type="tns:ImageFrameType"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Projection" type="tns:PredefinedProjection"/>
+              <s:element maxOccurs="1" minOccurs="1" name="MarginTop" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="MarginBottom" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="MarginLeft" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="MarginRight" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="0" name="FontFamily" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FontSizeHeader" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FontSizeFooter" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Height" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Width" type="s:double"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ZoomPercent" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="LegendBox" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorLegendBackground" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ColorLegendBorder" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="1" name="LegendVerticalPosition" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="LegendHorizontalPosition" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="Reload" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="ShowPriceChartLabels" type="s:boolean"/>
+              <s:element maxOccurs="1" minOccurs="1" name="TickPrecision" type="tns:TickPeriod"/>
+              <s:element maxOccurs="1" minOccurs="1" name="TickPeriods" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="WaterMarkHorizontalAlign" type="tns:HorzAlign"/>
+              <s:element maxOccurs="1" minOccurs="1" name="LightScheme" type="tns:PredefinedLightModel"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FontSizeLegend" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FontSizeAxes" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="FontSizeTitle" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForHourDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForDayDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForWeekDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForBiWeeklyDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForMonthDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForQuarterDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForSemiAnnualDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForAnnualDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForBiAnnualDisplay" type="s:int"/>
+              <s:element maxOccurs="1" minOccurs="1" name="DaysForPentaAnnualDisplay" type="s:int"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:simpleType name="LinePattern">
+        <s:restriction base="s:string">
+          <s:enumeration value="Solid"/>
+          <s:enumeration value="Dot"/>
+          <s:enumeration value="Dash"/>
+          <s:enumeration value="DashDot"/>
+          <s:enumeration value="DashDotDot"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="ImageFrameType">
+        <s:restriction base="s:string">
+          <s:enumeration value="None"/>
+          <s:enumeration value="Colonial"/>
+          <s:enumeration value="Common"/>
+          <s:enumeration value="Embed"/>
+          <s:enumeration value="Emboss"/>
+          <s:enumeration value="FrameOpenRight"/>
+          <s:enumeration value="FrameOpenRL"/>
+          <s:enumeration value="OneBarGradient"/>
+          <s:enumeration value="RoundedUp"/>
+          <s:enumeration value="SlimRoundedShadowed"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PredefinedProjection">
+        <s:restriction base="s:string">
+          <s:enumeration value="Orthogonal"/>
+          <s:enumeration value="OrthogonalElevated"/>
+          <s:enumeration value="OrthogonalHorizontalLeft"/>
+          <s:enumeration value="OrthogonalHorizontalRight"/>
+          <s:enumeration value="OrthogonalHalf"/>
+          <s:enumeration value="OrthogonalHalfHorizontalLeft"/>
+          <s:enumeration value="OrthogonalHalfHorizontalRight"/>
+          <s:enumeration value="OrthogonalHalfRotated"/>
+          <s:enumeration value="OrthogonalHalfElevated"/>
+          <s:enumeration value="Perspective"/>
+          <s:enumeration value="PerspectiveHorizontalLeft"/>
+          <s:enumeration value="PerspectiveHorizontalRight"/>
+          <s:enumeration value="PerspectiveRotated"/>
+          <s:enumeration value="PerspectiveElevated"/>
+          <s:enumeration value="PerspectiveTilted"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="TickPeriod">
+        <s:restriction base="s:string">
+          <s:enumeration value="Tick"/>
+          <s:enumeration value="Millisecond"/>
+          <s:enumeration value="Second"/>
+          <s:enumeration value="Minute"/>
+          <s:enumeration value="Hour"/>
+          <s:enumeration value="Day"/>
+          <s:enumeration value="Week"/>
+          <s:enumeration value="Month"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="HorzAlign">
+        <s:restriction base="s:string">
+          <s:enumeration value="Center"/>
+          <s:enumeration value="Left"/>
+          <s:enumeration value="Right"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="PredefinedLightModel">
+        <s:restriction base="s:string">
+          <s:enumeration value="None"/>
+          <s:enumeration value="SoftTopLeft"/>
+          <s:enumeration value="SoftFrontal"/>
+          <s:enumeration value="SoftTopRight"/>
+          <s:enumeration value="ShinyTopLeft"/>
+          <s:enumeration value="ShinyFrontal"/>
+          <s:enumeration value="ShinyTopRight"/>
+          <s:enumeration value="MetallicLustre"/>
+          <s:enumeration value="NorthernLights"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Security">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Common">
+            <s:sequence>
+              <s:element maxOccurs="1" minOccurs="0" name="CIK" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Cusip" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="ISIN" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Valoren" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Name" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="Market" type="s:string"/>
+              <s:element maxOccurs="1" minOccurs="0" name="CategoryOrIndustry" type="s:string"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="GetLastSaleChartPreset">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="AdditionalSymbols" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="StartTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="EndTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Style" type="tns:StockChartStyles"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Width" type="s:int"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Height" type="s:int"/>
+            <s:element maxOccurs="1" minOccurs="0" name="Preset" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleChartPresetResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleChartPresetResult" type="tns:IntradayChart"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleChartCustom">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="AdditionalSymbols" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="StartTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="EndTime" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Style" type="tns:StockChartStyles"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Width" type="s:int"/>
+            <s:element maxOccurs="1" minOccurs="1" name="Height" type="s:int"/>
+            <s:element maxOccurs="1" minOccurs="0" name="Design" type="tns:ChartDesign"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleChartCustomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleChartCustomResult" type="tns:IntradayChart"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetChartDesign">
+        <s:complexType/>
+      </s:element>
+      <s:element name="GetChartDesignResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetChartDesignResult" type="tns:ChartDesign"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleWithFallback">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbol" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleWithFallbackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleWithFallbackResult" type="tns:LastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleByIdentifierWithFallback">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Identifier" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="1" name="IdentifierType" type="tns:IdentifierTypes"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSaleByIdentifierWithFallbackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSaleByIdentifierWithFallbackResult" type="tns:LastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSalesWithFallback">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Symbols" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLastSalesWithFallbackResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="GetLastSalesWithFallbackResult" type="tns:ArrayOfLastSaleQuote"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LastSaleQuote" nillable="true" type="tns:LastSaleQuote"/>
+      <s:element name="ArrayOfLastSaleQuote" nillable="true" type="tns:ArrayOfLastSaleQuote"/>
+      <s:element name="IntradayChart" nillable="true" type="tns:IntradayChart"/>
+      <s:element name="ChartDesign" nillable="true" type="tns:ChartDesign"/>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetLastSalesWithFallbackSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSalesWithFallbackResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierHttpGetIn">
+    <wsdl:part name="Identifier" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="IdentifierType" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChartPresetResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChartDesignResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackHttpPostIn">
+    <wsdl:part name="Identifier" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="IdentifierType" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartHttpPostIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="AdditionalSymbols" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="StartTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="EndTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Style" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Width" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Height" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierHttpGetOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSales">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackHttpPostIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChartResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetHttpPostIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="AdditionalSymbols" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="StartTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="EndTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Style" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Width" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Height" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Preset" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartCustomSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChartCustomResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetHttpGetIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="AdditionalSymbols" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="StartTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="EndTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Style" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Width" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Height" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Preset" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleHttpGetIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesHttpPostIn">
+    <wsdl:part name="Symbols" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackHttpPostOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetHttpGetOut">
+    <wsdl:part name="Body" element="tns:IntradayChart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSalesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleWithFallbackResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChartPreset">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackHttpGetIn">
+    <wsdl:part name="Identifier" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="IdentifierType" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSalesWithFallback">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleByIdentifierWithFallbackResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackHttpGetIn">
+    <wsdl:part name="Symbols" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfLastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignHttpPostOut">
+    <wsdl:part name="Body" element="tns:ChartDesign">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleHttpPostIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLastSaleByIdentifierResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierHttpPostIn">
+    <wsdl:part name="Identifier" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="IdentifierType" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignHttpPostIn">
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignHttpGetOut">
+    <wsdl:part name="Body" element="tns:ChartDesign">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleByIdentifier">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartHttpGetOut">
+    <wsdl:part name="Body" element="tns:IntradayChart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackHttpPostOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleWithFallback">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartHttpGetIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="AdditionalSymbols" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="StartTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="EndTime" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Style" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Width" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Height" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleHttpPostOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleByIdentifierWithFallback">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartHttpPostOut">
+    <wsdl:part name="Body" element="tns:IntradayChart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesHttpGetIn">
+    <wsdl:part name="Symbols" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackHttpGetIn">
+    <wsdl:part name="Symbol" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleHttpGetOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleWithFallbackHttpGetOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartPresetHttpPostOut">
+    <wsdl:part name="Body" element="tns:IntradayChart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartCustomHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignHttpGetIn">
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleHeader">
+    <wsdl:part name="Header" element="tns:Header">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSalesWithFallbackHttpPostIn">
+    <wsdl:part name="Symbols" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierHttpPostOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetChartDesignSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChartDesign">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleByIdentifierWithFallbackHttpGetOut">
+    <wsdl:part name="Body" element="tns:LastSaleQuote">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetLastSaleChartCustomSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLastSaleChartCustom">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="XigniteNASDAQLastSaleSoap">
+    <wsdl:operation name="GetLastSale">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a standard real-time chart for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time intraday chart using a preset chart format for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartPresetSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartPresetSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartCustom">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a customized real-time chart for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartCustomSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartCustomSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the default Design specification for the standard chart.</wsdl:documentation>
+      <wsdl:input message="tns:GetChartDesignSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetChartDesignSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleWithFallbackSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleWithFallbackSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierWithFallbackSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierWithFallbackSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesWithFallbackSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesWithFallbackSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="XigniteNASDAQLastSaleHttpGet">
+    <wsdl:operation name="GetLastSale">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a standard real-time chart for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time intraday chart using a preset chart format for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartPresetHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartPresetHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the default Design specification for the standard chart.</wsdl:documentation>
+      <wsdl:input message="tns:GetChartDesignHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetChartDesignHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleWithFallbackHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleWithFallbackHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierWithFallbackHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierWithFallbackHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesWithFallbackHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesWithFallbackHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="XigniteNASDAQLastSaleHttpPost">
+    <wsdl:operation name="GetLastSale">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a standard real-time chart for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time intraday chart using a preset chart format for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleChartPresetHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleChartPresetHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns the default Design specification for the standard chart.</wsdl:documentation>
+      <wsdl:input message="tns:GetChartDesignHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetChartDesignHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns real time stock quote for a given stock ticker</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleWithFallbackHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleWithFallbackHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a real-time quote for a security based on the last trade execution.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSaleByIdentifierWithFallbackHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSaleByIdentifierWithFallbackHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Returns a collection of real time stock quotes for a comma-separated list of stock quotes.</wsdl:documentation>
+      <wsdl:input message="tns:GetLastSalesWithFallbackHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:GetLastSalesWithFallbackHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="XigniteNASDAQLastSaleSoap" type="tns:XigniteNASDAQLastSaleSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetLastSale">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSale" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSales" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSalesHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleByIdentifier" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleByIdentifierHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleChart" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleChartHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleChartPreset" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleChartPresetHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartCustom">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleChartCustom" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleChartCustomHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+      <soap:operation soapAction="http://www.xignite.com/services/GetChartDesign" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetChartDesignHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleWithFallback" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleWithFallbackHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSaleByIdentifierWithFallback" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSaleByIdentifierWithFallbackHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+      <soap:operation soapAction="http://www.xignite.com/services/GetLastSalesWithFallback" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetLastSalesWithFallbackHeader" part="Header" use="literal">
+        </soap:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="XigniteNASDAQLastSaleHttpGet" type="tns:XigniteNASDAQLastSaleHttpGet">
+    <http:binding verb="GET"/>
+    <wsdl:operation name="GetLastSale">
+      <http:operation location="/GetLastSale"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+      <http:operation location="/GetLastSales"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+      <http:operation location="/GetLastSaleByIdentifier"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+      <http:operation location="/GetLastSaleChart"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+      <http:operation location="/GetLastSaleChartPreset"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+      <http:operation location="/GetChartDesign"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+      <http:operation location="/GetLastSaleWithFallback"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+      <http:operation location="/GetLastSaleByIdentifierWithFallback"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+      <http:operation location="/GetLastSalesWithFallback"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="XigniteNASDAQLastSaleSoap12" type="tns:XigniteNASDAQLastSaleSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetLastSale">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSale" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSales" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSalesHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleByIdentifier" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleByIdentifierHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleChart" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleChartHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleChartPreset" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleChartPresetHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartCustom">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleChartCustom" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleChartCustomHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetChartDesign" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetChartDesignHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleWithFallback" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleWithFallbackHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSaleByIdentifierWithFallback" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSaleByIdentifierWithFallbackHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+      <soap12:operation soapAction="http://www.xignite.com/services/GetLastSalesWithFallback" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetLastSalesWithFallbackHeader" part="Header" use="literal">
+        </soap12:header>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="XigniteNASDAQLastSaleHttpPost" type="tns:XigniteNASDAQLastSaleHttpPost">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="GetLastSale">
+      <http:operation location="/GetLastSale"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSales">
+      <http:operation location="/GetLastSales"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifier">
+      <http:operation location="/GetLastSaleByIdentifier"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChart">
+      <http:operation location="/GetLastSaleChart"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleChartPreset">
+      <http:operation location="/GetLastSaleChartPreset"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetChartDesign">
+      <http:operation location="/GetChartDesign"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleWithFallback">
+      <http:operation location="/GetLastSaleWithFallback"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSaleByIdentifierWithFallback">
+      <http:operation location="/GetLastSaleByIdentifierWithFallback"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastSalesWithFallback">
+      <http:operation location="/GetLastSalesWithFallback"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XigniteNASDAQLastSale">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Provides real-time access to last sale NASDAQ, AMEX, and NYSE information.</wsdl:documentation>
+    <wsdl:port name="XigniteNASDAQLastSaleSoap" binding="tns:XigniteNASDAQLastSaleSoap">
+      <soap:address location="http://www.xignite.com/xNASDAQLastSale.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="XigniteNASDAQLastSaleHttpGet" binding="tns:XigniteNASDAQLastSaleHttpGet">
+      <http:address location="http://www.xignite.com/xNASDAQLastSale.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="XigniteNASDAQLastSaleSoap12" binding="tns:XigniteNASDAQLastSaleSoap12">
+      <soap12:address location="http://www.xignite.com/xNASDAQLastSale.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="XigniteNASDAQLastSaleHttpPost" binding="tns:XigniteNASDAQLastSaleHttpPost">
+      <http:address location="http://www.xignite.com/xNASDAQLastSale.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

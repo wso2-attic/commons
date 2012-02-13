@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.webservicex.net" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.webservicex.net" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.webservicex.net">
+      <s:element name="VerifyAddress">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="City" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="State" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="Zip" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerifyAddressResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="VerifyAddressResult" type="tns:ArrayOfAddress"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAddress">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="Address" nillable="true" type="tns:Address"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Address">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="1" name="Rank" type="s:int"/>
+          <s:element maxOccurs="1" minOccurs="1" name="Quality" type="s:double"/>
+          <s:element maxOccurs="1" minOccurs="0" name="City" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="State" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ZipRangeFrom" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ZipRangeTo" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ArrayOfAddress" nillable="true" type="tns:ArrayOfAddress"/>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="VerifyAddressHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VerifyAddressHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VerifyAddressSoapIn">
+    <wsdl:part name="parameters" element="tns:VerifyAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VerifyAddressHttpGetIn">
+    <wsdl:part name="City" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="State" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Zip" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VerifyAddressSoapOut">
+    <wsdl:part name="parameters" element="tns:VerifyAddressResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="VerifyAddressHttpPostIn">
+    <wsdl:part name="City" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="State" type="s:string">
+    </wsdl:part>
+    <wsdl:part name="Zip" type="s:string">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="USAddressVerificationSoap">
+    <wsdl:operation name="VerifyAddress">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Verify US Address</wsdl:documentation>
+      <wsdl:input message="tns:VerifyAddressSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:VerifyAddressSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="USAddressVerificationHttpPost">
+    <wsdl:operation name="VerifyAddress">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Verify US Address</wsdl:documentation>
+      <wsdl:input message="tns:VerifyAddressHttpPostIn">
+    </wsdl:input>
+      <wsdl:output message="tns:VerifyAddressHttpPostOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="USAddressVerificationHttpGet">
+    <wsdl:operation name="VerifyAddress">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Verify US Address</wsdl:documentation>
+      <wsdl:input message="tns:VerifyAddressHttpGetIn">
+    </wsdl:input>
+      <wsdl:output message="tns:VerifyAddressHttpGetOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="USAddressVerificationSoap" type="tns:USAddressVerificationSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="VerifyAddress">
+      <soap:operation soapAction="http://www.webservicex.net/VerifyAddress" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="USAddressVerificationSoap12" type="tns:USAddressVerificationSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="VerifyAddress">
+      <soap12:operation soapAction="http://www.webservicex.net/VerifyAddress" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="USAddressVerificationHttpPost" type="tns:USAddressVerificationHttpPost">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="VerifyAddress">
+      <http:operation location="/VerifyAddress"/>
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="USAddressVerificationHttpGet" type="tns:USAddressVerificationHttpGet">
+    <http:binding verb="GET"/>
+    <wsdl:operation name="VerifyAddress">
+      <http:operation location="/VerifyAddress"/>
+      <wsdl:input>
+        <http:urlEncoded/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="USAddressVerification">
+    <wsdl:port name="USAddressVerificationHttpGet" binding="tns:USAddressVerificationHttpGet">
+      <http:address location="http://www.webservicex.net/usaddressverification.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="USAddressVerificationHttpPost" binding="tns:USAddressVerificationHttpPost">
+      <http:address location="http://www.webservicex.net/usaddressverification.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="USAddressVerificationSoap12" binding="tns:USAddressVerificationSoap12">
+      <soap12:address location="http://www.webservicex.net/usaddressverification.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="USAddressVerificationSoap" binding="tns:USAddressVerificationSoap">
+      <soap:address location="http://www.webservicex.net/usaddressverification.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

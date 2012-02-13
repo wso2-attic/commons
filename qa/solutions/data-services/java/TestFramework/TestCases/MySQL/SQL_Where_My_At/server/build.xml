@@ -1,0 +1,67 @@
+<project name="SQL_Alias_My" default="run.server">
+
+        
+    <property name="base.dir" value="${project.base.dir}/SQL_Where_My_At/server"/>
+    <property name="src" value="${project.base.dir}/SQL_Where_My_At/server/src"/>
+    <property name="target" value="${project.base.dir}/SQL_Where_My_At/server/src/target"/>
+    <property name="filepath" value="${base.dir}/SQL_Where_My_At.dbs"/>
+    <property name="db.url" value="${DS.DB.DBURL}/wsasset"/>
+    <property name="db.user" value="${DS.DB.UserID}"/>
+    <property name="db.pwd" value="${DS.DB.Password}"/>
+     
+         
+    <target name="run.server">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}/classes"/>
+        <!-- Compile the client -->
+        <javac debug="on" 
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            
+            <classpath>
+                <fileset dir="${DS.envt.DS_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                
+               <fileset dir="${DS.envt.DS_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+                </fileset-->
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/EditDSFile.jar">
+         <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.AxiomReader" fork="true">
+		 <jvmarg value="-Xmx1024m"/>
+		 <arg value="${filepath}"/>
+		 <arg value="${db.url}"/>
+		 <arg value="${db.user}"/>
+		 <arg value="${db.pwd}"/>
+        
+            <classpath>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${DS.envt.DS_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                
+                <!--
+               <fileset dir="${DS.envt.DS_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+                -->
+            </classpath>
+        </java>
+    </target>
+
+   
+</project>

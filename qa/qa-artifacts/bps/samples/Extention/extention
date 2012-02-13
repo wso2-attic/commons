@@ -1,0 +1,26 @@
+I tried XPath extension with input parameter in BPS 1.1.0 and it worked as expected. I'll attach the samples and patched Saxon-bps jar to this JIRA. But these patches are not still given to QA and you must use this for testing purposes only.
+
+Here is my XPath extension code:
+
+package org.wso2.bps.example;
+
+public class Random {
+    public static String random(String in) {
+        //java.util.Random randomizer = new java.util.Random();
+        //int number = randomizer.nextInt();
+        return in + " World";
+    }
+}
+
+I have attached XPath extension source code and JAR, BPEL sample which uses the XPath extension and saxon-bps patched jar.
+
+First create directory called patch001 in BPS_HOME/webapps/ROOT/WEB-INF/patches directory and copy the patched saxon.bps-9.0.0.x-wso2v1.jar into that.
+
+Then copy the xpathext-0.0.1 jar into BPS_HOME/repository/components/extensions directory and start the BPS with --cleanCache option.
+
+Then deploy the hello.zip BPEL package in the BPS and invoke the HelloService. If the patch is working fine the process should return a string which has 'World' word appended to oroginal string input.
+
+Also if you can test you encrypt/decrypt functionality with above patched saxon-bps jar it'll help us to find the exact problem in you scenario. Make sure to add you XPath extension jar to repository/components/extension directory.
+
+https://support.wso2.com/jira/browse/CADEVSPRT-49
+

@@ -1,0 +1,22 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="RMProxy" transports="http" startOnLoad="true" statistics="enable">
+        <target>
+            <inSequence>
+                <header xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm" name="wsrm:SequenceAcknowledgement" action="remove"/>
+                <header xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm" name="wsrm:Sequence" action="remove"/>
+                <send>
+                    <endpoint>
+                        <address uri="http://localhost:9000/soap/Adding">
+			   <!--enableAddressing separateListener="true"/-->
+	                </address>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+        <enableRM/>
+    </proxy>
+</definitions>
+

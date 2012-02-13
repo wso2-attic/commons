@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-soap"
+    editDirectory="/org.eclipse.wst.wsdl/src" editorDirectory="/org.eclipse.wst.wsdl/src"
+    modelPluginID="org.eclipse.wst.wsdl" modelName="SOAP" editPluginClass="" editorPluginClass=""
+    nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    usedGenPackages="WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
+  <foreignModel>SOAP.mdl</foreignModel>
+  <foreignModel>VABASE_PLUGINS_PATH</foreignModel>
+  <foreignModel>../../..</foreignModel>
+  <genPackages prefix="SOAP" basePackage="org.eclipse.wst.wsdl.binding" disposableProviderFactory="true"
+      classPackageSuffix="internal.impl" utilityPackageSuffix="internal.util" ecorePackage="SOAP.ecore#/">
+    <genDataTypes ecoreDataType="SOAP.ecore#//IString"/>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPBinding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPBinding/transportURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPBinding/style"/>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPBody/use"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPBody/namespaceURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPBody/eEncodingStyles"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPBody/eParts"/>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPHeaderBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/use"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/namespaceURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/eEncodingStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/message"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPHeaderBase/part"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPHeaderBase/eMessage"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPHeaderBase/ePart"/>
+      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/getEncodingStyles"/>
+      <genOperations ecoreOperation="SOAP.ecore#//SOAPHeaderBase/setEncodingStyles">
+        <genParameters ecoreParameter="SOAP.ecore#//SOAPHeaderBase/setEncodingStyles/encodingStyles"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPFault">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/use"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/namespaceURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/eEncodingStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPFault/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPOperation/soapActionURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPOperation/style"/>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPAddress">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SOAP.ecore#//SOAPAddress/locationURI"/>
+    </genClasses>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPHeaderFault"/>
+    <genClasses ecoreClass="SOAP.ecore#//SOAPHeader">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SOAP.ecore#//SOAPHeader/headerFaults"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPBinding"/>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPAddress"/>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPBody">
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPBody/getEncodingStyles"/>
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPBody/setEncodingStyles">
+        <genParameters ecoreParameter="SOAP.ecore#//ISOAPBody/setEncodingStyles/encodingStyles"/>
+      </genOperations>
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPBody/getParts"/>
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPBody/setParts">
+        <genParameters ecoreParameter="SOAP.ecore#//ISOAPBody/setParts/parts"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPFault"/>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPOperation"/>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPHeaderFault"/>
+    <genClasses image="false" ecoreClass="SOAP.ecore#//ISOAPHeader">
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPHeader/getSOAPHeaderFaults"/>
+      <genOperations ecoreOperation="SOAP.ecore#//ISOAPHeader/addSOAPHeaderFault">
+        <genParameters ecoreParameter="SOAP.ecore#//ISOAPHeader/addSOAPHeaderFault/soapHeaderFault"/>
+      </genOperations>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

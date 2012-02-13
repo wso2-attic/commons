@@ -1,0 +1,87 @@
+<project name="MTOMclient" default="run.client">
+
+    <property name="base.dir" value="${project.base.dir}/mediation/mtom/xml/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="ESB_HOME" value="${esb.envt.ESB_HOME}"/>
+    <property name="endpoint" value="http://${esb.envt.hostname}:${esb.envt.httpport}/soap"/>
+    <property name="filename" value="${ESB_HOME}/repository/samples/resources/mtom/xml/synapse.xml"/>
+ 
+    <!--Copy the synapse.xml to ESB_HOME/webapp/WEB-INF/classes/conf-->
+    <target name="copy_synapse_xml">
+        <delete file="${ESB_HOME}/conf/synapse.xml"/>
+        <copy file="${build.dir}/../../config/synapse.xml" tofile="${ESB_HOME}/conf/synapse.xml" overwrite="true"/>
+    </target>	
+ 
+    <target name="copy_xml">
+        <delete dir="${ESB_HOME}/repository/samples/resources/mtom/xml"/>
+        <mkdir dir="${ESB_HOME}/repository/samples/resources/mtom/xml"/>
+        <copy file="${build.dir}/../../resources/synapse.xml" tofile="${filename}" overwrite="true"/>
+    </target>
+
+    <target name="sleep_server">
+ 	      <sleep seconds="30"/>
+    </target>
+    
+    <!--Start the WSO2 ESB Server--> 
+    <target name="start_synapse_server" depends="copy_synapse_xml, copy_xml">
+	<exec dir="${ESB_HOME}/bin" executable="cmd" os="Windows XP" spawn="true">
+	  <arg line="/c start wso2server.bat"/>
+	</exec>
+    </target>
+           
+    <target name="run.client" depends="clean">
+
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/MTOMClient.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.esb.client.MTOMClient" fork="true">
+            <arg value="${endpoint}"/>
+            <arg value="${filename}"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

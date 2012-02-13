@@ -1,0 +1,21 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="hello world example" author="Yumani Ranaweera" 
+height="10" width="10" description="This is a test gedget"/>
+<Content type="html"><![CDATA[
+<script type="text/javascript"> 
+
+function bobAlert() {     
+  alert("Wow!!!")}
+</script>
+
+Click Bob
+<form id="f">
+<input type="button" value=":) 'I am Bob'"onclick="bobAlert()">
+</form>
+
+
+]]></Content>
+</Module>
+
+

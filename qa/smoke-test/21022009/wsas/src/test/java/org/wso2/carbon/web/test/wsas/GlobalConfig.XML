@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<carbon>
+    <wsas>
+
+        <ServerConfig>
+            <ip>localhost</ip>
+            <https>9443</https>
+            <http>9763</http>
+        </ServerConfig>
+
+        <!-- SOAP With Action Test Propertise -->
+        <SWATest>
+            <uploadFile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\swa-test.aar</uploadFile>
+            <inputFile>D:\Projects\Carbon\WSAS\Build\wso2wsas-SNAPSHOT\README.txt</inputFile>
+            <downloadFile>D:\chamara.txt</downloadFile>
+        </SWATest>
+
+        <!-- MTOM Test Propertise -->
+        <MTOMTest>
+            <uploadFile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\MtomFileDownloadService.aar</uploadFile>
+            <inputFile>D:\Projects\Carbon\WSAS\Build\H2test\wso2wsas-3.1.0.SNAPSHOT\README.txt</inputFile>
+            <downloadFile>D:\chamara.txt</downloadFile>
+        </MTOMTest>
+
+        <!-- KeyStore Test -->
+        <KeystoreMGT>
+            <SecurityKeyStore>"D:\Projects\Idea\TestFramework\web-test-framework\commons\lib\qaserver.jks</SecurityKeyStore>
+            <SecurityKeyStorePwd>qaserver</SecurityKeyStorePwd>
+        </KeystoreMGT>
+
+        <!-- Service Uploading Propertise -->
+        <ServiceUpload> <!-- Service Uplaoding test case-->
+            <PojoUpload>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Myservice1.class</PojoUpload>
+            <pojoServiceName>Myservice1</pojoServiceName>
+            <JaxWsUpload>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\jax-ws-test.jar</JaxWsUpload>
+            <JaxWsServiceName>Calculator.CalculatorServicePort</JaxWsServiceName>
+            <Axis1resourcefile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\wsasa1service.jar</Axis1resourcefile>
+            <Axis1wsdlfile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\axis1wsastest.wsdd</Axis1wsdlfile>
+            <Axis1ServiceName>WsasA1service</Axis1ServiceName>
+            <SpringContextfile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\context.xml</SpringContextfile>
+            <SpringBeansfile>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\SimpleMathBean.jar</SpringBeansfile>
+            <Axis2filePath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Arrayservice.aar</Axis2filePath>
+            <Axis2ServiceName>Arrayservice</Axis2ServiceName>
+        </ServiceUpload>
+
+        <!-- Service Management Properties -->
+         <ServiceMgt>
+
+            <Axis1Service>
+                <Axis1WsddPath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.wsdd</Axis1WsddPath>
+                <Axis1ResourcePath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.jar</Axis1ResourcePath>
+                <ServiceName>Axis1Service</ServiceName>
+                <Axis1ThrottleTest>
+                    <ServiceEndpoint>services/Axis1Service</ServiceEndpoint>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>http://ws.apache.org/axis/Axis1Service/echoStringRequest</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </Axis1ThrottleTest>
+                <Axis1CachingTest>
+                    <ServiceEndpoint>services/Axis1Service.Axis1ServiceHttpSoap12Endpoint</ServiceEndpoint>
+                    <OperationName>getTime</OperationName>
+                    <SoapAction>urn:getTime</SoapAction>
+                    <NameSpace>http://service.carbon.wso2.org</NameSpace>
+                </Axis1CachingTest>
+                <Axis1Securitytest>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>http://ws.apache.org/axis/Axis1Service/echoStringRequest</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </Axis1Securitytest>
+            </Axis1Service>
+
+            <Axis2Service>
+                <FilePath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis2Service.aar</FilePath>
+                <ServiceName>Axis2Service</ServiceName>
+                <Axis2ThrottleTest>
+                    <ServiceEndpoint>services/Axis2Service.Axis2ServiceHttpSoap11Endpoint</ServiceEndpoint>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>urn:echoString</SoapAction>
+                    <NameSpace>http://service.carbon.wso2.org</NameSpace>
+                </Axis2ThrottleTest>
+                <Axis2CachingTest>
+                    <ServiceEndpoint>services/Axis2Service.Axis2ServiceHttpSoap12Endpoint</ServiceEndpoint>
+                    <OperationName>getTime</OperationName>
+                    <SoapAction>urn:getTime</SoapAction>
+                    <NameSpace>http://service.carbon.wso2.org</NameSpace>
+                </Axis2CachingTest>
+                <Axis2Securitytest>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>urn:echoString</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </Axis2Securitytest>
+           </Axis2Service>
+
+           <SpringService>
+                <SpringWsddPath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.wsdd</SpringWsddPath>
+                <SpringResourcePath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.jar</SpringResourcePath>
+                <ServiceName>Axis1Service</ServiceName>
+                <SpringThrottleTest>
+                    <ServiceEndpoint>services/Axis1Service</ServiceEndpoint>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>http://ws.apache.org/axis/Axis1Service/echoStringRequest</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </SpringThrottleTest>
+                <SpringCachingTest>
+                    <ServiceEndpoint>services/Axis1Service.Axis1ServiceHttpSoap12Endpoint</ServiceEndpoint>
+                    <OperationName>getTime</OperationName>
+                    <SoapAction>urn:getTime</SoapAction>
+                    <NameSpace>http://service.carbon.wso2.org</NameSpace>
+                </SpringCachingTest>
+                <SpringSecuritytest>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>http://ws.apache.org/axis/Axis1Service/echoStringRequest</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </SpringSecuritytest>
+            </SpringService>
+
+            <PojoService>
+                <PojoPath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\PojoService.class</PojoPath>
+                <ServiceName>PojoService</ServiceName>
+                <PojoThrottleTest>
+                    <ServiceEndpoint>services/PojoService</ServiceEndpoint>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>urn:echoString</SoapAction>
+                    <NameSpace>http://ws.apache.org/axis2</NameSpace>
+                </PojoThrottleTest>
+                <PojoCachingTest>
+                    <ServiceEndpoint>services/PojoService.PojoServiceHttpSoap11Endpoint</ServiceEndpoint>
+                    <OperationName>getTime</OperationName>
+                    <SoapAction>urn:getTime</SoapAction>
+                    <NameSpace>http://ws.apache.org/axis2</NameSpace>
+                </PojoCachingTest>
+                <PojoSecuritytest>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>urn:echoString</SoapAction>
+                    <nameSpace>http://ws.apache.org/axis2</nameSpace>
+                </PojoSecuritytest>
+            </PojoService>
+
+        </ServiceMgt>
+    </wsas>
+</carbon>

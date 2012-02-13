@@ -1,0 +1,65 @@
+<assembly>
+    <id>bin</id>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>mercury-${version}</outputDirectory>
+            <includes>
+                <include>LICENSE</include>
+                <include>NOTICE</include>
+                <include>release-notes.html</include>
+                <include>README.txt</include>
+                <include>release-note.txt</include>
+            </includes>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../modules/core/target</directory>
+            <outputDirectory>mercury-${version}/lib</outputDirectory>
+            <includes>
+                <include>mercury-core-${version}.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/persistence/target</directory>
+            <outputDirectory>mercury-${version}/lib</outputDirectory>
+            <includes>
+                <include>mercury-persistence-${version}.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/mar/target</directory>
+            <outputDirectory>mercury-${version}/module</outputDirectory>
+            <includes>
+                <include>mercury-mar-${version}.mar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/distribution/db</directory>
+            <outputDirectory>mercury-${version}/db</outputDirectory>
+            <includes>
+                <include>mercury_derby_db.tar.gz</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/docs</directory>
+            <outputDirectory>mercury-${version}/docs</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>../../modules/distribution/target/docs/apidocs</directory>
+            <outputDirectory>mercury-${version}/docs/apidocs</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        
+    </fileSets>
+</assembly>

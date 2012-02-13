@@ -1,0 +1,22 @@
+<module name="MessageDropModule" class="org.wso2.mercury.test.module.MessageDropModule">
+    <Description>
+        This module drops the message with a given reliability
+    </Description>
+
+    <!-- Message drop reliability -->
+    <parameter name="reliability" locked="false">1.5</parameter>
+    <parameter name="countineClientInMessages" locked="false">true</parameter>
+
+    <InFlow>
+        <handler name="MessageDropHandler" class="org.wso2.mercury.test.module.MessageDropHandler">
+            <order phase="DropPhase"/>
+        </handler>
+    </InFlow>
+
+    <OutFlow>
+        <handler name="MessageDropHandler" class="org.wso2.mercury.test.module.MessageDropHandler">
+            <order phase="DropPhase"/>
+        </handler>
+    </OutFlow>
+
+</module>

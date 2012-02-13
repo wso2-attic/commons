@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:jax="http://jaxws.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <jax:echoInt>
+         <arg0>12</arg0>
+      </jax:echoInt>
+   </soapenv:Body>
+</soapenv:Envelope

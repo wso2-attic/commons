@@ -1,0 +1,52 @@
+
+<project name="JavaBeanService" default="generate.service">
+
+    <property environment="env"/>
+    
+    <!--property name="WSAS_HOME" value="C:\wsas\Mercury\wso2wsas-2.2.1"/-->
+   
+
+    
+    <property name="base.dir" value="${project.base.dir}/pojo/echo/service"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+     <property name="client.lib" value="${wsas.envt.WSAS_HOME}\repository\lib"/>
+    
+
+    <path id="wsas.classpath">
+        <fileset dir="${client.lib}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile.service">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
+
+        <!--First let's compile the classes-->
+        <javac debug="on" 
+               fork="true"
+               destdir="${build.dir}/classes" 
+               srcdir="${base.dir}/src"
+               classpathref="wsas.classpath">
+        </javac>
+    </target>
+
+    
+    <target name="generate.service" depends="compile.service">
+        
+        <copy toDir="${build.dir}/classes" failonerror="false">
+            <fileset dir="${base.dir}/resources">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+        <jar destfile="${build.dir}/EchoService.aar">
+            <fileset excludes="**/Test.class" dir="${build.dir}/classes"/>
+        </jar>
+        <copy file="${build.dir}/EchoService.aar" tofile="${wsas.envt.WSAS_HOME}/repository/services/EchoService.aar"
+              overwrite="true"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>

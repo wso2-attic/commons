@@ -1,0 +1,1 @@
+<resource name="wcf" isCollection="true" path="/_system/governance/endpoints/http/www/restfulwebservices/net/wcf" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>1819</version><creator>admin</creator><createdTime>1296274619009</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296274619011</lastModified><description></description></resource>

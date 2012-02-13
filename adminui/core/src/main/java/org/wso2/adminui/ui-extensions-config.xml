@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+     Copyright 2005,2006 WSO2, Inc. http://www.wso2.org
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<extension-config>
+    <description>Extension configuration for WSO2 WSAS Management Console</description>
+
+    <files>
+        <file>index.html</file>
+        <file>forgot_password.html</file>
+        <file>sign_in_help.html</file>
+        <file>about.html</file>
+        <file>faq.html</file>
+    </files>
+
+    <!--
+       Mappings of Tokens to files. When these tokens are found in
+       a  file listed above, they will be replaced with the
+       contents in the corresponding mapped files.
+    -->
+    <file-mappings>
+        <mapping>
+            <token>@menu.items@</token>
+            <file>menu.html</file>
+        </mapping>
+        <mapping>
+            <token>@div.items@</token>
+            <file>divs.html</file>
+        </mapping>
+        <mapping>
+            <token>@css.file.items@</token>
+            <file>css.html</file>
+        </mapping>
+        <mapping>
+            <token>@js.file.items@</token>
+            <file>js.html</file>
+        </mapping>
+        <mapping>
+            <token>@promotion.content@</token>
+            <file>promotion.html</file>
+        </mapping>
+    </file-mappings>
+
+    <!--
+       The Management Console ordering will first order according to this
+       order, and thereafter, order the extension items in the natural
+       order of their names.
+    -->
+    <extension-order>
+        <item>core</item>
+    </extension-order>
+</extension-config>

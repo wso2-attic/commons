@@ -1,0 +1,32 @@
+Retrieve property values of Synapse level
+=========================================
+
+Step to run the test
+--------------------
+1. Deploy the synapse.xml
+2. Start the backend server which you need to talk to 
+3. Invoke the client using the following command
+
+If you are using a Javabench/Curl client
+
+java -jar benchmark.jar -p requests/echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8" -H "Priority: abc"  http://localhost:8280/services/proxy
+
+** Here we are sending "Priority: abc" as a header
+
+NOTE: echoString.xml is located at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/request-xmls
+
+Expected Results : Through the Log mediator, you should be able to see the value of the property has been removed through the 'remove property' option (PrIoRiTy = null).
+
+E.g.:- 
+=====================================================================================================================================================================
+DEBUG - LogMediator Start : Log mediator
+INFO - LogMediator PRIORITY = abc
+DEBUG - LogMediator End : Log mediator
+DEBUG - PropertyMediator Start : Property mediator
+DEBUG - PropertyMediator Removing property : priority (scope:transport)
+DEBUG - PropertyMediator End : Property mediator
+DEBUG - LogMediator Start : Log mediator
+INFO - LogMediator PrIoRiTy = null
+DEBUG - LogMediator End : Log mediator
+=====================================================================================================================================================================
+

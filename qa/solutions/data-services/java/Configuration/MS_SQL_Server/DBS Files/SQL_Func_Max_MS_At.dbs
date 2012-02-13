@@ -1,0 +1,8 @@
+<data name="SQL_Func_Max_MS_At"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="Func_Max"><sql>select MAX(DepreciationAmount) as MyMaxValue from Depreciation</sql><result element="BaseElement" rowName="Element"><attribute name="MyMaxValue" column="MyMaxValue" /></result></query><operation name="OP_Func_Max"><call-query href="Func_Max" /></operation></data>

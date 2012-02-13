@@ -1,0 +1,13 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wso2.esb.perf</groupId>
+  <artifactId>router</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>router-http-consumer-su</module>
+    <module>router-eip-su</module>
+    <module>router-http-provider-su</module>
+    <module>router-sa</module>
+  </modules>
+</project>

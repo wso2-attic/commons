@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<carbon>
+    <wsas>
+         <ServiceMgt>
+            <Axis1Service>
+                <Axis1WsddPath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.wsdd</Axis1WsddPath>
+                <Axis1ResourcePath>D:\Projects\Idea\TestFramework\web-test-framework\wsas\lib\Axis1Service.jar</Axis1ResourcePath>
+                <ServiceName>Axis1Service</ServiceName>
+                <ThrottleTest>
+                    <ServiceEndpoint>http://10.100.1.149:9763/services/Axis1Service</ServiceEndpoint>
+                    <OperationName>echoString</OperationName>
+                    <SoapAction>urn:echoString</SoapAction>
+                    <nameSpace>http://service.carbon.wso2.org</nameSpace>
+                </ThrottleTest>
+                <CachingTest>
+                    <ServiceEndpoint>http://10.100.1.149:9763/services/Axis1Service.Axis1ServiceHttpSoap12Endpoint</ServiceEndpoint>
+                    <OperationName>getTime</OperationName>
+                    <SoapAction>urn:getTime</SoapAction>
+                    <NameSpace>http://service.carbon.wso2.org</NameSpace>
+                </CachingTest>
+            </Axis1Service>
+        </ServiceMgt>
+    </wsas>
+</carbon>

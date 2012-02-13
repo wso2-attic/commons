@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xmlns:http="http://www.mulesource.org/schema/mule/http/2.0"
+      xmlns:axis="http://www.mulesource.org/schema/mule/axis/2.0"
+      xmlns:mxml="http://www.mulesource.org/schema/mule/xml/2.0"
+      xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.mulesource.org/schema/mule/core/2.0 http://www.mulesource.org/schema/mule/core/2.0/mule.xsd
+       http://www.mulesource.org/schema/mule/xml/2.0 http://www.mulesource.org/schema/mule/xml/2.0/mule-xml.xsd
+       http://www.mulesource.org/schema/mule/http/2.0 http://www.mulesource.org/schema/mule/http/2.0/mule-http.xsd
+       http://www.mulesource.org/schema/mule/axis/2.0 http://www.mulesource.org/schema/mule/axis/2.0/mule-axis.xsd">
+
+
+    <configuration>
+        <default-threading-profile maxThreadsActive="100"
+                                   maxThreadsIdle="50" poolExhaustedAction="WAIT" threadTTL="60001"/>
+    </configuration>
+    <byte-array-to-string-transformer name="B2S"/>
+    <http:connector name="HttpConnector" keepAlive="true"/>
+    <model name="CBRModel">
+
+        <service name="CBRProxy">
+
+            <inbound>
+                <inbound-endpoint connector-ref="HttpConnector" address="http://testb.wso2.com:8090/services/CBRProxy"
+                                  synchronous="true"
+                                  transformer-refs="B2S"/>
+            </inbound>
+
+            <outbound>
+                <custom-forwarding-catch-all-strategy
+                        class="org.mule.routing.ForwardingCatchAllStrategy">
+                    <outbound-endpoint connector-ref="HttpConnector"
+                                       address="http://localhost:8083/MockServices/EchoService"
+                                       synchronous="true"/>
+                </custom-forwarding-catch-all-strategy>
+                <filtering-router>
+                    <outbound-endpoint connector-ref="HttpConnector"
+                                       address="http://testc.wso2.com:8080/MockServices/EchoService"
+                                       synchronous="true"/>
+                    <mxml:jxpath-filter pattern="(//order[1]/symbol)"
+                                        expectedValue="IBM">
+                    </mxml:jxpath-filter>
+                </filtering-router>
+
+                <filtering-router>
+                    <outbound-endpoint connector-ref="HttpConnector"
+                                       address="http://localhost:8081/MockServices/EchoService"
+                                       synchronous="true"/>
+                    <mxml:jxpath-filter pattern="(//order[1]/symbol)"
+                                        expectedValue="SUN">
+                    </mxml:jxpath-filter>
+                </filtering-router>
+
+            </outbound>
+
+        </service>
+    </model>
+</mule>

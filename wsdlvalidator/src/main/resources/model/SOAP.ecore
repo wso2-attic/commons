@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="soap"
+    nsURI="http://www.eclipse.org/wsdl/2003/SOAP" nsPrefix="soap">
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPBinding" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPBinding">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transportURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPBody" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPBody">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEncodingStyles" upperBound="-1"
+        eType="#//IString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eParts" upperBound="-1"
+        eType="ecore:EClass WSDL.ecore#//Part"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeaderBase" eSuperTypes="WSDL.ecore#//ExtensibilityElement">
+    <eOperations name="getEncodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
+    <eOperations name="setEncodingStyles">
+      <eParameters name="encodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEncodingStyles" upperBound="-1"
+        eType="#//IString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType WSDL.ecore#//QName"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="part" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eMessage" lowerBound="1"
+        eType="ecore:EClass WSDL.ecore#//Message"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ePart" lowerBound="1" eType="ecore:EClass WSDL.ecore#//Part"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPFault" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPFault">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="use" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespaceURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="eEncodingStyles" upperBound="-1"
+        eType="#//IString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="suppressedGetVisibility" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPOperation" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPOperation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="soapActionURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="style" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPAddress" eSuperTypes="WSDL.ecore#//ExtensibilityElement #//ISOAPAddress">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="locationURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeaderFault" eSuperTypes="#//SOAPHeaderBase #//ISOAPHeaderFault"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SOAPHeader" eSuperTypes="#//SOAPHeaderBase #//ISOAPHeader">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="headerFaults" upperBound="-1"
+        eType="#//SOAPHeaderFault" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IString" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPBinding" instanceClassName="javax.wsdl.extensions.soap.SOAPBinding"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPAddress" instanceClassName="javax.wsdl.extensions.soap.SOAPAddress"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPBody" instanceClassName="javax.wsdl.extensions.soap.SOAPBody"
+      abstract="true" interface="true">
+    <eOperations name="getEncodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
+    <eOperations name="setEncodingStyles">
+      <eParameters name="encodingStyles" eType="ecore:EClass WSDL.ecore#//IList"/>
+    </eOperations>
+    <eOperations name="getParts" eType="ecore:EClass WSDL.ecore#//IList"/>
+    <eOperations name="setParts">
+      <eParameters name="parts" eType="ecore:EClass WSDL.ecore#//IList"/>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPFault" instanceClassName="javax.wsdl.extensions.soap.SOAPFault"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPOperation" instanceClassName="javax.wsdl.extensions.soap.SOAPOperation"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPHeaderFault" instanceClassName="javax.wsdl.extensions.soap.SOAPHeaderFault"
+      abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ISOAPHeader" instanceClassName="javax.wsdl.extensions.soap.SOAPHeader"
+      abstract="true" interface="true">
+    <eOperations name="getSOAPHeaderFaults" eType="ecore:EClass WSDL.ecore#//IList"/>
+    <eOperations name="addSOAPHeaderFault">
+      <eParameters name="soapHeaderFault" eType="#//ISOAPHeaderFault"/>
+    </eOperations>
+  </eClassifiers>
+</ecore:EPackage>

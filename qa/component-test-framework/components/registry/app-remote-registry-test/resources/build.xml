@@ -1,0 +1,81 @@
+<project name="Remoter Registry Test" basedir="" default="run">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="jar.dir" value="${build.dir}/jar"/>
+    <property name="export.dir" value="export"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="main-class" value="AllTestSuite"/>
+    <property name="registry.url" value="https://localhost:9443/registry/"/>
+    <property name="worker.num" value="1"/>
+
+    <path id="build.class.path">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement path="${classes.dir}"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${classes.dir}"/>
+        <path id="javac.classpath">
+            <pathelement path="${classes.dir}"/>
+            <fileset dir="../repository/lib">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+    </target>
+
+    <target name="compile" depends="init,prepare" description="Compile all Java">
+        <javac srcdir="src" destdir="${classes.dir}">
+            <classpath refid="javac.classpath"/>
+        </javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${export.dir}"/>
+        <delete file="results.txt"/>
+        <delete file="perf-results.txt"/>
+    </target>
+
+    <target name="prepare" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${jar.dir}"/>
+        <mkdir dir="${export.dir}/test-dir/test"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar basedir="${classes.dir}" jarfile="${jar.dir}/${ant.project.name}.jar" includes="**/*.class"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <junit printsummary="no" haltonerror="no" fork="yes" showoutput="true">
+            <sysproperty key="url.property" value="${registry.url}"/>
+            <classpath>
+                <path refid="javac.classpath"/>
+            </classpath>
+            <test name="org.wso2.carbon.app.test.registry.TestRunner" haltonfailure="no" outfile="results">
+                <formatter type="plain"/>
+            </test>
+        </junit>
+    </target>
+
+
+    <target name="run-perf" depends="compile">
+        <junit printsummary="no" haltonerror="no" fork="yes" showoutput="true">
+            <sysproperty key="url.property" value="${registry.url}"/>
+            <classpath>
+                <path refid="javac.classpath"/>
+            </classpath>
+            <test name="org.wso2.carbon.app.test.registry.PerfTestSuite" haltonfailure="no" outfile="perf-results">
+                <formatter type="plain"/>
+            </test>
+        </junit>
+    </target>
+
+</project>

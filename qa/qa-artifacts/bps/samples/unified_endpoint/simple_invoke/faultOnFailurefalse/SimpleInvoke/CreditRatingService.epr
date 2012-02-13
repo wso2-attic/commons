@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2009-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+-->
+
+<wsa:EndpointReference
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.w3schools.com uep_schema.xsd"
+        xmlns:wsa="http://www.w3.org/2005/08/addressing"
+        xmlns:wsdl11="http://schemas.xmlsoap.org/wsdl/">
+    <wsa:Address>http://localhost:9763/services/CreditRatingService/</wsa:Address>
+    <wsa:Metadata>
+        <id>SInvokeEPR</id>
+        
+        
+<definitions name="CreditRating" 
+			 targetNamespace="http://wso2.org/bps/samples/CreditRating" 
+			 xmlns="http://schemas.xmlsoap.org/wsdl/" 
+			 xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
+			 xmlns:ns="http://wso2.org/bps/samples/loan_process/schema" 
+			 xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+			 xmlns:tns="http://wso2.org/bps/samples/CreditRating" 
+			 xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+			 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <types>
+    <!--xsd:schema targetNamespace="http://wso2.org/bps/samples/CreditRating">
+            <xsd:import namespace="http://wso2.org/bps/samples/loan_process/schema" schemaLocation="CreditRatingService?xsd=loan.xsd"/>
+        </xsd:schema-->
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://wso2.org/bps/samples/loan_process/schema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://wso2.org/bps/samples/loan_process/schema">
+		    <element name="LoanRequest" type="tns:LoanRequestType"/>
+		    <element name="CreditRating" type="tns:CreditRatingType"/>
+		    <element name="LoanOffer" type="tns:LoanOfferType"/>
+		    <element name="CustomerInfo" type="tns:CustomerInfoType"/>
+		    <element name="SSN" type="tns:CustomerSSNType"/>
+		    <element name="CustomerSSN" type="tns:CustomerSSNType"/>
+		    <complexType name="LoanRequestType">
+		        <sequence>
+		            <element name="CustomerInfo" type="tns:CustomerInfoType"/>
+		            <element name="LoanInfo" type="tns:LoanInfoType"/>
+		        </sequence>
+		    </complexType>
+		    <complexType name="CustomerInfoType">
+		        <sequence>
+		            <element name="Name" type="string"/>
+		            <element name="Email" type="string"/>
+		            <element name="CustomerID" type="tns:CustomerIDType"/>
+		            <element name="CreditRating" type="int"/>
+		        </sequence>
+		    </complexType>
+		    <complexType name="CustomerSSNType">
+		        <sequence>
+		            <element name="SSN" type="string"/>
+		        </sequence>
+		    </complexType>
+		    <complexType name="CreditRatingType">
+		        <sequence>
+		            <element name="SSN" type="string"/>
+		            <element name="rating" type="int"/>
+		        </sequence>
+		    </complexType>
+		    <complexType name="LoanOfferType">
+		        <sequence>
+		            <element name="ProviderName" type="string"/>
+		            <element name="selected" type="boolean"/>
+		            <element name="approved" type="boolean"/>
+		            <element name="AnualInterestRate" type="decimal"/>
+		        </sequence>
+		    </complexType>
+		    <complexType name="LoanInfoType">
+		        <sequence>
+		            <element name="Amount" type="double"/>
+		            <element name="Years" type="int"/>
+		        </sequence>
+		    </complexType>
+		    <simpleType name="CustomerIDType">
+		        <restriction base="string">
+		            <pattern value="ZF-[0-9]{4}"/>
+		        </restriction>
+		    </simpleType>
+		</schema>
+  </types>
+  <message name="getCreditRatingResponse">
+    <part name="part" element="ns:CreditRating">
+    </part>
+
+  </message>
+  <message name="getCreditRatingRequest">
+    <part name="part" element="ns:CustomerSSN">
+    </part>
+  </message>
+  <portType name="CreditRatingPortType">
+    <operation name="getCreditRating">
+      <input name="input" message="tns:getCreditRatingRequest">
+    </input>
+
+      <output name="output" message="tns:getCreditRatingResponse">
+    </output>
+    </operation>
+  </portType>
+  <binding name="CreditRatingBinding" type="tns:CreditRatingPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="getCreditRating">
+      <soap:operation soapAction="urn:test" style="document"/>
+      <input name="input">
+
+        <soap:body use="literal"/>
+      </input>
+      <output name="output">
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CreditRatingService">
+    <port name="CreditRatingPort" binding="tns:CreditRatingBinding">
+	  <!--soap:address location="http://localhost:9763/services/CreditRatingService/"/-->
+      <soap:address location="http://localhost:9000/services/CreditRatingService/"/>
+    </port>
+  </service>
+    <plnk:partnerLinkType name="CreditRating">        
+        <plnk:role name="CreditRatingService" portType="tns:CreditRatingPortType"/>
+    </plnk:partnerLinkType>
+</definitions>
+        
+        
+        <qos>
+            <enableAddressing version="final" separateListener="true"/>
+        </qos>
+    </wsa:Metadata>    
+
+</wsa:EndpointReference>
+
+
+

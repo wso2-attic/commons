@@ -1,0 +1,7 @@
+Secured client -> non-secured loadbalance ESB -> secured node1/node2 ESB -> secured service
+===========================================================================================
+
+1. Used the Idea client (OperationClient) (E.g.:-policy2.xml)
+2. Used the configuration given in the folder (For the loadbalance ESB and node1/node2 ESBs of the cluster). You will have to enable security scenario 2 to the LBProxy
+3. Service was deployed on WSAS
+

@@ -1,0 +1,75 @@
+<package xmlns="http://wso2.org/bps/bpel/package/config">
+    <endpoints xmlns="http://wso2.org/bps/bpel/endpoint/config">
+
+
+	<!--Enable Security for Partner Service of BPEL process-->
+	
+	<!-- SecurePartnerService01-->
+																																							
+        <endpoint serviceName="SecurePartnerService01" servicePort="SecurePartnerService01SOAP11port_http" serviceNS="http://SecurePartnerService01.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService01.xml"/>    
+        </endpoint>
+
+
+
+
+ <endpoint serviceName="SecurePartnerService02" servicePort="SecurePartnerService02SOAP11port_http" serviceNS="http://SecurePartnerService02.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService02.xml"/>    
+        </endpoint>
+
+
+																																							
+        <endpoint serviceName="SecurePartnerService03" servicePort="SecurePartnerService03SOAP11port_http" serviceNS="http://SecurePartnerService03.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService03.xml"/>    
+        </endpoint>
+
+        <endpoint serviceName="SecurePartnerService04" servicePort="SecurePartnerService04SOAP11port_http" serviceNS="http://SecurePartnerService04.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService04.xml"/>    
+        </endpoint>
+
+        <endpoint serviceName="SecurePartnerService05" servicePort="SecurePartnerService05SOAP11port_http" serviceNS="http://SecurePartnerService05.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService05.xml"/>    
+        </endpoint>
+
+        <endpoint serviceName="SecurePartnerService06" servicePort="SecurePartnerService06SOAP11port_http" serviceNS="http://SecurePartnerService06.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService06.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService07" servicePort="SecurePartnerService07SOAP11port_http" serviceNS="http://SecurePartnerService07.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService07.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService08" servicePort="SecurePartnerService08SOAP11port_http" serviceNS="http://SecurePartnerService08.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService08.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService09" servicePort="SecurePartnerService09SOAP11port_http" serviceNS="http://SecurePartnerService09.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService09.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService10" servicePort="SecurePartnerService10SOAP11port_http" serviceNS="http://SecurePartnerService10.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService10.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService11" servicePort="SecurePartnerService11SOAP11port_http" serviceNS="http://SecurePartnerService11.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService11.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService12" servicePort="SecurePartnerService12SOAP11port_http" serviceNS="http://SecurePartnerService12.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService12.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService13" servicePort="SecurePartnerService13SOAP11port_http" serviceNS="http://SecurePartnerService13.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService13.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService14" servicePort="SecurePartnerService14SOAP11port_http" serviceNS="http://SecurePartnerService14.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService14.xml"/>    
+        </endpoint>
+        <endpoint serviceName="SecurePartnerService15" servicePort="SecurePartnerService15SOAP11port_http" serviceNS="http://SecurePartnerService15.wsdl" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <enableSec policyLocation="PolicySecurePartnerService15.xml"/>    
+        </endpoint>
+
+
+
+ 
+	<!--Enable Security for BPEL service  -->
+
+
+
+
+
+    </endpoints>
+</package>

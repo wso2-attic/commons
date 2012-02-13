@@ -1,0 +1,34 @@
+package com.example.tests;
+
+import com.thoughtworks.selenium.*;
+import java.util.regex.Pattern;
+
+public class NewService extends SeleneseTestCase {
+	public void setUp() throws Exception {
+		setUp("http://change-this-to-the-site-you-are-testing/", "*chrome");
+	}
+	
+	
+	public void testNew() throws Exception {
+	
+    // Sign-in
+		selenium.open("/carbon/admin/login.jsp");
+		selenium.type("txtUserName", "admin");
+		selenium.type("txtPassword", "admin");
+		selenium.click("//input[@value='Sign-in']");
+		selenium.waitForPageToLoad("30000");
+		
+		//Create a .js service
+		selenium.click("link=Create");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("serviceName", "automation");
+		selenium.click("next");
+		selenium.waitForPageToLoad("30000");
+		assertTrue(selenium.isTextPresent("Editing the mashup automation"));
+		assertTrue(selenium.isElementPresent("//body"));
+		selenium.click("//input[@value='Save changes']");
+		selenium.waitForPageToLoad("30000");
+		assertTrue(selenium.isTextPresent("automation"));
+	
+	}
+}

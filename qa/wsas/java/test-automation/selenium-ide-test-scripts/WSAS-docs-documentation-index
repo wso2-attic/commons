@@ -1,0 +1,369 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>WSAS-docs-documentation-index</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">WSAS-docs-documentation-index</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/docs/index_docs.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Documentation Index</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//div/strong[1]</td>
+	<td>Installation Guides</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[2]</td>
+	<td>Administration Guides</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[3]</td>
+	<td>Tool Guides</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[4]</td>
+	<td>Sample Guides</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[5]</td>
+	<td>Advanced Feature Guides</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//strong[6]</td>
+	<td>Additional References</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Introduction</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Installation Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=WSO2 WSAS Source Distribution</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Source Distribution</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Changing WSO2 WSAS Crypto Keys</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Change the WSO2 WSAS Crypto Keys</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Management Console Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>User Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Index</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[4]/div/ul[3]/li[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Eclipse WTP Integration</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=TCPMon</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>TCPMon Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[4]/div/ul[3]/li[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Change Password Tool</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Command Line Code Generators</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Code Generator Command Line Tool Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'Commodity<br />&nbsp;&nbsp;&nbsp;&nbsp;Quote Sample')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Commodity Quote Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Trader Sample</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Trader Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Chad Sample Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Chad Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Chad Sample Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Chad Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'TinyURL Sample<br />&nbsp;&nbsp;&nbsp;&nbsp;Guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>TinyURL Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'JavascriptService<br />&nbsp;&nbsp;&nbsp;&nbsp;Sample Guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>JavascriptService Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'FlickrClient<br />&nbsp;&nbsp;&nbsp;&nbsp;Sample Guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>FlickrClient Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'Data<br />&nbsp;&nbsp;&nbsp;&nbsp;Service Sample Guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Data Service Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'Data<br />&nbsp;&nbsp;&nbsp;&nbsp;Service Sample Guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Data Service Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Contents</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=EJB Service Provider Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>EJB Service Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//ul[5]/li[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Data Services</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Clustering WSAS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Clustering Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=XKMS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>WSO2 XKMS Implementation (XKMS 2.0)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Documentation Home</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

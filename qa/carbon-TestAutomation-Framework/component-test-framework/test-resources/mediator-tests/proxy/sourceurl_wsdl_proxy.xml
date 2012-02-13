@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="sourceurl_wsdl_proxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <endpoint name="endpoint_urn_uuid_3D2987155107DF65585800148523540172762292">
+                <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+            </endpoint>
+            <inSequence>
+                <log>
+                    <property name="text" value="***INCOMING MESSAGE***"/>
+                </log>
+            </inSequence>
+            <outSequence>
+                <log>
+                    <property name="text" value="***OUTGOING MESSAGE***"/>
+                </log>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="http://localhost:9000/services/SimpleStockQuoteService?wsdl"/>
+    </proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <log/>
+        <drop/>
+    </sequence>
+</definitions>

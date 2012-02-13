@@ -1,0 +1,55 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <localEntry key="addNumberTransform" src="file:repository/conf/sample/resources/script/addNumTransform.js"/>
+    <in>
+        <script language="js" key="addNumberTransform" function="transformRequest"/>
+        <send>
+            <endpoint>
+                <address uri="http://10.100.1.228:9762/services/Adding"/>
+            </endpoint>
+        </send>
+    </in>
+    <out>
+        <script language="js" key="addNumberTransform" function="transformResponse"/>
+        <send/>
+    </out>
+</definitions>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

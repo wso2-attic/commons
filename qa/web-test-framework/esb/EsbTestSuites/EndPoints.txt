@@ -1,0 +1,4 @@
+ESBAddEndpointMainTest
+ESBGeneralAddressEndpointTest
+ESBSecuredAddressEndpointTest
+ESBWSDLEndpointTest

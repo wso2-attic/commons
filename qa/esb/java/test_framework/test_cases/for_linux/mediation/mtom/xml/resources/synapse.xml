@@ -1,0 +1,3719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syn:definitions xmlns:syn="http://ws.apache.org/ns/synapse">
+    <syn:registry provider="org.wso2.esb.registry.ESBRegistry">
+        <syn:parameter name="root">file:registry</syn:parameter>
+        <syn:parameter name="cachableDuration">15000</syn:parameter>
+    </syn:registry>
+    <syn:proxy name="ProxyService1" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService2" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService3" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService4" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService5" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService6" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService7" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService8" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService9" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService10" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService11" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService12" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService13" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService14" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService15" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService16" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService17" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService18" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService19" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService20" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService21" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService22" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService23" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService24" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService25" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService26" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService27" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService28" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService29" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService30" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService31" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService32" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService33" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService34" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService35" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService36" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService37" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService38" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService39" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService40" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService41" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService42" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService43" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService44" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService45" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService46" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService47" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService48" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService49" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService50" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService51" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService52" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService53" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService54" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService55" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService56" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService57" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService58" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService59" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService60" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService61" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService62" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService63" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService64" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService65" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService66" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService67" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService68" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService69" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService70" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService71" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService72" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService73" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService74" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService75" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService76" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService77" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService78" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService79" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService80" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService81" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService82" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService83" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService84" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService85" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService86" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService87" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService88" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService89" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService90" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService91" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService92" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService93" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService94" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService95" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService96" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService97" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService98" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService99" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService100" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService1" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService2" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService3" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService4" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService5" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService6" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService7" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService8" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService9" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService10" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService11" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService12" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService13" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService14" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService15" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService16" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService17" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService18" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService19" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService20" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService21" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService22" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService23" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService24" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService25" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService26" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService27" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService28" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService29" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService30" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService31" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService32" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService33" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService34" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService35" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService36" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService37" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService38" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService39" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService40" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService41" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService42" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService43" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService44" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService45" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService46" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService47" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService48" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService49" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService50" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService51" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService52" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService53" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService54" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService55" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService56" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService57" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService58" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService59" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService60" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService61" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService62" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService63" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService64" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService65" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService66" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService67" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService68" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService69" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService70" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+
+    <syn:proxy name="ProxyService71" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService72" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService73" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService74" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService75" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService76" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService77" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService78" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService79" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService80" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService81" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService82" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService83" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService84" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService85" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService86" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService87" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService88" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService89" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService90" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+
+    <syn:proxy name="ProxyService91" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService92" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService93" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService94" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService95" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService96" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService97" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService98" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService99" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:proxy name="ProxyService100" startOnLoad="true">
+        <syn:target>
+            <syn:inSequence>
+                <syn:log separator=","/>
+                <syn:send>
+                    <syn:endpoint>
+                        <syn:address uri="http://localhost:9000/soap/Adding"/>
+                    </syn:endpoint>
+                </syn:send>
+            </syn:inSequence>
+            <syn:outSequence>
+                <syn:log separator=","/>
+                <syn:send/>
+            </syn:outSequence>
+        </syn:target>
+    </syn:proxy>
+    <syn:endpoint name="simple60">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple93">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple8">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple100">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple87">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple5">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple92">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple95">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple54">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple10">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple43">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple37">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple98">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple99">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple20">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple12">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple74">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple66">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple49">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple44">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple33">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple4">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple22">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple88">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple56">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple75">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple77">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple11">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple55">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple48">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple69">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple94">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple7">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple47">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple23">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple45">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple39">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple1">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple26">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple38">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple16">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple59">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple21">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple15">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple76">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple79">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple13">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple2">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple78">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple9">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple14">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple58">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple24">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple36">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple70">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple71">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple82">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple50">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple29">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple51">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple31">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple35">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple64">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple25">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple90">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple72">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple30">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple91">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple63">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple46">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple89">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple28">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple17">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple85">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple3">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple67">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple18">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple65">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple32">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple80">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple73">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple27">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple42">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple81">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple53">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple57">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple68">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple34">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple19">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple96">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple61">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple86">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple97">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple40">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple6">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple62">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple83">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple41">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple52">
+        <syn:address uri="http://localhost:9000/soap/Adding2"/>
+    </syn:endpoint>
+    <syn:endpoint name="simple84">
+        <syn:address uri="http://localhost:9000/soap/Adding1"/>
+    </syn:endpoint>
+    <syn:sequence name="main">
+        <syn:log/>
+        <syn:drop/>
+    </syn:sequence>
+    <syn:sequence name="fault">
+        <syn:log level="full">
+            <syn:property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <syn:property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <syn:property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </syn:log>
+        <syn:drop/>
+    </syn:sequence>
+    <syn:sequence name="switch_case">
+        <syn:in>
+            <syn:switch xmlns:m0="http://add.math.com" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//m0:add/m0:x">
+                <syn:case regex="1">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 1"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding1"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="2">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 2"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding2"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="3">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 3"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding3"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="4">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 4"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding4"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="5">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 5"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding5"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="6">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 6"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding6"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="7">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 7"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding7"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="8">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 8"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding8"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="9">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 9"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding9"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="10">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 10"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding10"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="11">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 11"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding11"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="12">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 12"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding12"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="13">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 13"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding13"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="14">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 14"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding14"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="15">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 15"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding15"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="16">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 16"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding16"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="17">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 17"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding17"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="18">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 18"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding18"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="19">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 19"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding19"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:case regex="20">
+                    <syn:property name="xValue" value="The &quot;x&quot; value is 20"/>
+                    <syn:send>
+                        <syn:endpoint>
+                            <syn:address uri="http://localhost:9000/soap/Adding20"/>
+                        </syn:endpoint>
+                    </syn:send>
+                </syn:case>
+                <syn:default>
+                    <syn:property name="xValue" expression="fn:concat('The xValue is - ', //m0:add/m0:x)"/>
+                </syn:default>
+            </syn:switch>
+        </syn:in>
+        <syn:out>
+            <syn:send/>
+        </syn:out>
+    </syn:sequence>
+</syn:definitions>

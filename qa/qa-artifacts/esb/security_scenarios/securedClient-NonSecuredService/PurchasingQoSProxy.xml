@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="PurchasingQoSProxy" transports="https http jms" startOnLoad="true" trace="disable">
+    <target>
+        <endpoint>
+            <address uri="http://10.216.33.50:9770/services/PuchasingService"/>
+        </endpoint>
+        <inSequence>
+            <log level="full"/>
+            <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+        </inSequence>
+        <outSequence>
+            <log level="full"/>
+            <send/>
+        </outSequence>
+    </target>
+    <publishWSDL uri="http://10.216.33.50:9770/services/PuchasingService?wsdl"/>
+    <policy key="conf:/repository/axis2/service-groups/PurchasingQoSProxy/services/PurchasingQoSProxy/policies/SigOnly"/>
+    <enableSec/>
+</proxy>

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.webservicex.net/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.webservicex.net/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The E-Payments Routing Directory provides basic routing information for FedACH transactions and Fedwire Funds and Book-Entry Securities transfers.This Web services  search for FedACH participant RDFIs by their name, location (state, or state and city), or routing number.</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.webservicex.net/">
+      <s:element name="getACHByName">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Name" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="getACHByNameResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="FedACHLists" type="tns:FedACHList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FedACHList">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="FedACHs" type="tns:ArrayOfFedACHData"/>
+          <s:element maxOccurs="1" minOccurs="1" name="TotalRecords" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFedACHData">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" minOccurs="0" name="FedACHData" type="tns:FedACHData"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FedACHData">
+        <s:sequence>
+          <s:element maxOccurs="1" minOccurs="0" name="RoutingNumber" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="OfficeCode" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ServicingFRBNumber" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="RecordTypeCode" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ChangeDate" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="NewRoutingNumber" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="CustomerName" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Address" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="City" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="StateCode" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="Zipcode" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="ZipcodeExtension" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="TelephoneAreaCode" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="TelephonePrefixNumber" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="TelephoneSuffixNumber" type="s:string"/>
+          <s:element maxOccurs="1" minOccurs="0" name="InstitutionStatusCode" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="getACHByLocation">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="Address" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="StateCode" type="s:string"/>
+            <s:element maxOccurs="1" minOccurs="0" name="City" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByLocationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="getACHByLocationResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="FedACHLists" type="tns:FedACHList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByZipCode">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="ZipCode" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByZipCodeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="getACHByZipCodeResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="FedACHLists" type="tns:FedACHList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByFRBNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="FRBNumber" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByFRBNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="getACHByFRBNumberResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="FedACHLists" type="tns:FedACHList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByRoutingNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="0" name="RoutingNumber" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getACHByRoutingNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element maxOccurs="1" minOccurs="1" name="getACHByRoutingNumberResult" type="s:boolean"/>
+            <s:element maxOccurs="1" minOccurs="1" name="FedACHLists" type="tns:FedACHList"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="getACHByFRBNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:getACHByFRBNumber">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByZipCodeSoapOut">
+    <wsdl:part name="parameters" element="tns:getACHByZipCodeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByLocationSoapOut">
+    <wsdl:part name="parameters" element="tns:getACHByLocationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByRoutingNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:getACHByRoutingNumber">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByNameSoapOut">
+    <wsdl:part name="parameters" element="tns:getACHByNameResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByFRBNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:getACHByFRBNumberResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByZipCodeSoapIn">
+    <wsdl:part name="parameters" element="tns:getACHByZipCode">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByNameSoapIn">
+    <wsdl:part name="parameters" element="tns:getACHByName">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByRoutingNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:getACHByRoutingNumberResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getACHByLocationSoapIn">
+    <wsdl:part name="parameters" element="tns:getACHByLocation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="FedACHHttpPost">
+  </wsdl:portType>
+  <wsdl:portType name="FedACHSoap">
+    <wsdl:operation name="getACHByName">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">FedACH participant RDFIs by their Customer Name</wsdl:documentation>
+      <wsdl:input message="tns:getACHByNameSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getACHByNameSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByLocation">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">FedACH participant RDFIs by Location</wsdl:documentation>
+      <wsdl:input message="tns:getACHByLocationSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getACHByLocationSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByZipCode">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">FedACH participant RDFIs by ZipCode</wsdl:documentation>
+      <wsdl:input message="tns:getACHByZipCodeSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getACHByZipCodeSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByFRBNumber">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">FedACH participant RDFIs by their FRB Number</wsdl:documentation>
+      <wsdl:input message="tns:getACHByFRBNumberSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getACHByFRBNumberSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByRoutingNumber">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">FedACH participant RDFIs by their Routing Number</wsdl:documentation>
+      <wsdl:input message="tns:getACHByRoutingNumberSoapIn">
+    </wsdl:input>
+      <wsdl:output message="tns:getACHByRoutingNumberSoapOut">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="FedACHHttpGet">
+  </wsdl:portType>
+  <wsdl:binding name="FedACHHttpPost" type="tns:FedACHHttpPost">
+    <http:binding verb="POST"/>
+  </wsdl:binding>
+  <wsdl:binding name="FedACHSoap" type="tns:FedACHSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getACHByName">
+      <soap:operation soapAction="http://www.webservicex.net/getACHByName" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByLocation">
+      <soap:operation soapAction="http://www.webservicex.net/getACHByLocation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByZipCode">
+      <soap:operation soapAction="http://www.webservicex.net/getACHByZipCode" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByFRBNumber">
+      <soap:operation soapAction="http://www.webservicex.net/getACHByFRBNumber" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByRoutingNumber">
+      <soap:operation soapAction="http://www.webservicex.net/getACHByRoutingNumber" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="FedACHHttpGet" type="tns:FedACHHttpGet">
+    <http:binding verb="GET"/>
+  </wsdl:binding>
+  <wsdl:binding name="FedACHSoap12" type="tns:FedACHSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getACHByName">
+      <soap12:operation soapAction="http://www.webservicex.net/getACHByName" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByLocation">
+      <soap12:operation soapAction="http://www.webservicex.net/getACHByLocation" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByZipCode">
+      <soap12:operation soapAction="http://www.webservicex.net/getACHByZipCode" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByFRBNumber">
+      <soap12:operation soapAction="http://www.webservicex.net/getACHByFRBNumber" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getACHByRoutingNumber">
+      <soap12:operation soapAction="http://www.webservicex.net/getACHByRoutingNumber" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FedACH">
+<wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">The E-Payments Routing Directory provides basic routing information for FedACH transactions and Fedwire Funds and Book-Entry Securities transfers.This Web services  search for FedACH participant RDFIs by their name, location (state, or state and city), or routing number.</wsdl:documentation>
+    <wsdl:port name="FedACHSoap" binding="tns:FedACHSoap">
+      <soap:address location="http://www.webservicex.net/FedACH.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="FedACHHttpGet" binding="tns:FedACHHttpGet">
+      <http:address location="http://www.webservicex.net/FedACH.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="FedACHSoap12" binding="tns:FedACHSoap12">
+      <soap12:address location="http://www.webservicex.net/FedACH.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="FedACHHttpPost" binding="tns:FedACHHttpPost">
+      <http:address location="http://www.webservicex.net/FedACH.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

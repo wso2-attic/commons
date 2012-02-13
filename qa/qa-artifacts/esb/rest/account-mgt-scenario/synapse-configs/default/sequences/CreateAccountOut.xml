@@ -1,0 +1,22 @@
+<sequence name="CreateAccountOut" xmlns="http://ws.apache.org/ns/synapse">
+	<filter source="//m:return" regex="true" xmlns:m="http://mgt.accounts.etrade.com">
+		<then>
+			<property name="HTTP_SC" scope="axis2" value="201" />
+			<property name="Location" scope="transport"
+				expression="fn:concat(get-property('REST_URL_PREFIX'), '/am/account/', get-property('accountId'))" />
+			<payloadFactory>
+				<format>
+					<status xmlns="">Account created</status>
+				</format>
+			</payloadFactory>
+		</then>
+		<else>
+			<payloadFactory>
+				<format>
+					<fault xmlns="">Account already exists</fault>
+				</format>
+			</payloadFactory>
+		</else>
+	</filter>
+	<send />
+</sequence>

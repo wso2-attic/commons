@@ -1,0 +1,49 @@
+1. Deploy the given synapse.xml
+2. Using the below command, send a echo request
+
+java -jar benchmark.jar -p requests/soap11_echoString.xml -n 1 -c 1 -k -H "SOAPAction: echoString"  -T "text/xml; charset=UTF-8" http://localhost:8281/
+
+soap11_echoString.xml
+=====================
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ser:echoString xmlns:ser="http://service.carbon.wso2.org">
+         <ser:s>Hi-A</ser:s>
+         <ser:s>Hi-B</ser:s>
+         <ser:s>Hi-C</ser:s>
+         <ser:s>Hi-D</ser:s>
+         <ser:s>Hi-E</ser:s>
+         <ser:s>Hi-F</ser:s>
+     </ser:echoString>
+   </soap:Body>
+</soap:Envelope>
+
+
+Expected result
+================
+Since preservePayload="true", the splitted messages will use the original message as a template and will create new messages as below. It will split the messages from target specified under expression and will attach the splitted messages at the level specified as the property 'attachPath'.
+
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ser:echoString xmlns:ser="http://service.carbon.wso2.org">
+         <ser:s>Hi-A</ser:s>
+     </ser:echoString>
+   </soap:Body>
+</soap:Envelope>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+   <soap:Body>
+      <ser:echoString xmlns:ser="http://service.carbon.wso2.org">
+         <ser:s>Hi-B</ser:s>
+     </ser:echoString>
+   </soap:Body>
+</soap:Envelope>
+
+and so on...six new soap messages should be created as above
+
+From this scenario, both preservePayload and attachPath properties are verified
+
+

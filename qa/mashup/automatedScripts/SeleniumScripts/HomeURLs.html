@@ -1,0 +1,209 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HomeURLs</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">HomeURLs</td></tr>
+</thead><tbody>
+<tr>
+	<td>echo</td>
+	<td>javascript{browserVersion.name}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=mashups.wso2.org</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>myWinNames</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>javascript{storedVars.myWinNames[storedVars.myWinNames.length-1]}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${myWinNames}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>WSO2 Mashup Community Portal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'User<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;guide')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>header</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>myWinNames1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>javascript{storedVars.myWinNames1[storedVars.myWinNames1.length-1]}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>WSO2 Mashup Server v0.2 Documentation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'Reference<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;documentation')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>javascript{selenium.browserbot.openedWindows.toSource()}</td>
+	<td>allWindows</td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>myWinNames2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>javascript{storedVars.myWinNames2[storedVars.myWinNames2.length-1]}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>WSO2 Mashup Server Reference - WSO2 Mashup Server - Confluence</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[contains(text(),'WSO2 Mashup<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Server issue tracker')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>myWinNames3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>javascript{storedVars.myWinNames3[storedVars.myWinNames3.length-1]}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Browse Project - WSO2 JIRA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Forum</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAllWindowNames</td>
+	<td>myWinNames4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>javascript{storedVars.myWinNames4[storedVars.myWinNames4.length-1]}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>30000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Project: WSO2 Mashup Server | WSO2 Oxygen Tank</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<data name="NestedQuerySample">
+   <config>
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/NQ_SAMPLE</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+      <property name="org.wso2.ws.dataservice.minpoolsize">1</property>
+      <property name="org.wso2.ws.dataservice.maxpoolsize">25</property>
+   </config>
+
+   <query id="employeeQuery">
+      <sql>select employeeNumber,firstName,lastName,email from Employees</sql>
+      <result element="Employees" rowName="Employee">
+         <element name="EmpNo" column="employeeNumber" />
+         <element name="FirstName" column="firstName" />
+         <element name="LastName" column="lastName" />
+         <element name="Email" column="email" />
+
+         <call-query href="salaryQuery">
+            <with-param name="employeeNumber" query-param="employeeNumber" />
+         </call-query>
+      </result>
+   </query>
+
+   <operation name="getEmployees">
+      <call-query href="employeeQuery" />
+   </operation>
+
+   <query id="salaryQuery">
+      <sql>select salary,lastRevisedDate from Salary where employeeNumber = ?</sql>
+      <result element="Salaries" rowName="Salary" defaultNamespace="http://salary.abc.com">
+         <element name="Amount" column="salary" />
+         <element name="LastRevisedDate" column="lastRevisedDate" />
+      </result>
+
+      <param name="employeeNumber" sqlType="INTEGER" type="IN" ordinal="1" />
+   </query>
+
+   <operation name="getSalary">
+      <call-query href="salaryQuery">
+         <with-param name="employeeNumber" query-param="employeeNumber" />
+      </call-query>
+   </operation>
+</data>

@@ -1,0 +1,114 @@
+<project name="SoapSessionClient" default="run.client">
+
+    <property environment="env"/>
+    
+    <property name="base.dir" value="${project.base.dir}/sessionmanagement/soapsession/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    <property name="wsdl.uri" value="http://${wsas.envt.hostname}:${wsas.envt.httpport}/services/SoapSessionService?wsdl"/>
+
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="target.stub" value="${target}/stub"/>
+    <property name="client.lib" value="${wsas.envt.WSAS_HOME}/repository/lib"/>
+    
+    <property name="client.repos.dir" value="${build.dir}/client_repositories"/>
+    
+    <property name="modules.dir" value="${wsas.envt.WSAS_HOME}/repository/modules/"/>
+    <property name="addressing.mar" value="${wsas.envt.addressing_version}"/>
+    
+
+    <target name="gen.stub">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <mkdir dir="${target}\stub"/>
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+            <arg line="-uri ${wsdl.uri}"/>
+            <arg line="-o ${target}"/>
+            <arg line="-pn SoapSessionServiceHttpSoap11Endpoint"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+        <!--now compile the stub classes-->
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/stub">
+            <src path="${target}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/SoapSessionService-stub.jar">
+            <fileset dir="${target}/stub">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+    </target>
+        
+        
+         
+    <target name="run.client" depends="clean,gen.stub">
+    
+        <mkdir dir="${client.repos.dir}"/>
+        <mkdir dir="${client.repos.dir}/modules"/>
+	 	
+	 	<!-- copy modules -->
+	   		<copy file="${modules.dir}/${addressing.mar}" tofile="${client.repos.dir}/modules/${addressing.mar}" overwrite="true"/>   
+        
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/SoapSessionService-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.wsas.client.SoapSessionClient">
+        <arg value="${client.repos.dir}"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+        <delete dir="${base.dir}/build"/>
+    </target>
+
+</project>

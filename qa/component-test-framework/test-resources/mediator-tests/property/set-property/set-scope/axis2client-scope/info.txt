@@ -1,0 +1,34 @@
+Step to run the test
+--------------------
+1. Deploy the synapse.xml
+2. Start the backend server which you need to talk to 
+3. Invoke the client using the following command
+
+If you are using a Javabench/Curl client
+
+java -jar benchmark.jar -p echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8"  http://localhost:8280/
+
+NOTE: echoString.xml is located at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/request-xmls
+
+Expected Results : These properties are set on the 'axis2-client' scope. The message should be coverted to a HTTP1.0 message. 
+(Monitor through TCPMon - 
+
+E.g.:- 
+POST /services/Axis2Service HTTP/1.0
+Content-Type: text/xml; charset=UTF-8
+SOAPAction: "urn:echoString"
+Content-Length: 273
+Host: 127.0.0.1:9765
+Connection: Keep-Alive
+User-Agent: Synapse-HttpComponents-NIO
+
+<?xml version='1.0' encoding='UTF-8'?>
+   <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>      
+         <ser:echoString xmlns:ser="http://service.carbon.wso2.org">         
+            <ser:s>echoEpr</ser:s>      
+         </ser:echoString>   
+      </soap:Body>
+   </soap:Envelope>
+
+Note that the message is now of HTTP/1.0)

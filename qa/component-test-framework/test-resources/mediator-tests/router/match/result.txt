@@ -1,0 +1,4 @@
+If the request is sent with the symbol, IBM and match="IBM" then the log text = *********FIRST ROUTE********* should be printed.
+
+
+If you send a request of type symbol=MSFT, the above log should not be printed and the client should fail.

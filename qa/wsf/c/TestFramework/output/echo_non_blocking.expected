@@ -1,0 +1,7 @@
+Using endpoint : http://localhost:9090/axis2/services/echo
+
+Sending OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/services/echo"><text>Hello World!</text></ns1:echoString>
+
+Received OM : <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"><soapenv:Header/><soapenv:Body><ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/c/samples"><text>Hello World!</text></ns1:echoString></soapenv:Body></soapenv:Envelope>
+
+echo client invoke SUCCESSFUL!

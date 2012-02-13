@@ -1,0 +1,41 @@
+<description xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+             xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+             xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:xstns="http://services.wsas.wso2.org/JSService?xsd"
+             xmlns:tns="http://services.wsas.wso2.org/JSService?wsdl"
+             xmlns="http://www.w3.org/ns/wsdl"
+             targetNamespace="http://services.wsas.wso2.org/JSService?wsdl">
+    <documentation>This service describes the JSService.</documentation>
+    <types>
+        <xs:schema targetNamespace="http://services.wsas.wso2.org/JSService?xsd"
+                   elementFormDefault="unqualified">
+            <xs:element name="echo" type="xstns:echoType"/>
+            <xs:complexType name="echoType">
+                <xs:sequence>
+                    <xs:element name="param1" type="xs:anyType"/>
+                    <xs:element name="param2" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="echoResponse" type="xstns:echoResponseType"/>
+            <xs:complexType name="echoResponseType">
+                <xs:sequence>
+                    <xs:element name="out" type="xs:anyType"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </types>
+    <interface name="JSServiceInterface">
+        <operation name="echo" pattern="http://www.w3.org/ns/wsdl/in-out"
+                   style="http://www.w3.org/ns/wsdl/style/rpc"
+                   wrpc:signature="param1 #in param2 #in out #return" wsdlx:safe="true">
+            <input element="xstns:echo"/>
+            <output element="xstns:echoResponse"/>
+        </operation>
+    </interface>
+    <binding name="JSServiceBinding" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2"
+             wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP/"/>
+    <service name="JSServiceService" interface="tns:JSServiceInterface">
+        <endpoint name="JSService" binding="tns:JSServiceBinding"
+                  address="http://localhost:8080/axis2/services/JSService"/>
+    </service>
+</description>

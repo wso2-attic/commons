@@ -1,0 +1,4 @@
+<service name="WSTransferSampleService" scope="application">
+	<module ref="Transfer"/>
+    <parameter name="ServiceClass" locked="false">org.wso2.sample.WSTransferSampleService</parameter>
+</service>

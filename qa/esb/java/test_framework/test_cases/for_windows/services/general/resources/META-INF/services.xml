@@ -1,0 +1,9 @@
+<service name="Adding">
+    <description>
+        This service is created to add two numbers.
+    </description>
+    <parameter name="ServiceClass" locked="false">org.wso2.esb.service.Adding</parameter>
+    <operation name="add">
+    	<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </operation>
+</service>

@@ -1,0 +1,41 @@
+<definitions xmlns:syn="http://ws.apache.org/ns/synapse">
+        <in>
+            <header name="To" value="http://10.100.1.228:9762/services/Adding"/>
+            <send/>
+        </in>
+        <out>
+            <send/>
+        </out>
+</definitions>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

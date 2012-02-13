@@ -1,0 +1,1 @@
+ sh $AXIS2_HOME/bin/wsdl2java.sh -uri http://localhost:8080/axis2/services/SampleService?wsdl -o .. -u -uw -ns2p http://service.sample1.mercury.wso2.org=org.wso2.mercury.sample1.stub -pn SampleServiceHttpSoap12Endpoint

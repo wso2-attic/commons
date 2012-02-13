@@ -1,0 +1,17 @@
+ManageStartUpTest
+RegistryTags
+SearchTest
+RegistryComment
+RegistryRating
+RegistryProperties
+ManageRegistryBrowserTest
+AssociationTest
+DependencyTest
+MyProfileTest
+MetaDataTest
+NotificationTest
+LifeCycleTest
+DistributedLCMTest
+ActivityTest
+HelpPagesTest
+FeedsTest

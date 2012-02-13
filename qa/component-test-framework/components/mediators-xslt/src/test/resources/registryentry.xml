@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="inOutSeq">
+        <in>
+            <log level="full">
+                <property xmlns:ns2="http://org.apache.synapse/xsd" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" name="text" expression="get-property('sample_text')"/>
+            </log>
+            <xslt key="conf:/XSLTFiles/echo_transform.xslt"/>
+            <send>
+                <endpoint name="endpoint_urn_uuid_8A501DF925F88139A05150009509692-1314033775">
+                    <address uri="http://localhost:9000/services/Echo"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <log level="full"/>
+            <xslt key="conf:/XSLTFiles/echo_back.xslt"/>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="inOutSeq"/>
+    </sequence>
+</definitions>

@@ -1,0 +1,7 @@
+Secured client -> secured loadbalance ESB -> secured node1/node2 ESB -> secured service
+===========================================================================================
+
+1. Used the Idea client (OperationClient) (E.g.:-policy2.xml)
+2. Used the configuration given in the folder (For the loadbalance ESB and node1/node2 ESBs of the cluster)
+3. Service was deployed on ESB/WSAS and secured using the policy used by the client(E.g.:-policy2)
+

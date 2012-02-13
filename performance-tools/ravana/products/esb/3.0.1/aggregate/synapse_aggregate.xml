@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syn:definitions xmlns:syn="http://ws.apache.org/ns/synapse">
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="SplitAggregateProxy" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <iterate xmlns:m="http://po.services.core.carbon.wso2.org" preservePayload="true" attachPath="//m:buyStocks" expression="//m:buyStocks/m:order">
+                    <target>
+                        <sequence>
+                            <send>
+                                <endpoint name="endpoint_urn_uuid_EC413F94F9DDAD9F3464159182536771811329157">
+                                    <address uri="http://localhost:80/services/256b.xml"/>
+                                </endpoint>
+                            </send>
+                        </sequence>
+                    </target>
+                </iterate>
+            </inSequence>
+            <outSequence>
+                <aggregate>
+                    <completeCondition>
+                        <messageCount min="-1" max="-1"/>
+                    </completeCondition>
+                    <onComplete xmlns:m="http://po.services.core.carbon.wso2.org" expression="//m:buyStocks">
+                        <send/>
+                    </onComplete>
+                </aggregate>
+            </outSequence>
+        </target>
+    </proxy>
+</syn:definitions>

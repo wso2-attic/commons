@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Map of __UP_loc__" height="300" 
+    author="Jane Smith" 
+    author_email="xxx@google.com" /> 
+  <UserPref name="loc" 
+    display_name="Location" 
+    required="true" /> 
+  <Content type="html">
+  <![CDATA[ 
+    <script src="http://maps.google.com/maps?file=js" type="text/javascript"></script>
+    <div id="map" style="width: 100%; height: 100%;"></div>
+    <script type="text/javascript">
+    var prefs = new gadgets.Prefs();
+    var map = new GMap(document.getElementById("map"));
+    map.addControl(new GSmallMapControl());
+    map.addControl(new GMapTypeControl());
+    var geocoder = new GClientGeocoder();
+    geocoder.getLatLng(prefs.getString('loc'), showMap)
+
+    function showMap(point) {
+      if (point!=null) {
+        map.centerAndZoom(point, 6);
+      }
+    };    
+    </script>
+  ]]> 
+  </Content>
+</Module>

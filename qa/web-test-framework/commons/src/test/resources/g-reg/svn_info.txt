@@ -1,0 +1,7 @@
+https://svn.wso2.org/repos/wso2/trunk/registry
+
+Interop wsdls
+
+1.http://131.107.72.15/SoapWsdl_ComplexDataTypes_XmlFormatter_Service_Indigo/
+2 .http://131.107.72.15/Security_WsSecurity_Service_Indigo/WSSecureConversation.svc?wsdl
+3. https://wso2.org/repos/wso2/branches/registry/1_1	

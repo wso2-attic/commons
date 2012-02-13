@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data name="CompanySample" serviceStatus="inactive" enableBatchRequests="false" enableBoxcarring="false">
+    <config id="default">
+        <property name="org.wso2.ws.dataservice.maxpoolsize"/>
+        <property name="org.wso2.ws.dataservice.password"/>
+        <property name="org.wso2.ws.dataservice.protocol"/>
+        <property name="org.wso2.ws.dataservice.driver"/>
+        <property name="org.wso2.ws.dataservice.validation_query"/>
+        <property name="org.wso2.ws.dataservice.user"/>
+        <property name="org.wso2.ws.dataservice.minpoolsize"/>
+    </config>
+    <query id="getVehiclesQuery" useConfig="default">
+        <sql>dummy</sql>
+        <param name="brand" paramType="SCALAR" sqlType="STRING" type="IN" ordinal="1"/>
+        <result element="Vehicles" rowName="Vehicle" defaultNamespace="http://test.org">
+            <element name="Model" column="Model" xsdType="xs:string"/>
+            <element name="AllocatedTo" column="AllocatedTo" xsdType="xs:string"/>
+        </result>
+    </query>
+    <query id="getEmployeeDepartmentsQuery" useConfig="default">
+        <sql>dummy</sql>
+        <param name="DName" paramType="SCALAR" sqlType="STRING" type="IN" ordinal="1"/>
+        <result element="EmpDep" rowName="Emp" defaultNamespace="http://test.org">
+            <element name="FirstName" column="FirstName" xsdType="xs:string"/>
+            <element name="LastName" column="LastName" xsdType="xs:string"/>
+            <element name="Address" column="Address" xsdType="xs:string"/>
+            <element name="DepID" column="DepID" xsdType="xs:integer"/>
+        </result>
+    </query>
+    <query id="getEmployeesQuery" useConfig="default">
+        <sql>dummy</sql>
+        <result element="Employees" rowName="Employee" defaultNamespace="http://test.org">
+            <element name="ID" column="ID" xsdType="xs:string"/>
+            <element name="First_Name" column="First_Name" xsdType="xs:string"/>
+            <element name="L_Name" column="L_Name" xsdType="xs:string"/>
+            <element name="Address" column="Address" xsdType="xs:string"/>
+            <element name="Department_ID" column="Department_ID" xsdType="xs:string"/>
+            <element name="Department_ID" column="Department_ID" xsdType="xs:string"/>
+            <element name="Department_ID2" column="Department_ID2" xsdType="xs:string"/>
+        </result>
+    </query>
+    <query id="getProjectDetailsQuery" useConfig="default">
+        <sql>dummy</sql>
+        <result element="Projects" rowName="Project" defaultNamespace="http://test.org">
+            <element name="Name" column="Name" xsdType="xs:string"/>
+            <element name="Client" column="Client" xsdType="xs:string"/>
+            <element name="Description" column="Description" xsdType="xs:string"/>
+            <element name="ManagerF_Name" column="ManagerF_Name" xsdType="xs:string"/>
+            <element name="ManagerL_Name" column="ManagerL_Name" xsdType="xs:string"/>
+        </result>
+    </query>
+    <operation name="getProjectDetails">
+        <call-query href="getProjectDetailsQuery"/>
+    </operation>
+    <operation name="getEmployees">
+        <call-query href="getEmployeesQuery"/>
+    </operation>
+    <operation name="getVehicles">
+        <call-query href="getVehiclesQuery">
+            <with-param name="brand" query-param="brand"/>
+        </call-query>
+    </operation>
+    <operation name="getEmployeeDepartments">
+        <call-query href="getEmployeeDepartmentsQuery">
+            <with-param name="DName" query-param="DName"/>
+        </call-query>
+    </operation>
+</data>

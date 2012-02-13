@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="org.wso2.mercury.persistence.dto.InternalKeyDto" table="T_INTERNAL_KEY" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="key" column="C_KEY"/>
+        <property name="toAddress" column="C_TO_ADDRESS"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.RMSSequenceDto" table="T_RMS_SEQUENCE" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="sequenceID" column="C_SEQUENCE_ID"/>
+        <property name="state" column="C_STATE"/>
+        <property name="messageNumber" column="C_MESSAGE_NUMBER"/>
+        <property name="lastMessageNumber" column="C_LAST_MESSAGE_NUMBER"/>
+        <property name="endPointAddress" column="C_END_POINT_ADDRESS"/>
+        <property name="ackToEpr" column="C_ACK_TO_EPR"/>
+        <property name="sequenceOffer" column="C_SEQUENCE_OFFER"/>
+        <property name="startTime" column="C_START_TIME"/>
+        <property name="lastAccessedTime" column="C_LAST_ACESSED_TIME"/>
+        <property name="endTime" column="C_END_TIME"/>
+        <property name="internalKeyID" column="C_INTERNAL_KEY_ID"/>
+        <property name="axis2InfoID" column="C_AXIS2_INFO_ID"/>
+        <property name="mep" column="C_MEP"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.RMSMessageDto" table="T_RMS_MESSAGE" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="messageNumber" column="C_MESSAGE_NUMBER"/>
+        <property name="lastMessage" column="C_IS_LAST_MESSAGE"/>
+        <property name="soapEnvelpe" column="C_SOAP_ENVELOPE" type="text" length="1000"/>
+        <property name="send" column="C_IS_SEND"/>
+        <property name="rmsSequenceID" column="C_RMS_SEQUENCE_ID"/>
+        <property name="axisMessageID" column="C_AXIS_MESSAGE_ID"/>
+        <property name="relatesToMessageID" column="C_RELATES_TO_MESSAGE_ID"/>
+        <property name="callBackClassName" column="C_CALL_BACK_CLASS_NAME"/>
+        <property name="action" column="C_ACTION"/>
+        <property name="operationName" column="C_OPERATION_NAME"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.AcknowledgmentDto" table="T_ACKNOWLEDGMENT_DTO" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="soapMessage" column="C_SOAP_MESSAGE" type="text" length="1000"/>
+        <property name="rmsSequenceID" column="C_RMS_SEQUENCE_ID"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.RMDSequenceDto" table="T_RMD_SEQUENCE" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="sequenceID" column="C_SEQUENCE_ID"/>
+        <property name="state" column="C_STATE"/>
+        <property name="acksTo" column="C_ACKS_TO"/>
+        <property name="lastMessageNumber" column="C_LAST_MESSAGE_NUMBER"/>
+        <property name="startTime" column="C_START_TIME"/>
+        <property name="endTime" column="C_END_TIME"/>
+        <property name="axis2InfoID" column="C_AXIS2_INFO"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.InvokerBufferDto" table="T_INVOKER_BUFFER" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="state" column="C_STATE"/>
+        <property name="lastMessage" column="C_LAST_MESSAGE"/>
+        <property name="lastMessageToApplication" column="C_LAST_MESSAGE_TO_APPLICATION"/>
+        <property name="rmdSequenceID" column="C_RMD_SEQUENCE_ID"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.RMDMessageDto" table="T_RMD_MESSAGE" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="messageNumber" column="C_MESSAGE_NUMBER"/>
+        <property name="soapEnvelope" column="C_SOAP_ENVELOPE" type="text" length="1000"/>
+        <property name="send" column="C_SEND"/>
+        <property name="internalBufferID" column="C_INTERNAL_BUFFER_ID"/>
+        <property name="operationName" column="C_OPERATION_NAME"/>
+        <property name="action" column="C_ACTION"/>
+        <property name="messageID" column="C_MESSAGE_ID"/>
+        <property name="to" column="C_TO"/>
+        <property name="replyTo" column="C_REPLY_TO"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.SequenceReceivedNumberDto" table="T_SEQUENCE_RECEIVED_NUMBER" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="number" column="C_NUMBER"/>
+        <property name="rmdSequenceID" column="C_RMD_SEQUENCE_ID"/>
+        <property name="relatesToMessageID" column="C_RELATES_TO_MESSAGE_ID"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.BufferReceivedNumberDto" table="T_BUFFER_RECEIVED_NUMBER" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="number" column="C_NUMBER"/>
+        <property name="internalBufferID" column="C_INTERNAL_BUFFER_ID"/>
+    </class>
+     <class name="org.wso2.mercury.persistence.dto.Axis2InfoDto" table="T_AXIS2_INFO" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="serviceName" column="C_SERVICE_NAME"/>
+        <property name="currentHanlderIndex" column="C_CURRENT_HANDLER_INDEX"/>
+        <property name="currentPhaseIndex" column="C_CURRENT_PHASE_INDEX"/>
+        <property name="serverSide" column="C_IS_SERVER_SIDE"/>
+        <property name="soapNamespaceURI" column="C_SOAP_NAMESPACE_URI"/>
+        <property name="addressingNamespaceURI" column="C_ADDRESSING_NAMESPACE_URI"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.EngagedModuleDto" table="T_ENGAGED_MODULLE" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="moduleName" column="C_MODULE_NAME"/>
+        <property name="axis2InfoID" column="C_AXIS2_INFO_ID"/>
+    </class>
+    <class name="org.wso2.mercury.persistence.dto.PropertyDto" table="T_PROPERTY" lazy="false">
+        <id name="id" column="C_ID">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="C_NAME"/>
+        <property name="value" column="C_VALUE"/>
+        <property name="axis2InfoID" column="C_AXIS2_INFO_ID"/>
+    </class>
+</hibernate-mapping>

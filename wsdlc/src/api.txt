@@ -1,0 +1,263 @@
+/** 
+* Initialize the wsdl mode module for client 
+* Mainly responsible of parsing the wsdl and creating intermediate structures for future use.
+* 
+* @param env			   : environment structure
+* @param wsdl_file_name    : location of the wsdl file
+* @param type_map_file	   : location of the type map file
+* @param xslt_location	   : where xslts reside
+* @param svc_client        : service client
+* @param svc_client_options: service client options
+* @param wsdl_info		   : intermediate structure containing, templates and typemap
+*
+* @returns AXIS2_SUCCESS or AXIS2_FAILURE depending on the success of the initialization.*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsf_wsdl_mode_initialize_for_client(const axutil_env_t* env,
+									const axis2_char_t* wsdl_file_name,
+									axis2_char_t* type_map_file,
+									axis2_char_t* xslt_location,
+									axis2_svc_client_t* svc_client,
+									axutil_hash_t* svc_client_options,
+									wsf_wsdl_info_t** wsdl_info);
+
+
+/** 
+* Initialize the wsdl mode module for client 
+* Mainly responsible of parsing the wsdl and creating intermediate structures for future use.
+* 
+* @param env			   : environment structure
+* @param wsdl_file_name    : location of the wsdl file
+* @param type_map_file	   : location of the type map file
+* @param xslt_location	   : where xslts reside
+* @param wsdl_info		   : intermediate structure containing, templates and typemap
+*
+* @returns AXIS2_SUCCESS or AXIS2_FAILURE depending on the success of the initialization.*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsf_wsdl_mode_initialize_for_service(const axutil_env_t* env,
+									 const axis2_char_t* wsdl_file_name,
+									 axis2_char_t* type_map_file,
+									 axis2_char_t* xslt_location,
+									 wsf_wsdl_info_t** wsdl_info);
+
+
+/**
+* Validate a given axiom against the template.
+* 
+* @param env		 	   : environment structure
+* @param type_map		   : type map object
+* @param templ			   : the template
+* @param node			   : axiom node
+* @param criteria          : criteria for the validation. 
+*
+* @returns AXIS2_SUCCESS or AXIS2_FAILURE depending on the success of the validation.*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsf_wsdl_mode_validate_axiom(const axutil_env_t* env, 
+							 axiom_node_t* type_map,
+							 wsf_wsdl_data_template_t* templ,
+							 axiom_node_t* node,
+							 unsigned short criteria);
+
+/**
+* Validate a given axiom against the template. data can be modified during validation, depending on the criteria.
+* 
+* @param env			   : environment structure
+* @param type_map		   : type map object
+* @param templ			   : the template
+* @param data			   : wsf_wsdl_data_t structure, which may be modified depending on the criteria.
+* @param criteria          : criteria for the validation. 
+*
+* @returns AXIS2_SUCCESS or AXIS2_FAILURE depending on the success of the validation.*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsf_wsdl_mode_validate_data(const axutil_env_t* env,
+							axiom_node_t* type_map,
+							wsf_wsdl_data_template_t* templ,
+							wsf_wsdl_data_t* data,
+							unsigned short criteria);
+
+/**
+* Perform client request. Uses intermediate structures created during initialization.
+* 
+* @param env			   : environment structure
+* @param svc_client        : service client
+* @param operation_name    : the operation used
+* @param user_parameters   : input data from the user
+* @param info			   : info structure created during initialization
+* @param response          : response received (if any)
+*
+* @returns AXIS2_SUCCESS or AXIS2_FAILURE depending on the success of the client request.*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsf_wsdl_mode_client_request(const axutil_env_t* env,
+ 							 axis2_svc_client_t* svc_client,
+							 const axis2_char_t* operation_name,	
+							 wsf_wsdl_data_t* user_parameters,
+							 wsf_wsdl_info_t* info,
+							 wsf_wsdl_data_t** response);
+							 
+							 
+/**
+* Creates the wsdl data structure corresponding to an object. 
+* To feed an object(complex) to the wsdl mode module, first use this function
+* to create the structure and use "add" functions to add elements.
+*
+* @param env		: environment structure [IN]
+*
+* @returns created structure. */
+
+AXIS2_EXTERN wsf_wsdl_data_t* AXIS2_CALL
+wsdl_data_create_object(const axutil_env_t* env);
+
+
+/**
+* Creates the wsdl data structure corresponding to an array. 
+* To feed an array to the wsdl mode module, first use this function
+* to create the structure and use "add" functions to add elements.
+* 
+* @param env		: environment structure [IN]
+*
+* @returns created structure. */
+
+AXIS2_EXTERN wsf_wsdl_data_t* AXIS2_CALL
+wsdl_data_create_array(const axutil_env_t* env);
+
+
+/**
+* Adds a simple element to an array or to an object created by "create" functions
+*
+* @param env			 : environment structure										[IN]	
+* @param parent_element	 : added element will be a child element of this element.		[MODIFY]
+* @param name			 : name of the element added									[IN]
+* @param data_type		 : data type													[IN]
+* @param data			 : "the simple element" added, provide a axis2_char_t* buffer	[IN]
+* @param type_ns		 : type name space												[IN]
+* @param target_ns		 : target name space											[IN] */
+
+AXIS2_EXTERN void AXIS2_CALL 
+wsdl_data_add_simple_element(const axutil_env_t* env, wsf_wsdl_data_t* parent_element,
+                             axis2_char_t* name, axis2_char_t* data_type, axis2_char_t* data,
+                             axis2_char_t* type_ns, axis2_char_t* target_ns);
+
+
+/**
+* Adds a complex element(i.e. an array or an object) to an array or to an object created by "create" functions
+* Consider this as a low level function. Following two functions are simplified to provide the same functionality.
+* 
+* @param env			 : environment structure										[IN]	
+* @param parent_element	 : added element will be a child element of this element.		[MODIFY]
+* @param name			 : name of the element added									[IN]
+* @param data_type		 : data type													[IN]
+* @param data			 : "the complex element" added, provide an array or an object	[IN]
+* @param type_ns		 : type name space												[IN]
+* @param target_ns		 : target name space											[IN]
+* @param children_type	 : CHILDREN_TYPE_ATTRIBUTES (object) or 
+*												CHILDREN_TYPE_ARRAY_ELEMENTS (array)    [IN] */
+
+AXIS2_EXTERN void AXIS2_CALL 
+wsdl_data_add_complex_element(const axutil_env_t* env, wsf_wsdl_data_t* parent_element, 
+							  axis2_char_t* name, axis2_char_t* data_type, wsf_wsdl_data_t* data,
+							  axis2_char_t* type_ns, axis2_char_t* target_ns, unsigned short children_type);
+
+
+/**
+* Adds an array to an array or to an object created by "create" functions
+* 
+* @param env			 : environment structure										[IN]	
+* @param parent_element	 : added element will be a child element of this element.		[MODIFY]
+* @param name			 : name of the element added									[IN]
+* @param data_type		 : data type													[IN]
+* @param data			 : THE array added												[IN]
+* @param type_ns		 : type name space												[IN]
+* @param target_ns		 : target name space											[IN] */
+
+AXIS2_EXTERN void AXIS2_CALL 
+wsdl_data_add_array(const axutil_env_t* env, wsf_wsdl_data_t* parent_element, 
+                     axis2_char_t* name, wsf_wsdl_data_t* data,
+                     axis2_char_t* type_ns, axis2_char_t* target_ns);
+
+
+/**
+* Adds an object to an array or to an object created by "create" functions
+* 
+* @param env			 : environment structure										[IN]	
+* @param parent_element	 : added element will be a child element of this element.		[MODIFY]
+* @param name			 : name of the element added									[IN]
+* @param data_type		 : data type													[IN]
+* @param data			 : THE object added												[IN]
+* @param type_ns		 : type name space												[IN]
+* @param target_ns		 : target name space											[IN]
+*/
+
+AXIS2_EXTERN void AXIS2_CALL 
+wsdl_data_add_object(const axutil_env_t* env, wsf_wsdl_data_t* parent_element, 
+                     axis2_char_t* name, axis2_char_t* data_type, wsf_wsdl_data_t* data,
+                     axis2_char_t* type_ns, axis2_char_t* target_ns);
+
+
+/**
+* The free function fo wsf_wsdl_data_t structure
+* 
+* @param env			 : environment structure										[IN]	
+* @param data			 : element to be free											[IN]
+*/
+
+AXIS2_EXTERN void AXIS2_CALL 
+wsdl_data_free(const axutil_env_t* env, wsf_wsdl_data_t* data);
+
+
+/*\________________________________________________________________________________________________________________/*\ 
+  Following functions are to iterate through the wsf_wsdl_data_t structure. (to hide the complexities of the struct). 
+\*------------------------------------------------------------------------------------------------------------------*/
+
+
+/**
+* Creates the iterator
+*
+* @param env			 : environment structure										[IN]	
+* @param element	     : attached data element										[IN]
+*
+* @returns the iterator created. */
+
+AXIS2_EXTERN wsf_wsdl_data_iterator_t* AXIS2_CALL
+wsdl_data_iterator_create(const axutil_env_t* env, wsf_wsdl_data_t* element);
+
+
+/** 
+* Free the iterator
+*
+* @param env			 : environment structure										[IN]	
+* @param ite			 : iterator to be free											[IN] */
+
+AXIS2_EXTERN void AXIS2_CALL
+wsdl_data_iterator_free(const axutil_env_t* env, wsf_wsdl_data_iterator_t* ite);
+
+
+/** 
+* Reset to the first child element of the wsf_wsdl_data_t structure.
+*
+* @param env			 : environment structure										[IN]	
+* @param ite			 : iterator to be modified										[MODIFY]
+*
+* @returns AXIS2_FALSE or AXIS2_TRUE depending on the availability of the first element */
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsdl_data_iterator_first(const axutil_env_t* env, wsf_wsdl_data_iterator_t** ite);
+
+
+/**
+* Move the iterator to the next child element of the wsf_wsdl_data_t structure.
+*
+* @param env			 : environment structure										[IN]	
+* @param data			 : iterator to be modified										[MODIFY]
+*
+* @returns AXIS2_FALSE or AXIS2_TRUE depending on the availability of the next element
+*/
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+wsdl_data_iterator_next(const axutil_env_t* env, wsf_wsdl_data_iterator_t** ite);
+
+
+

@@ -1,0 +1,122 @@
+<project name="perf-test-sample" basedir="." default="test-horizontal">
+
+	<property name="dest.dir" value="build" />
+	<property name="dest.dir.classes" value="${dest.dir}/classes" />
+	<property name="dest.dir.lib" value="${dest.dir}/lib" />
+	<property name="home" value="." />
+	<property name="src" value="./src" />
+
+	<path id="build.class.path">
+		<fileset dir="${home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>		
+
+	<path id="test.class.path">
+		<pathelement location="${dest.dir.classes}" />
+		<pathelement location="${dest.dir.classes}" />
+		<fileset dir="${home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<path refid="build.class.path" />		
+	</path>
+
+	<target name="clean">
+		<delete dir="${dest.dir}" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${dest.dir}" />
+		<mkdir dir="${dest.dir.classes}" />
+	</target>
+
+	<target name="compile" depends="clean,prepare">
+		<javac srcdir="src" destdir="${dest.dir.classes}">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target> 
+
+     	<target name="run" depends="compile,jar"/>
+	
+	<target name="jar">
+		<jar basedir="${dest.dir.classes}" destfile="${dest.dir}/pp.jar" />
+	</target>
+	
+	<target name="copy" depends="compile">
+		<copy file="registry.xml" todir="${dest.dir.classes}/org/wso2/registry/secure"/>
+	</target>
+
+	<target name="test-vertical" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.VerticalDataPopulationTestSuite" />
+    		</junit>
+  	</target>
+	
+	<target name="test-horizontal" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.HorizontalDataPopulateTestSuite" />
+    		</junit>
+  	</target>
+
+	<target name="test-normal" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.PerformanceTestSuite" />
+    		</junit>
+  	</target>
+	
+	<target name="app-test-vertical" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.AppVerticalDataPopulationTestSuite" />
+    		</junit>
+  	</target>
+	
+	<target name="app-test-horizontal" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.AppHorizontalDataPopulateTestSuite" />
+    		</junit>
+  	</target>
+
+	<target name="app-test-normal" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.AppPerfomanceTestSuite" />
+    		</junit>
+  	</target>
+
+	<target name="userload-test" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.UserLoadTestSuite" />
+    		</junit>
+  	</target>
+
+	<target name="Resourceload-test" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.ResourceLoadTest" />
+    		</junit>
+  	</target>
+
+	<target name="concurrent-test" depends="compile,copy">
+    		<junit printsummary="yes">
+      			<classpath refid="test.class.path" />
+			<formatter type="brief" usefile="true" />
+      			<test name="org.wso2.registry.secure.ConcurrentPerformanceTestSuite" />
+    		</junit>
+  	</target>
+
+</project>
+

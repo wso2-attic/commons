@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="FunctionProcess"
+    targetNamespace="http://FunctionProcess.bpel"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:tns="http://FunctionProcess.bpel" xmlns:ns0="http://AdderService.wsdl" xmlns:ns1="http://MultiplierService.wsdl" xmlns:ns2="http://SquareService.wsdl" xmlns:ns3="http://www.example.org/messages" xmlns:ns4="http://ws.apache.org/axis2">
+    <import namespace="http://FunctionProcessService.wsdl" location="FunctionProcessService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://AdderService.wsdl" location="AdderService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://MultiplierService.wsdl" location="MultiplierService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://SquareService.wsdl" location="SquareService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="SquarePartnerLink" xmlns:ns2="http://SquareService.wsdl" partnerLinkType="ns2:SquareServicePartnerlinkType" partnerRole="squareRole"/>
+        <partnerLink name="MultiplierPartnerLink" xmlns:ns1="http://MultiplierService.wsdl" partnerLinkType="ns1:MultiplierServicePartnerlinkType" partnerRole="multiplierRole"/>
+        <partnerLink name="AdderPartnerLink" xmlns:ns0="http://AdderService.wsdl" partnerLinkType="ns0:AdderServicePartnerlinkType" partnerRole="adderRole"/>
+        <partnerLink name="FunctionProcessPartnerLink" xmlns:tns="http://FunctionProcessService.wsdl" partnerLinkType="tns:FunctionProcessService" myRole="FunctionProcessServicePortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="FunctionProcessServiceOperationOutput" xmlns:tns="http://FunctionProcessService.wsdl" messageType="tns:FunctionProcessServiceOperationResponse"/>
+        <variable name="MultiplyOutput1" messageType="ns1:multiplyResponse"/>
+        <variable name="MultiplyInput1" messageType="ns1:multiplyRequest"/>
+        <variable name="FunctionProcessServiceOperationInput" xmlns:tns="http://FunctionProcessService.wsdl" messageType="tns:FunctionProcessServiceOperationRequest"/>
+        <variable name="MultiplyOutput" xmlns:ns1="http://MultiplierService.wsdl" messageType="ns1:multiplyResponse"/>
+        <variable name="MultiplyInput" xmlns:ns1="http://MultiplierService.wsdl" messageType="ns1:multiplyRequest"/>
+        <variable name="SquareOutput" xmlns:ns2="http://SquareService.wsdl" messageType="ns2:squareResponse"/>
+        <variable name="SquareInput" xmlns:ns2="http://SquareService.wsdl" messageType="ns2:squareRequest"/>
+        <variable name="AddOutput" xmlns:ns0="http://AdderService.wsdl" messageType="ns0:addResponse"/>
+        <variable name="AddInput" xmlns:ns0="http://AdderService.wsdl" messageType="ns0:addRequest"/>
+    </variables>
+    <sequence>
+        <receive name="ReceiveRequest" createInstance="yes" partnerLink="FunctionProcessPartnerLink" operation="FunctionProcessServiceOperation" xmlns:tns="http://FunctionProcessService.wsdl" portType="tns:FunctionProcessServicePortType" variable="FunctionProcessServiceOperationInput"/>
+        <assign name="Assign1">
+	    <copy>
+                <from>
+                    <literal xml:space="preserve">
+			<tns:add xmlns:tns="http://ws.apache.org/axis2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  			<tns:param0></tns:param0>
+				<tns:param1></tns:param1>
+			</tns:add>
+		    </literal>
+                </from>
+                <to part="parameters" variable="AddInput">
+                </to>
+            </copy>
+	    <copy>
+                <from>
+                    <literal xml:space="preserve">
+			<tns:multiply xmlns:tns="http://ws.apache.org/axis2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  			<tns:param0></tns:param0>
+				<tns:param1></tns:param1>
+			</tns:multiply>
+		    </literal>
+                </from>
+                <to part="parameters" variable="MultiplyInput">
+                </to>
+            </copy>
+
+            <copy>
+                <from>$FunctionProcessServiceOperationInput.functionProcessServiceRequest/ns3:param0</from>
+                <to>$AddInput.parameters/ns4:param0</to>
+            </copy>
+            <copy>
+                <from>$FunctionProcessServiceOperationInput.functionProcessServiceRequest/ns3:param1</from>
+                <to>$AddInput.parameters/ns4:param1</to>
+            </copy>
+            <copy>
+                <from>$FunctionProcessServiceOperationInput.functionProcessServiceRequest/ns3:param0</from>
+                <to>$MultiplyInput.parameters/ns4:param0</to>
+            </copy>
+            <copy>
+                <from>$FunctionProcessServiceOperationInput.functionProcessServiceRequest/ns3:param1</from>
+                <to>$MultiplyInput.parameters/ns4:param1</to>
+            </copy>
+        </assign>
+        <flow name="Flow1">
+            <invoke name="InvokeAdderService" partnerLink="AdderPartnerLink" operation="add" portType="ns0:AdderServicePortType" inputVariable="AddInput" outputVariable="AddOutput"/>
+            <invoke name="InvokeMultiplierService1" partnerLink="MultiplierPartnerLink" operation="multiply" portType="ns1:MultiplierServicePortType" inputVariable="MultiplyInput" outputVariable="MultiplyOutput"/>
+        </flow>
+        <assign name="Assign2">
+	    <copy>
+                <from>
+                    <literal xml:space="preserve">
+			<tns:multiply xmlns:tns="http://ws.apache.org/axis2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  			<tns:param0></tns:param0>
+				<tns:param1></tns:param1>
+			</tns:multiply>
+		    </literal>
+                </from>
+                <to part="parameters" variable="MultiplyInput1">
+                </to>
+            </copy>
+            <copy>
+                <from>$AddOutput.parameters/ns4:return</from>
+                <to>$MultiplyInput1.parameters/ns4:param0</to>
+            </copy>
+            <copy>
+                <from>$MultiplyOutput.parameters/ns4:return</from>
+                <to>$MultiplyInput1.parameters/ns4:param1</to>
+            </copy>
+        </assign>
+        <invoke name="InvokeMultiplierService2" partnerLink="MultiplierPartnerLink" operation="multiply" portType="ns1:MultiplierServicePortType" inputVariable="MultiplyInput1" outputVariable="MultiplyOutput1"/>
+        <assign name="Assign3">
+            <copy>
+                <from>
+                    <literal xml:space="preserve">
+			<tns:square xmlns:tns="http://ws.apache.org/axis2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  			<tns:param0></tns:param0>
+			</tns:square>
+		    </literal>
+                </from>
+                <to part="parameters" variable="SquareInput">
+                </to>
+            </copy>
+	    <copy>
+                <from>$MultiplyOutput1.parameters/ns4:return</from>
+                <to>$SquareInput.parameters/ns4:param0</to>
+            </copy>
+        </assign>
+        <invoke name="InvokeSquareService" partnerLink="SquarePartnerLink" operation="square" xmlns:ns2="http://SquareService.wsdl" portType="ns2:SquareServicePortType" inputVariable="SquareInput" outputVariable="SquareOutput"/>
+        <assign name="Assign4">
+            <copy>
+                <from>
+                    <literal xml:space="preserve">
+			<tns:functionProcessServiceResponse xmlns:tns="http://www.example.org/messages" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  			<tns:return></tns:return>
+			</tns:functionProcessServiceResponse>
+		    </literal>
+                </from>
+                <to part="functionProcessServiceResponse" variable="FunctionProcessServiceOperationOutput">
+                </to>
+            </copy>
+	    <copy>
+                <from>$SquareOutput.parameters/ns4:return</from>
+                <to>$FunctionProcessServiceOperationOutput.functionProcessServiceResponse/ns3:return</to>
+            </copy>
+        </assign>
+        <reply name="Reply1" partnerLink="FunctionProcessPartnerLink" operation="FunctionProcessServiceOperation" xmlns:tns="http://FunctionProcessService.wsdl" portType="tns:FunctionProcessServicePortType" variable="FunctionProcessServiceOperationOutput"/>
+    </sequence>
+</process>

@@ -1,0 +1,65 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+	xmlns:pns="http://ode/bpel/unit-test" 
+	xmlns:wns="http://ode/bpel/unit-test.wsdl">
+
+
+	<process name="pns:HelloWorld">
+		<active>true</active>
+
+
+
+
+
+
+
+
+
+		<provide partnerLink="helloPartnerLink">
+
+			<service name="wns:HelloService" port="HelloPort"/>
+
+	
+		</provide>
+
+
+		<provide partnerLink="helloPartnerLink1"><service name="wns:HelloService1" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink1"><service name="wns:HelloService1" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink2"><service name="wns:HelloService2" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink3"><service name="wns:HelloService3" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink4"><service name="wns:HelloService4" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink5"><service name="wns:HelloService5" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink6"><service name="wns:HelloService6" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink7"><service name="wns:HelloService7" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink8"><service name="wns:HelloService8" port="HelloPort"/></provide>
+<provide partnerLink="helloPartnerLink9"><service name="wns:HelloService9" port="HelloPort"/></provide>
+
+		<provide partnerLink="helloPartnerL">
+
+	
+			<service name="wns:Hello" port="HelloPort"/>
+	
+	
+		</provide>
+		
+
+	
+	</process>
+</deploy>

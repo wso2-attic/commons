@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mule-configuration PUBLIC "-//MuleSource //DTD mule-configuration XML V1.0//EN"
+        "http://ee.mulesource.com/mule/dtd/mule-configuration.dtd">
+
+<mule-configuration id="Mule_ProxyService_Sample" version="1.0">
+
+    <description>
+        This configuration is for demonstrate proxy behavior .
+    </description>
+    <environment-properties>
+        <property name="http.keepAlive" value="true"/>
+        <property name="http.keepAliveTimeout" value="120000"/>
+    </environment-properties>
+    <connector name="HttpConnector" className="org.mule.providers.http.HttpConnector">
+        <threading-profile doThreading="true" maxThreadsActive="100" maxThreadsIdle="50" poolExhaustedAction="WAIT"/>
+    </connector>
+    <model name="ProxyModel">
+
+        <mule-descriptor name="DirectProxy"
+                         implementation="org.mule.providers.soap.WSProxyService">
+            <inbound-router>
+                <endpoint connector="HttpConnector" address="http://testb.wso2.com:8090/services/DirectProxy"
+                          synchronous="true"/>
+            </inbound-router>
+            <outbound-router>
+                <router className="org.mule.routing.outbound.FilteringOutboundRouter">
+                    <endpoint connector="HttpConnector" address="http://testc.wso2.com:8080/MockServices/EchoService"
+                              synchronous="true"/>
+                </router>
+            </outbound-router>
+            <properties>
+                <property name="wsdlFile" value="wsdl/ProxyWSDL-embedded.wsdl"/>
+            </properties>
+        </mule-descriptor>
+    </model>
+</mule-configuration>

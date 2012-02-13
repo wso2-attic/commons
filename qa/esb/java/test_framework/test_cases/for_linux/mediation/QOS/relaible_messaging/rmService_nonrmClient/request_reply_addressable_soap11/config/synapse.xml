@@ -1,0 +1,25 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="RMProxy" transports="http" startOnLoad="true" statistics="enable">
+        <target>
+            <inSequence>
+               <RMSequence single="true" version="1.0"/>
+	       <!--property action="set" name="OUT_ONLY" value="true"/-->
+               <send>
+                    <endpoint>
+                        <address uri="http://localhost:9001/soap/MercuryAdding">
+                            <enableAddressing/>
+                            <enableRM/>
+                        </address>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+		<!--header xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm" name="wsrm:SequenceAcknowledgement" action="remove"/>
+                <header xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm" name="wsrm:Sequence" action="remove"/-->
+                <send/>
+            </outSequence>
+        </target>
+        <enableRM/>
+    </proxy>
+</definitions>
+

@@ -1,0 +1,6 @@
+UserManagementTest
+ESBKeyStoreManagementTest
+ESBLoggingConfigTest
+ESBEventSourceTest
+ESBManageSynapseConfigurationMainTest
+ESBScheduleTasksMainTest

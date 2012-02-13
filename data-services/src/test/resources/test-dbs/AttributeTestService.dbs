@@ -1,0 +1,28 @@
+<data name="AttributeTestService">
+   <config>
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/classicmodels?autoReconnect=true</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">password</property>
+      <property name="org.wso2.ws.dataservice.minpoolsize">2</property>
+      <property name="org.wso2.ws.dataservice.maxpoolsize">100</property>
+   </config>
+
+   <query id="query1">
+      <sql>select customerNumber, customerName, contactLastName, phone, city from customers</sql>
+
+      <result element="Customers" rowName="Customer">
+         <attribute name="customerNumber" column="customerNumber" />
+         <attribute name="customerName" column="customerName" />
+         <attribute name="contactLastName" column="contactLastName" />
+         <attribute name="phone" column="phone" />
+         <element name="city" column="city" />
+      </result>
+   </query>
+
+   <operation name="results1">
+      <call-query href="query1">
+      </call-query>
+   </operation>
+</data>
+

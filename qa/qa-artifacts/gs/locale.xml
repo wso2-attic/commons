@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+	<ModulePrefs title="This is lession1"
+	             height="250"     
+	             scaling="false"
+	             author="yumani">
+		<Locale lang="en" country="us"/>
+		<Locale lang="ja" country="jp"/>
+
+		<Require feature="dynamic-height"/>
+		<Optional feature="shareable-prefs"/>
+	</ModulePrefs>
+	
+	<Content type="html">
+		<![CDATA[
+			Hello, World!
+			]]>
+	</Content>	
+</Module>

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<definitions name="SimpleInvoke"
+        targetNamespace="http://wso2.org/bpel/sample"
+        xmlns:tns="http://wso2.org/bpel/sample"
+        xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     TYPE DEFINITION - List of services participating in this BPEL process 
+     The default output of the BPEL designer uses strings as input and 
+     output to the BPEL Process. But you can define or import any XML 
+     Schema type and us them as part of the message types.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <types>  
+        <schema attributeFormDefault="unqualified" 
+                elementFormDefault="qualified" 
+                targetNamespace="http://wso2.org/bpel/sample" 
+                xmlns="http://www.w3.org/2001/XMLSchema"
+                >
+                
+            <element name="SimpleInvokeRequest">
+                <complexType>
+                    <sequence>
+                        <element name="input" type="string" />
+                    </sequence>
+                </complexType>
+            </element>
+                  
+            <element name="SimpleInvokeResponse">
+                <complexType>
+                    <sequence>
+                        <element name="result" type="string"/>
+                    </sequence>
+                </complexType>
+            </element>
+            
+        </schema>
+    </types>
+  
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     MESSAGE TYPE DEFINITION - Definition of the message types used as 
+     part of the port type defintions
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <message name="SimpleInvokeRequestMessage">
+        <part name="payload" element="tns:SimpleInvokeRequest"/>
+    </message>
+    
+    <message name="SimpleInvokeResponseMessage">
+        <part name="payload" element="tns:SimpleInvokeResponse"/>
+    </message>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PORT TYPE DEFINITION - A port type groups a set of operations into
+     a logical service unit.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- portType implemented by the SimpleInvoke BPEL process -->
+    <portType name="SimpleInvoke">
+        <operation name="initiate">
+            <input message="tns:SimpleInvokeRequestMessage"/>
+        </operation>
+    </portType>
+
+    <!-- portType implemented by the requester of SimpleInvoke BPEL process 
+         for asynchronous callback purposes
+         -->
+    <portType name="SimpleInvokeCallback">
+        <operation name="onResult">
+            <input message="tns:SimpleInvokeResponseMessage"/>
+        </operation>
+    </portType>
+
+
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     PARTNER LINK TYPE DEFINITION
+         the SimpleInvoke partnerLinkType binds the provider and
+         requester portType into an asynchronous conversation.
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->    
+    <plnk:partnerLinkType name="SimpleInvoke">
+        <plnk:role name="SimpleInvokeProvider" portType="tns:SimpleInvoke"/>
+        <plnk:role name="SimpleInvokeRequester" portType="tns:SimpleInvokeCallback"/>
+    </plnk:partnerLinkType>   
+    <binding name="SIBinding" type="tns:SimpleInvoke">
+    	<soap:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<operation name="initiate">
+    		<soap:operation
+    			soapAction="http://wso2.org/bpel/sample/initiate" />
+    		<input>
+    			<soap:body use="literal" />
+    		</input>
+    	</operation>
+    </binding>
+    <service name="SIService">
+    	<port name="NewPort" binding="tns:SIBinding">
+    		<soap:address location="http://localhost:9763/services/SIService" />
+    	</port>
+    </service>
+</definitions>

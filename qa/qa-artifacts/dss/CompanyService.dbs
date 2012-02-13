@@ -1,0 +1,49 @@
+<data name="CompanySampleDS">      
+   <config id="CompanyDataSource">            
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>            
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://10.100.1.140:3306/Company</property>            
+      <property name="org.wso2.ws.dataservice.user">root</property>            
+      <property name="org.wso2.ws.dataservice.password">root123</property>      
+   </config>      
+   <query id="ProjectDetails" useConfig="CompanyDataSource">            
+      <sql>SELECT Project.P_Name, Project.Client_Name, Project.Description, Employee.FName, Employee.LName&#xd;FROM Project LEFT JOIN Employee ON Project.Manager=Employee.ID&#xd;ORDER BY Project.P_ID</sql>            
+      <result element="Projects" rowName="Project" defaultNamespace="http://test.org">                  
+         <element name="Name" column="P_Name" xsdType="xs:string" />                  
+         <element name="Client" column="Client_Name" xsdType="xs:string" />                  
+         <element name="Description" column="Description" xsdType="xs:string" />                  
+         <element name="ManagerF_Name" column="FName" xsdType="xs:string" />                  
+         <element name="ManagerL_Name" column="LName" xsdType="xs:string" />            
+      </result>      
+   </query>      
+   <query id="Employee_Details" useConfig="CompanyDataSource">            
+      <sql>SELECT * FROM Company.Employee</sql>            
+      <result element="Employees" rowName="Employee" defaultNamespace="http://test.org">                  
+         <element name="ID" column="ID" xsdType="xs:string" />                  
+         <element name="First_Name" column="FName" xsdType="xs:string" />                  
+         <element name="L_Name" column="LName" xsdType="xs:string" />                  
+         <element name="Address" column="Address" xsdType="xs:string" />                  
+         <element name="Department_ID" column="Dep_id" xsdType="xs:string" />            
+      </result>      
+   </query>      
+   <query id="DepartmentEmps" useConfig="CompanyDataSource">            
+      <sql>SELECT Employee.FName, Employee.LName, Employee.Address&#xd;FROM Employee INNER JOIN Department ON Employee.Dep_id=Department.Dep_ID&#xd;WHERE Department.Dep_Name=?&#xd;ORDER BY Employee.LName</sql>            
+      <result element="EmpDep" rowName="Emp" defaultNamespace="http://test.org">                  
+         <element name="FirstName" column="FName" xsdType="xs:string" />                  
+         <element name="LastName" column="LName" xsdType="xs:string" />                  
+         <element name="Address" column="Address" xsdType="xs:string" />            
+      </result>            
+      <param name="Dep_Name" sqlType="STRING" ordinal="1" defaultValue="Dep1" />      
+   </query>      
+   <operation name="getProjectDetails">            
+      <call-query href="ProjectDetails" />      
+   </operation>      
+   <operation name="getEmployees">            
+      <call-query href="Employee_Details" />      
+   </operation>      
+   <operation name="getEmployeeDepartments">            
+      <call-query href="DepartmentEmps">                  
+         <with-param name="Dep_Name" query-param="Dep_Name" />            
+      </call-query>      
+   </operation>
+</data>
+

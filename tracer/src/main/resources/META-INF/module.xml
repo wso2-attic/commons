@@ -1,0 +1,26 @@
+<module name="wso2tracer" class="org.wso2.tracer.module.TracerModule">
+    <InFlow>
+       <handler name="TracingHandler"
+                 class="org.wso2.tracer.module.handler.TracingHandler">
+            <order phase="OpPhase"/>
+        </handler>
+    </InFlow>
+    <OutFlow>
+        <handler name="TracingHandler"
+                 class="org.wso2.tracer.module.handler.TracingHandler">
+            <order phase="MessageOut" after="AddressingOutHandler" before="ResponseTimeHandler"/>
+        </handler>
+    </OutFlow>
+    <InFaultFlow>
+         <handler name="TracingHandler"
+                 class="org.wso2.tracer.module.handler.TracingHandler">
+            <order phase="OpPhase"/>
+        </handler>
+    </InFaultFlow>
+    <OutFaultFlow>
+         <handler name="TracingHandler"
+                 class="org.wso2.tracer.module.handler.TracingHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFaultFlow>
+</module>

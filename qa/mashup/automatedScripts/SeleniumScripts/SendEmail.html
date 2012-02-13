@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SendEmail</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">SendEmail</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/services/EmailToGmail?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_sendEmail_HostUserPass</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>(null)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://mail.google.com/mail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Email</td>
+	<td>yumani</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>Passwd</td>
+	<td>password123</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>signIn</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>mashupserver</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mashup server approaches 1.0</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

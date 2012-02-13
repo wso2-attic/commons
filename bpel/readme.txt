@@ -1,0 +1,1 @@
+    <deployer extension=".bpel" directory="bpel" class="org.wso2.bepl.BEPLDeployer"/>

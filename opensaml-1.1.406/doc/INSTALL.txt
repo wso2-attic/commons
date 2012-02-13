@@ -1,0 +1,52 @@
+Please read the README.txt file in the same directory with this file
+before continuing. More general information is available there. This
+file documents the process of installing and building from source.
+
+You should have a good understanding of Java programming and the
+environment in which you plan to use the code before moving forward.
+Sun has reams of online tutorials on Java, so please start at
+http://java.sun.com/
+
+There are a fairly large number of dependent Java class libraries required
+to build the opensaml-1.1.jar file, but all the needed jars are currently
+included. The binaries can be rebuilt easily using the ant shell script.
+
+After unpacking the source:
+
+$ cd opensaml/java
+$ ant dist
+
+If you must support JDK 1.3 applications, you can override the build as
+follows:
+
+$ ant dist -Djavaversion=1.3
+
+A very common and generally universal build issue when using JDK 1.4 with
+the JAXP libraries that OpenSAML uses is that Sun has included older versions
+of this code inside the JDK, and you will get build failures or runtime
+failures if you do not override those classes with the jarfiles included
+with OpenSAML.
+
+To correct this problem, refer to the README.txt file, which discusses the
+endorsed library mechanism in Java. Basically you need to copy or symlink the
+jar files from opensaml/java/endorsed to the JDK's endorsed folder.
+
+Additionally, while you can use Sun's XML classes on JDK 1.5 to build and
+use OpenSAML, there is a memory leak somewhere in that code. The Xerces
+parser from Apache corrects this problem and is included. You can endorse
+those jars to override the broken Sun code on JDK 1.5 just as with JDK 1.4.
+
+The JavaDocs can be generated with the following command:
+
+$ ant javadocs
+
+Make sure that opensaml.jar and all the jars in the lib and endorsed folder
+are in your application's classpath when using the classes. If you don't know
+what a classpath is, you need to read up on Java and determine how to specify
+it for the application you're using or building. Some of the classes also
+depend on a Servlet 2.2 environment and should work in any compliant J2EE server.
+
+You often need to copy the JAXP jar files into a different endorsed folder
+such as the one Tomcat uses by default (tomcat/common/lib/endorsed), if not
+using the java JVM directly. Refer to your application server's documentation
+for further details.

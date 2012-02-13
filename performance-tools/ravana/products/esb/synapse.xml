@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="XSLTProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <xslt key="xslt-key-req"/>
+                <send>
+                    <endpoint name="endpoint_urn_uuid_8CD1A8E283E732E27A63447969797682093962071">
+                        <address uri="http://localhost:9763/services/POService"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <xslt key="xslt-key-res"/>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <proxy name="POProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <endpoint name="endpoint_urn_uuid_65064FC77EB7779BD131182969342756-295788580">
+                <address uri="http://localhost:9763/services/POService"/>
+            </endpoint>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <proxy name="SignEncProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <endpoint name="endpoint_urn_uuid_E7ECEAF2CD1F1521282721786852509-560606065">
+                <address uri="http://localhost:9763/services/POService"/>
+            </endpoint>
+            <inSequence>
+                <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+        <policy key="conf:/repository/axis2/service-groups/SignEncProxy/services/SignEncProxy/policies/SigEncr"/>
+        <enableSec/>
+    </proxy>
+    <localEntry key="xslt-key-req" src="file:repository/samples/resources/transform/transform.xslt"/>
+    <localEntry key="xslt-key-res" src="file:repository/samples/resources/transform/transform_back.xslt"/>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>

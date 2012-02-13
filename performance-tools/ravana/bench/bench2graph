@@ -1,0 +1,139 @@
+#!/bin/sh
+#
+# BenchToGraph : Graph modeler for Autobench results files
+# written by Samuel Dupas <samuel.dupas@synaptique.co.uk>
+#
+# Thanks to Julian T J Midgley <jtjm@xenoclast.org>
+#
+
+if [ $# -lt 3 ] ; then
+    echo "Usage          : bench2graph PARAM_1 PARAM_2 [ PARAM_3 ... PARAM_N ]"
+    echo "Test name"
+    echo "Parameter 2    : autobench results file"
+    echo "Parameter 3    : name of the postscript output file"
+    echo "Parameter 4    : graph category"
+    echo "Parameter 5..N : [optional] columns to display in the graphic"
+    exit 1
+fi
+
+testname=$1
+category=$4
+shift	
+
+if [ ! -f $1 ] ; then
+    echo "Incorrect file format"
+    exit 2
+fi
+
+input=$1
+shift
+
+output=$1
+if [ `echo $output |cut -c 1` != '/' ] ; then
+	output=`pwd`/$output
+fi
+shift
+
+while [ $# -ne 0 ] ; do
+    liste="$liste,$1,"
+    shift
+done
+
+#echo -n "Enter the title : "
+#read title
+
+if [ ! -d /tmp/graph_script ] ; then
+    mkdir /tmp/graph_script
+fi
+mkdir /tmp/graph_script/$$
+
+cp $input /tmp/graph_script/$$/results.tsv
+cd /tmp/graph_script/$$
+
+nblines=`cat results.tsv | wc -l`
+nblines=`expr $nblines - 1`
+
+legend=`head -1 results.tsv`
+i=1
+for col in $legend ; do
+    if [ $i -ne 1 ] ; then
+	if [ `echo -n $liste | wc -c` -eq 0 ] ; then
+	    tail -$nblines results.tsv | gawk '{print $1 " " $line}' line=$i > $col
+	    files="$files $col" 
+	elif `echo $liste | grep ",${i}," > /dev/null` ; then
+	    tail -$nblines results.tsv | gawk '{print $1 " " $line}' line=$i > $col
+	    files="$files $col"
+	fi
+    fi
+    i=`expr $i + 1`
+done
+
+#set the gnuplot script
+echo "set terminal postscript color" > /tmp/gnuplot.cmd
+echo "set key outside below" >> /tmp/gnuplot.cmd
+echo "set key box" >> /tmp/gnuplot.cmd
+echo "set grid" >> /tmp/gnuplot.cmd
+echo "set output \"${output}\"" >> /tmp/gnuplot.cmd
+echo "set style data linespoints" >> /tmp/gnuplot.cmd
+echo "set title \"$testname\"" >> /tmp/gnuplot.cmd
+echo "set yrange [0:*]" >>/tmp/gnuplot.cmd
+
+#if [ "$testname" = "Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size" -o "$testname" = "transactions_per_second_vs_message_size" ] ; then
+if [ "$category" = "httperf-histo" -o "$category" = "jms-histo" -o "$category" = "ab-histo" ] ; then
+	#set the graph to a histogram
+	echo "set boxwidth .75 relative" >>/tmp/gnuplot.cmd
+	echo "set style fill solid 2.00 border 10" >>/tmp/gnuplot.cmd
+	echo "set style histogram clustered gap 1 title  offset character 0, 0, 0" >>/tmp/gnuplot.cmd
+	echo "set style data histograms" >>/tmp/gnuplot.cmd
+	echo "set datafile missing '-'" >>/tmp/gnuplot.cmd
+	echo "set style data histograms" >>/tmp/gnuplot.cmd
+	echo "set xtics 10" >>/tmp/gnuplot.cmd
+	echo "set xtics border in scale 1,0.5 nomirror rotate by -45  offset character 0, 0, 0" >>/tmp/gnuplot.cmd
+	echo "set xlabel \"Message Size\(KB\)\"">>/tmp/gnuplot.cmd
+	echo "set ylabel \"Rate\(\/S\)\"">>/tmp/gnuplot.cmd
+	echo -n "plot '/tmp/graph_script/$$/results.tsv' using ">>/tmp/gnuplot.cmd
+	j=1
+	#iterate for the rows which need to plot
+	for col in $files ; do
+	    if [ $j = 1 ] ; then 
+		echo -n "2:xtic(1) ti col">>/tmp/gnuplot.cmd
+	    elif [ $j -gt 1 ] ; then
+	    	echo ", '' u `expr $j+1` ti col">>/tmp/gnuplot.cmd
+	    fi
+	    j=`expr $j + 1`
+	done
+
+elif [ "$category" = "httperf" ]; then
+	echo set xlabel \"Demand Rate\" >> /tmp/gnuplot.cmd
+	echo -n plot >> /tmp/gnuplot.cmd
+	j=0
+	#iterate for the rows which need to plot
+	for col in $files ; do
+	    if [ $j -ne 0 ] ; then
+		echo -n "," >> /tmp/gnuplot.cmd
+	    fi
+	    echo -n " \"${col}\"" >> /tmp/gnuplot.cmd
+	    j=`expr $j + 1`
+	done
+
+elif [ "$category" = "ab" ]; then
+	echo set xlabel \"Concurrency\" >> /tmp/gnuplot.cmd
+	echo -n plot >> /tmp/gnuplot.cmd
+	j=0
+	#iterate for the rows which need to plot
+	for col in $files ; do
+	    if [ $j -ne 0 ] ; then
+		echo -n "," >> /tmp/gnuplot.cmd
+	    fi
+	    echo -n " \"${col}\"" >> /tmp/gnuplot.cmd
+	    j=`expr $j + 1`
+	done
+
+fi
+
+echo >> /tmp/gnuplot.cmd
+
+gnuplot /tmp/gnuplot.cmd
+
+
+rm -rf /tmp/graph_script/$$

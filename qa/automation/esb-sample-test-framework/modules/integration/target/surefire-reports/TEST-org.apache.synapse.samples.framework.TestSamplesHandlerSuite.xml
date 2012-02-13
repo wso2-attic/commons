@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite failures="0" time="1,582.681" errors="0" skipped="0" tests="44" name="org.apache.synapse.samples.framework.TestSamplesHandlerSuite">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/home/chamara/java/jdk1.6.0_29/jre/lib/amd64"/>
+    <property name="java.vm.version" value="20.4-b02"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/home/chamara/wso2/project/automation/synapse_framework"/>
+    <property name="java.runtime.version" value="1.6.0_29-b11"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/home/chamara/java/jdk1.6.0_29/jre/lib/endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="
+"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="os.name" value="Linux"/>
+    <property name="classworlds.conf" value="/home/chamara/software/apache-maven-3.0.3/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/home/chamara/java/jdk1.6.0_29/jre/lib/amd64/server:/home/chamara/java/jdk1.6.0_29/jre/lib/amd64:/home/chamara/java/jdk1.6.0_29/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="2.6.32-37-generic"/>
+    <property name="user.home" value="/home/chamara"/>
+    <property name="user.timezone" value="Asia/Colombo"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="user.name" value="chamara"/>
+    <property name="java.class.path" value="/home/chamara/software/apache-maven-3.0.3/boot/plexus-classworlds-2.4.jar"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/home/chamara/java/jdk1.6.0_29/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.6.0_29"/>
+    <property name="java.ext.dirs" value="/home/chamara/java/jdk1.6.0_29/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="securerandom.source" value="file:/dev/./urandom"/>
+    <property name="sun.boot.class.path" value="/home/chamara/java/jdk1.6.0_29/jre/lib/resources.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/rt.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/sunrsasign.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/jsse.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/jce.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/charsets.jar:/home/chamara/java/jdk1.6.0_29/jre/lib/modules/jdk.boot.jar:/home/chamara/java/jdk1.6.0_29/jre/classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="maven.home" value="/home/chamara/software/apache-maven-3.0.3"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase time="40.093" classname="org.apache.synapse.samples.framework.tests.message.Sample0" name="testSmartClientMode"/>
+  <testcase time="35.209" classname="org.apache.synapse.samples.framework.tests.message.Sample0" name="testSynapseAsHTTPProxy"/>
+  <testcase time="35.159" classname="org.apache.synapse.samples.framework.tests.message.Sample1" name="testDumbClientMode"/>
+  <testcase time="35.159" classname="org.apache.synapse.samples.framework.tests.message.Sample2" name="testCBR"/>
+  <testcase time="34.138" classname="org.apache.synapse.samples.framework.tests.message.Sample3" name="testLocalEntriesReusableEndPointsSequences"/>
+  <testcase time="35.14" classname="org.apache.synapse.samples.framework.tests.message.Sample4" name="testErrorHandling"/>
+  <testcase time="34.137" classname="org.apache.synapse.samples.framework.tests.message.Sample5" name="testCreateFaultAndChangeDirection"/>
+  <testcase time="35.138" classname="org.apache.synapse.samples.framework.tests.message.Sample6" name="testManipulatingHeadersAndFiltering"/>
+  <testcase time="35.129" classname="org.apache.synapse.samples.framework.tests.message.Sample7" name="testLocalRegEntriesAndSchemaValidation"/>
+  <testcase time="34.128" classname="org.apache.synapse.samples.framework.tests.message.Sample8" name="testRegistryAndXSLTMediator"/>
+  <testcase time="36.136" classname="org.apache.synapse.samples.framework.tests.message.Sample9" name="testDynamicSequences"/>
+  <testcase time="35.3" classname="org.apache.synapse.samples.framework.tests.message.Sample10" name="testDynamicEndPoints"/>
+  <testcase time="35.132" classname="org.apache.synapse.samples.framework.tests.message.Sample11" name="testFullRegistryBasedConfig"/>
+  <testcase time="39.126" classname="org.apache.synapse.samples.framework.tests.message.Sample12" name="testFireAndForget"/>
+  <testcase time="37.122" classname="org.apache.synapse.samples.framework.tests.message.Sample13" name="testDualQuote"/>
+  <testcase time="37.143" classname="org.apache.synapse.samples.framework.tests.message.Sample15" name="testMessageEnrichment"/>
+  <testcase time="40.179" classname="org.apache.synapse.samples.framework.tests.message.Sample16" name="testDynamicStaticKeys"/>
+  <testcase time="35.124" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample50" name="testRestToPox"/>
+  <testcase time="36.125" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample51" name="testMTOMOptimization"/>
+  <testcase time="36.129" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample51" name="testSWAOptimization"/>
+  <testcase time="36.463" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample52" name="testSessionLessLB"/>
+  <testcase time="42.691" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample53" name="testFailOver"/>
+  <testcase time="35.368" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample54" name="testSessionFullLB"/>
+  <testcase time="40.588" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample55" name="testSessionFullLBFailOver"/>
+  <testcase time="34.146" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample56" name="testSmartClientMode"/>
+  <testcase time="38.344" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample58" name="testStaticLB"/>
+  <testcase time="38.35" classname="org.apache.synapse.samples.framework.tests.endpoint.Sample59" name="testSessionLessLB"/>
+  <testcase time="35.382" classname="org.apache.synapse.samples.framework.tests.qos.Sample101" name="testWSRM"/>
+  <testcase time="35.112" classname="org.apache.synapse.samples.framework.tests.proxy.Sample150" name="testBasicProxy"/>
+  <testcase time="34.111" classname="org.apache.synapse.samples.framework.tests.proxy.Sample151" name="testCustomSequencesEndpointsWithProxy"/>
+  <testcase time="34.119" classname="org.apache.synapse.samples.framework.tests.proxy.Sample152" name="testTransportAndFormatSwitching"/>
+  <testcase time="36.379" classname="org.apache.synapse.samples.framework.tests.proxy.Sample154" name="testSessionFullLB"/>
+  <testcase time="35.106" classname="org.apache.synapse.samples.framework.tests.proxy.Sample155" name="testDualQuote"/>
+  <testcase time="35.108" classname="org.apache.synapse.samples.framework.tests.proxy.Sample157" name="testRoutingOnHttpHeader"/>
+  <testcase time="35.111" classname="org.apache.synapse.samples.framework.tests.advanced.Sample350" name="testScriptMediationWithJS"/>
+  <testcase time="34.102" classname="org.apache.synapse.samples.framework.tests.advanced.Sample351" name="testScriptMediationInLineJS"/>
+  <testcase time="34.101" classname="org.apache.synapse.samples.framework.tests.advanced.Sample352" name="testAccesingAPIUsingScripting"/>
+  <testcase time="37.105" classname="org.apache.synapse.samples.framework.tests.advanced.Sample370" name="testThrottling"/>
+  <testcase time="35.154" classname="org.apache.synapse.samples.framework.tests.advanced.Sample371" name="testRestrictedThrottling"/>
+  <testcase time="34.123" classname="org.apache.synapse.samples.framework.tests.advanced.Sample380" name="testCustomMediator"/>
+  <testcase time="35.106" classname="org.apache.synapse.samples.framework.tests.advanced.Sample390" name="testXQuery"/>
+  <testcase time="34.179" classname="org.apache.synapse.samples.framework.tests.advanced.Sample391" name="testExternalXQuery"/>
+  <testcase time="36.145" classname="org.apache.synapse.samples.framework.tests.advanced.Sample420" name="testCache"/>
+  <testcase time="35.117" classname="org.apache.synapse.samples.framework.tests.advanced.Sample450" name="testURLRewrite"/>
+</testsuite>

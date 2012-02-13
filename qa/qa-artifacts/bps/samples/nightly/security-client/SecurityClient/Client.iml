@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module relativePaths="true" type="JAVA_MODULE" version="4">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="jdk" jdkName="IDEA 6819" jdkType="IDEA JDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/lib/endorsed/xercesImpl-2.8.1.wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/lib/endorsed/xml-apis-1.3.04.wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/lib/endorsed/xalan-2.7.0.wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/lib/endorsed/geronimo-jaxws_2.2_spec-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-connector-2.0.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-pool-1.5.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-kernel-2.0.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.core.services-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/jettison-1.0.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.utils-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/h2-1.2.140.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-logging-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-stax-api_1.0_spec-1.0.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/rampart-trust-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.core.common-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-jibx-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.logging.service-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.authenticator.proxy-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-spec-jms-1.1.0.rc4-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-j2ee-connector_1.5_spec-1.0.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/xmlbeans-2.3.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.logging.view.ui-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-ejb_2.1_spec-1.1.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/neethi-2.0.4-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-lang-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-el-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-transaction-2.0.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-codec-1.3.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.base-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-cli-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.addressing-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-jaxbri-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/XmlSchema-1.4.6-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axiom-1.2.11-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/rampart-core-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.user.core-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.rm-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/compass-2.0.1-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.security.mgt-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-jta_1.1_spec-1.1.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/ehcache-1.5.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.pwprovider-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.security.mgt.ui-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-spec-javamail-1.3.0.rc51-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/geronimo-saaj_1.3_spec-1.0.0-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/jibx-1.2.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/rampart-policy-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.rm.ui-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.user.api-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-fileupload-1.2.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/wsdl4j-1.6.2-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-modeler-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.registry.api-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.core-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-io-2.0.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/abdera-1.0.0-wso2v2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-dbcp-1.4.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-transport-jms-1.1.0-wso2v4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/backport-util-concurrent-3.1.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/commons-httpclient-3.1.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.registry.core-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/xkms-2.4.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/bcel-5.2.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/httpcore-4.1.0-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-transport-base-1.1.0-wso2v4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/axis2-json-1.6.1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.logging.admin.ui-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/opensaml2-2.0.0.alpha1-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/woden-1.0.0.M8-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/bcprov-jdk15-132.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/wss4j-1.5.11-wso2v1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../2.0.3/10_3/wso2bps-2.0.3-SNAPSHOT/repository/lib/org.wso2.carbon.logging-3.2.0-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntryProperties />
+  </component>
+</module>
+

@@ -1,0 +1,312 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.wso2.mercury</groupId>
+	<artifactId>mercury-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>SNAPSHOT</version>
+	<name>WSO2 Mercury</name>
+	<url>http://wso2.org/projects/mercury</url>
+	<description>
+		WS-Reliable Messaging implementation from WSO2
+	</description>
+
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+
+	<modules>
+		<module>modules/core</module>
+		<module>modules/persistence</module>
+		<!--
+		<module>modules/test</module>
+		-->
+		<module>modules/mar</module>
+		<module>modules/distribution</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2</artifactId>
+				<version>${axis2.version}</version>
+			</dependency>
+			<dependency>
+                <groupId>org.apache.axis2</groupId>
+                <artifactId>axis2-transports</artifactId>
+                <version>${axis2.version}</version>
+            </dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-api</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-impl</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-dom</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.neethi</groupId>
+				<artifactId>neethi</artifactId>
+				<version>${neethi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.woodstox</groupId>
+				<artifactId>wstx-asl</artifactId>
+				<version>${woodstok.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${commons.logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+                        <dependency>
+                                 <groupId>org.apache.httpcomponents</groupId>
+                                 <artifactId>httpcore</artifactId>
+                                 <version>${httpcore.version}</version>
+                        </dependency>
+			<!-- Rampart -->
+			<dependency>
+				<groupId>org.apache.rampart</groupId>
+				<artifactId>rampart-core</artifactId>
+				<version>${rampart.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.rampart</groupId>
+				<artifactId>rampart-trust</artifactId>
+				<version>${rampart.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.rampart</groupId>
+				<artifactId>rampart-policy</artifactId>
+				<version>${rampart.version}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.axis2</groupId>
+            <artifactId>axis2-transports</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-impl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-dom</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.neethi</groupId>
+			<artifactId>neethi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>wstx-asl</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
+		</dependency>
+                <dependency>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                </dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+	</dependencies>
+
+	<scm>
+		<connection>
+			scm:svn:https://wso2.org/repos/wso2/trunk/commons/mercury
+		</connection>
+		<developerConnection>
+			scm:svn:https://wso2.org/repos/wso2/trunk/commons/mercury
+		</developerConnection>
+	</scm>
+
+	<repositories>
+		<repository>
+			<id>m2-snapshot-repository</id>
+			<url>
+				http://people.apache.org/repo/m2-snapshot-repository
+			</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>wso2-maven2-repository</id>
+			<url>http://dist.wso2.org/maven2</url>
+		</repository>
+		<repository>
+			<id>tomcat-repository</id>
+			<url>http://tomcat.apache.org/dev/dist/m2-repository</url>
+		</repository>
+		<repository>
+			<id>ws-zones-repository</id>
+			<url>http://ws.zones.apache.org/repository2</url>
+		</repository>
+		<!-- Others are available from http://repo1.maven.org/maven2 -->
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>wso2-maven2-repository</id>
+			<name>WSO2 Maven2 Repository</name>
+			<url>
+				scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/
+			</url>
+		</repository>
+		<snapshotRepository>
+			<id>wso2-maven2-snapshot-repository</id>
+			<name>WSO2 Maven2 Repository</name>
+			<url>
+				scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/
+			</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<profiles>
+<!--
+           <profile>
+             <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            <modules>
+                <module>modules/distribution</module>
+            </modules>
+          </profile>	
+-->
+          <profile>
+			<activation>
+				<property>
+					<name>sign</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.0-alpha-3</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+	   </profile>
+	</profiles>
+
+	<organization>
+		<name>WSO2 Inc</name>
+		<url>http://wso2.com</url>
+	</organization>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://wso2.org/jira/browse/mercury</url>
+	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>WSO2 Mercury Users' list</name>
+			<post>mailto:mercury-user@wso2.org</post>
+			<archive>http://wso2.org/mailarchive/mercury-user/</archive>
+			<subscribe>
+				mailto:mercury-user-request@wso2.org?subject=subscribe
+			</subscribe>
+			<unsubscribe>
+				mailto:mercury-user-request@wso2.org?subject=unsubscribe
+			</unsubscribe>
+		</mailingList>
+		<mailingList>
+			<name>WSO2 Mercury Developers' List</name>
+			<post>mailto:mercury-dev@wso2.org</post>
+			<archive>http://wso2.org/mailarchive/mercury-dev/</archive>
+			<subscribe>
+				mailto:mercury-dev-request@wso2.org?subject=subscribe
+			</subscribe>
+			<unsubscribe>
+				mailto:mercury-dev-request@wso2.org?subject=unsubscribe
+			</unsubscribe>
+		</mailingList>
+	</mailingLists>
+
+	<properties>
+		<axis2.version>SNAPSHOT</axis2.version>
+		<axiom.version>SNAPSHOT</axiom.version>
+		<hibernate.version>3.2.5.ga</hibernate.version>
+		<neethi.version>SNAPSHOT</neethi.version>
+		<junit.version>3.8.2</junit.version>
+		<woodstok.version>3.2.1</woodstok.version>
+		<commons.logging.version>1.1</commons.logging.version>
+		<log4j.version>1.2.13</log4j.version>
+		<rampart.version>SNAPSHOT</rampart.version>
+                <httpcore.version>4.0-beta1</httpcore.version>
+                <servlet.api.version>2.3</servlet.api.version>
+	</properties>
+</project>

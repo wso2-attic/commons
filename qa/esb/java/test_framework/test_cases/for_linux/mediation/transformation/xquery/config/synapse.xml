@@ -1,0 +1,23 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <localEntry key="xquery_add_req" src="file:repository/conf/sample/resources/xquery/xquery_req_add.xq"/>
+    <localEntry key="xquery_add_res" src="file:repository/conf/sample/resources/xquery/xquery_res_add.xq"/>
+        <in>
+            <xquery key="xquery_add_req">
+                <variable name="x" value="10" type="INT"/>
+                <variable name="y" value="10" type="INT"/>
+            </xquery>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/soap/Adding"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <xquery key="xquery_add_res">
+                <variable name="return" value="20" type="INT"/>
+            </xquery>
+            <send/>
+        </out>
+
+</definitions>
+

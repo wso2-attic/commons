@@ -1,0 +1,133 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<process name="HelloWorld3"
+    targetNamespace="http://ode/bpel/unit-test" 
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:tns="http://ode/bpel/unit-test"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:test="http://ode/bpel/unit-test.wsdl"
+    xmlns:credit1="http://wso2.org/bps/samples/CreditRating"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+xmlns:credit="http://wso2.org/bps/samples/loan_process/schema">
+
+  <import location="HelloWorld3.wsdl"
+     namespace="http://ode/bpel/unit-test3.wsdl"
+     importType="http://schemas.xmlsoap.org/wsdl/" />
+   <import location="CreditRating.wsdl"
+     namespace="http://wso2.org/bps/samples/CreditRating"
+     importType="http://schemas.xmlsoap.org/wsdl/" />  
+
+   <partnerLinks>
+      <partnerLink name="helloPartnerLink" 
+         partnerLinkType="test:HelloPartnerLinkType" 
+         myRole="me" />
+      <partnerLink name="CreditPartnerLink" 
+         partnerLinkType="credit1:CreditRating" 
+         partnerRole="CreditRatingService" 
+         myRole="CreditRatingCallbackService"/>
+   </partnerLinks>
+    
+   <variables>
+     <variable name="myVar" messageType="test:HelloMessage"/>
+     <variable name="CreditVar" messageType="credit1:getCreditRatingRequest"/>
+     <variable name="CreditResponseVar" messageType="credit1:getCreditRatingResponse"/>
+     <variable name="tmpVar" type="xsd:string"/>
+     <variable name="tmpDate" type="xsd:dateTime"/>
+   </variables>
+   
+   <correlationSets>
+        <correlationSet name="correlator" properties="test:correlatorProp"/>
+   </correlationSets>
+        
+   <sequence>   
+       <receive 
+          name="start"
+          partnerLink="helloPartnerLink"
+          portType="test:HelloPortType"
+          operation="hello"
+          variable="myVar"
+          createInstance="yes">
+          
+		  <correlations>
+		        <correlation set="correlator" initiate="yes"></correlation>
+		  </correlations>
+      </receive>
+          
+      <assign name="assign1">
+         <copy>
+			 <from>
+				<literal>
+				    <credit:CustomerSSN>
+				        <credit:SSN></credit:SSN>
+				    </credit:CustomerSSN>
+				</literal>
+			</from>
+			<to>$CreditVar.part</to>
+        </copy>
+        <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to>$CreditVar.part/credit:SSN</to>
+         </copy>
+      </assign>
+          
+      <!--invoke name="CreditService" partnerLink="CreditPartnerLink" operation="getCreditRating" portType="credit1:CreditRatingPortType" inputVariable="CreditVar" outputVariable="CreditResponseVar"/-->
+      <invoke 
+      		name="CreditService" 
+      		partnerLink="CreditPartnerLink" 
+      		operation="getCreditRating" 
+      		portType="credit1:CreditRatingPortType" 
+      		inputVariable="CreditVar">
+      		<!--correlations>
+                <correlation set="correlator" initiate="yes"></correlation>
+            </correlations-->
+      </invoke>
+      <receive 
+          name="CreditCallbackService"
+          partnerLink="CreditPartnerLink"
+          portType="credit1:CreditRatingCallbackPortType"
+          operation="getCreditRatingCallback"
+          variable="CreditResponseVar">
+          <correlations>
+              <correlation set="correlator" initiate="no"></correlation>
+          </correlations>
+      </receive>        
+
+      <assign name="assign2">
+      	<copy>
+            <from>$CreditResponseVar.part/credit:SSN</from>
+            <to variable="myVar" part="TestPart"/>
+         </copy>
+         <copy>
+            <from variable="myVar" part="TestPart"/>
+            <to variable="tmpVar"/>
+         </copy>
+         <copy>
+             <from>concat($tmpVar,' World')</from>
+             <to variable="myVar" part="TestPart"/>
+         </copy>
+      </assign>
+       <reply name="end"  
+              partnerLink="helloPartnerLink"
+              portType="test:HelloPortType" 
+              operation="hello"
+              variable="myVar"/>
+   </sequence>
+</process>

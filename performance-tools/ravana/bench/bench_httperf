@@ -1,0 +1,349 @@
+#!/usr/bin/perl -w
+
+# WSO2 Ravana - tool to benchmark WSO2 server products
+
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+
+use strict;
+use Getopt::Long;
+use XML::Simple;
+use List::Util qw[min max]; #To get minimum and maximum of a list
+
+my $VERSION="1.0.0";
+
+my $DEBUG = 0;
+#---------------------------------------------------------------------------
+# test_host ($data, $rate, $server, $uri, $port)
+sub
+test_host 
+{
+    my ($data, $rate, $server, $uri, $port) = @_;
+    my %results;
+
+	my $header = $data->{'extra'}->{'header'};
+	my $method = $data->{'scenario'}->{'method'};
+	my $timeout = $data->{'scenario'}->{'timeout'};
+	my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};	
+	my $max_connections = $data->{'scenario'}->{'max_connections'};	
+	my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+	my $user_think_time = $data->{'scenario'}->{'user_think_time'};
+	my $scenario = $data->{'scenario'}->{'name'};
+	
+    my $httperf_command="";
+	if (defined $header && $header ne "''")
+    {
+        $httperf_command = "httperf --server $server --uri \"$uri\" ".
+	    " --hog  --method ". $method.
+	    " --add-header=\"".$header."\"".
+        #" --num-conn ".$num_conn." --num-call ".$num_call.
+	    " --timeout ".$timeout." --rate $rate --port $port ".
+	    "--max-piped-calls ".$max_piped_calls.
+	    " --max-connections ".$max_connections.
+	    " --wsesslog=$no_of_sessions,$user_think_time,scenario/$scenario/inputfile";
+    }
+    else
+    {
+        $httperf_command = "httperf --server $server --uri \"$uri\" ".
+	    " --hog  --method ". $method.
+        #" --num-conn ".$num_conn." --num-call ".$num_call.
+	    " --timeout ".$timeout." --rate $rate --port $port ".
+	    "--max-piped-calls ".$max_piped_calls.
+	    " --max-connections ".$max_connections.
+	    " --wsesslog=$no_of_sessions,$user_think_time,scenario/$scenario/inputfile";
+    }
+	
+    #print STDERR "$httperf_command\n" if $DEBUG;
+    print STDERR "$httperf_command\n";
+
+    open (IN,  "$httperf_command |")
+	or die "Cannot execute httperf\n";
+
+    while(<IN>) {
+	if (/^Total: .*replies (\d+)/) {
+	    $results{replies}=$1;
+	}
+	if (/^Connection rate: (\d+\.\d)/) {
+	    $results{conn_rate}=$1;
+	}
+	if (/^Request rate: (\d+\.\d)/) {
+	    $results{req_rate}=$1;
+	}
+	if (/^Reply rate .*min (\d+\.\d) avg (\d+\.\d) max (\d+\.\d) stddev (\d+\.\d)/) {
+	    $results{rep_rate_min} = $1;
+	    $results{rep_rate_avg} = $2;
+        print STDERR "rep_rate_avg:$2\n";
+	    $results{rep_rate_max} = $3;
+	    $results{rep_rate_stdv} = $4;
+	}
+	if (/^Reply time .* response (\d+\.\d)/) {
+	    $results{rep_time} = $1;
+        print STDERR "rep_time:$1\n";
+	}
+	if (/^Net I\/O: (\d+\.\d)/) {
+	    $results{net_io} = $1;
+        print STDERR "net_io:$1\n";
+	}
+	if (/^Errors: total (\d+)/) {
+	    $results{errors} = $1;
+        print STDERR "errors:$1\n";
+	}
+	print $_;
+    }
+    close (IN);
+    
+    if ($results{replies} == 0) {
+	print STDERR "Zero replies received, test invalid: rate $rate\n";
+	$results{percent_errors} = 101;
+    }
+    else {
+	$results{percent_errors} = ( 100 * $results{errors} / $results{replies} );
+    }
+    return \%results;
+}
+
+sub 
+print_header
+{
+    my ($data, $sep, $out_stream) = @_;
+    my $host1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+    my $host2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+
+    # The following is really quite ugly...
+    print $out_stream "dem_req_rate".$sep.
+        "req_rate_$host1".$sep.
+        "con_rate_$host1".$sep.
+        "min_rep_rate_$host1".$sep.
+        "avg_rep_rate_$host1".$sep.
+        "max_rep_rate_$host1".$sep.
+        "stddev_rep_rate_$host1".$sep.
+        "resp_time_$host1".$sep.
+        "net_io_$host1".$sep.
+        "errors_$host1";
+
+    if ($data->{'single-host'} eq 'true') {
+        print $out_stream "\n";
+    }
+    else {
+        print $out_stream $sep."req_rate_$host2".$sep.
+            "con_rate_$host2".$sep.
+            "min_rep_rate_$host2".$sep.
+            "avg_rep_rate_$host2".$sep.
+            "max_rep_rate_$host2".$sep.
+            "stddev_rep_rate_$host2".$sep.
+            "resp_time_$host2".$sep.
+            "net_io_$host2".$sep.
+            "errors_$host2\n";
+    }
+}
+
+#--------------------------------------------------------------------------
+# Main
+
+# Declarations
+my ($curr_rate, $sep);
+my (%res_host1, %res_host2, $dem_req);
+
+# Get configuration from config file
+
+my $xml = XML::Simple->new;
+my $data = $xml->XMLin("./conf/config.xml");
+
+$DEBUG = 1 if ($data->{'extra'}->{'debug'} eq 'false');
+
+$sep = "\t";
+
+# Check that httperf is in our path
+system("which httperf > /dev/null") == 0 
+    or die 'Cannot find httperf in $PATH; please ensure it is installed and your PATH is'."\ncorrectly set\n";
+
+#get the server details for the config.xml
+my $host1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+my $host2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+
+#check single server or two servers
+if(!(defined($host2)&&defined($port2)&&defined($uri2))){
+	$data->{'single-host'} = 'true';	
+} else {
+	$data->{'single-host'} = 'false';
+} 
+
+#get scenario details
+my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+my $scenario = $data->{'scenario'}->{'name'};
+
+# Set the output stream
+open(OUT, ">scenario/$scenario/results/results.tsv") or die "Cannot open output file for writing\n";
+
+#print the header of the tsv file
+print_header($data, $sep, \*OUT);
+
+my $high_rate = $data->{'scenario'}->{'high_rate'};
+my $low_rate = $data->{'scenario'}->{'low_rate'};
+my $rate_step = $data->{'scenario'}->{'rate_step'};
+my $warmup_rate = $data->{'scenario'}->{'warmup_rate'};
+my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};
+
+my $demand_rate_at_max_response_rate_h1 = 0; 
+my $demand_rate_at_max_response_rate_h2 = 0; 
+
+my $max_response_time_h1 = 0; 
+my $max_response_time_h2 = 0; 
+
+my @tps_list1; #list to contain demand rate for host1
+my @tpr_list1; #list to contain response time for host1
+my @tps_list2; #list to contain demand rate for for host2
+my @tpr_list2; #list to contain response time for host2
+
+# Conduct the tests
+#testing for demand rates, from low_rate to high_rate with the step of rate_step
+for ($curr_rate = $low_rate; $curr_rate <= $high_rate; 
+     $curr_rate += $rate_step) 
+{	
+    $dem_req = ($curr_rate*$max_piped_calls);	
+
+    # Test Host 1	
+    %res_host1 = %{test_host ($data, $curr_rate, $host1, $uri1, $port1)};
+    #get the demand rate at the maximum response time 
+    if($res_host1{rep_rate_avg})
+    {
+        push(@tps_list1, $res_host1{rep_rate_avg});
+        push(@tpr_list1, $res_host1{rep_time});
+    }
+
+    # Test Host 2
+    if ($data->{'single-host'} eq 'false') 
+    {
+	    sleep(20);  
+    	%res_host2 = %{test_host ($data, $curr_rate, $host2, $uri2, $port2)};
+	    #get the demand rate at the maximum response time
+	    if($res_host2{rep_rate_avg})
+        {
+            push(@tps_list2, $res_host2{rep_rate_avg});
+            push(@tpr_list2, $res_host2{rep_time});
+	    }	
+    } 
+	
+    # Merge and Display Results
+    if($res_host1{rep_rate_avg})
+    {
+	    print OUT $dem_req.$sep.
+		  $res_host1{req_rate}.$sep.
+		  $res_host1{conn_rate}.$sep.
+		  $res_host1{rep_rate_min}.$sep.
+		  $res_host1{rep_rate_avg}.$sep.
+		  $res_host1{rep_rate_max}.$sep.
+		  $res_host1{rep_rate_stdv}.$sep.
+	      $res_host1{rep_time}.$sep.
+		  $res_host1{net_io}.$sep.
+		  $res_host1{percent_errors};
+	    if ($data->{'single-host'} eq 'true') 
+        {
+	   	    print OUT "\n";
+	    }
+	    else 
+        {
+	    	print OUT $sep.$res_host2{req_rate}.$sep.
+	     	  $res_host2{conn_rate}.$sep.
+	    	  $res_host2{rep_rate_min}.$sep.
+	    	  $res_host2{rep_rate_avg}.$sep.
+	    	  $res_host2{rep_rate_max}.$sep.
+	    	  $res_host2{rep_rate_stdv}.$sep.
+	    	  $res_host2{rep_time}.$sep.
+		      $res_host2{net_io}.$sep.
+		      $res_host2{percent_errors}."\n";	   
+	    }
+	}
+}
+$demand_rate_at_max_response_rate_h1 = max(@tps_list1); #take max
+$max_response_time_h1 = min(@tpr_list1); #take min
+$demand_rate_at_max_response_rate_h2 = max(@tps_list2); #take max
+$max_response_time_h2 = min(@tpr_list2); #take min
+
+#calculate message size
+my $message_size = -s "scenario/$scenario/inputfile";
+
+if(! -e "scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv"){
+	open(MAXRATE, ">scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+	#print header
+	if ( $data->{'single-host'} eq 'false' ) {
+		print MAXRATE "message_size".$sep."dem_rate_$host1".$sep."dem_rate_$host2";	
+	} else {
+		print MAXRATE "message_size".$sep."dem_rate_$host1";
+	}
+	print MAXRATE "\n";
+}else{
+	open(MAXRATE, ">>scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";	
+}
+
+if(! -e "scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv"){
+
+	open(MAXTIME, ">scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+	#print header
+	if ( $data->{'single-host'} eq 'false' ) {	
+		print MAXTIME "message_size".$sep."res_time_$host1".$sep."res_time_$host2";	
+	} else {
+		print MAXTIME "message_size".$sep."res_time_$host1";
+	}
+	print MAXTIME "\n";
+}else{
+	open(MAXTIME, ">>scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+}
+
+#print data to Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv
+if ( $data->{'single-host'} eq 'false' ) 
+{
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1".$sep."$demand_rate_at_max_response_rate_h2";
+	print MAXTIME "$message_size".$sep."$max_response_time_h1".$sep."$max_response_time_h2";
+    my $mr_h1 = sprintf("%d", $demand_rate_at_max_response_rate_h1);
+    my $mr_h2 = sprintf("%d", $demand_rate_at_max_response_rate_h2);
+    print STDERR "******************************max_res_rate_h1:$mr_h1\n";
+    print STDERR "******************************max_res_rate_h2:$mr_h2\n";
+    print STDERR "******************************high_rate:$high_rate\n";
+	if($mr_h1 == $high_rate)
+    {
+		print STDERR "**************************You can go for higher Demand Rate and test $data->{'product1'}->{product_name}\n";
+	}
+	if($mr_h2 == $high_rate)
+    {
+		print STDERR "**************************You can go for higher Demand Rate and test $data->{'product2'}->{product_name}\n";
+    }
+} 
+else 
+{
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1";
+	print MAXTIME "$message_size".$sep."$max_response_time_h1";
+    my $mr_h1 = sprintf("%d", $demand_rate_at_max_response_rate_h1);
+    print STDERR "******************************max_res_rate:$mr_h1\n";
+    print STDERR "******************************high_rate:$high_rate\n";
+	if($mr_h1 == $high_rate)
+    {
+		print STDERR "**************************You can go for higher Demand Rate and test $data->{'product2'}->{product_name}\n";
+	}
+}
+print MAXRATE "\n";
+print MAXTIME "\n";
+
+close (OUT);
+close (MAXRATE);
+close (MAXTIME);
+
+print STDERR "Benchmark complete\n";

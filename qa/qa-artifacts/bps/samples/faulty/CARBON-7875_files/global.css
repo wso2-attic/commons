@@ -1,0 +1,169 @@
+
+
+
+
+
+
+
+a:link,a:visited {color:#3c78b5;}
+a:hover,a:active {color:#660000;}
+.pagetitle { color: #3c78b5; }
+.formtitle { color: #3c78b5; }
+.bluetext { color: #3c78b5; }
+.custcolour  { color: #3c78b5; }
+.toptext, .toptext a { color: #000000; }
+.portletLoginHeader { color: #ffffff; background-color: #3c78b5}
+.bgBorder {border:1px #ffffff solid; }
+#filterFormHeader,
+.leftFormHeader {border-bottom-color: #3c78b5; }
+#filterForm .tableUnderline { border-bottom-color: #3c78b5; }
+
+span.switch {color: #3c78b5;}
+
+.item-header .item-summary,
+.item-header .item-summary a:link,
+.item-header .item-summary a:visited {color:#3c78b5;}
+
+.ops li a.button:hover,
+#view-drop a.drop:hover,
+.tabs2 ul.horizontal li a {color:#3c78b5;}
+.ops li a.active:hover {color:#fff;} 
+/* header colours
+    header-top */
+#header {color:#000000;background-color:#ffffff;}
+#header-top div.aui-dd-parent a.lnk {color:#000000;}
+#header-top div.aui-dd-parent a.drop {background-image:url("/jira/rest/api/1.0/dropdowns?color=000000&bgcolor=ffffff");}
+#header-top div.aui-dd-parent.active,
+#header-top div.aui-dd-parent:hover {background-color:#325c82;}
+#header-top #popup-profile-user  {color:#000000;padding-right:1em;}
+
+#header-top div.aui-dd-parent.active a.lnk,
+#header-top div.aui-dd-parent:hover a.lnk {color:#f0f0f0;}
+
+#header-top div:hover a.drop {background-image: url("/jira/rest/api/1.0/dropdowns?color=f0f0f0&bgcolor=325c82");}
+#header-top div.active a.drop,
+#header-top div a.drop:hover,
+#header-top div a.drop:active,
+#header-top div a.drop:focus {background-color:#ffffff;background-image: url('/jira/rest/api/1.0/dropdowns?color=000000&bgcolor=ffffff');}
+#header-top div .drop-wrap {background-image: url("/jira/rest/api/1.0/header-separator?color=000000&bgcolor=ffffff");}
+#header-top div:hover .drop-wrap,
+#header-top div.active .drop-wrap {background-image: url("/jira/rest/api/1.0/header-separator?color=f0f0f0&bgcolor=325c82");}
+/* ie6 only */
+#header-top div.active {_background-color:#325c82;}
+#header-top div.active div {_background-color:#325c82;}
+
+ /* header bottom (navigation bar) */
+#header-bottom {background-color:#3c78b5;border-top:1px solid #ffffff;}
+#header-bottom #main-nav li.aui-dd-parent {background-color:#3c78b5;}
+    #create_link {color:#ffffff;}
+    #header-bottom #main-nav a.lnk {color:#ffffff;}
+    #header-bottom #main-nav li a.drop {background-image:url("/jira/rest/api/1.0/dropdowns?color=ffffff&bgcolor=3c78b5");}
+/* //header colours */
+/* note: the styles below are NOT user configurable in admin
+   They give the hover/active state of the drop arrow */
+#header-bottom #main-nav li:hover a.drop,
+#header-bottom #main-nav li.selected a.drop {background-image: url('../../../images/menu_indicator_for_light_backgrounds.gif')}
+#header-bottom #main-nav li.active a.drop,
+#header-bottom #main-nav li a.drop:hover,
+#header-bottom #main-nav li a.drop:active,
+#header-bottom #main-nav li a.drop:focus {background-color:#ccc;background-image: url('/jira/rest/api/1.0/dropdowns?color=fff&bgcolor=ccc');}
+#header-bottom #main-nav li .drop-wrap {background-image: url("/jira/rest/api/1.0/header-separator?color=f0f0f0&bgcolor=3c78b5");}
+#header-bottom #main-nav li.selected .drop-wrap {background-image: url("/jira/rest/api/1.0/header-separator?color=ccc&bgcolor=f7f7f7");}
+#header-bottom #main-nav li:hover .drop-wrap,
+#header-bottom #main-nav li.active .drop-wrap {background-image: url("/jira/rest/api/1.0/header-separator?color=ccc&bgcolor=ffffff");}
+/* ie6 only */
+#header-bottom #main-nav li.selected {_background-color:#f7f7f7;_border:none}
+#header-bottom #main-nav li.active {_background-color:#fff;}
+#header-bottom #main-nav li.selected div,
+#header-bottom #main-nav li.active div {_background-color:#fff;}
+
+
+.property-list .name {width:11em; margin-left:-12em;}
+.property-list .wrap {padding-left:12em;}
+.two-cols .item-right .wrap {padding-left:13em;}
+
+
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color1,
+    #jira .dashboard #dashboard-content div.gadget.color1 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color1 .dashboard-item-title {background: #369;_background:#369}
+
+#jira .dashboard #dashboard-content div.gadget.color1 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color1 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color1 a:hover,
+    #jira .dashboard ul.column li.color1.hover .gadget-container,
+    #jira li.color1.hover .gadget-menu .aui-dropdown,
+    #jira li.color1 form.aui {border-color: #369;_background:#369}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color2,
+    #jira .dashboard #dashboard-content div.gadget.color2 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color2 .dashboard-item-title {background: #900925;_background:#900925}
+
+#jira .dashboard #dashboard-content div.gadget.color2 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color2 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color2 a:hover,
+    #jira .dashboard ul.column li.color2.hover .gadget-container,
+    #jira li.color2.hover .gadget-menu .aui-dropdown,
+    #jira li.color2 form.aui {border-color: #900925;_background:#900925}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color3,
+    #jira .dashboard #dashboard-content div.gadget.color3 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color3 .dashboard-item-title {background: #d94625;_background:#d94625}
+
+#jira .dashboard #dashboard-content div.gadget.color3 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color3 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color3 a:hover,
+    #jira .dashboard ul.column li.color3.hover .gadget-container,
+    #jira li.color3.hover .gadget-menu .aui-dropdown,
+    #jira li.color3 form.aui {border-color: #d94625;_background:#d94625}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color4,
+    #jira .dashboard #dashboard-content div.gadget.color4 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color4 .dashboard-item-title {background: #346006;_background:#346006}
+
+#jira .dashboard #dashboard-content div.gadget.color4 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color4 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color4 a:hover,
+    #jira .dashboard ul.column li.color4.hover .gadget-container,
+    #jira li.color4.hover .gadget-menu .aui-dropdown,
+    #jira li.color4 form.aui {border-color: #346006;_background:#346006}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color5,
+    #jira .dashboard #dashboard-content div.gadget.color5 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color5 .dashboard-item-title {background: #003366;_background:#003366}
+
+#jira .dashboard #dashboard-content div.gadget.color5 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color5 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color5 a:hover,
+    #jira .dashboard ul.column li.color5.hover .gadget-container,
+    #jira li.color5.hover .gadget-menu .aui-dropdown,
+    #jira li.color5 form.aui {border-color: #003366;_background:#003366}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color6,
+    #jira .dashboard #dashboard-content div.gadget.color6 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color6 .dashboard-item-title {background: #411E66;_background:#411E66}
+
+#jira .dashboard #dashboard-content div.gadget.color6 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color6 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color6 a:hover,
+    #jira .dashboard ul.column li.color6.hover .gadget-container,
+    #jira li.color6.hover .gadget-menu .aui-dropdown,
+    #jira li.color6 form.aui {border-color: #411E66;_background:#411E66}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color7,
+    #jira .dashboard #dashboard-content div.gadget.color7 .gadget-hover .dashboard-item-title,
+    #jira .dashboard #dashboard-content div.gadget.color7 .dashboard-item-title {background: #bbb;_background:#bbb}
+
+#jira .dashboard #dashboard-content div.gadget.color7 .dashboard-item-frame.gadget-hover {border-color: #999999;}
+#jira .dashboard #dashboard-content div.gadget.color7 form.aui {border-color:#bbb;}
+
+#jira .dashboard .gadget .gadget-menu .aui-dd-parent .gadget-colors li.color7 a:hover,
+    #jira .dashboard ul.column li.color7.hover .gadget-container,
+    #jira li.color7.hover .gadget-menu .aui-dropdown,
+    #jira li.color7 form.aui {border-color: #bbb;_background:#bbb}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://ws.apache.org/axis2" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://SquareService.wsdl" xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns0="http://SquareService.wsdl">
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2">
+            <xs:element name="square">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="args0" type="xs:int" />
+                    </xs:sequence>
+                </xs:complexType>
+
+            </xs:element>
+            <xs:element name="squareResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" type="xs:int" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+
+    </wsdl:types>
+    <wsdl:message name="squareRequest">
+        <wsdl:part name="parameters" element="ns:square" />
+    </wsdl:message>
+    <wsdl:message name="squareResponse">
+        <wsdl:part name="parameters" element="ns:squareResponse" />
+    </wsdl:message>
+    <wsdl:portType name="SquareServicePortType">
+        <wsdl:operation name="square">
+
+            <wsdl:input message="ns0:squareRequest" wsaw:Action="urn:square" />
+            <wsdl:output message="ns0:squareResponse" wsaw:Action="urn:squareResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SquareServiceSoap11Binding" type="ns0:SquareServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="square">
+            <soap:operation soapAction="urn:square" style="document" />
+            <wsdl:input>
+
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="SquareServiceSoap12Binding" type="ns0:SquareServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+
+        <wsdl:operation name="square">
+            <soap12:operation soapAction="urn:square" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+    <wsdl:binding name="SquareServiceHttpBinding" type="ns0:SquareServicePortType">
+        <http:binding verb="POST" />
+        <wsdl:operation name="square">
+            <http:operation location="square" />
+            <wsdl:input>
+                <mime:content type="text/xml" part="square" />
+            </wsdl:input>
+            <wsdl:output>
+
+                <mime:content type="text/xml" part="square" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="SquareService">
+        <wsdl:port name="SquareServiceJmsSoap11Endpoint" binding="ns0:SquareServiceSoap11Binding">
+            <soap:address location="jms:/SquareService?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=tcp://localhost:61616&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpsSoap11Endpoint" binding="ns0:SquareServiceSoap11Binding">
+
+            <soap:address location="https://10.100.1.175:9443/services/SquareService.SquareServiceHttpsSoap11Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpSoap11Endpoint" binding="ns0:SquareServiceSoap11Binding">
+            <soap:address location="http://appserver.cloud1.wso2.com/services/t/madurangi3.com/SquareService.SquareServiceHttpSoap11Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpSoap12Endpoint" binding="ns0:SquareServiceSoap12Binding">
+            <soap12:address location="http://10.100.1.175:9763/services/SquareService.SquareServiceHttpSoap12Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceJmsSoap12Endpoint" binding="ns0:SquareServiceSoap12Binding">
+
+            <soap12:address location="jms:/SquareService?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=tcp://localhost:61616&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpsSoap12Endpoint" binding="ns0:SquareServiceSoap12Binding">
+            <soap12:address location="https://10.100.1.175:9443/services/SquareService.SquareServiceHttpsSoap12Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpsEndpoint" binding="ns0:SquareServiceHttpBinding">
+            <http:address location="https://10.100.1.175:9443/services/SquareService.SquareServiceHttpsEndpoint/" />
+        </wsdl:port>
+        <wsdl:port name="SquareServiceHttpEndpoint" binding="ns0:SquareServiceHttpBinding">
+
+            <http:address location="http://10.100.1.175:9763/services/SquareService.SquareServiceHttpEndpoint/" />
+        </wsdl:port>
+    </wsdl:service>
+
+    <plink:partnerLinkType name="SquareServicePartnerlinkType">
+        <plink:role name="squareRole" portType="ns0:SquareServicePortType"/>
+    </plink:partnerLinkType>
+</wsdl:definitions>

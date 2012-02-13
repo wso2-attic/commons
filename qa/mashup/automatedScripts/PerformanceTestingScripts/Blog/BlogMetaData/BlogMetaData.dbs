@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data name="BlogMetaData">
+    <config>
+        <property name="excel_datasource">E:\mashup\wso2-mashup-server-1.5.1/blog-data.xls</property>
+    </config>
+    <query id="getBlogsQuery">
+        <result element="Blogs" rowName="Blog">
+            <element name="Author" column="Author"/>
+            <element name="Feed" column="RSS Feed"/>
+        </result>
+        <excel>
+            <workbookname>Sheet1</workbookname>
+            <startingrow>2</startingrow>
+            <maxrowcount>-1</maxrowcount>
+            <hasheader>true</hasheader>
+        </excel>
+    </query>
+    <operation name="getBlogs">
+        <call-query href="getBlogsQuery"/>
+    </operation>
+</data>

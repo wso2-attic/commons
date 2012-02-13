@@ -1,0 +1,613 @@
+#!/usr/bin/perl -w
+
+# WSO2 Ravana - tool to benchmark WSO2 server products
+
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# A copy of version 2 of the GNU General Public License may be found
+# in the file "LICENCE" in the Autobench tarball.
+
+use strict;
+use Socket;
+use Fcntl qw(F_GETFL F_SETFL O_NONBLOCK);
+use Getopt::Long;
+use FileHandle;
+use XML::Simple;
+
+my $VERSION="1.0.0";
+my $DEBUG = 0;
+
+
+#--------------------------------------------------------------------------
+# get_config([$config_file])
+#
+# Reads the config file ($CONFIG_FILE), and returns the configuration
+# as a hash.
+
+sub
+get_config
+{
+    my $CONFIG_FILE = shift @_; # optional - overrides $CONFIG_FILE if present
+    my %config;
+    my $install = 0;
+
+    open (IN,$CONFIG_FILE) 
+	or $install = 1;
+
+    if ($install) {
+	install_new_config($CONFIG_FILE);
+	print STDERR "Installation complete - please rerun autobench_admin\n";
+	exit(0);
+    }
+    
+    while (<IN>) {
+	# Throw away comments and blank lines
+	next if (/^\#.*|^\s+$|^\s+\#|^$/);
+	
+	# Check for valid key-value pair and extract key into $1, value into $2
+	unless (/^\s*([a-zA-Z][a-zA-Z_0-9\-]*?)\s*=\s*(\S.*?)\s*$/) {
+	    warn "AUTOBENCH: Warning - invalid line in config file:'$_'";
+	    next;
+	}
+	
+	if (defined $config{$1}) {
+	    warn "AUTOBENCH: Warning - parameter '$1' defined more than once,".
+		 "ignoring '$1'='$2'";
+	    next;
+	}
+	$config{$1}=$2;
+    }
+    return %config;
+}
+
+#--------------------------------------------------------------------------
+# install_new_config($dest)
+# 
+# Installs a copy of the autobench config file into a user's home directory
+
+sub
+install_new_config
+{
+    my $dest = shift @_;
+    print STDERR "Autobench configuration file not found\n - installing new copy in $dest\n";
+    system("cp $MASTER_CONFIG $dest");
+}
+
+#---------------------------------------------------------------------------
+# get_clients ($clients)
+sub
+get_clients
+{
+    my $clients = shift @_;
+    my @tmp_clients = split(/,/,$clients);
+    my ($host, %client_hash, $port, $str);
+
+    foreach $str (@tmp_clients) {
+	($host, $port)      = split(/:/,$str);
+	$client_hash{$host} = $port;
+    }
+    return \%client_hash;
+}
+
+#---------------------------------------------------------------------------
+# open_socket($host, $port)
+sub
+open_socket
+{
+    my ($host, $port) = @_;
+    my $iaddr = inet_aton($host)
+	or die "Invalid host: $host: $!";
+    my $paddr;
+
+    my $sock = new FileHandle;
+    socket ($sock, PF_INET, SOCK_STREAM, getprotobyname('tcp'));
+    $paddr = sockaddr_in($port, $iaddr);
+    connect($sock, $paddr)
+	or die "Connection to $host:$port failed: $!";
+    return $sock;
+}
+	    
+#---------------------------------------------------------------------------
+# set_non_block ($fh)
+sub
+set_non_block
+{
+    my $fh = shift @_;
+    my $flags = fcntl($fh, F_GETFL, 0)
+	or die "Can't get flags for socket: $!\n";
+    $flags = fcntl($fh, F_SETFL, $flags | O_NONBLOCK)
+	or die "Can't set flags for socket: $!\n";
+}
+
+#---------------------------------------------------------------------------
+# build_select_bits (@socks)
+
+sub
+build_select_bits
+{
+    my @socks = @_;
+    my ($sock, $selbits);
+    $selbits = '';
+
+    foreach $sock (@socks) {
+	vec($selbits, fileno($sock), 1) = 1;
+    }
+    
+    return $selbits;
+}
+
+#---------------------------------------------------------------------------
+# parse_response ($response)
+
+sub
+parse_response
+{
+    my $response = shift @_;
+    my @elements = split(/\n/, $response);
+    my ($el, %results, $key, $val);
+
+    foreach $el (@elements) {
+	next if ($el =~ /BENCH_COMPLETE|END_DATA/);
+	($key, $val) = split(/:/, $el);
+	$results{$key} = $val;
+    }
+    return \%results;
+}
+
+#---------------------------------------------------------------------------
+# collate_results($results_sock_ref, @socks)
+sub
+collate_results
+{
+    my ($results_sock_ref, @socks) = @_;
+    my ($sock, $key, %results);
+    
+    foreach $sock (@socks) {
+	foreach $key (keys %{$$results_sock_ref{$sock}}) {
+	    $results{$key} += $ { $$results_sock_ref{$sock}}{$key};
+	}
+    }
+    $results{rep_time} = $results{rep_time} / scalar(@socks);
+    $results{percent_errors} = $results{percent_errors} / scalar(@socks);
+    return \%results;
+}
+
+    
+#---------------------------------------------------------------------------
+# run_test($httperf_args, $clients_ref)
+sub
+run_test
+{
+    my ($httperf_args, $clients_ref) = @_;
+    my ($client, %client_socks, @socks, $sock, %response, %results_sock);
+    my ($rin, $rout, $buffer, $bytes, $nfound, $accepted, $completed);
+
+    # Open connections to each autobench host
+    foreach $client (keys %$clients_ref) {
+	$sock = open_socket($client, $$clients_ref{$client});
+	$client_socks{$sock} = $client;
+	print STDERR "Opened connection to $client:$$clients_ref{$client}\n"
+	    if $DEBUG;
+	# Make socket non-blocking
+	set_non_block($sock);
+	push(@socks, $sock);
+    }
+    
+    my $start_time = time() + 5;
+    print STDERR "  Command: $httperf_args\n".
+ 		 "  Time   : $start_time\n" if $DEBUG;    
+    # Send start commands to each client
+    foreach $sock (@socks) {
+	syswrite($sock, "$httperf_args\n$start_time\nEND_AB\n");
+	print STDERR "Issued start command to: $client_socks{$sock}\n" if $DEBUG;
+	$response{$sock} = '';
+    }
+
+
+    # Check that clients have accepted command
+    $accepted = 0;
+    while (! $accepted) {
+	$rin = build_select_bits(@socks);
+	$nfound = select($rout = $rin, undef, undef, undef);
+	foreach $sock (@socks) {
+	    $buffer= '';
+
+	    if(vec($rout, fileno($sock), 1) 
+	       && (! ($response{$sock} eq 'TRUE'))) {
+		$bytes = sysread($sock, $buffer, 2048);
+		if (! defined $bytes) {
+		    # Probably EAGAIN, don't do nowt
+		}
+		elsif ($bytes == 0) {
+		    #if die here, it does not create the graphs. return to the previous function to continue. eranda
+		    #die "FATAL: client $client_socks{$sock} closed connection";	
+		    print STDERR "FATAL: client $client_socks{$sock} closed connection";
+		    return;
+		}
+		else {
+		    $response{$sock} .= $buffer;
+		}
+	    }
+	}
+	foreach $sock (@socks) {
+
+	    if ($response{$sock} =~ /ACCEPTED\n/) {
+		$response{$sock} = 'TRUE';
+		print STDERR "$client_socks{$sock} accepted command\n" if $DEBUG;
+	    }
+	    if ($response{$sock} eq 'TRUE') {
+		$accepted ++;
+	    }
+	}
+	$accepted = 0 if ($accepted < scalar(@socks));
+    }
+
+    $completed = 0;
+    foreach $sock (@socks) {
+	$response{$sock} = '';
+    }
+
+    while (! $completed) {
+	$rin = build_select_bits(@socks);
+	$nfound = select($rout = $rin, undef, undef, undef);
+	foreach $sock (@socks) {
+	    if (vec($rout, fileno($sock), 1)) {
+		$bytes = sysread($sock, $buffer, 2048);
+		if (! defined $bytes) {
+		    # Probably EAGAIN, don't do nowt
+		}
+		elsif ($bytes == 0) {
+		    #if die here, it does not create the graphs. return to the previous function to continue eranda
+		    #die "FATAL: client $client_socks{$sock} closed connection";	
+		    print STDERR "FATAL: client $client_socks{$sock} closed connection";
+		    return;
+		}
+		else {
+		    $response{$sock} .= $buffer;
+		}
+	    }
+	}
+	foreach $sock (@socks) {
+	    if ($response{$sock} =~ /END_DATA\n/) {
+		$completed ++;
+	    }
+	    elsif ($response{$sock} =~ /BENCH_FAILED\n/) {
+		#if die here, it does not create the graphs. return to the previous function to continue eranda
+		#die "FATAL: client $client_socks{$sock} sent BENCH_FAILED";
+		print STDERR "FATAL: client $client_socks{$sock} sent BENCH_FAILED";
+		return;
+	    }
+	}
+	$completed = 0 if ($completed < scalar(@socks));
+    }
+    
+    foreach $sock (@socks) {
+	$results_sock{$sock} = parse_response($response{$sock});
+    }
+    return collate_results(\%results_sock, @socks);
+
+    # testing only 
+
+}
+
+#---------------------------------------------------------------------------
+# test_host ($config_ref, $rate, $server, $uri, $port, $clients_ref)
+sub
+test_host 
+{
+    my ($data, $rate, $server, $uri, $port, $clients_ref) = @_;
+    my (%results, $httperf_args, $extra_httperf_opts);
+    $extra_httperf_opts = '';
+
+    # Build list of extra httperf config options
+    #foreach (keys %$config_ref) {
+    #if ( /^httperf_(.*)$/ ) {
+    #        my $hf_val = $$config_ref{$_};
+    #        $hf_val = ($hf_val eq 'NULL') ? '' : $hf_val; 
+    #    $extra_httperf_opts .= " --".$1." ".$hf_val ;
+    #}
+    #}
+    #$httperf_args = "--server $server --uri \"$uri\" ".
+    #"--num-conn ".$$config_ref{num_conn}.
+    #" --num-call ".$$config_ref{num_call}.
+    #" --timeout ".$$config_ref{timeout}.
+    #    " --rate $rate --port $port $extra_httperf_opts";
+
+    my $header = $data->{'extra'}->{'header'};
+	my $method = $data->{'scenario'}->{'method'};
+	my $timeout = $data->{'scenario'}->{'timeout'};
+	my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};	
+	my $max_connections = $data->{'scenario'}->{'max_connections'};	
+    	#my $num_conn = $data->{'autobench'}->{'num_conn'};
+    	#my $num_call = $data->{'autobench'}->{'num_call'};
+	my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+	my $user_think_time = $data->{'scenario'}->{'user_think_time'};
+	my $scenario = $data->{'scenario'}->{'name'};
+	
+    #check_present($config_ref, qw(num_conn num_call timeout));
+    $httperf_args = "--server $server --uri \"$uri\" ".
+	  " --hog  --method ". $method.
+	  " --add-header=\"".$header."\"".
+      #" --num-conn ".$num_conn." --num-call ".$num_call.
+	  " --timeout ".$timeout." --rate $rate --port $port ".
+	  "--max-piped-calls ".$max_piped_calls.
+	  " --max-connections ".$max_connections.
+	  " --wsesslog=$no_of_sessions,$user_think_time,scenario/$scenario/inputfile";
+
+    %results = %{run_test($httperf_args, $clients_ref)};
+
+    return \%results;
+}
+
+#---------------------------------------------------------------------------
+# main
+
+my (%clients, $httperf_args, $curr_rate, %res_host1, %res_host2, $dem_req);
+my ($sep, $client, $num_clients);
+
+# Read config
+my %config=get_config("autobench/autobench.conf");
+
+my $xml = XML::Simple->new;
+#my $data = $xml->XMLin($config{'user_configuration'});
+my $data = $xml->XMLin("./conf/config.xml");
+# Override config file with options supplied on the command line.
+#GetOptions( \%config, "host1:s","host2:s","uri1:s","uri2:s","port1:i",
+#            "port2:i","low_rate:i","high_rate:i","rate_step:i",
+#            "num_conn:i","num_call:i","timeout:i","quiet","single_host",
+#	    "output_fmt=s","file=s","clients=s","version","debug",
+#            "const_test_time:i");
+$DEBUG = 1 if (defined $config{debug});
+
+if ($config{version}) {
+    print "autobench_admin $VERSION\nCopyright (C) WSO2- 2010\n";
+    exit 0;
+}
+
+if ($config{const_test_time} && $config{const_test_time} < 10) {
+    die "--const_test_time must be >= 10. See autobench(1) for details\n";
+}
+
+#%clients = %{get_clients($config{clients})};
+#foreach $client (keys %clients) {
+#    $num_clients ++;
+#}
+
+$num_clients = 0;
+
+#this need to provide two or more servers, else exception
+while ($client = $data->{'client'}->[$num_clients]){ 
+	my ($host, $port)      = split(/:/,$client);
+	$clients{$host} = $port;
+	$num_clients++;	
+}
+
+#if ( $config{output_fmt} eq 'csv' ) {
+#    $sep = ",";
+#}
+#elsif ( $config{output_fmt} eq 'tsv' ) {
+$sep = "\t";
+#}
+#else {
+#    die "Output Format '$config{output_fmt}' not supported";
+#}
+
+# Set the output stream correctly 
+#if (defined($config{file})){
+    # Filename supplied with --file option, try to open it for writing.
+#    open(OUT, ">$config{file}") or die "Cannot open $config{file} for writing";
+#}
+#else {
+    # Connect OUT to STDOUT
+#    open(OUT, ">&STDOUT") or die "Bizarre, cannot connect OUT to STDOUT!";
+#}
+
+#get the server details for the config.xml
+my $host1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri1 = $data->{'product1'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+my $host2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'host'};
+my $port2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'port'};
+my $uri2 = $data->{'product2'}->{'server-config'}->{'transport'}->{'http'}->{'uri'};
+
+#check single server or two servers
+if(!(defined($host2)&&defined($port2)&&defined($uri2))){
+	$data->{'single-host'} = 'true';	
+}else {
+	$data->{'single-host'} = 'false';
+} 
+
+#get scenario details
+my $no_of_sessions = $data->{'scenario'}->{'no_of_sessions'};
+my $scenario = $data->{'scenario'}->{'name'};
+
+# Set the output stream
+open(OUT,">scenario/$scenario/results/results.tsv") or die "Cannot open output file";
+
+# Print first line of output
+# The following is really quite ugly...
+print OUT "dem_req_rate".$sep.
+       "req_rate_$host1".$sep.
+       "con_rate_$host1".$sep.
+       "min_rep_rate_$host1".$sep.
+       "avg_rep_rate_$host1".$sep.
+       "max_rep_rate_$host1".$sep.
+       "stddev_rep_rate_$host1".$sep.
+       "resp_time_$host1".$sep.
+       "net_io_$host1".$sep.
+       "errors_$host1";
+
+if ($data->{'single-host'} eq 'true') {
+	print OUT "\n";
+}
+else {
+    print OUT $sep."req_rate_$host2".$sep.
+       "con_rate_$host2".$sep.
+       "min_rep_rate_$host2".$sep.
+       "avg_rep_rate_$host2".$sep.
+       "max_rep_rate_$host2".$sep.
+       "stddev_rep_rate_$host2".$sep.
+       "resp_time_$host2".$sep.
+       "net_io_$host2".$sep.
+       "errors_$host2\n";
+}
+
+my $high_rate = $data->{'scenario'}->{'high_rate'};
+my $low_rate = $data->{'scenario'}->{'low_rate'};
+my $rate_step = $data->{'scenario'}->{'rate_step'};
+my $warmup_rate = $data->{'scenario'}->{'warmup_rate'};
+my $max_piped_calls = $data->{'scenario'}->{'max_piped_calls'};
+
+my $demand_rate_at_max_response_rate_h1 = 0; 
+my $i1 = 0;
+my $demand_rate_at_max_response_rate_h2 = 0; 
+my $i2 = 0;
+
+my $max_response_time_h1 = 0; 
+my $max_response_time_h2 = 0; 
+
+#warm up the servers
+#this can be used when the low demand rate is more than 400 
+#test_host ($data, $warmup_rate, $host1, $uri1, $port1, \%clients);
+
+#testing for demand rates, from low_rate to high_rate with the step of rate_step
+for ($curr_rate = $low_rate; $curr_rate <= $high_rate; 
+     $curr_rate += $rate_step) {
+
+     #the current demand rate is devided amoung the autobench deamon clients equally
+     #the demand rate for a single client is now current_rate/number_of_clients
+     my $shared_rate = $curr_rate / $num_clients;
+
+     $dem_req = ($curr_rate * $max_piped_calls);
+
+     # if ($config{const_test_time}) {
+     #   $config{num_conn} = $shared_rate * $config{const_test_time};
+     # } else {
+     #$config{num_conn} = $conn_total / $num_clients;
+     # }
+     #print STDERR `date`;
+
+    # Test Host 1	
+    %res_host1 = %{test_host ($data, $shared_rate, $host1, $uri1, $port1, \%clients)};
+    #get the demand rate at the maximum response time
+    if($res_host1{rep_rate_avg}){
+	    if((($dem_req-$res_host1{rep_rate_avg}) < $dem_req*0.005) && ($i1 < 2)){
+		$demand_rate_at_max_response_rate_h1 = $dem_req;
+		$max_response_time_h1 = $res_host1{rep_time};
+		$i1 = 0;	
+	    } else {
+		$i1++;
+	    }
+    }
+
+    # Test Host 2
+    if ($data->{'single-host'} eq 'false') {
+	sleep(20);  
+    	%res_host2 = %{test_host ($data, $shared_rate, $host2, $uri2, $port2, \%clients)};
+	#get the demand rate at the maximum response time
+	if($res_host2{rep_rate_avg}){	
+		if((($dem_req-$res_host2{rep_rate_avg}) < $dem_req*0.005) && ($i2 < 2)){
+			$demand_rate_at_max_response_rate_h2 = $dem_req;
+			$max_response_time_h2 = $res_host2{rep_time};	
+			$i2 = 0;
+	    	} else {
+			$i2++;
+	    	}
+	}
+
+    }
+
+    # Merge and Display Results
+    print OUT $dem_req.$sep.
+	  $res_host1{req_rate}.$sep.
+	  $res_host1{conn_rate}.$sep.
+	  $res_host1{rep_rate_min}.$sep.
+	  $res_host1{rep_rate_avg}.$sep.
+	  $res_host1{rep_rate_max}.$sep.
+	  $res_host1{rep_rate_stdv}.$sep.
+          $res_host1{rep_time}.$sep.
+	  $res_host1{net_io}.$sep.
+          $res_host1{percent_errors};
+    if ($data->{'single-host'} eq 'true') {
+	print OUT "\n";
+    }
+    else {
+    print OUT $sep.$res_host2{req_rate}.$sep.
+      $res_host2{conn_rate}.$sep.
+      $res_host2{rep_rate_min}.$sep.
+      $res_host2{rep_rate_avg}.$sep.
+      $res_host2{rep_rate_max}.$sep.
+      $res_host2{rep_rate_stdv}.$sep.
+      $res_host2{rep_time}.$sep.
+      $res_host2{net_io}.$sep.
+      $res_host2{percent_errors}."\n";	   
+    }
+
+}
+
+#calculate message size
+my $message_size = -s "scenario/$scenario/inputfile";
+
+if(! -e "scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv"){
+	open(MAXRATE, ">scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+	#print header
+	if ( $data->{'single-host'} eq 'false' ) {
+		print MAXRATE "message_size".$sep."dem_rate_$host1".$sep."dem_rate_$host2";		
+	} else {
+		print MAXRATE "message_size".$sep."dem_rate_$host1";
+	}
+	print MAXRATE "\n";
+}else{
+	open(MAXRATE, ">>scenario/$scenario/results/Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";	
+	
+}
+
+if(! -e "scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv"){
+
+	open(MAXTIME, ">scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+	#print header
+	if ( $data->{'single-host'} eq 'false' ) {	
+		print MAXTIME "message_size".$sep."res_time_$host1".$sep."res_time_$host2";	
+	} else {
+		print MAXTIME "message_size".$sep."res_time_$host1";
+	}
+	print MAXTIME "\n";
+}else{
+	open(MAXTIME, ">>scenario/$scenario/results/Maximum_Response_Time_vs_Message_Size.tsv") or die "Cannot open output file for writing\n";
+}
+
+#print data to Demand_Rate_at_Maximum_Response_Rate_vs_Message_Size.tsv
+if ( $data->{'single-host'} eq 'false' ) {
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1".$sep."$demand_rate_at_max_response_rate_h2";
+	print MAXTIME "$message_size".$sep."$max_response_time_h1".$sep."$max_response_time_h2";
+	if($demand_rate_at_max_response_rate_h1 == $high_rate){
+		print STDERR "You can go for higher Demand Rate and test the servers\n";
+	}
+} else {
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1";
+	print MAXTIME "$message_size".$sep."$max_response_time_h1";
+	if($demand_rate_at_max_response_rate_h2 == $high_rate){
+		print STDERR "You can go for higher Demand Rate and test the server\n";
+	}
+}
+print MAXRATE "\n";
+print MAXTIME "\n";
+
+close (OUT);
+close (MAXRATE);
+close (MAXTIME);
+
+print STDERR "Benchmark complete\n";

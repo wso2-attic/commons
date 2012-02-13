@@ -1,0 +1,39 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ihc.org/xsd/ErrorResolution" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://ihc.org/xsd/ErrorResolution">
+<element name="errorNotification" type="tns:ErrorNotificationType"/>
+<complexType name="ErrorNotificationType">
+<sequence>
+<element name="application" type="tns:ApplicationType"/>
+<element minOccurs="0" name="details">
+<complexType>
+<sequence>
+<any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+</sequence>
+</complexType>
+</element>
+</sequence>
+<attribute name="timeStamp" type="dateTime" use="required"/>
+<attribute name="uniqueErrorId" type="tns:uuid" use="required"/>
+<attribute name="errorCode" type="string" use="required"/>
+<attribute name="alertLevel" type="tns:AlertLevelType" use="required"/>
+</complexType>
+<complexType name="ApplicationType">
+<sequence>
+<any maxOccurs="unbounded" minOccurs="0" processContents="skip"/>
+</sequence>
+<attribute name="id" type="string" use="required"/>
+<anyAttribute processContents="skip"/>
+</complexType>
+<simpleType name="AlertLevelType">
+<restriction base="string">
+<enumeration value="INFO"/>
+<enumeration value="WARNING"/>
+<enumeration value="ERROR"/>
+<enumeration value="CRITICAL"/>
+</restriction>
+</simpleType>
+<simpleType name="uuid">
+<restriction base="string">
+<pattern value="\w{8}(\-\w{4}){3}\-\w{12}"/>
+</restriction>
+</simpleType>
+</schema>

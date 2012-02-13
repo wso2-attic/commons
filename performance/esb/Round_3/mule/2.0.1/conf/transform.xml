@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:context="http://www.springframework.org/schema/context"
+      xmlns:http="http://www.mulesource.org/schema/mule/http/2.0"
+      xmlns:axis="http://www.mulesource.org/schema/mule/axis/2.0"
+      xmlns:xm="http://www.mulesource.org/schema/mule/xml/2.0"
+      xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+       http://www.mulesource.org/schema/mule/core/2.0 http://www.mulesource.org/schema/mule/core/2.0/mule.xsd
+       http://www.mulesource.org/schema/mule/http/2.0 http://www.mulesource.org/schema/mule/http/2.0/mule-http.xsd
+       http://www.mulesource.org/schema/mule/axis/2.0 http://www.mulesource.org/schema/mule/axis/2.0/mule-axis.xsd
+       http://www.mulesource.org/schema/mule/xml/2.0 http://www.mulesource.org/schema/mule/xml/2.0/mule-xml.xsd">
+
+    <configuration>
+        <default-threading-profile maxThreadsActive="100"
+                                   maxThreadsIdle="50" poolExhaustedAction="WAIT" threadTTL="60001"/>
+    </configuration>
+    <http:connector name="HttpConnector" keepAlive="true"/>
+    <xm:xslt-transformer name="Xsltin" xsl-file="xslt/transform.xslt"/>
+    <xm:xslt-transformer name="Xsltout" xsl-file="xslt/transform_back.xslt"/>
+
+    <model name="XSLTModel">
+
+        <service name="XSLTProxy">
+
+            <inbound>
+                <inbound-endpoint connector-ref="HttpConnector" address="http://testb.wso2.com:8090/services/XSLTProxy"
+                                  transformer-refs="Xsltin"
+                                  responseTransformer-refs="Xsltout" synchronous="true"/>
+            </inbound>
+
+            <outbound>
+                <outbound-pass-through-router>
+                    <outbound-endpoint connector-ref="HttpConnector"
+                                       address="http://testc.wso2.com:8080/MockServices/EchoService"
+                                       synchronous="true"/>
+                </outbound-pass-through-router>
+            </outbound>
+
+        </service>
+
+
+    </model>
+
+</mule>

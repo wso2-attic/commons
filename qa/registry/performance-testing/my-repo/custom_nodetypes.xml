@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<nodeTypes xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+       xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:rep="internal"
+       xmlns:sv="http://www.jcp.org/jcr/sv/1.0"
+       xmlns:mix="http://www.jcp.org/jcr/mix/1.0"
+       xmlns:ocm="http://jackrabbit.apache.org/ocm"
+       xmlns:registry="http://www.wso2.org/registry" >
+
+  <nodeType name="ocm:discriminator" isMixin="true">
+   <supertypes>
+     <supertype>nt:base</supertype>
+   </supertypes>
+   <propertyDefinition name="ocm:classname" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="false" />
+ </nodeType>
+ <nodeType name="registry:comment" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>nt:base</supertype>
+    </supertypes>
+    <propertyDefinition name="registry:text" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+    <propertyDefinition name="registry:user" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+    <propertyDefinition name="registry:time" requiredType="Date" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+ </nodeType>
+ <nodeType name="registry:resource" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>mix:versionable</supertype>
+      <supertype>nt:hierarchyNode</supertype>
+    </supertypes>
+    <propertyDefinition name="registry:content" requiredType="Binary" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+    <propertyDefinition name="registry:description" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+    <propertyDefinition name="registry:mediaType" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" />
+    <propertyDefinition name="*" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false" /> 
+    <childNodeDefinition name="*" defaultPrimaryType="registry:comment" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="true">
+      <requiredPrimaryTypes>
+        <requiredPrimaryType>registry:comment</requiredPrimaryType>
+      </requiredPrimaryTypes>
+    </childNodeDefinition>  
+ </nodeType>
+</nodeTypes>
+

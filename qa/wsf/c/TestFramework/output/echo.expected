@@ -1,0 +1,13 @@
+Using endpoint : http://localhost:9090/axis2/services/echo
+
+Sending OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/services/echo"><text>Hello World!</text></ns1:echoString>
+
+Received OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/c/samples"><text>Hello World!</text></ns1:echoString>
+
+echo client invoke SUCCESSFUL!
+
+Sending OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/services/echo"><text>Hello World!</text></ns1:echoString>
+
+Received OM : <ns1:echoString xmlns:ns1="http://ws.apache.org/axis2/c/samples"><text>Hello World!</text></ns1:echoString>
+
+echo client invoke SUCCESSFUL!

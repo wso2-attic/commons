@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: org.wso2.carbon.server.admin.test.ServerManager
+Created-By: 1.6.0_20 (Sun Microsystems Inc.)
+

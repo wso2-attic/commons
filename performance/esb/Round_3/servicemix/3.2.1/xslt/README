@@ -1,0 +1,15 @@
+Installing the transformer into servicemix
+
+    run servicemix (sh bin/servicemix)
+    mvn clean install
+    cd transform-sa
+    mvn jbi:projectDeploy
+
+Invocation of the proxy should be done with the following url
+
+    http://localhost:8194/XSLTProxy/
+
+Do not use addressing when invoking the proxy through servicemix.
+Refer the following link for more detials;
+
+    http://servicemix.apache.org/servicemix-http.html

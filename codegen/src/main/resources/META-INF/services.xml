@@ -1,0 +1,82 @@
+<serviceGroup>
+
+    <!-- Disabling MTOM for tooling services. If MTOM is enabled globally
+    this will case an adverse effect on these services when calling
+    through the AJAX admin console.
+    -->
+    <parameter name="enableMTOM">false</parameter>
+
+    <service name="WSDLInfoService" scope="transportsession">
+        <schema schemaNamespace="http://org.apache.axis2/xsd" elementFormDefaultQualified="false"/>
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <description>
+            This service will give WSDL binding information
+        </description>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">
+            org.wso2.codegen.service.WSDLInfoService</parameter>
+    </service>
+    <service name="JavaClientGeneratorService" scope="transportsession">
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.wso2.codegen.service.java.JavaClientGeneratorServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">
+            org.wso2.codegen.service.java.JavaClientGeneratorService</parameter>
+        <operation name="generate" mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>generate</actionMapping>
+        </operation>
+    </service>
+    <service name="AjaxClientGeneratorService" scope="transportsession">
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.wso2.codegen.service.ajax.AjaxClientGeneratorServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">
+            org.wso2.codegen.service.ajax.AjaxClientGeneratorService</parameter>
+        <operation name="generateAjaxClient"
+                   mep="http://www.w3.org/2004/08/wsdl/in-out">
+            <actionMapping>generateAjaxClient</actionMapping>
+        </operation>
+    </service>
+
+    <service name="DynamicCodeGeneratorService" scope="transportsession">
+        <schema schemaNamespace="http://org.apache.axis2/xsd" elementFormDefaultQualified="false"/>
+        <transports>
+            <transport>https</transport>
+            <transport>http</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">
+            org.wso2.codegen.service.ajax.DynamicCodeGeneratorService</parameter>
+    </service>
+
+    <service name="WSDL2Code" scope="transportsession">
+        <schema schemaNamespace="http://org.wso2.wsf/tools" elementFormDefaultQualified="false"/>
+        <transports>
+            <transport>https</transport>
+            <transport>http</transport>
+        </transports>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter locked="false" name="ServiceClass">org.wso2.codegen.service.wsdl2code.WSDL2Code
+        </parameter>
+    </service>
+
+</serviceGroup>

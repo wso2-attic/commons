@@ -1,0 +1,15 @@
+<sequence name="DeleteAccountIn" xmlns="http://ws.apache.org/ns/synapse">
+	<payloadFactory>
+		<format>
+			<m:removeAccount xmlns:m="http://mgt.accounts.etrade.com">
+				<m:id>$1</m:id>
+			</m:removeAccount>
+		</format>
+		<args>
+			<arg expression="get-property('uri.var.accountId')" />
+		</args>
+	</payloadFactory>
+	<send>
+		<endpoint key="AccountSvc" />
+	</send>
+</sequence>

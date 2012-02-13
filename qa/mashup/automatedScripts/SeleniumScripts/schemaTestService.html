@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>schemaTestService</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">schemaTestService</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/services/schemaTest?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=returnJSObject</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_returnJSObject_param1_0</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_returnJSObject_param2_0</td>
+	<td>1.1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>input_returnJSObject_param3_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_returnJSObject</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeTextPresent</td>
+	<td>{param1 : "test", param2 : 1.1, param3 : true}</td>
+	<td>storeResponse</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>{param1 : "test", param2 : 1.1, param3 : true}</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

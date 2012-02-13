@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:http="http://servicemix.apache.org/http/1.0"
+       xmlns:b="http://esb.wso2.org/perf/transform">
+
+  <http:endpoint service="b:TransformedSimpleStockQuoteService"
+                 endpoint="endpoint"
+                 role="provider" 
+                 locationURI="http://testc.wso2.com:8080/MockServices/EchoService"
+                 defaultMep="http://www.w3.org/2004/08/wsdl/in-out"
+                 soap="true" 
+		 soapVersion="1.1"/>             
+
+</beans>

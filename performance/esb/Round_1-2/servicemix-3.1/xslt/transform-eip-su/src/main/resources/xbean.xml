@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<beans xmlns:eip="http://servicemix.apache.org/eip/1.0"
+       xmlns:b="http://esb.wso2.org/perf/transform">
+
+  <eip:static-routing-slip service="b:Transform" endpoint="endpoint">
+    <eip:targets>
+      <eip:exchange-target service="b:InTransform" />
+      <eip:exchange-target service="b:TransformedSimpleStockQuoteService" />
+      <eip:exchange-target service="b:OutTransform" />
+    </eip:targets>
+  </eip:static-routing-slip>
+
+</beans>

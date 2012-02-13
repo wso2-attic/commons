@@ -1,0 +1,33 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns0="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:ns1="http://schemas.datacontract.org/2004/07/System" xmlns:ns2="http://schemas.datacontract.org/2004/07/XwsInterop.SoapWsdl.ComplexDataTypes.XmlFormatter.Service.Indigo" xmlns:tns="http://tempuri.org/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" schemaLocation="../../schemas/microsoft/com/2003/10/Serialization/test2.xsd"/>
+<xs:import namespace="http://schemas.datacontract.org/2004/07/System" schemaLocation="../../schemas/datacontract/org/2004/07/System/test1.xsd"/>
+<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" schemaLocation="../../schemas/microsoft/com/2003/10/Serialization/test4.xsd"/>
+<xs:element name="inArrayString1D" nillable="true" type="ns0:ArrayOfstring"/>
+<xs:element name="RetArrayString1DResult" nillable="true" type="ns0:ArrayOfstring"/>
+<xs:element name="inArrayInt1D" nillable="true" type="ns0:ArrayOfint"/>
+<xs:element name="RetArrayInt1DResult" nillable="true" type="ns0:ArrayOfint"/>
+<xs:element name="inArrayDecimal1D" nillable="true" type="ns1:ArrayOfNullableOfdecimal"/>
+<xs:element name="RetArrayDecimal1DResult" nillable="true" type="ns1:ArrayOfNullableOfdecimal"/>
+<xs:element name="inArrayDateTime1D" nillable="true" type="ns1:ArrayOfNullableOfdateTime"/>
+<xs:element name="RetArrayDateTime1DResult" nillable="true" type="ns1:ArrayOfNullableOfdateTime"/>
+<xs:element name="inArrayString2D" nillable="true" type="ns0:ArrayOfArrayOfstring"/>
+<xs:element name="RetArrayString2DResult" nillable="true" type="ns0:ArrayOfArrayOfstring"/>
+<xs:element name="inArray1D_SN" nillable="true" type="ns2:ArrayOfPerson"/>
+<xs:element name="RetArray1D_SNResult" nillable="true" type="ns2:ArrayOfPerson"/>
+<xs:element name="inArrayAnyType1D" nillable="true" type="ns0:ArrayOfanyType"/>
+<xs:element name="RetArrayAnyType1DResult" nillable="true" type="ns0:ArrayOfanyType"/>
+<xs:element name="inStructS1" nillable="true" type="ns2:Name"/>
+<xs:element name="RetStructS1Result" nillable="true" type="ns2:Name"/>
+<xs:element name="inStructSN" nillable="true" type="ns2:Person"/>
+<xs:element name="RetStructSNResult" nillable="true" type="ns2:Person"/>
+<xs:element name="inStructSNSA" nillable="true" type="ns2:Employee"/>
+<xs:element name="RetStructSNSAResult" nillable="true" type="ns2:Employee"/>
+<xs:element name="inStructSNSAS" nillable="true" type="ns2:Group"/>
+<xs:element name="RetStructSNSASResult" nillable="true" type="ns2:Group"/>
+<xs:element name="inEnumString" type="ns2:BitMask"/>
+<xs:element name="RetEnumStringResult" type="ns2:BitMask"/>
+<xs:element name="inEnumInt" type="ns2:IntSet"/>
+<xs:element name="RetEnumIntResult" type="ns2:IntSet"/>
+<xs:element name="inDerivedClass" nillable="true" type="ns2:Table"/>
+<xs:element name="RetDerivedClassResult" nillable="true" type="ns2:Table"/>
+</xs:schema>

@@ -1,0 +1,399 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>WSAS-docs-left-navigation</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">WSAS-docs-left-navigation</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/docs/index_docs.html</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=User Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>User Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=FAQs</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Frequently Asked Questions(FAQs)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Installation Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Installation Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Source Distribution</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Running Behind a Proxy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Running behind an Apache HTTPD Proxy</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Data Services Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Data Services</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=RDBMS Data Source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>exact:How to create data Service using JBDC connection parameters?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=CSV Data Source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>exact:How to use CSV File to create Data Service?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Excel Data Source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>exact:How to use MS Excel(97-2003) File to create Data Service?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=JNDI Data Source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>exact:How to use JNDI data source to create Data Service?</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=EJB Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>EJB Service Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Clustering Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Clustering Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=XKMS Guide</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>WSO2 XKMS Implementation (XKMS 2.0)</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Changing Keys</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Change the WSO2 WSAS Crypto Keys</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Chad</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Chad Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Commodity Quote</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Commodity Quote Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Data Services</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Data Service Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Flickr</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>FlickrClient Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Javascript</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>JavascriptService Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=STS</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Security Service Token Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Trader</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Trader Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Tiny URL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>TinyURL Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Metadata Exchange</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>MEX Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=XML Key Managment Specification</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>XKMS Sample Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Code Generation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Code Generator Command Line Tool Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Change Password</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Change Password Tool</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Eclipse IDE Integration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1[1]</td>
+	<td>Eclipse WTP Integration</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=TCP Monitor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>TCPMon Guide</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=WSDL2Code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>WSDL2Code - Generate Code Starting with a WSDL Document</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=WSDL View</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>WSDLView - Generate the WSDL Document Starting with a Java Class</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Try It</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Try It - Invoke a Remote Web Service</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=AAR Validation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>AAR Validator</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=MAR Validation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>MAR Validator</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=News</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//h1</td>
+	<td>Archived News</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Mailing Lists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Project Mailing Lists</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Integration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Continuous Integration</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Project Team</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>The Team</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Issue Tracking</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Issue Tracking</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

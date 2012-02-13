@@ -1,0 +1,23 @@
+<localEntry key="AccountListXSLT" xmlns="http://ws.apache.org/ns/synapse">
+	<xsl:stylesheet version="2.0"
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+		xmlns:m0="http://mgt.accounts.etrade.com" xmlns:m1="http://mgt.accounts.etrade.com/xsd"
+		exclude-result-prefixes="m0 m1 fn">
+
+		<xsl:output method="xml" omit-xml-declaration="yes" indent="yes" />
+
+		<xsl:template match="m0:getAccountsResponse">
+			<accounts xmlns="">
+				<xsl:apply-templates select="m0:return" />
+			</accounts>
+		</xsl:template>
+
+		<xsl:template match="m0:return">
+			<account xmlns="">
+				<xsl:attribute name="href">
+    				<xsl:value-of select="concat('/am/account/', m1:id)" />
+    			</xsl:attribute>
+			</account>
+		</xsl:template>
+	</xsl:stylesheet>
+</localEntry>

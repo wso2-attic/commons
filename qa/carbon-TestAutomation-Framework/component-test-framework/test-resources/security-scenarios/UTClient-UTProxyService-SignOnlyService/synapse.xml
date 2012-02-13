@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="secureProxy" transports="https" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+                <send>
+                    <endpoint name="endpoint_urn_uuid_41CACD0E8D7436A6B183444837793671702150931">
+                        <address uri="http://localhost:9764/services/Axis2Service">
+                            <enableSec policy="conf:/policy/policy.xml"/>
+                        </address>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="http://localhost:9764/services/Axis2Service?wsdl"/>
+        <policy key="conf:/repository/axis2/service-groups/secureProxy/services/secureProxy/policies/UTOverTransport"/>
+        <enableSec/>
+    </proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="timeoutseq"/>
+    </sequence>
+</definitions>

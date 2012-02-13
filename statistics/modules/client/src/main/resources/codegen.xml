@@ -1,0 +1,15 @@
+<config>
+
+    <!-- stubs generation -->
+    <set>
+        <uri>../core/src/main/resources/aars/service/META-INF/wso2statistics.wsdl</uri>
+        <o>./target/classes/</o>
+        <p>org.wso2.statistics.service</p>
+        <d>adb</d>
+        <sn>Statistics</sn>
+        <pn>StatisticsSOAP11port_https</pn>
+        <s/>
+        <f/>
+        <uw/>
+    </set>
+</config>

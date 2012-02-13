@@ -1,0 +1,55 @@
+<project name="Runall" default="deploy.services">
+
+<taskdef resource="net/sf/antcontrib/antlib.xml">  
+		<classpath>
+			<pathelement location="ant-contrib-1.0b3.jar"/>
+		</classpath>
+</taskdef>
+
+    
+    <xmlproperty file="global_config.xml"/>
+    
+    <property name="project.base.dir" value="."/>
+    
+    
+     <target name="deploy.services">
+      
+     <for list="${mashup.services.service}" param="name">
+			<sequential>
+          <ant antfile="@{name}\service\build.xml"/> 
+          <!--record name="deploy-services.log"/-->   			
+			</sequential>
+			</for>           
+    </target>
+    
+    <target name="run.clients">
+     <for list="${mashup.clients.client}" param="name" keepgoing="true">
+			<sequential>
+          <ant antfile="@{name}\client\build.xml"/>
+          <!--record name="run-clients.log"/-->
+      </sequential>
+			</for>
+           
+    </target>
+    
+    <!--target name="clean.clients">
+     <for list="${wsas.clients.client}" param="name">
+			<sequential>
+          <ant antfile="@{name}\client\build.xml" target ="clean"/>
+          
+      </sequential>
+			</for>
+           
+    </target>
+    
+    <target name="clean.services">
+     <for list="${wsas.services.service}" param="name">
+			<sequential>
+          <ant antfile="@{name}\service\build.xml" target ="clean"/>
+      </sequential>
+			</for>
+           
+    </target-->
+    
+  
+</project>

@@ -1,0 +1,48 @@
+<project name="AddingService" default="generate.service">
+
+    <property environment="env"/>
+    
+        
+    <property name="base.dir" value="${project.base.dir}/services/general"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+
+    <path id="esb.classpath">
+        <fileset dir="${esb.envt.ESB_HOME}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile.service">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
+
+        <!--First let's compile the classes-->
+        <javac debug="on" 
+               fork="true"
+               destdir="${build.dir}/classes" 
+               srcdir="${base.dir}/src"
+               classpathref="esb.classpath">
+        </javac>
+    </target>
+
+    
+    <target name="generate.service" depends="compile.service">
+        
+        <copy toDir="${build.dir}/classes" failonerror="false">
+            <fileset dir="${base.dir}/resources">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+        <jar destfile="${build.dir}/AddingService.aar">
+            <fileset excludes="**/Test.class" dir="${build.dir}/classes"/>
+        </jar>
+	<delete file="${esb.envt.ESB_HOME}/samples/axis2Server/repository/services/AddingService.aar"/>
+        <copy file="${build.dir}/AddingService.aar" tofile="${esb.envt.ESB_HOME}/samples/axis2Server/repository/services/AddingService.aar"
+              overwrite="true"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>
+

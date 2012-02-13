@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema elementFormDefault="qualified"
+      targetNamespace="http://www.insurance.example.com/claims/schema"
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+      xmlns:tns="http://www.insurance.example.com/claims">
+      <xsd:element name="ClaimApprovalResponseData">
+      	<xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="response" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ClaimApprovalData">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cust">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="id" type="xsd:string">
+                  </xsd:element>
+                  <xsd:element name="firstname" type="xsd:string">
+                  </xsd:element>
+                  <xsd:element name="lastname" type="xsd:string">
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="amount" type="xsd:double" />
+            <xsd:element name="region" type="xsd:string" />
+            <xsd:element name="priority" type="xsd:int" />
+            <xsd:element name="activateAt" type="xsd:dateTime" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Notify">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="firstname" type="xsd:string"/>
+				<xsd:element name="lastname" type="xsd:string"/>
+				<xsd:element name="taskId" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+      <!--xsd:element name="HIFeedback">
+		<xsd:complexType name="HIFeedbackType">
+			<xsd:sequence>
+				<xsd:element name="TaskID" type="string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element-->	
+</xsd:schema>
+
+
+<!--schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://wso2.org/humantask/feedback/schema" 
+	xmlns:tns="http://wso2.org/humantask/feedback/schema" 
+	elementFormDefault="qualified">
+
+	<element name="HIFeedback" type="tns:HIFeedbackType"/>
+
+	<complexType name="HIFeedbackType">
+		<sequence>
+			<element name="TaskID" type="string"/>
+		</sequence>
+	</complexType>
+</schema-->

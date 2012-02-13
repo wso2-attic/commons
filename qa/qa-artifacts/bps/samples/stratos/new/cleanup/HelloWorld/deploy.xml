@@ -1,0 +1,153 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements.  See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership.  The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License.  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+	xmlns:pns="http://ode/bpel/unit-test" 
+	xmlns:wns="http://ode/bpel/unit-test.wsdl">
+
+<!--Test Retire / Active -->
+	<process name="pns:HelloWorld1">
+		<active>false</active>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.1" port="HelloPort"/>
+		</provide>
+	</process>
+	
+		<process name="pns:HelloWorld2">
+		<active>true</active>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.2" port="HelloPort"/>
+		</provide>
+	</process>
+
+	<process name="pns:HelloWorld3">
+		<retired>true</retired>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.3" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld4">
+		<retired>false</retired>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.4" port="HelloPort"/>
+		</provide>
+	</process>
+
+<!--Test in-memory -->
+
+	<process name="pns:HelloWorld5">
+		<in-memory>true</in-memory>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.5" port="HelloPort"/>
+		</provide>
+	</process>
+
+<!--Test cleanup -->
+
+	<process name="pns:HelloWorld6">
+		<cleanup on="success"/>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.6" port="HelloPort"/>
+		</provide>
+	</process>
+
+	<process name="pns:HelloWorld7">
+		<cleanup on="failure" >
+                <category>instance</category>
+                <category>correlations</category>
+                <category>variables</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.7" port="HelloPort"/>
+		</provide>
+	</process>
+
+
+	<process name="pns:HelloWorld8">
+	<cleanup on="success" >
+ 		<category>variables</category>
+                
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.8" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld9">
+	<cleanup on="success" >       
+               <category>messages</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.9" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld10">
+	<cleanup on="success" >
+                <category>correlations</category>
+        	</cleanup>
+
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.10" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld11">
+	<cleanup on="success" >
+                <category>events</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.11" port="HelloPort"/>
+		</provide>
+	</process>
+
+	<process name="pns:HelloWorld12">
+	<cleanup on="success"/>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.12" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld13">
+	<cleanup on="failure" >
+                <category>instance</category>
+                <category>correlations</category>
+                <category>variables</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.13" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld14">
+	<cleanup on="failure" >
+                <category>events</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.14" port="HelloPort"/>
+		</provide>
+	</process>
+	<process name="pns:HelloWorld15">
+	<cleanup on="failure" >
+                <category>variables</category>
+                <category>messages</category>
+                <category>correlations</category>
+                <category>events</category>
+        	</cleanup>
+		<provide partnerLink="helloPartnerLink">
+		<service name="wns:HelloService.15" port="HelloPort"/>
+		</provide>
+	</process>
+
+
+</deploy>

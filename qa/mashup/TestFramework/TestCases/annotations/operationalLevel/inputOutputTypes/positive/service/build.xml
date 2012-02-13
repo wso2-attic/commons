@@ -1,0 +1,20 @@
+<!-- ========================================
+ * Purpose	:	This is a build files to call deploy the service to test "input/OutputTypes" annotation of WSO2 Mashup Server.
+ * Author	: 	Yumani Ranaweera
+============================================-->
+
+<project name="InputOutputService" default="deploy.service">
+
+	<!-- where the base directory is -->      
+    <property name="base.dir" value="${project.base.dir}\annotations\operationalLevel\inputOutputTypes\positive\service"/>
+	
+	<!-- where the MASHUP HOME directory is -->
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+
+	<!-- ========== deploy.service Target ===================================-->          
+    <target name="deploy.service">        
+		<echo message="------------------------------ Deploying inputOutputTypesPositiveTCs.js -----------------------------------"/>
+		<copy file="${base.dir}/src/inputOutputTypesPositiveTCs.js" tofile="${MASHUP_HOME}/repository/scripts/samples/inputOutputTypesPositiveTCs.js" overwrite="true"/>
+    </target>
+    
+</project>

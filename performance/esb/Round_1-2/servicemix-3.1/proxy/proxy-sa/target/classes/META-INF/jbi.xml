@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" version="1.0">
+  <service-assembly>
+    <identification>
+      <name>proxy-sa</name>
+      <description>A custom project</description>
+    </identification>
+    <service-unit>
+      <identification>
+        <name>proxy-http-consumer-su</name>
+        <description>proxy-http-consumer-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>proxy-http-consumer-su-1.0-SNAPSHOT.zip</artifacts-zip>
+        <component-name>servicemix-http</component-name>
+      </target>
+    </service-unit>
+    <service-unit>
+      <identification>
+        <name>proxy-http-provider-su</name>
+        <description>proxy-http-provider-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>proxy-http-provider-su-1.0-SNAPSHOT.zip</artifacts-zip>
+        <component-name>servicemix-http</component-name>
+      </target>
+    </service-unit>
+  </service-assembly>
+</jbi>

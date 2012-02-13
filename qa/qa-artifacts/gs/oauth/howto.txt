@@ -1,0 +1,3 @@
+OAuth Gadget Testing
+          o Add the "google" keys to the GS (oauth.json file contains keys)
+          o Add http://nuwanbando.com/test/contacts-test.xml gadget to the portal (contacts-test.xml is also attached here)

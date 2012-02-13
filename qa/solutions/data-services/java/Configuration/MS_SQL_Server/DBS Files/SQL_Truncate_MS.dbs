@@ -1,0 +1,8 @@
+<data name="SQL_Truncate_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="Create_Table"><sql>create table TempAssetStatus(StatusID int(50),StatusDescription varchar(100), PRIMARY KEY(StatusID));</sql><result element="BaseElement" rowName="Element" /></query><query id="Insert_Data"><sql>insert INTO TempAssetStatus(StatusID,StatusDescription)values(1000,'Ok'); </sql><result element="BaseElement" rowName="Element" /></query><query id="Show_Table"><sql>Select * from TempAssetStatus</sql><result element="BaseElement" rowName="Element"><element name="StatusID" column="StatusID" /><element name="StatusDescription" column="StatusDescription" /></result></query><query id="Truncate_Table"><sql>TRUNCATE TABLE TempAssetStatus</sql><result element="BaseElement" rowName="Element" /></query><operation name="OP_Create"><call-query href="Create_Table" /></operation><operation name="OP_Insert"><call-query href="Insert_Data" /></operation><operation name="OP_Show"><call-query href="Show_Table" /></operation><operation name="OP_Truncate"><call-query href="Truncate_Table" /></operation></data>

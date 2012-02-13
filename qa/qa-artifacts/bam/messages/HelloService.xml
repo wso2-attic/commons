@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://www.wso2.org/types">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <typ:greet>
+         <!--Optional:-->
+         <name>Hello</name>
+      </typ:greet>
+   </soapenv:Body>
+</soapenv:Envelope>

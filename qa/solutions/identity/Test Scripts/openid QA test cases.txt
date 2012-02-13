@@ -1,0 +1,219 @@
+QA Test Cases
+--------------
+
+OpenID Issue
+-------------
+
+1. Signup for a new user [User A] by manually entering required/optional attributes
+   An OpenID should be generated and displayed for the user in the following format
+   [OpenID Provider Server Url]\user\[user name] (http://localhost:12080/user/yumani)	-PASS, pass
+
+2. Signup for a new user [User B] with a self-issued information card
+   An OpenID should be generated and displayed for the user in the following format
+   [OpenID Provider Server Url]\user\[user name] (http://localhost:12080/user/A83-QU7M-MRJ)	-Pass,pass
+
+
+OpenID Login
+-------------
+   
+3. Login to the IdP with User A's OpenID
+   Prompted to enter password or a registered self-issued information card
+   Enter password
+   Select 'Default Profile'
+   Should login successfully.
+   Verify 'OpenID relying party site settings' reflects correct information	-Pass, pass
+
+	---- Switch on the site settings, logout and login again. Should not prompt to Select 'Default Profile'.
+
+
+
+
+4. Login to the IdP with User B's OpenID
+   Prompted to enter password or a registered self-issued information card
+   Present the self-issued inormation card used in signup
+   Select 'Default Profile' & select Only Once'
+   Should login successfully.
+   Verify 'OpenID relying party site settings' reflects correct information	-paSS,pass
+
+	---- Switch on the site settings, logout and login again. Should not prompt to Select 'Default Profile'.
+
+
+
+5. Login to the IdP with User A's OpenID
+   Prompted to enter password or a registered self-issued information card
+   Enter password and select 'Remember me on this computer'
+   Select 'Default Profile' & select 'Always'
+   Should login successfully.
+   Verify 'OpenID relying party site settings' reflects correct information
+   Close the browser & open a new one
+   Login to the IdP with User A's OpenID
+   No password prompted or user approval required.
+   Should login successfully.							-pass,pass				-
+
+
+
+
+6. Login to the IdP with User B's OpenID [you have already logged in with this OpenID in "4"]
+   Card Selector prompts up [No password page is displayed as in "4"]
+   Present the self-issued information card used in signup
+   Select 'Default Profile' & select 'Always'
+   Should login successfully.
+   Verify 'OpenID relying party site settings' reflects correct information
+   Close the browser & open a new one
+   Login to the IdP with User B's OpenID 
+   Card Selector prompts up [No password page is displayed as in "4"]
+   Present the self-issued information card used in signup
+   No user approval required.
+   Should login successfully.						- pass, pass
+
+
+
+
+7. Login to IdP with User A's username/password
+   Register a self-issued information card
+   Logout
+   Login to the IdP with User A's OpenID
+   Prompted to enter password or a registered self-issued information card
+   Present the registered self-issued information card
+   User approval not required since we already set it to 'Always.		-pass, pass
+   Should login successfully.
+
+
+
+
+
+
+8. Login to IdP with User B's infocard
+   Register a self-issued information card
+   Logout
+   Login to the IdP with User B's OpenID
+   Card Selector prompts up
+   Present the registered self-issued information card
+   User approval not required since we already set it to 'Always.		-pass, pass
+   Should login successfully.
+
+
+
+
+
+Download Information Cards
+---------------------------
+
+9. Login to IdP with OpenID
+   Download OpenIDInfo Card and install it in Card Selector			-pass, pass
+
+
+
+10.Login to IdP with OpenID
+   Download Information Card and install it in Card Selector			-pass, pass
+
+
+
+
+OpenID InfoCard Login
+----------------------
+
+11.Click on OpenID on the login page
+   Instead of typing the OpenID, click on the OpenID InfoCard image
+   Present the OpenID InfoCard you downloaded in test case '9'
+   Should login successfully.							-pass, pass
+
+
+
+
+
+Multiple Profiles
+------------------
+
+12.Login to IdP with User A
+   Add multiple profiles
+   Under 'OpenID relying party site settings' de-select 'Trust Always'
+   Logout
+   Login with User A's OpenID
+   Enter OpenID Url
+   Enter password
+   All the profiles are available for user selection
+   Select one profile
+   Click on 'Once'
+   Should login successfully.							-pass, pass
+
+
+
+
+
+   
+javarp
+-------
+
+13.Login with OpenID Url
+   Attributes displayed on successfull login
+   Attributes displayed should reflect the selecetd profile		-pass, pass
+
+
+
+
+
+14.Login with OpenID InforCard
+   Attributes displayed on successful login				-pass, pass
+
+
+-----Login to OpenID Simple Registration Demo with Open id sic
+  Attributes displayed on successfull login
+  Attributes displayed should reflect the selecetd profile		-pass, pass
+
+
+-----Login to OpenID PAPE Demo with open id sic, select phishing resistant
+  should promt for card selction and profile selection only
+  Attributes displayed on successfull login
+  Attributes displayed should reflect the selecetd profile		-PASS, pass
+
+
+-----Login to OpenID PAPE Demo with open id sic, select multi-factor
+  should promt for card selction, login and profile selection
+  Attributes displayed on successfull login
+  Attributes displayed should reflect the selecetd profile		-pass, not done
+
+   
+
+   
+Claim Mappings
+--------------
+
+Few stps as a workaround for a defect
+- Add a new claim (put under Dialect URI: http://axschema.org)
+- Enable supporting (switch it on)
+- From idp create a new user with data added to the new claim
+- Come back to IS admin, go to claim mappings and map the claim with the claim value
+
+
+- Go to idp and edit an existing profile to add a value to the claim that was just added
+- Open openidaxsubmit.jsp
+- Add the new claim to the 'if' clause
+ openIDAuthRequest.addRequiredClaims(hobby","http://schemas.xmlsoap.org/ws/2005/05/identity/claims/hobby");              	
+                  }
+
+- Open openidloggedin.jsp
+Add the new claim
+			<% if (request.getAttribute("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/hobby") != null) { %>
+			<tr>
+				<td>Hobby:</td>
+				<td><%=request.getAttribute("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/hobby")%></td>
+			</tr>
+			<%}%>
+
+
+
+
+
+Add relying party
+-----------------
+Download a cert from an outside site in .DER format add it as a relying party
+Download a cert from an same site (from IS itself) in .DER format add it as a relying party
+
+
+
+
+
+
+
+

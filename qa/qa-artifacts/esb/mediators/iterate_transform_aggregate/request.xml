@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.purchasing.wso2.com">
+   <soapenv:Header/>
+   <soapenv:Body>
+	<ser:stock>
+		<ser:quote>
+			<ser:purchase>
+				<ser:stockquote>IBM</ser:stockquote>
+				<ser:price>20</ser:price>
+			</ser:purchase>
+			<ser:purchase>
+				<ser:stockquote>MSFT</ser:stockquote>
+				<ser:price>30</ser:price>
+			</ser:purchase>
+			<ser:purchase>
+				<ser:stockquote>SUN</ser:stockquote>
+				<ser:price>1000</ser:price>
+			</ser:purchase>
+		</ser:quote>
+	</ser:stock>
+   </soapenv:Body>
+</soapenv:Envelope>

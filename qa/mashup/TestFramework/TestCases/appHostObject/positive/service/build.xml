@@ -1,0 +1,16 @@
+
+<project name="SafeService" default="deploy.service">
+
+      
+    <property name="base.dir" value="${project.base.dir}\appHostObject\positive\service"/>
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+
+       
+    <target name="deploy.service">
+        
+     <copy file="${base.dir}/src/Atom1.js" tofile="${MASHUP_HOME}/scripts/samples/Atom1.js"
+              overwrite="true"/>
+    </target>
+
+    
+</project>

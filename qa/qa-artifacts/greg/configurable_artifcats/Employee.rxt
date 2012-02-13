@@ -1,0 +1,73 @@
+<artifactType type="application/vnd.wso2-employee+xml" shortName="empolyeeData" singularLabel="Employee" pluralLabel="Employees" hasNamespace="true" iconSet="7">
+    <storagePath>/wso2/employee/personal/@{details_first}/@{id_code}</storagePath>
+    <nameAttribute>details_first</nameAttribute>
+    <ui>
+        <list>
+           <column name="First Name">
+                <data type="path" value="details_first" href="/wso2/employee/personal/@{details_first}"/>
+           </column>
+            <column name="Designation">
+                <data type="text" value="details_designation"/>
+            </column>     
+            <column name="Employee Number">
+                <data type="text" value="id_nic"/>
+            </column>  
+            <column name="Employee ID">
+                <data type="path" value="id_code" href="/wso2/employee/personal/@{details_first}/@{id_code}"/>
+            </column> 
+        </list>
+    </ui>
+    <content>
+        <table name="ID"  columns="3">
+        <subheading>
+            <heading>Code</heading><heading>Year of Birth</heading><heading>NIC #</heading>
+        </subheading>
+		<field type="options">
+		    <name label="Code">Code</name>
+		    <values>
+		        <value>None</value><value>A-J</value><value>K-T</value><value>U-Z</value>
+		    </values>
+		</field>
+		<field type="options">
+		    <name label="Year Of Birth">Year</name>
+		    <values>
+			<value>None</value><value>1931-1940</value><value>1941-1950</value><value>1951-1960</value><value>1961-1970</value><value>1971-1980</value><value>1981-1990</value><value>1991-2000</value><value>2001-2012</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="NIC Number">NIC</name>
+		</field>
+	</table>
+
+        <table name="Details">
+		<field type="text">
+		    <name label="First Name">First</name>
+		</field>
+		<field type="text">
+		    <name label="Last Name">LastName</name>            
+		</field>
+		<field type="options">
+		    <name label="Employee Age">EmployeeAge</name>
+		    <values>
+		        <value>None</value><value>25-30</value><value>30-35</value><value>35-40</value><value>45-50</value><value>Above 50</value>
+		    </values>
+		</field>
+		<field type="options">
+		    <name label="Designation">Designation</name>
+		    <values>
+		        <value>None</value><value>Software Engineer</value><value>Senior Software Engineer</value><value>Technical Lead</value><value>QA Manager</value><value>Team Lead</value>
+		    </values>
+		</field>
+		<field type="options">
+		    <name label="Country">Country</name>
+		    <values>
+		        <value>None</value><value>Sri Lanka</value><value>India</value><value>China</value><value>United States of America</value><value>United Kingdom</value>
+		    </values>
+		</field>
+		<field type="text">
+		    <name label="Comments">Comments</name>            
+		</field>
+	</table>  
+
+   </content>
+</artifactType>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="securedProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <log>
+                    <property name="message" value="***Node2 - Incoming Message***"/>
+                </log>
+                <send>
+                    <endpoint name="endpoint_urn_uuid_D05C1BB747D28DCC389272909476921-237799083">
+                        <address uri="http://localhost:8280/services/echo"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <log>
+                    <property name="message" value="***Node2 - Outgoing Message***"/>
+                </log>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>    
+    <sequence name="main">
+               <log level="full">
+    </sequence>
+</definitions>

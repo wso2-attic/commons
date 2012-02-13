@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="main">
+        <in>
+            <log>
+                <property name="urlProp" expression="$url:SyMbOl"/>
+            </log>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService" format="rest"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>

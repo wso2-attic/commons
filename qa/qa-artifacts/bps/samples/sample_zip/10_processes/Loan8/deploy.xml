@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:wns="http://wso2.org/bps/samples/LoanService" xmlns:dins="http://wso2.org/bps/samples/DILoanService" xmlns:xkns="http://wso2.org/bps/samples/XKLoanService">
+  <process name="dins:DILoanService">
+    <active>false</active>
+    <provide partnerLink="LoanServicePL">
+      <service name="wns:DILoanService" port="LoanServicePort"/>
+	</provide>
+	<invoke partnerLink="LoanServicePL">
+		<service name="wns:LoanServiceCallback" port="LoanServiceCallbackPort"/>
+    </invoke>
+  </process>
+
+
+
+
+
+  <process name="xkns:XKLoanService">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+		<service name="wns:XKLoanService" port="LoanServicePort"/>
+	</provide>
+	<invoke partnerLink="XKLoanServicePL">
+		<service name="wns:LoanServiceCallback" port="LoanServiceCallbackPort"/>
+    </invoke>
+
+  </process>
+
+
+  <process name="xkns:XKLoanService1">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService1" port="LoanServicePort"/>	
+	</provide>
+  </process>
+
+  <process name="xkns:XKLoanService2">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService2" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+  <process name="xkns:XKLoanService3">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService3" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+  <process name="xkns:XKLoanService4">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService4" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+  <process name="xkns:XKLoanService5">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService5" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+  <process name="xkns:XKLoanService6">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService6" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+  <process name="xkns:XKLoanService7">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService7" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+
+  <process name="xkns:XKLoanService8">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService8" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+
+  <process name="xkns:XKLoanService9">
+    <active>true</active>
+    <provide partnerLink="XKLoanServicePL">
+	<service name="wns:XKLoanService9" port="LoanServicePort"/>	
+	</provide>
+
+
+  </process>
+
+
+
+
+</deploy>
+

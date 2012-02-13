@@ -1,0 +1,9 @@
+<module name="wso2mex" class="org.wso2.mex.MetadataExchangeModule">
+	<Description>This module provides MetadataExchange services for
+        any services that the module is Engaged</Description>
+	<operation name="GetMetadata" mep="http://www.w3.org/2004/08/wsdl/in-out">
+		<messageReceiver class="org.wso2.mex.MexMessageReceiver" />
+		<actionMapping>http://schemas.xmlsoap.org/ws/2004/09/mex/GetMetadata/Request</actionMapping>
+		<outputActionMapping>http://schemas.xmlsoap.org/ws/2004/09/mex/GetMetadata/Response</outputActionMapping>
+	</operation>
+</module>

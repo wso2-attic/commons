@@ -1,0 +1,28 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+        <in>
+            <switch xmlns:m0="http://services.esb.wso2.org" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//m0:add/m0:x">
+                <case regex="10">
+                    <property name="xValue" value="The &quot;x&quot; value is 10"/>
+                </case>
+                <case regex="20">
+                    <property name="xValue" value="The &quot;x&quot; value is 20"/>
+                </case>
+                <default>
+                    <property name="xValue" expression="fn:concat('The xValue is - ', //m0:add/m0:x)"/>
+                </default>
+            </switch>
+            <log level="custom" separator=",">
+                <property xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" name="xValue" expression="get-property('xValue')"/>
+                <property xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" name="epr" expression="get-property('To')"/>
+            </log>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/Adding"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <send/>
+        </out>
+</definitions>
+

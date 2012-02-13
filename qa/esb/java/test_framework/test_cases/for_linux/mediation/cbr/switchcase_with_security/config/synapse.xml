@@ -1,0 +1,53 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+<localEntry key="sec_policy" src="file:repository/conf/sample/resources/policy/policy.xml"/>
+	<in>
+            <switch xmlns:ns="http://service.esb.wso2.org" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//ns:add/ns:y">
+                <case regex="20">
+                    <send>
+                        <endpoint>
+                           <address uri="http://bogus:9000/soap/NonExistentStockQuoteService"/>
+                        </endpoint>
+                    </send>
+                </case>
+                <case regex="10">
+                    <send>
+                        <endpoint>
+                            <address uri="http://localhost:9000/soap/SecureCBRService">
+                                <enableAddressing/>
+                                <enableSec policy="sec_policy"/>
+                            </address>
+                        </endpoint>
+                    </send>
+                </case>
+                <default>
+                    <log level="custom" separator=",">
+                        <property name="text" expression="//ns:addResponse/ns:return"/>
+                    </log>
+                </default>
+
+            </switch>
+            <drop/>
+        </in>
+        <out>
+            <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+            <switch xmlns:ns="http://service.esb.wso2.org" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//ns:addResponse/ns:return">
+                <case regex="50">
+                    <log level="custom" separator=",">
+                        <property name="text" expression="//ns:addResponse/ns:return"/>
+                    </log>
+                </case>
+                <case regex="60">
+                    <log level="custom" separator=",">
+                        <property name="text" expression="//ns:addResponse/ns:return"/>
+                    </log>
+                </case>
+                <default>
+                    <log level="custom" separator=",">
+                        <property name="text" expression="//ns:addResponse/ns:return"/>
+                    </log>
+                </default>
+            </switch>
+            <send/>
+        </out>
+</definitions>
+

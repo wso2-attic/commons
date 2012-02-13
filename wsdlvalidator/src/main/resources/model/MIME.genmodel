@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-mime"
+    editDirectory="/org.eclipse.wst.wsdl/src" editorDirectory="/org.eclipse.wst.wsdl/src"
+    modelPluginID="org.eclipse.wst.wsdl" modelName="MIME" editPluginClass="" editorPluginClass=""
+    nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    usedGenPackages="WSDL.genmodel#//wsdl platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
+  <foreignModel>MIME.mdl</foreignModel>
+  <foreignModel>VABASE_PLUGINS_PATH</foreignModel>
+  <foreignModel>../../..</foreignModel>
+  <genPackages prefix="MIME" basePackage="org.eclipse.wst.wsdl.binding" disposableProviderFactory="true"
+      classPackageSuffix="internal.impl" utilityPackageSuffix="internal.util" ecorePackage="MIME.ecore#/">
+    <genDataTypes ecoreDataType="MIME.ecore#//List"/>
+    <genClasses ecoreClass="MIME.ecore#//MIMEContent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute MIME.ecore#//MIMEContent/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIME.ecore#//MIMEContent/ePart"/>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEContent/setPart">
+        <genParameters ecoreParameter="MIME.ecore#//MIMEContent/setPart/part"/>
+      </genOperations>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEContent/getPart"/>
+    </genClasses>
+    <genClasses ecoreClass="MIME.ecore#//MIMEPart">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIME.ecore#//MIMEPart/eExtensibilityElements"/>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEPart/addExtensibilityElement">
+        <genParameters ecoreParameter="MIME.ecore#//MIMEPart/addExtensibilityElement/extensibilityElement"/>
+      </genOperations>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEPart/getExtensibilityElements"/>
+    </genClasses>
+    <genClasses ecoreClass="MIME.ecore#//MIMEMultipartRelated">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference MIME.ecore#//MIMEMultipartRelated/eMIMEPart"/>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEMultipartRelated/addMIMEPart">
+        <genParameters ecoreParameter="MIME.ecore#//MIMEMultipartRelated/addMIMEPart/mimePart"/>
+      </genOperations>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEMultipartRelated/getMIMEParts"/>
+    </genClasses>
+    <genClasses ecoreClass="MIME.ecore#//MIMEMimeXml">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference MIME.ecore#//MIMEMimeXml/ePart"/>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEMimeXml/setPart">
+        <genParameters ecoreParameter="MIME.ecore#//MIMEMimeXml/setPart/part"/>
+      </genOperations>
+      <genOperations ecoreOperation="MIME.ecore#//MIMEMimeXml/getPart"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="MIME.ecore#//IMIMEPart"/>
+    <genClasses image="false" ecoreClass="MIME.ecore#//IMIMEMultipartRelated"/>
+    <genClasses image="false" ecoreClass="MIME.ecore#//IMIMEContent"/>
+    <genClasses image="false" ecoreClass="MIME.ecore#//IMIMEMimeXml"/>
+  </genPackages>
+</genmodel:GenModel>

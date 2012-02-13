@@ -1,0 +1,91 @@
+<project name="RequestReplyAnnonSOAP12Client" default="run.client">
+ 
+    <property name="base.dir" value="${project.base.dir}/mediation/QOS/relaible_messaging/rmService_nonrmClient/request_reply_annon_soap12/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="ESB_HOME" value="${esb.envt.ESB_HOME}"/>
+    <property name="endpoint" value="http://${esb.envt.hostname}:${esb.envt.httpport}/soap"/>
+    <echo message="Executing 'RequestReplyAnnonSOAP12Client' scenario"/>
+ 
+   <!--Copy the synapse.xml to ESB_HOME/webapp/WEB-INF/classes/conf-->
+    <target name="copy_synapse_xml">
+        <delete file="${ESB_HOME}/conf/synapse.xml"/>
+        <copy file="${build.dir}/../../config/synapse.xml" tofile="${ESB_HOME}/conf/synapse.xml" overwrite="true"/>
+    </target>	
+ 
+    <!--Create a directory and copy the axis2.xml file-->
+    <target name="copy_axis2_xml">
+	<delete dir="${ESB_HOME}/repository/samples/resources/rmscenario"/>
+        <mkdir dir="${ESB_HOME}/repository/samples/resources/rmscenario"/>
+    	<copy file="${build.dir}/../../resources/axis2.xml" tofile="${ESB_HOME}/repository/samples/resources/rmscenario/axis2.xml" overwrite="true"/>
+    </target>
+ 
+    <!--Starting the WSO2 ESB Server-->
+    <target name="start_synapse_server" depends="copy_axis2_xml, copy_synapse_xml">
+        <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="true">
+            <arg value="console"/>
+       </exec> 
+    </target>
+           
+    <target name="run.client" depends="clean">
+
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/RequestReplyAnnonSOAP12Client-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.esb.client.RequestReplyAnnonSOAP12Client" fork="true">
+	    <arg value="${ESB_HOME}/client_repo"/>
+            <arg value="${ESB_HOME}/repository/samples/resources/rmscenario"/>
+            <arg value="${endpoint}"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+
+       <!--Shutting down the WSO2 ESB Server-->
+       <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="false">
+            <arg value="stop"/>
+       </exec>
+      
+    </target>
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

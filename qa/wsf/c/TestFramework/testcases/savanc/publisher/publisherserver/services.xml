@@ -1,0 +1,14 @@
+<service name="publisher">
+    <parameter name="ServiceClass" locked="xsd:false">publisher</parameter>
+    <parameter name="loadServiceAtStartup" locked="xsd:false">true</parameter>
+   <description>
+       This is a sample eventing data source which loads as the axis2 engine startup and 
+       start publishing to its subscribers.
+   </description>
+   <module ref="savan"/>
+   <parameter name="TopicURL" locked="xsd:false">http://localhost:9090/axis2/services/publisher</parameter>
+
+   <operation name="start">
+           <parameter name="wsamapping" >http://ws.apache.org/axis2/c/savan/samples/pubilsher/start</parameter>
+   </operation>
+</service>

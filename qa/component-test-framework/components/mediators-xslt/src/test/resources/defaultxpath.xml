@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <localEntry key="echo_in" src="file:repository/samples/resources/transform/echo_transform.xslt"/>
+    <localEntry key="echo_out" src="file:repository/samples/resources/transform/echo_back.xslt"/>
+    <localEntry key="inline_echo_in">
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                        xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:m0="http://service.carbon.wso2.org"
+                        version="2.0" exclude-result-prefixes="m0 fn">
+            <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+            <xsl:template match="/">
+                <xsl:apply-templates select="//m0:echoString"/>
+            </xsl:template>
+            <xsl:template match="m0:echoString">
+                <m:echoString xmlns:m="http://service.carbon.wso2.org">
+                    <m:s>Hi-Request2222</m:s>
+                </m:echoString>
+            </xsl:template>
+        </xsl:stylesheet>
+    </localEntry>
+    <localEntry key="inline_echo_out">
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ax21="http://services.samples/xsd"
+                        xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:m0="http://service.carbon.wso2.org"
+                        version="2.0" exclude-result-prefixes="m0 ax21 fn">
+            <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+            <xsl:template match="/">
+                <xsl:apply-templates select="//m0:return"/>
+            </xsl:template>
+            <xsl:template match="m0:return">
+                <m:echoStringResponse xmlns:m="http://service.carbon.wso2.org">
+                    <m:return>Hi-Response222</m:return>
+                </m:echoStringResponse>
+            </xsl:template>
+        </xsl:stylesheet>
+    </localEntry>
+    <sequence name="inOutSeq">
+        <in>
+            <log level="full">
+                <property xmlns:ns2="http://org.apache.synapse/xsd" xmlns:ns="http://org.apache.synapse/xsd" name="text"
+                          expression="get-property('sample_text')"/>
+            </log>
+            <xslt key="echo_in"/>
+            <send>
+                <endpoint name="endpoint_urn_uuid_8A501DF925F88139A05150009509692-1314033775">
+                    <address uri="http://localhost:9000/services/Echo"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <log level="full"/>
+            <xslt key="echo_out"/>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="inOutSeq"/>
+    </sequence>
+</definitions>

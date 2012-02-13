@@ -1,0 +1,58 @@
+<project name="SQL_Or_My" default="run.client">
+
+        
+    <property name="base.dir" value="${project.base.dir}/SQL_Or_My/client"/>
+    <property name="src" value="${project.base.dir}/SQL_Or_My/client/src"/>
+    <property name="target" value="${project.base.dir}/SQL_Or_My/client/target"/>
+    <property name="endpoint.uri" value="http://${DS.envt.hostname}:${DS.envt.httpport}/services/SQL_Or_My.SQL_Or_MyHttpSoap11Endpoint"/>
+	<property name="lib.path" value="${DS.envt.DS_HOME}"/>
+    
+         
+         
+    <target name="run.client">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}/classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" 
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+               <fileset dir="${DS.envt.DS_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="${DS.envt.DS_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/SQL_Or_My.jar">
+         <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.SQL_Or_My_Client" fork="true">
+        <jvmarg value="-Xmx1024m"/>
+        <arg value="${endpoint.uri}"/>
+            <classpath>
+               <fileset dir="${DS.envt.DS_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${DS.envt.DS_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+   
+</project>

@@ -1,0 +1,3 @@
+If breakRouter="false" then text = ##########SECOND ROUTE######## and text = =============THIRD ROUTE============= should be logged since the message goes through it's sibling Router mediators
+
+If it's set to false, it should NOT invoke it's sibling Router mediators and the above logs should not be printed

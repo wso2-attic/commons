@@ -1,0 +1,37 @@
+<sequence name="GetAccountOut" xmlns="http://ws.apache.org/ns/synapse">
+	<filter xpath="//n:id" xmlns:n="http://mgt.accounts.etrade.com/xsd">
+		<then>
+			<payloadFactory>
+				<format>
+					<account xmlns="">
+						<id>$1</id>
+						<name>$2</name>
+						<description>$3</description>
+						<email>$4</email>
+						<telephone>$5</telephone>
+						<address>$6</address>
+						<dateCreated>$7</dateCreated>
+					</account>
+				</format>
+				<args>
+					<arg expression="//n:id/text()" />
+					<arg expression="//n:name/text()" />
+					<arg expression="//n:description/text()" />
+					<arg expression="//n:email/text()" />
+					<arg expression="//n:telephone/text()" />
+					<arg expression="//n:address/text()" />
+					<arg expression="//n:dateCreated/text()" />
+				</args>
+			</payloadFactory>
+		</then>
+		<else>
+			<property name="HTTP_SC" scope="axis2" value="404" />
+			<payloadFactory>
+				<format>
+					<fault xmlns="">Specified resource does not exist</fault>
+				</format>
+			</payloadFactory>
+		</else>
+	</filter>
+	<send />
+</sequence>

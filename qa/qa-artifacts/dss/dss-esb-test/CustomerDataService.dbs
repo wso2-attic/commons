@@ -1,0 +1,22 @@
+<data name="CustomerDataService">
+   <config id="mysql">
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/customer_db</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+   </config>
+   <query id="getCustomerQuery" useConfig="mysql">
+      <sql>select * from customer where id=?</sql>
+      <result element="customers" rowName="customer">
+         <element name="id" column="id" xsdType="xs:string" />
+         <element name="name" column="name" xsdType="xs:string" />
+         <element name="address" column="address" xsdType="xs:string" />
+      </result>
+      <param name="id" sqlType="STRING" />
+   </query>
+   <operation name="getCustomer">
+      <call-query href="getCustomerQuery">
+         <with-param name="id" query-param="id" />
+      </call-query>
+   </operation>
+</data>

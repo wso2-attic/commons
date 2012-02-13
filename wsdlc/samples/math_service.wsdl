@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description xmlns="http://www.w3.org/2006/01/wsdl" xmlns:wsdlx="http://www.w3.org/2006/01/wsdl-extension" xmlns:tns="http://www.wso2.org/php" xmlns:wsoap="http://www.w3.org/2006/01/wsdl/soap" xmlns:whttp="http://www.w3.org/2006/01/wsdl/http" xmlns:soapenc="http://www.w3.org/2003/05/soap-envelope" xmlns:default="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.wso2.org/php">
+  <documentation>A simple samples|math_service.php service</documentation>
+  <types>
+    <default:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFromDefault="qualified">
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="divFunction">
+        <complexType>
+          <sequence>
+            <element name="inMessage" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="divFunctionResponse">
+        <complexType>
+          <sequence>
+            <element name="returnVal" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="addFunction">
+        <complexType>
+          <sequence>
+            <element name="inMessage" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="addFunctionResponse">
+        <complexType>
+          <sequence>
+            <element name="returnVal" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="subFunction">
+        <complexType>
+          <sequence>
+            <element name="inMessage" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="subFunctionResponse">
+        <complexType>
+          <sequence>
+            <element name="returnVal" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="mulFunction">
+        <complexType>
+          <sequence>
+            <element name="inMessage" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element xmlns="http://www.w3.org/2006/01/wsdl" name="mulFunctionResponse">
+        <complexType>
+          <sequence>
+            <element name="returnVal" type="xsd:anyType"/>
+          </sequence>
+        </complexType>
+      </element>
+    </default:schema>
+  </types>
+  <interface name="samples|math_service.phpInterface">
+    <operation name="divFunction" pattern="http://www.w3.org/2006/01/wsdl/in-out">
+      <input pattern="divFunction"/>
+      <output pattern="divFunctionResponse"/>
+    </operation>
+    <operation name="addFunction" pattern="http://www.w3.org/2006/01/wsdl/in-out">
+      <input pattern="addFunction"/>
+      <output pattern="addFunctionResponse"/>
+    </operation>
+    <operation name="subFunction" pattern="http://www.w3.org/2006/01/wsdl/in-out">
+      <input pattern="subFunction"/>
+      <output pattern="subFunctionResponse"/>
+    </operation>
+    <operation name="mulFunction" pattern="http://www.w3.org/2006/01/wsdl/in-out">
+      <input pattern="mulFunction"/>
+      <output pattern="mulFunctionResponse"/>
+    </operation>
+  </interface>
+  <binding name="samples|math_service.phpSOAPBinding" type="http://www.w3.org/2006/01/wsdl/soap" interface="samples|math_service.phpInterface" version="1.2" protocol="http://www.w3.org/2003/05/soap/bindings/HTTP"/>
+  <service service="samples|math_service.php" interface="samples|math_service.phpInterface">
+    <endpoint name="samples|math_service.php" binding="tnssamples|math_service.php" address="localhost/samples/math_service.php"/>
+  </service>
+</description>

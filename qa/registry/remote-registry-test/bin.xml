@@ -1,0 +1,66 @@
+<assembly>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        
+        <fileSet>
+            <directory>./src</directory>
+            <outputDirectory>RemoteRegistryTest-${test.version}/src</outputDirectory>
+            <excludes>
+                <exclude>**/**.sh</exclude>
+                <exclude>**/pom.xml</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>./resources</directory>
+            <outputDirectory>RemoteRegistryTest-${test.version}/conf/</outputDirectory>
+            <excludes>
+                <exclude>**/**.sh</exclude>
+                <exclude>**/build.xml</exclude>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <directory>./resources</directory>
+            <outputDirectory>RemoteRegistryTest-${test.version}/</outputDirectory>
+            <excludes>
+                <exclude>**/**.properties</exclude>
+                <include>**/build.xml</include>
+            </excludes>
+        </fileSet>
+
+        <fileSet>
+            <outputDirectory>RemoteRegistryTest-${test.version}</outputDirectory>
+            <excludes>
+                <exclude>**/native/*</exclude>
+                <exclude>**/services/sample01.aar</exclude>
+                <exclude>**/services/echo/**</exclude>
+                <exclude>**/repository/services/version/**</exclude>
+                <exclude>**/pom.xml</exclude>
+                <exclude>**/registry.xml</exclude>
+                <exclude>**/*.sh</exclude>
+                <exclude>**/version.txt</exclude>
+                <exclude>**/carbon.xml</exclude>
+                <exclude>**/resources/clientRepository/modules/rampart*</exclude>
+            </excludes>
+           <includes>
+                <include>README.txt</include>
+           </includes>
+        </fileSet>
+       </fileSets>
+
+
+
+    <dependencySets>
+        <dependencySet>
+            <!--<outputFileNameMapping>${artifact.artifactId}_${artifact.version}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>-->
+            <outputDirectory>RemoteRegistryTest-${test.version}/lib</outputDirectory>
+            <includes>
+                <include>junit:junit:jar</include>
+                <include>org.wso2.carbon:org.wso2.carbon.user.core:jar</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

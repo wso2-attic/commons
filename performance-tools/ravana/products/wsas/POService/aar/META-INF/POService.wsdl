@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="POWSDL" targetNamespace="http://po.services.core.carbon.wso2.org" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://po.services.core.carbon.wso2.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="http://po.services.core.carbon.wso2.org" xmlns:tns="http://po.services.core.carbon.wso2.org" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	    <xsd:complexType name="BuyStocksType">
+		    <xsd:sequence>
+		        <xsd:element maxOccurs="unbounded" name="order" type="tns:OrderType">
+		        </xsd:element>
+		    </xsd:sequence>
+        </xsd:complexType>
+         <xsd:complexType name="OrderType">
+            <xsd:sequence>
+                <xsd:element name="symbol" type="xsd:string"/>
+                <xsd:element name="buyerID" type="xsd:string"/>
+                <xsd:element name="price" type="xsd:double"/>
+                <xsd:element name="volume" type="xsd:int"/>
+            </xsd:sequence>
+        </xsd:complexType>
+
+	    <xsd:element name="buyStocks" type="tns:BuyStocksType"/>
+	</xsd:schema>
+  </types>
+  <message name="POOperationRequest">
+    <part name="parameters" element="tns:buyStocks">
+    </part>
+  </message>
+  <message name="POOperationResponse">
+    <part name="parameters" element="tns:buyStocks">
+    </part>
+  </message>
+  <portType name="buyStocksPortType">
+    <operation name="buyStocks">
+      <input name="message" message="tns:POOperationRequest">
+    </input>
+      <output name="message" message="tns:POOperationResponse">
+    </output>
+    </operation>
+  </portType>
+  <binding name="POServiceSOAP11Binding" type="tns:buyStocksPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="buyStocks">
+      <soap:operation soapAction="urn:buyStocks" style="document"/>
+      <input name="message">
+        <soap:body use="literal"/>
+      </input>
+      <output name="message">
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="POService">
+    <port name="POServicePort" binding="tns:POServiceSOAP11Binding">
+      <soap:address location="http://localhost:18181/POProxy"/>
+    </port>
+  </service>
+    <plnk:partnerLinkType name="POWSDL">
+        <!-- A partner link type is automatically generated when a new port type is added. Partner link types are used by BPEL processes. 
+In a BPEL process, a partner link represents the interaction between the BPEL process and a partner service. Each partner link is associated with a partner link type.
+A partner link type characterizes the conversational relationship between two services. The partner link type can have one or two roles.-->
+        <plnk:role name="POWSDLPortTypeRole" portType="tns:buyStocksPortType"/>
+    </plnk:partnerLinkType>
+</definitions>

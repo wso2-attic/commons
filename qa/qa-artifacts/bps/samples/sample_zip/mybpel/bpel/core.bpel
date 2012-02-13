@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+	name="Core" targetNamespace="http://www.example.com/bpel/core.bpel" xmlns:mywsdlns="http://www.example.com/bpel/core.wsdl"
+	xmlns:sns="http://www.example.com/wsdl/shared.wsdl">
+
+	<import importType="http://schemas.xmlsoap.org/wsdl/" namespace="http://www.example.com/bpel/core.wsdl"
+		location="core.wsdl" />
+	<import importType="http://schemas.xmlsoap.org/wsdl/" namespace="http://www.example.com/wsdl/shared.wsdl"
+		location="../wsdl/shared.wsdl" />
+
+	<partnerLinks>
+		<partnerLink name="CoreLink" partnerLinkType="mywsdlns:CoreLinkType"
+			myRole="Core" />
+	</partnerLinks>
+
+	<variables>
+		<variable name="stringMessage" messageType="sns:string" />
+	</variables>
+
+	<sequence>
+
+		<receive name="ReceiveStringToEcho" partnerLink="CoreLink" operation="echo"
+			createInstance="yes" variable="stringMessage" />
+
+		<reply name="ReturnString" partnerLink="CoreLink" operation="echo" variable="stringMessage" />
+
+	</sequence>
+
+</process>

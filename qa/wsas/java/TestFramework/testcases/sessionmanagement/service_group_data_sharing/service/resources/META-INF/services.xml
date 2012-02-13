@@ -1,0 +1,30 @@
+<serviceGroup>
+<service name="ServiceGroupTestService1" scope="soapsession">
+    <Description>
+        This is a sample service to test data sharing among services
+    </Description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    <parameter name="ServiceClass" locked="false">
+      org.wso2.wsas.service.SGTestService1
+    </parameter>
+</service>
+<service name="ServiceGroupTestService2" scope="soapsession">
+    <Description>
+        This is a sample service to test data sharing among services
+    </Description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    <parameter name="ServiceClass" locked="false">
+      org.wso2.wsas.service.SGTestService2
+    </parameter>
+</service>
+</serviceGroup>

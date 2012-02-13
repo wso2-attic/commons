@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# this will copy a file and append the date binding to its name.
+# to run this type sh datecp path_to-the_file/file.
+# i.e sh datecp ../Documents/Stratos/testdata/9MB.txt will create 9MB-2011-10-13_14.3621.txt at .
+
+
+date_formatted=$(date +%Y-%m-%d_%H.%M%S)
+file_extension=`echo "$1"|awk -F . '{print $NF}'`
+file_name=`basename $1 .$file_extension`
+
+cp -iv $1 $file_name-$date_formatted.$file_extension

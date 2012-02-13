@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>org.apache.openjpa.eclipse.all</artifactId>
+    <groupId>org.apache.openjpa.eclipse</groupId>
+    <version>1.0.0-wso2v1</version>
+  </parent>
+  <groupId>org.apache.openjpa.eclipse</groupId>
+  <artifactId>org.apache.openjpa.eclipse.site</artifactId>
+  <packaging>eclipse-update-site</packaging>
+	<name>OpenJPA Bytecode Enhancer Plugin Update Site</name>
+	<description>
+		OpenJPA Bytecode Enhancer Plugin available as local update site.
+	</description>
+</project>

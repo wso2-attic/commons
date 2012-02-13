@@ -1,0 +1,51 @@
+<project name="rm_test_service" default="create" basedir="..">
+
+    <target name="init">
+        <property name="service_home" value="${basedir}"/>
+        <property name="classes_dir" value="${service_home}/classes"/>
+        <property name="src_dir" value="${service_home}/src"/>
+        <property name="lib_dir" value="/home/amila/downloads/axis2-SNAPSHOT/lib"/>
+        <property name="deploy_dir" value="${service_home}/deploy"/>
+        <property name="service_file" value="${service_home}/repository_server/services/RMTestService.aar"/>
+    </target>
+
+    <target name="create" depends="clean" description="creating the service aar">
+        <echo message="creating the service aar from ${service_home}"/>
+
+        <!-- creates deploy and class directoris -->
+        <mkdir dir="${deploy_dir}"/>
+        <mkdir dir="${deploy_dir}/META-INF"/>
+
+        <!-- compiling the classes -->
+        <!--<javac destdir="${classes_dir}" srcdir="${src_dir}">-->
+            <!--<classpath>-->
+                <!--<fileset dir="${lib_dir}" includes="*.jar"/>-->
+                <!--<fileset dir="/home/amila/share/java/junit3.8.1" includes="*.jar"/>-->
+            <!--</classpath>-->
+        <!--</javac>-->
+
+        <!-- copy the classes -->
+        <copy todir="${deploy_dir}">
+            <fileset dir="${classes_dir}"/>
+        </copy>
+
+        <!-- copy services file -->
+        <copy file="conf/services.xml" todir="${deploy_dir}/META-INF"/>
+
+        <!-- copy the key store -->
+        <copy file="conf/service.jks"  todir="${deploy_dir}" />
+        <copy file="conf/interop/oiosi.jks"  todir="${deploy_dir}" />
+
+        <!-- create TestService.aar file -->
+        <jar destfile="${service_file}">
+            <zipfileset dir="${deploy_dir}" prefix=""/>
+        </jar>
+
+    </target>
+
+    <target name="clean" depends="init" description="deletes the old contentst">
+        <!--<delete dir="${classes_dir}"/>-->
+        <delete dir="${deploy_dir}"/>
+    </target>
+
+</project>

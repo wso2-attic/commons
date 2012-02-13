@@ -1,0 +1,310 @@
+/**
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.wso2.siddhi.core.node.processor;
+
+import org.apache.log4j.Logger;
+import org.wso2.siddhi.api.condition.Condition;
+import org.wso2.siddhi.api.condition.sequence.SequenceCondition;
+import org.wso2.siddhi.api.eventstream.EventStream;
+import org.wso2.siddhi.api.eventstream.query.Query;
+import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
+import org.wso2.siddhi.api.eventstream.query.SequenceQuery;
+import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
+import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.event.generator.EventGenerator;
+import org.wso2.siddhi.core.event.generator.EventGeneratorImpl;
+import org.wso2.siddhi.core.exception.ProcessorInitializationException;
+import org.wso2.siddhi.core.exception.SiddhiException;
+import org.wso2.siddhi.core.node.processor.eventmap.SequenceOutputMapObj;
+import org.wso2.siddhi.core.exception.InvalidAttributeCastException;
+import org.wso2.siddhi.core.exception.InvalidQueryException;
+import org.wso2.siddhi.core.exception.InvalidQueryInputStreamException;
+import org.wso2.siddhi.core.exception.PropertyFormatException;
+import org.wso2.siddhi.core.exception.UndefinedPropertyException;
+import org.wso2.siddhi.core.node.processor.executor.SequenceExecutor;
+import org.wso2.siddhi.core.parser.ConditionParser;
+import org.wso2.siddhi.core.parser.QueryInputStreamParser;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * This class contains the Query processor implementation for processing Sequence queries
+ */
+public class SequenceProcessor extends AbstractProcessor {
+
+    private static final Logger log = Logger.getLogger(PatternProcessor.class);
+    private SequenceQuery query;
+    private List<SequenceOutputMapObj> outputEventMappingObjects;
+    private EventGenerator eventGenerator;
+    private List<SequenceExecutor> executorList;
+    private List<SequenceExecutor> activeExecutors; // Events are sent to these Executors
+    private boolean cleanOldExecutors = false;
+    private long executorCleaningTime = 0;
+    private long executorCleaningInterval = 1000;
+    private boolean skipTillNextMatch = true;
+
+    /**
+     * @param query sequence query
+     * @throws org.wso2.siddhi.core.exception.ProcessorInitializationException
+     *
+     * @throws org.wso2.siddhi.core.exception.InvalidQueryInputStreamException
+     *
+     */
+    public SequenceProcessor(SequenceQuery query)
+            throws InvalidQueryInputStreamException, ProcessorInitializationException,
+                   SiddhiException {
+        this.query = query;
+        this.activeExecutors = new LinkedList<SequenceExecutor>();
+        for (QueryInputStream queryInputStream : query.getQueryInputStreamList()) {
+            assignQueryInputStream(queryInputStream);
+        }
+        init();
+    }
+
+    @Override
+    public String getStreamId() {
+        return query.getStreamId();
+    }
+
+    /**
+     * Set whether to skip till the next match
+     *
+     * @param isSkip whether to skip till the next match
+     */
+    public void setSkipTillFirstMatch(boolean isSkip) {
+        skipTillNextMatch = isSkip;
+    }
+
+    @Override
+    public void assignQueryInputStream(QueryInputStream queryInputStream)
+            throws InvalidQueryInputStreamException {
+        inputEventStream.assignInputStreamHandler(QueryInputStreamParser.parse(queryInputStream));
+    }
+
+    /**
+     * add sequence of executors recursively for star executors ex. AB*C*D*E
+     */
+    private static void addNextExecutorOfStarExecutor(List<SequenceExecutor> executorList,
+                                                      SequenceExecutor currentExecutor) {
+        if (currentExecutor.isStarExecutor()) {
+            SequenceExecutor nextExecutor = currentExecutor.getNextNewExecutor();
+            executorList.add(nextExecutor);
+            if (nextExecutor.isStarExecutor()) {
+                addNextExecutorOfStarExecutor(executorList, nextExecutor);
+            }
+        }
+    }
+
+    @Override
+    public void init() throws ProcessorInitializationException, SiddhiException {
+        try {
+
+            // Query
+            Condition condition = query.getCondition();
+            List<EventStream> inputEventStreams = query.getEventStreamList();
+            ConditionParser conditionParser = new ConditionParser(condition, inputEventStreams);
+
+            executorList = conditionParser.getSequenceExecutorList(); // Get list of Executors
+
+            SequenceExecutor firstExecutor = executorList.get(0).getNewInstance();
+            activeExecutors.add(firstExecutor); //adding first SequenceExecutor to activeExecutors
+            addNextExecutorOfStarExecutor(activeExecutors, firstExecutor);
+
+            for (SequenceExecutor sequenceExecutor : executorList) {
+                if (sequenceExecutor.getLifeTime() > -1) {
+                    cleanOldExecutors = true;
+                    break;
+                }
+            }
+
+            // Output
+            eventGenerator = new EventGeneratorImpl(query.getStreamId(), query.getNames(), query.getTypes());
+            List<String> outputDefinitionList = query.getOutputDefinition().getPropertyList();
+            outputEventMappingObjects = new ArrayList<SequenceOutputMapObj>();
+
+            List<String> eventStreamNameList = OutputDefinitionParserUtil.createStreamIdListFromConditions((SequenceCondition) condition);
+
+            for (String aOutputDefinition : outputDefinitionList) {
+                // use 0 as the first state
+                int stateId = Integer.parseInt(aOutputDefinition.split("=")[1].split("\\.")[0].substring(1));
+                int selfEventPosition = 0;
+                String propertyAttribute;
+
+                try {
+                    propertyAttribute = aOutputDefinition.split("=")[1].split("\\.")[2];
+
+                    if (aOutputDefinition.split("=")[1].split("\\.")[1].equals("first")) {
+                        selfEventPosition = 0;
+                    } else {
+                        selfEventPosition = 1;
+                    }
+
+                } catch (Exception e) {
+                    propertyAttribute = aOutputDefinition.split("=")[1].split("\\.")[1];
+                }
+
+                for (EventStream eventStream : inputEventStreams) {
+                    if (eventStream.getStreamId().equals(eventStreamNameList.get(stateId))) {
+                        SequenceOutputMapObj mapObj = new SequenceOutputMapObj(stateId, eventStream.getAttributePositionForName(propertyAttribute), selfEventPosition);
+                        outputEventMappingObjects.add(mapObj);
+                        break;
+                    }
+                }
+            }
+        } catch (UndefinedPropertyException ex) {
+            log.warn(ex.getMessage());
+            throw new ProcessorInitializationException("UndefinedPropertyException occurred " + ex.getMessage());
+        } catch (InvalidAttributeCastException ex) {
+            log.warn(ex.getMessage());
+            throw new ProcessorInitializationException("InvalidAttributeCastException occurred " + ex.getMessage());
+        } catch (InvalidQueryException ex) {
+            log.warn(ex.getMessage());
+            throw new ProcessorInitializationException("InvalidQueryException occurred " + ex.getMessage());
+        } catch (PropertyFormatException ex) {
+            log.warn(ex.getMessage());
+            throw new ProcessorInitializationException("PropertyFormatException occurred " + ex.getMessage());
+        }
+
+    }
+
+    @Override
+    public void run() {
+        Event event = null;
+
+        while (true) {
+
+            try {
+                event = inputEventStream.takeEvent();  //get event
+
+                // Check for last event
+                if (event.getEventStreamId().equals(SiddhiManager.POISON_PILL)) {
+                    Integer pill = (Integer) event.getNthAttribute(0);
+                    if (pill == SiddhiManager.RESET_PROCESSORS) {
+                        reset();
+                        continue;
+                    } else if (pill == SiddhiManager.KILL_ALL) {
+                        outputEventStream.put(event);
+                        break;
+                    } else if (pill == SiddhiManager.KILL) {
+                        break;
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            List<SequenceExecutor> newlyAddedActiveListeners = new ArrayList<SequenceExecutor>();
+            boolean isEventFired = false;
+
+            for (Iterator<SequenceExecutor> it = activeExecutors.iterator(); it.hasNext(); ) {
+                SequenceExecutor currentSequenceExecutor = it.next();
+
+                if (!currentSequenceExecutor.isAlive()) {     // Removing expired listeners
+                    it.remove();
+                    continue;
+                } else if (currentSequenceExecutor.execute(event)) {
+                    skipTillNextMatch = false;
+
+                    // Fire Event - Generate output
+                    if (currentSequenceExecutor.isFireEvent()) {
+                        // Generate output event
+                        Object[] outputValues = new Object[outputEventMappingObjects.size()];
+                        for (int i = 0, outPutEventGenMapListSize = outputEventMappingObjects.size(); i < outPutEventGenMapListSize; i++) {
+                            SequenceOutputMapObj sequenceOutputMapObj = outputEventMappingObjects.get(i);
+
+                            try {
+                                outputValues[i] = currentSequenceExecutor.getArrivedEvents()[sequenceOutputMapObj.getStateTypeId()][sequenceOutputMapObj.getselfEventPosition()].getNthAttribute(sequenceOutputMapObj.getPosition());
+                            } catch (Exception e) {
+                                try {
+                                    outputValues[i] = currentSequenceExecutor.getArrivedEvents()[sequenceOutputMapObj.getStateTypeId()][0].getNthAttribute(sequenceOutputMapObj.getPosition());
+                                } catch (Exception e2) {
+                                    outputValues[i] = null;
+                                }
+                            }
+                        }
+                        // Send generated output event
+                        try {
+                            outputEventStream.put(eventGenerator.createEvent(outputValues));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        isEventFired = true;
+                        break;
+                    }
+
+                    // add executors to listener list
+                    if (currentSequenceExecutor.isStarExecutor()) {
+                        newlyAddedActiveListeners.add(currentSequenceExecutor.getNextThisExecutor());
+                    }
+
+                    if (currentSequenceExecutor.isNextExecutorExist()) {
+                        SequenceExecutor nextExecutor = currentSequenceExecutor.getNextNewExecutor();
+                        if (nextExecutor.isStarExecutor()) {
+                            nextExecutor.execute(event);
+                        }
+                        newlyAddedActiveListeners.add(nextExecutor);
+                        addNextExecutorOfStarExecutor(newlyAddedActiveListeners, nextExecutor);
+                    }
+                }
+
+                if (skipTillNextMatch) {
+                    currentSequenceExecutor.clearEvents();
+                    continue;
+                }
+                it.remove();
+            }
+
+            if (isEventFired || activeExecutors.size() + newlyAddedActiveListeners.size() == 0) {
+                reset();    //resetting listeners
+            } else {
+                activeExecutors.addAll(newlyAddedActiveListeners); //adding new listeners
+            }
+
+            if (cleanOldExecutors) {
+                long currentTime = System.currentTimeMillis();
+                if (executorCleaningTime < currentTime) {
+                    executorCleaningTime = currentTime + executorCleaningInterval;
+
+                    for (Iterator<SequenceExecutor> it = activeExecutors.iterator(); it.hasNext(); ) {
+                        SequenceExecutor currentSequenceExecutor = it.next();
+                        if (!currentSequenceExecutor.isAlive()) {
+                            it.remove();
+                        }
+                    }
+                    System.gc();
+                }
+            }
+        }
+    }
+
+    /**
+     * Reset activeExecutors
+     */
+    private void reset() {
+        activeExecutors.clear();
+        SequenceExecutor firstExecutor = executorList.get(0).getNewInstance();
+        activeExecutors.add(firstExecutor.getNewInstance()); //adding first SequenceExecutor to activeExecutors
+        addNextExecutorOfStarExecutor(activeExecutors, firstExecutor);
+        skipTillNextMatch = true;
+    }
+
+    public Query getQuery() {
+        return query;
+    }
+}

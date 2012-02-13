@@ -1,0 +1,53 @@
+<module name="wso2throttle" class="org.wso2.throttle.module.ThrottleModule">
+    <Description>
+        Module for controlling client access to web service engine. Access throttling can
+        be configured at a global level, service level or operation level.
+    </Description>
+    <InFlow>
+        <handler name="GlobalThrottleHandler"
+                 class="org.wso2.throttle.module.handler.GlobalThrottleHandler">
+            <order phase="PreDispatch"/>
+        </handler>
+        <handler name="ServiceLevelThrottleHandler"
+                 class="org.wso2.throttle.module.handler.ServiceLevelThrottleHandler">
+            <order phase="OperationInPhase"/>
+        </handler>
+        <handler name="OperationLevelThrottleHandler"
+                 class="org.wso2.throttle.module.handler.OperationLevelThrottleHandler">
+            <order phase="OperationInPhase"/>
+        </handler>
+    </InFlow>
+    <OutFlow>
+        <handler name="OperationLevelThrottleHandler"
+                 class="org.wso2.throttle.module.handler.OperationLevelThrottleHandler">
+            <order phase="MessageOut"/>
+        </handler>
+        <handler name="ServiceLevelThrottleHandler"
+                 class="org.wso2.throttle.module.handler.ServiceLevelThrottleHandler">
+            <order phase="MessageOut"/>
+        </handler>
+        <handler name="GlobalThrottleHandler"
+                 class="org.wso2.throttle.module.handler.GlobalThrottleHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFlow>
+
+    <wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                xmlns:throttle="http://www.wso2.org/products/wso2commons/throttle">
+        <throttle:ModuleThrottleAssertion>                
+            <wsp:Policy>
+                <throttle:ID throttle:type="IP">other</throttle:ID>
+                <wsp:Policy>
+                    <throttle:Allow/>
+                </wsp:Policy>
+            </wsp:Policy>
+            <wsp:Policy>
+                <throttle:ID throttle:type="DOMAIN">other</throttle:ID>
+                <wsp:Policy>
+                    <throttle:Allow/>
+                </wsp:Policy>
+            </wsp:Policy>
+        </throttle:ModuleThrottleAssertion>
+    </wsp:Policy>
+</module>
+

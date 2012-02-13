@@ -1,0 +1,1783 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <title>[#CARBON-7875] After a bpel package fails to deploy, other 
+bpel packages with the same name for .bpel cannot be deployed - WSO2 
+JIRA </title>
+
+    <meta content="general" name="decorator">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="LfLS7kxrBU">
+
+
+    <link rel="shortcut icon" href="https://wso2.org/jira/s/522/7/_/favicon.ico">
+    <link rel="icon" type="image/png" href="https://wso2.org/jira/s/522/7/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '/jira';</script>
+<link type="text/css" rel="stylesheet" href="CARBON-7875_files/com.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/jira/s/522/7/2.1.3/_/download/batch/com.atlassian.auiplugin:ajs/com.atlassian.auiplugin:ajs.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="CARBON-7875_files/jira.css" media="all">
+<link type="text/css" rel="stylesheet" href="CARBON-7875_files/jira_002.css" media="all">
+<!--[if IE]>
+<link type="text/css" rel="stylesheet" href="/jira/s/522/7/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?ieonly=true" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="CARBON-7875_files/jira_003.css" media="print">
+<link type="text/css" rel="stylesheet" href="CARBON-7875_files/global.css" media="all">
+<script type="text/javascript" src="CARBON-7875_files/com.js"></script>
+<script type="text/javascript" src="CARBON-7875_files/jira_002.js"></script>
+<script type="text/javascript" src="CARBON-7875_files/jira.js"></script>
+<script type="text/javascript" src="CARBON-7875_files/jira_004.js"></script>
+<script type="text/javascript" src="CARBON-7875_files/jira_005.js"></script>
+<script type="text/javascript" src="CARBON-7875_files/jira_003.js"></script>
+
+    <script type="text/javascript" src="CARBON-7875_files/shortcuts.js"></script>
+</head><body id="jira" class="nl type-ab stalker">
+<div id="common-header" style="background-image: url(&quot;../images/top-bg.gif&quot;); background-repeat: repeat-x; background-position: left top; height: 116px; padding-top: 22px; opacity: 0;">
+	<div id="logo" style="display: block; float: left; margin-top: 5px; margin-left: 10px; width: 340px;"><a href="http://wso2.org/"><img src="CARBON-7875_files/wso2-logo.gif" alt="Oxygen Tank"></a></div>
+	<div id="tag" style="clear: both; float: left; font-weight: bold; margin-left: 145px;">THE DEVELOPER PORTAL FOR SOA</div>
+        <div style="float: right; margin-right: 10px; clear: both; background-image: url(&quot;../images/url-bg.gif&quot;); height: 31px; background-repeat: no-repeat; width: 207px; text-align: center; background-position: right bottom;">
+	<span style="font-weight: bold; line-height: 30px; text-align: center;"><a href="http://wso2.org/" target="_blank">WSO2 OxygenTank</a> | <a href="http://wso2.com/" target="_blank">wso2.com</a></span>
+</div>
+</div>
+
+<div style="opacity: 0;" id="header">
+    <div id="header-top">
+        <a id="logo" href="https://wso2.org/jira/secure/Dashboard.jspa">
+                        <img class="logo" src="CARBON-7875_files/wso2-oxygentank-logo.png" alt="WSO2 JIRA" border="0" height="0" width="0">
+                    </a>
+                <form id="quicksearch" action="/jira/secure/QuickSearch.jspa" method="post">
+            <label for="quickSearchInput" title="Go directly to an issue by typing a valid issue key, or run a free-text search." class="overlabel-apply show">Quick Search</label>
+            <input id="quickSearchInput" class="quickSearchInput" size="25" title="Go directly to an issue by typing a valid issue key, or run a free-text search. ( Type '/' )" name="searchString" accesskey="q" valign="absmiddle" type="text">
+        </form>
+                
+        <div id="header-details-user" class="aui-dd-parent header-link-container dd-allocated">
+         <a class="lnk" href="https://wso2.org/jira/secure/ViewProfile.jspa">Pavithra Madurangi</a>
+        <span class="drop-wrap">
+        <a class="drop aui-dd-link" href="#"><span>Access more options</span>
+        </a>
+    </span>
+    <div class="aui-dropdown standard hidden">
+                                            <ul id="personal" class="  first     ">
+                                            <li><a id="view_profile" class="" title="View and change your details and preferences" href="https://wso2.org/jira/secure/ViewProfile.jspa">Profile</a></li>
+                                    </ul>
+                                                <ul id="jira-help" class="    ">
+                                            <li><a id="view_help" class="" title="Goto the online documentation for JIRA" href="http://docs.atlassian.com/jira/docs-041/Home?clicked=jirahelp">Online Help</a></li>
+                                            <li><a id="keyshortscuthelp" class="" title="Get more information about JIRA's Keyboard Shortcuts" href="https://wso2.org/jira/secure/ViewKeyboardShortcuts.jspa">Keyboard Shortcuts</a></li>
+                                            <li><a id="user_history" class="" title="Get more information about JIRA" href="http://www.atlassian.com/software/jira">About JIRA</a></li>
+                                    </ul>
+                                                <ul id="system" class="    last  ">
+                                            <li><a id="log_out" class="" title="Log out and cancel any automatic login." href="https://wso2.org/jira/logout">Log Out</a></li>
+                                    </ul>
+                        </div>
+</div>
+        
+    </div>
+    <div id="header-bottom">
+                    <div id="createItem">
+                <a title="Create a new issue / bug / feature request / etc ( Type 'c' )" accesskey="c" id="create_link" href="https://wso2.org/jira/secure/CreateIssue%21default.jspa" class="lnk ico-add">Create Issue</a>
+            </div>
+            <fieldset id="create_link_params" rel="createItem" class="hidden">
+                <input id="createItem_create" value="Create" type="hidden">
+                <input id="createItem_create_desc" value="Create Issue" type="hidden">
+                <input id="createItem_project" value="Project" type="hidden">
+                <input id="createItem_select_project" value="Choose the project..." type="hidden">
+                <input id="createItem_issuetype" value="Issue Type" type="hidden">
+                <input id="createItem_select_type" value="Choose the issue type..." type="hidden">
+                <input id="createItem_cancel" value="Cancel" type="hidden">
+                <input id="createItem_log_in" value="Click here to log in" type="hidden">
+                <input id="createItem_log_in_desc" value="You are not logged in." type="hidden">
+                <input id="createItem_no_permission" value="You do not have permission to create issues." type="hidden">
+                <input id="createItem_project_recent" value="Recent Projects" type="hidden">
+                <input id="createItem_project_all" value="All Projects" type="hidden">
+                <input id="createItem_issuetype_invalid" value="Invalid issue type." type="hidden">
+                <input id="createItem_issuetype_select" value="Please select..." type="hidden">
+            </fieldset>
+                <div id="menu">
+            
+            
+<ul id="main-nav" class="menu-bar">
+                        <li class="aui-dd-parent lazy   dd-allocated">
+                    <a class="lnk" href="https://wso2.org/jira/secure/Dashboard.jspa" id="home_link" accesskey="h" title="View your current Dashboard ( Type 'g' then 'd' )">Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link" id="home_link_drop" rel="home_link" accesskey="d" title="Access more options (Alt+Shift+d)" href="#"><span>Access more options (Alt+Shift+d)</span></a></span>
+            <div class="aui-dropdown standard hidden"></div>
+                </li>
+                        <li class="aui-dd-parent lazy   dd-allocated">
+                    <a class="lnk" href="https://wso2.org/jira/browse/CARBON" id="browse_link" accesskey="b" title="Browse currently active project 'WSO2 Carbon' ( Type 'g' then 'p' )">Projects</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link" id="browse_link_drop" rel="browse_link" accesskey="p" title="Access more options (Alt+Shift+p)" href="#"><span>Access more options (Alt+Shift+p)</span></a></span>
+            <div class="aui-dropdown standard hidden"></div>
+                </li>
+                        <li class="aui-dd-parent lazy  selected   dd-allocated">
+                    <a class="lnk" href="https://wso2.org/jira/secure/IssueNavigator.jspa" id="find_link" accesskey="f" title="View your current filter ( Type 'g' then 'i' )">Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link" id="find_link_drop" rel="find_link" accesskey="i" title="Access more options (Alt+Shift+i)" href="#"><span>Access more options (Alt+Shift+i)</span></a></span>
+            <div class="aui-dropdown standard hidden"></div>
+                </li>
+                        <li class="aui-dd-parent nonlazy   dd-allocated">
+                    <a class="lnk" href="https://wso2.org/jira/secure/GreenHopper.jspa" id="greenhopper_menu" title="Manage your project with GreenHopper">Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link" id="greenhopper_menu_drop" accesskey="g" rel="greenhopper_menu" title="Access more options (Alt+Shift+g)" href="#"><span>Access more options</span></a></span>
+                            <div class="aui-dropdown standard hidden"><div>
+                                                                        <ul id="greenhopper_menu_dropdown" class=" first   last  ">
+                                                            <li class="dropdown-item"><a id="planningboard-mlink" class="    " href="https://wso2.org/jira/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                            <li class="dropdown-item"><a id="taskboard-mlink" class="    " href="https://wso2.org/jira/secure/TaskBoard.jspa">Task Board</a></li>
+                                                            <li class="dropdown-item"><a id="chartboard-mlink" class="    " href="https://wso2.org/jira/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                            <li class="dropdown-item"><a id="releasedboard-mlink" class="    " href="https://wso2.org/jira/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                    </ul>
+                                                                        </div></div>
+                                            </li>
+    </ul>
+
+            
+        </div>
+
+    </div>
+</div>
+
+
+
+ 
+<fieldset class="hidden parameters">
+    <input id="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost." type="hidden">
+    <input id="keyType" value="Type" type="hidden">
+    <input id="keyThen" value="then" type="hidden">
+    <input id="dblClickToExpand" value="Double click to expand" type="hidden">
+</fieldset>
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input id="viewMoreMsg" value="Click to view {0} more" type="hidden">
+    <input id="hideMsg" value="Hide" type="hidden">
+    <input id="errorVoting" value="Error occurred while voting. Please reload this issue and try again." type="hidden">
+    <input id="errorWatching" value="Error occurred while adding or removing yourself as a watcher. Please reload this issue and try again." type="hidden">
+    <input id="issueOpTitleUnvote" value="Remove vote for this issue" type="hidden">
+    <input id="issueOpTitleVote" value="Vote for this issue" type="hidden">
+    <input id="issueOpTitleWatch" value="Start watching this issue" type="hidden">
+    <input id="issueOpTitleUnwatch" value="Stop watching this issue" type="hidden">
+    <input id="issueOpUnvote" value="Remove Vote" type="hidden">
+    <input id="issueOpVote" value="Add Vote" type="hidden">
+    <input id="issueOpWatch" value="Watch Issue" type="hidden">
+    <input id="issueOpUnwatch" value="Unwatch Issue" type="hidden">
+</fieldset>
+
+<div style="visibility: hidden; height: 137px;" class="stalker-placeholder"></div><div style="position: fixed; top: 0px;" id="stalker" class="stalker detached">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image: url(&quot;/jira/secure/projectavatar?pid=10101&amp;avatarId=10011&amp;size=large&quot;);">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" src="CARBON-7875_files/projectavatar.png" height="48" width="48">
+        
+        <span>WSO2 Carbon</span>
+</h1>
+
+
+
+    
+            
+                <ul class="ops page-navigation">
+                
+                    <li class="previous">
+                        <a id="previous-issue" href="https://wso2.org/jira/browse/CARBON-7898" title="Previous Issue 'CARBON-7898' ( Type 'k' )">
+                            <span class="icon icon-page-prev"><span>Previous Issue 'CARBON-7898'</span></span>
+                        </a>
+                    </li>
+                
+                    <li class="showing">
+                        2 of 87
+                                    <a id="return-to-search" href="https://wso2.org/jira/secure/IssueNavigator.jspa" title="Return to search">Return to search</a>
+                                
+                    </li>
+                
+                    <li class="next">
+                        <a id="next-issue" href="https://wso2.org/jira/browse/CARBON-9079" title="Next Issue 'CARBON-9079' ( Type 'j' )">
+                            <span class="icon icon-page-next"><span>Next Issue 'CARBON-9079'</span></span>
+                        </a>
+                    </li>
+                
+                </ul>
+            
+    
+
+
+<ul class="breadcrumbs">
+    <li>
+        <a id="project-name-val" href="https://wso2.org/jira/browse/CARBON">
+            WSO2 Carbon</a>
+    </li>
+    
+    <li class="section"><a id="key-val" href="https://wso2.org/jira/browse/CARBON-7875">CARBON-7875</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="https://wso2.org/jira/browse/CARBON-7875">After a bpel package fails to deploy, other bpel packages with the same name for .bpel cannot be deployed</a></h2>
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                    <ul id="opsbar-edit" class="first ops">
+                        <li class="last">
+                            <a id="editIssue" title="Edit this issue ( Type 'e' )" class="button edit first last" href="https://wso2.org/jira/secure/EditIssue%21default.jspa?id=25491"><span class="icon butt-edit"><span>Edit - CARBON-7875</span></span>Edit</a>
+                        </li>
+                    </ul>
+                
+                
+                
+                    
+                        
+                            <ul id="opsbar-opsbar-operations" class="ops ">
+                                
+                                    <li>
+                                        <a id="assign-issue" title="Assign this issue to someone ( Type 'a' )" class="button opsbar-operations first" href="https://wso2.org/jira/secure/AssignIssue%21default.jspa?id=25491">Assign</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a id="assign-to-me" title="Assign this issue to me" class="button opsbar-operations" href="https://wso2.org/jira/secure/AssignIssue.jspa?atl_token=LfLS7kxrBU&amp;id=25491&amp;assignee=pavithra">Assign To Me</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a id="comment-issue" title="Comment on this issue ( Type 'm' )" class="button opsbar-operations" href="https://wso2.org/jira/secure/AddComment%21default.jspa?id=25491">Comment</a>
+                                    </li>
+                                
+                                
+                                    
+                                        <li class="last">
+                                            <div style="" class="aui-dd-parent dd-allocated">
+                                                <a id="opsbar-operations_more" class="button more last drop" href="#">More Actions<span class="icon drop-menu"><span>More</span></span></a>
+                                                <div style="display: none; top: 0px; right: -7px; width: 139px; height: 300px;" class="aui-shadow"><div class="tl"></div><div class="tr"></div><div style="height: 278px;" class="l"></div><div style="height: 278px;" class="r"></div><div class="bl"></div><div class="br"></div><div style="width: 111px;" class="b"></div></div><div class="aui-dropdown standard hidden">
+                                                
+                                                    <ul class="first">
+                                                        
+                                                            <li>
+                                                                <a id="log-work" title="Log work against this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/CreateWorklog%21default.jspa?id=25491">Log Work</a>
+                                                            </li>
+                                                        
+                                                    </ul>
+                                                
+                                                    <ul class="">
+                                                        
+                                                            <li>
+                                                                <a id="attach-file" title="Attach a file to this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/AttachFile%21default.jspa?id=25491">Attach File</a>
+                                                            </li>
+                                                        
+                                                    </ul>
+                                                
+                                                    <ul class="">
+                                                        
+                                                            <li>
+                                                                <a id="view-voters" title="View voters for this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/ViewVoters%21default.jspa?id=25491">Voters</a>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <a id="toggle-watch-issue" title="Start watching this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/VoteOrWatchIssue.jspa?atl_token=LfLS7kxrBU&amp;id=25491&amp;watch=watch">Watch Issue</a>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <a id="manage-watchers" title="Manage the watchers of this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/ManageWatchers%21default.jspa?id=25491">Watchers</a>
+                                                            </li>
+                                                        
+                                                    </ul>
+                                                
+                                                    <ul class="">
+                                                        
+                                                            <li>
+                                                                <a id="create-subtask" title="Create sub-task for this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/CreateSubTaskIssue%21default.jspa?parentIssueId=25491">Create Sub-Task</a>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <a id="issue-to-subtask" title="Convert this issue to sub-task" class="opsbar-operations" href="https://wso2.org/jira/secure/ConvertIssue.jspa?id=25491">Convert to Sub-Task</a>
+                                                            </li>
+                                                        
+                                                    </ul>
+                                                
+                                                    <ul class=" last">
+                                                        
+                                                            <li>
+                                                                <a id="move-issue" title="Move this issue to another project or issue type." class="opsbar-operations" href="https://wso2.org/jira/secure/MoveIssue%21default.jspa?id=25491">Move</a>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <a id="link-issue" title="Link this issue to another issue" class="opsbar-operations" href="https://wso2.org/jira/secure/LinkExistingIssue%21default.jspa?id=25491">Link</a>
+                                                            </li>
+                                                        
+                                                            <li>
+                                                                <a id="clone-issue" title="Clone this issue" class="opsbar-operations" href="https://wso2.org/jira/secure/CloneIssueDetails%21default.jspa?id=25491">Clone</a>
+                                                            </li>
+                                                        
+                                                    </ul>
+                                                
+                                                </div>
+                                            </div>
+                                        </li>
+                                    
+                                    
+                                
+                            </ul>
+                        
+                    
+                
+                    
+                        
+                            <ul id="opsbar-opsbar-transitions" class="ops ">
+                                
+                                    <li>
+                                        <a id="action_id_701" title="Close Issue - Closing an issue indicates there is no more work to be done on it, and it has been verified as complete." class="button opsbar-transitions first" href="https://wso2.org/jira/secure/WorkflowUIDispatcher.jspa?id=25491&amp;action=701&amp;atl_token=LfLS7kxrBU">Close Issue</a>
+                                    </li>
+                                
+                                    <li>
+                                        <a id="action_id_3" title="" class="button opsbar-transitions" href="https://wso2.org/jira/secure/WorkflowUIDispatcher.jspa?id=25491&amp;action=3&amp;atl_token=LfLS7kxrBU">Reopen Issue</a>
+                                    </li>
+                                
+                                
+                                    
+                                    
+                                        
+                                            <li class="last">
+                                                <div>
+                                                    <span id="opsbar-transitions_more" class="button disabled more last drop">Workflow<span class="icon drop-menu"><span>More</span></span></span>
+                                                </div>
+                                            </li>
+                                        
+                                    
+                                
+                            </ul>
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent dd-allocated">
+                                    <a href="#" title="View this issue in another format" class="drop"><span class="icon icon-view"><span>View this issue in another format</span></span>View<span class="icon drop-menu"><span>View</span></span></a>
+                                    <div class="aui-dropdown standard hidden">
+                                        <ul class="first last">
+                                            
+                                                <li>
+                                                    <a rel="nofollow" href="https://wso2.org/jira/si/jira.issueviews:issue-xml/CARBON-7875/CARBON-7875.xml">XML</a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a rel="nofollow" href="https://wso2.org/jira/si/jira.issueviews:issue-word/CARBON-7875/CARBON-7875.doc">Word</a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a rel="nofollow" href="https://wso2.org/jira/si/jira.issueviews:issue-html/CARBON-7875/CARBON-7875.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+            
+                
+
+
+
+
+
+
+
+
+<form id="add_comment" action="/jira/secure/AddComment.jspa?atl_token=LfLS7kxrBU" class="aui top-label" method="post" name="jiraform">
+
+    
+
+    
+
+    <div class="noHeader">
+        <label for="comment">Comment
+        </label>
+    
+            <textarea name="comment" id="comment" rows="2" wrap="virtual" cols="" class="textarea"></textarea>
+
+
+                                </div>
+    
+                                    <div>
+        <label for="commentLevel">Viewable By
+        </label>
+                <select name="commentLevel" id="commentLevel">
+        <option selected="selected" value="">All Users</option>
+                    <optgroup label="Project Roles">
+                                    <option value="role:10001">Developers</option>
+                             </optgroup>
+                            <optgroup label="Groups">
+                                    <option value="group:IdentitySolution-developers">IdentitySolution-developers</option>
+                                    <option value="group:MashupServer-developers">MashupServer-developers</option>
+                                    <option value="group:bam-developers">bam-developers</option>
+                                    <option value="group:bps-developers">bps-developers</option>
+                                    <option value="group:carbon-developers">carbon-developers</option>
+                                    <option value="group:commons-developers">commons-developers</option>
+                                    <option value="group:dataservices-developers">dataservices-developers</option>
+                                    <option value="group:gadgetserver-developers">gadgetserver-developers</option>
+                                    <option value="group:global-developers">global-developers</option>
+                                    <option value="group:governance-developers">governance-developers</option>
+                                    <option value="group:jira-users">jira-users</option>
+                                    <option value="group:ot-user">ot-user</option>
+                                    <option value="group:ozone-developers">ozone-developers</option>
+                                    <option value="group:registry-developers">registry-developers</option>
+                                    <option value="group:tools-developers">tools-developers</option>
+                                    <option value="group:wso2 Inc">wso2 Inc</option>
+                            </optgroup>
+            </select>
+                            </div>
+            
+                        
+
+
+
+
+
+
+<input id="id" name="id" value="25491" type="hidden">
+
+
+    
+
+
+<input id="atl_token" name="atl_token" value="LfLS7kxrBU" type="hidden">
+
+
+    <div class="submit">
+        
+            <input class="submit_btn" name="Add " accesskey="s" title="Press Alt+Shift+s to submit form" value="Add " id="add_comment_submit" type="submit">
+        
+        
+            <a id="add_comment_cancel" class="cancel" accesskey="`" title="Cancel (Alt+Shift + `)" value="Cancel" href="#">Cancel</a>
+        
+    </div>
+
+</form>
+
+            
+
+        </div>
+    </div>
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+
+
+                
+                
+                
+                
+
+                    <div class="module reduced">
+    <div class="mod-header">
+        <h3>Details</h3>
+    </div>
+    <div class="mod-content">
+        <ul id="issuedetails" class="property-list two-cols">
+            <li class="item">
+                <div class="wrap">
+                    <strong class="name">Type:</strong>
+                    <span id="type-val" class="value">
+                                                                        <img src="CARBON-7875_files/bug.gif" alt="Bug" title="Bug - A problem which impairs or prevents the functions of the product." align="absmiddle" border="0" height="16" width="16">
+             Bug
+                    </span>
+                </div>
+            </li>
+            <li class="item item-right">
+                <div class="wrap">
+                    <strong class="name">Status:</strong>
+                    <span id="status-val" class="property-list-value">
+                                                                        <img src="CARBON-7875_files/status_resolved.gif" alt="Resolved" title="Resolved - A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed." align="absmiddle" border="0" height="16" width="16">
+             Resolved
+                    </span>
+                </div>
+            </li>
+                            <li class="item">
+                    <div class="wrap">
+                        <strong class="name">Priority:</strong>
+                        <span id="priority-val" class="value">
+                                                                                <img src="CARBON-7875_files/priority_major.gif" alt="Normal" title="Normal - Major loss of function." align="absmiddle" border="0" height="16" width="16">
+             Normal
+                        </span>
+                    </div>
+                </li>
+                                                                        <li class="item item-right">
+                    <div class="wrap">
+                        <strong class="name">Resolution:</strong>
+                        <span id="resolution-val" class="value resolved">
+                                                         Fixed
+                                                </span>
+                    </div>
+                </li>
+                                        <li class="item">
+                    <div class="wrap">
+                        <strong class="name">Affects Version/s:</strong>
+                        <span id="versions-val" class="value">
+                                                            <span class="shorten" id="versions-field">
+                                                                            <span title="3.1.0 ">3.1.0</span>                                                                    </span>
+                                                    </span>
+                    </div>
+                </li>
+                                        <li class="item item-right">
+                    <div class="wrap">
+                        <strong class="name">Fix Version/s:</strong>
+                        <span id="fixfor-val" class="value">
+                                                            <span class="shorten" id="fixVersions-field">
+                                                                            <a href="https://wso2.org/jira/browse/CARBON/fixforversion/10342" title="3.1.0 ">3.1.0</a>                                                                    </span>
+                                                    </span>
+                    </div>
+                </li>
+                                        <li class="item">
+                    <div class="wrap">
+                        <strong class="name">Component/s:</strong>
+                        <span id="components-val" class="value">
+                                                            <span class="shorten" id="components-field">
+                                                                            <a href="https://wso2.org/jira/browse/CARBON/component/10385" title="BPEL ">BPEL</a>                                                                    </span>
+                                                    </span>
+                    </div>
+                </li>
+                                </ul>
+    </div>
+</div>
+
+                    
+                        
+
+<div id="customfieldmodule" class="module reduced">
+    <div class="mod-content">
+        
+
+        
+        
+        
+        <ul id="tab1" class="property-list">
+            
+            
+                
+                    
+                    
+                        <li id="rowForcustomfield_10075" class="item">
+                            <div class="wrap">
+                                <strong title="Severity" class="name">Severity:</strong>
+                                <div id="customfield_10075-val" class="value type-select">
+                                      Major
+
+                                </div>
+                            </div>
+                        </li>
+                    
+                
+            
+                
+                    
+                    
+                        <li id="rowForcustomfield_10040" class="item">
+                            <div class="wrap">
+                                <strong title="Estimated Complexity" class="name">Estimated Complexity:</strong>
+                                <div id="customfield_10040-val" class="value type-select">
+                                      Moderate
+
+                                </div>
+                            </div>
+                        </li>
+                    
+                
+            
+                
+                    
+                    
+                        <li id="rowForcustomfield_10020" class="item">
+                            <div class="wrap">
+                                <strong title="Attachment License" class="name">Attachment License:</strong>
+                                <div id="customfield_10020-val" class="value type-radiobuttons">
+                                      I agree to grant a license to WSO2 for this work for inclusion in WSO2 works as per the <a href="http://wso2.org/files/wso2-cla.pdf">WSO2 Contributor License Agreement</a> and the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>
+
+                                </div>
+                            </div>
+                        </li>
+                    
+                
+            
+        </ul>
+        
+    </div>
+</div>
+
+                    
+
+                    
+
+
+
+
+<div id="detailsmodule" class="module">
+    <div id="issue-description" class="mod-content twixi-block expanded">
+        <ul class="item-details">
+            <li>
+                <dl>
+                    <dt>Description:</dt>
+                    
+                        <dd class="twixified">
+                            <div class="twixi-wrap verbose">
+                                <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+                                <div id="description-full" class="flooded">
+                                    -First deploy a faulty BPEL package. It fails to deploy (1st attached bpel)
+<br>
+
+<br>
+-Then deploy a bpel package with the same name for .bpel (2nd and 3rd 
+attached bpels). This is not a faulty bpel. but it fails to deploy with 
+following error
+<br>
+
+<br>
+2010-10-13 11:41:58,707] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+<br>
+[2010-10-13 11:41:58,707] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error deploying BPEL package.
+<br>
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:382)
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:142)
+<br>
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+<br>
+	at org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+<br>
+	at org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:815)
+<br>
+	at org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:68)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:79)
+<br>
+	at org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:93)
+<br>
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+<br>
+	at java.util.TimerThread.run(Timer.java:462)
+<br>
+[2010-10-13 11:41:58,708]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+<br>
+
+<br>
+-For cetain bpels this issue does not appear (4th bpel)
+                                </div>
+                            </div>
+                            <div class="twixi-wrap concise">
+                                <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+                                <div class="flooded">
+                                    -First deploy a faulty BPEL package.
+ It fails to deploy (1st attached bpel)
+
+-Then deploy a bpel package with the same name for .bpel (2nd and 3rd 
+attached bpels). This is not a faulty bpel. but it fails to deploy with 
+following error
+
+2010-10-13 11:41:58,707] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+[2010-10-13
+ 11:41:58,707] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error 
+deploying BPEL package.
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:382)
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:142)
+
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+	at 
+org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+
+	at 
+org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:815)
+
+	at 
+org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:68)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:79)
+
+	at 
+org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:93)
+
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+	at java.util.TimerThread.run(Timer.java:462)
+[2010-10-13 11:41:58,708]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+
+-For cetain bpels this issue does not appear (4th bpel)
+                                </div>
+                            </div>
+                        </dd>
+                    
+                    
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+                            
+                                <div id="environmentmodule" class="module">
+                                    <div id="environment-val" class="mod-content">
+                                        <ul class="item-details">
+                                            <li>
+                                                <dl>
+                                                    <dt>Environment:</dt>
+                                                    <dd>
+                                                                      Ubuntu, <a href="https://wso2.org/jira/browse/BPS-2" title="Deployed services page's &quot;Try this service&quot; not working/taking long time to respond"><strike>BPS-2</strike></a>.1.0-SNAPSHOT (12/10/10)
+      
+                                                    </dd>
+                                                </dl>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            
+                            
+
+
+
+
+
+
+
+
+	<div id="attachmentmodule" class="module">
+		<div class="mod-header">
+            <ul class="ops">
+                
+                    <li><a id="aszip" href="https://wso2.org/jira/secure/attachmentzip/25491.zip" class="icon icon-download" title="Download all attachments as a ZIP file"><span>Download all attachments as a ZIP file</span></a></li>
+                
+                
+                    <li><a id="manage-attachment-link" href="https://wso2.org/jira/secure/ManageAttachments.jspa?atl_token=LfLS7kxrBU&amp;id=25491" class="icon icon-view" title="Manage Attachments"><span>Manage Attachments</span></a></li>
+                
+                
+                    <li><a id="add-attachments-link" href="https://wso2.org/jira/secure/AttachFile%21default.jspa?atl_token=LfLS7kxrBU&amp;id=25491" class="icon icon-add16" title="Attach a file to this issue"><span>Attach a file to this issue</span></a></li>
+                
+            </ul>
+            
+    			<h3><a id="manageattachments" href="https://wso2.org/jira/secure/ManageAttachments.jspa?atl_token=LfLS7kxrBU&amp;id=25491">Attachments</a></h3>
+			
+            
+        </div>
+        <div class="mod-content">
+        
+            <ol id="file_attachments" class="item-attachments">
+            
+            
+                
+                
+                    <li class="attachment-content">
+                        <div class="attachment-thumb">
+                            <a href="https://wso2.org/jira/secure/attachment/14696/HelloWorld.zip">
+                                <img src="CARBON-7875_files/zip.gif" alt="Zip Archive" border="0" height="16" width="16">
+
+                            </a>
+                        </div>
+                        <dl>
+                            <dt><a class="attachment-title" href="https://wso2.org/jira/secure/attachment/14696/HelloWorld.zip" title="Latest 13/Oct/10 6:30 AM - Pavithra Madurangi">HelloWorld.zip</a></dt>
+                            <dd class="attachment-size">(3 kB)</dd>
+                            <dd class="attachment-author">Pavithra Madurangi</dd>
+                            <dd class="attachment-date">13/Oct/10 6:30 AM</dd>
+                        </dl>
+                    </li>
+                
+            
+                
+                
+                    <li class="attachment-content">
+                        <div class="attachment-thumb">
+                            <a href="https://wso2.org/jira/secure/attachment/14697/HelloWorld.zip">
+                                <img src="CARBON-7875_files/zip.gif" alt="Zip Archive" border="0" height="16" width="16">
+
+                            </a>
+                        </div>
+                        <dl>
+                            <dt><a class="attachment-title" href="https://wso2.org/jira/secure/attachment/14697/HelloWorld.zip" title="Latest 13/Oct/10 6:30 AM - Pavithra Madurangi">HelloWorld.zip</a></dt>
+                            <dd class="attachment-size">(4 kB)</dd>
+                            <dd class="attachment-author">Pavithra Madurangi</dd>
+                            <dd class="attachment-date">13/Oct/10 6:30 AM</dd>
+                        </dl>
+                    </li>
+                
+            
+                
+                
+                    <li class="attachment-content">
+                        <div class="attachment-thumb">
+                            <a href="https://wso2.org/jira/secure/attachment/14698/HelloWorld.zip">
+                                <img src="CARBON-7875_files/zip.gif" alt="Zip Archive" border="0" height="16" width="16">
+
+                            </a>
+                        </div>
+                        <dl>
+                            <dt><a class="attachment-title" href="https://wso2.org/jira/secure/attachment/14698/HelloWorld.zip" title="Latest 13/Oct/10 6:30 AM - Pavithra Madurangi">HelloWorld.zip</a></dt>
+                            <dd class="attachment-size">(3 kB)</dd>
+                            <dd class="attachment-author">Pavithra Madurangi</dd>
+                            <dd class="attachment-date">13/Oct/10 6:30 AM</dd>
+                        </dl>
+                    </li>
+                
+            
+                
+                
+                    <li class="attachment-content">
+                        <div class="attachment-thumb">
+                            <a href="https://wso2.org/jira/secure/attachment/14871/org.wso2.carbon.bpel-carbon-7875.patch">
+                                <img src="CARBON-7875_files/text.gif" alt="Text File" border="0" height="16" width="16">
+
+                            </a>
+                        </div>
+                        <dl>
+                            <dt><a class="attachment-title" href="https://wso2.org/jira/secure/attachment/14871/org.wso2.carbon.bpel-carbon-7875.patch" title="Latest 03/Nov/10 1:09 PM - Denis Weerasiri">org.wso2.carbon.bpel-carbon-7875.patch</a></dt>
+                            <dd class="attachment-size">(2 kB)</dd>
+                            <dd class="attachment-author">Denis Weerasiri</dd>
+                            <dd class="attachment-date">03/Nov/10 1:09 PM</dd>
+                        </dl>
+                    </li>
+                
+            
+                
+                
+                    <li class="attachment-content">
+                        <div class="attachment-thumb">
+                            <a href="https://wso2.org/jira/secure/attachment/14699/TestIf.zip">
+                                <img src="CARBON-7875_files/zip.gif" alt="Zip Archive" border="0" height="16" width="16">
+
+                            </a>
+                        </div>
+                        <dl>
+                            <dt><a class="attachment-title" href="https://wso2.org/jira/secure/attachment/14699/TestIf.zip" title="Latest 13/Oct/10 6:31 AM - Pavithra Madurangi">TestIf.zip</a></dt>
+                            <dd class="attachment-size">(3 kB)</dd>
+                            <dd class="attachment-author">Pavithra Madurangi</dd>
+                            <dd class="attachment-date">13/Oct/10 6:31 AM</dd>
+                        </dl>
+                    </li>
+                
+            
+            </ol>
+    
+        
+
+        
+            
+        </div>
+    </div>
+
+    
+    
+
+
+                            
+
+
+                            
+
+
+
+                        
+                    
+
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+
+
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description rdf:about="https://wso2.org/jira/browse/CARBON-7875"
+    dc:title="[#CARBON-7875] After a bpel package fails to deploy, other bpel packages with the same name for .bpel cannot be deployed"
+    dc:subject="WSO2 Carbon"
+    dc:description="-First deploy a faulty BPEL package. It fails to deploy (1st attached bpel)
+
+-Then deploy a bpel p ..."
+    dc:date="2010-10-13 06:30:32,000"
+    dc:identifier="https://wso2.org/jira/browse/CARBON-7875"
+    trackback:ping="https://wso2.org/jira/rpc/trackback/CARBON-7875"/>
+
+<rdf:Description rdf:about="https://wso2.org/jira/secure/ViewIssue.jspa?id=25491"
+    dc:title="[#CARBON-7875] After a bpel package fails to deploy, other bpel packages with the same name for .bpel cannot be deployed"
+    dc:subject="WSO2 Carbon"
+    dc:description="-First deploy a faulty BPEL package. It fails to deploy (1st attached bpel)
+
+-Then deploy a bpel p ..."
+    dc:date="2010-10-13 06:30:32,000"
+    dc:identifier="https://wso2.org/jira/secure/ViewIssue.jspa?id=25491"
+    trackback:ping="https://wso2.org/jira/rpc/trackback/CARBON-7875"/>
+
+<rdf:Description rdf:about="https://wso2.org/jira/secure/ViewIssue.jspa?key=CARBON-7875"
+    dc:title="[#CARBON-7875] After a bpel package fails to deploy, other bpel packages with the same name for .bpel cannot be deployed"
+    dc:subject="WSO2 Carbon"
+    dc:description="-First deploy a faulty BPEL package. It fails to deploy (1st attached bpel)
+
+-Then deploy a bpel p ..."
+    dc:date="2010-10-13 06:30:32,000"
+    dc:identifier="https://wso2.org/jira/secure/ViewIssue.jspa?key=CARBON-7875"
+    trackback:ping="https://wso2.org/jira/rpc/trackback/CARBON-7875"/>
+</rdf:RDF>-->
+
+
+
+                
+
+
+                <div id="activitymodule" class="module">
+                    <div class="mod-header">
+                        <h3>Activity</h3>
+                    </div>
+                    <div class="mod-content">
+                        
+
+
+
+    <div class="tabwrap tabs2">
+        
+            <div class="sortwrap">
+                
+                    <a class="icon icon-sort-down" rel="nofollow" href="https://wso2.org/jira/browse/CARBON-7875?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                
+                
+            </div>
+        
+        <ul id="issue-tabs" class="tabs horizontal">
+        
+            
+            
+                <li><a id="all-tabpanel" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel#issue-tabs"><strong>All</strong></a></li>
+            
+        
+            
+                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+            
+            
+        
+            
+            
+                <li><a id="worklog-tabpanel" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aworklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+            
+        
+            
+            
+                <li><a id="changehistory-tabpanel" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.jira.plugin.system.issuetabpanels%3Achangehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+            
+        
+            
+            
+                <li><a id="activity-stream-issue-tab" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.streams.streams-jira-plugin%3Aactivity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+            
+        
+            
+            
+                <li><a id="subversion-commits-tabpanel" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.jira.plugin.ext.subversion%3Asubversion-commits-tabpanel#issue-tabs"><strong>Subversion Commits</strong></a></li>
+            
+        
+            
+            
+                <li><a id="bamboo-build-results-tabpanel" href="https://wso2.org/jira/browse/CARBON-7875?page=com.atlassian.jira.plugin.ext.bamboo%3Abamboo-build-results-tabpanel#issue-tabs"><strong>Builds</strong></a></li>
+            
+        
+        </ul>
+    </div>
+    
+        <div class="issuePanelContainer" id="issue_actions_container">
+        
+            
+                
+                <div id="comment-37383" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="https://wso2.org/jira/browse/CARBON-7875?focusedCommentId=37383&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_37383" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">    <a name="action_37383"></a>     
+                                                
+    
+                <a id="comment_37383_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">26/Oct/10 1:29 PM</span></span>   - <span class="redText subText" title="Denis Weerasiri - 26/Oct/10 1:41 PM">edited</span> </div>
+        <div class="action-body flooded">At the faulty process deployment
+<br>
+
+<br>
+[2010-10-26 18:27:01,407]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 18:27:01,437]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Strating deployment of processes from directory 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/repository/bpel/0/HelloWorld-5
+<br>
+[2010-10-26 18:27:01,441]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6">org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6">org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6</a>]; startup date [Tue Oct 26 18:27:01 IST 2010]; root of context hierarchy
+<br>
+[2010-10-26 18:27:01,441]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 18:27:01,494]  INFO {org.apache.ode.bpel.compiler.BpelC} -  info: [CompilingProcess] Compiling BPEL process.
+<br>
+[2010-10-26 18:27:01,533] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorld.
+<br>
+[2010-10-26 18:27:01,534] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error deploying BPEL package.
+<br>
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorld.
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:408)
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:152)
+<br>
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+<br>
+	at org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+<br>
+	at org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:809)
+<br>
+	at org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:64)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:71)
+<br>
+	at org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:90)
+<br>
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+<br>
+	at java.util.TimerThread.run(Timer.java:462)
+<br>
+[2010-10-26 18:27:01,541]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+<br>
+
+<br>
+
+<br>
+Next correct process deployment
+<br>
+
+<br>
+[2010-10-26 18:43:23,114] ERROR {org.apache.ode.bpel.compiler.bom.BpelObjectFactory$BOMSAXErrorHandler} -  null:<a href="file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880988029942007E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:">file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880988029942007E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:</a> Attribute 'label' is not allowed to appear in element 'scope'.
+<br>
+[2010-10-26 18:43:23,117]  WARN 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory} -  Validation 
+errors during parsing, continuing due to 
+-Dorg.apache.ode.compiler.failOnValidationErrors=false switch
+<br>
+[2010-10-26 18:43:23,122]  INFO {org.apache.ode.bpel.compiler.BpelC} -  info: [CompilingProcess] Compiling BPEL process.
+<br>
+[2010-10-26 18:43:27,111]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorld.zip in the repository. If
+ the bpel package is undeployed through the management console, please 
+ignore this warning.
+<br>
+[2010-10-26 18:43:27,137]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a">org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a">org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a</a>]; startup date [Tue Oct 26 18:43:27 IST 2010]; root of context hierarchy
+<br>
+[2010-10-26 18:43:27,138]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 18:43:27,141]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Strating deployment of processes from directory 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/repository/bpel/0/HelloWorld-5
+<br>
+[2010-10-26 18:43:27,141]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3da505be">org.springframework.context.support.ClassPathXmlApplicationContext@3da505be</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3da505be">org.springframework.context.support.ClassPathXmlApplicationContext@3da505be</a>]; startup date [Tue Oct 26 18:43:27 IST 2010]; root of context hierarchy
+<br>
+[2010-10-26 18:43:27,142]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 18:43:27,143] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+<br>
+[2010-10-26 18:43:27,144] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error deploying BPEL package.
+<br>
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:408)
+<br>
+	at org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:152)
+<br>
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+<br>
+	at org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+<br>
+	at org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:809)
+<br>
+	at org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+<br>
+	at org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:64)
+<br>
+	at org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:71)
+<br>
+	at org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:90)
+<br>
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+<br>
+	at java.util.TimerThread.run(Timer.java:462)
+<br>
+[2010-10-26 18:43:27,144]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+<br>
+
+<br>
+
+<br>
+Again retry
+<br>
+
+<br>
+[2010-10-26 19:02:54,891]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 19:02:54,933] ERROR {org.apache.ode.bpel.compiler.bom.BpelObjectFactory$BOMSAXErrorHandler} -  null:<a href="file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.288099974857916E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:">file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.288099974857916E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:</a> Attribute 'label' is not allowed to appear in element 'scope'.
+<br>
+[2010-10-26 19:02:54,937]  WARN 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory} -  Validation 
+errors during parsing, continuing due to 
+-Dorg.apache.ode.compiler.failOnValidationErrors=false switch
+<br>
+[2010-10-26 19:02:54,938]  INFO {org.apache.ode.bpel.compiler.BpelC} -  info: [CompilingProcess] Compiling BPEL process.
+<br>
+[2010-10-26 19:02:57,109]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorld.zip in the repository. If
+ the bpel package is undeployed through the management console, please 
+ignore this warning.
+<br>
+[2010-10-26 19:02:57,295]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2">org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2">org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2</a>]; startup date [Tue Oct 26 19:02:57 IST 2010]; root of context hierarchy
+<br>
+[2010-10-26 19:02:57,295]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-26 19:03:06,453]  WARN 
+{org.wso2.carbon.core.util.HouseKeepingTask} -  Could not delete file 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880978160768862E12/HelloWorld.zip
+<br>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+                <a name="action_37383"></a>     
+                                                
+    
+                <a id="comment_37383_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">26/Oct/10 1:29 PM</span></span>   - <span class="redText subText" title="Denis Weerasiri - 26/Oct/10 1:41 PM">edited</span>
+              At the faulty process deployment
+
+[2010-10-26 18:27:01,407]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 18:27:01,437]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Strating deployment of processes from directory 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/repository/bpel/0/HelloWorld-5
+[2010-10-26
+ 18:27:01,441]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6">org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6">org.springframework.context.support.ClassPathXmlApplicationContext@14497ea6</a>];
+ startup date [Tue Oct 26 18:27:01 IST 2010]; root of context hierarchy
+[2010-10-26 18:27:01,441]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 18:27:01,494]  INFO {org.apache.ode.bpel.compiler.BpelC} -  
+info: [CompilingProcess] Compiling BPEL process.
+[2010-10-26 18:27:01,533] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorld.
+[2010-10-26
+ 18:27:01,534] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error 
+deploying BPEL package.
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorld.
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:408)
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:152)
+
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+	at 
+org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+
+	at 
+org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:809)
+
+	at 
+org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:64)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:71)
+
+	at 
+org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:90)
+
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+	at java.util.TimerThread.run(Timer.java:462)
+[2010-10-26 18:27:01,541]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+
+
+Next correct process deployment
+
+[2010-10-26 18:43:23,114] ERROR 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory$BOMSAXErrorHandler} -
+  null:<a href="file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880988029942007E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:">file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880988029942007E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:</a>
+ Attribute 'label' is not allowed to appear in element 'scope'.
+[2010-10-26 18:43:23,117]  WARN 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory} -  Validation 
+errors during parsing, continuing due to 
+-Dorg.apache.ode.compiler.failOnValidationErrors=false switch
+[2010-10-26 18:43:23,122]  INFO {org.apache.ode.bpel.compiler.BpelC} -  
+info: [CompilingProcess] Compiling BPEL process.
+[2010-10-26 18:43:27,111]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorld.zip in the repository. If
+ the bpel package is undeployed through the management console, please 
+ignore this warning.
+[2010-10-26 18:43:27,137]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a">org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a">org.springframework.context.support.ClassPathXmlApplicationContext@3fecf56a</a>];
+ startup date [Tue Oct 26 18:43:27 IST 2010]; root of context hierarchy
+[2010-10-26 18:43:27,138]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 18:43:27,141]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Strating deployment of processes from directory 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/repository/bpel/0/HelloWorld-5
+[2010-10-26
+ 18:43:27,141]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3da505be">org.springframework.context.support.ClassPathXmlApplicationContext@3da505be</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3da505be">org.springframework.context.support.ClassPathXmlApplicationContext@3da505be</a>];
+ startup date [Tue Oct 26 18:43:27 IST 2010]; root of context hierarchy
+[2010-10-26 18:43:27,142]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 18:43:27,143] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+[2010-10-26
+ 18:43:27,144] ERROR {org.wso2.carbon.bpel.BPELDeployer} -  Error 
+deploying BPEL package.
+org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentException: 
+Aborting deployment. Cannot find Process definition for type {<a href="http://ode/bpel/unit-test">http://ode/bpel/unit-test</a>}HelloWorldtest.
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deployBPELPackageInODE(TenantProcessStoreImpl.java:408)
+
+	at 
+org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl.deploy(TenantProcessStoreImpl.java:152)
+
+	at org.wso2.carbon.bpel.BPELDeployer.deploy(BPELDeployer.java:77)
+	at 
+org.apache.axis2.deployment.repository.util.DeploymentFileData.deploy(DeploymentFileData.java:136)
+
+	at 
+org.apache.axis2.deployment.DeploymentEngine.doDeploy(DeploymentEngine.java:809)
+
+	at 
+org.apache.axis2.deployment.repository.util.WSInfoList.update(WSInfoList.java:144)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.update(RepositoryListener.java:391)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.checkServices(RepositoryListener.java:254)
+
+	at 
+org.apache.axis2.deployment.RepositoryListener.startListener(RepositoryListener.java:385)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.checkRepository(SchedulerTask.java:64)
+
+	at 
+org.apache.axis2.deployment.scheduler.SchedulerTask.run(SchedulerTask.java:71)
+
+	at 
+org.apache.axis2.deployment.scheduler.Scheduler$SchedulerTimerTask.run(Scheduler.java:90)
+
+	at java.util.TimerThread.mainLoop(Timer.java:512)
+	at java.util.TimerThread.run(Timer.java:462)
+[2010-10-26 18:43:27,144]  INFO 
+{org.apache.axis2.deployment.DeploymentEngine} -  
+org.apache.axis2.deployment.DeploymentException: Error deploying BPEL 
+package.
+
+
+Again retry
+
+[2010-10-26 19:02:54,891]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 19:02:54,933] ERROR 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory$BOMSAXErrorHandler} -
+  null:<a href="file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.288099974857916E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:">file:///opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.288099974857916E12/HelloWorld/HelloWorld/HelloWorld.bpel:61:24:cvc-complex-type.3.2.2:</a>
+ Attribute 'label' is not allowed to appear in element 'scope'.
+[2010-10-26 19:02:54,937]  WARN 
+{org.apache.ode.bpel.compiler.bom.BpelObjectFactory} -  Validation 
+errors during parsing, continuing due to 
+-Dorg.apache.ode.compiler.failOnValidationErrors=false switch
+[2010-10-26 19:02:54,938]  INFO {org.apache.ode.bpel.compiler.BpelC} -  
+info: [CompilingProcess] Compiling BPEL process.
+[2010-10-26 19:02:57,109]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorld.zip in the repository. If
+ the bpel package is undeployed through the management console, please 
+ignore this warning.
+[2010-10-26 19:02:57,295]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2">org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2">org.springframework.context.support.ClassPathXmlApplicationContext@620f61e2</a>];
+ startup date [Tue Oct 26 19:02:57 IST 2010]; root of context hierarchy
+[2010-10-26 19:02:57,295]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-26 19:03:06,453]  WARN 
+{org.wso2.carbon.core.util.HouseKeepingTask} -  Could not delete file 
+/opt/installations/wso2/trunk/carbon/products/bps/modules/distribution/target/wso2bps-2.0-SNAPSHOT/tmp/work/bpelTemp/1.2880978160768862E12/HelloWorld.zip
+
+         </div>
+    </div>
+</div>
+                
+            
+                
+                <div id="comment-37434" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="https://wso2.org/jira/browse/CARBON-7875?focusedCommentId=37434&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_37434" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">    <a name="action_37434"></a>     
+    
+    
+                <a id="comment_37434_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">29/Oct/10 3:28 PM</span></span>  </div>
+        <div class="action-body flooded">I tried to re-generate this 
+again. It doesn't matter whether it's a faulty process or not. Once you 
+undeploy a valid process and try to re-deploy it, it gives an console 
+like this.
+<br>
+
+<br>
+[2010-10-29 20:42:40,119]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentContext} -  
+Instance filter for instance deletion:pid={<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5
+<br>
+[2010-10-29 20:42:40,307]  INFO {org.apache.ode.bpel.engine.BpelServerImpl} -  Unregistered process {<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5.
+<br>
+[2010-10-29 20:42:40,308]  INFO {org.wso2.carbon.bpel.ode.integration.store.ProcessStoreImpl} -  Process {<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5 undeployed.
+<br>
+[2010-10-29 20:42:49,753]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorldSingleProcess.zip in the 
+repository. If the bpel package is undeployed through the management 
+console, please ignore this warning.
+<br>
+[2010-10-29 20:42:50,108]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87">org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87">org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87</a>]; startup date [Fri Oct 29 20:42:50 IST 2010]; root of context hierarchy
+<br>
+[2010-10-29 20:42:50,108]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-29 20:42:50,138]  INFO {org.apache.ode.bpel.compiler.BpelC} -  info: [CompilingProcess] Compiling BPEL process.
+<br>
+[2010-10-29 20:42:59,757]  INFO {org.springframework.context.support.ClassPathXmlApplicationContext} -  Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2">org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2">org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2</a>]; startup date [Fri Oct 29 20:42:59 IST 2010]; root of context hierarchy
+<br>
+[2010-10-29 20:42:59,757]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+<br>
+[2010-10-29 20:42:59,760] ERROR {org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  Service: {<a href="http://helloworld1.wsdl/">http://HelloWorld1.wsdl</a>}HelloService1 already used by another process. Try again with a different service name
+<br>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+                <a name="action_37434"></a>     
+    
+    
+                <a id="comment_37434_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">29/Oct/10 3:28 PM</span></span>
+               I tried to re-generate this again. It doesn't matter 
+whether it's a faulty process or not. Once you undeploy a valid process 
+and try to re-deploy it, it gives an console like this.
+
+[2010-10-29 20:42:40,119]  INFO 
+{org.wso2.carbon.bpel.ode.integration.store.BPELDeploymentContext} -  
+Instance filter for instance deletion:pid={<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5
+[2010-10-29 20:42:40,307]  INFO {org.apache.ode.bpel.engine.BpelServerImpl} -  Unregistered process {<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5.
+[2010-10-29 20:42:40,308]  INFO {org.wso2.carbon.bpel.ode.integration.store.ProcessStoreImpl} -  Process {<a href="http://helloworld1.bpel/">http://HelloWorld1.bpel</a>}HelloWorld1-5
+ undeployed.
+[2010-10-29 20:42:49,753]  WARN 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Cannot find BPEL package with name /HelloWorldSingleProcess.zip in the 
+repository. If the bpel package is undeployed through the management 
+console, please ignore this warning.
+[2010-10-29 20:42:50,108]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87">org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87">org.springframework.context.support.ClassPathXmlApplicationContext@3a67ba87</a>];
+ startup date [Fri Oct 29 20:42:50 IST 2010]; root of context hierarchy
+[2010-10-29 20:42:50,108]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-29 20:42:50,138]  INFO {org.apache.ode.bpel.compiler.BpelC} -  
+info: [CompilingProcess] Compiling BPEL process.
+[2010-10-29 20:42:59,757]  INFO 
+{org.springframework.context.support.ClassPathXmlApplicationContext} -  
+Refreshing <a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2">org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2</a>: display name [<a href="mailto:org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2">org.springframework.context.support.ClassPathXmlApplicationContext@27af9da2</a>];
+ startup date [Fri Oct 29 20:42:59 IST 2010]; root of context hierarchy
+[2010-10-29 20:42:59,757]  INFO 
+{org.springframework.beans.factory.xml.XmlBeanDefinitionReader} -  
+Loading XML bean definitions from class path resource [beans.xml]
+[2010-10-29 20:42:59,760] ERROR 
+{org.wso2.carbon.bpel.ode.integration.store.TenantProcessStoreImpl} -  
+Service: {<a href="http://helloworld1.wsdl/">http://HelloWorld1.wsdl</a>}HelloService1 already used by another process. Try again with a different service name
+         </div>
+    </div>
+</div>
+                
+            
+                
+                <div id="comment-37504" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="https://wso2.org/jira/browse/CARBON-7875?focusedCommentId=37504&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_37504" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">    <a name="action_37504"></a>     
+    
+    
+                <a id="comment_37504_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">03/Nov/10 1:09 PM</span></span>  </div>
+        <div class="action-body flooded">Attached a patch, which only 
+removes the .zip and the process artifact at the tenant process store. 
+Need to be verified to remove metadata at parentProcessStore and 
+TenantProcessStore. </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+                <a name="action_37504"></a>     
+    
+    
+                <a id="comment_37504_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">03/Nov/10 1:09 PM</span></span>
+               Attached a patch, which only removes the .zip and the 
+process artifact at the tenant process store. Need to be verified to 
+remove metadata at parentProcessStore and TenantProcessStore.         </div>
+    </div>
+</div>
+                
+            
+                
+                <div id="comment-39068" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="https://wso2.org/jira/browse/CARBON-7875?focusedCommentId=39068&amp;page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_39068" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">    <a name="action_39068"></a>     
+    
+    
+                <a id="comment_39068_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">27/Dec/10 6:20 PM</span></span>  </div>
+        <div class="action-body flooded">Verified with the new build. </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+                <a name="action_39068"></a>     
+    
+    
+                <a id="comment_39068_header_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a> added a comment  - <span class="subText"><span class="date">27/Dec/10 6:20 PM</span></span>               Verified with the new build.         </div>
+    </div>
+</div>
+                
+            
+        
+        
+        </div>
+    
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                   
+                       <div id="peoplemodule" class="module">
+    <div class="mod-header">
+        <h3>People</h3>
+    </div>
+    <div class="mod-content">
+        <ul class="item-details" id="peopledetails">
+            <li class="people-details">
+                                <dl>
+                    <dt>Assignee:</dt>
+                    <dd id="assignee-val">
+                                <a id="issue_summary_assignee_denis" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=denis">Denis Weerasiri</a>
+                    </dd>
+                </dl>
+                                                <dl>
+                    <dt>Reporter:</dt>
+                    <dd id="reporter-val">
+                                <a id="issue_summary_reporter_pavithra" href="https://wso2.org/jira/secure/ViewProfile.jspa?name=pavithra">Pavithra Madurangi</a>
+                    </dd>
+                </dl>
+                                            </li>
+            <li class="people-operations section">
+                                <dl>
+                    <dt>
+                        <a id="view_votes_label" href="https://wso2.org/jira/secure/ViewVoters%21default.jspa?id=25491">Votes</a>:</dt>
+                    <dd id="votes-val">
+                                                    <span id="votes-data">0</span>                                                                                                            <span class="icon  icon-vote-off" title="You cannot vote for an issue you have reported."><span>Voting</span></span>
+                                                                        </dd>
+                </dl>                
+                                                <dl>
+                    <dt>
+                        <a id="view_watchers_label" href="https://wso2.org/jira/secure/ManageWatchers%21default.jspa?id=25491">Watchers</a>:</dt>
+                    <dd id="watchers-val">
+                                                                        <a id="view_watchers" href="https://wso2.org/jira/secure/ManageWatchers%21default.jspa?id=25491"><span id="watchers-data">0</span></a>
+                                                                                    <a id="toggle_watching_label" rel="25491" class="icon icon-watch-off" href="https://wso2.org/jira/secure/VoteOrWatchIssue.jspa?atl_token=LfLS7kxrBU&amp;id=25491&amp;watch=watch" title="Start watching this issue"><span>Start watching this issue</span></a>
+                                                                        </dd>
+                </dl>
+                            </li>
+        </ul>
+    </div>
+</div>
+                       
+<div id="datesmodule" class="module">
+    <div class="mod-header">
+        <h3>Dates</h3>
+    </div>
+    <div class="mod-content">
+        <ul class="item-details">
+            <li>
+            
+                <dl class="dates">
+                    <dt>Created:</dt>
+                    <dd id="create-date" class="date">13/Oct/10 6:30 AM</dd>
+                </dl>
+                <dl class="dates">
+                    <dt>Updated:</dt>
+                    <dd id="updated-date" class="date">27/Dec/10 6:20 PM</dd>
+                </dl>
+            
+                <dl class="dates">
+                    <dt>Resolved:</dt>
+                    <dd id="resolved-date" class="date">27/Dec/10 6:20 PM</dd>
+                </dl>
+            
+            
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+                       
+
+                   
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="footer">
+<div class="poweredbymessage">
+        <a href="http://www.atlassian.com/software/jira" class="smalltext">Atlassian JIRA</a>
+        <span id="footer-build-information" style="color: rgb(102, 102, 102);">(v4.1.1#522)</span>        | <a href="http://support.atlassian.com/secure/CreateIssue.jspa?issuetype=1&amp;pid=10000">Report a problem</a>
+        | <a href="http://jira.atlassian.com/secure/CreateIssue.jspa?pid=10240&amp;issuetype=2">Request a feature</a>
+        | <a href="https://wso2.org/jira/secure/Administrators.jspa">Contact administrators</a>
+    </div>
+            <div class="licensemessage">
+                    Powered by a free Atlassian <a href="http://www.atlassian.com/software/jira">JIRA</a> open source license for WSO2, Inc.. Try JIRA - <a href="http://www.atlassian.com/software/jira">bug tracking software</a> for <i>your</i> team.
+
+                </div>
+    </div>
+
+
+
+<!--
+	                 REQUEST ID : 386x661149x1
+	          REQUEST TIMESTAMP : [19/Mar/2011:06:26:25 +0000]
+	               REQUEST TIME : 0.2680
+	                 ASESSIONID : q6issf
+	        CONCURRENT REQUESTS : 1
+-->
+
+<div style="display: none;" id="inline-dialog-shadow"><div class="tl"></div><div class="tr"></div><div class="l"></div><div class="r"></div><div class="bl"></div><div class="br"></div><div class="b"></div></div><div style="margin-top: -100px; margin-left: -216px; width: 432px; height: 229px; display: none;" class="shadow"><div class="tl"></div><div class="tr"></div><div style="height: 183px;" class="l"></div><div style="height: 183px;" class="r"></div><div class="bl"></div><div class="br"></div><div style="width: 374px;" class="b"></div></div><div style="margin-top: -100px; margin-left: -200px; width: 400px; height: 200px; background: none repeat scroll 0% 0% rgb(255, 255, 255); display: none;" id="delete-dshboard" class="popup"></div><div id="fancy_overlay"></div><div id="fancy_loading"><div></div></div><div id="fancy_outer"><div id="fancy_inner"><div id="fancy_close"></div><div id="fancy_bg"><div class="fancy_bg" id="fancy_bg_n"></div><div class="fancy_bg" id="fancy_bg_ne"></div><div class="fancy_bg" id="fancy_bg_e"></div><div class="fancy_bg" id="fancy_bg_se"></div><div class="fancy_bg" id="fancy_bg_s"></div><div class="fancy_bg" id="fancy_bg_sw"></div><div class="fancy_bg" id="fancy_bg_w"></div><div class="fancy_bg" id="fancy_bg_nw"></div></div><a href="javascript:;" id="fancy_left"><span class="fancy_ico" id="fancy_left_ico"></span></a><a href="javascript:;" id="fancy_right"><span class="fancy_ico" id="fancy_right_ico"></span></a><div id="fancy_content"></div></div></div><div id="fancy_title"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="fancy_title" id="fancy_title_left"></td><td class="fancy_title" id="fancy_title_main"><div></div></td><td class="fancy_title" id="fancy_title_right"></td></tr></tbody></table></div><div id="inline-dialog-create_issue_popup" class="aui-inline-dialog"><div style="width: 250px;" class="contents"></div><div id="arrow-create_issue_popup" class="arrow"></div></div></body></html>

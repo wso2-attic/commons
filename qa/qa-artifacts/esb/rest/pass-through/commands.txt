@@ -1,0 +1,7 @@
+REST Pass through :
+
+curl --data "customerid=1&customername=sandapa&customerage=26&customeraddress=kohuwala" -X POST -H "Content-Type: application/x-www-form-urlencoded" http://localhost:8282/services/RestPassthrough/rest/qa/customer
+
+
+
+curl --data "customerid=3&customername=sam&customerage=22&customeraddress=colombo" -X POST -H "Content-Type: application/x-www-form-urlencoded" http://localhost:9763/CustomerService/rest/qa/customer

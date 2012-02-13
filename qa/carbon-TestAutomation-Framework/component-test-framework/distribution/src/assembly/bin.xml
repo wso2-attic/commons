@@ -1,0 +1,178 @@
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<assembly>
+    <!--<id>bin</id>-->
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <!--<fileSet>
+            <directory>target/wso2carbon-test-framework-${carbon.version}</directory>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <excludes>
+                <exclude>**/native/*</exclude>
+                <exclude>**/*.sh</exclude>
+                <exclude>**/wso2server.bat</exclude>
+                <exclude>**/README*</exclude>
+                <exclude>**/LICENSE*</exclude>
+                <exclude>**/INSTALL*</exclude>
+                <exclude>**/release-notes.html</exclude>
+                <exclude>**/axis2services/sample01.aar</exclude>
+                <exclude>**/axis2services/echo/**</exclude>
+                <exclude>**/axis2services/version/**</exclude>
+                <exclude>**/pom.xml</exclude>
+                <exclude>**/version.txt</exclude>
+                <exclude>**/carbon.xml</exclude>
+                <exclude>**/axis2.xml</exclude>
+                <exclude>**/wrapper.conf</exclude>
+                <exclude>**/ciphertool.bat</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>target/wso2carbon-${carbon.version}</directory>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <excludes>
+                <exclude>**/daemon.sh</exclude>
+                <exclude>**/wso2server.bat</exclude>
+                <exclude>**/ciphertool.sh</exclude>
+            </excludes>
+            <includes>
+                <include>**/*.sh</include>
+                <include>**/native/*</include>
+            </includes>
+            <fileMode>755</fileMode>
+        </fileSet>-->
+
+
+
+
+    </fileSets>
+
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>wso2-carbon-test-framework-SNAPSHOT/repository/lib</outputDirectory>
+            <includes>
+                <include>org.wso2.carbon:org.wso2.carbon.authenticator.proxy:jar</include>
+                <!--include>authenticator-SNAPSHOT-tests:jar</include-->
+                <include>org.wso2.carbon:authenticator:jar</include>
+            </includes>
+        </dependencySet>
+
+
+    </dependencySets>
+
+   <!-- <files>
+        <file>
+            <source>INSTALL.txt</source>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>README.txt</source>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>LICENSE.txt</source>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>release-notes.html</source>
+            <outputDirectory>wso2gs-${pom.version}</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/bin/README.txt</source>
+            <outputDirectory>wso2gs-${pom.version}/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/bin/version.txt</source>
+            <outputDirectory>wso2gs-${pom.version}/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/repository/conf/carbon.xml</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/repository/conf/axis2.xml</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/repository/conf/README</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/bin/wso2server.bat</source>
+            <outputDirectory>wso2gs-${pom.version}/bin/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/repository/conf/wrapper.conf</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <filtered>true</filtered>
+            <fileMode>644</fileMode>
+        </file>
+        <file>
+            <source>target/wso2carbon-${carbon.version}/bin/daemon.sh</source>
+            <outputDirectory>wso2gs-${pom.version}/bin/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+
+        <file>
+            <source>conf/claim-config.xml</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+
+        <file>
+            <source>conf/identity.xml</source>
+            <outputDirectory>wso2gs-${pom.version}/repository/conf/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <file>
+            <source>conf/wso2is-user-certs.jks</source>
+            <outputDirectory>wso2gs-${pom.version}/resources/security/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+
+        <file>
+            <source>conf/userRP.jks</source>
+            <outputDirectory>wso2gs-${pom.version}/resources/security/</outputDirectory>
+            <fileMode>644</fileMode>
+        </file>
+    </files>-->
+</assembly>

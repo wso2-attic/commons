@@ -1,0 +1,6 @@
+Using endpoint : http://api.google.com/search/beta2
+
+Invoking operation doSpellingSuggestion with params ixSzAkNQFHJMnjkRrzChE6CTHyYFHOJY and salvasion
+<ns1:doSpellingSuggestion soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns1="urn:GoogleSearch" xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/1999/XMLSchema"><key xsi:type="xsd:string">ixSzAkNQFHJMnjkRrzChE6CTHyYFHOJY</key><phrase xsi:type="xsd:string">salvasion</phrase></ns1:doSpellingSuggestion>
+
+Result = salvation

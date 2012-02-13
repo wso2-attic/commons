@@ -1,0 +1,1 @@
+<resource name="ws" isCollection="true" path="/_system/governance/services/http/ws" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>1377</version><creator>admin</creator><createdTime>1296273690853</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296273690853</lastModified><description></description></resource>

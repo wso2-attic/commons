@@ -1,0 +1,19 @@
+<serviceMetaData xmlns="http://www.wso2.org/governance/metadata">
+    <overview>
+        <name>MyBizServiceName</name>
+        <namespace>http://foo.com</namespace>
+        <description>my desc</description>
+    </overview>
+    <serviceLifecycle/>
+    <contacts/>
+    <interface>
+        <wsdlURL>http://ww2.wso2.org/~prabath/BizService.wsdl</wsdlURL>
+        <transportProtocols>HTTP</transportProtocols>
+    </interface>
+    <security/>
+    <endpoints/>
+    <docLinks/>
+    <operation xmlns="">Add</operation>
+    <currentName xmlns=""></currentName>
+    <currentNamespace xmlns=""></currentNamespace>
+</serviceMetaData>

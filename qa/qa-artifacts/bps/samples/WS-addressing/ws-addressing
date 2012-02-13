@@ -1,0 +1,24 @@
+Description
+
+WS-Addressing is a standardized way of including message routing data within SOAP headers. Instead of relying on network-level transport to convey routing information, a message utilizing WS-Addressing may contain its own dispatch metadata in a standardized SOAP header. The network-level transport is only responsible for delivering that message to a dispatcher capable of reading the WS-Addressing metadata. Once that message arrives at the dispatcher specified in the URI, the job of the network-level transport is done.
+
+WS-Addressing supports the use of asynchronous interactions by specifying a common SOAP header (wsa:ReplyTo) that contains the endpoint reference (EPR) to which the response is to be sent. The service provider transmits the response message over a separate connection to the wsa:ReplyTo endpoint. This decouples the lifetime of the SOAP request/response interaction from the lifetime of the HTTP request/response protocol, thus enabling long-running interactions that can span arbitrary periods of time.
+[edit] Endpoint References
+
+An Endpoint Reference (EPR) is an XML structure encapsulating information useful for addressing a message to a Web service. This includes the destination address of the message, any additional parameters (called reference parameters) necessary to route the message to the destination, and optional metadata (such as WSDL or WS-Policy) about the service.
+[edit] Message Addressing Properties
+
+Message Addressing Properties communicate addressing information relating to the delivery of a message to a Web service:
+
+    * Message destination URI
+    * Source endpoint -- the endpoint of the service that dispatched this message (EPR)
+    * Reply endpoint -- the endpoint to which reply messages should be dispatched (EPR)
+    * Fault endpoint -- the endpoint to which fault messages should be dispatched (EPR)
+    * Action -- an action value indicating the semantics of the message (may assist with routing the message) URI
+    * Unique message ID URI
+    * Relationship to previous messages (A pair of URIs)
+
+RESOURCES:
+
+http://wso2.org/library/2605
+

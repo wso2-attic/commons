@@ -1,0 +1,90 @@
+package org.wso2.carbon.mediator.dbReport.test;
+
+/*  Copyright (c) WSO2 Inc. (http://wso2.com) All Rights Reserved.
+
+  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+*  software distributed under the License is distributed on an
+*  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+*  KIND, either express or implied.  See the License for the
+*  specific language governing permissions and limitations
+*  under the License.
+*
+*/
+
+import org.apache.axiom.om.OMElement;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.authenticator.proxy.test.utils.FrameworkSettings;
+import org.wso2.carbon.common.test.utils.ConfigHelper;
+import org.wso2.carbon.common.test.utils.TestTemplate;
+import org.wso2.carbon.common.test.utils.client.StockQuoteClient;
+import org.wso2.carbon.mediation.configadmin.test.commands.ConfigServiceAdminStubCommand;
+import org.wso2.carbon.mediation.configadmin.ui.ConfigServiceAdminStub;
+
+import java.io.File;
+
+public class DBReportMediatorTest extends TestTemplate {
+    private static final Log log = LogFactory.getLog(DBReportMediatorTest.class);
+
+    @Override
+    public void init() {
+        log.info("Initializing DBReport mediator Tests");
+        log.debug("DBReport mediator Tests Initialised");
+    }
+
+    @Override
+    public void runSuccessCase() {
+        log.debug("Running DBReport mediator SuccessCase ");
+
+        StockQuoteClient stockQuoteClient = new StockQuoteClient();
+
+        try {
+
+            ConfigServiceAdminStub configServiceAdminStub = new
+                    ConfigServiceAdminStubCommand().initConfigServiceAdminStub(sessionCookie);
+
+            String xmlPath = frameworkPath + File.separator + "components" + File.separator + "mediators-dbReport"
+                             + File.separator + "src" + File.separator + "test" + File.separator + "resource" + File.separator + "dbReport.xml";
+            System.out.println(xmlPath);
+            OMElement omElement = ConfigHelper.createOMElement(xmlPath);
+
+            new ConfigServiceAdminStubCommand(configServiceAdminStub).updateConfigurationExecuteSuccessCase(omElement);
+
+
+            OMElement result = stockQuoteClient.stockQuoteClientforProxy("http://" + FrameworkSettings.HOST_NAME + ":" + FrameworkSettings.HTTP_PORT, null, "IBM");
+            log.info(result);
+            System.out.println(result);
+
+            if (!result.toString().contains("IBM")) {
+                junit.framework.Assert.fail("DBReport Mediator not invoked");
+                log.error("DBReport Mediator not invoked");
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            log.error("DBReport Mediator doesn't work : " + e.getMessage());
+
+        }
+
+    }
+
+    @Override
+    public void runFailureCase() {
+    }
+
+    @Override
+    public void cleanup() {
+        ConfigServiceAdminStub configServiceAdminStub = new
+                ConfigServiceAdminStubCommand().initConfigServiceAdminStub(sessionCookie);
+        new ConfigServiceAdminStubCommand(configServiceAdminStub).loadDefaultConfig();
+
+    }
+}

@@ -1,0 +1,16 @@
+<config>
+
+    <!-- stubs generation -->
+    <set>
+        <uri>src/main/resources/aars/service/META-INF/TracerService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.tracer.service</p>
+        <d>adb</d>
+        <s/>
+        <f/>
+        <ss/>
+        <g/>
+        <sn>wso2tracer</sn>
+        <pn>wso2tracerSOAP11port_https</pn>
+    </set>
+</config>

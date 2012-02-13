@@ -1,0 +1,100 @@
+<wsdl:definitions xmlns:axis2="http://ajax.service.codegen.wso2.org"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:ns0="http://ajax.service.codegen.wso2.org/xsd"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:ns1="http://org.apache.axis2/xsd"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://ajax.service.codegen.wso2.org">
+    <wsdl:documentation>AjaxClientGeneratorService</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ns="http://ajax.service.codegen.wso2.org/xsd"
+                   attributeFormDefault="qualified" elementFormDefault="unqualified"
+                   targetNamespace="http://ajax.service.codegen.wso2.org/xsd">
+            <xs:element name="generateAjaxClient">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceName" nillable="true" type="xs:string"/>
+                        <xs:element name="wsdlLocation" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="generateAjaxClientResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="generateAjaxClientMessage">
+        <wsdl:part name="part1" element="ns0:generateAjaxClient"/>
+    </wsdl:message>
+    <wsdl:message name="generateAjaxClientResponse">
+        <wsdl:part name="part1" element="ns0:generateAjaxClientResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="AjaxClientGeneratorServicePortType">
+        <wsdl:operation name="generateAjaxClient">
+            <wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                        message="axis2:generateAjaxClientMessage"
+                        wsaw:Action="urn:generateAjaxClient"/>
+            <wsdl:output message="axis2:generateAjaxClientResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="AjaxClientGeneratorServiceSOAP11Binding"
+                  type="axis2:AjaxClientGeneratorServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="generateAjaxClient">
+            <soap:operation soapAction="urn:generateAjaxClient" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AjaxClientGeneratorServiceSOAP12Binding"
+                  type="axis2:AjaxClientGeneratorServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="generateAjaxClient">
+            <soap12:operation soapAction="urn:generateAjaxClient" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AjaxClientGeneratorServiceHttpBinding"
+                  type="axis2:AjaxClientGeneratorServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="generateAjaxClient">
+            <http:operation location="generateAjaxClient"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="AjaxClientGeneratorService">
+        <wsdl:port name="AjaxClientGeneratorServiceSOAP11port_https"
+                   binding="axis2:AjaxClientGeneratorServiceSOAP11Binding">
+            <soap:address location="https://127.0.0.1:9443/soap/AjaxClientGeneratorService"/>
+        </wsdl:port>
+        <wsdl:port name="AjaxClientGeneratorServiceSOAP12port_https"
+                   binding="axis2:AjaxClientGeneratorServiceSOAP12Binding">
+            <soap12:address location="https://127.0.0.1:9443/soap/AjaxClientGeneratorService"/>
+        </wsdl:port>
+        <wsdl:port name="AjaxClientGeneratorServiceHttpport1"
+                   binding="axis2:AjaxClientGeneratorServiceHttpBinding">
+            <http:address location="https://127.0.0.1:9443/rest/AjaxClientGeneratorService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

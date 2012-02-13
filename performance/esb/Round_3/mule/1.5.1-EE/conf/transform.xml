@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mule-configuration PUBLIC "-//MuleSource //DTD mule-configuration XML V1.0//EN"
+        "http://ee.mulesource.com/mule/dtd/mule-configuration.dtd">
+
+<mule-configuration id="Mule_Transform_Sample" version="1.0">
+
+    <description>
+        This configuration performs transformations from custom quote to standard quote.
+    </description>
+
+    <environment-properties>
+        <property name="http.keepAlive" value="true"/>
+        <property name="http.keepAliveTimeout" value="120000"/>
+    </environment-properties>
+    <connector name="HttpConnector" className="org.mule.providers.http.HttpConnector">
+        <threading-profile doThreading="true" maxThreadsActive="100" maxThreadsIdle="50" poolExhaustedAction="WAIT"/>
+    </connector>
+    <transformers>
+
+        <transformer name="Xsltin" className="org.mule.transformers.xml.XsltTransformer">
+            <properties>
+                <property name="xslFile" value="xslt/transform.xslt"/>
+            </properties>
+        </transformer>
+
+        <transformer name="Xsltout" className="org.mule.transformers.xml.XsltTransformer">
+            <properties>
+                <property name="xslFile" value="xslt/transform_back.xslt"/>
+            </properties>
+        </transformer>
+    </transformers>
+
+    <model name="TransformModel">
+
+        <mule-descriptor name="XSLTProxy" implementation="org.mule.components.simple.BridgeComponent">
+
+            <inbound-router>
+                <endpoint connector="HttpConnector" address="http://testb.wso2.com:8090/services/XSLTProxy"
+                          transformers="Xsltin"
+                          responseTransformers="Xsltout" synchronous="true"/>
+            </inbound-router>
+
+            <outbound-router>
+                <router className="org.mule.routing.outbound.OutboundPassThroughRouter">
+                    <endpoint connector="HttpConnector" address="http://testc.wso2.com:8080/MockServices/EchoService"
+                              synchronous="true"/>
+                </router>
+            </outbound-router>
+
+        </mule-descriptor>
+
+    </model>
+
+</mule-configuration>

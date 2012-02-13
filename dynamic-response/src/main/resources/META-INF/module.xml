@@ -1,0 +1,20 @@
+<module name="DynamicResponseHandler">
+    <Description>This module provides support for dynamically changing the response format based on the value of the response query parameter. For e.g if a request was sent to the following EPR 
+                 axis2/services/version/getVersion?response=application/json
+                 Irrespective of the format of the request message the response will be json.</Description>    
+    <OutFlow>
+        <handler name="DynamicResponseHandler" class="org.wso2.dynamicresponse.DynamicResponseHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFlow>
+
+    <OutFaultFlow>
+        <handler name="DynamicResponseHandler" class="org.wso2.dynamicresponse.DynamicResponseHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFaultFlow>
+    <parameter name="mappedjson">application/json</parameter>
+    <parameter name="json">application/json/badgerfish</parameter>
+    <parameter name="pox">application/xml</parameter> 
+    <parameter name="soap">application/soap+xml</parameter> 
+</module>

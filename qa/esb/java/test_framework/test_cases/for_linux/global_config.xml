@@ -1,0 +1,213 @@
+<esb>
+
+<!-- WSO2 ESB environment preperation -->
+
+<envt>
+	<ESB_HOME>/home/evanthika/WSO2/Carbon/ESB/release/1.6-pre-alpha-take05/wso2esb-2.1.0.SNAPSHOT</ESB_HOME>
+	<hostname>localhost</hostname>
+	<httpport>8280</httpport>
+	<httpsport>8243</httpsport>
+        <http_listnerport>9000</http_listnerport>
+        <service1_name>SimpleStockQuoteService</service1_name>
+	<rampart_version>rampart-1.401.mar</rampart_version>
+	<addressing_version>addressing-1.401.mar</addressing_version>
+	<mercury_version>mercury-mar-0.92.mar</mercury_version>
+</envt>
+
+<!--Synapse Samples-->
+<!--clients>
+        <client>mediation/samples/sample0</client>
+</clients-->
+<clients>
+        <client>mediation/samples/sample1</client>
+</clients>
+
+<!-- Client configuration -->
+<!--clients>
+        <client>mediation/QOS/security/scenario1_sample_200</client>
+
+</clients>
+<clients>
+        <client>mediation/QOS/security/scenario2_sample_100</client>
+
+</clients>
+<clients>
+        <client>mediation/QOS/security/scenario3_sample_1000</client>
+
+</clients>
+<clients>
+        <client>mediation/QOS/security/scenario4_sample_1002</client>
+
+</clients>
+<clients>
+        <client>mediation/QOS/security/scenario5_sample_1004</client>
+
+</clients-->
+<!--Protocol switching-->
+<!--clients>
+        <client>mediation/protocol-switching/pox-to-soap11</client>
+</clients>
+<clients>
+        <client>mediation/protocol-switching/pox-to-soap12</client>
+</clients>
+<clients>
+        <client>mediation/protocol-switching/soap11-to-pox</client>
+</clients>
+<clients>
+        <client>mediation/protocol-switching/soap12-to-pox</client>
+</clients-->
+
+<!-- SWA Samples [Different file types]-->
+<!--clients>
+        <client>mediation/swa/doc</client>
+</clients>
+<clients>
+        <client>mediation/swa/zip</client>
+</clients>
+<clients>
+        <client>mediation/swa/xml</client>
+</clients>
+<clients>
+        <client>mediation/swa/text</client>
+</clients>
+<clients>
+        <client>mediation/swa/mp3</client>
+</clients>
+<clients>
+        <client>mediation/swa/jpg</client>
+</clients>
+<clients>
+        <client>mediation/swa/gif</client>
+</clients-->
+
+<!-- MTOM Samples [Different file types]-->
+<!--clients>
+        <client>mediation/mtom/doc</client>
+</clients>
+<clients>
+        <client>mediation/mtom/zip</client>
+</clients>
+<clients>
+        <client>mediation/mtom/xml</client>
+</clients>
+<clients>
+        <client>mediation/mtom/text</client>
+</clients>
+<clients>
+        <client>mediation/mtom/mp3</client>
+</clients>
+<clients>
+        <client>mediation/mtom/jpg</client>
+</clients>
+<clients>
+        <client>mediation/mtom/gif</client>
+</clients-->
+
+<!-- Content Based Routing Samples -->
+<!--clients>
+        <client>mediation/cbr/cbr_with_wsdl_endpoints</client>
+</clients>
+<clients>
+        <client>mediation/cbr/switchcase_with_security</client>
+</clients>
+<clients>
+        <client>mediation/cbr/cbr_with_switch_case</client>
+</clients>
+<clients>
+        <client>mediation/cbr/cbr_with_filtering</client>
+</clients-->
+
+<!--fault generation-->
+
+<!--clients>
+        <client>mediation/fault-handling/pox_soap11fault</client>
+</clients>
+<clients>
+        <client>mediation/fault-handling/pox_soap12fault</client>
+</clients>
+<clients>
+        <client>mediation/fault-handling/soap_soap11fault</client>
+</clients>
+<clients>
+        <client>mediation/fault-handling/soap_soap12fault</client>
+</clients-->
+
+<!-- Transformation Samples -->
+<!--clients>
+	<client>mediation/transformation/xslt</client>
+</clients>
+<clients>
+	<client>mediation/transformation/xquery</client>
+</clients-->
+
+<!-- Advanced Mediation Samples -->
+<!--clients>
+	<client>mediation/advanced-mediation/caching</client>
+</clients-->
+
+<!-- Validation Samples -->
+<!--clients>
+	<client>mediation/validation</client>
+</clients-->
+
+<!-- Filtering Samples -->
+<!--clients>
+	<client>mediation/filtering</client>
+</clients-->
+
+<!-- Reliable Messaging Samples -->
+<!--clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/oneway_addressable_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/oneway_addressable_soap12</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/oneway_annon_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/oneway_annon_soap12</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/request_reply_annon_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/request_reply_annon_soap12</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/request_reply_addressable_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/rmService_nonrmClient/request_reply_addressable_soap12</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/nonrmService_rmClient/request_reply_annon_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/nonrmService_rmClient/request_reply_annon_soap12</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/nonrmService_rmClient/request_reply_addressable_soap11</client>
+</clients>
+<clients>
+        <client>mediation/QOS/relaible_messaging/nonrmService_rmClient/request_reply_addressable_soap12</client>
+</clients-->
+<!--clients>
+        <client>mediation/QOS/relaible_messaging/nonrmService_rmClient/oneway_annon_soap11</client>
+</clients-->
+
+<!--Service configuration-->
+<services>
+	<service>services/general</service>
+</services>
+
+<services>
+	<service>services/rm</service>
+</services>
+
+<services>
+	<service>services/security/SecureCBRService</service>
+</services>
+
+</esb>
+

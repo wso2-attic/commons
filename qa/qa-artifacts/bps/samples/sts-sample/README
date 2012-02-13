@@ -1,0 +1,49 @@
+Sample to demonstrate the use of Security Token Service
+===============================================================================
+
+Please refer sample-guide.html for detailed instructions Security Token Service on WSAS Documentation.
+
+Pre-requisite:
+You need to download Java Cryptography Extension (JCE) Unlimited Strength
+Jurisdiction Policy Files 5.0 from http://java.sun.com/javase/downloads/index_jdk5.jsp
+and copy the two jar files from the extracted jce directory
+(local_policy.jar and US_export_policy.jar) to $JAVA_HOME/jre/lib/security.
+
+Please follow the given steps:
+
+0.) To configure STS you need to have a role having manage-security permission
+
+1.) Setup the sample by running the given Apache Ant build.
+    $ ant
+
+2.) Start WSO2 WSAS (If you haven't already started it)
+
+3.) Log into WSO2 WSAS administration console.
+
+4.) Select "wso2carbon-sts" service and setup security scenario "Sign and encrypt - X509 Authentication" on it.
+    Make sure wso2carbon.jks keystore (wso2carbon keystore) is used.
+
+5.) Select "HelloService" service and copy the http service address.
+
+
+6.) Select "wso2carbon-sts" service and navigate to "Configure STS".
+    Paste/type the http endpoint address of "HelloService" service in 
+      "Add new trusted service"->"Endpoint Address"
+    Select the WSO2WSAS private key's certificate alias (wso2carbon)
+    
+7.) Select "HelloService" service and setup security scenario 
+    "SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy - Sign and Encrypt , X509 Authentication" on it.
+    Makesure wso2carbon.jks keystore (wso2carbon keystore) is used.
+
+7.) Upload sts-sample/conf/client.cert into the wso2carbon keystore using the 
+    WSO2WSAS admin console.
+
+8.) Run client
+     $ ./run-client.sh <wso2carbon-sts-http-address> <hello-service-http-address>
+	OR 
+     path\>run-client.bat  <wso2carbon-sts-http-address> <hello-service-http-address>
+
+
+Notes:
+
+1. Make sure <hello-service-http-address> is exactly the same as the url you added as a trusted service to the STS

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://ws.apache.org/axis2" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://AdderService.wsdl" xmlns:plink="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns0="http://AdderService.wsdl">
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2">
+            <xs:element name="add">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="args0" type="xs:int" />
+                        <xs:element minOccurs="0" name="args1" type="xs:int" />
+                    </xs:sequence>
+
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="addResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" type="xs:int" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="addRequest">
+        <wsdl:part name="parameters" element="ns:add" />
+    </wsdl:message>
+    <wsdl:message name="addResponse">
+        <wsdl:part name="parameters" element="ns:addResponse" />
+    </wsdl:message>
+    <wsdl:portType name="AdderServicePortType">
+
+        <wsdl:operation name="add">
+            <wsdl:input message="ns0:addRequest" wsaw:Action="urn:add" />
+            <wsdl:output message="ns0:addResponse" wsaw:Action="urn:addResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="AdderServiceSoap11Binding" type="ns0:AdderServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="add">
+            <soap:operation soapAction="urn:add" style="document" />
+
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AdderServiceSoap12Binding" type="ns0:AdderServicePortType">
+
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="add">
+            <soap12:operation soapAction="urn:add" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal" />
+            </wsdl:output>
+
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="AdderServiceHttpBinding" type="ns0:AdderServicePortType">
+        <http:binding verb="POST" />
+        <wsdl:operation name="add">
+            <http:operation location="add" />
+            <wsdl:input>
+                <mime:content type="text/xml" part="add" />
+            </wsdl:input>
+
+            <wsdl:output>
+                <mime:content type="text/xml" part="add" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="AdderService">
+        <wsdl:port name="AdderServiceJmsSoap11Endpoint" binding="ns0:AdderServiceSoap11Binding">
+            <soap:address location="jms:/AdderService?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=tcp://localhost:61616&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" />
+        </wsdl:port>
+
+        <wsdl:port name="AdderServiceHttpsSoap11Endpoint" binding="ns0:AdderServiceSoap11Binding">
+            <soap:address location="https://localhost:9443/services/AdderService.AdderServiceHttpsSoap11Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="AdderServiceHttpSoap11Endpoint" binding="ns0:AdderServiceSoap11Binding">
+            <soap:address location="http://localhost:9763/services/something" />
+        </wsdl:port>
+        <wsdl:port name="AdderServiceHttpsSoap12Endpoint" binding="ns0:AdderServiceSoap12Binding">
+            <soap12:address location="https://localhost:9443/services/AdderService.AdderServiceHttpsSoap12Endpoint/" />
+        </wsdl:port>
+
+        <wsdl:port name="AdderServiceHttpSoap12Endpoint" binding="ns0:AdderServiceSoap12Binding">
+            <soap12:address location="http://localhost:9763/services/AdderService.AdderServiceHttpSoap12Endpoint/" />
+        </wsdl:port>
+        <wsdl:port name="AdderServiceJmsSoap12Endpoint" binding="ns0:AdderServiceSoap12Binding">
+            <soap12:address location="jms:/AdderService?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=tcp://localhost:61616&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory" />
+        </wsdl:port>
+        <wsdl:port name="AdderServiceHttpsEndpoint" binding="ns0:AdderServiceHttpBinding">
+            <http:address location="https://localhost:9443/services/AdderService.AdderServiceHttpsEndpoint/" />
+        </wsdl:port>
+
+        <wsdl:port name="AdderServiceHttpEndpoint" binding="ns0:AdderServiceHttpBinding">
+            <http:address location="http://localhost:9763/services/AdderService.AdderServiceHttpEndpoint/" />
+        </wsdl:port>
+    </wsdl:service>
+
+
+    <plink:partnerLinkType name="AdderServicePartnerlinkType">
+        <plink:role name="adderRole" portType="ns0:AdderServicePortType"/>
+    </plink:partnerLinkType>
+</wsdl:definitions>

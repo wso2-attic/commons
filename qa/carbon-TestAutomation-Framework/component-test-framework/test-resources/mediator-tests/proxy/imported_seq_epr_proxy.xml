@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="imported_seq_epr_proxy" transports="https http" startOnLoad="true" trace="disable">
+        <target endpoint="epr" inSequence="inSeq" outSequence="outSeq"/>
+        <publishWSDL uri="http://localhost:9000/services/SimpleStockQuoteService?wsdl"/>
+    </proxy>
+    <localEntry key="proxy_wsdl" src="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+    <endpoint name="epr">
+        <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+    </endpoint>
+    <sequence name="outSeq">
+        <log>
+            <property name="text" value="***OUTGOING SEQUENCE***"/>
+        </log>
+        <send/>
+    </sequence>
+    <sequence name="inSeq">
+        <log>
+            <property name="text" value="***INCOMING SEQUENCE***"/>
+        </log>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <log/>
+        <drop/>
+    </sequence>
+</definitions>

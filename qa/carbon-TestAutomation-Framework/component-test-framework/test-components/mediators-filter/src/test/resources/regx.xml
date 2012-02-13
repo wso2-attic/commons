@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <filter xmlns:ns2="http://org.apache.synapse/xsd" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" source="get-property('To')" regex=".*/StockQuote.*">
+            <then>
+                <log>
+                    <property name="called" value="- FILTER MEDIATOR MATCHED -"/>
+                </log>
+                <send>
+                    <endpoint>
+                        <address uri="http://localhost:9000/services/SimpleStockQuoteService/"/>
+                    </endpoint>
+                </send>
+            </then>
+            <else>
+                <log>
+                    <property name="called" value="- FILTER MEDIATOR UNMATCHED -"/>
+                </log>
+                <send/>
+            </else>
+        </filter>
+    </sequence>
+</definitions>

@@ -1,0 +1,5 @@
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="testSeq">
+    <property name="prop1" value=" testVal" scope="default" type="STRING"/>
+
+    <log/>
+</sequence>

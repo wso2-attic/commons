@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data name="CSVDataServiceUploaded">
+    <description>Sample data service</description>
+    <config id="CSVDataSource">
+        <property name="csv_datasource">/home/jayani/Desktop/web-test-framework/wsas/lib/DataServiceCSVResource.csv</property>
+        <property name="csv_columnseperator">,</property>
+        <property name="csv_columns">id,name,address</property>
+        <property name="csv_columnordinal">1,2,3</property>
+        <property name="csv_startingrow">2</property>
+        <property name="csv_maxrowcount">-1</property>
+        <property name="csv_hasheader">true</property>
+    </config>
+    <query id="q1" useConfig="CSVDataSource">
+        <result element="customers" rowName="customer" defaultNamespace="">
+            <element name="id" column="1"/>
+            <element name="name" column="2"/>
+            <attribute name="address" column="3"/>
+        </result>
+    </query>
+    <operation name="getAllCustomer">
+        <call-query href="q1"/>
+    </operation>
+</data>

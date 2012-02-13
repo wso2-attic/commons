@@ -1,0 +1,25 @@
+What You're Looking At
+----------------------
+
+This directory contains an Axis2 custom deployer which reads Axis1 WSDD files and deploys each Axis1 service therein as an Axis2 service.  This allows you to take advantage of the Axis2 message processing framework, including the ability to engage extensions via Modules, without needing to change your pre-existing Axis1 code.  We hope this enables you to ease your migration to Axis2's speed, power, and flexibility by taking small steps.
+
+Using The Deployer
+------------------
+
+To utilize the deployer, you need to have the two classes Axis1Deployer and Axis1InOutMessageReceiver on your classpath.  The easiest way to do this is by just dropping the axis1deployer.jar file into the /lib directory of your Axis2 repository.  You must also have the Axis1 classes available - there are a variety of ways this can happen.  Some J2EE servers have Axis built-in, for instance.  You can also drop the axis.jar file into the Axis2 repository's /lib directory.
+
+In your axis2.xml configuration, include the following line:
+
+    <deployer extension="wsdd" class="a1deployer.Axis1Deployer" directory="services"/>
+
+That deploys the deployer, and enables it to react to WSDD files in your services/ directory.  After that's been done, you can put your Axis1 "server-config.wsdd" file into your Axis2 services/ directory and start the server or webapp.
+
+NOTE: You must also have all service implementation classes and Handler classes on your classpath for the Axis1 deployments to work - again, you can drop these jars into <repository>/lib or <repository>/services/lib.
+
+TODOs
+-----
+* Finish documentation
+* Check in tests
+* M2 build script
+* Integration with WSAS
+* JWS support?

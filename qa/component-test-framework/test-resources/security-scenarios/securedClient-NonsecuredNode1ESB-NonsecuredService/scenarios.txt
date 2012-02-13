@@ -1,0 +1,7 @@
+Secured client -> Non-secured loadbalance ESB -> Non-secured node1/node2 ESB -> Non secured service
+====================================================================================================
+
+1. Used the Idea client (OperationClient) (set security_scenario_no =0 in client.properties)
+2. Used the configuration given in the folder (For the loadbalance ESB and node1/node2 ESBs of the cluster)
+3. Service was deployed on WSAS
+

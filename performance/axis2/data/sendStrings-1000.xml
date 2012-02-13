@@ -1,0 +1,1 @@
+<?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"><soapenv:Header /><soapenv:Body><ns1:sendStrings xmlns:ns1="http://www.extreme.indiana.edu/wsdl/Benchmark1"><ns1:size>1000</ns1:size></ns1:sendStrings></soapenv:Body></soapenv:Envelope>

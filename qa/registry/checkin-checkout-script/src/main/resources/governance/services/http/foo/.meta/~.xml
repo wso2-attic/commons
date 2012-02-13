@@ -1,0 +1,1 @@
+<resource name="foo" isCollection="true" path="/_system/governance/services/http/foo" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>1295</version><creator>admin</creator><createdTime>1296273569942</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296273569942</lastModified><description></description></resource>

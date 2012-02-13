@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5  Built on : Apr 30, 2009 (06:07:24 EDT) -->
+<serviceGroup>
+    <service name="CustomerInfoService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.wso2.carbon.bpel.ode.integration.axis2.receivers.WSDLAwareMessageReceiver"/>
+        </messageReceivers>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="getCustomerSSN" mep="http://www.w3.org/ns/wsdl/in-out"
+                   namespace="http://wso2.org/bps/samples/CustomerInfo">
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.wso2.carbon.bpel.ode.integration.axis2.receivers.WSDLAwareMessageReceiver"/>
+            <actionMapping>http://wso2.org/bps/samples/CustomerInfo/CustomerInfoPortType/input</actionMapping>
+            <outputActionMapping>http://wso2.org/bps/samples/CustomerInfo/CustomerInfoPortType/output
+            </outputActionMapping>
+        </operation>
+        <module ref="rampart"/>
+        <module ref="addressing"/>
+        <wsp:Policy wsu:Id="UTOverTransport"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <!--<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">-->
+                        <!--<wsp:Policy>-->
+                            <!--<sp:TransportToken>-->
+                                <!--<wsp:Policy>-->
+                                    <!--<sp:HttpsToken RequireClientCertificate="false"/>-->
+                                <!--</wsp:Policy>-->
+                            <!--</sp:TransportToken>-->
+                            <!--<sp:AlgorithmSuite>-->
+                                <!--<wsp:Policy>-->
+                                    <!--<sp:Basic256/>-->
+                                <!--</wsp:Policy>-->
+                            <!--</sp:AlgorithmSuite>-->
+                            <!--<sp:Layout>-->
+                                <!--<wsp:Policy>-->
+                                    <!--<sp:Lax/>-->
+                                <!--</wsp:Policy>-->
+                            <!--</sp:Layout>-->
+                            <!--<sp:IncludeTimestamp/>-->
+                        <!--</wsp:Policy>-->
+                    <!--</sp:TransportBinding>-->
+                    <sp:SupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:UsernameToken
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"/>
+                        </wsp:Policy>
+                    </sp:SupportingTokens>
+
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:passwordCallbackClass>org.wso2.bps.samples.rampart.PWCBHandler
+                        </ramp:passwordCallbackClass>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+
+    </service>
+</serviceGroup>

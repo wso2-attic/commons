@@ -1,0 +1,19 @@
+========================
+Apache ODE Release Notes
+========================
+
+Apache 2.0-beta is an early release of an improved version of the
+ODE runtime, supporting better performance and reliability.
+ 
+Apache ODE 2.0-beta requires Java 1.5.x. The WAR distribution can run 
+in most J2EE servlet container. The JBI distribution should be able to
+run in any JBI container but has only been tested with ServiceMix
+3.1 so far. See the BUILDING file if you want to build your own
+distribution from the source release.
+
+Changes:
+-------
+
+Please check our Jira:
+
+https://issues.apache.org/jira/browse/ODE

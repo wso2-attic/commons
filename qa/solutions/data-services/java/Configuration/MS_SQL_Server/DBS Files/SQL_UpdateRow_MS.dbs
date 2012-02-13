@@ -1,0 +1,8 @@
+<data name="SQL_UpdateRow_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="InsertData"><sql>insert INTO Employees values (65,'New Dtata','Silva(New)','Mr(New)','E555(New)','S555(New)','Col(New)');</sql><result element="BaseElement" rowName="Element" /></query><operation name="OP_insertData"><call-query href="InsertData" /></operation><query id="Select_Data"><sql>select * from Employees where EmployeeID = 65 or EmployeeID = 75</sql><result element="BaseElement" rowName="Element"><element name="EmployeeID" column="EmployeeID" /><element name="FirstName" column="FirstName" /><element name="LastName" column="LastName" /><element name="Title" column="Title" /><element name="Extention" column="Extention" /><element name="WorkLocation" column="WorkLocation" /><element name="OfficeLocation" column="OfficeLocation" /></result></query><operation name="Select_Data"><call-query href="Select_Data" /></operation><query id="Update_Data"><sql>UPDATE Employees SET EmployeeID = 75 WHERE EmployeeID  = 65</sql><result element="BaseElement" rowName="Element" /></query><operation name="Update_Data"><call-query href="Update_Data" /></operation></data>

@@ -1,0 +1,232 @@
+<artifactType type="application/vnd.wso2-visa+xml" shortName="VisaData" singularLabel="Visa" pluralLabel="Visas" hasNamespace="true" iconSet="9">
+    <storagePath>/immigrant/visa/@{passport_country}/@{passport_passportnumber}</storagePath>
+    <nameAttribute>passport_passportnumber</nameAttribute>
+    <ui>
+        <list>
+           <column name="Passport Number">
+                <data type="path" value="passport_passportnumber" href="@{storagePath}"/>
+           </column>
+           <column name="Country Applied For">
+                <data type="path" value="passport_country" href="/immigrant/visa/@{passport_country}"/>
+           </column>
+           <column name="Date of Birth">
+                <data type="text" value="birthrecords_dob"/>
+           </column>
+           <column name="Place of Birth">
+                <data type="text" value="birthrecords_placeofbirth"/>
+           </column>
+           <column name="Nationality">
+                <data type="text" value="birthrecords_nationality"/>
+           </column>
+           <column name="Type of Visa">
+                <data type="text" value="visas_typeofvisa"/>
+           </column>
+           <column name="Emergency Contact">
+                <data type="text" value="emergencycontact_EmergencyContact"/>
+           </column>
+        </list>
+    </ui>
+
+    <content>
+        <table name="Passport">
+		<field type="text" required="true" readonly="true">
+		    <name label="1.1 Passport Number">Passportnumber</name>
+		</field>
+		<field type="text">
+		    <name label="1.2 City">City</name>
+		</field>
+		<field type="options">
+		    <name label="1.3 Country">Country</name>
+		    <values>
+			<value>Select</value><value>Sri Lanka</value><value>India</value><value>China</value><value>Japan</value><value>US</value><value>UK</value><value>Germany</value><value>Russia</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="1.4 State/Province">State</name>
+		</field>
+		<field type="options">
+		    <name label="1.5 Issuing Country">IssuingCountry</name>
+		    <values>
+			<value>Select</value><value>Sri Lanka</value><value>India</value><value>China</value><value>Japan</value><value>US</value><value>UK</value><value>Germany</value><value>Russia</value>
+	 	    </values>
+		</field>
+	</table>
+        <table name="Issance Date dd-month-yyyy" columns="3">
+	  <subheading>
+	    <heading>day</heading><heading>month</heading><heading>year</heading>
+	  </subheading>
+		<field type="text">
+		    <name label="day">day</name>
+		</field>
+		<field type="options">
+		    <name label="month">month</name>
+		    <values>
+			<value>Select</value><value>January</value><value>February</value><value>March</value><value>April</value><value>May</value><value>June</value><value>July</value><value>August</value><value>September</value><value>October</value><value>Novermber</value><value>December</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="year">year</name>
+		</field>
+	</table>
+        <table name="Expiration Date dd-month-yyyy" columns="3">
+	  <subheading>
+	    <heading>day</heading><heading>month</heading><heading>year</heading>
+	  </subheading>
+		<field type="text">
+		    <name label="day">day</name>
+		</field>
+		<field type="options">
+		    <name label="month">month</name>
+		    <values>
+			<value>Select</value><value>January</value><value>February</value><value>March</value><value>April</value><value>May</value><value>June</value><value>July</value><value>August</value><value>September</value><value>October</value><value>Novermber</value><value>December</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="year">year</name>
+		</field>
+	</table>
+        <table name="PersonalInformation">
+		<field type="text">
+		    <name label="2.1Surnames (As in Passport)">surname</name>
+		</field>
+		<field type="text">
+		    <name label="2.2 First and Middle Names (As in Passport)">firstmiddle</name>
+		</field>
+		<field type="text">
+		    <name label="2.3 Other Surnames Used (Maiden, Religious, Professional, Aliases)">othersurname</name>
+		</field>
+		<field type="text">
+		    <name label="2.4 Other First and Middle Names Used">otherfirst</name>
+		</field>
+
+	</table>
+	<table name="BirthRecords">
+		<field type="options">
+		    <name label="3.1 Date of Birth (dd-month-yyyy)">dob</name>
+		    <values>
+			<value>Select</value><value>January</value><value>February</value><value>March</value><value>April</value><value>May</value><value>June</value><value>July</value><value>August</value><value>September</value><value>October</value><value>Novermber</value><value>December</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="3.2 Place of Birth City">placeofbirth</name>
+		</field>
+		<field type="options">
+		    <name label="3.3 Nationality">Nationality</name>
+		    <values>
+			<value>Select</value><value>AFGHANISTAN</value><value>ALBANIA</value><value>ALGERIA</value><value>ANDORRA</value><value>ANGOLA</value><value>ANGUILLA</value><value>ANTIGUA AND BARBUDA</value><value>ARGENTINA</value><value>ARMENIA</value><value>ARUBA</value><value>AUSTRALIA</value><value>AUSTRIA</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="3.4 Place of Birth Country">countryofbirth</name>
+		    <values>
+			<value>Select</value><value>AFGHANISTAN</value><value>ALBANIA</value><value>ALGERIA</value><value>ANDORRA</value><value>ANGOLA</value><value>ANGUILLA</value><value>ANTIGUA AND BARBUDA</value><value>ARGENTINA</value><value>ARMENIA</value><value>ARUBA</value><value>AUSTRALIA</value><value>AUSTRIA</value>
+	 	    </values>
+		</field>
+		<field type="text">
+		    <name label="3.5 Place of State/Province">stateofbirth</name>
+		</field>
+		<field type="text">
+		    <name label="3.6 National Identification Number (If applicable)">nic</name>
+		</field>
+	</table>
+        <table name="Gender">
+		<field type="checkbox">
+		    <name label="Male">Male</name>
+		</field>
+		<field type="checkbox">
+		    <name label="Female">Female</name>
+		</field>
+	</table>
+        <table name="Contact information. Home Address.Include apartment number street city state or province postal zone and country">
+		<field type="text-area">
+		    <name label="4.1  Street Address Line 1">address1</name>
+		</field>
+		<field type="text">
+		    <name label="4.2 Street Address Line 2">address2</name>
+		</field>
+		<field type="text">
+		    <name label="4.3 City">city</name>
+		</field>
+		<field type="text">
+		    <name label="4.4 State/Province">state</name>
+		</field>
+		<field type="text">
+		    <name label="4.5 Postal Code">postal</name>
+		</field>
+		<field type="text">
+		    <name label="4.6 Country">country</name>
+		    <values>
+			<value>Select</value><value>AFGHANISTAN</value><value>ALBANIA</value><value>ALGERIA</value><value>ANDORRA</value><value>ANGOLA</value><value>ANGUILLA</value><value>ANTIGUA AND BARBUDA</value><value>ARGENTINA</value><value>ARMENIA</value><value>ARUBA</value><value>AUSTRALIA</value><value>AUSTRIA</value>
+	 	    </values>
+		</field>
+	</table>
+        <table name="Contact information. Telephone contacts" columns="3">
+		<subheading>
+		    <heading>Telephone</heading><heading>Fax</heading><heading>Other</heading>
+		</subheading>
+		<field type="text">
+		    <name label="Home Telephone Number">HomeTelephoneNumber</name>
+		</field>
+		<field type="text">
+		    <name label="Fax Number">FaxNumber</name>
+		</field>
+		<field type="text-area">
+		    <name label="Mobile/Cell Number">MobileNumber</name>
+		</field>
+		<field type="text">
+		    <name label="Business Phone Number">BusinessPhoneNumber</name>
+		</field>
+		<field type="text">
+		    <name label="Business Fax Number">BusinessFaxNumber</name>
+		</field>
+		<field type="text-area">
+		    <name label="Pager Number">PagerNumber</name>
+		</field>
+	</table>
+        <table name="Have You Ever Been Issued a U.S. Visa">
+		<field type="checkbox">
+		    <name label="Yes">Yes</name>
+		</field>
+		<field type="checkbox">
+		    <name label="No">No</name>
+		</field>
+		<field type="text">
+		    <name label="WHEN? (Most Recent)">when</name>
+		</field>
+		<field type="text-area">
+		    <name label="Where?">Where</name>
+		</field>
+		<field type="text" url="true">
+		    <name label="Company Website">Company Website</name>
+		</field>
+        <field type="text" url="true" path="true">
+            <name label="WSDL URL">WSDL URL</name>
+        </field>
+	</table>
+    <table name="Visas">
+		<field type="option-text" maxoccurs="unbounded">
+		    <name label="What type of Visa?">TypeofVisa</name>
+		    <values>
+			<value>Select</value><value>A1 - AMBASSADOR, DIPLOMAT OR CONOFF AND IMMED FAMILY</value><value>B1 - VISITOR FOR BUSINESS</value><value>C1 - ALIEN IN TRANSIT</value><value>D - CREW MEMBER ( SHIP OR AIRCRAFT CREW)</value><value>E1 - TREATY TRADER, SPOUSE, CHILDREN</value><value>F1 - STUDENT (ACADEMIC OR LANGUAGE)</value><value>G1 - PERM REPRESENTATIVE TO INTL ORG AND IMMED FAMILY</value><value>H1B - TEMP WKER DISTINGUISHED MERIT ( OTHER THAN NURSE)</value><value>I - FOREIGN INFO MEDIA AND SPOUSE AND CHILDREN</value><value>K1 - FIANCE OR FIANCEE OF U. S. CITIZEN</value><value>L1 - INTRA-COMPANY TRANSFEREE(EXEC, MGR)</value><value>M1 - VOCATIONAL/TECHNICAL STUDENT</value>
+	 	    </values>
+		</field>
+	</table>
+    <table name="EmergencyContact">
+        <subheading>
+            <heading>Contact Type</heading><heading>Contact Name/Organization Name</heading>EmergencyContact
+        </subheading>
+        <field type="option-text" maxoccurs="unbounded">
+            <name label="Emergency Contact">EmergencyContact</name>
+            <values>
+                <value>None</value><value>Technical Owner</value><value>Business Owner</value>
+            </values>
+        </field>
+    </table>
+    <table name="Service Lifecycle">
+        <field type="options">
+            <name label="Lifecycle Name">Lifecycle Name</name>
+            <values class="org.wso2.carbon.governance.services.ui.utils.LifecycleListPopulator" />
+        </field>
+    </table>
+   </content>
+</artifactType>

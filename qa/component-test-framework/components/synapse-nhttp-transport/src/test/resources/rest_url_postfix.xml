@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="main" trace="disable" statistics="enable">
+        <in>
+            <property name="REST_URL_POSTFIX" value="/getSimpleQuote?symbol=IBM" scope="axis2"/>
+            <send>
+                <endpoint name="axis2_epr">
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService" format="rest"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>

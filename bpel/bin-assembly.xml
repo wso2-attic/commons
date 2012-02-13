@@ -1,0 +1,202 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<assembly>
+    <id>bin</id>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <baseDirectory>lib</baseDirectory>
+    <formats>
+	<!--<format>tar.gz</format>  //uncomment,if tar.gz archive needed-->
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>./target</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>org.wso2.bpel-${version}.jar</include>
+            </includes>
+        </fileSet>
+
+    </fileSets>
+
+      <dependencySets>
+        <dependencySet>
+          <outputDirectory></outputDirectory>
+            <excludes>
+                <exclude>javax.activation:activation:jar</exclude>
+                <exclude>activeio:activeio:jar</exclude>
+                <exclude>org.apache.ant:ant:jar</exclude>
+                <exclude>org.apache.ant:ant-launcher:jar</exclude>
+                <exclude>asm:asm:jar</exclude>
+                <exclude>asm:asm-commons:jar</exclude>
+                <exclude>asm:asm-tree:jar</exclude>
+                <exclude>org.apache.ws.commons.axiom:axiom:jar</exclude>
+                <exclude>org.apache.ws.commons.axiom:axiom-api:jar</exclude>
+                <exclude>org.apache.ws.commons.axiom:axiom-dom:jar</exclude>
+                <exclude>org.apache.ws.commons.axiom:axiom-impl:jar</exclude>
+                <exclude>org.apache.axis2:axis2-java2wsdl:jar</exclude>
+                <exclude>org.apache.axis2:axis2-kernel:jar</exclude>
+                <exclude>org.apache.axis2:axis2-transports:jar</exclude>
+                <exclude>cglib:cglib:jar</exclude>
+                <exclude>cglib:cglib-nodep:jar</exclude>
+                <exclude>commons-codec:commons-codec:jar</exclude>
+                <exclude>commons-dbcp:commons-dbcp:jar</exclude>
+                <exclude>commons-fileupload:commons-fileupload:jar</exclude>
+                <exclude>commons-httpclient:commons-httpclient:jar</exclude>
+                <exclude>commons-io:commons-io:jar</exclude>
+                <exclude>commons-jelly:commons-jelly-tags-velocity:jar</exclude>
+                <exclude>concurrent:concurrent:jar</exclude>
+                <exclude>dom4j:dom4j:jar</exclude>
+                <exclude>net.sf.ehcache:ehcache:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-j2ee-deployment_1.1_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-j2ee-jacc_1.0_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-j2ee-management_1.0_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-jms_1.1_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-jpa_3.0_spec:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec:jar</exclude>
+                <exclude>geronimo:geronimo-kernel:jar</exclude>
+                <exclude>geronimo:geronimo-management:jar</exclude>
+                <exclude>geronimo:geronimo-naming:jar</exclude>
+                <exclude>geronimo:geronimo-security:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-servlet_2.4_spec:jar</exclude>
+                <exclude>geronimo:geronimo-spec-activation:jar</exclude>
+                <exclude>geronimo-spec:geronimo-spec-j2ee-connector:jar</exclude>
+                <exclude>geronimo-spec:geronimo-spec-jta:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec:jar</exclude>
+                <exclude>geronimo:geronimo-system:jar</exclude>
+                <exclude>geronimo:geronimo-util:jar</exclude>
+                <exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec:jar</exclude>
+                <exclude>howl:howl-logger:jar</exclude>
+                <exclude>org.objectweb.howl:howl:jar</exclude>
+                <exclude>hsqldb:hsqldb:jar</exclude>
+                <exclude>wsdl4j:wsdl4j:jar</exclude>
+                <exclude>org.codehaus.woodstox:wstx-asl:jar</exclude>
+                <exclude>org.apache.ode.xalan:xalan:jar</exclude>
+                <exclude>geronimo:geronimo-common:jar</exclude>
+                <exclude>geronimo:geronimo-core:jar</exclude>
+                <exclude>geronimo:geronimo-deployment:jar</exclude>
+                <exclude>geronimo:geronimo-j2ee:jar</exclude>
+                <exclude>org.apache.httpcomponents:httpcore:jar</exclude>
+                <exclude>com.ibm.icu:icu4j:jar</exclude>
+                <exclude>javacc:javacc:jar</exclude>
+                <exclude>net.java.dev.javacc:javacc:jar</exclude>
+                <exclude>jaxen:jaxen:jar</exclude>
+                <exclude>jaxme:jaxme-api:jar</exclude>
+                <exclude>xerces:xercesImpl:jar</exclude>
+                <exclude>mx4j:mx4j:jar</exclude>
+                <exclude>xstream:xstream:jar</exclude>
+                <exclude>msv:xsdlib:jar</exclude>
+                <exclude>xpp3:xpp3:jar</exclude>
+                <exclude>xom:xom:jar</exclude>
+                <exclude>xml-resolver:xml-resolver:jar</exclude>
+                <exclude>xerces:xmlParserAPIs:jar</exclude>
+                <exclude>xml-apis:xml-apis:jar</exclude>
+                <exclude>xmlbeans:xmlbean:jar</exclude>
+                <exclude>jencks:xapool-without-pool:jar</exclude>
+                <exclude>org.apache.woden:woden-api:jar</exclude>
+                <exclude>org.apache.woden:woden-impl-dom:jar</exclude>
+                <exclude>velocity:velocity:jar</exclude>
+                <exclude>velocity:velocity-dep:jar</exclude>
+                <exclude>tranql:tranql:jar</exclude>
+                <exclude>org.ccil.cowan.tagsoup:tagsoup:jar</exclude>
+                <exclude>spring-parent:org.springframework:jar</exclude>
+                <exclude>org.igniterealtime:smack:jar</exclude>
+                <exclude>javax.servlet:servlet-api:jar</exclude>
+                <exclude>msv:relaxngDatatype:jar</exclude>
+                <exclude>regexp:regexp:jar</exclude>
+                <exclude>pull-parser:pull-parser:jar</exclude>
+                <exclude>org.apache.ws.commons.schema:XmlSchema:jar</exclude>
+                <exclude>org.apache.neethi:neethi:jar</exclude>
+                <exclude>jdom:jdom:jar</exclude>
+                <exclude>org.jencks:jencks:jar</exclude>
+                <exclude>junit:junit:jar</exclude>
+                <exclude>log4j:log4j:jar</exclude>
+                <exclude>javax.mail:mail:jar</exclude>
+                <exclude>geronimo:geronimo-connector:jar:1.1</exclude>
+                <exclude>geronimo:geronimo-transaction:jar:1.1</exclude>
+                <exclude>xmlbeans:xbean:jar</exclude>
+            </excludes>
+            <!--<excludes>
+                 <exclude>mx4j:mx4j-jmx:jar</exclude>
+                 <exclude>mx4j:mx4j-impl:jar</exclude>
+                 <exclude>mx4j:mx4j-remote:jar</exclude>
+                 <exclude>mx4j:mx4j-tools:jar</exclude>
+                 <exclude>mx4j:mx4j:jar</exclude>
+                 <exclude>rome:rome:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-j2ee-connector_1.5_spec:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-j2ee-jacc_1.0_spec:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-j2ee-management_1.0_spec:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec:jar</exclude>
+                 <exclude>org.apache.geronimo.specs:geronimo-jsp_2.0_spec:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-console:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-core:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-jaas:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-optional:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-optional:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-web:jar</exclude>
+                 <exclude>org.apache.activemq:activemq-web-demo:war</exclude>
+                 <exclude>xstream:xstream:jar</exclude>
+                 <exclude>xom:xom:jar</exclude>
+                 <exclude>xmlpull:xmlpull:jar</exclude>
+                 <exclude>xerces:xmlParserAPIs:jar</exclude>
+                 <exclude>org.apache.xbean:xbean-spring:jar</exclude>
+                 <exclude>org.apache.tomcat:tribes:jar</exclude>
+                 <exclude>org.springframework:spring:jar</exclude>	
+                 <exclude>org.springframework:spring-beans:jar</exclude>
+                 <exclude>org.springframework:spring-context:jar</exclude>	
+                 <exclude>org.springframework:spring-core:jar</exclude>	
+                 <exclude>org.springframework:spring-web:jar</exclude>	
+                 <exclude>logkit:logkit:jar</exclude>	
+                 <exclude>org.apache.tomcat:juli:jar</exclude>	
+                 <exclude>javax.xml.bind:jsr173_api:jar</exclude>	
+                 <exclude>jrms:jrms:jar</exclude>	
+                 <exclude>activemq:jmdns:jar</exclude>	
+                 <exclude>org.mortbay.jetty:jetty:jar</exclude>	
+                 <exclude>org.mortbay.jetty:jetty-util:jar</exclude>	
+                 <exclude>jdom:jdom:jar</exclude>
+                 <exclude>jakarta-regexp:jakarta-regexp:jar</exclude>
+                 <exclude>com.ibm.icu:icu4j:jar</exclude>
+                 <exclude>org.apache.bcel:bcel:jar</exclude>	
+                 <exclude>org.apache.activemq:activeio-core:jar</exclude>
+                 <exclude>org.apache.ant:ant:jar</exclude>
+                 <exclude>org.apache.ant:ant-launcher:jar</exclude>
+                 <exclude>aopalliance:aopalliance:jar</exclude>
+                 <exclude>org.apache.activemq:apache-activemq:jar</exclude>
+                 <exclude>avalon-framework:avalon-framework:jar</exclude>
+                 <exclude>axis:axis:jar</exclude>
+                 <exclude>bsf:bsf:jar</exclude>
+                 <exclude>commons-beanutils:commons-beanutils:jar</exclude>
+                 <exclude>commons-collections:commons-collections:jar</exclude>
+                 <exclude>commons-pool:commons-pool:jar</exclude>
+                 <exclude>dom4j:dom4j:jar</exclude>
+                 <exclude>com.sun.xml.fastinfoset:FastInfoset:jar</exclude>
+                 <exclude>activesoap:jaxp-api:jar</exclude>
+                 <exclude>rhino:js:jar</exclude>
+                 <exclude>junit:junit:jar</exclude>
+                 <exclude>javax.servlet:servlet-api</exclude>
+                 <exclude>org.mortbay.jetty:servlet-api-2.5:jar:6.0.1</exclude>
+            </excludes>-->
+        </dependencySet>
+      </dependencySets>
+</assembly>

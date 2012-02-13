@@ -1,0 +1,6 @@
+1. Drop the PWCBHandler.jar to ESB_HOME/repository/components/lib folder and restart the ESB server
+2. Create a Proxy service as sepcified in the synapse.xml and secured it with UT (scenario 1)
+3. Deploy Axis2Service on WSAS and apply security scenario 2
+4. Go to the Policy editor of the WSAS service which you applied security, copy the policy and save it in the registry with the RampartConfig section replaced as given in sec_policy_for_proxy.xml
+5. You do  not need to change anything on the server side policy (just giving the policy as an example only - server_side_policy.xml)
+6. The invoke using the client with UT.

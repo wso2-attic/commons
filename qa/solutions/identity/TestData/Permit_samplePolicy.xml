@@ -1,0 +1,25 @@
+<Request>
+    <Subject>
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+                 DataType="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name">
+        <AttributeValue>seth@users.example.com</AttributeValue>
+      </Attribute>
+      <Attribute AttributeId="group"
+                 DataType="http://www.w3.org/2001/XMLSchema#string"
+                 Issuer="admin@users.example.com">
+        <AttributeValue>developers</AttributeValue>
+      </Attribute>
+    </Subject>
+    <Resource>
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+                 DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+        <AttributeValue>http://server.example.com/code/docs/developer-guide.html</AttributeValue>
+      </Attribute>
+    </Resource>
+    <Action>
+      <Attribute AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+                 DataType="http://www.w3.org/2001/XMLSchema#string">
+        <AttributeValue>read</AttributeValue>
+      </Attribute>
+    </Action>
+  </Request>

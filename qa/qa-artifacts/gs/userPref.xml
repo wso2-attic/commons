@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Preferences for __UP_myname__" height="250" />
+  <UserPref name="myname" display_name="Name" required="true" />
+  <UserPref name="myphoto" display_name="Photo" default_value="http://doc.examples.googlepages.com/rowan-headshot.jpg"/>
+  <UserPref name="mychoice" display_name="Show Photo?" datatype="bool" default_value="true"/>
+  <UserPref name="mycolor" display_name="Color" default_value="Yellow" datatype="enum" >
+    <EnumValue value="Red" />
+    <EnumValue value="Aqua" />
+    <EnumValue value="Lime" />
+    <EnumValue value="Yellow" />
+    <EnumValue value="Pink" />
+    <EnumValue value="Orange" />
+    <EnumValue value="White" />
+  </UserPref> 
+  <Content type="html">
+  <![CDATA[ 
+    <div style="text-align:center"><a
+      id="Riggs" title="My Photo Album" target="_blank" 
+      href="http://picasaweb.google.com/doc.examples/ShelfBoy">
+      <img border="0" alt="Photo" src="http://doc.examples.googlepages.com/Riggsie-OP.jpg" 
+      title="Click Here."></a>
+    </div>
+  ]]> 
+  </Content>
+</Module>

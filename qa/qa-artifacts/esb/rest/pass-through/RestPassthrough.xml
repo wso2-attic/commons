@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="RestPassthrough" transports="https http" startOnLoad="true" trace="disable">
+    <target>
+        <endpoint>
+            <address uri="http://localhost:9763/CustomerService"/>
+        </endpoint>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </target>
+</proxy>

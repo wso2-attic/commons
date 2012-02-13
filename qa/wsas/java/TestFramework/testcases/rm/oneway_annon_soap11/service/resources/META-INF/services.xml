@@ -1,0 +1,17 @@
+<service name="SandeshaService">
+    <Description>
+        Sandesha/Reliable Messaging test service
+    </Description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    
+    <module ref="sandesha2" />
+    
+    <parameter name="ServiceClass" locked="false">
+     org.wso2.wsas.service.SandeshaService
+    </parameter>
+</service>

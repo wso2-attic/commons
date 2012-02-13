@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<esb>	 
+	<Database>
+	    <currentDBConfig>mysql-db</currentDBConfig>
+    	<dbConfigname>mysql-db</dbConfigname>
+        <url>jdbc:mysql://localhost:3306/testEsb</url>
+        <userName>root</userName>
+        <password>root123</password>
+        <driverName>com.mysql.jdbc.Driver</driverName>
+        <maxActive>80</maxActive>
+        <maxWait>60000</maxWait>
+        <minIdle>5</minIdle> 
+</Database>
+</esb>

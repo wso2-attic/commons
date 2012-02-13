@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Gifting friends" 
+  descrition="App that demonstrates the use of templates in the profile view to retrieve and display data.">
+<Require feature="opensocial-0.8"/>
+<Require feature="opensocial-data"/>
+<Require feature="opensocial-templates">
+  <Param name="process-on-server">true</Param>
+</Require>
+</ModulePrefs>
+<Content type="html"><![CDATA[
+  <style type="text/css">
+  body,span,p {
+    font-family:times;
+  }     
+  .name {
+    color: blue;
+  }
+  .male {
+    color: red;
+  }
+  .female {
+    color: purple;
+  }
+  .gift {
+    font-family: arial;
+    font-size: 12px;
+    padding: 8px;
+  }
+  </style>
+  <script type="text/os-data" xmlns:os="http://ns.opensocial.org/2008/markup">
+    <os:ViewerRequest key="viewer" fields="name,gender"/>
+    <os:OwnerRequest key="owner" />
+    <os:PeopleRequest key="viewerFriends" userId="@viewer" groupId="@friends" fields="name,profileUrl"/>
+    <os:PersonAppDataRequest key="gifts" method="appdata.get" userId="@viewer" appId="@app" fields="giftsData,lastGiftBy" />
+    <os:PeopleRequest key="lastGift" userId="${gifts[viewer.id]['lastGiftBy']}" groupId="@self" />
+  </script>
+  <script type="text/os-template"  xmlns:os="http://ns.opensocial.org/2008/markup" xmlns:osx= "http://ns.opensocial.org/2009/extensions">
+    <span class="${viewer.gender}"><b>Welcome ${viewer.name.givenName}</b></span>
+    <p/>
+ 
+    This app belongs to 
+    <span if="${viewer.id != owner.id}"><a href="${owner.url}">${owner.name.givenName} ${owner.name.familyName}</a></span>
+    <span if="${viewer.id == owner.id}">you</span>
+    <p/>Your friends :       
+    <ul>
+      <li repeat="${viewerFriends}">
+        <osx:NavigateToPerson person="${Cur}">
+        <span class="name" id="id${Context.Index}">${Cur.name.givenName}</span></osx:NavigateToPerson>
+ 
+        <span class="gift" if="${osx:parseJson(gifts[viewer.id].giftsData)[id] != null}"> 
+          received <os:Html code=${osx:parseJson(gifts[viewer.id].giftsData)[id]}></span>
+      </li>
+    </ul>
+    The last gift was sent by : ${lastGift.name.givenName}
+    <br/>
+    <br/>
+    <osx:NavigateToApp>Send gift to a friend</osx:NavigateToApp>
+    <p/>
+    <img src="http://code.google.com/apis/opensocial/images/opensocial.jpg" alt="OpenSocial logo" height="50%" />
+    <p/>
+  </script>    
+]]></Content>
+</Module>

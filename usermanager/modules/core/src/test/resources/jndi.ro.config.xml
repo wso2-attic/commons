@@ -1,0 +1,14 @@
+<configuration xmlns="http://usermanager.commons.wso2.org/ns">
+
+<realm class="org.wso2.commons.usermanager.realm.ro.JNDIRealmRO" 
+           configClass="org.wso2.commons.usermanager.realm.ro.JNDIConfigurationRO">
+   <realmConfiguration>
+        <property name="jndi.attributeIds" value="uid, userPassword"/>
+		<property name="jndi.userPattern" value="uid={0},ou=People,dc=wso2,dc=com"/>
+		<property name="jndi.connectionURL" value="ldap://localhost:389"/> 
+		<property name="jndi.connectionName" value="cn=root,dc=wso2,dc=com"/>
+		<property name="jndi.connectionPass" value="secret"/>
+    </realmConfiguration>
+</realm>
+
+</configuration>

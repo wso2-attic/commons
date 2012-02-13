@@ -1,0 +1,4 @@
+<Module>
+  <ModulePrefs title="URL Content"/> 
+  <Content type="url" href="http://www/cgi-bin/example/gadgets/mystats.cgi" /> 
+</Module>

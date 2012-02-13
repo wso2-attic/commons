@@ -1,0 +1,9 @@
+Using endpoint : http://localhost:9090/axis2/services/sec_echo
+Using client_home : C:\wsfc_1.2.0\wso2-wsf-c-src-1.2.0\wso2-wsf-c-bin-1.2.0-win32\client_repo
+client_home= C:\wsfc_1.2.0\wso2-wsf-c-src-1.2.0\wso2-wsf-c-bin-1.2.0-win32\client_repo
+Sending OM : <ns1:echoIn xmlns:ns1="http://ws.apache.org/rampart/c/samples"><text>Hello</text></ns1:echoIn>
+
+Response has a SOAP fault
+
+Returned SOAP fault: <soapenv:Fault><soapenv:Code><soapenv:Value>soapenv:Sender</soapenv:Value><soapenv:Subcode><soapenv:Value>wsse:FailedCheck</soapenv:Value></soapenv:Subcode></soapenv:Code><soapenv:Reason><soapenv:Text xml:lang="en" xmlns:xml="http://www.w3.org/XML/1998/namespace">Timestamp token required. Cannot find in the security header</soapenv:Text></soapenv:Reason><soapenv:Detail><wsse:ProblemSecurityHeader xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">wsse:InvalidSecurity</wsse:ProblemSecurityHeader></soapenv:Detail></soapenv:Fault>
+echo client invoke FAILED!

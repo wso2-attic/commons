@@ -1,0 +1,10 @@
+<sequence name="ListAccountsIn" xmlns="http://ws.apache.org/ns/synapse">
+	<payloadFactory>
+		<format>
+			<m:getAccounts xmlns:m="http://mgt.accounts.etrade.com"/>
+		</format>
+	</payloadFactory>
+	<send>
+		<endpoint key="AccountSvc" />
+	</send>
+</sequence>

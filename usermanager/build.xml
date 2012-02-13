@@ -1,0 +1,29 @@
+<project default="app">
+
+    <property name="dir.tmp" value="tmp" />
+    <property name="um.version" value="0.6" />
+	<target name="clean">
+	    <delete dir="${dir.tmp}" />
+	</target>
+    
+    <target name="app" depends="clean">
+	<mkdir dir="${dir.tmp}" />
+	<mkdir dir="${dir.tmp}/resources"/>
+	<mkdir dir="${dir.tmp}/documentation"/>
+	<mkdir dir="${dir.tmp}/lib"/>
+	<copy file="modules/core/target/usermanager-core-${um.version}.jar" todir="${dir.tmp}/lib"/>
+	<copy file="modules/configs/target/usermanager-configs-${um.version}.jar" todir="${dir.tmp}/lib"/>
+	<copy file="modules/annotation-configs/target/usermanager-config-annotation-${um.version}.jar" todir="${dir.tmp}/lib"/>
+	<copy file="modules/verification/target/user-verification-${um.version}.jar" todir="${dir.tmp}/lib"/>
+	<copy file="distribution/LICENCE" todir="${dir.tmp}"/>
+	<copy file="distribution/README" todir="${dir.tmp}"/>
+	<copy file="modules/core/src/main/java/org/wso2/usermanager/readwrite/create_db.sql" todir="${dir.tmp}/resources"/>
+	<copy todir="${dir.tmp}/documentation">
+		<fileset dir="modules/docs">
+			<include name="**"/>
+		</fileset>
+	</copy>
+	<zip destfile="wso2usermanager-${um.version}.zip" basedir="${dir.tmp}"/>
+    </target>
+
+</project>

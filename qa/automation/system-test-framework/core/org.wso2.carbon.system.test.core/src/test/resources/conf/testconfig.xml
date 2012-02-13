@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario className="testclassname">
+        <description>App Server concurrent web app uploading</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="1">
+                        <war>
+                            <name>SimpleServlet.war</name>
+                        </war>
+                    </artifact>
+                    <artifact userId="2">
+                        <war>
+                            <name>myServletWAR.war</name>
+                        </war>
+                        <car>
+                            <name>AxisCApp-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                    <artifact userId="3">
+                        <war>
+                            <name>SimpleServlet.war</name>
+                        </war>
+                    </artifact>
+                </product>
+                <product productName="ESB">
+                    <artifact userId="2">
+                        <car>
+                            <name>DemoProxy-1.0.0.car</name>
+                            <name>ESBproject1-1.0.0.car</name>
+                            <name>ESBproject2-1.0.0.car</name>
+                            <name>ESBproject3-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StratosAxis2ServiceTest">
+        <description>Test multi-tenancy of services - Deploy services from one tenant and check whether
+            those are available in other tenants</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.esb.StratosCustomProxyTest">
+        <description>ESB custom proxy check</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="0">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+                <product productName="ESB">
+                    <artifact userId="0">
+                        <car>
+                            <name>DemoProxy-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+
+     <scenario className="org.wso2.stratos.automation.test.esb.ServiceChainingTest">
+        <description>ESB custom proxy check</description>
+        <artifacts>
+            <products>
+                <!--<product productName="AS">
+                    <artifact userId="0">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>-->
+                <product productName="ESB">
+                    <artifact userId="0">
+                        <car>
+                            <name>ServiceChaining-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+
+    <scenario className="org.wso2.carbon.system.test.ScenarioTest1">
+        <description>ESB custom proxy check</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="1">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+                <product productName="ESB">
+                    <artifact userId="1">
+                        <car>
+                            <name>DemoProxy-1.0.0-1.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.FaultyWebAppDeploymentTest">
+        <description>Deploy faulty webapp and redeploy correct webapp</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="12">
+                        <war>
+                            <name>SimpleServlet-faulty.war</name>
+                        </war>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.perf.as.AARLoadTest">
+        <description>Concurrent execution of axis2 service c = 500 and n = 1000</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StratosAsReadWSDLFromRepo">
+        <description>sample service to test schema imports when the wsdl is placed at META-INF and the schema is located
+            in a url repo
+        </description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>StratosSchemaimportservice.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StopAndRedeployWebAppTest">
+        <description>Delete stopped web app and redeploy</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="7">
+                        <war>
+                            <name>SimpleServlet.war</name>
+                        </war>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.CarFileMultitenancyTest">
+        <description>Deploy webservice though car file and check multitenancy</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="13">
+                        <car>
+                            <name>AxisCApp-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StratosASServiceStatTest">
+        <description>Deploy webservice though car file and check multitenancy</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StratosASSystemStatTest">
+        <description>Deploy webservice though car file and check multitenancy</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+    <scenario className="org.wso2.stratos.automation.test.as.StratosASSoapTracerTest">
+        <description>Soap tracer multitenancy test</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="15">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+</scenarios>

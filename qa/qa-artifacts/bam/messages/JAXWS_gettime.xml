@@ -1,0 +1,6 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:jax="http://jaxws.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <jax:getTime/>
+   </soapenv:Body>
+</soapenv:Envelope>

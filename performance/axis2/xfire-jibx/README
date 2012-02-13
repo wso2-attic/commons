@@ -1,0 +1,9 @@
+This example shows how to use XFire in a servlet container. You must 
+have Maven 2.x installed to build this example.  To build type:
+
+$ mvn install war:war
+
+The resultant war should work in any web application. The WSDL file
+for the service should be viewable at:
+
+http://yourhost:port/xfire/services/BenchmarkService?wsdl

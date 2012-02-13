@@ -1,0 +1,17 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+        <in>
+            <filter xmlns:m0="http://service.esb.wso2.org" xmlns:ns1="http://org.apache.synapse/xsd" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" source="//m0:x" regex="10">
+                <log level="full" separator=",">
+                    <property name="Incoming_filt_prop" value="Incoming Message getting filtered"/>
+                </log>
+                <send>
+                    <endpoint>
+                        <address uri="http://localhost:9000/services/Adding"/>
+                    </endpoint>
+                </send>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+</definitions>

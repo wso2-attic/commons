@@ -1,0 +1,30 @@
+<sequence name="CreateAccountIn" xmlns="http://ws.apache.org/ns/synapse">
+	<property name="accountId" expression="//id" />
+	<payloadFactory>
+		<format>
+			<m:createAccount xmlns:m="http://mgt.accounts.etrade.com" xmlns:n="http://mgt.accounts.etrade.com/xsd">
+				<m:account>
+					<n:id>$1</n:id>
+					<n:name>$2</n:name>
+					<n:description>$3</n:description>
+					<n:email>$4</n:email>
+					<n:telephone>$5</n:telephone>
+					<n:address>$6</n:address>
+					<n:dateCreated>$7</n:dateCreated>
+				</m:account>
+			</m:createAccount>
+		</format>
+		<args>
+			<arg expression="//id" />
+			<arg expression="//name" />
+			<arg expression="//description" />
+			<arg expression="//email" />
+			<arg expression="//telephone" />
+			<arg expression="//address" />
+			<arg expression="//dateCreated" />
+		</args>
+	</payloadFactory>
+	<send>
+		<endpoint key="AccountSvc" />
+	</send>
+</sequence>

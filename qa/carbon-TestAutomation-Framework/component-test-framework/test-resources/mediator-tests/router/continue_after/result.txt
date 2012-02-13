@@ -1,0 +1,3 @@
+Since this is set to true, <router continueAfter="true"> when the client is invoked, the log message text = *********CONTINUE AFTER ROUTING********* should be printed. 
+
+If the property is set to false, the above log message should not be printed

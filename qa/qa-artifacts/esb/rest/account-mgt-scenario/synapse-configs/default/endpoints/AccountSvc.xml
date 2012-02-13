@@ -1,0 +1,3 @@
+<endpoint name="AccountSvc" xmlns="http://ws.apache.org/ns/synapse">
+	<address uri="http://localhost:9763/services/AccountService" format="soap11" />
+</endpoint>

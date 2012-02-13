@@ -1,0 +1,65 @@
+<project name="Remoter Registry Test" basedir="." default="runserver">
+
+    <property name="builder.url"
+              value="http://builder.wso2.org/browse/REGISTRY-NIGHTLY-387/artifact/registry-dist/wso2registry-SNAPSHOT.zip"/>
+    <property name="distribution.zip.name" value="wso2registry-SNAPSHOT.zip"/>
+    <property name="distribution.name" value="wso2registry-SNAPSHOT"/>
+    <property name="snapshot.dir" value="snapshot"/>
+
+    <property name="script.path" value="${snapshot.dir}\${distribution.name}\bin\wso2server.bat"/>
+    <property name="framework.repo" value="C:\svn\registry"/>
+    <property name="maven.executable" value="C:\mvn\apache-maven-2.0.8\bin\mvn.bat"/>
+
+
+    <target name="clean">
+        <delete dir="${snapshot.dir}"/>
+    </target>
+
+    <target name="prepare" depends="clean">
+        <mkdir dir="${snapshot.dir}"/>
+    </target>
+
+    <target name="getzip" depends="prepare">
+        <get src="${builder.url}"
+             dest="${snapshot.dir}/${distribution.zip.name}"/>
+    </target>
+
+    <target name="unzip" depends="getzip">
+        <unzip src="${snapshot.dir}/${distribution.zip.name}"
+               dest="${snapshot.dir}"/>
+    </target>
+
+    <target name="install" depends="runserver">
+        <exec dir="${framework.repo}" executable="${maven.executable}">
+            <arg line="clean install"/>
+        </exec>
+    </target>
+
+    <target name="runserver" depends="unzip">
+        <echo message="scriptPath = ${script.path}"/>
+        <exec executable="cmd" spawn="true">
+            <arg value="/c"/>
+            <arg value="${script.path}"/>
+        </exec>
+
+        <sleep milliseconds="100000"/>
+
+    </target>
+
+    <target name="send.mail">
+    
+         <!--mail mailhost="smtp.gmail.com" mailport="587" ssl="true" subject="Test Mail" user="charitha@wso2.com" password=""-->
+         <mail mailhost="10.100.2.52" mailport="25"  subject="Test Mail">
+		 <from address="krishantha@wso2.com"/>
+		 <replyto address="krishantha@wso2.com"/>
+  	<to address="charitha@wso2.com", "evanthika@wso2.com"/>
+  	<message>WSO2 GReg Smoke test report</message>
+ 	 <!--attachments>
+    	<fileset dir="C:\test">
+      	<include name="**/*.zip"/>
+    	</fileseti>
+ 	 </attachments-->
+	</mail>    
+    </target>
+
+</project>

@@ -1,0 +1,47 @@
+
+<project name="Rampart_UT_EchoService" default="generate.service">
+
+    
+    <property name="base.dir" value="${project.base.dir}/rampart/sign-only/service"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    <property name="client.lib" value="${wsas.envt.WSAS_HOME}/repository/lib"/>
+   
+
+    <path id="wsas.classpath">
+        <fileset dir="${wsas.envt.WSAS_HOME}/repository/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile.service">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dir}/classes"/>
+
+        <!--First let's compile the classes-->
+        <javac debug="on" 
+               fork="true"
+               destdir="${build.dir}/classes" 
+               srcdir="${base.dir}/src"
+               classpathref="wsas.classpath">
+        </javac>
+    </target>
+
+    
+    <target name="generate.service" depends="compile.service">
+        
+        <copy toDir="${build.dir}/classes" failonerror="false">
+            <fileset dir="${base.dir}/resources">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+        <jar destfile="${build.dir}/Rampart_SIGNONLY_Echo_service.aar">
+            <fileset excludes="**/Test.class" dir="${build.dir}/classes"/>
+        </jar>
+        <copy file="${build.dir}/Rampart_SIGNONLY_Echo_service.aar" tofile="${wsas.envt.WSAS_HOME}/repository/services/Rampart_SIGNONLY_Echo_service.aar"
+              overwrite="true"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>

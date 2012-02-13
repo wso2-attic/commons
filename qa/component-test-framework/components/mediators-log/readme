@@ -1,0 +1,28 @@
+
+log level Definitions
+-----------------------
+
+simple = To, From, WSAction, SOAPAction, ReplyTo, MessageID and any properties
+headers = All SOAP header blocks and any properties
+full = all attributes included in log level 'simple' and the SOAP envelope and any properties
+custom = Only properties specified to the Log mediator
+
+
+expected outputs
+----------------
+
+simple
+------
+INFO LogMediator To: /, WSAction: urn:getQuote, SOAPAction: urn:getQuote, MessageID: urn:uuid:32B17641037630198A1282546096661, Direction: request, prop_1 = ***simple level test property***, Envelope: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><ns:getQuote xmlns:ns="http://services.samples"><ns:request><ns:symbol>IBM</ns:symbol></ns:request></ns:getQuote></soapenv:Body></soapenv:Envelope>
+
+header
+-------
+INFO LogMediator To: /, WSAction: urn:getQuote, SOAPAction: urn:getQuote, MessageID: urn:uuid:32B17641037630198A1282545361674, Direction: request, prop_1 = ***header level test property***, Envelope: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><ns:getQuote xmlns:ns="http://services.samples"><ns:request><ns:symbol>IBM</ns:symbol></ns:request></ns:getQuote></soapenv:Body></soapenv:Envelope>
+
+full
+-----
+INFO LogMediator To: /, WSAction: urn:getQuote, SOAPAction: urn:getQuote, MessageID: urn:uuid:32B17641037630198A1282545696154, Direction: request, prop_1 = ***full level test property***, Envelope: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><ns:getQuote xmlns:ns="http://services.samples"><ns:request><ns:symbol>IBM</ns:symbol></ns:request></ns:getQuote></soapenv:Body></soapenv:Envelope>
+
+custom
+--------
+INFO LogMediator prop_1 = ***custom level test property***

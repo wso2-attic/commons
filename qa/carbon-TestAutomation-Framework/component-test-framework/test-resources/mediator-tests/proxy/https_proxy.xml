@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="service_group_proxy" transports="https" startOnLoad="true">
+   <target>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService" />
+      </endpoint>
+   </target>
+   <publishWSDL uri="http://localhost:9000/services/SimpleStockQuoteService?wsdl" />
+</proxy>

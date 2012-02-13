@@ -1,0 +1,36 @@
+<data baseURI="xs:anyURI" name="StudentInfoService">
+    <config>
+    	<property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+    	<property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/projects</property>
+
+    	<property name="org.wso2.ws.dataservice.user">datauser</property>
+    	<property name="org.wso2.ws.dataservice.password">wso2</property>
+    </config>
+
+    <query id="studentInfo">
+       <param name="index" sqlType="INTEGER"/>
+       <sql>select name, id,deptNo, email from student where id = ?</sql>
+        <result element="students" rowName="student">
+          <element name="Name" column="name"/>
+          <element name="Index" column="id"/>
+          <element name="E-mail" column="email"/>
+          <call-query href="allDepartments"></call-query>
+        </result>
+     </query>
+
+    <query id="allDepartments">
+       <param name="deptNo" sqlType="INTEGER"/>
+       <sql>select id, name from department where id=?</sql>
+        <result element="departments" rowName="department">
+          <element name="ID" column="id"/>
+          <element name="Name" column="name"/>
+        </result>
+     </query>
+
+     <operation name="getStudentByProjectId">
+       <call-query href="studentInfo">
+       </call-query>
+     </operation>
+
+
+</data>

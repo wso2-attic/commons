@@ -1,0 +1,17 @@
+Steps that followed
+
+Security_scenarios.zip is extracted in to WSO2BPS/samples
+
+HelloWorld.zip BPEL package is uploaded.
+
+Servce.jks is added to keystore (Key store Password & Private Key Password=apache)
+
+Service is secured using security Scenarios (used Scenarios 2-15, UsernameToken is working fine)
+
+SecurityClient.zip is opened as a idea project
+
+parameters in client.properties is changed
+
+Then client is run.
+
+In first invoke (used security scenario -2) following exception is generated in server terminal. 

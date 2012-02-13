@@ -1,0 +1,16 @@
+Memory Status
++---------------------------+---------------+---------------+
+| FILE						|  EXAMINED		|	CLEANED		|
++---------------------------+---------------+---------------+
+| wsf_wsdl.c				|				|				|
+| wsf_wsdl_data.c			|				|				|
+| wsf_wsdl_data_template.c	|				|				|
+| wsf_wsdl_data_util.c		|				|				|
+| wsf_wsdl_type_map.c		|				|				|
+| wsf_wsdl_util.c			|				|				|
+| wsf_wsdl_util_parser.c	|	   Yes		|	   Yes		|
+| wsf_wsdl_util_xslt.c		|	   Yes		|	   Yes		|
++---------------------------+---------------+---------------+
+
+TODO:
+scripting language independence in user parameters : eg. useSoap in PHP and use_soap in Ruby

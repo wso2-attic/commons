@@ -1,0 +1,8 @@
+<data name="SQL_InputMapping_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="FilterQuery"><sql>select * from assets where AssetID = ?</sql><param name="AssetID" sqlType="INTEGER" type="" ordinal="" /><result element="BaseElement" rowName="Element"><attribute name="AssetID" column="AssetID" /><attribute name="AssetDescripion" column="AssetDescripion" /><attribute name="EmployeeID" column="EmployeeID" /></result></query><operation name="OP_InputMapping"><call-query href="FilterQuery"><with-param name="AssetID" query-param="AssetID" /></call-query></operation></data>

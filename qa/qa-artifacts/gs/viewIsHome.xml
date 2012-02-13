@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module> 
+<ModulePrefs  title='Play Gold Miner Vegas Game Oyna'
+              title_url='http://turkiyegadget.blogspot.com'
+			  description='Play Gold Miner Vegas Game Oyna'
+              directory_title='Play Gold Miner Vegas Game Oyna'
+			  author='Türkiye Google Gadget'>
+<Require feature="dynamic-height"/>
+<Require feature="analytics" />
+<Require feature="opensocial-0.8"/>
+<Require feature="views"/>
+</ModulePrefs>
+<Content type="html" view="home">
+  <![CDATA[ 
+
+			<script>
+			_IG_AdjustIFrameHeight();
+			</script>
+			<iframe width="100%" height="100%" frameborder="0" align="middle" scrolling="false" src='http://turkiyegadgets.appspot.com/gg/oyun/playgoldminergame/?langx=h'></iframe>
+			<script>
+			_IG_Analytics("UA-2032089-10", '/gadget_playgoldminergame'); 
+			</script>
+  ]]> 
+  </Content>
+    <Content type="html" view="canvas">
+  <![CDATA[ 
+
+			<script>
+			_IG_AdjustIFrameHeight();
+			</script>
+			<iframe width="100%" height="100%" frameborder="0" align="middle" scrolling="false" src='http://turkiyegadgets.appspot.com/gg/oyun/playgoldminergame/?langx=c'></iframe>
+			<script>
+			_IG_Analytics("UA-2032089-10", '/gadget_playgoldminergame'); 
+			</script>
+  ]]> 
+  </Content>
+
+</Module>

@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OrgSite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">OrgSite</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://mashups.wso2.org/services/yahooGeoCode/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:City:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:Street:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:State: Alabama Alaska Arizona Arkansas California Colorado Connecticut Delaware District of Colombia Florida Georgia Hawaii Idaho Illinois Indiana Iowa Kansas Kentucky Louisiana Maine Maryland Massachusetts Michigan Minnesota Mississippi Missouri Montana Nebraska Nevada New Hampshire New Jersey New Mexico New York North Carolina North Dakota Ohio Oklahoma Oregon Pennsylvania Rhode Island South Carolina South Dakota Tennessee Texas Utah Vermont Virginia Washington West Virginia Wisconsin Wyoming</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:State:</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://mashups.wso2.org/services/yahooGeoCode?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_geocode_street_0</td>
+	<td>new</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_geocode_city_0</td>
+	<td>new</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_geocode</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>&lt;ResultSet xmlns="urn:yahoo:maps" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:yahoo:maps http://api.local.yahoo.com/MapsService/V1/GeocodeResponse.xsd"&gt;&lt;Result precision="zip"&gt;&lt;Latitude&gt;31.571950&lt;/Latitude&gt;&lt;Longitude&gt;-86.139720&lt;/Longitude&gt;&lt;Address/&gt;&lt;City&gt;Elba&lt;/City&gt;&lt;State&gt;AL&lt;/State&gt;&lt;Zip/&gt;&lt;Country&gt;US&lt;/Country&gt;&lt;/Result&gt;&lt;/ResultSet&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://mashups.wso2.org/services/LatestEarthquakes/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>WSO2 Mashup Server 'Earthquake' Service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>glob:*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://mashups.wso2.org/services/LatestEarthquakes?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//div[1]/table/tbody/tr[2]/td[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://mashups.wso2.org/services/sudoku?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_newpuzzle_options_0</td>
+	<td>&lt;options&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;difficulty&gt;expert&lt;/difficulty&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;symmetrical&gt;false&lt;/symmetrical&gt; <br />&lt;/options&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_newpuzzle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>&lt;board&gt;&lt;row n="1"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="9"/&gt;&lt;cell n="4" value="0"/&gt;&lt;cell n="5" value="7"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="2"/&gt;&lt;row n="2"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="2"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="0"/&gt;&lt;cell n="5" value="6"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="4"/&gt;&lt;row n="3"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="4"/&gt;&lt;cell n="5" value="9"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="1"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="0"/&gt;&lt;row n="4"/&gt;&lt;cell n="1" value="2"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="7"/&gt;&lt;cell n="5" value="0"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="9"/&gt;&lt;row n="5"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="7"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="5"/&gt;&lt;cell n="5" value="0"/&gt;&lt;cell n="6" value="4"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="0"/&gt;&lt;row n="6"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="1"/&gt;&lt;cell n="4" value="0"/&gt;&lt;cell n="5" value="0"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="8"/&gt;&lt;cell n="8" value="4"/&gt;&lt;cell n="9" value="0"/&gt;&lt;row n="7"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="3"/&gt;&lt;cell n="5" value="4"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="8"/&gt;&lt;row n="8"/&gt;&lt;cell n="1" value="0"/&gt;&lt;cell n="2" value="0"/&gt;&lt;cell n="3" value="4"/&gt;&lt;cell n="4" value="0"/&gt;&lt;cell n="5" value="1"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="5"/&gt;&lt;cell n="8" value="2"/&gt;&lt;cell n="9" value="0"/&gt;&lt;row n="9"/&gt;&lt;cell n="1" value="3"/&gt;&lt;cell n="2" value="1"/&gt;&lt;cell n="3" value="0"/&gt;&lt;cell n="4" value="2"/&gt;&lt;cell n="5" value="0"/&gt;&lt;cell n="6" value="0"/&gt;&lt;cell n="7" value="0"/&gt;&lt;cell n="8" value="0"/&gt;&lt;cell n="9" value="6"/&gt; &lt;details&gt; &lt;source&gt;Sudoku Web Service by Jonathan Marsh (jonathan@wso2.com) http://mashups.wso2.org/services/sudoku/&lt;/source&gt; &lt;created&gt;2007-11-19T08:57:20.362&lt;/created&gt; &lt;difficulty&gt;expert&lt;/difficulty&gt; &lt;symmetrical&gt;false&lt;/symmetrical&gt; &lt;/details&gt; &lt;/board&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=options</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_options</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>10000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>&lt;options&gt; &lt;symmetrical default="true"&gt;true false&lt;/symmetrical&gt; &lt;difficulty default="medium"&gt;trivial easy medium difficult expert&lt;/difficulty&gt; &lt;/options&gt;</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

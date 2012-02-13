@@ -1,0 +1,27 @@
+<data name="CSVSampleService" serviceGroup="CSV" baseURI="http://ws.wso2.org/dataservice/samples/csv_sample_service">                                                     
+   <config id="default">                                                                                                  
+      <property name="csv_datasource">./samples/resources/Products.csv</property>                                                                                                  
+      <property name="csv_columnseperator">,</property>                                                                                                  
+      <property name="csv_startingrow">2</property>                                                                                                  
+      <property name="csv_maxrowcount">-1</property>                                                                                                  
+      <property name="csv_hasheader">false</property>                                                 
+   </config>                                                 
+   <operation name="getProducts">                                                                                                  
+      <call-query href="productsQuery" />                                                 
+   </operation>                                                 
+   <query id="productsQuery" useConfig="default" output-event-trigger="testEV">                                                                                                  
+      <result element="Products" rowName="Product">                                                                                                                                                   
+         <element name="ID" column="1" />                                                                                                                                                   
+         <element name="Category" column="3" />                                                                                                                                                   
+         <element name="Price" column="4" xsdType="xs:double" />                                                                                                                                                   
+         <element name="Name" column="2" />                                                                                                  
+      </result>                                                                                      
+   </query>                          
+   <event-trigger id="testEV" language="XPath">                                                                                                            
+      <expression> //*[local-name()='productsQuery']/*[local-name()='Price']&lt;800</expression>                                                                                                            
+      <target-topic>eventtest</target-topic>                                                                                                            
+      <subscriptions>                                                                                                                                                      
+         <subscription>http://esb.stratoslive.wso2.com:8280/services/t/nirodhaQA7.com/Event</subscription>                                                                                                            
+      </subscriptions>                                                                  
+   </event-trigger>           
+</data>

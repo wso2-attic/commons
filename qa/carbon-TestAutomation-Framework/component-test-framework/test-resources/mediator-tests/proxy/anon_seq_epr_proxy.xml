@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <proxy xmlns="http://ws.apache.org/ns/synapse"  name="anon_seq_epr_proxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <endpoint name="endpoint_urn_uuid_D5693F8FABD7BF26E42422641638131115847390">
+                <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+            </endpoint>
+            <inSequence>
+                <log>
+                    <property name="text" value="***INCOMING MESSAGE***"/>
+                </log>
+            </inSequence>
+            <outSequence>
+                <log>
+                    <property name="text" value="***OUTGOING MESSAGE***"/>
+                </log>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>

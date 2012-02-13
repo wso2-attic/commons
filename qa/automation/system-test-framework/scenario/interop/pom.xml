@@ -1,0 +1,83 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>system-test</artifactId>
+        <version>3.2.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.carbon</groupId>
+    <artifactId>interop-tests</artifactId>
+    <packaging>pom</packaging>
+    <version>3.2.1</version>
+
+    <name>WSO2 Carbon - System Interop Tests Aggregator Module</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>
+                                    ${common.dir}/org.wso2.carbon.test.interop.common/src/test/resources/interop.properties
+                                </file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <modules>
+        <module>org.wso2.carbon.test.interop.common</module>
+        <module>org.wso2.carbon.test.interop.addressing</module>
+        <module>org.wso2.carbon.test.interop.mtom</module>
+    </modules>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.apache.axis2.wso2</groupId>
+            <artifactId>axis2</artifactId>
+            <version>${interop.axis2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom.wso2</groupId>
+            <artifactId>axiom</artifactId>
+            <version>${interop.axiom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>wsdl4j.wso2</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>${interop.wsdl4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>system-test-core</artifactId>
+            <version>3.2.1</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <common.dir>${project.basedir}</common.dir>
+        <interop.axis2.version>1.6.1.wso2v2</interop.axis2.version>
+        <interop.axiom.version>1.2.11.wso2v1</interop.axiom.version>
+        <interop.wsdl4j.version>1.6.2.wso2v2</interop.wsdl4j.version>
+    </properties>
+
+</project>

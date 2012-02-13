@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<performance_test>
+	<product>		
+		<product_name>wso2esb-3.0.0</product_name>
+        <product_path>/home/damitha/projects/perftest-framework/products</product_path>
+		<server-config>
+			<host1>localhost</host1>
+			<port1>8281</port1>
+            <uri1>/services/XSLTProxy</uri1>		
+		</server-config>	
+	</product>
+	<scenario>
+		<name>wso2esb-3.0.0_xslt</name>		
+		<method>POST</method>
+		<timeout>15</timeout>
+		<high_rate>1</high_rate>
+		<low_rate>1</low_rate>
+		<rate_step>1</rate_step>
+		<max_piped_calls>4</max_piped_calls>		
+		<max_connections>4</max_connections>				
+		<no_of_sessions>1</no_of_sessions>
+		<user_think_time>0</user_think_time>	
+	</scenario>
+	<extra>
+        <header>Connection: close\nContent-Type: text/xml; charset=utf-8\nSOAPAction: \"m:buyStocks\"\n</header>
+		<debug>true</debug>
+	</extra>
+</performance_test>
+
+

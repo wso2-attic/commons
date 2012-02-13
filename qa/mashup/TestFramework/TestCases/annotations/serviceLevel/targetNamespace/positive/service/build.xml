@@ -1,0 +1,21 @@
+<!-- ========================================
+ * Purpose	:	This is a build files to call deploy the service to test "TargetNamespace" annotation of WSO2 Mashup Server.
+ * Author	: 	Yumani Ranaweera
+============================================-->
+
+<project name="SafeService" default="deploy.service">
+
+	<!-- where the base directory is -->        
+    <property name="base.dir" value="${project.base.dir}\annotations\serviceLevel\targetNamespace\positive\service"/>
+
+	<!-- where the MASHUP HOME directory is -->
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+	
+
+	<!-- ========== deploy.service Target ===================================-->            
+    <target name="deploy.service">   
+		<echo message="------------------------------ Deploying targetNamespace.js -----------------------------------"/>
+		<copy file="${base.dir}/src/targetNamespace.js" tofile="${MASHUP_HOME}/scripts/samples/targetNamespace.js" overwrite="true"/>
+    </target>
+    
+</project>

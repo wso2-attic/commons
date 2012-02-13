@@ -1,0 +1,189 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RampartSecurityScenarios xmlns="http://www.wso2.org/products/wsas/security">
+    <Scenario id="scenario1">
+        <Summary>UsernameToken with Timestamp over HTTPS</Summary>
+        <Description>Provides Authentication. Clients have Username Tokens</Description>
+        <Category>ut.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario2">
+        <Summary>Sign only - X509 Authentication </Summary>
+        <Description>Provides Authentication and Integrity. Clients have X509 certificates</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+        <Scenario id="scenario3">
+        <Summary>Sign and encrypt - X509 Authentication</Summary>
+        <Description>Provides Authentication, Integrity and Confidentiality. Clients have X509 certificates</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario4">
+        <Summary>Sign only - Anonymous clients </Summary>
+        <Description>Provides Integrity. Clients have X509 certificates</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario5">
+        <Summary>Encrypt only - Anonymous clients</Summary>
+        <Description>Provides Integrity.</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario6">
+        <Summary>Sign and Encrypt - Anonymous clients </Summary>
+        <Description>Provides Integrity and Confidentiality.</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario7">
+        <Summary>Encrypt only - Username Token Authentication </Summary>
+        <Description>Provides Authentication and Confidentiality. Clients have Username Tokens</Description>
+        <Category>ut.keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario8">
+        <Summary>Sign and Encrypt - Username Token Authentication</Summary>
+        <Description>Provides Authentication, Integrity and Confidentiality. Clients have Username Tokens</Description>
+        <Category>ut.keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario9">
+        <Summary>SecureConversation - Sign only - Service as STS - Bootstrap policy -
+            Sign and Encrypt , X509 Authentication </Summary>
+        <Description>Provides Authentication and Integrity. Multiple message exchange.Clients have X509 certificates. </Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario10">
+        <Summary>SecureConversation - Encrypt only - Service as STS - Bootstrap policy -
+            Sign and Encrypt , X509 Authentication </Summary>
+        <Description>Provides Confidentiality. Multiple message exchange.Clients have X509 certificates. </Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario11">
+        <Summary>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy -
+            Sign and Encrypt , X509 Authentication </Summary>
+        <Description>Provides Authentication, Integrity and Confidentiality. Multiple message exchange.Clients have X509 certificates.</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario12">
+        <Summary>SecureConversation - Sign Only - Service as STS - Bootstrap policy -
+            Sign and Encrypt , Anonymous clients  </Summary>
+        <Description>Provides Integrity. Multiple message exchange.</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario13">
+        <Summary>SecureConversation - Encrypt Only - Service as STS - Bootstrap policy -
+            Sign and Encrypt , Anonymous clients  </Summary>
+        <Description>Provides Confidentiality. Multiple message exchange.</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario14">
+        <Summary>SecureConversation - Encrypt Only  - Service as STS - Bootstrap policy -
+            Sign and Encrypt , Username Token Authentication</Summary>
+        <Description>Provides Authentication and Confidentiality. Multiple message exchange. Clients have Username Tokens.</Description>
+        <Category>ut.keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario15">
+        <Summary>SecureConversation - Sign and Encrypt - Service as STS - Bootstrap policy -
+            Sign and Encrypt , Username Token Authentication </Summary>
+        <Description>Provides Authentication Integrity and Confidentiality. Multiple message exchange. Clients have Username Tokens.</Description>
+        <Category>ut.keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario16">
+        <Summary>IssuedToken over HTTPS and UsernameToken</Summary>
+        <Description>Client authenticates using a UsernameToken and presents a token from the STS</Description>
+        <Category>ut.keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <Scenario id="scenario17">
+        <Summary>Messages signed and encrypted using an IssuedToken</Summary>
+        <Description>Client uses a TokenIssued by the STS to sign and encrypt the message</Description>
+        <Category>keystore.related</Category>
+        <Modules>
+            <Module>rampart</Module>
+            <Module>rahas</Module>
+        </Modules>
+    </Scenario>
+    <!--
+       This is the default required scenario. When no other security scenarios are applied
+       this will be the effective scenario.
+
+       NOTE: Do not change the id of this scenario
+    -->
+    <Scenario id="DisableSecurity">
+        <Summary>Unsecured</Summary>
+        <Description>Completely disable security for this service</Description>
+        <Category>system</Category>
+
+        <!--
+           Following modules need to be disengaged when security is disabled
+        -->
+        <Modules>
+            <Module>rahas</Module>
+            <Module>rampart</Module>
+        </Modules>
+    </Scenario>
+</RampartSecurityScenarios>

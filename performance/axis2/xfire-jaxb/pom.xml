@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.codehaus.xfire.examples</groupId>
+  <artifactId>xfire-jaxb</artifactId>
+  <name>Benchmark Example</name>
+  <version>1.1</version>
+  <inceptionYear>2004</inceptionYear>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.codehaus.xfire</groupId>
+      <artifactId>xfire-generator</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.xfire</groupId>
+      <artifactId>xfire-spring</artifactId>
+      <version>1.2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.3</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+                <taskdef name="wsgen" classname="org.codehaus.xfire.gen.WsGenTask" 
+                     classpathref="maven.compile.classpath"/>
+                <wsgen outputDirectory="${basedir}/target/generated-source"
+                  wsdl="${basedir}/src/wsdl/Benchmark.wsdl" package="edu.indiana.extreme.wsdl.benchmark1"
+                  binding="jaxb" />
+                <copy tofile="${basedir}/target/generated-source/edu/indiana/extreme/wsdl/benchmark1/BenchmarkImpl.java"
+                      file="${basedir}/src/edu/indiana/extreme/wsdl/benchmark1/BenchmarkImpl.java"
+                      overwrite="true"/>
+                </tasks>
+              <sourceRoot>
+                ${project.build.directory}/generated-source
+              </sourceRoot>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warSourceDirectory>${basedir}/src/webapp</warSourceDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+    <sourceDirectory>src/main</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.properties</include>
+          <include>**/*.wsdl</include>
+        </includes>
+      </testResource>
+    </testResources>
+  </build>
+
+  <!--  needed for XmlSchema -->
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <name>Codehaus maven repository</name>
+      <url>http://dist.codehaus.org/</url>
+      <layout>legacy</layout>
+    </repository>
+  </repositories>
+
+</project>

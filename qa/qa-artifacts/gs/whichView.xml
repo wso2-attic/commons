@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="getSupportedViews"
+               author="api.kurrik@google.com">
+    <Require feature="views" />
+  </ModulePrefs>
+  <Content type="html" view="default">
+    <![CDATA[
+      <h1>Available views</h1>
+      <div id="view-output"></div>
+      <script type="text/javascript">
+        var views = gadgets.views.getSupportedViews();
+        var dom = document.getElementById("view-output");
+        for (var view in views) {
+          if (views.hasOwnProperty(view)) {
+            dom.innerHTML += "<div>" + view + "</div>";
+          }
+        }
+        gadgets.log(views);
+      </script>
+    ]]>
+  </Content>
+</Module>

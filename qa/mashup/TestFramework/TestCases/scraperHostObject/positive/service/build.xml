@@ -1,0 +1,19 @@
+
+<project name="SafeService" default="deploy.service">
+
+      
+    <property name="base.dir" value="."/>
+    <property name="MASHUP_HOME" value="C:\projects\Mashup_\modules\distribution\target\dist\wso2-mashup-server-SNAPSHOT"/>
+
+       
+    <target name="deploy.service">
+        
+     	<copy file="${base.dir}/src/nationalgeographic.js" tofile="${MASHUP_HOME}/scripts/samples/nationalgeographic.js" overwrite="true"/>
+     	<copy file="${base.dir}/src/nationalgeographic.resources/storexml.stub.js" tofile="${MASHUP_HOME}/scripts/samples/nationalgeographic.resources/storexml.stub.js" overwrite="true"/>
+		<copy todir="${MASHUP_HOME}/scripts/samples/nationalgeographic.resources/www" overwrite="true">
+            <fileset dir="${base.dir}/src/nationalgeographic.resources/www">
+                <include name="*.xml"/>
+            </fileset>  
+		</copy>
+    </target>
+</project>

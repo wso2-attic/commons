@@ -1,0 +1,108 @@
+
+<project name="Runall" default="deploy.services">
+
+<taskdef resource="net/sf/antcontrib/antlib.xml"> 
+
+<classpath>
+		<pathelement location="ant-contrib-1.0b3.jar"/>
+</classpath>
+
+</taskdef>    
+    <xmlproperty file="global_config.xml"/>
+    <property name="project.base.dir" value="."/>
+     
+<target name="run.clients">
+     
+   <for list="${DS.clients.client}" param="name">
+		<sequential>
+		<echo message="############################################################################################################"/>
+		<echo message="@{name}"/>
+			<ant antfile="@{name}/Client/build.xml"/> 
+			<sleep seconds="2"/>
+			<record name="run.clients.log"/>   			
+		</sequential>
+    </for>
+</target>
+   
+<target name="edit.services">
+     
+   <for list="${DS.clients.client}" param="name">
+		<sequential>
+		<echo message="############################################################################################################"/>
+		<echo message="@{name}"/>
+			<ant antfile="@{name}/server/build.xml"/> 
+			<sleep seconds="2"/>		
+		</sequential>
+    </for>
+</target>   
+   
+ 
+
+<target name="deploy.services"  depends="edit.services">
+	<for list="${DS.clients.client}" param="deploy">
+		<sequential>
+		<echo message="############################################################################################################"/>
+		<echo message="@{deploy}"/>
+		<copy todir="${DS.envt.DS_HOME}/repository/dataservices">
+		  <fileset dir="@{deploy}/server">
+		     <include name="*.dbs"/>
+		  </fileset>
+        </copy>
+        </sequential>
+    </for>
+</target> 
+    
+<target name="Generate.database" >
+
+<path id="db.driver.path">
+        <fileset dir="${DS.envt.DS_HOME}/lib/extensions">
+            <include name="*.jar"/>
+        </fileset>
+</path>
+
+<sql driver="com.mysql.jdbc.Driver"
+       url="${DS.DB.DBURL}/mysql"
+       userid="${DS.DB.UserID}" password="${DS.DB.Password}"
+       autocommit="true" onerror="continue">
+   <classpath>
+    <path refid="db.driver.path"/>
+   </classpath>
+   <fileset file="${basedir}/DB_Setup/SQLFiles/GenerateDatabase.sql"/>  
+   <fileset file="${basedir}/DB_Setup/SQLFiles/CreateTables.sql"/> 
+   <fileset file="${basedir}/DB_Setup/SQLFiles/InsertData.sql"/> 
+   <!--fileset file="${basedir}/SQLFiles/CreateFunction.sql"/--> 
+   <!--fileset file="${basedir}/SQLFiles/CreateProcedures.sql"/-->            
+                      
+ </sql>
+ </target>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
+<!--
+    
+    <target name="clean.clients">
+     <for list="${wsas.clients.client}" param="name">
+			<sequential>
+          <ant antfile="@{name}\client\build.xml" target ="clean"/>
+          
+      </sequential>
+			</for>
+           
+    </target>
+    
+    <target name="clean.services">
+     <for list="${wsas.services.service}" param="name">
+			<sequential>
+          <ant antfile="@{name}\service\build.xml" target ="clean"/>
+      </sequential>
+			</for>
+           
+    </target>
+    
+  -->
+</project>

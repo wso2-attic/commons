@@ -1,0 +1,15 @@
+
+<project name="SafeService" default="deploy.service">
+
+      
+    <property name="base.dir" value="${project.base.dir}\sessionHostObject\positive\service"/>
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+
+       
+    <target name="deploy.service">
+		<echo message="--------------------------- Deploying applicationScopeService.js -----------------------------------"/>
+		<copy file="${base.dir}\src\applicationScopeService.js" tofile="${MASHUP_HOME}/scripts/samples/applicationScopeService.js" overwrite="true"/>
+    </target>
+
+    
+</project>

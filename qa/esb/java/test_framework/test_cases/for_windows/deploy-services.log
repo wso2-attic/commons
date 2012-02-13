@@ -1,0 +1,24 @@
+
+compile.service:
+    [mkdir] Created dir: C:\Carbon\test_framework_for_windows\services\rm\build
+    [mkdir] Created dir: C:\Carbon\test_framework_for_windows\services\rm\build\classes
+    [javac] Compiling 1 source file to C:\Carbon\test_framework_for_windows\services\rm\build\classes
+
+generate.service:
+     [copy] Copying 1 file to C:\Carbon\test_framework_for_windows\services\rm\build\classes
+      [jar] Building jar: C:\Carbon\test_framework_for_windows\services\rm\build\MercuryService.aar
+   [delete] Deleting: C:\Carbon\ESB\beta3_rc2\wso2esb-2.0-SNAPSHOT\samples\axis2Server\repository\services\MercuryService.aar
+     [copy] Copying 1 file to C:\Carbon\ESB\beta3_rc2\wso2esb-2.0-SNAPSHOT\samples\axis2Server\repository\services
+
+compile.service:
+    [mkdir] Created dir: C:\Carbon\test_framework_for_windows\services\security\SecureCBRService\build
+    [mkdir] Created dir: C:\Carbon\test_framework_for_windows\services\security\SecureCBRService\build\classes
+    [javac] Compiling 1 source file to C:\Carbon\test_framework_for_windows\services\security\SecureCBRService\build\classes
+
+generate.service:
+     [copy] Copying 1 file to C:\Carbon\test_framework_for_windows\services\security\SecureCBRService\build\classes
+      [jar] Building jar: C:\Carbon\test_framework_for_windows\services\security\SecureCBRService\build\SecureCBRService.aar
+   [delete] Deleting: C:\Carbon\ESB\beta3_rc2\wso2esb-2.0-SNAPSHOT\samples\axis2Server\repository\services\SecureCBRService.aar
+     [copy] Copying 1 file to C:\Carbon\ESB\beta3_rc2\wso2esb-2.0-SNAPSHOT\samples\axis2Server\repository\services
+
+BUILD SUCCESSFUL

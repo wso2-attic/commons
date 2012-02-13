@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">    
+    <soapenv:Body>
+        <m0:CheckPriceRequest xmlns:m0="http://www.apache-synapse.org/test">
+            <m0:Code>IBM</m0:Code>
+        </m0:CheckPriceRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+

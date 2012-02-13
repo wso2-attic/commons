@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>interop-tests</artifactId>
+        <version>3.2.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.carbon</groupId>
+    <artifactId>org.wso2.carbon.test.interop.addressing</artifactId>
+    <packaging>jar</packaging>
+
+    <name>WSO2 Carbon - System Interop Tests - WS-Addressing</name>
+
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>source-code-generation</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <path id="wsdl2java.classpath">
+                                    <fileset dir="${wso2.as.home}/repository/components/plugins">
+                                        <include name="**/*.jar"/>
+                                    </fileset>
+                                    <fileset
+                                            dir="/home/sadeep/myWork/interopTests/as/wso2as-4.1.0/lib">
+                                        <include name="**/*.jar"/>
+                                    </fileset>
+                                </path>
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri ${wsdl.addressing.last} -u -ap -uw -o target/generated-code
+                                    -p org.tempuri.last.echo"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri http://10.100.3.227/WSAddressingCR_Service_WCF/WSAddressing10.svc?wsdl -u -ap -uw -o target/generated-code
+                                    -pn CustomBinding_Notify -p org.tempuri.last.notify"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri http://10.100.3.227/WSAddressingCR_Service_WCF/WSAddressing10.svc?wsdl -u -ap -uw -o target/generated-code
+                                    -pn CustomBinding_Notify1 -p org.tempuri.last.notify1"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri http://10.100.3.227/WSAddressingCR_Service_WCF/WSAddressing10.svc?wsdl -u -ap -uw -o target/generated-code
+                                    -p org.tempuri.submission.echo"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri http://10.100.3.227/WSAddressingCR_Service_WCF/WSAddressing10.svc?wsdl -u -ap -uw -o target/generated-code
+                                    -pn CustomBinding_Notify -p org.tempuri.submission.notify"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+
+                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+                                    <arg line="-uri http://10.100.3.227/WSAddressingCR_Service_WCF/WSAddressing10.svc?wsdl -u -ap -uw -o target/generated-code
+                                    -pn CustomBinding_Notify1 -p org.tempuri.submission.notify1"/>
+                                    <classpath refid="wsdl2java.classpath"/>
+                                </java>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>
+                                    target/generated-code/src
+                                </source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>org.wso2.carbon.test.interop.common</artifactId>
+            <version>3.2.1</version>
+            <scope>test</scope>
+            <classifier>tests</classifier>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <common.dir>${project.parent.basedir}</common.dir>
+    </properties>
+
+</project>

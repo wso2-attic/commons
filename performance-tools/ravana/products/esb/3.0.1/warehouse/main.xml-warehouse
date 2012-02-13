@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="main" trace="disable">
+        <dbreport>
+            <connection>
+                <pool>
+                    <password>root</password>
+                    <user>root</user>
+                    <url>jdbc:mysql://localhost:3306/warehouse</url>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                </pool>
+            </connection>
+            <statement>
+                <sql>INSERT INTO warehouse VALUES(?)</sql>
+                <parameter xmlns:ns2="http://org.apache.synapse/xsd" expression="$body" type="VARCHAR"/>
+            </statement>
+        </dbreport>
+        <property name="RESPONSE" value="true"/>
+        <header name="To" expression="get-property('ReplyTo')"/>
+        <send/>
+    </sequence>

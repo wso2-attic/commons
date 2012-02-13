@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:CreditRating="http://wso2.org/bps/samples/CreditRating" xmlns:sample="http://wso2.org/bpel/sample">
+  <process name="sample:SimpleInvoke">
+    <active>true</active>
+    <retired>false</retired>
+    <process-events generate="all"/>
+    <provide partnerLink="client">
+      <service name="sample:SIService" port="NewPort"/>
+    </provide>
+    <invoke partnerLink="CRPL">
+      <service name="CreditRating:CreditRatingService" port="CreditRatingPort">
+      	<endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config" endpointReference="CreditRatingService.epr">
+		</endpoint>
+      </service>
+    </invoke>
+  </process>
+</deploy>

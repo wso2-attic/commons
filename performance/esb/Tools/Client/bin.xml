@@ -1,0 +1,31 @@
+<assembly>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>benchmark/src/main/release</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>LICENSE</include>
+                <include>NOTICE</include>
+                <include>README.txt</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>org.wso2.performance:benchmark:jar</include>
+                <include>org.apache.httpcomponents:httpcore:jar</include>
+                <include>org.apache.httpcomponents:httpcore-nio:jar</include>
+                <include>commons-cli:commons-cli:jar</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>
+

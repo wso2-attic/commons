@@ -1,0 +1,1 @@
+<resource name="policies" isCollection="true" path="/_system/governance/policies" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>1750</version><creator>wso2.system.user</creator><createdTime>1296274363621</createdTime><lastUpdater>wso2.system.user</lastUpdater><lastModified>1296274568058</lastModified><description></description></resource>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<beans xmlns:saxon="http://servicemix.apache.org/saxon/1.0"
+       xmlns:b="http://esb.wso2.org/perf/transform">
+
+  <saxon:xslt service="b:InTransform" endpoint="endpoint"
+              result="dom"
+              resource="classpath:transform.xslt" />
+
+</beans>

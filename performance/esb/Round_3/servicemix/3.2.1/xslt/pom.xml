@@ -1,0 +1,17 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.wso2.esb.perf</groupId>
+  <artifactId>transform</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <modules>
+    <module>transform-http-consumer-su</module>
+    <module>transform-eip-su</module>
+    <module>transform-xslt-su</module>
+    <module>transform-back-xslt-su</module>
+    <module>transform-http-provider-su</module>
+    <module>transform-sa</module>
+  </modules>
+</project>
+
+

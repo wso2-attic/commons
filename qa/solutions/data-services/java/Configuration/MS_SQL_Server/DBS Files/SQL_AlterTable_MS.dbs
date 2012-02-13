@@ -1,0 +1,8 @@
+<data name="SQL_AlterTable_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="Create"><sql>create table TempStatus(StatusID int(50),StatusDescription varchar(100), PRIMARY KEY(StatusID));</sql><result element="BaseElement" rowName="Element" /></query><query id="Alter_Table"><sql>ALTER table TempStatus add Gender varchar(20)</sql><result element="BaseElement" rowName="Element" /></query><operation name="OP_Create"><call-query href="Create" /></operation><operation name="OP_Alter"><call-query href="Alter_Table" /></operation></data>

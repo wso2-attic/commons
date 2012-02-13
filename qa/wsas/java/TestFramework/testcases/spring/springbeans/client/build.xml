@@ -1,0 +1,189 @@
+<project name="sprinbeanclient" default="run.client1">
+
+    <property environment="env"/>
+    
+     <property name="base.dir" value="${project.base.dir}/spring/springbeans/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+
+    
+    <property name="wsdl.uri1" value="http://${wsas.envt.hostname}:${wsas.envt.httpport}/services/personBean?wsdl"/>
+    <property name="wsdl.uri2" value="http://${wsas.envt.hostname}:${wsas.envt.httpport}/services/echoBean?wsdl"/>
+
+    <property name="src1" value="${base.dir}/src1"/>
+    <property name="src2" value="${base.dir}/src2"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="target.stub1" value="${target}/stub1"/>
+    <property name="target.stub2" value="${target}/stub2"/>
+    <property name="client.lib" value="${wsas.envt.WSAS_HOME}/repository/lib"/>
+    
+
+    <target name="gen.stub1">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes1"/>
+        <mkdir dir="${target}\stub1"/>
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+            <arg line="-uri ${wsdl.uri1}"/>
+            <arg line="-pn personBeanHttpSoap11Endpoint"/>
+            <arg line="-o ${target}"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+        <!--now compile the stub classes-->
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/stub1">
+            <src path="${target}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/PersonSpringService-stub.jar">
+            <fileset dir="${target}/stub1">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+    </target>
+    
+    <target name="gen.stub2">
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes2"/>
+        <mkdir dir="${target}\stub2"/>
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+            <arg line="-uri ${wsdl.uri2}"/>
+            <arg line="-o ${target}"/>
+            <arg line="-pn echoBeanHttpSoap11Endpoint"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+        <!--now compile the stub classes-->
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/stub2">
+            <src path="${target}/src"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/EchoSpringService-stub.jar">
+            <fileset dir="${target}/stub2">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+    </target>
+        
+        
+         
+    <target name="run.client1" depends="gen.stub1">
+        
+        <!-- Compile the client 1 -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes1">
+            <src path="${base.dir}\src1"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+                
+         <!--jar the compiled stuff of client 1-->
+        <jar destfile="${target}/PersonSpringService-client.jar">
+            <fileset dir="${target}/classes1">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+                 
+        <java classname="org.wso2.wsas.client.PersonSpringClient">
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+     <target name="run.client2" depends="gen.stub2">
+        
+        
+        <!-- Compile the client 2 -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes2">
+            <src path="${base.dir}/src2"/>
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+                 
+         <!--jar the compiled stuff of client 2-->
+        <jar destfile="${target}/EchoSpringService-client.jar">
+            <fileset dir="${target}/classes2">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.wsas.client.EchoSpringClient">
+            <classpath>
+                <fileset dir="${client.lib}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${wsas.envt.WSAS_HOME}\lib\endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

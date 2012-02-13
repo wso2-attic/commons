@@ -1,0 +1,6 @@
+test this and bpel in property folder in bps. there are errors in deployment but it appears in porcesses list. not in deployed packages list or services list
+
+in test ima 
+[2010-10-29 14:09:43,997] ERROR {org.wso2.carbon.bpel.ode.integration.BPELBindingContextImpl} -  Could not activate endpoint for service {http://ode/bpel/unit-test/TestIMA.wsdl}TestIMAService and port TestIMAPort
+org.apache.axis2.AxisFault: More than one part for message TestIMAMessage
+ and the process get added to processes list

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<performance_test>
+	<product>		
+		<product_name>wso2esb-3.0.0</product_name>
+        <product_path>/home/damitha/projects/perftest-framework/products</product_path>
+		<server-config>
+			<host1>localhost</host1>
+			<port1>8280</port1>
+			<uri1>/services/SignEncProxy</uri1>		
+		</server-config>	
+	</product>
+	<scenario>
+		<name>wso2esb-3.0.0_sign_encrypt</name>		
+		<method>POST</method>
+		<timeout>15</timeout>
+		<high_rate>200</high_rate>
+		<low_rate>50</low_rate>
+		<rate_step>50</rate_step>
+		<max_piped_calls>4</max_piped_calls>		
+		<max_connections>4</max_connections>				
+		<no_of_sessions>400</no_of_sessions>
+		<user_think_time>0</user_think_time>	
+	</scenario>
+	<extra>
+        <header>Connection: close\nContent-Type:application/soap+xml; charset=utf-8\nSOAPAction: \"urn:buyStocks\"\n</header>
+		<debug>true</debug>
+	</extra>
+</performance_test>
+
+

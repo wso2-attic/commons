@@ -1,0 +1,33 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://samples.soamoa.yesso.eu/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://samples.soamoa.yesso.eu/">
+<xs:complexType name="artist">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="tns:address"/>
+<xs:element minOccurs="0" name="artType" type="tns:artType"/>
+<xs:element minOccurs="0" name="famousWorks" type="xs:string"/>
+<xs:element minOccurs="0" name="firstName" type="xs:string"/>
+<xs:element minOccurs="0" name="lastName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element minOccurs="0" name="houseNumber" type="xs:string"/>
+<xs:element minOccurs="0" name="street" type="xs:string"/>
+<xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="artType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="ACTOR"/>
+<xs:enumeration value="DIRECTOR"/>
+<xs:enumeration value="AUTHOR"/>
+<xs:enumeration value="PAINTER"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType final="#all" name="artistArray">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="item" nillable="true" type="tns:artist"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

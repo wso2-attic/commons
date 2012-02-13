@@ -1,0 +1,8 @@
+Using endpoint : http://localhost:9090/axis2/services/enc_basic256_echo
+Using client_home : C:\wsfc_1.2.0\wso2-wsf-c-src-1.2.0\wso2-wsf-c-bin-1.2.0-win32\client_repo
+client_home= C:\wsfc_1.2.0\wso2-wsf-c-src-1.2.0\wso2-wsf-c-bin-1.2.0-win32\client_repo
+Sending OM : <ns1:echoIn xmlns:ns1="http://ws.apache.org/rampart/c/samples"><text>Hello</text></ns1:echoIn>
+
+Received OM : <ns1:RecievedNode xmlns:ns1="http://ws.apache.org/axis2/rampart/samples"><LocalName>echoIn</LocalName></ns1:RecievedNode>
+
+echo client invoke SUCCESSFUL!

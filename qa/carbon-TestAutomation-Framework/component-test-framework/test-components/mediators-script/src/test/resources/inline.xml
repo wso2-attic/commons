@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <script language="js">mc.setPayloadXML(
+      &lt;m:getQuote xmlns:m="http://services.samples"&gt;
+         &lt;m:request&gt;
+            &lt;m:symbol&gt;MSFT&lt;/m:symbol&gt;
+         &lt;/m:request&gt;
+      &lt;/m:getQuote&gt;);</script>
+            <send>
+                <endpoint name="endpoint_urn_uuid_BB43A356D5F693DCC9197108278480311949592091">
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>

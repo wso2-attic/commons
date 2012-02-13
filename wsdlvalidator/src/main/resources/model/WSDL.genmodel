@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.wst.wsdl/src-wsdl"
+    editDirectory="/org.eclipse.wst.wsdl.edit/src" editorDirectory="org.eclipse.wst.wsdl.editor/src"
+    modelPluginID="org.eclipse.wst.wsdl" modelName="WSDL" modelPluginClass="" editPluginClass=""
+    editorPluginClass="" nonNLSMarkers="true" codeFormatting="true" importerID="org.eclipse.emf.importer.rose"
+    usedGenPackages="platform:/plugin/org.eclipse.xsd/model/XSD.genmodel#//xsd">
+  <foreignModel>WSDL.mdl</foreignModel>
+  <foreignModel>VABASE_PLUGINS_PATH</foreignModel>
+  <foreignModel>../..</foreignModel>
+  <genPackages prefix="WSDL" basePackage="org.eclipse.wst" disposableProviderFactory="true"
+      classPackageSuffix="internal.impl" utilityPackageSuffix="internal.util" ecorePackage="WSDL.ecore#/">
+    <genDataTypes ecoreDataType="WSDL.ecore#//QName"/>
+    <genDataTypes ecoreDataType="WSDL.ecore#//OperationType"/>
+    <genDataTypes ecoreDataType="WSDL.ecore#//DOMElement"/>
+    <genDataTypes ecoreDataType="WSDL.ecore#//WSDLException"/>
+    <genDataTypes ecoreDataType="WSDL.ecore#//DOMDocument"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//WSDLElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//WSDLElement/documentationElement"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//WSDLElement/element"/>
+      <genOperations ecoreOperation="WSDL.ecore#//WSDLElement/getEnclosingDefinition"/>
+      <genOperations ecoreOperation="WSDL.ecore#//WSDLElement/setEnclosingDefinition">
+        <genParameters ecoreParameter="WSDL.ecore#//WSDLElement/setEnclosingDefinition/definition"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//PortType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//PortType/qName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//PortType/undefined"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//PortType/eOperations"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Operation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Operation/style"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Operation/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Operation/undefined"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Operation/eInput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Operation/eOutput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Operation/eFaults"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Operation/eParameterOrdering"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Message">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Message/qName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Message/undefined"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Message/eParts"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Part">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Part/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Part/elementName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Part/typeName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Part/typeDefinition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Part/elementDeclaration"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Part/eMessage"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Binding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Binding/qName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Binding/undefined"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Binding/ePortType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Binding/eBindingOperations"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//BindingOperation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//BindingOperation/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingOperation/eOperation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingOperation/eBindingInput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingOperation/eBindingOutput"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingOperation/eBindingFaults"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Service">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Service/qName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Service/undefined"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Service/ePorts"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Port">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Port/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Port/eBinding"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//ExtensibilityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//ExtensibilityElement/required"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//ExtensibilityElement/elementType"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Definition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Definition/targetNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Definition/location"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Definition/qName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Definition/encoding"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eMessages"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/ePortTypes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eBindings"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eServices"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//Definition/eNamespaces"/>
+      <genOperations ecoreOperation="WSDL.ecore#//Definition/getDocument"/>
+      <genOperations ecoreOperation="WSDL.ecore#//Definition/setDocument">
+        <genParameters ecoreParameter="WSDL.ecore#//Definition/setDocument/document"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Import">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Import/namespaceURI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Import/locationURI"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Import/eDefinition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//Import/eSchema"/>
+      <genOperations ecoreOperation="WSDL.ecore#//Import/getSchema"/>
+      <genOperations ecoreOperation="WSDL.ecore#//Import/setSchema">
+        <genParameters ecoreParameter="WSDL.ecore#//Import/setSchema/schema"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//ExtensibleElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//ExtensibleElement/eExtensibilityElements"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Input"/>
+    <genClasses ecoreClass="WSDL.ecore#//Output"/>
+    <genClasses ecoreClass="WSDL.ecore#//Fault"/>
+    <genClasses ecoreClass="WSDL.ecore#//BindingInput">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//BindingInput/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingInput/eInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingInput/getInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingInput/setInput">
+        <genParameters ecoreParameter="WSDL.ecore#//BindingInput/setInput/input"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//BindingOutput">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//BindingOutput/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingOutput/eOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingOutput/getOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingOutput/setOutput">
+        <genParameters ecoreParameter="WSDL.ecore#//BindingOutput/setOutput/output"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//BindingFault">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//BindingFault/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//BindingFault/eFault"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingFault/getFault"/>
+      <genOperations ecoreOperation="WSDL.ecore#//BindingFault/setFault">
+        <genParameters ecoreParameter="WSDL.ecore#//BindingFault/setFault/fault"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//Namespace">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Namespace/URI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//Namespace/prefix"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IPortType">
+      <genOperations ecoreOperation="WSDL.ecore#//IPortType/addOperation">
+        <genParameters ecoreParameter="WSDL.ecore#//IPortType/addOperation/operation"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IPortType/getOperation">
+        <genParameters ecoreParameter="WSDL.ecore#//IPortType/getOperation/name"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IPortType/getOperation/inputName"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IPortType/getOperation/outputName"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IPortType/getOperations"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IOperation">
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/addFault">
+        <genParameters ecoreParameter="WSDL.ecore#//IOperation/addFault/fault"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/getFault">
+        <genParameters ecoreParameter="WSDL.ecore#//IOperation/getFault/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/getFaults"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/getParameterOrdering"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/setParameterOrdering">
+        <genParameters ecoreParameter="WSDL.ecore#//IOperation/setParameterOrdering/parameterOrder"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/getInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/setInput">
+        <genParameters ecoreParameter="WSDL.ecore#//IOperation/setInput/input"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/getOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IOperation/setOutput">
+        <genParameters ecoreParameter="WSDL.ecore#//IOperation/setOutput/output"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IInput">
+      <genOperations ecoreOperation="WSDL.ecore#//IInput/getMessage"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IInput/setMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IInput/setMessage/message"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IOutput">
+      <genOperations ecoreOperation="WSDL.ecore#//IOutput/getMessage"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IOutput/setMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IOutput/setMessage/message"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IFault">
+      <genOperations ecoreOperation="WSDL.ecore#//IFault/getMessage"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IFault/setMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IFault/setMessage/message"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IMessage">
+      <genOperations ecoreOperation="WSDL.ecore#//IMessage/addPart">
+        <genParameters ecoreParameter="WSDL.ecore#//IMessage/addPart/part"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IMessage/getPart">
+        <genParameters ecoreParameter="WSDL.ecore#//IMessage/getPart/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IMessage/getParts"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IMessage/getOrderedParts">
+        <genParameters ecoreParameter="WSDL.ecore#//IMessage/getOrderedParts/partOrder"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IPart"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IService">
+      <genOperations ecoreOperation="WSDL.ecore#//IService/addPort">
+        <genParameters ecoreParameter="WSDL.ecore#//IService/addPort/port"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IService/getPorts"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IService/getPort">
+        <genParameters ecoreParameter="WSDL.ecore#//IService/getPort/name"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IPort">
+      <genOperations ecoreOperation="WSDL.ecore#//IPort/getBinding"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IPort/setBinding">
+        <genParameters ecoreParameter="WSDL.ecore#//IPort/setBinding/binding"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IBinding">
+      <genOperations ecoreOperation="WSDL.ecore#//IBinding/addBindingOperation">
+        <genParameters ecoreParameter="WSDL.ecore#//IBinding/addBindingOperation/bindingOperation"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBinding/getBindingOperation">
+        <genParameters ecoreParameter="WSDL.ecore#//IBinding/getBindingOperation/name"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IBinding/getBindingOperation/inputName"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IBinding/getBindingOperation/outputName"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBinding/getBindingOperations"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBinding/getPortType"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBinding/setPortType">
+        <genParameters ecoreParameter="WSDL.ecore#//IBinding/setPortType/portType"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IBindingOperation">
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/addBindingFault">
+        <genParameters ecoreParameter="WSDL.ecore#//IBindingOperation/addBindingFault/bindingFault"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/getBindingFault">
+        <genParameters ecoreParameter="WSDL.ecore#//IBindingOperation/getBindingFault/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/getBindingFaults"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/getOperation"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/setOperation">
+        <genParameters ecoreParameter="WSDL.ecore#//IBindingOperation/setOperation/operation"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/getBindingInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/setBindingInput">
+        <genParameters ecoreParameter="WSDL.ecore#//IBindingOperation/setBindingInput/bindingInput"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/getBindingOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IBindingOperation/setBindingOutput">
+        <genParameters ecoreParameter="WSDL.ecore#//IBindingOperation/setBindingOutput/bindingOutput"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IBindingInput"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IBindingOutput"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IBindingFault"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IExtensibilityElement"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IDefinition">
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addBinding">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addBinding/binding"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addImport">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addImport/importDef"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addMessage/message"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addNamespace">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addNamespace/prefix"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addNamespace/namespaceURI"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addPortType">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addPortType/portType"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/addService">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/addService/service"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createBindingFault"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createBindingInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createBindingOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createBindingOperation"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createBinding"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createFault"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createImport"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createInput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createMessage"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createOperation"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createOutput"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createPart"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createPort"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createPortType"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createService"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getBinding">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getBinding/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getBindings"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getImports"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getImports.1">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getImports.1/namespaceURI"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getMessage/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getMessages"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getNamespace">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getNamespace/prefix"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getNamespaces"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getPortType">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getPortType/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getPortTypes"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getPrefix">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getPrefix/namespaceURI"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getService">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/getService/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getServices"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getExtensionRegistry"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/setExtensionRegistry">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/setExtensionRegistry/extensionRegistry"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getDocumentBaseURI"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/setDocumentBaseURI">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/setDocumentBaseURI/documentBase"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/createTypes"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/removeService">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/removeService/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/removeBinding">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/removeBinding/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/removePortType">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/removePortType/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/removeMessage">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/removeMessage/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/getTypes"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IDefinition/setTypes">
+        <genParameters ecoreParameter="WSDL.ecore#//IDefinition/setTypes/types"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IImport"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IList"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IMap"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IURL"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IExtensionRegistry"/>
+    <genClasses ecoreClass="WSDL.ecore#//Types">
+      <genOperations ecoreOperation="WSDL.ecore#//Types/getSchemas"/>
+      <genOperations ecoreOperation="WSDL.ecore#//Types/getSchemas.1">
+        <genParameters ecoreParameter="WSDL.ecore#//Types/getSchemas.1/namespaceURI"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IIterator"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//ITypes"/>
+    <genClasses ecoreClass="WSDL.ecore#//UnknownExtensibilityElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//UnknownExtensibilityElement/children"/>
+    </genClasses>
+    <genClasses ecoreClass="WSDL.ecore#//XSDSchemaExtensibilityElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//XSDSchemaExtensibilityElement/documentBaseURI"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference WSDL.ecore#//XSDSchemaExtensibilityElement/schema"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//MessageReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute WSDL.ecore#//MessageReference/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference WSDL.ecore#//MessageReference/eMessage"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IElementExtensible">
+      <genOperations ecoreOperation="WSDL.ecore#//IElementExtensible/getExtensibilityElements"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IElementExtensible/addExtensibilityElement">
+        <genParameters ecoreParameter="WSDL.ecore#//IElementExtensible/addExtensibilityElement/extElement"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IAttributeExtensible">
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getExtensionAttribute">
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/getExtensionAttribute/name"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute">
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute/name"/>
+        <genParameters ecoreParameter="WSDL.ecore#//IAttributeExtensible/setExtensionAttribute/value"/>
+      </genOperations>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getExtensionAttributes"/>
+      <genOperations ecoreOperation="WSDL.ecore#//IAttributeExtensible/getNativeAttributeNames"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//IObject"/>
+    <genClasses image="false" ecoreClass="WSDL.ecore#//ISchema"/>
+  </genPackages>
+</genmodel:GenModel>

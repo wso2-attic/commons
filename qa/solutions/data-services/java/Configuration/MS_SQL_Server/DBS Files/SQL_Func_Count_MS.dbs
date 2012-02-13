@@ -1,0 +1,8 @@
+<data name="SQL_Func_Count_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="Func_Count"><sql>select count(AssetID) as MyCountValue from Assets</sql><result element="BaseElement" rowName="Element"><element name="MyCountValue" column="MyCountValue" /></result></query><operation name="OP_Count"><call-query href="Func_Count" /></operation></data>

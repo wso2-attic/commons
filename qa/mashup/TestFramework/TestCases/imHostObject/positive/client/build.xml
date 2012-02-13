@@ -1,0 +1,93 @@
+<!-- ========================================
+ * Purpose	:	This is a build files to call the client to test "im" host object of WSO2 Mashup Server.
+ * Author	: 	Yumani Ranaweera
+============================================-->
+
+<project name="ImHostObject" default="run.client">
+
+	<!-- where the global property file is -->   
+    <xmlproperty file="${project.base.dir}\global_config.xml"/>  
+
+	<!-- where the base directory is -->	
+	<property name="base.dir" value="${project.base.dir}\imHostObject\positive\client"/>
+
+	<!-- where the source files are -->	
+    <property name="src" value="${base.dir}\src"/>
+	
+	<!-- where the MASHUP HOME directory is -->	
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+	
+    <!-- where the target is created --> 	
+    <property name="target" value="${base.dir}\target"/>
+    <property name="target.java" value="${target}\src"/>
+    <property name="target.classes" value="${target}/classes"/>
+
+
+	<!-- ========== copy.yahoolib Target ===================================
+	<target name="copy.yahoolib">  
+		<copy file="${project.base.dir}/ymsg_network_v0_63.jar" tofile="${mashup.envt.MASHUP_HOME}/lib/ymsg_network_v0_63.jar" overwrite="true"/>
+    </target> -->
+
+	
+	<!-- ==========shutdown.server Target ===================================
+	<target name="shutdown.server" depends="copy.yahoolib">   
+		<echo message="shutting down the server"/>
+		<exec executable="cmd" dir="${mashup.envt.MASHUP_HOME}\bin" os="Windows XP">
+			<arg value="/c"/>
+			<arg value="shutdown.bat"/> 			
+		</exec> 
+		
+		<path id="ant.classpath">
+            <fileset file="${mashup.envt.MASHUP_HOME}/lib/ant-1.7.0.jar"/>
+            <fileset file="${mashup.envt.MASHUP_HOME}/lib/ant-launcher-1.7.0.jar"/>
+        </path>
+		
+		<java classname="org.apache.tools.ant.Main" fork="on" append="on" failonerror="on" dir="${base.dir}">
+            <classpath>
+                <path refid="ant.classpath"/>
+            </classpath>
+            <arg line="-f ${base.dir}\build2.xml"/>
+        </java>
+		
+	</target> -->
+	
+	
+	
+
+             
+	<!-- ========== run.client Target ===================================--> 
+    <!--<target name="run.client" depends="copy.yahoolib, shutdown.server, clean"> -->       
+	<target name="run.client" depends="clean">       
+        <!-- Compile the client -->
+        <mkdir dir="${target}/classes"/>
+		<echo message="${base.dir}\src"/>
+		<path id="base.classpath">
+            	<fileset dir="${mashup.envt.MASHUP_HOME}\lib"> <include name="*.jar"/> </fileset>
+				<fileset dir="${mashup.envt.AXIS_HOME}\lib"><include name="*.jar"/></fileset>
+				<fileset dir="${target}"> <include name="*.jar"/> </fileset>
+		</path>
+		
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true" destdir="${target}/classes">
+            <!--src path="${base.dir}/src"/-->
+			<src path="${base.dir}\src"/>
+            <classpath>
+				 <path refid="base.classpath"/>
+            </classpath>
+        </javac>
+        
+        <!--jar the compiled stuff-->
+        <jar destfile="${target}/IMAllScenarios-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>		
+		
+    </target>
+
+	<!-- ========== clean Target =================================== --> 
+	<target name="clean">
+	<echo message= "-------------------------------- Running the client for IMAllScenarios.js ---------------------------"/>    
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

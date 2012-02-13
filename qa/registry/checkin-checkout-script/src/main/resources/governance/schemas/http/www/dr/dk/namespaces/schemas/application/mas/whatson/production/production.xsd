@@ -1,0 +1,118 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.dr.dk/namespaces/schemas/application/mas/whatson/production" xmlns:c_types="http://www.dr.dk/namespaces/schemas/common/types" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.dr.dk/namespaces/schemas/application/mas/whatson/production">
+<xsd:import namespace="http://www.dr.dk/namespaces/schemas/common/types" schemaLocation="../../../../common/types/types.xsd"/>
+<xsd:simpleType name="description">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="2000"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="char100">
+<xsd:restriction base="xsd:string">
+<xsd:maxLength value="100"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="id_number">
+<xsd:restriction base="xsd:integer">
+<xsd:totalDigits value="38"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:simpleType name="prd_no">
+<xsd:restriction base="xsd:string">
+<xsd:pattern value="[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]"/>
+</xsd:restriction>
+</xsd:simpleType>
+<xsd:element name="production" type="production"/>
+<xsd:complexType name="production">
+<xsd:sequence>
+<xsd:element name="prd_number" type="prd_no"/>
+<xsd:element minOccurs="0" name="prd_parent_number" type="prd_no"/>
+<xsd:element name="prd_type" type="char100"/>
+<xsd:element name="prd_title" type="char100"/>
+<xsd:element name="prd_title_alt" type="char100"/>
+<xsd:element minOccurs="0" name="prd_punchline" type="char100"/>
+<xsd:element minOccurs="0" name="prd_series_title" type="char100">
+<xsd:annotation>
+<xsd:documentation>
+						(RAP only) should be in future MA solution "The title of the series the
+						actual production is a part of."
+					</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_description" type="description"/>
+<xsd:element minOccurs="0" name="prd_category" type="char100"/>
+<xsd:element minOccurs="0" name="prd_targetgroup" type="char100">
+<xsd:annotation/>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_targetgroup_source_url" type="char100">
+<xsd:annotation/>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_intention" type="char100">
+<xsd:annotation/>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_intention_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_form" type="char100"/>
+<xsd:element minOccurs="0" name="prd_form_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_frequency" type="char100"/>
+<xsd:element minOccurs="0" name="prd_frequency_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_origin" type="char100"/>
+<xsd:element minOccurs="0" name="prd_origin_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_prodmode" type="char100"/>
+<xsd:element minOccurs="0" name="prd_prodmode_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_department" type="char100">
+<xsd:annotation/>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_department_source_url" type="char100">
+<xsd:annotation>
+<xsd:documentation>
+						(RAP only) name prd_department_source_url is renamed from
+						prd_department_code which is more appropriate for its usage
+					</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element name="prd_is_series" type="c_types:booleanS">
+<xsd:annotation>
+<xsd:documentation>
+						(RAP only) should be in future MA solution
+					</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_is_own_production" type="c_types:booleanS">
+<xsd:annotation>
+<xsd:documentation>(RAP only)</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_content" type="char100">
+<xsd:annotation>
+<xsd:documentation>(RAP only) reconsider type</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_content_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_prodyear" type="char100">
+<xsd:annotation>
+<xsd:documentation>(RAP only)</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_prodcountry" type="char100">
+<xsd:annotation>
+<xsd:documentation>(RAP only) reconsider type</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element minOccurs="0" name="prd_prodcountry_source_url" type="char100"/>
+<xsd:element minOccurs="0" name="prd_subcountry" type="char100"/>
+<xsd:element minOccurs="0" name="prd_subcountry_source_url" type="char100"/>
+<xsd:element name="prd_create_timestamp" type="xsd:dateTime">
+<xsd:annotation>
+<xsd:documentation>
+						create_timestampis given i local for historic reasons Example:
+						2006-05-21T17:30:00
+					</xsd:documentation>
+</xsd:annotation>
+</xsd:element>
+<xsd:element maxOccurs="unbounded" minOccurs="0" name="name_and_role" type="c_types:name_and_role">
+<xsd:annotation/>
+</xsd:element>
+</xsd:sequence>
+</xsd:complexType>
+<xsd:simpleType name="test">
+<xsd:restriction base="xsd:string"/>
+</xsd:simpleType>
+</xsd:schema>

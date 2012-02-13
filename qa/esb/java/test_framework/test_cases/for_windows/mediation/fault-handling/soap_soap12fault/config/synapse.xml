@@ -1,0 +1,42 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <!--registry provider="org.wso2.carbon.mediation.registry.ESBRegistry">
+        <parameter name="root">file:./repository/samples/resources/</parameter>
+        <parameter name="cachableDuration">15000</parameter>
+    </registry-->
+    <localEntry key="xslt_add_req" src="file:repository/samples/resources/transform/xslt_add_req_err.xslt"/>
+    <sequence name="main">
+        <sequence key="pox_to_soap"/>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="pox_to_soap" onError="soap12_fault">
+        <in>
+            <!--xslt key="xslt_add_req"/-->
+            <send>
+                <endpoint>
+                    <address format="soap12" uri="http://localhost:9000/services/Adding1"/>
+                </endpoint>
+            </send>
+	    <drop/>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="soap12_fault">
+        <log level="full" separator=","/>
+       <makefault version="soap12">
+            <code xmlns:sf12="http://www.w3.org/2003/05/soap-envelope" value="sf12:VersionMismatch"/>
+            <reason value="Exception occurred when transforming the request/response"/>
+        </makefault>
+	<log level="full"/>
+        <header name="To" action="remove"/>
+        <property name="RESPONSE" value="true"/>
+    </sequence>
+</definitions>

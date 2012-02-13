@@ -1,0 +1,101 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://ihc.org/xsd/patient" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://ihc.org/xsd/patient">
+<xs:element name="PersonSearchCriteria">
+<xs:annotation>
+<xs:documentation>Comment describing your root element</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="MMINumber" type="xs:string"/>
+<xs:element minOccurs="0" name="SSN" type="xs:string"/>
+<xs:element minOccurs="0" name="FirstName" type="xs:string"/>
+<xs:element minOccurs="0" name="MiddleName" type="xs:string"/>
+<xs:element minOccurs="0" name="LastName" type="xs:string"/>
+<xs:element minOccurs="0" name="AreaCode">
+<xs:simpleType>
+<xs:restriction base="xs:int"/>
+</xs:simpleType>
+</xs:element>
+<xs:element minOccurs="0" name="PhoneNumber">
+<xs:simpleType>
+<xs:restriction base="xs:int"/>
+</xs:simpleType>
+</xs:element>
+<xs:element minOccurs="0" name="MRN" type="ns1:MRNType"/>
+<xs:element minOccurs="0" name="RadiologyNumber" type="ns1:RadiologyNumberType"/>
+<xs:element minOccurs="0" name="ZipCode" type="xs:string"/>
+<xs:element minOccurs="0" name="Gender" type="ns1:CWEType"/>
+<xs:element minOccurs="0" name="DateOfBirth" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:complexType name="CWEType">
+<xs:sequence>
+<xs:element minOccurs="0" name="originalText">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="singleTranslation">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="originalText">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="codeSystem">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="code">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="codeSystemVersion">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="code">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element minOccurs="0" name="code">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="MRNType">
+<xs:sequence>
+<xs:element name="number" type="xs:string"/>
+<xs:element minOccurs="0" name="FacilityCode" type="ns1:CWEType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="RadiologyNumberType">
+<xs:sequence>
+<xs:element name="number" type="xs:string"/>
+<xs:element minOccurs="0" name="FacilityCode" type="ns1:CWEType"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

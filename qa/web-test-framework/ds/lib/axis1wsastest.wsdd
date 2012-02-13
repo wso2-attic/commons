@@ -1,0 +1,7 @@
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+  <service name="WsasA1service" style="wrped">
+    <parameter name="className" value="WsasA1service"/>
+    <parameter name="allowedMethods" value="*"/>
+  </service>
+</deployment>

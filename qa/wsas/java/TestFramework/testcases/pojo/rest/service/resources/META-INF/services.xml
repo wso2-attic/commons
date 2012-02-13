@@ -1,0 +1,12 @@
+<service name="RestService">
+    <description>
+        This is a sample service to verify RESTful service invocation in WSAS.
+    </description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+       <parameter name="ServiceClass">org.wso2.wsas.service.RestService</parameter>
+</service>

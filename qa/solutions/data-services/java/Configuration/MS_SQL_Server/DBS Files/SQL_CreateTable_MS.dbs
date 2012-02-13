@@ -1,0 +1,8 @@
+<data name="SQL_CreateTable_MS"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="TableCreate"><sql>CREATE table TempAsset(id int(50),name varchar(100),PRIMARY KEY(id));</sql><result element="BaseElement" rowName="Element" /></query><operation name="OP_CreateTable"><call-query href="TableCreate" /></operation></data>

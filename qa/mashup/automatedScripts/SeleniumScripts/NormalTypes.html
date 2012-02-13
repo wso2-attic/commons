@@ -1,0 +1,244 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>NormalTypes</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">NormalTypes</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/services/NormalTypes?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testObject_param_0</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//input[@value='Add param']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testObject_param_1</td>
+	<td>test1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testObject</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>test,test1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testNumber</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testNumber_param_0</td>
+	<td>23</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testNumber</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>23</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testNumber_param_0</td>
+	<td>wew</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testNumber</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:Fault: Unable to convert value "wew" to double [detail] &lt;soapenv:Detail&gt;&lt;Exception&gt;org.apache.axis2.AxisFault: Unable to convert value "wew" to double<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.createParam(JavaScriptReceiver.java:730)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleSimpleElement(JavaScriptReceiver.java:428)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleSimpleTypeInRequest(JavaScriptReceiver.java:403)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleComplexTypeInRequest(JavaScriptReceiver.java:382)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.invokeBusinessLogic(JavaScriptReceiver.java:166)<br /><br />	at org.apache.axis2.receivers.AbstractInOutMessageReceiver.invokeBusinessLogic(AbstractInOutMessageReceiver.java:40)<br /><br />	at org.apache.axis2.receivers.AbstractMessageReceiver.receive(AbstractMessageReceiver.java:96)<br /><br />	at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:145)<br /><br />	at org.apache.axis2.transport.http.HTTPTransportUtils.processHTTPPostRequest(HTTPTransportUtils.java:275)<br /><br />	at org.apache.axis2.transport.http.AxisServlet.doPost(AxisServlet.java:120)<br /><br />	at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)<br /><br />	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)<br /><br />	at org.wso2.mashup.transport.ServiceUIFilter.doFilter(ServiceUIFilter.java:186)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:202)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)<br /><br />	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)<br /><br />	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)<br /><br />	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)<br /><br />	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)<br /><br />	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)<br /><br />	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)<br /><br />	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)<br /><br />	at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:667)<br /><br />	at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)<br /><br />	at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)<br /><br />	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)<br /><br />	at java.lang.Thread.run(Thread.java:595)<br /><br />&lt;/Exception&gt;<br /><br />&lt;/soapenv:Detail&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testString</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testString_param_0</td>
+	<td>ewe</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testString</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>ewe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testString_param_0</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testString</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>123</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testAny</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testAny_param_0</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testAny</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testAny_param_0</td>
+	<td>&lt;xml/&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testAny</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>&lt;xml /&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testDate</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testDate</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>exact:Fault: Unable to convert value "" to date time [detail] &lt;soapenv:Detail&gt;&lt;Exception&gt;org.apache.axis2.AxisFault: Unable to convert value "" to date time<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.createParam(JavaScriptReceiver.java:843)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleSimpleElement(JavaScriptReceiver.java:428)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleSimpleTypeInRequest(JavaScriptReceiver.java:403)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.handleComplexTypeInRequest(JavaScriptReceiver.java:382)<br /><br />	at org.wso2.javascript.rhino.JavaScriptReceiver.invokeBusinessLogic(JavaScriptReceiver.java:166)<br /><br />	at org.apache.axis2.receivers.AbstractInOutMessageReceiver.invokeBusinessLogic(AbstractInOutMessageReceiver.java:40)<br /><br />	at org.apache.axis2.receivers.AbstractMessageReceiver.receive(AbstractMessageReceiver.java:96)<br /><br />	at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:145)<br /><br />	at org.apache.axis2.transport.http.HTTPTransportUtils.processHTTPPostRequest(HTTPTransportUtils.java:275)<br /><br />	at org.apache.axis2.transport.http.AxisServlet.doPost(AxisServlet.java:120)<br /><br />	at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)<br /><br />	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)<br /><br />	at org.wso2.mashup.transport.ServiceUIFilter.doFilter(ServiceUIFilter.java:186)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:202)<br /><br />	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)<br /><br />	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)<br /><br />	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)<br /><br />	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)<br /><br />	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)<br /><br />	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)<br /><br />	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)<br /><br />	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)<br /><br />	at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:667)<br /><br />	at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)<br /><br />	at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)<br /><br />	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)<br /><br />	at java.lang.Thread.run(Thread.java:595)<br /><br />&lt;/Exception&gt;<br /><br />&lt;/soapenv:Detail&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testBoolean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>input_testBoolean_param_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testBoolean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testXml</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testXml_param_0</td>
+	<td>&lt;xml/&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testXml</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>&lt;xml /&gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=testArray</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testArray_param_0</td>
+	<td>a</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[8]/table/tbody/tr[1]/td[2]/input[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_testArray_param_1</td>
+	<td>b</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_testArray</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>a,b</td>
+	<td></td>
+</tr>
+<tr>
+	<td>close</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

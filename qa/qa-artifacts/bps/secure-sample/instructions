@@ -1,0 +1,17 @@
+copy SecurePartnerService.aar to so2bps-2.0.0/repository/deployment/server/axis2services
+
+copy PWCBHandler.jar to wso2bps-2.0.0/repository/components/lib (every external jar should go to this place)
+
+copy client.jks to wso2bps-2.0.0/resources/security
+
+restart the server
+
+Add service.jks through key store (password is apache)
+
+upload the bpel package
+
+Apply security to .aar service (patner service)
+
+To test the security senario 1, create role client and give admin permission. Then create use with user name client and password apache.
+
+enable addressing also 

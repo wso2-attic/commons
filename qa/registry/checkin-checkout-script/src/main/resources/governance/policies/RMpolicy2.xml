@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+    <wsrmp:RMAssertion
+         xmlns:wsrmp="http://docs.oasis-open.org/ws-rx/wsrmp/200702">
+    <wsrmp:SequenceTransportSecurity/>
+    <wsrmp:DeliveryAssurance>
+      <wsp:Policy>
+        <wsrmp:ExactlyOnce/>
+      </wsp:Policy>
+    </wsrmp:DeliveryAssurance>
+  </wsrmp:RMAssertion>
+</wsp:Policy>

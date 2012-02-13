@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://services.samples/xsd"
+            xmlns:tns="http://services.samples/xsd"
+            elementFormDefault="unqualified">
+    <xsd:complexType name="skcotSyub">
+        <xsd:sequence>
+            <xsd:element name="redro">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="lobmys" type="xsd:string"></xsd:element>
+                        <xsd:element name="DIreyub" type="xsd:string"></xsd:element>
+                        <xsd:element name="ecirp" type="xsd:double"></xsd:element>
+                        <xsd:element name="emulov" type="xsd:int"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:element name="skcotSyub" type="tns:skcotSyub"></xsd:element>
+</xsd:schema>

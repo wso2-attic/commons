@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+    <bannerLeft>
+        <name>Component Test Framework Reporting Module</name>
+        <src>images/logo.png</src>
+        <href>http://wso2.org</href>
+    </bannerLeft>
+    <bannerRight>
+        <src>images/title.png</src>
+    </bannerRight>
+    <body>
+        <menu name="Overview">
+
+            <item name="Description and Usage" href="index.html"/>
+            <item name="Registry Resource Test Results" href="/report/registry-resource-test.html"/>
+            <item name="Registry API Test Result" href="/report/registry-api-test.html"/>
+            <item name="Registry Meta-data Results" href="/report/registry-metadata-test.html"/>
+            <item name="Registry Handler Results" href="/report/registry-handler-test.html"/>
+            <item name="aggregate-mediator results" href="/report/aggregate-mediator-test.html"/>
+            <item name="cache-mediator results" href="/report/cache-mediator-test.html"/>
+            <item name="callout-mediator results" href="/report/callout-mediator-test.html"/>
+            <item name="class-mediator results" href="/report/class-mediator-test.html"/>
+            <item name="clone-mediator results" href="/report/clone-mediator-test.html"/>
+            <item name="command-mediator results" href="/report/command-mediator-test.html"/>
+            <item name="dbLookup-mediator results" href="/report/db-lookup-mediator-test.html"/>
+            <item name="dbReport-mediator results" href="/report/db-report-mediator-test.html"/>
+            <item name="drop-mediator results" href="/report/drop-mediator-test.html"/>
+            <item name="enrich-mediator results" href="/report/enrich-mediator-test.html"/>
+            <item name="event-mediator results" href="/report/event-mediator-test.html"/>
+            <item name="fault-mediator results" href="/report/fault-mediator-test.html"/>
+            <item name="filter-mediator results" href="/report/filter-mediator-test.html"/>
+            <item name="header-mediator results" href="/report/header-mediator-test.html"/>
+            <item name="inout-mediator results" href="/report/inout-mediators-test.html"/>
+            <item name="iterate-mediator results" href="/report/iterate-mediator-test.html"/>
+            <item name="log-mediator results" href="/report/log-mediator-test.html"/>
+            <item name="property-mediator results" href="/report/property-mediator-test.html"/>
+            <item name="router-mediator results" href="/report/router-mediator-test.html"/>
+            <item name="rule-mediator results" href="/report/rule-mediator-test.html"/>
+            <item name="script-mediator results" href="/report/script-mediator-test.html"/>
+            <item name="send-mediator results" href="/report/send-mediator-test.html"/>
+            <item name="sequence-mediator results" href="/report/sequence-mediator-test.html"/>
+            <item name="spring-mediator results" href="/report/spring-mediator-test.html"/>
+            <item name="switch-mediator results" href="/report/switch-mediator-test.html"/>
+            <item name="throttle-mediator results" href="/report/throttle-mediator-test.html"/>
+            <item name="validate-mediator results" href="/report/validate-mediator-test.html"/>
+            <item name="xquery-mediator results" href="/report/xquery-mediator-test.html"/>
+            <item name="xslt-mediator results" href="/report/xslt-mediator-test.html"/>
+            <item name="priority-executors results" href="/report/priority-executors-test.html"/>
+            <item name="proxyservices results" href="/report/proxy-services-test.html"/>
+            <item name="sequences results" href="/report/sequences-test.html"/>
+            <item name="endpoints results" href="/report/endpoint-test.html"/>
+            <item name="event-sources results" href="/report/event-sources-test.html"/>
+            <item name="localentry results" href="/report/local-entry-test.html"/>
+        </menu>
+        <menu ref="reports"/>
+    </body>
+
+</project>

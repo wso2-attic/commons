@@ -1,0 +1,8 @@
+<data name="SQL_OrderBy_MS_At"><config>
+    <property name="org.wso2.ws.dataservice.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</property>
+    <property name="org.wso2.ws.dataservice.protocol">jdbc:microsoft:sqlserver://10.100.1.89:14330;DatabaseName=wsasset</property>
+    <property name="org.wso2.ws.dataservice.user">sa</property>
+    <property name="org.wso2.ws.dataservice.password">root</property>
+    <property name="org.wso2.ws.dataservice.minpoolsize"></property>
+    <property name="org.wso2.ws.dataservice.maxpoolsize"></property>
+  </config><query id="OrderBy"><sql>select * from Maintenance order by MaintenanceID DESC</sql><result element="BaseElement" rowName="Element"><attribute name="MaintenanceID" column="MaintenanceID" /><attribute name="AssetID" column="AssetID" /></result></query><operation name="OP_OrderBy"><call-query href="OrderBy" /></operation></data>

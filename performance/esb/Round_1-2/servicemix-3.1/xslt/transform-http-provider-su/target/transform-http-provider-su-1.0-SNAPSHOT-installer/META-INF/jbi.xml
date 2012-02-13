@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" version="1.0">
+  <services binding-component="false" xmlns:b="http://esb.wso2.org/perf/transform">
+    <provides service-name="b:TransformedSimpleStockQuoteService" endpoint-name="endpoint"/>
+  </services>
+</jbi>

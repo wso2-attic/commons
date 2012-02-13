@@ -1,0 +1,94 @@
+<wsdlview>
+
+    <argument uiType="text">
+        <name>cn</name>
+        <description>Fully qualified class name</description>
+    </argument>
+    <argument uiType="text">
+        <name>sn</name>
+        <description>Service name</description>
+    </argument>
+    <argument uiType="text">
+        <name>l</name>
+        <description>Address of the port for the WSDL</description>
+    </argument>
+    <argument uiType="skip">
+        <name>cp</name>
+        <description>List of classpath entries - (urls)</description>
+    </argument>
+    <argument uiType="text">
+        <name>tn</name>
+        <description>Target namespace for service</description>
+    </argument>
+    <argument uiType="text">
+        <name>tp</name>
+        <description>Target namespace prefix for service</description>
+    </argument>
+    <argument uiType="text">
+        <name>stn</name>
+        <description>Target namespace for schema</description>
+    </argument>
+    <argument uiType="text">
+        <name>stp</name>
+        <description>Target namespace prefix for schema</description>
+    </argument>
+    <argument uiType="option">
+        <name>st</name>
+        <description>Style for the WSDL</description>
+        <values>
+            <value>document</value>
+        </values>
+    </argument>
+    <argument uiType="option">
+        <name>u</name>
+        <description>Use for the WSDL</description>
+        <values>
+            <value>literal</value>
+        </values>
+    </argument>
+    <argument uiType="text">
+        <name>nsg</name>
+        <description>Fully qualified name of a class that implements NamespaceGenerator</description>
+    </argument>
+    <argument uiType="text">
+        <name>sg</name>
+        <description>Fully qualified name of a class that implements SchemaGenerator</description>
+    </argument>
+    <argument uiType="text-area">
+        <name>p2n</name>
+        <description>[java package,namespace][java package,namespace]...package to namespace mapping</description>
+    </argument>
+    <argument uiType="option">
+        <name>efd</name>
+        <description>Setting for elementFormDefault (defaults to qualified)</description>
+        <values>
+            <value>qualified</value>
+            <value>unqualified</value>
+        </values>
+    </argument>
+    <argument uiType="option">
+        <name>afd</name>
+        <description>Setting for attributeFormDefault (defaults to qualified)</description>
+        <values>
+            <value>qualified</value>
+            <value>unqualified</value>
+        </values>
+    </argument>
+    <argument uiType="text-area">
+        <name>xc</name>
+        <description>class1,class2,class3,..Extra class(es) for which schematype must be generated</description>
+    </argument>
+    <argument uiType="option">
+        <name>wv</name>
+        <description>WSDL version - defaults to 1.1</description>
+        <values>
+            <value>1.1</value>
+            <value>2.0</value>
+        </values>
+    </argument>
+    <argument uiType="check">
+        <name>dlb</name>
+        <description>Generate schemas conforming to doc/lit/bare style</description>
+    </argument>
+
+</wsdlview>

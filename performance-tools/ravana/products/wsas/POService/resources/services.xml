@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6-wso2v1  Built on : Mar 29, 2010 (11:46:12 UTC) -->
+<serviceGroup>
+    <service name="POService">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.wso2.carbon.core.services.po.POServiceMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">org.wso2.carbon.core.services.po.POServiceSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="buyStocks" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://po.services.core.carbon.wso2.org">
+            <actionMapping>urn:buyStocks</actionMapping>
+            <outputActionMapping>http://po.services.core.carbon.wso2.org/buyStocksPortType/message</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>

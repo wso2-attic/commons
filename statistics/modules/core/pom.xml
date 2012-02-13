@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <parent>
+        <groupId>org.wso2.statistics</groupId>
+        <artifactId>wso2statistics-parent</artifactId>
+        <version>SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>wso2statistics</artifactId>
+    <packaging>jar</packaging>
+    <version>SNAPSHOT</version>
+    <name>WSO2 Statistics module</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>mar</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <property name="module.mar"
+                                          value="target/wso2statistics-${wso2statistics.version}.mar"/>
+                                <property name="module.mar.dir"
+                                          value="target/wso2statistics-mar"/>
+                                <property name="module.jar.dir"
+                                          value="target/wso2statistics-jar"/>
+                                <property name="module.jar"
+                                          value="target/wso2statistics-${wso2statistics.version}.jar"/>
+                                <property name="module.aar"
+                                          value="${module.mar.dir}/aars/wso2statistics.aar"/>
+
+                                <unjar dest="${module.mar.dir}"
+                                       src="${module.jar}"/>
+                                <copy todir="${module.jar.dir}">
+                                    <fileset dir="${module.mar.dir}"/>
+                                </copy>
+                                <delete dir="${module.jar.dir}/aars"/>
+                                <delete dir="${module.jar.dir}/META-INF"/>
+                                <jar basedir="${module.jar.dir}" destfile="${module.jar}"/>
+                                <mkdir dir="${module.mar.dir}/lib"/>
+                                <copy todir="${module.mar.dir}/lib">
+                                    <fileset file="${module.jar}"/>
+                                </copy>
+                                <delete dir="${module.mar.dir}/org"/>
+                                <jar basedir="${module.mar.dir}/aars/service"
+                                     destfile="${module.aar}"/>
+                                <delete dir="${module.mar.dir}/aars/service"/>
+                                <jar basedir="${module.mar.dir}"
+                                     destfile="${module.mar}"/>
+                                <delete dir="${module.mar.dir}"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>mar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/wso2statistics-${wso2statistics.version}.mar</file>
+                                    <type>mar</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

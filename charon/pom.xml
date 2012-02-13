@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.charon</groupId>
+    <artifactId>charon-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>WSO2 Charon - Parent</name>
+	<description>WSO2 Charon - SCIM Implementation</description>
+	<url>http://wso2.com</url>
+
+    <modules>
+        <module>charon-core</module>
+        <module>charon-utils</module>
+        <module>charon-samples</module>
+        <module>charon-deployment</module>
+    </modules>
+
+    <properties>
+        <charon.version>1.0.0-SNAPSHOT</charon.version>
+    </properties>
+</project>

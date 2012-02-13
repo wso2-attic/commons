@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+        xmlns:wns="http://wso2.org/bps/samples/LoanService"
+        xmlns:dins="http://wso2.org/bps/samples/DILoanService"
+        xmlns:xkns="http://wso2.org/bps/samples/XKLoanService"
+        xmlns:lpns="http://wso2.org/bps/samples/LoanProcess"
+        xmlns:cins="http://wso2.org/bps/samples/CustomerInfo"
+        xmlns:crns="http://wso2.org/bps/samples/CreditRating">
+    <process name="lpns:LoanProcess">
+        <active>true</active>
+        <provide partnerLink="Client">
+            <service name="lpns:LoanProcessService" port="LoanProcessPort">
+		<endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config">
+			<mex-timeout value="180000"/>     				    
+        		</endpoint> 
+		</service>
+        </provide>
+        <provide partnerLink="DILoanServicePL">
+            <service name="wns:LoanServiceCallback" port="LoanServiceCallbackPort"/>
+        </provide>
+        <invoke partnerLink="CustomerInfoPL">
+            <service name="cins:CustomerInfoService" port="CustomerInfoPort"/>
+        </invoke>
+        <invoke partnerLink="CreditRatingPL">
+            <service name="crns:CreditRatingService" port="CreditRatingPort">
+                <endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config">
+                    <!--<enableSec policyLocation="policy.xml"/>-->
+                    <serviceDescription location="services.xml"/>
+                </endpoint>
+            </service>
+        </invoke>
+        <invoke partnerLink="DILoanServicePL">
+            <service name="wns:DILoanService" port="LoanServicePort"/>
+        </invoke>
+    </process>
+</deploy>

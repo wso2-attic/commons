@@ -1,0 +1,36 @@
+Step to run the test
+--------------------
+1. Deploy the synapse.xml
+2. Start the backend server which you need to talk to 
+3. Invoke the client using the following command
+
+If you are using a Javabench/Curl client
+
+java -jar benchmark.jar -p echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8"  http://localhost:8280/
+
+NOTE: echoString.xml is located at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/request-xmls
+
+Expected Results : Through the Log mediator, the values of the properties defined should be displayed properly.
+
+E.g.:- If the message is sent as below
+====================================================================================
+<?xml version='1.0' encoding='UTF-8'?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+      <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+         <wsa:To>http://localhost:9765/services/Axis2Service</wsa:To>
+         <wsa:Action>urn:echoString</wsa:Action>
+         <wsa:MessageID>urn:uuid:01C552D89B3A2C5D441280300868447</wsa:MessageID>
+      </soapenv:Header>
+   <soapenv:Body>
+      <ser:echoString xmlns:ser="http://service.carbon.wso2.org">
+         <ser:s>echo</ser:s>
+      </ser:echoString>
+   </soapenv:Body>
+</soapenv:Envelope>
+====================================================================================
+
+the Log mediator should log the specified properties as below.
+
+=====================================================================================================================================================================
+body = <ser:echoString xmlns:ser="http://service.carbon.wso2.org"><ser:s>echo</ser:s></ser:echoString>, header_To = http://localhost:9765/services/Axis2Service, header_MessageID = urn:uuid:01C552D89B3A2C5D441280300868447, header_Action = urn:echoString, ctx = false, axis2 = text/xml, trp = text/xml; charset=UTF-8
+=====================================================================================================================================================================

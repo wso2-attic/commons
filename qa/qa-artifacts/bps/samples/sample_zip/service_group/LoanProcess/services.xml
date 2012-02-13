@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.5  Built on : Apr 30, 2009 (06:07:24 EDT) -->
+<serviceGroup     xmlns:lpns="http://wso2.org/bps/samples/LoanProcess" xmlns:wns="http://wso2.org/bps/samples/LoanService">
+    <service name="lpns:LoanProcessService" port="LoanProcessPort"/>
+       
+    </service>
+    <service name="wns:LoanServiceCallback" port="LoanServiceCallbackPort"/>
+       
+    </service>
+
+
+</serviceGroup>

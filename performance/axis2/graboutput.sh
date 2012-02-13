@@ -1,0 +1,1 @@
+awk -v SOAP_ENGINE=$4 -v METHOD=$2 -v ITEM_COUNT=$3 -f graboutput.awk $1 

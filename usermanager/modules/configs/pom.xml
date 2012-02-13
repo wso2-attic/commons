@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
+  <parent>
+        <groupId>org.wso2.commons.usermanager</groupId>
+        <artifactId>usermanager-pom</artifactId>
+        <version>SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.commons.usermanager</groupId>
+    <artifactId>usermanager-configs</artifactId>
+    <packaging>jar</packaging>
+    <version>SNAPSHOT</version>
+    <name>User Manager Configs</name>
+
+    <build>
+        <plugins>
+	    <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+        	<artifactId>maven-surefire-plugin</artifactId>
+        	<configuration>
+          	    <excludes>
+            		<exclude>**/DefaultRealmTest.java</exclude>
+            		<exclude>**/AcegiTest.java</exclude>
+			<exclude>JDBCTest.java</exclude>
+          	    </excludes>
+        	</configuration>
+	    </plugin>
+	     <plugin>
+                	<groupId>org.apache.maven.plugins</groupId>
+                	<artifactId>maven-compiler-plugin</artifactId>
+                	<version>2.0</version>
+                	<configuration>
+                    	<source>1.4</source>
+                    	<target>1.4</target>
+                	</configuration>
+            	    </plugin>
+	</plugins>
+    </build>
+    
+    <dependencies>
+	<dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>naming-factory</artifactId>
+            <version>${naming.factory}</version>
+        </dependency>
+
+	<dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>naming-factory-dbcp</artifactId>
+            <version>${naming.factory.dbcp}</version>
+        </dependency>
+
+    	<dependency>
+            <groupId>tomcat</groupId>
+            <artifactId>naming-resources</artifactId>
+            <version>${naming.resources}</version>
+        </dependency>
+	<dependency>
+            <groupId>org.acegisecurity</groupId>
+            <artifactId>acegi-security</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+    </dependencies>
+
+
+
+    
+</project>

@@ -1,0 +1,25 @@
+<configuration xmlns="http://usermanager.commons.wso2.org/ns">
+
+	<!-- Hibernate realm configuration -->
+	<realm class="org.wso2.commons.usermanager.realm.rw.hibernate.HibernateRealm" 
+           configClass="org.wso2.commons.usermanager.realm.rw.hibernate.RealmConfigurationImpl"
+		   verifier="ver1">
+        	<realmConfiguration> 
+		</realmConfiguration>
+		
+	</realm>
+
+
+	<verifier name="ver1" class="org.wso2.commons.usermanager.realm.rw.hibernate.TestSubstituteEmailVerifier"
+			  configClass="org.wso2.commons.usermanager.realm.rw.hibernate.TestSubstituteEmailVerifierConfig">
+		<verifierConfiguration>
+			<property name="port" value="25"/>
+			<property name="host" value="relay.pair.com"/>
+			<property name="from" value="usermanager@commons.wso2.org"/>
+			<property name="username" value="user"/>
+			<property name="password" value="password"/>
+			<property name="verificationServiceEPR" value="eprstuff"/>
+		</verifierConfiguration>	
+	</verifier>
+
+</configuration>

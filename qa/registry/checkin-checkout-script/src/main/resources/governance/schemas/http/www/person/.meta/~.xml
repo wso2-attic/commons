@@ -1,0 +1,1 @@
+<resource name="person" isCollection="true" path="/_system/governance/schemas/http/www/person" registryUrl="https://localhost:9443/registry"><mediaType></mediaType><version>1344</version><creator>admin</creator><createdTime>1296273631646</createdTime><lastUpdater>admin</lastUpdater><lastModified>1296273631646</lastModified><description></description></resource>

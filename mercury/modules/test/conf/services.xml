@@ -1,0 +1,1067 @@
+<serviceGroup>
+    <service name="TestInOutService">
+        <description>Test In Out Service</description>
+        <module ref="Mercury"/>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="TestInOutOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>urn:TestInOutOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="TestInService">
+        <description>Test In Service</description>
+        <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <module ref="MessageDropModule"/>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-only"
+                    class="org.wso2.mercury.test.service.TestInMessageReceiver"/>
+        </messageReceivers>
+        <operation name="TestInOperation" mep="http://www.w3.org/ns/wsdl/in-only">
+            <actionMapping>urn:TestInOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="PlainTestInOutService">
+        <description>Plain Test In Out Service</description>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="PlainTestInOutOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>urn:PlainTestInOutOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="PlainTestInService">
+        <description>Plain Test In Service</description>
+        <!--<module ref="MessageDropModule"/>-->
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-only"
+                    class="org.wso2.mercury.test.service.TestInMessageReceiver"/>
+        </messageReceivers>
+        <operation name="PlainTestInOperation" mep="http://www.w3.org/ns/wsdl/in-only">
+            <actionMapping>urn:PlainTestInOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="SecureTestInService">
+        <description>Secure Test In Service</description>
+        <!--<module ref="MessageDropModule"/>-->
+        <!--<module ref="addressing"/>-->
+        <module ref="rampart"/>
+        <module ref="Mercury"/>
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:InitiatorToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:InitiatorToken>
+                            <sp:RecipientToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:RecipientToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:TripleDesRsa15/>
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict/>
+                                </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp/>
+                            <sp:OnlySignEntireHeadersAndBody/>
+                        </wsp:Policy>
+                    </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>client</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-only"
+                    class="org.wso2.mercury.test.service.TestInMessageReceiver"/>
+        </messageReceivers>
+        <operation name="SecureTestInOperation" mep="http://www.w3.org/ns/wsdl/in-only">
+            <actionMapping>urn:SecureTestInOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="SecureTestInOutService">
+        <description>Secure Test In Out Service</description>
+        <!--<module ref="MessageDropModule"/>-->
+        <!--<module ref="addressing"/>-->
+        <module ref="rampart"/>
+        <module ref="Mercury"/>
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:InitiatorToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:InitiatorToken>
+                            <sp:RecipientToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:RecipientToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:TripleDesRsa15/>
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict/>
+                                </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp/>
+                            <sp:OnlySignEntireHeadersAndBody/>
+                        </wsp:Policy>
+                    </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>client</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="SecureTestInOutOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>urn:SecureTestInOutOperation</actionMapping>
+        </operation>
+    </service>
+    <service name="TestFaultInOutService">
+        <description>Test Fault In Out Service</description>
+        <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <!--<module ref="MessageDropModule"/>-->
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestFaultInOutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="TestFaultInOutOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>urn:TestFaultInOutOperation</actionMapping>
+        </operation>
+    </service>
+
+    <service name="TestSecConInService">
+        <description>Test Sec Con In Service</description>
+        <!--<module ref="addressing"/>-->
+        <module ref="rampart"/>
+        <module ref="rahas"/>
+        <module ref="Mercury"/>
+        <parameter name="sct-issuer-config">
+            <sct-issuer-config>
+                <cryptoProperties>
+                    <crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                        <property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</property>
+                        <property name="org.apache.ws.security.crypto.merlin.file">service.jks</property>
+                        <property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</property>
+                    </crypto>
+                </cryptoProperties>
+                <addRequestedAttachedRef/>
+                <addRequestedUnattachedRef/>
+                <keyComputation>3</keyComputation>
+                <proofKeyType>BinarySecret</proofKeyType>
+            </sct-issuer-config>
+        </parameter>
+        <parameter name="token-canceler-config">
+            <token-canceler-config>
+            </token-canceler-config>
+        </parameter>
+        <wsp:Policy wsu:Id="SecureConversation_MutualCertificate10Sign_IPingServiceSign_policy"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                    xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing"
+                    xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:SymmetricBinding>
+                        <wsp:Policy>
+                            <sp:ProtectionToken>
+                                <wsp:Policy>
+                                    <sp:SecureConversationToken
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                        <wsp:Policy>
+                                            <sp:RequireDerivedKeys/>
+                                            <sp:BootstrapPolicy>
+                                                <wsp:Policy>
+                                                    <sp:SignedParts>
+                                                        <sp:Body/>
+                                                        <sp:Header Name="To"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="From"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="FaultTo"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="ReplyTo"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="MessageID"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="RelatesTo"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                        <sp:Header Name="Action"
+                                                                   Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                                                    </sp:SignedParts>
+                                                    <sp:EncryptedParts>
+                                                        <sp:Body/>
+                                                    </sp:EncryptedParts>
+                                                    <sp:SymmetricBinding>
+                                                        <wsp:Policy>
+                                                            <sp:ProtectionToken>
+                                                                <wsp:Policy>
+                                                                    <sp:X509Token
+                                                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                                                        <wsp:Policy>
+                                                                            <sp:RequireDerivedKeys/>
+                                                                            <sp:RequireThumbprintReference/>
+                                                                            <sp:WssX509V3Token10/>
+                                                                        </wsp:Policy>
+                                                                    </sp:X509Token>
+                                                                </wsp:Policy>
+                                                            </sp:ProtectionToken>
+                                                            <sp:AlgorithmSuite>
+                                                                <wsp:Policy>
+                                                                    <sp:Basic256/>
+                                                                </wsp:Policy>
+                                                            </sp:AlgorithmSuite>
+                                                            <sp:Layout>
+                                                                <wsp:Policy>
+                                                                    <sp:Lax/>
+                                                                </wsp:Policy>
+                                                            </sp:Layout>
+                                                            <sp:IncludeTimestamp/>
+                                                            <sp:OnlySignEntireHeadersAndBody/>
+                                                        </wsp:Policy>
+                                                    </sp:SymmetricBinding>
+                                                    <sp:EndorsingSupportingTokens>
+                                                        <wsp:Policy>
+                                                            <sp:X509Token
+                                                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                                                <wsp:Policy>
+                                                                    <sp:RequireDerivedKeys/>
+                                                                    <sp:RequireThumbprintReference/>
+                                                                    <sp:WssX509V3Token10/>
+                                                                </wsp:Policy>
+                                                            </sp:X509Token>
+                                                        </wsp:Policy>
+                                                    </sp:EndorsingSupportingTokens>
+                                                    <sp:Wss11>
+                                                        <wsp:Policy>
+                                                            <sp:MustSupportRefKeyIdentifier/>
+                                                            <sp:MustSupportRefIssuerSerial/>
+                                                            <sp:MustSupportRefThumbprint/>
+                                                            <sp:MustSupportRefEncryptedKey/>
+                                                        </wsp:Policy>
+                                                    </sp:Wss11>
+                                                    <sp:Trust10>
+                                                        <wsp:Policy>
+                                                            <sp:MustSupportIssuedTokens/>
+                                                            <sp:RequireClientEntropy/>
+                                                            <sp:RequireServerEntropy/>
+                                                        </wsp:Policy>
+                                                    </sp:Trust10>
+                                                </wsp:Policy>
+                                            </sp:BootstrapPolicy>
+                                        </wsp:Policy>
+                                    </sp:SecureConversationToken>
+                                </wsp:Policy>
+                            </sp:ProtectionToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic256/>
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Lax/>
+                                </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp/>
+                            <sp:OnlySignEntireHeadersAndBody/>
+                        </wsp:Policy>
+                    </sp:SymmetricBinding>
+                    <sp:SignedParts>
+                        <sp:Body/>
+                        <sp:Header Name="To" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="From" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="FaultTo" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="ReplyTo" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="MessageID" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="RelatesTo" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                        <sp:Header Name="Action" Namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+                    </sp:SignedParts>
+                    <sp:Wss10>
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:Trust10>
+                        <wsp:Policy>
+                            <sp:MustSupportIssuedTokens/>
+                            <sp:RequireClientEntropy/>
+                            <sp:RequireServerEntropy/>
+                        </wsp:Policy>
+                    </sp:Trust10>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>client</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>
+                            org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-only"
+                    class="org.wso2.mercury.test.service.TestInMessageReceiver"/>
+        </messageReceivers>
+        <operation name="TestInOperation" mep="http://www.w3.org/ns/wsdl/in-only">
+            <actionMapping>urn:TestInOperation</actionMapping>
+        </operation>
+    </service>
+
+
+    <service name="SecureTestFaultInOutService">
+        <description>Test Fault In Out Service</description>
+        <!--<module ref="addressing"/>-->
+        <module ref="rampart"/>
+        <module ref="Mercury"/>
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:InitiatorToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                            <sp:RequireThumbprintReference/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:InitiatorToken>
+                            <sp:RecipientToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                            <sp:RequireThumbprintReference/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:RecipientToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:TripleDesRsa15/>
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict/>
+                                </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp/>
+                            <sp:OnlySignEntireHeadersAndBody/>
+                        </wsp:Policy>
+                    </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>client</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestFaultInOutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="TestFaultInOutOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>urn:TestFaultInOutOperation</actionMapping>
+        </operation>
+    </service>
+
+    <!-- interop tests -->
+    <service name="InteropServicePlain">
+        <description>Interop Plain Service</description>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRM">
+        <description>Interop RM Service</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRMDelay1">
+        <description>Interop RM Service Delay</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInOutDelay1MessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropServiceRMDelay" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRMDelay">
+        <description>Interop RM Service Delay</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+
+
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInOutDelayMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropServiceRMDelay" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceSecurity">
+        <description>Interop Plain Security Service</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="rampart"/>
+
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                    xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:InitiatorToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:InitiatorToken>
+                    <sp:RecipientToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:RecipientToken>
+                    <sp:AlgorithmSuite>
+                        <wsp:Policy>
+                            <sp:TripleDesRsa15/>
+                        </wsp:Policy>
+                    </sp:AlgorithmSuite>
+                    <sp:Layout>
+                        <wsp:Policy>
+                            <sp:Strict/>
+                        </wsp:Policy>
+                    </sp:Layout>
+                    <sp:IncludeTimestamp/>
+                    <sp:OnlySignEntireHeadersAndBody/>
+                </wsp:Policy>
+            </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportIssuedTokens/>
+                            <sp:RequireClientEntropy/>
+                            <sp:RequireServerEntropy/>
+                        </wsp:Policy>
+                    </sp:Trust10>
+                    <wsaw:UsingAddressing/>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:timestampTTL>303</ramp:timestampTTL>
+                        <ramp:timestampMaxSkew>1000</ramp:timestampMaxSkew>
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>useReqSigCert</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRMSecurity">
+        <description>Interop RM Service</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <module ref="rampart"/>
+
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                    xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:InitiatorToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:InitiatorToken>
+                    <sp:RecipientToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:RecipientToken>
+                    <sp:AlgorithmSuite>
+                        <wsp:Policy>
+                            <sp:TripleDesRsa15/>
+                        </wsp:Policy>
+                    </sp:AlgorithmSuite>
+                    <sp:Layout>
+                        <wsp:Policy>
+                            <sp:Strict/>
+                        </wsp:Policy>
+                    </sp:Layout>
+                    <sp:IncludeTimestamp/>
+                    <sp:OnlySignEntireHeadersAndBody/>
+                </wsp:Policy>
+            </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportIssuedTokens/>
+                            <sp:RequireClientEntropy/>
+                            <sp:RequireServerEntropy/>
+                        </wsp:Policy>
+                    </sp:Trust10>
+                    <wsaw:UsingAddressing/>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:timestampTTL>303</ramp:timestampTTL>
+                        <ramp:timestampMaxSkew>1000</ramp:timestampMaxSkew>
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>useReqSigCert</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInoutMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>
+                http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRMSecurityDelay1">
+        <description>Interop RM Service</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <module ref="rampart"/>
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                    xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <wsrm:RMAssertion xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy">
+                        <wsrm:InactivityTimeout Milliseconds="600000"/>
+                        <wsrm:AcknowledgementInterval Milliseconds="200"/>
+                    </wsrm:RMAssertion>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:InitiatorToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:InitiatorToken>
+                            <sp:RecipientToken>
+                                <wsp:Policy>
+                                    <sp:X509Token
+                                            sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                        <wsp:Policy>
+                                            <sp:WssX509V3Token10/>
+                                        </wsp:Policy>
+                                    </sp:X509Token>
+                                </wsp:Policy>
+                            </sp:RecipientToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic256/>
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict/>
+                                </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp/>
+                            <sp:OnlySignEntireHeadersAndBody/>
+                        </wsp:Policy>
+                    </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportIssuedTokens/>
+                            <sp:RequireClientEntropy/>
+                            <sp:RequireServerEntropy/>
+                        </wsp:Policy>
+                    </sp:Trust10>
+                    <wsaw:UsingAddressing/>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                        <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                        <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                        <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                        <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Name="testheader" Namespace="http://wso2.com"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:timestampTTL>303</ramp:timestampTTL>
+                        <ramp:timestampMaxSkew>1000</ramp:timestampMaxSkew>
+                        <ramp:user>client</ramp:user>
+                        <ramp:encryptionUser>useReqSigCert</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+
+                    </ramp:RampartConfig>
+
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInOutDelay1MessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>
+                http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+    <service name="InteropServiceRMSecurityDelay2">
+        <description>Interop RM Service</description>
+         <!--<module ref="addressing"/>-->
+        <module ref="Mercury"/>
+        <module ref="rampart"/>
+
+        <parameter name="transport.mail.Address">nitaserver@wso2.com</parameter>
+        <parameter name="transport.mail.Protocol">pop3</parameter>
+        <parameter name="transport.PollInterval">2</parameter>
+        <parameter name="mail.pop3.host">pop.wso2.com</parameter>
+        <parameter name="mail.pop3.user">nitaserver@wso2.com</parameter>
+        <parameter name="mail.pop3.password">NitaServer</parameter>
+
+        <wsp:Policy wsu:Id="SigEncr"
+                    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                    xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:InitiatorToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:InitiatorToken>
+                    <sp:RecipientToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                <wsp:Policy>
+                                    <sp:WssX509V3Token10/>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:RecipientToken>
+                    <sp:AlgorithmSuite>
+                        <wsp:Policy>
+                            <sp:TripleDesRsa15/>
+                        </wsp:Policy>
+                    </sp:AlgorithmSuite>
+                    <sp:Layout>
+                        <wsp:Policy>
+                            <sp:Strict/>
+                        </wsp:Policy>
+                    </sp:Layout>
+                    <sp:IncludeTimestamp/>
+                    <sp:OnlySignEntireHeadersAndBody/>
+                </wsp:Policy>
+            </sp:AsymmetricBinding>
+                    <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportRefKeyIdentifier/>
+                            <sp:MustSupportRefIssuerSerial/>
+                        </wsp:Policy>
+                    </sp:Wss10>
+                    <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <wsp:Policy>
+                            <sp:MustSupportIssuedTokens/>
+                            <sp:RequireClientEntropy/>
+                            <sp:RequireServerEntropy/>
+                        </wsp:Policy>
+                    </sp:Trust10>
+                    <wsaw:UsingAddressing/>
+                    <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Header Namespace="http://www.w3.org/2005/08/addressing"/>
+                        <sp:Header Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm"/>
+                    </sp:SignedParts>
+                    <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                        <sp:Body/>
+                    </sp:EncryptedParts>
+                    <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                        <ramp:timestampTTL>303</ramp:timestampTTL>
+                        <ramp:timestampMaxSkew>1000</ramp:timestampMaxSkew>
+                        <ramp:user>service</ramp:user>
+                        <ramp:encryptionUser>useReqSigCert</ramp:encryptionUser>
+                        <ramp:passwordCallbackClass>org.wso2.mercury.test.security.PWCallBackHandler</ramp:passwordCallbackClass>
+                        <ramp:signatureCrypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:signatureCrypto>
+                        <ramp:encryptionCypto>
+                            <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">
+                                    JKS</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.file">
+                                    service.jks</ramp:property>
+                                <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">
+                                    apache</ramp:property>
+                            </ramp:crypto>
+                        </ramp:encryptionCypto>
+                    </ramp:RampartConfig>
+                </wsp:All>
+            </wsp:ExactlyOne>
+        </wsp:Policy>
+
+        <messageReceivers>
+            <messageReceiver
+                    mep="http://www.w3.org/2004/08/wsdl/in-out"
+                    class="org.wso2.mercury.test.service.TestInOutDelayMessageReceiver"/>
+        </messageReceivers>
+        <operation name="InteropPlainOperation" mep="http://www.w3.org/ns/wsdl/in-out">
+            <actionMapping>
+                http://rep.oio.dk/oiosi.ehandel.gov.dk/xml/schemas/2007/09/01/Invoice201Interface/SubmitInvoiceRequest</actionMapping>
+        </operation>
+    </service>
+
+</serviceGroup>

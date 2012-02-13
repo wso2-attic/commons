@@ -1,0 +1,274 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Tryit</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Tryit</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/services/digit2image?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeTextPresent</td>
+	<td>Try the digit2image service.</td>
+	<td>digit2imageTitle</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_digit2image</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//tr[4]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//tr[4]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/exchangeRate?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Try the exchangeRate service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_convert_fromCurrency_0</td>
+	<td>ALL</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_convert_toCurrency_0</td>
+	<td>USD</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_convert</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>0.0???</td>
+	<td>500</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>0.0???</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/formulaFlicks?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_videoList</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//div[1]/table/tbody/tr[2]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//div[1]/table/tbody/tr[2]/td[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/storexml?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_store_name_0</td>
+	<td>store1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_store_value_0</td>
+	<td>&lt;x&gt;test&lt;/x&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_store</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/sudoku?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_newpuzzle_options_0</td>
+	<td>&lt;options&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;difficulty&gt;trivial&lt;/difficulty&gt; ?<br />&nbsp;&nbsp;&nbsp;&nbsp;&lt;symmetrical&gt;true&lt;/symmetrical&gt; ?<br />&lt;/options&gt;</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_newpuzzle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>console_newpuzzle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>console_newpuzzle</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Try the sudoku service.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/TomatoTube?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_readTomatoTubeFeed_mode_0</td>
+	<td>dvd</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_readTomatoTubeFeed</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//tr[3]/td[2]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//tr[3]/td[2]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/version?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_getVersion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Try the version service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>console_getVersion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>console_getVersion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/wso2builds?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>input_namedBuild_includeDetails_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_namedBuild</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Try the wso2builds service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//tr[4]/td[2]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//tr[4]/td[2]/div/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/yahooGeoCode?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_geocode_street_0</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>input_geocode_city_0</td>
+	<td>flower</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>button_geocode</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTitle</td>
+	<td>Try the yahooGeoCode service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>//span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//span[2]</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

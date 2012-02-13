@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:esb="http://esb.test.web.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <esb:div>
+         <!--Optional:-->
+         <esb:x>10</esb:x>
+         <!--Optional:-->
+         <esb:y>2</esb:y>
+      </esb:div>
+   </soapenv:Body>
+</soapenv:Envelope>

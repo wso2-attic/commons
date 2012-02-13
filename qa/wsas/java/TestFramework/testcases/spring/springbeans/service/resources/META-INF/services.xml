@@ -1,0 +1,25 @@
+<serviceGroup>
+
+<service name="personBean" scope="application">
+<schema elementFormDefaultQualified="false"/>
+<messageReceivers>
+<messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver" /><messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" /></messageReceivers>
+
+<parameter locked="true" name="ServiceObjectSupplier">org.wso2.carbon.springservices.spring.GenericApplicationContextSupplier</parameter>
+
+<parameter locked="true" name="SpringBeanName">personBean</parameter>
+<parameter locked="true" name="SpringContextLocation">spring/context.xml</parameter>
+</service>
+
+<service name="echoBean">
+<schema elementFormDefaultQualified="false"/>
+<messageReceivers>
+<messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver" /><messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" /></messageReceivers>
+
+<parameter locked="true" name="ServiceObjectSupplier">org.wso2.carbon.springservices.GenericApplicationContextSupplier</parameter>
+
+<parameter locked="true" name="SpringBeanName">echoBean</parameter>
+<parameter locked="true" name="SpringContextLocation">spring/context.xml</parameter>
+</service>
+
+</serviceGroup>

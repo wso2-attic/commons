@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://services.samples/xsd">
+<soapenv:Body>
+<xsd:buyStocks>
+<order><symbol>IBM</symbol><buyerID>asankha</buyerID><price>140.34</price><volume>2000</volume></order>
+<order><symbol>MSFT</symbol><buyerID>ruwan</buyerID><price>23.56</price><volume>8030</volume></order>
+<order><symbol>SUN</symbol><buyerID>indika</buyerID><price>14.56</price><volume>5000000</volume></order>
+</xsd:buyStocks>
+</soapenv:Body>
+</soapenv:Envelope>

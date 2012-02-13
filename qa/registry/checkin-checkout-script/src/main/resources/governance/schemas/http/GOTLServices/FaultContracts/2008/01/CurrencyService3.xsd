@@ -1,0 +1,11 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://GOTLServices.FaultContracts/2008/01" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://GOTLServices.FaultContracts/2008/01">
+<xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" schemaLocation="../../../../schemas/microsoft/com/2003/10/Serialization/CurrencyService.xsd"/>
+<xs:complexType name="DefaultFaultContract">
+<xs:sequence>
+<xs:element name="ErrorId" type="xs:int"/>
+<xs:element name="ErrorMessage" nillable="true" type="xs:string"/>
+<xs:element name="CorrelationId" type="ser:guid"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="DefaultFaultContract" nillable="true" type="tns:DefaultFaultContract"/>
+</xs:schema>

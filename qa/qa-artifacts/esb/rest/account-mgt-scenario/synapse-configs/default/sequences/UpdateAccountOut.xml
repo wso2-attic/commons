@@ -1,0 +1,20 @@
+<sequence name="UpdateAccountOut" xmlns="http://ws.apache.org/ns/synapse">
+	<filter source="//m:return" regex="true" xmlns:m="http://mgt.accounts.etrade.com">
+		<then>
+			<payloadFactory>
+				<format>
+					<status xmlns="">Account updated</status>
+				</format>
+			</payloadFactory>
+		</then>
+		<else>
+			<property name="HTTP_SC" scope="axis2" value="404" />
+			<payloadFactory>
+				<format>
+					<fault xmlns="">Specified resource does not exist</fault>
+				</format>
+			</payloadFactory>
+		</else>
+	</filter>
+	<send />
+</sequence>

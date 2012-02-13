@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>OperationName</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">OperationName</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/services/OperationNameNOTSET?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=getVersion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/OperationNameSET?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=GETVERSION</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/services/OperationNameTwice?tryit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=GET_VERSION</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>link=GETVERSION</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

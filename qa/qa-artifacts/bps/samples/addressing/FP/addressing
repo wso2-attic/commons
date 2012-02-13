@@ -1,0 +1,113 @@
+
+-global addressing enabled and addressing enabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287057039663/7278107356</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/output1</wsa:Action>
+      <wsa:RelatesTo>http://identifiers.wso2.com/messageid/1287057039663/7278107356</wsa:RelatesTo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <functionProcessServiceResponse xmlns="http://www.example.org/messages">	  			
+         <tns:return xmlns:tns="http://www.example.org/messages">3</tns:return>			
+      </functionProcessServiceResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+---------------------------------------------------------------------------------------
+--global addressing enabled and addressing disabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287057813563/7477581453</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+-------------------------------------------------------------------------------------------
+-global addressing disabled and addressing disabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287059162838/5583727472</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header />
+   <soapenv:Body>
+      <functionProcessServiceResponse xmlns="http://www.example.org/messages">	  			
+         <tns:return xmlns:tns="http://www.example.org/messages">3</tns:return>			
+      </functionProcessServiceResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+--------------------------------------------------------------------------------------------------
+-global addressing disabled and addressing enabled in deploy.xml
+
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+   <s:Header>
+      <wsa:To>http://10.100.1.175:9763/services/FunctionProcessServiceService.FunctionProcessServiceServicehttpFunctionProcessServiceBindingEndpoint/</wsa:To>
+      <wsa:ReplyTo>
+         <wsa:Address>http://www.w3.org/2005/08/addressing/anonymous</wsa:Address>
+      </wsa:ReplyTo>
+      <wsa:MessageID>http://identifiers.wso2.com/messageid/1287059370792/2471350278</wsa:MessageID>
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/input1</wsa:Action>
+   </s:Header>
+   <s:Body>
+      <p:functionProcessServiceRequest xmlns:p="http://www.example.org/messages">
+         <param0 xmlns="http://www.example.org/messages">1</param0>
+         <param1 xmlns="http://www.example.org/messages">2</param1>
+      </p:functionProcessServiceRequest>
+   </s:Body>
+</s:Envelope>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+      <wsa:Action>http://FunctionProcessService.wsdl/FunctionProcessServicePortType/output1</wsa:Action>
+      <wsa:RelatesTo>http://identifiers.wso2.com/messageid/1287059370792/2471350278</wsa:RelatesTo>
+   </soapenv:Header>
+   <soapenv:Body>
+      <functionProcessServiceResponse xmlns="http://www.example.org/messages">	  			
+         <tns:return xmlns:tns="http://www.example.org/messages">3</tns:return>			
+      </functionProcessServiceResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+

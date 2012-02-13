@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="CustomerInfo"
+    targetNamespace="http://wso2.org/bps/samples/CustomerInfo"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:tns="http://wso2.org/bps/samples/CustomerInfo" xmlns:ns0="http://wso2.org/bps/samples/loan_process/schema">
+    <import namespace="http://wso2.org/bps/samples/CustomerInfo" location="CustomerInfo.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="CustomerInfoPL" partnerLinkType="tns:CustomerInfo" myRole="CustomerInfoPortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="output" messageType="tns:getCustomerSSNResponse"/>
+        <variable name="input" messageType="tns:getCustomerSSNRequest"/>
+    </variables>
+    <sequence>
+        <receive name="ReceiveSSNRequest" createInstance="yes" partnerLink="CustomerInfoPL" operation="getCustomerSSN" portType="tns:CustomerInfoPortType" variable="input"/>
+        <assign name="AssignSSN">
+            <copy>
+                <from>
+                    <literal>
+                        <ns0:CustomerSSN>
+                            <ns0:SSN></ns0:SSN>
+                        </ns0:CustomerSSN>
+                    </literal>
+                </from>
+                <to>$output.part</to>
+            </copy>
+            <copy>
+                <from>'43235678SSN'</from>
+                <to>$output.part/ns0:SSN</to>
+            </copy>
+        </assign>
+        <reply name="ReplySSN" partnerLink="CustomerInfoPL" operation="getCustomerSSN" portType="tns:CustomerInfoPortType" variable="output"/>
+    </sequence>
+</process>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="FunctionProcessService" targetNamespace="http://FunctionProcessService.wsdl"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://FunctionProcessService.wsdl" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:msgs="http://www.example.org/messages">
+    <wsdl:types>
+      <xsd:schema xmlns:ns="http://ws.apache.org/axis2" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://www.example.org/messages">
+         <xsd:element name="functionProcessServiceRequest">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="param0" type="xsd:int"/>
+                  <xsd:element minOccurs="0" name="param1" type="xsd:int"/>
+                  <!--<xsd:element minOccurs="0" name="param2" type="xsd:int"/>-->
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="functionProcessServiceResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element minOccurs="0" name="return" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:schema>
+   </wsdl:types>
+    <message name="FunctionProcessServiceOperationRequest">
+        <part name="functionProcessServiceRequest" element="msgs:functionProcessServiceRequest"/>
+    </message>
+    <message name="FunctionProcessServiceOperationResponse">
+        <part name="functionProcessServiceResponse" element="msgs:functionProcessServiceResponse"/>
+    </message>
+    <portType name="FunctionProcessServicePortType">
+        <operation name="FunctionProcessServiceOperation">
+            <input name="input1" message="tns:FunctionProcessServiceOperationRequest"/>
+            <output name="output1" message="tns:FunctionProcessServiceOperationResponse"/>
+        </operation>
+    </portType>
+    <binding name="FunctionProcessServiceBinding" type="tns:FunctionProcessServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="FunctionProcessServiceOperation">
+            <soap:operation/>
+            <input name="input1">
+                <soap:body use="literal"/>
+            </input>
+            <output name="output1">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="FunctionProcessServiceService">
+        <port name="FunctionProcessServicePort" binding="tns:FunctionProcessServiceBinding">
+            <soap:address location="http://localhost:8080/ode/processes/FunctionProcessServicePort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="FunctionProcessService">
+        <plnk:role name="FunctionProcessServicePortTypeRole" portType="tns:FunctionProcessServicePortType"/>
+    </plnk:partnerLinkType>
+</definitions>

@@ -1,0 +1,27 @@
+Retrieve property values of Synapse level
+=========================================
+
+Step to run the test
+--------------------
+1. Deploy the synapse.xml
+2. Start the backend server which you need to talk to 
+3. Invoke the client using the following command
+
+If you are using a Javabench/Curl client
+
+java -jar benchmark.jar -p requests/echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8" -H "Priority: abc"  http://localhost:8280/
+
+NOTE: echoString.xml is located at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/request-xmls
+
+Expected Results : You should be able to see how the value of the property content_type is set to $trp:Content-Type. This will retieve the actual content type from the HTTP header and set it to the property new_content_type (new_content_type = text/xml; charset=UTF-8)
+
+E.g.:- 
+=====================================================================================================================================================================
+[2010-07-30 12:40:05,815] DEBUG - PropertyMediator Start : Property mediator
+[2010-07-30 12:40:05,815] DEBUG - PropertyMediator Setting property : content_type at scope : transport to : text/xml; charset=UTF-8 (i.e. result of expression : $trp:Content-Type)
+[2010-07-30 12:40:05,816] DEBUG - PropertyMediator End : Property mediator
+[2010-07-30 12:40:05,816] DEBUG - LogMediator Start : Log mediator
+[2010-07-30 12:40:05,816]  INFO - LogMediator new_content_type = text/xml; charset=UTF-8
+[2010-07-30 12:40:05,816] DEBUG - LogMediator End : Log mediator
+=====================================================================================================================================================================
+

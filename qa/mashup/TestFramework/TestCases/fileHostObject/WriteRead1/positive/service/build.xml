@@ -1,0 +1,20 @@
+<!-- ========================================
+ * Purpose	:	This is a build files to call deploy the service to test "file" host object of WSO2 Mashup Server.
+ * Author	: 	Yumani Ranaweera
+============================================-->
+
+<project name="WriteRead1Service" default="deploy.service">
+
+	<!-- where the base directory is -->        
+    <property name="base.dir" value="${project.base.dir}\fileHostObject\WriteRead1\positive\service"/>
+	
+	<!-- where the MASHUP HOME directory is -->
+    <property name="MASHUP_HOME" value="${mashup.envt.MASHUP_HOME}"/>
+
+	<!-- ========== deploy.service Target ===================================-->          
+    <target name="deploy.service">
+		<echo message="---------------------------- Deploying WriteRead1.js -----------------------------------"/>	
+		<copy file="${base.dir}/src/WriteRead1.js" tofile="${MASHUP_HOME}/scripts/samples/WriteRead1.js" overwrite="true"/>
+    </target>
+    
+</project>

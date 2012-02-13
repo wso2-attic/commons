@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Google Contacts Gadget">
+
+  <Require feature="opensocial-0.7"/>
+
+  <OAuth>
+    <Service name="google">
+    <Access url="https://www.google.com/accounts/OAuthGetAccessToken" method="GET"/>
+
+    <Request url="https://www.google.com/accounts/OAuthGetRequestToken?scope=http://www.google.com/m8/feeds/" method="GET"/>
+
+    <Authorization url="https://www.google.com/accounts/OAuthAuthorizeToken"/>
+    </Service>
+  </OAuth>
+
+  </ModulePrefs>
+  <Content type="html">
+  <![CDATA[
+
+<!-- ALm6fM0s4_q-So13z-anWFkTy4SqM-ClLBxqkAbb_p_87pBVDZFpuQO9VP1NvfDNAE6T7vLxkB-JB0locJPYVi9ZKmFtHCIpwaKGKPKBWkA2hwKqOsycRuw8qADXznihhhr0yiqd8e4HVHVxRlJxg4x2QU-PI2zTDQ== -->
+
+    <style>
+    #main {
+        margin: 0px;
+        padding: 0px;
+        font-size: small;
+    }
+    </style>
+
+    <div id="main" style="display: none">
+    </div>
+
+    <div id="approval" style="display: none">
+      <img src="http://dirk.balfanz.googlepages.com/new.gif">
+      <a id="personalize"
+        onclick="javascript:showOneSection('waiting'); return true"
+        target="approve">Personalize this gadget</a>
+    </div>
+
+    <div id="waiting" style="display: none">
+      Please click
+      <a onclick="javascript:fetchData()">I've approved access</a>
+      once you've approved access to your data.
+    </div>
+
+    <script type="text/javascript">
+      function showOneSection(toshow) {
+        var sections = [ 'main', 'approval', 'waiting' ];
+        for (var i=0; i < sections.length; ++i) {
+          var s = sections[i];
+          var el = document.getElementById(s);
+          if (s === toshow) {
+            el.style.display = "block";
+          } else {
+            el.style.display = "none";
+          }
+        }
+      }
+
+      function showResults(result) {
+        showOneSection('main');
+
+        var titleElement = document.createElement('div');
+
+        var nameNode = document.createTextNode(result.feed.title.$t);
+
+        titleElement.appendChild(nameNode);
+
+        document.getElementById("main").appendChild(titleElement);
+        document.getElementById("main").appendChild(document.createElement("br"));
+
+        list = result.feed.entry;
+
+        for(var i = 0; i < list.length; i++) {
+
+          entry = list[i];
+
+          var divElement = document.createElement('div');
+          divElement.setAttribute('class', 'name');
+
+          var valueNode = document.createTextNode(entry.gd$email[0].address);
+
+          divElement.appendChild(nameNode);
+          divElement.appendChild(valueNode);
+
+          document.getElementById("main").appendChild(divElement);
+        }
+      }
+
+      function fetchData() {
+        var params = {};
+        url = "http://www.google.com/m8/feeds/contacts/default/base?alt=json";
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.OAUTH;
+        params[gadgets.io.RequestParameters.OAUTH_SERVICE_NAME] = "google";
+        params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+
+        gadgets.io.makeRequest(url, function (response) {
+          if (response.oauthApprovalUrl) {
+            var personalize = document.getElementById('personalize');
+            personalize.href = response.oauthApprovalUrl;
+            showOneSection('approval');
+          } else if (response.data) {
+            showOneSection('main');
+            showResults(response.data);
+          } else {
+	    errorStr = response.oauthErrorText;
+            var main = document.getElementById('main');
+            var wtf = document.createTextNode('Something went wrong: ' + errorStr);
+            main.appendChild(wtf);
+            showOneSection('main');
+          }
+        }, params);
+      }
+
+      gadgets.util.registerOnLoadHandler(fetchData);
+    </script>
+        ]]>
+  </Content>
+</Module>

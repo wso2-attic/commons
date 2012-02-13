@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="My Friends">
+    <Require feature="opensocial-0.8"/>
+    <Optional feature="content-rewrite">
+      <Param name="include-tags"></Param>
+    </Optional>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+      <script type="text/javascript"
+          src="http://ostemplates-demo.appspot.com/ostemplates.js"></script>
+
+      <script type="text/os-template">
+        <b>${owner.displayName}'s Friends</b>
+        <ul>
+          <li repeat="friends">${displayName}</li>
+        </ul>
+      </script>
+
+      <script type="text/javascript">
+        function loadData() {
+          var req = opensocial.newDataRequest();
+          req.add(req.newFetchPersonRequest('OWNER'), 'owner');
+          var idSpecFriends = opensocial.newIdSpec(
+              {'userId':'OWNER', 'groupId':'FRIENDS'});
+          req.add(req.newFetchPeopleRequest(idSpecFriends), 'friends');
+          req.send(function(data) {
+            os.Container.processDocument(data);
+          });
+        }
+        gadgets.util.registerOnLoadHandler(loadData);
+      </script>
+    ]]>
+
+  </Content>
+</Module>

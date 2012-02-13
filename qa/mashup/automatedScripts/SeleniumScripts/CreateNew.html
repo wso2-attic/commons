@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CreateNew</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CreateNew</td></tr>
+</thead><tbody>
+<tr>
+	<td>click</td>
+	<td>//img[@title='Create a new Mashup']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCursorPosition</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>txtMashupName</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>alertButton</td>
+	<td>createNew1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='button']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>alertMessageBoxMessageArea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>alertMessageBoxMessageArea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>The service was successfully created. It will be listed in the 'Available Mashups' list soon.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>alertBoxButton</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

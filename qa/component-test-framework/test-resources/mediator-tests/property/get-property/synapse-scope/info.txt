@@ -1,0 +1,20 @@
+Step to run the test
+--------------------
+1. Deploy the synapse.xml
+2. Start the backend server which you need to talk to 
+3. Invoke the client using the following command
+
+If you are using a Javabench/Curl client
+
+java -jar benchmark.jar -p echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8"  http://localhost:8280/
+
+NOTE: echoString.xml is located at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/request-xmls
+
+Expected Results : Through the Log mediator, the values of the properties defined should be displayed properly.
+
+E.g.:- 
+=====================================================================================================================================================================
+INFO - LogMediator date = 7/28/10 2:13 PM, time = 1280306612698, To = http://localhost:9765/services/Axis2Service, Action = urn:echoString, MessageID = urn:uuid:01C552D89B3A2C5D441280300868447, messageFormat = soap11, operationName = mediate
+=====================================================================================================================================================================
+
+NOTE : If a sequence is invoked the operation name will be printed as 'mediate'. If you invoke a Proxy service with a WSDL, then the operation name would be 'echoString'

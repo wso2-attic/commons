@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<performance_test>
+	<product1>		
+		<product_name>wso2wsas-3.2.0</product_name>
+        <server-config>
+            <transport>
+                <http>
+			        <host>localhost</host>
+			        <port>9764</port>
+                    <uri>/services/POService</uri>
+                </http>
+            </transport>
+		</server-config>	
+	</product1>
+	<scenario>
+		<name>wso2wsas-3.2.0</name>		
+		<method>POST</method>
+		<timeout>30</timeout>
+		<high_rate>1</high_rate>
+		<low_rate>1</low_rate>
+		<rate_step>1</rate_step>
+		<max_piped_calls>200</max_piped_calls>		
+		<max_connections>1</max_connections>				
+		<no_of_sessions>4</no_of_sessions>
+		<user_think_time>0</user_think_time>	
+	</scenario>
+	<client>10.0.0.4:4600</client>
+    	<client>10.0.0.2:4600</client>
+	<extra>
+        <content_type>application/soap+xml; charset=utf-8; action=m:buyStocks</content_type>
+		<debug>true</debug>
+		<sort>true</sort>	
+	</extra>
+</performance_test>
+
+

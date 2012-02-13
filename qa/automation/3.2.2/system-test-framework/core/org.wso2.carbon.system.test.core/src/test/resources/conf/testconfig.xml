@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario className="aaa">
+        <description>App Server concurrent web app uploading</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="1">
+                        <war>
+                            <name>SimpleServlet.war</name>
+                        </war>
+                    </artifact>
+                    <artifact userId="2">
+                        <war>
+                            <name>myServletWAR.war</name>
+                        </war>
+                        <car>
+                            <name>AxisCApp-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                    <artifact userId="3">
+                        <war>
+                            <name>SimpleServlet.war</name>
+                        </war>
+                    </artifact>
+                </product>
+                <product productName="ESB">
+                    <artifact userId="2">
+                        <car>
+                            <name>DemoProxy-1.0.0.car</name>
+                            <name>ESBproject1-1.0.0.car</name>
+                            <name>ESBproject2-1.0.0.car</name>
+                            <name>ESBproject3-1.0.0.car</name>
+                        </car>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+     <scenario className="org.wso2.stratos.automation.test.as.StratosAxis2ServiceTest">
+        <description>App Server concurrent web app uploading</description>
+        <artifacts>
+            <products>
+                <product productName="AS">
+                    <artifact userId="1">
+                        <aar>
+                            <name>Axis2Service.aar</name>
+                        </aar>
+                    </artifact>
+                </product>
+            </products>
+        </artifacts>
+    </scenario>
+</scenarios>

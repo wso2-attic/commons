@@ -1,0 +1,86 @@
+<module name="Mercury" class="org.wso2.mercury.modules.MercuryModule">
+    <Description>
+        This module implements WS-ReliableMessaging for Axis2. Implementation is in progress for WSRM 1.0. inculding the
+        piggy back model
+    </Description>
+
+    <!-- RMS sequence parameters all are in milliseconds-->
+    <parameter name="rmsSequenceTimeout" locked="false">600000</parameter>
+    <parameter name="rmsSequenceRetransmitTime" locked="false">5000</parameter>
+    <parameter name="rmsSequenceWorkerSleepTime" locked="false">1000</parameter>
+    <parameter name="rmsMaximumRetransmitCount" locked="false">10</parameter>
+
+    <!-- RMD sequence parameters all are in milliseconds-->
+    <parameter name="rmdSequenceTimeout" locked="false">600000</parameter>
+    <parameter name="rmdSequenceRetransmitTime" locked="false">5000</parameter>
+    <parameter name="rmdSequenceWorkerSleepTime" locked="false">1000</parameter>
+
+    <!-- Invoker parameters all are in milliseconds-->
+    <parameter name="invokerTimeout" locked="false">600000</parameter>
+    <parameter name="invokerWorkerSleepTime" locked="false">1000</parameter>
+
+    <parameter name="notifyThreads" locked="false">true</parameter>
+    <parameter name="buildMessageWithoutWaiting" locked="false">false</parameter>
+
+
+    <parameter name="sequenceRemovalWorkerSleepTime" locked="false">30000</parameter>
+
+
+    <!--<parameter name="rmPersistanceManager" locked="false">org.wso2.mercury.persistence.hibernate.HibernatePersistenceManager</parameter>-->
+    <!--<parameter name="rmSecurityManager" locked="false">org.wso2.mercury.security.rampart.RampartBasedRMSecurityManager</parameter>-->
+    <parameter name="enforceRM" locked="false">false</parameter>
+
+    <InFlow>
+        <handler name="MercurySequenceIDDispatcher" class="org.wso2.mercury.handlers.MercurySequenceIDDispatcher">
+            <order phase="Addressing" after="AddressingBasedDispatcher"/>
+        </handler>
+        <handler name="MercuryDuplicationHandler" class="org.wso2.mercury.handlers.MercuryDuplicationHandler">
+            <order phase="Addressing" after="MercurySequenceIDDispatcher"/>
+        </handler>
+        <handler name="MercuryInHandler" class="org.wso2.mercury.handlers.MercuryInHandler">
+            <order phase="RMPhase"/>
+        </handler>
+    </InFlow>
+
+    <OutFlow>
+        <handler name="MercuryOutHandler" class="org.wso2.mercury.handlers.MercuryOutHandler">
+            <order phase="RMPhase"/>
+        </handler>
+    </OutFlow>
+
+    <InFaultFlow>
+        <handler name="MercuryInHandler" class="org.wso2.mercury.handlers.MercuryInHandler">
+            <order phase="RMPhase"/>
+        </handler>
+    </InFaultFlow>
+
+    <OutFaultFlow>
+        <handler name="MercuryOutHandler" class="org.wso2.mercury.handlers.MercuryOutHandler">
+            <order phase="RMPhase"/>
+        </handler>
+    </OutFaultFlow>
+
+
+    <operation name="MercuryOperationInOnly" mep="http://www.w3.org/2006/01/wsdl/in-only">
+        <messageReceiver class="org.wso2.mercury.receivers.RMDummyMessageReceiver"/>
+        <!-- namespaces for the 2005-02 spec -->
+        <actionMapping>http://schemas.xmlsoap.org/ws/2005/02/rm/SequenceAcknowledgement</actionMapping>
+        <actionMapping>http://schemas.xmlsoap.org/ws/2005/02/rm/TerminateSequence</actionMapping>
+        <actionMapping>http://schemas.xmlsoap.org/ws/2005/02/rm/LastMessage</actionMapping>
+        
+    </operation>
+
+    <operation name="MercuryOperationInOut" mep="http://www.w3.org/2006/01/wsdl/in-out">
+        <messageReceiver class="org.wso2.mercury.receivers.RMDummyMessageReceiver"/>
+        <!-- namespaces for the 2005-02 spec -->
+        <actionMapping>http://schemas.xmlsoap.org/ws/2005/02/rm/CreateSequence</actionMapping>
+        <actionMapping>http://schemas.xmlsoap.org/ws/2005/02/rm/AckRequested</actionMapping>
+    </operation>
+
+    <!-- this operation is used in starting the message sequence -->
+    <operation name="MercuryOperationOutOnly" mep="http://www.w3.org/2006/01/wsdl/out-only">
+        <messageReceiver class="org.wso2.mercury.receivers.RMDummyMessageReceiver"/>
+
+    </operation>
+
+</module>

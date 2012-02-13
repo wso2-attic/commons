@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<Module>
+    <ModulePrefs title="SOA Platform Blog"
+                 description="SOA blog articles Syndicated via WSO2 Blogs"
+                 author="WSO2 Gadget Server"
+                 author_email="contact@wso2.org"
+                 author_link="http://wso2.org/"
+                 title_url="http://wso2.org/"
+                 height="100"
+                 scrolling="true">
+        <Require feature="dynamic-height"/>
+        <Require feature="settitle"/>
+        <Require feature="setprefs"/>
+    </ModulePrefs>
+    <UserPref name="feed_url" display_name="Feed URL:"
+              default_value="http://soa-platform.blogspot.com/feeds/posts/default/"/>
+    <UserPref name="show_date" display_name="Show Dates?" datatype="bool" default_value="true"/>
+    <UserPref name="num_entries" display_name="Number of Entries:" default_value="5"/>
+    <Content type="html">
+    <![CDATA[
+    <style>
+        #content_div p{font-size: 90%;}
+        #content_div p1{font-size:large; margin-left: 140px;}
+        #content_div div {margin-top: 8px;}
+
+        #content_div {font-size: 80%;  margin: 3px; background-color: #FFF; padding: 2px; padding-top: 0px; margin-top: 0px;}
+        #content_div a:link, a:visited, a:active {font-size: 90%;}
+        .date{font-size: 70%; margin-left: 17px;}
+        #feedTitle{display:block; font-size: 100%;}
+        .item{border-color:#D1D3D4 #FFFFFF;border-style:dotted solid;border-width:1px;padding:4px 0;}
+        .summary{font-style : italic;}
+    </style>
+    <script type="text/javascript">
+        var prefs = new gadgets.Prefs();
+        var showdate = prefs.getBool('show_date');
+        var entries = prefs.getInt('num_entries');
+        var feedUrl = prefs.getString('feed_url');
+
+        if (entries > 100)
+        {
+            alert('You cannot display more than 100 entries.');
+            entries = 100;
+        }
+
+        var params = {};
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
+        params[gadgets.io.RequestParameters.NUM_ENTRIES] = entries;
+        params[gadgets.io.RequestParameters.GET_SUMMARIES] = 'true';
+        gadgets.io.makeRequest(feedUrl, readFeed, params);
+
+        function readFeed(feed) {
+            if (feed == null) {
+                alert('There is no data.');
+                return;
+            }
+
+            // Start building HTML string that will be displayed in gadget.
+            gadgets.window.setTitle(feed.data.Title + ' | ' + feed.data.Description);
+            var html = '';
+            // Access the data for a given entry
+            if (feed.data.Entry) {
+                for (var i = 0; i < feed.data.Entry.length; i++) {
+                    html += '<div id="item-' + i + '">'
+                            + '<table id="feedTitle"><tr><td><a href="javascript:showContent(' + i + ')" style="text-decoration:none;">+</a></td>'
+                            + '<td><a target="_blank" href="' + feed.data.Entry[i].Link + '">'
+                            + feed.data.Entry[i].Title
+                            + '</a></td></tr></table>';
+
+                    if (showdate) {
+                        // The feed entry Date field contains the timestamp in seconds
+                        // since Jan. 1, 1970. To convert it to the milliseconds needed
+                        // to initialize the JavaScript Date object with the correct date,
+                        // multiply by 1000.
+                        var milliseconds = (feed.data.Entry[i].Date) * 1000;
+                        var date = new Date(milliseconds);
+                        html += '<span class="date">';
+                        html += date.toLocaleDateString();
+                        html += " ";
+                        html += date.toLocaleTimeString();
+                        html += '</span>';
+                    }
+                    var sumString = feed.data.Entry[i].Summary;
+                    html += '<div class="summary" id="sum-' + i + '" style="display:none;">' + sumString + '</div>';
+                    html += '</div>';
+                }
+            }
+            document.getElementById('content_div').innerHTML = html;
+            setTimeout("gadgets.window.adjustHeight()",100);
+
+        }
+
+        function showContent(id) {
+            if (document.getElementById('sum-' + id).style.display == '') {
+                document.getElementById('sum-' + id).style.display = 'none';
+                document.getElementById('item-' + id).className = '';
+            } else {
+                document.getElementById('sum-' + id).style.display = '';
+                document.getElementById('item-' + id).className = 'item';
+            }
+            gadgets.window.adjustHeight();
+        }
+  </script>
+    <div id="content_div"><img src="waiting.gif" alt="" /> loading...</div>
+    ]]>
+
+    </Content>
+</Module>

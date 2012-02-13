@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>system-test</artifactId>
+        <version>3.2.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.wso2.carbon</groupId>
+    <artifactId>system-test-scenarios</artifactId>
+    <version>3.2.1</version>
+    <packaging>jar</packaging>
+
+    <name>WSO2 Carbon - System Test Cases</name>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>system-test-command</artifactId>
+            <classifier>tests</classifier>
+            <version>3.2.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>system-test-core</artifactId>
+            <version>3.2.1</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>        
+    </dependencies>
+   
+</project>

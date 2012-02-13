@@ -1,0 +1,334 @@
+<?xml version="1.0"?>
+<greg_tests>
+  <directories>
+    <carbon_home>/home/krishantha/product/greg/3.6.0/wso2greg-3.6.0</carbon_home>
+    <test_home>/home/krishantha/product/greg/3.6.0/wso2greg-3.6.0/bin/resources</test_home>
+    <working_home>/home/krishantha/product/greg/3.6.0/wso2greg-3.6.0/bin</working_home>
+  </directories>
+  <tests>
+    <test1>
+        <name>chekout registry root</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+   </test1>
+  <test2>
+        <name>update registry root</name>
+        <operation>update</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test2>
+    <test3>
+        <name>checkin to registry root</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test3>
+    <test4>
+        <name>chekout a registry collection</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/governance-directory</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename></dumpfilename>
+    </test4>
+    <test5>
+        <name>chekout registry root to a dump file</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/dumpfiledir</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename>testdumpfile.dump</dumpfilename>
+    </test5>
+    <test6>
+        <name>chekout registry collection to a dump file</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/dumpcollection</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename>testdumpcollection.dump</dumpfilename>
+    </test6>
+     <test7>
+        <name>checkin dump file to registry root - depends on test5</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/dumpfiledir</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename>testdumpfile.dump</dumpfilename>
+    </test7>
+     <test8>
+        <name>checkin dump file to registry collection - depends on test6</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/dumpcollection</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename>testdumpcollection.dump</dumpfilename>
+    </test8>
+   <test9>
+        <name>update registry collection - depends on test4</name>
+        <operation>update</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/governance-directory</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename></dumpfilename>
+    </test9>
+     <test10>
+        <name>checkin new file to registry root</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test10>
+    <test11>
+        <name>checkout updates to registry root- depends on test10</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test11>
+    <test12>
+        <name>update a file and checkin to registry root - depends on test11</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test12>
+    <test13>
+        <name>checkout updated content of root - depends on test12</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate/newupdate2</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test13>
+    <test14>
+        <name>checkin file with colon to registry root</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test14>
+    <test15>
+        <name>checkout resources with colon in name- depends on test14</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate-colon1</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test15>
+    <test16>
+        <name>checkin file names with spaces to registry root</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test16>
+    <test17>
+        <name>checkout file with spaces- depends on test16</name>
+        <operation>checkout</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate-space</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test17>
+    <test18>
+        <name>checkin files to a collection - depends on test17</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate-space</directory>
+        <collectionname>/_system/local/newCollection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test18>
+    <test19>
+        <name>checkin after file deletion - depends on test18</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate-space</directory>
+        <collectionname>/_system/local/newCollection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test19>
+    <test20>
+        <name>checkout after file deletion - depends on test19</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/newupdate-space/new</directory>
+        <collectionname>/_system/local/newCollection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test20> 
+    <test21>
+        <name>checkin collection</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test21-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test21>
+    <test22>
+        <name>checkout collection - depends on test21</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test22-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test22>
+    <test23>
+        <name>checkin collection after updating- depends on test22</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test22-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test23>
+    <test24>
+        <name>checkout collection after updating- depends on test23</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test24-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test24>
+    <test25>
+        <name>checkin collection after deleting - depends on test24</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test22-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test25>
+    <test26>
+        <name>checkout collection after deleting - depends on test25</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test26-collection</directory>
+        <collectionname>/_system/local/test21-collection</collectionname>
+        <dumpfilename></dumpfilename>
+    </test26>
+    <test27>
+        <name>checkin WSDLS, Schemas, Endpoints, Policies, Services</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test27-collection</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename></dumpfilename>
+    </test27> 
+     <test28>
+        <name>checkout WSDLS, Schemas, Endpoints, Policies, Services</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test28-collection</directory>
+        <collectionname>/_system/governance</collectionname>
+        <dumpfilename></dumpfilename>
+    </test28> 
+    <test29>
+        <name>checkin a collection with symlinks</name>
+        <operation>ci</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test29-collection</directory>
+        <collectionname>/_system/local</collectionname>
+        <dumpfilename></dumpfilename>
+    </test29>  
+    <test30>
+        <name>checkout a collection with symlinks</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test30-collection</directory>
+        <collectionname>/_system/local</collectionname>
+        <dumpfilename></dumpfilename>
+    </test30> 
+    <test31>
+        <name>checkout registry root with incorrect user credentials</name>
+        <operation>co</operation>
+        <username>admin1</username>
+        <password>admin1</password>
+        <directory>test/test123/test31-collection</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test31>
+    <test32>
+        <name>checkout from invalid resource path</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test32-collection</directory>
+        <collectionname>/InvalidPath</collectionname>
+        <dumpfilename></dumpfilename>
+    </test32> 
+    <test33>
+        <name>checkin to registry root with invalid user credentials</name>
+        <operation>ci</operation>
+        <username>admin1</username>
+        <password>admin1</password>
+        <directory>test/test123/test33-collection</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test33>
+    <test34>
+        <name>Update registry root with invalid user credentials</name>
+        <operation>update</operation>
+        <username>admin1</username>
+        <password>admin1</password>
+        <directory>test/test123/test33-collection</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test34>
+    <test35>
+        <name>checkout with conflicting resources</name>
+        <operation>co</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test35-collection</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test35>
+    <test36>
+        <name>update with conflicting resources - depends test35</name>
+        <operation>update</operation>
+        <username>admin</username>
+        <password>admin</password>
+        <directory>test/test123/test35-collection</directory>
+        <collectionname>/</collectionname>
+        <dumpfilename></dumpfilename>
+    </test36>
+  </tests>
+</greg_tests>

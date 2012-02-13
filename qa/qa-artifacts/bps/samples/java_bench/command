@@ -1,0 +1,3 @@
+java -jar benchmark.jar -p requests/soap11_echoString.xml -n 120 -c 15 -k -H "SOAPAction: urn:echoString" http://appserver.cloud.private.wso2.com/services/t/tik.wso2.com/Axis2Service/
+
+java -jar benchmark.jar -p request.xml -n 10 -c 10 -k -H "SOAPAction: Task" http://bps.cloud1.wso2.com/services/t/lmn.com/TestAssignDateService/

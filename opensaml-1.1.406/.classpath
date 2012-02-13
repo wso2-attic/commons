@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="lib" path="endorsed/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-2.2.jar"/>
+	<classpathentry sourcepath="lib/log4j-1.2.5-src.jar" kind="lib" path="lib/log4j-1.2.5.jar"/>
+	<classpathentry sourcepath="lib/junit-3.8.1-src.jar" kind="lib" path="lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.03.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="endorsed/xercesImpl.jar"/>
+	<classpathentry sourcepath="C:/cvs/xml-security/src" kind="lib" path="lib/xmlsec-20050514.jar"/>
+	<classpathentry kind="lib" path="endorsed/resolver.jar"/>
+	<classpathentry kind="lib" path="endorsed/xalan.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>

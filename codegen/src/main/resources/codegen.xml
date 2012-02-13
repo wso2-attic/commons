@@ -1,0 +1,61 @@
+<config>
+
+    <!-- stubs generation -->
+    <set>
+        <uri>src/main/resources/META-INF/JavaClientGeneratorService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.codegen.service.java</p>
+        <d>adb</d>
+        <sn>JavaClientGeneratorService</sn>
+        <pn>JavaClientGeneratorServiceSOAP11port_https</pn>
+        <s/>
+        <f/>
+    </set>
+
+    <set>
+        <uri>src/main/resources/META-INF/WSDLInfoService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.codegen.service</p>
+        <d>adb</d>
+        <sn>WSDLInfoService</sn>
+        <pn>WSDLInfoServiceSOAP11port_https</pn>
+        <s/>
+        <f/>
+    </set>
+
+    <set>
+        <uri>src/main/resources/META-INF/AjaxClientGeneratorService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.codegen.service.ajax</p>
+        <d>adb</d>
+        <sn>AjaxClientGeneratorService</sn>
+        <pn>AjaxClientGeneratorServiceSOAP11port_https</pn>
+        <s/>
+        <f/>
+    </set>
+
+    <!-- codegen skeletons -->
+    <set>
+        <uri>src/main/resources/META-INF/JavaClientGeneratorService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.codegen.service.java</p>
+        <d>adb</d>
+        <ss/>
+        <ssi/>
+        <uw/>
+        <f/>
+        <Emp>org.wso2.codegen.service.java</Emp>
+    </set>
+    <set>
+        <uri>src/main/resources/META-INF/AjaxClientGeneratorService.wsdl</uri>
+        <o>target/generated/</o>
+        <p>org.wso2.codegen.service.ajax</p>
+        <d>adb</d>
+        <ss/>
+        <ssi/>
+        <uw/>
+        <f/>
+        <Emp>org.wso2.codegen.service.ajax</Emp>
+    </set>
+
+</config>

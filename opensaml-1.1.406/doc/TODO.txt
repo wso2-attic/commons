@@ -1,0 +1,4 @@
+Last updated 5/7/04
+
+- test suites
+- better samples and docs

@@ -1,0 +1,10 @@
+2008/01/24 09:39:39 INFO> WSO2 WSF/PHP test framework started...
+2008/01/24 09:39:39 INFO> Enter into run Apache server
+2008/01/24 09:39:39 INFO> element value of apache home directory /usr/local/apache2
+2008/01/24 09:39:39 INFO> change into /usr/local/apache2/bin directory 
+2008/01/24 09:39:39 INFO> Apache server execution finished ... 
+2008/01/24 09:40:10 INFO> Enter into run Apache server
+2008/01/24 09:40:10 INFO> element value of apache home directory /usr/local/apache2
+2008/01/24 09:40:10 INFO> change into /usr/local/apache2/bin directory 
+2008/01/24 09:40:25 INFO> Apache server stoped successfully. 
+2008/01/24 09:40:25 INFO> Apache server execution finished ... 

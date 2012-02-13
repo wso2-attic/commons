@@ -1,0 +1,173 @@
+<!--
+  ~  Copyright (c) 2005-2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  ~
+  -->
+<!--
+	test-case-0
+-->
+<project default="main">
+<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+<!--<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>-->
+<!-- <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+  <classpath>
+    <pathelement location="/usr/share/ant/lib/ant-contrib-1.0b3.jar"/>
+  </classpath>
+</taskdef>-->
+
+    <property name="this.dir" location="."/>
+
+    <target name="main" depends="clean,init,wso2esb-samples-start,axis2server-build,axis2server-start,smart-client-test,proxy-client-test,esb-stop,axis2servers-stop">
+    <!--<target name="main" depends="Server-stop">-->
+        <echo>Test for test-case-${no} completed !</echo>
+    </target>
+
+    <target name="clean">
+        <echo>cleaning..</echo>
+	<delete dir="./../../results/test-cases/test-case-${no}"/>
+    </target>
+
+    <target name="init">
+        <echo>Start testing test-case-${no} ..</echo>
+	<mkdir dir="./../../results/test-cases/test-case-${no}"/>
+    </target>
+
+    <target name="wso2esb-samples-start" depends="init">
+ 		<limit seconds="${esb-max-time-sec}">
+			<exec dir="../../utils/esb" executable="./wso2esb-samples-start.sh" os="Linux">
+				<arg value="${no}"/>
+				<arg value="${esbHome}"/>
+			</exec>
+			<sleep seconds="22"/>
+			<antcall target="poll">
+			  <param name="poll.log" value="esb.log"/>
+			  <param name="poll.string" value="${esb-start-indicator}"/>
+			</antcall>
+       	<echo>ESB Started !</echo>
+		</limit>
+    </target>
+
+    <target name="axis2server-build" depends="init">
+       <exec dir="../../utils/axis2/server" executable="./axis2server-build.sh" os="Linux" >
+		<arg value="${no}"/>
+		<arg value="SimpleStockQuoteService"/>
+		<arg value="${this.dir}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="axis2server-start" depends="init">
+		<limit seconds="${axis2server-max-time-sec}">
+     	<exec dir="../../utils/axis2/server" executable="./axis2server-start.sh" os="Linux">
+			<arg value="${no}"/>
+			<arg value="${esbHome}"/>
+			<arg value="${this.dir}"/>
+	   	</exec>
+		<sleep seconds="2"/>
+		<antcall target="poll">
+		  <param name="poll.log" value="axis2server.log"/>
+		  <param name="poll.string" value="${axis2server-start-indicator}"/>
+		</antcall>
+       	<echo>Axis2 Sample server Started !</echo>
+		</limit>
+    </target>
+
+    <target name="esb-stop" >
+       <exec dir="../../utils/esb" executable="./esb-stop.sh" os="Linux">
+		<arg value="${no}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="axis2servers-stop" >
+       <exec dir="../../utils/axis2/server" executable="./axis2servers-stop.sh" os="Linux">
+		<arg value="${no}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="smart-client-run" >
+       <exec dir="." executable="./smart-client.sh" os="Linux" >
+		<arg value="${no}"/>
+		<arg value="${this.dir}"/>
+		<arg value="${esbHome}"/>
+	</exec>
+    </target>
+   
+    <target name="smart-client-test" depends="smart-client-run" >
+       <echo>Smart Client test started</echo>
+	<if>
+	 <resourcecontains resource="./../../results/test-cases/test-case-${no}/smart-client.log" substring="Standard :: Stock price = $"/>
+	 <then>
+	   <echo message="Test passed" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Smart Client test Passed
+</echo> 
+	 </then>
+	 <else>
+	   <echo message="Test Failed" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Smart Client test Failed
+</echo> 
+	 </else>
+	</if>
+    </target>
+
+    <target name="proxy-client-run" >
+       <exec dir="." executable="./proxy-client.sh" os="Linux" >
+		<arg value="${no}"/>
+		<arg value="${this.dir}"/>
+		<arg value="${esbHome}"/>
+	</exec>
+    </target>
+   
+    <target name="proxy-client-test" depends="proxy-client-run" >
+       <echo>Smart Client test started</echo>
+	<if>
+	 <resourcecontains resource="./../../results/test-cases/test-case-${no}/proxy-client.log" substring="Standard :: Stock price = $"/>
+	 <then>
+	   <echo message="--------------------" />
+	   <echo message="Test passed" />
+	   <echo message="--------------------" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Proxy Client test Passed
+</echo> 
+	 </then>
+	 <else>
+	   <echo message="--------------------" />
+	   <echo message="Test failed" />
+	   <echo message="--------------------" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Proxy Client test Failed
+</echo> 
+	 </else>
+	</if>
+	<echo file="./../../results/results.txt" append="yes"></echo> 
+    </target>
+
+	<target name="poll">
+     	<if>
+		 <resourcecontains resource="./../../results/test-cases/test-case-${no}/${poll.log}" substring="${poll.string}"/>
+		<else>
+		 	<sleep seconds="2"/>
+			<antcall target="loop" >
+			  <param name="poll.log" value="${poll.log}"/>
+			  <param name="poll.string" value="${poll.string}"/>
+			</antcall>
+		</else>
+		</if>
+    </target>
+	<target name="loop">
+		<antcall target="poll" />
+ 	</target>
+
+</project>

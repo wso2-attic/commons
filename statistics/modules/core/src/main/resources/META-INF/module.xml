@@ -1,0 +1,41 @@
+<module name="wso2statistics"
+        class="org.wso2.statistics.module.StatisticsModule">
+    <InFlow>
+        <handler name="GlobalRequestCounter"
+                 class="org.wso2.statistics.module.GlobalRequestCountHandler">
+            <order phase="Transport"/>
+        </handler>
+        <handler name="ServiceRequestCounter"
+                 class="org.wso2.statistics.module.ServiceRequestCountHandler">
+            <order phase="Dispatch"/> <!-- @  phaseLast="true" has been removed -->
+        </handler>
+        <handler name="OperationInCounter"
+                 class="org.wso2.statistics.module.InOperationCountHandler">
+            <order phase="OpPhase"/>
+        </handler>
+        <handler name="ResponseTimeHandler"
+                 class="org.wso2.statistics.module.ResponseTimeHandler">
+            <order phaseFirst="true" phase="Transport" />
+        </handler>
+    </InFlow>
+    <OutFlow>
+        <handler name="GlobalResponseCounter"
+                 class="org.wso2.statistics.module.GlobalResponseCountHandler">
+            <order phase="OpPhase"/>
+        </handler>
+        <handler name="OperationOutCounter"
+                 class="org.wso2.statistics.module.OutOperationCountHandler">
+            <order phase="OpPhase"/>
+        </handler>
+        <handler name="ResponseTimeHandler"
+                 class="org.wso2.statistics.module.ResponseTimeHandler">
+            <order phase="MessageOut" phaseLast="true"/>
+        </handler>
+    </OutFlow>
+    <OutFaultFlow>
+        <handler name="FaultCounter"
+                 class="org.wso2.statistics.module.FaultCountHandler">
+            <order phase="MessageOut"/>
+        </handler>
+    </OutFaultFlow>
+</module>

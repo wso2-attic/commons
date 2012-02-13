@@ -1,0 +1,76 @@
+<!--
+  ~  Copyright (c) 2005-2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  ~
+  -->
+<!-- 
+	install,uninstall  ActiveMQ
+-->
+<project default="main">
+<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+<!--<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>-->
+<!-- <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+  <classpath>
+    <pathelement location="/usr/share/ant/lib/ant-contrib-1.0b3.jar"/>
+  </classpath>
+</taskdef>-->
+
+    <property name="esbHome" value="/opt/wso2esb-3.0.0"/>
+    <property name="activemqPath" value="/opt/activemq"/>
+    <property name="activemqVersion" value="5.3.1"/>
+  
+    <target name="main" depends="uninstall,install">
+        <echo>ActiveMQ installed !</echo>
+    </target>
+
+    <target name="uninstall">
+        <echo>cleaning..</echo>
+		<delete dir="./../../results/activemq"/>
+	  	<delete>
+			<fileset dir="${esbHome}/repository/components/lib/">
+				<include name="activemq-core-*.jar"/>
+				<include name="geronimo-j2ee-management_1.0_spec-*.jar"/>
+				<include name="geronimo-jms_1.1_spec-*.jar"/>
+	 		</fileset>
+	  	</delete>
+    </target>
+
+    <target name="install">
+        <echo>Start ActiveMQ installation ..</echo>
+		<mkdir dir="./../../results/activemq"/>
+	 	<copy todir="./../../results/activemq">
+			<fileset dir="${activemqPath}">
+				<include name="apache-activemq-*-bin.tar.gz"/>
+			</fileset>
+	  	</copy>
+		<exec dir="./../../results/activemq/" executable="tar" os="Linux">
+			<arg value="zxf"/>
+			<arg value="apache-activemq-${activemqVersion}-bin.tar.gz"/>
+		</exec>
+		<copy todir="${esbHome}/repository/components/lib/">
+			<fileset dir="./../../results/activemq/apache-activemq-${activemqVersion}/lib/">
+				<include name="activemq-core-*.jar"/>
+				<include name="geronimo-j2ee-management_1.0_spec-*.jar"/>
+				<include name="geronimo-jms_1.1_spec-*.jar"/>
+			</fileset>
+		</copy>
+		<exec dir="./../../results/activemq/apache-activemq-${activemqVersion}/bin" executable="chmod" os="Linux">
+			<arg value="755"/>
+			<arg value="activemq"/>
+		</exec>
+		<echo>Start ActiveMQ installation ..</echo>
+    </target>
+</project>

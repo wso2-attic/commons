@@ -1,0 +1,124 @@
+<project name="Security_Sample1004" default="run.client">
+ 
+    <property name="base.dir" value="${project.base.dir}/mediation/QOS/security/scenario5_sample_1004/client"/>
+    <property name="build.dir" value="${base.dir}/build"/>
+    
+    <property name="src" value="${base.dir}/src"/>
+    <property name="target" value="${base.dir}/target"/>
+    <property name="target.java" value="${target}/src"/>
+    <property name="target.classes" value="${target}/classes"/>
+    <property name="ESB_HOME" value="${esb.envt.ESB_HOME}"/>
+    <property name="endpoint" value="http://${esb.envt.hostname}:${esb.envt.httpport}/soap"/>
+    <echo message="Executing 'Security_Sample1004' scenario"/>
+ 
+   <!--Copy the synapse.xml to ESB_HOME/webapp/WEB-INF/classes/conf-->
+    <target name="copy_synapse_xml">
+        <delete file="${ESB_HOME}/conf/synapse.xml"/>
+        <copy file="${build.dir}/../../config/synapse.xml" tofile="${ESB_HOME}/conf/synapse.xml" overwrite="true"/>
+    </target>	
+ 
+    <!--Create a directory and copy the StockQuoteSecClient.java file-->
+    <target name="copy_StockQuoteSecClient_java">
+	<delete file="${build.dir}/../../client/src/org/wso2/esb/client/StockQuoteSecClient.java"/>
+        <copy file="${build.dir}/../../resources/StockQuoteSecClient.java" tofile="${build.dir}/../../client/src/org/wso2/esb/client/StockQuoteSecClient.java" overwrite="true"/>
+    </target>
+ 
+    <!--Starting the WSO2 ESB Server-->
+    <target name="start_synapse_server" depends="copy_synapse_xml, copy_StockQuoteSecClient_java">
+        <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="true">
+            <arg value="console"/>
+       </exec> 
+    </target>
+           
+    <target name="run_client" depends="clean">
+
+        <delete dir="${target}"/>
+        <mkdir dir="${target}\classes"/>
+        <!-- Compile the client -->
+        
+        <javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true"
+               destdir="${target}/classes">
+            <src path="${base.dir}/src"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <!--fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset-->
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </javac>
+        
+         <!--jar the compiled stuff-->
+        <jar destfile="${target}/StockQuoteClient.java-client.jar">
+            <fileset dir="${target}/classes">
+                <!--exclude name="**/META-INF/*.*"/-->
+            </fileset>
+        </jar>
+        
+        <java classname="org.wso2.esb.client.StockQuoteClient" fork="true">
+	    <arg value="${ESB_HOME}/client_repo"/>
+            <arg value="${endpoint}"/>
+            <classpath>
+                <fileset dir="${ESB_HOME}/repository/lib">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${target}">
+                    <include name="*.jar"/>
+                </fileset>
+                <fileset dir="${ESB_HOME}/lib/endorsed">
+                    <include name="*.*"/>
+                </fileset>
+            </classpath>
+        </java>
+
+       <!--Shutting down the WSO2 ESB Server-->
+       <exec dir="${ESB_HOME}/bin" executable="wso2server.sh" spawn="false">
+            <arg value="stop"/>
+       </exec>
+       <echo message="Successfully executed Security_Sample1004 scenario"/>
+    </target>
+
+    <target name="stockquote">
+        <java classname="org.wso2.esb.client.StockQuoteClient.java" fork="true">
+            <sysproperty key="symbol" value="${symbol}"/>
+            <sysproperty key="mode"   value="${mode}"/>
+            <sysproperty key="addurl" value="${addurl}"/>
+            <sysproperty key="trpurl" value="${trpurl}"/>
+            <sysproperty key="prxurl" value="${prxurl}"/>
+            <sysproperty key="repository" value="${repository}"/>
+            <sysproperty key="policy" value="${policy}"/>
+            <sysproperty key="rest" value="${rest}"/>
+            <sysproperty key="wsrm" value="${wsrm}"/>
+            <sysproperty key="itr" value="${itr}"/>
+            <sysproperty key="javax.net.ssl.trustStore" value="${ESB_HOME}/repository/resources/security/client-truststore.jks"/>
+            <sysproperty key="javax.net.ssl.trustStorePassword" value="wso2carbon"/>
+            <sysproperty key="java.io.tmpdir" value="./../../work/temp/sampleClient"/>
+            <sysproperty key="java.endorsed.dirs" value="./../../lib/endorsed"/>
+            <!--
+            <jvmarg value="-Xdebug"/>
+            <jvmarg value="-Xnoagent"/>
+            <jvmarg value="-Djava.compiler=none"/>
+            <jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"/>
+            -->
+        </java>
+    </target>
+
+    <!--Starting the WSO2 ESB Server-->
+    <target name="run.client" depends="stockquote">
+        <exec dir="${ESB_HOME}/samples/axis2Client" executable="ant" spawn="true">
+            <arg value="stockquote"/>
+            <arg value="-Dtrpurl=http://localhost:8280/services/StockQuoteProxy"/>
+            <arg value="-Dpolicy=${ESB_HOME}/repository/samples/resources/policy/client_policy_3.xml"/>
+       </exec>
+    </target>
+
+
+   <target name="clean">
+        <delete dir="${base.dir}/target"/>
+    </target>
+
+</project>

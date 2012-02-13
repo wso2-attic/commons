@@ -1,0 +1,147 @@
+<description xmlns="http://www.w3.org/ns/wsdl"
+    xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+    xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:axis2="http://echo.services.wsas.wso2.org"
+    xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+    xmlns:ns0="http://echo.services.wsas.wso2.org/xsd" xmlns:ns1="http://org.apache.axis2/xsd"
+    targetNamespace="http://echo.services.wsas.wso2.org">
+    <documentation> This service echos the input provided to it. </documentation>
+    <types>
+        <xs:schema xmlns:ns="http://echo.services.wsas.wso2.org/xsd"
+            targetNamespace="http://echo.services.wsas.wso2.org/xsd"
+            attributeFormDefault="qualified" elementFormDefault="unqualified">
+            <xs:element name="echoInt">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="in" type="xs:int" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoIntResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:int" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoString">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="in" type="xs:string" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoStringResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:string" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="throwAxisFaultFault">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="throwAxisFaultFault" type="xs:anyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="throwAxisFaultResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:string" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoOMElement">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="omEle" type="xs:anyType" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoOMElementResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="xs:anyType" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoStringArrays">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="a" maxOccurs="unbounded" type="xs:string" nillable="true"/>
+                        <xs:element name="b" maxOccurs="unbounded" type="xs:string" nillable="true"/>
+                        <xs:element name="c" type="xs:int" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="echoStringArraysResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" type="ns:SimpleBean" nillable="true"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="SimpleBean" type="ns:SimpleBean"/>
+            <xs:complexType name="SimpleBean">
+                <xs:sequence>
+                    <xs:element name="a_r" maxOccurs="unbounded" type="xs:string" nillable="true"/>
+                    <xs:element name="b_r" maxOccurs="unbounded" type="xs:string" nillable="true"/>
+                    <xs:element name="c" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </types>
+    <interface name="echoInterface">
+        <operation name="throwAxisFault" pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/rpc"
+            wrpc:signature="return #return">
+            <input element="#none"/>
+            <output element="ns0:throwAxisFaultResponse"/>
+        </operation>
+        <operation name="echoOMElement" pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/rpc"
+            wrpc:signature="omEle #in return #return">
+            <input element="ns0:echoOMElement"/>
+            <output element="ns0:echoOMElementResponse"/>
+        </operation>
+        <operation name="echoStringArrays" pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/rpc"
+            wrpc:signature="a #in b #in c #in return #return">
+            <input element="ns0:echoStringArrays"/>
+            <output element="ns0:echoStringArraysResponse"/>
+        </operation>
+        <operation name="echoInt" pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/rpc"
+            wrpc:signature="in #in return #return">
+            <input element="ns0:echoInt"/>
+            <output element="ns0:echoIntResponse"/>
+        </operation>
+        <operation name="echoString" pattern="http://www.w3.org/ns/wsdl/in-out"
+            style="http://www.w3.org/ns/wsdl/style/rpc"
+            wrpc:signature="in #in return #return">
+            <input element="ns0:echoString"/>
+            <output element="ns0:echoStringResponse"/>
+        </operation>
+    </interface>
+    <binding name="echoSOAPBinding" interface="axis2:echoInterface"
+        type="http://www.w3.org/ns/wsdl/soap"
+        wsoap:version="1.2"
+        wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP">
+        <operation ref="axis2:throwAxisFault"/>
+        <operation ref="axis2:echoOMElement"/>
+        <operation ref="axis2:echoStringArrays"/>
+        <operation ref="axis2:echoInt"/>
+        <operation ref="axis2:echoString"/>
+    </binding>
+    <service name="echoService" interface="axis2:echoInterface">
+        <endpoint name="echoEndpoint_http" binding="axis2:echoSOAPBinding"
+            address="http://192.168.1.53:9762/soap/echo"/>
+        <endpoint name="echoEndpoint_http" binding="axis2:echoSOAPBinding"
+            address="http://192.168.1.53:9762/rest/echo"/>
+        <endpoint name="echoEndpoint_https" binding="axis2:echoSOAPBinding"
+            address="https://192.168.1.53:9443/soap/echo"/>
+        <endpoint name="echoEndpoint_https" binding="axis2:echoSOAPBinding"
+            address="https://192.168.1.53:9443/rest/echo"/>
+    </service>
+</description>

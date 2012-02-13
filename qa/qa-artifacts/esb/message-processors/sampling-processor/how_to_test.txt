@@ -1,0 +1,5 @@
+1. Deploy the message store(MyStore) and message processor(SamplingProcessor)
+2. Run SendPlaceOrder.sh
+3. Monitor the backend server (In this example, ESB Simple Axis server)
+You will notice that, the backend receives message in 20 second intervals.
+Now change the interval value in processor and continue testing.

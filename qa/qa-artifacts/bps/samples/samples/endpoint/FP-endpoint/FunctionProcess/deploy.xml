@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:FunctionProcess.bpel="http://FunctionProcess.bpel" xmlns:FunctionProcessService.wsdl="http://FunctionProcessService.wsdl" xmlns:AdderService.wsdl="http://AdderService.wsdl" xmlns:MultiplierService.wsdl="http://MultiplierService.wsdl" xmlns:SquareService.wsdl="http://SquareService.wsdl">
+
+  <process name="FunctionProcess.bpel:FunctionProcess">
+    <!--process-events generate="all"/-->
+<in-memory>false</in-memory>
+
+		<active>true</active>
+    <provide partnerLink="FunctionProcessPartnerLink">
+      <service name="FunctionProcessService.wsdl:FunctionProcessServiceService" port="FunctionProcessServicePort"/>
+    </provide>
+    <invoke partnerLink="SquarePartnerLink">
+      <!--service name="SquareService.wsdl:SquareService" port="SquareServiceJmsSoap11Endpoint"/-->
+   <service name="SquareService.wsdl:SquareService" port="SquareServiceHttpSoap11Endpoint"/>
+
+
+    </invoke>
+    <invoke partnerLink="MultiplierPartnerLink">
+      <!--service name="MultiplierService.wsdl:MultiplierService" port="MultiplierServiceJmsSoap11Endpoint"/-->
+  <service name="MultiplierService.wsdl:MultiplierService" port="MultiplierServiceHttpSoap11Endpoint"/>
+    </invoke>
+    <!--invoke partnerLink="AdderPartnerLink">
+     <service name="AdderService.wsdl:AdderService" port="AdderServiceHttpSoap11Endpoint"/>
+
+    </invoke-->
+
+<invoke partnerLink="AdderPartnerLink">
+      	<service name="AdderService.wsdl:AdderService" port="AdderServiceHttpSoap11Endpoint">
+       <endpoint xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <address url="http://10.100.1.175:9763/services/AdderService.AdderServiceHttpSoap11Endpoint/"/>
+		<!--max-timeout value="180000"/-->
+		<httpOptions>
+                <connection-timeout value="50"/>
+            </httpOptions>
+        </endpoint>
+    </service>
+</invoke> 
+  </process>
+
+</deploy>

@@ -1,0 +1,66 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="">
+  <title>WSO2 UI Management Framework</title>
+</head>
+
+<body lang="en">
+<p><b>Introduction</b></p>
+
+<p>The main purpose of this project is to give a generic Dynamic Web Service
+Invocation Framework using AJAX. This has been used in WSO2 WSAS and WSO2 ESB
+successfully.</p>
+
+<p><b>Integration</b></p>
+
+<p>When the server starts up an xml file <strong>ui-extensions-config.xml
+</strong> has to be in the classpath. This file has the following main
+parts,</p>
+<pre>&lt;extension-config&gt;
+    &lt;description&gt;Description of the Project&lt;/description&gt;
+
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+
+    &lt;file-mappings&gt;
+        &lt;mapping&gt;
+            &lt;token&gt;@menu.items@&lt;/token&gt;
+            &lt;file&gt;menu.html&lt;/file&gt;
+        &lt;/mapping&gt;
+        &lt;mapping&gt;
+            &lt;token&gt;@div.items@&lt;/token&gt;
+            &lt;file&gt;divs.html&lt;/file&gt;
+        &lt;/mapping&gt;
+        &lt;mapping&gt;
+            &lt;token&gt;@css.file.items@&lt;/token&gt;
+            &lt;file&gt;css.html&lt;/file&gt;
+        &lt;/mapping&gt;
+        &lt;mapping&gt;
+            &lt;token&gt;@js.file.items@&lt;/token&gt;
+            &lt;file&gt;js.html&lt;/file&gt;
+        &lt;/mapping&gt;
+        &lt;mapping&gt;
+            &lt;token&gt;@promotion.content@&lt;/token&gt;
+            &lt;file&gt;promotion.html&lt;/file&gt;
+        &lt;/mapping&gt;
+     &lt;/file-mappings&gt;
+
+    &lt;extension-order&gt;
+        &lt;item&gt;core&lt;/item&gt;
+    &lt;/extension-order&gt;
+&lt;/extension-config&gt;</pre>
+<ul>
+  <li>The index.html that provide with this is a template. It has above
+    mention &lt;tokens/&gt; and they should be filled with &lt;file/&gt;. <br>
+  </li>
+  <li>When copying to the actual location one has to write the filters for
+    <strong>server.name and server.short.name.</strong></li>
+  <li>In your project you have to write <strong>showHome() </strong>
+    javascript.</li>
+<li>GLOBAL_SERVICE_STRING has to be provided ??</li>
+<li>isServerRegistered in GlobalAdmin need to be set [registration] ????</li>
+<li></li>
+</ul>
+
+<p>ss</p>
+</body>
+</html>

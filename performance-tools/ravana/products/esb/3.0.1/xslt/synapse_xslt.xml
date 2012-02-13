@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="XSLTProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <xslt key="xslt-key-req"/>
+                <send>
+                    <endpoint name="endpoint_urn_uuid_8CD1A8E283E732E27A63447969797682093962071">
+                        <address uri="http://localhost:80/services/1k.xml"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <xslt key="xslt-key-res"/>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <localEntry key="xslt-key-req" src="file:repository/samples/resources/transform/transform.xslt"/>
+    <localEntry key="xslt-key-res" src="file:repository/samples/resources/transform/transform_back.xslt"/>
+</definitions>

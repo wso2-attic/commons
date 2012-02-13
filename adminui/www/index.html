@@ -1,0 +1,146 @@
+<html>
+
+<head>
+<script language="javascript">
+var locationString1 = self.location.href;
+
+if (!((locationString1.indexOf("#") > 0) || ((locationString1.lastIndexOf('/') +1 ) == locationString1.length)) || (locationString1.indexOf("html") > 0)){
+    self.location.replace(self.location.href + "/");
+}
+</script>
+<title>@server_name@ Management Console</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<meta name="description" content="@server_name@" />
+
+<meta name="distribution" content="global" />
+<meta name="resource-type" content="document" />
+
+<meta name="robots" content="nofollow" />
+<meta name="copyright" content="Copyright 2007 WSO2" />
+
+<meta name="mssmarttagspreventparsing" content="true" />
+<meta http-equiv="imagetoolbar" content="no" />
+
+    <!-- If the serviceURL changed other than axis2/services
+         following two links should be chnaged to copewith new serviceURL
+         foo/bar/rss and foo/bar/atom
+    -->
+
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="#"
+      onclick="javascript:wso2.wsf.Util.openWindow('rss');return false;"/>
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="#"
+      onclick="javascript:wso2.wsf.Util.openWindow('atom');return false;" />
+<link rel="shortcut icon" href="favicon.ico" type="image/ico" />
+
+<!-- ####################################################################### -->
+<!--                  Place Holder for CSS File References                   -->
+<!-- ####################################################################### -->
+<link rel="stylesheet" type="text/css" href="css/main.css" media="screen, projection" />
+@css.file.items@
+
+<!-- ####################################################################### -->
+<!--               Place Holder for Javascript File References               -->
+<!-- ####################################################################### -->
+<script language="javascript" src="js/all.js"></script>
+<script language="javascript" src="global_params.js"></script>
+@js.file.items@
+
+</head>
+
+<body onload="javascript:init();">
+
+<div id="wrapper">
+
+<div id="header">
+
+<h1>@server_name@</h1>
+<h2>Management Console</h2>
+
+<p id="meta"></p>
+
+</div><!-- /header -->
+
+<div id="container" class="clearfix">
+
+<div id="navigation" class="clearfix" style="display:inline;">
+
+<!-- ####################################################################### -->
+<!--                       Place Holder for Menu Items                       -->
+<!-- ####################################################################### -->
+    <div id="navigation_logged_in" style="display:none;">
+        <ul class="menu">
+
+            @menu.items@
+
+        </ul>
+
+    </div>
+
+    <div id="navigation_general" style="display:inline;">
+        <ul class="menu"><!-- here the id is menu. Ideally it should have been a class--> 
+
+            @menu.items.general@
+
+        </ul>
+
+    </div>
+
+</div><!-- /navigation -->
+<div id="content" style="display:inline;"><!-- content -->
+<div id="divGeneralHome" style="display:inline;"><!-- This will be a standard div to inject promotional content--> 
+    @promotion.content@
+</div>
+<div id="logincontainer" class="clearfix" style="display:none;">
+		<div id="loginform">
+			<div id="loginformwrap">
+				<form action="#" method="post" id="formLogin" name="formLogin">
+					<fieldset>
+						<legend><strong>Sign-in to @server_short_name@</strong></legend>
+                        <p/>
+                        <div><label for="txtUserName">Username:</label> <input type="text" id="txtUserName" name="txtUserName" size="10"/></div>
+						<div><label for="txtPassword">Password:</label> <input type="password" id="txtPassword" name="txtPassword" size="10"/></div>
+						<div><input id="signin" type="submit" value="Sign In" onclick="javascript:wso2.wsf.Util.login(document.formLogin.txtUserName.value, document.formLogin.txtPassword.value,wso2.wsf.Util.login['callback']);return false;"/></div>
+                        <p><a href="forgot_password.html">Forgot Password</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="sign_in_help.html">Sign-in Help</a></p>
+					</fieldset>
+				</form>
+			</div> <!-- /loginformwrap -->
+
+			<div id="metastuff">
+				<p><a class="normal_link" href="about.html">About @server_short_name@</a></p>
+				<p>Learn more from our <a class="normal_link" href="docs/index_docs.html">Documentation</a> </p>
+			</div> <!-- /metastuff -->
+		</div> <!-- /loginform -->
+
+		<div id="promocontent"></div><!-- /promocontent -->
+	</div><!-- /logincontainer -->    
+
+<!-- ####################################################################### -->
+<!--                          Place Holder for div Items                     -->
+<!-- ####################################################################### -->
+@div.items@
+
+</div><!-- /content -->
+
+</div><!-- /container -->
+
+<!-- This will give the wait animation-->
+<div id="waitAnimationDiv" style="display: inline;"></div>
+<!-- the div for the message box. This name is not supposed to be used for any other div in the admin application-->
+<div id="alertMessageBox" style="display:none;position:absolute;z-index: 600;">
+    <!--the message area-->
+    <p id="alertMessageBoxMessageArea"></p>
+    <!-- the button area-->
+    <p id="alertButton" align="right">
+        <input id="alertBoxButton" type="button"
+                value="  OK  "
+                onclick="javascript:document.getElementById('alertMessageBox').style.display='none';return false;"/></p>
+</div>
+ <!-- end of the message box div -->
+<div id="footer"><div class="footer1"><a href="http://ws.apache.org/axis2/" target="_blank"><img src="images/axis2-powered.gif"></img></a></div>
+<div class="footer2">&copy; 2007 WSO2 Inc.</div></div><!-- /footer -->
+
+</div><!-- /wrapper -->
+</body>
+</html>

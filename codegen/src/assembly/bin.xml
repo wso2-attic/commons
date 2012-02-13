@@ -1,0 +1,15 @@
+<assembly>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>    
+    <fileSets>
+        <fileSet>
+            <directory>www</directory>
+            <outputDirectory>extensions/tools/xslt</outputDirectory>
+            <includes>
+                <include>**/**.xsl</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

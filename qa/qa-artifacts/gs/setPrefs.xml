@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs 
+    title="Setprefs New">
+    <Require feature="opensocial-0.8"/>
+    <Require feature="setprefs" /> 
+    </ModulePrefs>
+  <UserPref 
+    name="counter" 
+    default_value="0" 
+    datatype="hidden"/>
+  <Content type="html">
+  <![CDATA[ 
+    <div id="content_div" style="height: 100px;"></div>
+    <script type="text/javascript">
+
+    // Get user preferences
+    var prefs = new gadgets.Prefs();
+    var html = "";
+    var div = document.getElementById('content_div');
+    // Increment value of "counter" user preference
+    function incrementCounter() {  
+      var count = prefs.getInt("counter");
+      div.innerHTML = "The count is " + count + ".";
+      // Increment "counter" userpref          
+      prefs.set("counter", count + 1);
+    }
+
+    // Reset value of "counter" userpref to 0
+    function resetCounter(){
+      prefs.set("counter", 0);
+      div.innerHTML = "Count reset to " + prefs.getInt("counter") + ".";
+    }
+
+    </script>
+    <input type=button value="Count" name="count" onClick="incrementCounter()">
+    <input type=button value="Reset" name="reset" onClick="resetCounter()">
+  ]]> 
+  </Content>
+</Module>

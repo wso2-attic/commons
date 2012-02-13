@@ -1,0 +1,177 @@
+#!/usr/bin/perl -w
+
+# WSO2 Ravana - tool to benchmark WSO2 server products
+
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# A copy of version 2 of the GNU General Public License may be found
+# in the file "LICENCE" in the Autobench tarball.
+
+
+use strict;
+use Getopt::Long;
+use XML::Simple;
+
+my $VERSION="1.0.0";
+
+my $DEBUG = 0;
+
+# test_host ($data, $rate, $warmup_rate)
+sub
+test_host 
+{
+    my ($data, $rate, $warmup_rate, $name, $persistent, $receiver_queue_lookup, $sender_queue_lookup, $listener_only) = @_;
+    my %results;
+
+	my $scenario = $data->{'scenario'}->{'name'};
+	
+    #check_present($config_ref, qw(num_conn num_call timeout));
+    my $jmsperf_command = "ant -Dmessage.count=$rate ".
+	  "-Dwarmup.count=$warmup_rate ".
+	  "-Dreceiver.queue.lookup=$receiver_queue_lookup ".
+	  "-Dsender.queue.lookup=$sender_queue_lookup ".
+	  "-Ddelivery.mode=$persistent ".
+	  "-Dlistener.only=$listener_only ".
+	  "-Dinput.file=scenario/$scenario/inputfile perfListener";
+	
+    print STDERR "$jmsperf_command\n" if $DEBUG;
+    print STDERR "$jmsperf_command\n";
+
+    open (IN,  "$jmsperf_command |")
+	or die "Cannot execute jmsperf\n";
+
+    while(<IN>) {
+        print STDERR $_;
+        if (/average: (\d+\.\d+)/) {
+            $results{tps}=$1;
+        }
+    }
+    close (IN);
+    
+    if ($results{tps} == 0) {
+	print STDERR "Zero replies received, test invalid: rate $rate\n";
+	$results{percent_errors} = 101;
+    }
+    return \%results;
+}
+
+#--------------------------------------------------------------------------
+# Main
+
+# Declarations
+my ($curr_rate, $sep);
+my (%res_host1, %res_host2);
+
+# Get configuration from config file
+
+my $xml = XML::Simple->new;
+my $data = $xml->XMLin("./conf/config.xml");
+
+$DEBUG = 1 if ($data->{'extra'}->{'debug'} eq 'false');
+
+$sep = "\t";
+
+# Check that java is in our path
+system("which java > /dev/null") == 0 
+    or die 'Cannot find java in $PATH; please ensure it is installed and your PATH is'."\ncorrectly set\n";
+
+# Check that ant is in our path
+system("which ant > /dev/null") == 0 
+    or die 'Cannot find ant in $PATH; please ensure it is installed and your PATH is'."\ncorrectly set\n";
+
+#check single server or two servers
+if(!(defined($data->{'product1'})&&defined($data->{'product2'}))){
+	$data->{'single-host'} = 'true';	
+} else {
+	$data->{'single-host'} = 'false';
+} 
+
+#get scenario details
+my $scenario = $data->{'scenario'}->{'name'};
+
+# Set the output stream
+open(OUT, ">scenario/$scenario/results/results.tsv") or die "Cannot open output file for writing\n";
+
+my $high_rate = $data->{'scenario'}->{'high_rate'};
+my $warmup_rate = $data->{'scenario'}->{'warmup_rate'};
+my $product1_transport_name = $data->{'product1'}->{'server-config'}->{'transport'}->{'jms'}->{'name'};
+my $product1_persistent = $data->{'product1'}->{'server-config'}->{'transport'}->{'jms'}->{'persistent'};
+my $product1_receiver_queue_lookup = $data->{'product1'}->{'server-config'}->{'transport'}->{'jms'}->{'receiver_queue_lookup'};
+my $product1_sender_queue_lookup = $data->{'product1'}->{'server-config'}->{'transport'}->{'jms'}->{'sender_queue_lookup'};
+my $product1_listener_only = $data->{'product1'}->{'server-config'}->{'transport'}->{'jms'}->{'listener_only'};
+my $product2_transport_name = $data->{'product2'}->{'server-config'}->{'transport'}->{'jms'}->{'name'};
+my $product2_persistent = $data->{'product2'}->{'server-config'}->{'transport'}->{'jms'}->{'persistent'};
+my $product2_receiver_queue_lookup = $data->{'product2'}->{'server-config'}->{'transport'}->{'jms'}->{'receiver_queue_lookup'};
+my $product2_sender_queue_lookup = $data->{'product2'}->{'server-config'}->{'transport'}->{'jms'}->{'sender_queue_lookup'};
+my $product2_listener_only = $data->{'product2'}->{'server-config'}->{'transport'}->{'jms'}->{'listener_only'};
+
+my $demand_rate_at_max_response_rate_h1 = 0; 
+my $i1 = 0;
+my $demand_rate_at_max_response_rate_h2 = 0; 
+my $i2 = 0;
+
+
+# Conduct the tests
+
+# Test Host 1	
+system("cp conf/jndi.properties.$product1_transport_name conf/jndi.properties");	
+%res_host1 = %{test_host ($data, $high_rate, $warmup_rate, $product1_transport_name, $product1_persistent, $product1_receiver_queue_lookup, $product1_sender_queue_lookup, $product1_listener_only)};
+#get the demand rate at the maximum response time 
+if($res_host1{tps}){
+    $demand_rate_at_max_response_rate_h1 = $res_host1{tps};
+    $i1 = 0;	
+}
+
+# Test Host 2
+if ($data->{'single-host'} eq 'false') {
+    system("cp conf/jndi.properties.$product2_transport_name conf/jndi.properties");	
+    sleep(20);  
+    %res_host2 = %{test_host ($data, $high_rate, $warmup_rate, $product2_transport_name, $product2_persistent, $product2_receiver_queue_lookup, $product2_sender_queue_lookup, $product2_listener_only)};
+    #get the demand rate at the maximum response time
+    if($res_host2{tps}){
+        $demand_rate_at_max_response_rate_h2 = $res_host1{tps};
+        $i2 = 0;
+    }	
+} 
+
+#calculate message size
+my $message_size = -s "scenario/$scenario/inputfile";
+
+if(! -e "scenario/$scenario/results/transactions_per_second_vs_message_size.tsv"){
+	open(MAXRATE, ">scenario/$scenario/results/transactions_per_second_vs_message_size.tsv") or die "Cannot open output file for writing\n";
+	if ( $data->{'single-host'} eq 'false' ) {
+		print MAXRATE "message_size".$sep."tps_$data->{'product1'}->{product_name}".$sep."tps_$data->{'product2'}->{product_name}";	
+	} else {
+		print MAXRATE "message_size".$sep."dem_rate_$data->{'product1'}->{product_name}";
+	}
+	print MAXRATE "\n";
+}else{
+	open(MAXRATE, ">>scenario/$scenario/results/transactions_per_second_vs_message_size.tsv") or die "Cannot open output file for writing\n";	
+}
+
+#print data to transactions_per_second_vs_message_size.tsv
+if ( $data->{'single-host'} eq 'false' ) {
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1".$sep."$demand_rate_at_max_response_rate_h2";
+} else {
+    print STDERR "Transactions per second:$demand_rate_at_max_response_rate_h1 \n";
+	print MAXRATE "$message_size".$sep."$demand_rate_at_max_response_rate_h1";
+}
+print MAXRATE "\n";
+
+close (OUT);
+close (MAXRATE);
+
+print STDERR "Benchmark complete\n";

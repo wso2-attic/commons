@@ -1,0 +1,71 @@
+<!--
+  ~  Copyright (c) 2005-2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  ~
+  -->
+
+<!-- Introduction to proxy services -->
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+ <localEntry key="sec_policy" src="file:repository/samples/resources/policy/policy_3.xml"/>
+
+    <proxy name="StockQuoteProxy" startOnLoad="true">
+        <target inSequence="proxy_in_seq" outSequence="proxy_out_seq" faultSequence="fault"/>    
+        <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+    </proxy>     
+
+    <sequence name="proxy_in_seq">
+        <clone>
+            <target sequence="nonsecuresequence"/>
+            <target sequence="securesequence"/>
+        </clone>
+    </sequence>   
+
+    <sequence name="proxy_out_seq">
+        <aggregate>
+		<header name="wsse:Security" action="remove"
+                        xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"/>
+            <completeCondition timeout="30">
+                <messageCount min="-1" max="-1"/>
+            </completeCondition>
+            <onComplete>
+		<!--TODO: Transformation logic for the aggregated result-->
+                <send/>
+            </onComplete>
+        </aggregate>
+    </sequence>
+
+    <sequence name="fault">
+        <log/>
+    </sequence>
+
+	<sequence name="nonsecuresequence">        
+	        <send>
+                    <endpoint name="nonsecure">
+                        <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                    </endpoint>      
+	        </send>
+	</sequence>
+	<sequence name="securesequence">        
+	        <send>
+            		<endpoint name="secure">
+                		<address uri="http://localhost:9000/services/SecureStockQuoteService">
+                    			<enableSec policy="sec_policy"/>
+                    			<enableAddressing/>
+                		</address>
+            		</endpoint>      
+	        </send>
+	</sequence>
+</definitions>

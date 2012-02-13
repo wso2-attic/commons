@@ -1,0 +1,7 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xsd:complexType name="ProductType">
+<xsd:sequence>
+<xsd:element name="Type" type="xsd:string"/>
+</xsd:sequence>
+</xsd:complexType>
+</xsd:schema>

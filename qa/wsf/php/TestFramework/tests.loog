@@ -1,0 +1,22 @@
+2007/01/26 11:19:20 INFO> axis2c tests configuration file is axis2c_tests.xml 
+2007/01/26 11:19:20 INFO> axis2c test framework started...
+2007/01/26 11:19:20 INFO> Building Rampart...
+2007/01/26 11:19:58 INFO> Enter into invoke clients
+2007/01/26 11:19:59 INFO> got child nodes 
+2007/01/26 11:19:59 INFO> deploy directory value is C:\axis2c\build\deploy
+2007/01/26 11:19:59 INFO> file name is enc_echo
+2007/01/26 11:20:00 INFO> Enter into run simple axis server
+2007/01/26 11:20:00 INFO> element value of deploy directory C:\axis2c\build\deploy
+2007/01/26 11:20:00 INFO> change into C:\axis2c\build\deploy/bin directory 
+2007/01/26 11:20:00 INFO> server name is axis2_http_server and starting port is 9090
+2007/01/26 11:20:00 INFO> simple axis server execution finished ... 
+2007/01/26 11:20:02 INFO> 1. printed invoking enc_echo to screen 
+2007/01/26 11:20:02 INFO> changed directory to C:\axis2c\build\deploy\rampart\samples\client
+2007/01/26 11:20:02 INFO> Repeating results may occure for loop ahead 
+
+2007/01/26 11:20:43 INFO> axis2 http server stoped 
+2007/01/26 11:20:43 INFO> ==================Summery==============
+2007/01/26 11:20:43 INFO> Total Tests        : 1
+2007/01/26 11:20:43 INFO> Successful Invokes : 0
+2007/01/26 11:20:43 INFO> Failed Invokes     : 1
+2007/01/26 11:20:43 INFO> ========================================

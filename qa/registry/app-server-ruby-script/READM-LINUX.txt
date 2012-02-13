@@ -1,0 +1,29 @@
+GREG_tomcat_deploy_linux.rb
+============================
+
+This script automates WSO2 Goveranance Registry deployment on Tomcat application server. In order to run the script, please follow the steps given below.
+
+1. Install Ruby on your system (You may also need to install ruby_gnome2 along with ruby)
+2. Copy GREG_tomcat_deploy_linux.rb to a directory in your Linux file system
+3. Edit the following settings in GREG_tomcat_deploy_linux.rb 
+
+$greg_repo="/home/krishantha/Desktop/greg/greg-repo/test"
+$CARBON_BIN_HOME="/home/krishantha/Desktop/greg/wso2greg-3.0.3"
+$CATALINA_HOME="/home/krishantha/tomcat/apache-tomcat-6.0.20"
+$JAVA_HOME="/usr/local/jdk1.6.0_06"
+
+Here greg_repo can be any location in your file system. CARBON_BIN_HOME is the location of the unzipped WSO2 Governance Registry binary distribution.
+CATALINA_HOME, Home directory of the tomcat binary
+JAVA_HOME, Home directory of your java installation.
+
+3. Open a command shell and enter the following command
+"ruby GREG_tomcat_deploy_linux.rb"
+
+This will create new directories, configure the necessary files in both tomcat and WSO2 Goveranance Registry.
+
+Script will start the tomcat server and deployed URL will be as follows.
+
+https://your-ip:8443/greg/carbon/
+
+Note that if you want to restart the tomcat, go to tomcat bin and stop the server first. Then you can start the server using tomcat start scripts. Don't use the ruby script to start server.
+

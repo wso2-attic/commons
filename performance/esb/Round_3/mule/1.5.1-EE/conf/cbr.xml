@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mule-configuration PUBLIC "-//MuleSource //DTD mule-configuration XML V1.0//EN"
+        "http://ee.mulesource.com/mule/dtd/mule-configuration.dtd">
+
+<mule-configuration id="Mule_Content_Based_Routing_Sample" version="1.0">
+
+    <description>
+        This configuration does content based routing based on the symbol.
+    </description>
+    <environment-properties>
+        <property name="http.keepAlive" value="true"/>
+        <property name="http.keepAliveTimeout" value="120000"/>
+    </environment-properties>
+    <connector name="HttpConnector" className="org.mule.providers.http.HttpConnector">
+        <threading-profile doThreading="true" maxThreadsActive="100" maxThreadsIdle="50" poolExhaustedAction="WAIT"/>
+    </connector>
+    <transformers>
+        <transformer name="B2S" className="org.mule.transformers.simple.ByteArrayToString"/>
+    </transformers>
+
+    <model name="CBRModel">
+
+        <mule-descriptor name="CBRProxy" implementation="org.mule.providers.soap.WSProxyService">
+
+            <inbound-router>
+                <endpoint connector="HttpConnector" address="http://testb.wso2.com:8090/services/CBRProxy"
+                          synchronous="true"
+                          transformers="B2S"/>
+            </inbound-router>
+
+            <outbound-router>
+
+                <catch-all-strategy className="org.mule.routing.ForwardingCatchAllStrategy">
+                    <endpoint connector="HttpConnector" address="http://localhost:8083/MockServices/EchoService"
+                              synchronous="true"/>
+                </catch-all-strategy>
+
+                <router className="org.mule.routing.outbound.FilteringOutboundRouter">
+                    <endpoint connector="HttpConnector" address="http://testc.wso2.com:8080/MockServices/EchoService"
+                              synchronous="true"/>
+                    <filter expression="(//order[1]/symbol)"
+                            className="org.mule.routing.filters.xml.JXPathFilter">
+                        <properties>
+                            <property name="value" value="IBM"/>
+                        </properties>
+                    </filter>
+                </router>
+
+                <router className="org.mule.routing.outbound.FilteringOutboundRouter">
+                    <endpoint connector="HttpConnector" address="http://localhost:8081/MockServices/EchoService"
+                              synchronous="true"/>
+                    <filter expression="(//order[1]/symbol)"
+                            className="org.mule.routing.filters.xml.JXPathFilter">
+                        <properties>
+                            <property name="value" value="SUN"/>
+                        </properties>
+                    </filter>
+                </router>
+
+
+            </outbound-router>
+            <properties>
+                <property name="wsdlFile" value="wsdl/ProxyWSDL-embedded.wsdl"/>
+            </properties>
+
+        </mule-descriptor>
+    </model>
+</mule-configuration>

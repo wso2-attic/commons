@@ -1,0 +1,25 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">   
+<localEntry key="validate_schema" src="file:repository/samples/resources/validate/add_schema.xsd"/> 
+<in>
+        <validate>
+            <schema key="validate_schema"/>
+            <on-fail>
+                 <makefault>
+                    <code value="tns:Receiver"
+                            xmlns:tns="http://www.w3.org/2003/05/soap-envelope"/>
+                    <reason value="Error occurred when validating"/>
+                </makefault>
+                <property name="RESPONSE" value="true"/>
+                <header name="To" expression="get-property('ReplyTo')"/>
+            </on-fail>
+        </validate>
+	<send>
+		<endpoint>
+			<address uri="http://localhost:9000/services/Adding"/>
+		</endpoint>
+	</send>
+    </in>
+    <out>
+	<send/>
+    </out>
+</definitions>

@@ -1,0 +1,72 @@
+<wsp:Policy wsu:Id="SigEncr" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+  <wsp:ExactlyOne>
+    <wsp:All>
+      <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <wsp:Policy>
+          <sp:InitiatorToken>
+            <wsp:Policy>
+              <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                <wsp:Policy>
+                  <sp:RequireThumbprintReference/>
+                  <sp:WssX509V3Token10/>
+                </wsp:Policy>
+              </sp:X509Token>
+            </wsp:Policy>
+          </sp:InitiatorToken>
+          <sp:RecipientToken>
+            <wsp:Policy>
+              <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                <wsp:Policy>
+                  <sp:RequireThumbprintReference/>
+                  <sp:WssX509V3Token10/>
+                </wsp:Policy>
+              </sp:X509Token>
+            </wsp:Policy>
+          </sp:RecipientToken>
+          <sp:AlgorithmSuite>
+            <wsp:Policy>
+              <sp:Basic256/>
+            </wsp:Policy>
+          </sp:AlgorithmSuite>
+          <sp:Layout>
+            <wsp:Policy>
+              <sp:Strict/>
+            </wsp:Policy>
+          </sp:Layout>
+          <sp:IncludeTimestamp/>
+          <sp:OnlySignEntireHeadersAndBody/>
+        </wsp:Policy>
+      </sp:AsymmetricBinding>
+      <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Policy>
+          <sp:MustSupportRefKeyIdentifier/>
+          <sp:MustSupportRefIssuerSerial/>
+          <sp:MustSupportRefThumbprint/>
+          <sp:RequireSignatureConfirmation/>
+        </sp:Policy>
+      </sp:Wss11>
+      <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Policy>
+          <sp:MustSupportRefKeyIdentifier/>
+          <sp:MustSupportRefIssuerSerial/>
+        </sp:Policy>
+      </sp:Wss10>
+      <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Body/>
+      </sp:SignedParts>
+      <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Body/>
+      </sp:EncryptedParts>
+        <rampc:RampartConfig xmlns:rampc="http://ws.apache.org/rampart/c/policy">
+            <rampc:User>wso2carbon</rampc:User>
+            <rampc:TimeToLive>360</rampc:TimeToLive>
+            <rampc:EncryptionUser>useReqSigCert</rampc:EncryptionUser>
+            <rampc:PasswordType>Digest</rampc:PasswordType>
+            <rampc:PasswordCallbackClass>/axis2c/deploy/samples/lib/rampartc/libpwcb.so</rampc:PasswordCallbackClass>
+            <rampc:ReceiverCertificate>/home/damitha/projects/perftest-framework/wsclient/wso2carbon.cer</rampc:ReceiverCertificate>
+            <rampc:Certificate>/home/damitha/projects/perftest-framework/wsclient/wso2carbon.cer</rampc:Certificate>
+            <rampc:PrivateKey>/home/damitha/projects/perftest-framework/wsclient/wso2carbon.key</rampc:PrivateKey>
+        </rampc:RampartConfig>
+    </wsp:All>
+  </wsp:ExactlyOne>
+</wsp:Policy>

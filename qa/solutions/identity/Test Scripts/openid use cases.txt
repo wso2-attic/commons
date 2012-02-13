@@ -1,0 +1,132 @@
+OpenID integration with WSO2 Identity Solution
+-----------------------------------------------
+
+1. Definitions
+2. Use cases for User
+3. Use cases for Admin
+4. DBSchema changes required by OpenID integration
+5. Configuration file changes
+
+
+1. Definitions
+---------------
+
+1. A user profile : A set of claims with corresponding values
+2. OpenID Provider [OP] : Can be treated equivalent to an IdP in this context
+
+2. Use cases for User
+--------------------
+
+1. Get an OpenID url 
+
+      - User signs up with WSO2 IdP
+	- An OpenID url will be created automatically to him
+
+2. Download an OpenIDInfo Card 
+	- User logs into the WSO2 IdP
+      - User downloads an OpenID InfoCard
+
+3. Login with OpenID Url - issued by WSO2 IdP
+
+4. Login with OpenIDInfoCard issued by WSO2 IdP 
+
+5. View the Urls, which accepted the user's OpenID Url 
+
+	- User logs into the WSO2 IdP with valid credentials
+      - View the sites which accepted the user's OpenID Url
+        [Site Url| Number of times being used|Last login|Trust Always|Deafult Profile]
+
+6. Add/Remove sites as 'Always Trusted' by login in directly 
+
+	- User logs into the WSO2 IdP with valid credentials
+      - View the sites which accepted the user's OpenID Url
+      - User adds/removes sites[urls] as always trusted sites, from the sites which already accepted his OpenID url
+
+7. Add/Remove sites as 'Always Trusted' during redirection
+
+	- User being redirected to the WSO2 IdP.
+      - User logs into the WSO2 IdP with valid credentials
+      - User decides, whether to trust the RP Only Once, Always or Deny sending profile info
+
+8. Login into the WSO2 IdP during redirection, using a registered self-issued InfoCard
+
+	- User being redirected to the WSO2 IdP.
+      - User logs into the WSO2 IdP with a registered self-issued InfoCard
+
+
+9. Maintain different "user profiles" and set one as default against each RP - requests authentication
+
+
+3. Use cases for Admin
+-----------------------
+
+1. Add claims related to OpenID as 'supported claims' 
+
+    [Note 1 - OpenID related claims will have a additional attribute called 'OpenID Tag"]
+
+2. Add new claims related to OpenID to a given dialect
+
+   [Note 1 - OpenID related claims will have a additional attribute called 'OpenID Tag"]
+   [Note 2 - Admin should not add any claims to the dialect http://schema.openid.net/2007/05/claims - Simple Atrribute Registration]
+   [Note 3 - Admin can add any claim to the dialect http://openid.net/schema - Attribute Exchange]
+   [Note 4 - Adding the OpenID Tag to any claim wil make it available as an OpenID claim]
+
+3. View issued InfoCards against Token Type
+
+4. Revoke issued OpenIDInfoCards
+
+5. Enable/Disable OpenID/OpenIDInfoCard support
+
+
+4. DBSchema changes required by OpenID integration
+---------------------------------------------------
+
+4.1. Table Name : CLAIMS
+-------------------------
+
+Columns to be added : 
+
+1. OPENID_TAG [IS_NULL = YES, VARCHAR]
+
+   Purpose: This column will contain all the OpenID related tags against the Claim Uri.
+            And also will allow to map, even an Inforcard claim to an OpenID attribute.
+
+
+   Example: Give Name
+            uri : http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname
+            OPENID_TAG : givenname
+
+	      Date of Birth
+            uri: http://schema.openid.net/2007/05/claims/dob
+            OPENID_TAG: dob
+
+4.2. Table Name : OPENID_USER_RP [NEW}
+---------------------------------
+
+Columns:
+
+1. RP_URL
+2. USER_ID
+3. C_LAST_UPDATED
+4. IS_TRUSTED_ALWAYS
+5. VISIT_COUNT
+6. LAST_VISIT
+7. DEFAULT_PROFILE
+
+
+5. Configuration file changes
+------------------------------
+1. modules\identity-provider\conf\initial-claims.xml 
+
+   - Added new dialects for OpenID
+   - Introduced a new element <OpenIDTag>
+
+2. modules\identity-provider\conf\wsas-server.xml
+
+   - Added <OpenIDServerUrl>
+
+3. modules\identity-provider\conf\wso2identity.hbm.xml
+
+   - DBSchema changes Ref [4.1]
+
+  

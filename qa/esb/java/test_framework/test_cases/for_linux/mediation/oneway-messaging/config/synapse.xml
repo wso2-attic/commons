@@ -1,0 +1,12 @@
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <!-- filtering of messages with XPath and regex matches -->
+    <filter source="get-property('To')" regex=".*/StockQuote.*">
+        <send>
+            <endpoint>
+                <address uri="http://localhost:9000/soap/SimpleStockQuoteService"/>
+            </endpoint>
+        </send>
+        <drop/>
+    </filter>
+    <send/>
+</definitions>

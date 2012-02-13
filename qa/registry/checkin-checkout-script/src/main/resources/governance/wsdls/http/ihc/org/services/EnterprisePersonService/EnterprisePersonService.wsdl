@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://ihc.org/services/EnterprisePersonService" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ihc.org/services/EnterprisePersonService" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ws="http://ihc.org/xsd/patient" xmlns:er="http://ihc.org/xsd/ErrorResolution" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:resp="http://ihc.org/xsd/patient/response">
+<wsdl:documentation>
+		Add some documentation about the service here
+	</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ihc.org/xsd/patient">
+			<xs:include schemaLocation="../../../../../../schemas/http/ihc/org/xsd/patient/EnterprisePersonService.xsd"/>
+			<xs:include schemaLocation="../../../../../../schemas/http/ihc/org/xsd/patient/EnterprisePersonService1.xsd"/>
+			<xs:element name="codeSystem">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="code">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="1" minOccurs="1" name="value" type="xs:string"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PatientAndsourceSystemId" xmlns="http://ihc.org/xsd/patient">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ws:Patient"/>
+						<xs:element ref="ws:sourceSystemIdentification"/>
+						<xs:element maxOccurs="1" minOccurs="1" ref="ws:codeSystem"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="warningType">
+				<xs:sequence>
+					<xs:element maxOccurs="1" minOccurs="1" name="Type" type="xs:string"/>
+					<xs:element maxOccurs="1" minOccurs="1" name="Details" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="response">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="patientIdElement" type="xs:long">
+						</xs:element>
+						<xs:element maxOccurs="1" minOccurs="0" name="warnings">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" minOccurs="1" name="warning" type="ws:warningType"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="PatientIdList">
+				<xs:sequence>
+					<xs:element ref="ws:codeSystem"/>
+					<xs:element maxOccurs="unbounded" minOccurs="1" name="patientId" type="xs:long"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="patientIdList" type="ws:PatientIdList"/>
+			<xs:complexType name="WarningListType">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="1" name="warning" type="ws:warningType"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="Patients">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="ws:Patient"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="warnings" type="ws:WarningListType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PersonSearchResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SearchID" type="xs:nonNegativeInteger"/>
+						<xs:element name="Count" type="xs:nonNegativeInteger"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="warnings" type="ws:WarningListType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetSearchResponseList">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="Result">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="1" minOccurs="1" ref="ws:Patient"/>
+									<xs:element maxOccurs="1" minOccurs="1" name="Weight" type="xs:int"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element maxOccurs="unbounded" minOccurs="0" name="warnings" type="ws:WarningListType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetSearchResults">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="ws:codeSystem"/>
+						<xs:element name="SearchID" type="xs:nonNegativeInteger"/>
+						<xs:element name="Offset" type="xs:nonNegativeInteger"/>
+						<xs:element name="Count" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ihc.org/xsd/ErrorResolution">
+			<xs:include schemaLocation="../../../../../../schemas/http/ihc/org/xsd/ErrorResolution/EnterprisePersonService2.xsd"/>
+		</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="GetSearchResultsMessage">
+    <wsdl:part name="patientSearchResults" element="ws:GetSearchResults">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="patientSearchCriteriaMessage">
+    <wsdl:part name="patientSearchCriteria" element="ws:PersonSearchCriteria">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SearchResponseMessage">
+    <wsdl:part name="patientSearchResponse" element="ws:PersonSearchResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="patientAndsourceSystemIdCemMessage">
+    <wsdl:part name="patientCem" element="ws:PatientAndsourceSystemId">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="patientCemMessage">
+    <wsdl:part name="patientCem" element="ws:Patient">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="personFault">
+    <wsdl:part name="personFaultParam" element="er:errorNotification">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonsResponse">
+    <wsdl:part name="patients" element="ws:Patients">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPersonsRequest">
+    <wsdl:part name="patientIds" element="ws:patientIdList">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="patientIdMessage">
+    <wsdl:part name="patientId" element="ws:response">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="GetSearchResponseListMessage">
+    <wsdl:part name="getSearchResults" element="ws:GetSearchResponseList">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="EnterprisePersonPortType">
+    <wsdl:operation name="searchPerson">
+      <wsdl:input message="tns:patientSearchCriteriaMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:SearchResponseMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPersonSearchResults">
+      <wsdl:input message="tns:GetSearchResultsMessage">
+    </wsdl:input>
+      <wsdl:output message="tns:GetSearchResponseListMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="insertPerson">
+<wsdl:documentation>
+				Add some documentation about the insertPerson
+				operation here
+			</wsdl:documentation>
+      <wsdl:input message="tns:patientAndsourceSystemIdCemMessage" wsaw:Action="urn:insertPerson">
+    </wsdl:input>
+      <wsdl:output message="tns:patientIdMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updatePerson">
+<wsdl:documentation>
+				Add some documentation about the updatePerson
+				operation here
+			</wsdl:documentation>
+      <wsdl:input message="tns:patientAndsourceSystemIdCemMessage" wsaw:Action="urn:updatePerson">
+    </wsdl:input>
+      <wsdl:output message="tns:patientIdMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="mergePerson">
+<wsdl:documentation>
+				Add some documentation about the mergePerson
+				operation here
+			</wsdl:documentation>
+      <wsdl:input message="tns:patientAndsourceSystemIdCemMessage" wsaw:Action="urn:mergePerson">
+    </wsdl:input>
+      <wsdl:output message="tns:patientIdMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="insertUpdatePerson">
+<wsdl:documentation>
+				Add some documentation about the
+				insertUpdatePerson operation here
+			</wsdl:documentation>
+      <wsdl:input message="tns:patientAndsourceSystemIdCemMessage" wsaw:Action="urn:insertUpdatePerson">
+    </wsdl:input>
+      <wsdl:output message="tns:patientIdMessage">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPersons">
+      <wsdl:input message="tns:getPersonsRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getPersonsResponse">
+    </wsdl:output>
+      <wsdl:fault name="fault" message="tns:personFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EnterprisePerson-SOAP11Binding" type="tns:EnterprisePersonPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="searchPerson">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/searchPerson"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPersonSearchResults">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/getPersonSearchResults"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="insertPerson">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/insertPerson"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updatePerson">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/updatePerson"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="mergePerson">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/mergePerson"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="insertUpdatePerson">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/insertUpdatePerson"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getPersons">
+      <soap:operation soapAction="http://ihc.org/services/EnterprisePersonService/getPatientList"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EnterprisePersonService">
+    <wsdl:port name="SOAP11Endpoint" binding="tns:EnterprisePerson-SOAP11Binding">
+      <soap:address location="http://159.212.166.88:80/axis2/services/EnterprisePersonService/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

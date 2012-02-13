@@ -1,0 +1,43 @@
+
+
+1. Start the Mashup server.
+2. Execute dduser_csv_datafile.jmx file and add 15 users to the Mashup Server. (the admin login is set to admin\admin in the script. if your admin login is something else pls change the script) 
+3. Use the data included in regusers_15.csv for the above. (both files should reside in the same directory)
+4. Shutdown the server and copy the sample and system mashups to each user directory
+5. Start the server
+6. Execute AddCommentsTags_.html which will adds tags and comments to all the mashups of all users.
+
+
+
+NOTE: 
+Before staring the server make sure the 'mashup.vmoptions' is setup with these values.
+-Xms512m
+
+-Xmx1024m
+
+-XX:PermSize=256m
+
+-XX:MaxPermSize=256m
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Perf Object -Memory
+Counter -Pages/sec
+-------------------
+Pages/sec is the rate at which pages are read from or written to disk to resolve hard page faults. This counter is a primary indicator of the kinds of faults that cause system-wide delays.  It is the sum of Memory\\Pages Input/sec and Memory\\Pages Output/sec.  It is counted in numbers of pages, so it can be compared to other counts of pages, such as Memory\\Page Faults/sec, without conversion. It includes pages retrieved to satisfy faults in the file system cache (usually requested by applications) non-cached mapped memory files.
+
+
+Perf Object -Processor
+Counter -% Processor Time
+-------------------
+% Processor Time is the percentage of elapsed time that the processor spends to execute a non-Idle thread. It is calculated by measuring the duration of the idle thread is active in the sample interval, and subtracting that time from interval duration.  (Each processor has an idle thread that consumes cycles when no other threads are ready to run). This counter is the primary indicator of processor activity, and displays the average percentage of busy time observed during the sample interval. It is calculated by monitoring the time that the service is inactive, and subtracting that value from 100%.
+
+
+
+Perf Object -Physical Disk
+Counter -Avg. Disk Queue Length
+-------------------
+Avg. Disk Queue Length is the average number of both read and write requests that were queued for the selected disk during the sample interval.

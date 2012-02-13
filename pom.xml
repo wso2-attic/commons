@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>wso2commons-build</artifactId>
+    <groupId>wso2commons-build</groupId>
+    <packaging>pom</packaging>
+    <version>144453</version>
+    <name>This is only to generate all the commons projects </name>
+    <!-- This pom do nothing but to take www under mvn module dependencies -->
+    <modules>
+        <module>utils</module>
+        <module>codegen</module>
+        <module>adminui</module>
+        <module>authenticator</module>
+        <module>mex</module>
+        <module>statistics</module>
+        <module>throttle</module>
+        <module>tracer</module>        
+        <module>xfer</module>
+	<module>xkms</module>
+	<!--module>data-services</module-->
+        <module>dynamic-codegen</module>
+        <module>im-wrapper</module>
+        <module>usermanager</module>
+        <module>monitor</module>
+        <module>dynamic-response</module>
+	<module>sandesha2-persistence</module>
+	<module>deployers/axis1deployer</module>
+        <module>wsdl-converter</module>
+        <module>wsdl-view</module>
+        <module>archive-validators</module>
+        <!--module>caching</module-->
+        <module>plugins/sm-list-plugin</module>
+        <module>plugins/js-plugin</module>
+        <!--module>caching</module-->
+    </modules>
+    <build>
+        <defaultGoal>install</defaultGoal>
+    </build>
+
+     
+    <distributionManagement>
+    <repository>
+      <id>wso2-maven2-repository</id>
+      <name>WSO2 Maven2 Repository</name>
+      <url>scp://dist.wso2.org/maven2</url>
+    </repository>
+  </distributionManagement>
+
+    
+</project>

@@ -1,0 +1,200 @@
+<!--
+  ~  Copyright (c) 2005-2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  ~
+  -->
+<!--
+	test-case-250
+-->
+<project default="main">
+<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+<!--<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>-->
+<!-- <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+  <classpath>
+    <pathelement location="/usr/share/ant/lib/ant-contrib-1.0b3.jar"/>
+  </classpath>
+</taskdef>-->
+
+    <property name="activemqHome" value="./../../results/activemq/apache-activemq-${activemqVersion}"/>
+
+    <property name="this.dir" location="."/>
+
+  <target name="main" depends="clean,init,activemq-install,activemq-start,wso2esb-samples-start,axis2server-build,axis2server-start,dumb-client-test,esb-stop,axis2servers-stop,activemq-stop,activemq-uninstall,clean-up">
+        <echo>Test for test-case-${no} completed !</echo>
+    </target>
+
+    <target name="clean">
+        <echo>cleaning..</echo>
+	<delete dir="./../../results/test-cases/test-case-${no}"/>
+    </target>
+
+    <target name="init">
+        <echo>Start testing test-case-${no} ..</echo>
+	<mkdir dir="./../../results/test-cases/test-case-${no}"/>
+	<move file="${esbHome}/repository/conf/axis2.xml" tofile="./../../backup/axis2.xml-jms"/>
+	<copy file="./../../utils/jms/conf/axis2.xml-jms-enabled" tofile="${esbHome}/repository/conf/axis2.xml"/>
+    </target>
+
+    <target name="clean-up">
+        <echo>clean-up..</echo>
+	<delete file="${esbHome}/repository/conf/axis2.xml"/>
+	<move file="./../../backup/axis2.xml-jms" tofile="${esbHome}/repository/conf/axis2.xml"/>
+    </target>
+
+    <target name="wso2esb-samples-start" depends="init">
+ 		<limit seconds="${esb-max-time-sec}">
+			<exec dir="../../utils/esb" executable="./wso2esb-samples-start.sh" os="Linux">
+				<arg value="${no}"/>
+				<arg value="${esbHome}"/>
+			</exec>
+			<sleep seconds="22"/>
+			<antcall target="poll">
+			  <param name="poll.log" value="esb.log"/>
+			  <param name="poll.string" value="${esb-start-indicator}"/>
+			</antcall>
+       	<echo>ESB Started !</echo>
+		</limit>
+    </target>
+
+    <target name="axis2server-build" depends="init">
+       <exec dir="../../utils/axis2/server" executable="./axis2server-build.sh" os="Linux" >
+		<arg value="${no}"/>
+		<arg value="SimpleStockQuoteService"/>
+		<arg value="${this.dir}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="axis2server-start" depends="init">
+		<limit seconds="${axis2server-max-time-sec}">
+     	<exec dir="../../utils/axis2/server" executable="./axis2server-start.sh" os="Linux">
+			<arg value="${no}"/>
+			<arg value="${esbHome}"/>
+			<arg value="${this.dir}"/>
+	   	</exec>
+		<sleep seconds="2"/>
+		<antcall target="poll">
+		  <param name="poll.log" value="axis2server.log"/>
+		  <param name="poll.string" value="${axis2server-start-indicator}"/>
+		</antcall>
+       	<echo>Axis2 Sample server Started !</echo>
+		</limit>
+    </target>
+  
+    <target name="activemq-install" depends="init">
+        <exec dir="./../../utils/jms" executable="ant" os="Linux">
+			<arg value="-DesbHome=${esbHome}"/>
+			<arg value="-DactivemqVersion=${activemqVersion}"/>
+			<arg value="-DactivemqPath=${activemqPath}"/>
+	    </exec>
+       <echo>ActiveMQ installed</echo>
+    </target>
+
+    <target name="activemq-uninstall" depends="init">
+        <exec dir="./../../utils/jms" executable="ant" os="Linux">
+			<arg value="-DesbHome=${esbHome}"/>
+			<arg value="-DactivemqVersion=${activemqVersion}"/>
+			<arg value="-DactivemqPath=${activemqPath}"/>
+			<arg value="uninstall"/>
+	    </exec>
+       <echo>ActiveMQ uninstalled!</echo>
+    </target>
+
+    <target name="activemq-start" depends="init">
+		<limit seconds="${activemq-max-time-sec}">
+	     <exec dir="./../../utils/jms" executable="./activemq-start.sh" os="Linux">
+			<arg value="${no}"/>
+			<arg value="${activemqHome}"/>
+	   	</exec>
+		<sleep seconds="5"/>
+		<antcall target="poll">
+		  <param name="poll.log" value="activemq.log"/>
+		  <param name="poll.string" value="${activemq-start-indicator}"/>
+		</antcall>
+       	<echo>ActiveMQ  Started !</echo>
+		</limit>
+    </target>
+
+    <target name="esb-stop" >
+       <exec dir="../../utils/esb" executable="./esb-stop.sh" os="Linux">
+		<arg value="${no}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="axis2servers-stop" >
+       <exec dir="../../utils/axis2/server" executable="./axis2servers-stop.sh" os="Linux">
+		<arg value="${no}"/>
+		<arg value="${esbHome}"/>
+       </exec>
+    </target>
+
+    <target name="activemq-stop" >
+       <exec dir="../../utils/jms" executable="./activemq-stop.sh" os="Linux">
+		<arg value="${no}"/>
+       </exec>
+    </target>
+
+    <target name="dumb-client-run" >
+       <exec dir="." executable="./dumb-client.sh" os="Linux" >
+		<arg value="${no}"/>
+		<arg value="${this.dir}"/>
+		<arg value="${esbHome}"/>
+	</exec>
+	<sleep seconds="${client-response-time-sec}"/>
+    </target>
+   
+    <target name="dumb-client-test" depends="dumb-client-run" >
+
+    <echo>Dumb Client test started</echo>
+	<if>
+	<and>
+	 	<resourcecontains resource="./../../results/test-cases/test-case-${no}/axis2server.log" substring="samples.services.SimpleStockQuoteService  :: Accepted order"/>
+		<resourcecontains resource="./../../results/test-cases/test-case-${no}/esb.log" substring="ProxyServiceMessageReceiver Proxy Service StockQuoteProxy received a new message"/> 
+	</and>
+	 <then>
+	   <echo message="--------------------" />
+	   <echo message="Test passed" />
+	   <echo message="--------------------" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Dumb Client test Passed
+</echo> 
+	 </then>
+	 <else>
+	   <echo message="--------------------" />
+	   <echo message="Test failed" />
+	   <echo message="--------------------" />
+	   <echo file="./../../results/results.txt" append="yes">[test-case-${no}] Dumb Client test Failed
+</echo> 
+	 </else>
+	</if>
+    </target>
+
+	<target name="poll">
+     	<if>
+		 <resourcecontains resource="./../../results/test-cases/test-case-${no}/${poll.log}" substring="${poll.string}"/>
+		<else>
+		 	<sleep seconds="2"/>
+			<antcall target="loop" >
+			  <param name="poll.log" value="${poll.log}"/>
+			  <param name="poll.string" value="${poll.string}"/>
+			</antcall>
+		</else>
+		</if>
+    </target>
+	<target name="loop">
+		<antcall target="poll" />
+ 	</target>
+</project>

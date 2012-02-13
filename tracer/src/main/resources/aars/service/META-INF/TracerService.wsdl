@@ -1,0 +1,233 @@
+<wsdl:definitions xmlns:axis2="http://service.tracer.wso2.org"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:ns0="http://org.apache.axis2/xsd"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:ns1="http://service.tracer.wso2.org/xsd"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://service.tracer.wso2.org">
+    <wsdl:documentation>wso2tracer</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ns="http://org.apache.axis2/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="unqualified" targetNamespace="http://org.apache.axis2/xsd">
+            <xs:element name="getMessage">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceId" nillable="true" type="xs:string"/>
+                        <xs:element name="operationName" nillable="true" type="xs:string"/>
+                        <xs:element name="messageSequence" nillable="true" type="xs:long"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getMessageResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns1:MessagePayload"/>
+                    </xs:sequence>
+                </xs:complexType>
+
+            </xs:element>
+            <xs:element name="getMessages">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="numberOfMessages" nillable="true" type="xs:int"/>
+                        <xs:element name="filter" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getMessagesResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns1:TracerServiceInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="setMonitoring">
+
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="flag" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="setMonitoringResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns1:TracerServiceInfo"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns:ax216="http://service.tracer.wso2.org/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="unqualified"
+                   targetNamespace="http://service.tracer.wso2.org/xsd">
+            <xs:element name="MessagePayload" type="ax216:MessagePayload"/>
+            <xs:complexType name="MessagePayload">
+                <xs:sequence>
+
+                    <xs:element name="request" nillable="true" type="xs:string"/>
+                    <xs:element name="response" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="TracerServiceInfo" type="ax216:TracerServiceInfo"/>
+            <xs:complexType name="TracerServiceInfo">
+                <xs:sequence>
+                    <xs:element name="empty" type="xs:boolean"/>
+                    <xs:element name="flag" nillable="true" type="xs:string"/>
+                    <xs:element name="lastMessage" nillable="true" type="ax216:MessagePayload"/>
+                    <xs:element maxOccurs="unbounded" name="messageInfo" nillable="true"
+                                type="ax216:MessageInfo"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="MessageInfo" type="ax216:MessageInfo"/>
+            <xs:complexType name="MessageInfo">
+                <xs:sequence>
+                    <xs:element name="messageSequence" type="xs:long"/>
+
+                    <xs:element name="operationName" nillable="true" type="xs:string"/>
+                    <xs:element name="serviceId" nillable="true" type="xs:string"/>
+                    <xs:element name="timestamp" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="setMonitoringMessage">
+        <wsdl:part name="part1" element="ns0:setMonitoring"/>
+    </wsdl:message>
+    <wsdl:message name="setMonitoringResponse">
+        <wsdl:part name="part1" element="ns0:setMonitoringResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getMessagesMessage">
+        <wsdl:part name="part1" element="ns0:getMessages"/>
+    </wsdl:message>
+    <wsdl:message name="getMessagesResponse">
+        <wsdl:part name="part1" element="ns0:getMessagesResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getMessageMessage">
+        <wsdl:part name="part1" element="ns0:getMessage"/>
+    </wsdl:message>
+    <wsdl:message name="getMessageResponse">
+        <wsdl:part name="part1" element="ns0:getMessageResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="wso2tracerPortType">
+        <wsdl:operation name="setMonitoring">
+            <wsdl:input message="axis2:setMonitoringMessage" wsaw:Action="urn:setMonitoring"/>
+            <wsdl:output message="axis2:setMonitoringResponse"
+                         wsaw:Action="http://service.tracer.wso2.org/wso2tracerPortType/setMonitoringResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getMessages">
+            <wsdl:input message="axis2:getMessagesMessage" wsaw:Action="urn:getMessages"/>
+            <wsdl:output message="axis2:getMessagesResponse"
+                         wsaw:Action="http://service.tracer.wso2.org/wso2tracerPortType/getMessagesResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getMessage">
+            <wsdl:input message="axis2:getMessageMessage" wsaw:Action="urn:getMessage"/>
+            <wsdl:output message="axis2:getMessageResponse"
+                         wsaw:Action="http://service.tracer.wso2.org/wso2tracerPortType/getMessageResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="wso2tracerSOAP11Binding" type="axis2:wso2tracerPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="setMonitoring">
+            <soap:operation soapAction="urn:setMonitoring" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessages">
+            <soap:operation soapAction="urn:getMessages" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessage">
+            <soap:operation soapAction="urn:getMessage" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="wso2tracerSOAP12Binding" type="axis2:wso2tracerPortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="setMonitoring">
+            <soap12:operation soapAction="urn:setMonitoring" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessages">
+            <soap12:operation soapAction="urn:getMessages" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessage">
+            <soap12:operation soapAction="urn:getMessage" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="wso2tracerHttpBinding" type="axis2:wso2tracerPortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="setMonitoring">
+            <http:operation location="setMonitoring"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessages">
+            <http:operation location="getMessages"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getMessage">
+            <http:operation location="getMessage"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="wso2tracer">
+        <wsdl:port name="wso2tracerSOAP11port_https" binding="axis2:wso2tracerSOAP11Binding">
+            <soap:address location="https://10.100.1.230:9443/services/wso2tracer"/>
+        </wsdl:port>
+        <wsdl:port name="wso2tracerSOAP12port_https" binding="axis2:wso2tracerSOAP12Binding">
+            <soap12:address location="https://10.100.1.230:9443/services/wso2tracer"/>
+        </wsdl:port>
+        <wsdl:port name="wso2tracerHttpport" binding="axis2:wso2tracerHttpBinding">
+            <http:address location="https://10.100.1.230:9443/services/wso2tracer"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

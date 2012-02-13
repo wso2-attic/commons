@@ -1,0 +1,4 @@
+Use <dbname>;
+grant all privileges on *.* to 'root'@'10.100.3.20' identified by 'root';
+
+grant all privileges on *.* to 'wso2admin'@'data.stratoslive.wso2.com' identified by 'pdss261temp';

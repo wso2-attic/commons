@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="LBProxy" transports="https http" startOnLoad="true" trace="enable" statistics="enable">
+        <target>
+            <inSequence>
+                <send>
+                    <endpoint name="anonymous">
+                        <loadbalance algorithm="org.apache.synapse.endpoints.algorithms.RoundRobin">
+                            <endpoint name="endpoint_urn_uuid_E37C5352C1474DBDE49035752386068-49088183">
+                                <address uri="http://localhost:8270/services/securedProxy"/>
+                            </endpoint>
+                            <endpoint name="endpoint_urn_uuid_E37C5352C1474DBDE49035752617244-2056275292">
+                                <address uri="http://localhost:8271/services/securedProxy"/>
+                            </endpoint>
+                        </loadbalance>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+        <policy key="conf:/repository/axis2/service-groups/LBProxy/services/LBProxy/policies/SigOnly"/>
+        <enableSec/>
+    </proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <log level="full"/>
+    </sequence>
+</definitions>

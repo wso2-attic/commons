@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+
+    <class name="org.apache.sandesha2.storage.beans.RMSBean" table="rms_t">
+    
+    	   <id name="createSeqMsgID" column="c_create_seq_msg_id" />
+    
+           <property name="sequenceID" column="c_sequence_id" />
+           <property name="toEPR" column="c_to_epr" />
+           <property name="replyToEPR" column="c_reply_to_epr" />
+           <property name="acksToEPR" column="c_acks_to_epr" />
+           <property name="RMVersion" column="c_rm_version" />
+           <property name="securityTokenData" column="c_security_token_data" />
+           <property name="lastActivatedTime" column="c_last_activated_time" />
+           <property name="closed" column="c_closed" />
+           <property name="terminated" column="c_terminated" />
+           <property name="pollingMode" column="c_polling_mode" />
+           <property name="serviceName" column="c_service_name" />
+           <property name="flags" column="c_flags" />        
+           <property name="id" column="c_id" />
+           <property name="internalSequenceID" column="c_internal_sequence_id" />
+           <property name="createSequenceMsgStoreKey" column="c_create_sequence_msg_store_key" />
+           <property name="referenceMessageStoreKey" column="c_reference_msg_store_key" />
+           <property name="lastSendError" column="c_last_send_error" type="serializable" length="5000" />
+           <property name="highestOutRelatesTo" column="c_highest_out_relates_to" />
+           <property name="clientCompletedMessages" column="c_client_completed_messages" type="serializable" length="5000"  />
+           <property name="transportTo" column="c_transport_to" />
+           <property name="offeredEndPoint" column="c_offered_endpoint" />
+           <property name="offeredSequence" column="c_offered_sequence" />
+           <property name="anonymousUUID" column="c_anonymous_uuid" />
+           <property name="lastSendErrorTimestamp" column="c_last_send_error_timestamp" />  
+           <property name="lastOutMessage" column="c_last_out_message" />
+           <property name="highestOutMessageNumber" column="c_highest_out_message_number" />  
+           <property name="nextMessageNumber" column="c_next_message_number" />
+           <property name="terminateAdded" column="c_terminate_added" />  
+           <property name="timedOut" column="c_timed_out" />
+           <property name="sequenceClosedClient" column="c_sequence_closed_client" />  
+           <property name="expectedReplies" column="c_expected_replies" />
+           <property name="soapVersion" column="c_soap_version" />
+           <property name="terminationPauserForCS" column="c_termination_pauser_for_cs" />
+           <property name="avoidAutoTermination" column="c_avoid_auto_termination" />
+           <property name="rmsFlags" column="c_rms_flags" />
+         
+    </class>
+
+    <class name="org.apache.sandesha2.storage.beans.InvokerBean" table="invoker_t">
+    
+    	   <id name="messageContextRefKey" column="c_messageContextRefKey" />
+           
+           <property name="sequenceID" column="c_sequence_id" />
+           <property name="context" column="c_context" />
+           <property name="msgNo" column="c_msg_no" />
+           <property name="flags" column="c_flags" />
+
+    </class>
+    
+    <class name="org.wso2.sandesha2.storage.persistent.hibernate.beans.MessageStoreBean" table="message_store_t">
+    
+        <id name="storedKey" column="stored_key" />
+
+        <property name="SOAPEnvelopeString" column="c_SOAP_envelope_string" type="text" length="10000"/>
+        <property name="SOAPVersion" column="c_SOAP_version" />
+        <property name="transportOut" column="c_transport_out" />
+        <property name="axisServiceGroup" column="c_axis_service_group" />
+        <property name="axisService" column="c_axis_service" />
+        <property name="axisOperation" column="c_axis_operation" />
+        <property name="axisOperationMEP" column="c_axis_operation_mep" />
+        <property name="toURL" column="c_to_url" />
+        <property name="messageID" column="c_message_id" />
+        <property name="action" column="c_action" />
+        <property name="transportTo" column="c_transport_to" />
+        <property name="flow" column="c_flow" />
+        <property name="executionChainString" column="c_execution_chain_string" />
+        <property name="messageReceiverString" column="c_message_receiver_string" />
+        <property name="serverSide" column="c_server_side" />  
+        <property name="inMessageStoreKey" column="c_in_message_store_key" />
+        <property name="persistentPropertyString" column="persistent_property_string" type="text" length="5000" />
+        <property name="callbackClassName" column="c_callback_class_name" /> 
+
+    </class>
+    
+    <class name="org.apache.sandesha2.storage.beans.RMDBean" table="rmd_t">
+    
+    	   <id name="sequenceID" column="c_sequence_id" />
+    
+           <property name="toEPR" column="c_to_epr" />
+           <property name="replyToEPR" column="c_reply_to_epr" />
+           <property name="acksToEPR" column="c_acks_to_epr" />
+           <property name="RMVersion" column="c_rm_version" />
+           <property name="securityTokenData" column="c_security_token_data" />
+           <property name="lastActivatedTime" column="c_last_activated_time" />
+           <property name="closed" column="c_closed" />
+           <property name="terminated" column="c_terminated" />
+           <property name="pollingMode" column="c_polling_mode" />
+           <property name="serviceName" column="c_service_name" />
+           <property name="flags" column="c_flags" />  
+           <property name="referenceMessageKey" column="c_referrence_message_key" />
+           <property name="highestInMessageId" column="c_highest_in_message_id" />
+           <property name="lastInMessageId" column="c_last_in_message_id" />
+           <property name="serverCompletedMessages" column="c_server_completed_messages" type="serializable" length="5000" />
+           <property name="outOfOrderRanges" column="c_outof_order_ranges" type="serializable" length="5000" />
+           <property name="toAddress" column="c_to_address" />
+           <property name="outboundInternalSequence" column="c_outbound_internal_sequence" />
+           <property name="nextMsgNoToProcess" column="c_next_msgno_to_process" />
+           <property name="highestInMessageNumber" column="c_highest_in_message_number" />
+           <property name="rmdFlags" column="c_rmd_flags" />    
+    
+    </class>
+    
+    <class name="org.apache.sandesha2.storage.beans.SenderBean" table="sender_t">
+    
+    	   <id name="messageID" column="c_message_id" />
+    
+           <property name="messageContextRefKey" column="c_message_context_ref_key" />
+           <property name="internalSequenceID" column="c_internal_sequence_id" />
+           <property name="sequenceID" column="c_sequence_id" />
+           <property name="toAddress" column="c_to_address" />
+           <property name="inboundSequenceId" column="c_inbound_sequence_id" />
+           <property name="send" column="c_send" />
+           <property name="sentCount" column="c_sent_count" />
+           <property name="messageNumber" column="c_message_number" />
+           <property name="reSend" column="c_resend" />
+           <property name="timeToSend" column="c_time_to_send" />
+           <property name="messageType" column="c_message_type" /> 
+           <property name="lastMessage" column="c_last_message" /> 
+           <property name="inboundMessageNumber" column="c_inbound_message_number" />
+           <property name="transportAvailable" column="c_transport_available" /> 
+           <property name="flags" column="c_flags" />  
+    
+    </class>
+    
+</hibernate-mapping>

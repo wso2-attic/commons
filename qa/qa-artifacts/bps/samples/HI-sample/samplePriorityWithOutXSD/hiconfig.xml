@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hic:HIConfig xmlns:hic="http://wso2.org/ht/schema/hi-config"
+	xmlns:claim="http://www.insurance.example.com/claims"
+	xmlns:claimtask="http://www.insurance.example.com/claims"
+	>
+	<hic:task name="claimtask:ApproveClaim">
+		<hic:publish>
+			<hic:service name="claim:ClaimService" port="ClaimPort" />
+		</hic:publish>
+		<hic:callback>
+			<hic:service name="claim:ClaimServiceCB" port="ClaimPortCB" />
+		</hic:callback>
+	</hic:task>
+	<hic:notification name="claimtask:ClaimApprovalReminder">
+		<hic:publish>
+			<hic:service name="claim:ClaimReminderService" port="ClaimReminderPort" />
+		</hic:publish>
+	</hic:notification>
+</hic:HIConfig>

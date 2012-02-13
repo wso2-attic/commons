@@ -1,0 +1,32 @@
+8/26/05
+Version 1.1b
+
+Added back Xerces option to disable data normalization so that
+verifying signed base64 content will work.
+
+Corrected a bug in the URI utility class.
+
+Corrected and improved some of the unit tests and made sure tests
+run during builds.
+
+8/15/05
+Version 1.1a
+
+Replaced Sun XML code with Xerces to correct memory leak
+
+5/22/05
+Version 1.1
+
+Rewrite of DOM management to fix various bugs and simplify
+maintenance
+
+Migration to JAXP 1.3 for XML parsing and validation
+
+Support for SAML 1.0 and SAML 1.1 in the same process
+
+Redesigned binding and profile classes and interfaces to
+support customized implementations, authentication
+
+Type 1 and 2 SAML artifact support
+
+Pluggable identifier generation

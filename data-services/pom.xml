@@ -1,0 +1,366 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.wso2.dataservice</groupId>
+	<artifactId>wso2data-service</artifactId>
+    <packaging>jar</packaging>
+	<version>SNAPSHOT</version>
+	<name>WSO2 Data Service</name>
+	<url>http://wso2.org</url>
+	<description>WSO2 Data Services</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>au.com.bytecode.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>                
+                <version>${commons.dbcp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-pool</groupId>
+                <artifactId>commons-pool</artifactId>                
+                <version>${commons.pool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.registry</groupId>
+                <artifactId>wso2registry-core</artifactId>
+                <version>${wso2registry.core.version}</version>
+            </dependency>     
+            <dependency>
+                <groupId>org.apache.woden</groupId>
+                <artifactId>woden-api</artifactId>
+                <version>${woden.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.woden</groupId>
+                <artifactId>woden-impl-dom</artifactId>
+                <version>${woden.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${commons.httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>backport-util-concurrent</groupId>
+                <artifactId>backport-util-concurrent</artifactId>
+                <version>${backport.util.concurrent.version}</version>
+            </dependency>
+            
+        </dependencies>
+        
+    </dependencyManagement>
+
+    <dependencies>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+			<version>${axis2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-api</artifactId>
+			<version>${axiom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-impl</artifactId>
+			<version>${axiom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.axiom</groupId>
+			<artifactId>axiom-dom</artifactId>
+			<version>${axiom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ws.commons.schema</groupId>
+			<artifactId>XmlSchema</artifactId>
+			<version>${XmlSchema.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons.logging.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>wstx-asl</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>${wsdl4j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>${commons.httpclient.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>au.com.bytecode.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>                
+        </dependency>
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>                
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.registry</groupId>
+            <artifactId>wso2registry-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.woden</groupId>
+            <artifactId>woden-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.woden</groupId>
+            <artifactId>woden-impl-dom</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+             <groupId>commons-httpclient</groupId>
+             <artifactId>commons-httpclient</artifactId>
+             <scope>test</scope>
+        </dependency>
+        <dependency>
+             <groupId>org.apache.httpcomponents</groupId>
+             <artifactId>httpcore</artifactId>
+             <scope>test</scope>
+        </dependency>        
+        <dependency>
+             <groupId>backport-util-concurrent</groupId>
+             <artifactId>backport-util-concurrent</artifactId>
+             <scope>test</scope>
+        </dependency>         
+        <!-- JDBC Driver classes -->
+        <!-- uncomment as needed -->
+        <!--
+        <dependency>
+            <groupId>com.mysql.jdbc</groupId>
+            <artifactId>Driver</artifactId>
+            <version>2.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/test/resources/lib/mysql-connector-java-5.1.5-bin.jar</systemPath>
+        </dependency>     
+        -->               
+	</dependencies>
+	
+    <scm>
+        <connection>scm:svn:https://wso2.org/repos/wso2/trunk/commons/data-services</connection>
+        <developerConnection>
+            scm:svn:https://wso2.org/repos/wso2/trunk/commons/data-services
+        </developerConnection>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>wso2-maven2-repository-snapshot</id>
+            <url>http://dist.wso2.org/snapshots/maven2</url>
+        </repository>
+        <repository>
+            <id>m2-snapshot-repository</id>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <url>http://dist.wso2.org/maven2</url>
+        </repository>
+        <repository>
+            <id>tomcat-repository</id>
+            <url>http://tomcat.apache.org/dev/dist/m2-repository</url>
+        </repository>
+        <repository>
+            <id>ws-zones-repository</id>
+            <url>http://ws.zones.apache.org/repository2</url>
+        </repository>
+        <!-- Others are available from http://repo1.maven.org/maven2 -->
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <name>WSO2 Maven2 Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>wso2-maven2-snapshot-repository</id>
+            <name>WSO2 Maven2 Snapshot Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/snapshots/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <source>1.4</source>
+                    <target>1.4</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.0.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>generate-test-repository</id>
+                            <phase>generate-test-sources</phase>
+                            <configuration>
+                                <tasks>
+                                    <echo>######################################</echo>
+                                    <echo>creating repository for data services</echo>
+                                    <echo>######################################</echo>
+                                    <mkdir dir="${basedir}/target/repository"/>
+                                    <mkdir dir="${basedir}/target/repository/dataservices"/>
+                                    <mkdir dir="${basedir}/target/repository/services"/>
+                                    <mkdir dir="${basedir}/target/repository/modules"/>
+                                    <property name="sample_dbs_files_dir" value="${basedir}/src/test/resources/test-dbs"/>
+                                    <copy todir="${basedir}/target/repository/dataservices">
+                                      <fileset dir="${sample_dbs_files_dir}">
+                                       <include name="**/*.dbs"/>
+                                      </fileset>
+                                    </copy>                                    
+                                </tasks>
+                            </configuration>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+              </plugin>
+            
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <forkMode>pertest</forkMode>
+                    <argLine>-enableassertions</argLine>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <skip>true</skip>
+                    <!--
+                    <excludes>
+                        <include>**/*Test.java</include>
+                    </excludes>
+                    -->
+                </configuration>
+            </plugin>
+
+		</plugins>
+	</build>
+
+    <profiles>
+         <profile>
+             <activation>
+                 <property>
+                     <name>sign</name>
+                 </property>
+             </activation>
+             <build>
+                 <plugins>
+                     <plugin>
+                         <groupId>org.apache.maven.plugins</groupId>
+                         <artifactId>maven-gpg-plugin</artifactId>
+                         <version>1.0-alpha-3</version>
+                         <executions>
+                             <execution>
+                                 <id>sign-artifacts</id>
+                                 <phase>verify</phase>
+                                 <goals>
+                                     <goal>sign</goal>
+                                 </goals>
+                             </execution>
+                         </executions>
+                     </plugin>
+                 </plugins>
+             </build>
+         </profile>
+     </profiles>
+        
+    <properties>
+        <axis2.version>SNAPSHOT</axis2.version>
+        <axiom.version>SNAPSHOT</axiom.version>
+        <XmlSchema.version>SNAPSHOT</XmlSchema.version>
+        <wsdl4j.version>1.6.1</wsdl4j.version>
+        <log4j.version>1.2.13</log4j.version>
+        <commons.logging.version>1.1</commons.logging.version>
+        <wsdl4j.version>1.6.1</wsdl4j.version>
+        <commons.httpclient.version>3.0.1</commons.httpclient.version>
+        <opencsv.version>1.8</opencsv.version>
+        <poi.version>3.0-FINAL</poi.version>
+        <commons.dbcp.version>1.2.2</commons.dbcp.version>
+        <commons.pool.version>1.3</commons.pool.version>
+        <wso2registry.core.version>SNAPSHOT</wso2registry.core.version>
+        <woden.version>1.0-incubating-SNAPSHOT</woden.version>
+        <commons.httpclient.version>3.0.1</commons.httpclient.version>
+        <httpcore.version>4.0-alpha6</httpcore.version>
+        <backport.util.concurrent.version>2.2</backport.util.concurrent.version>
+    </properties>
+</project>

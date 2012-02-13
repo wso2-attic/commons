@@ -1,0 +1,65 @@
+<project name="customer-service" default="create" basedir="..">
+
+    <target name="init">
+        <property environment="env"/>
+        <property name="WINK_HOME" value="/home/charitha/products/apache-wink/apache-wink-1.1.3-incubating"/>
+        <property name="service_home" value="${basedir}"/>
+        <property name="classes_dir" value="${service_home}/classes"/>
+        <property name="src_dir" value="${service_home}/src"/>
+        <property name="wink_lib_dir" value="${WINK_HOME}/lib"/>
+        <property name="wink_dist_dir" value="${WINK_HOME}/dist"/>
+        <property name="deploy_dir" value="${service_home}/deploy"/>
+        <property name="war_file" value="${service_home}/CustomerService.war"/>
+    </target>
+
+    <target name="create" depends="clean" description="creating the war">
+        <echo message="creating the war from ${service_home}"/>
+
+        <!-- creates deploy and class directoris -->
+        <mkdir dir="${deploy_dir}"/>
+        <mkdir dir="${classes_dir}"/>
+        <mkdir dir="${deploy_dir}/WEB-INF"/>
+        <mkdir dir="${deploy_dir}/WEB-INF/lib"/>
+
+        <path id="webapp.classpath">
+        <fileset dir="${WINK_HOME}/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${WINK_HOME}/dist">
+            <include name="*.jar"/>
+        </fileset>
+
+        </path>
+
+        <javac destdir="${classes_dir}" srcdir="${src_dir}" debug="on" classpathref="webapp.classpath"/>
+
+        <!-- copy the classes -->
+        <copy todir="${deploy_dir}/WEB-INF/classes">
+            <fileset dir="${classes_dir}"/>
+        </copy>
+
+         <copy todir="${deploy_dir}/WEB-INF/lib">
+            <fileset dir="${wink_lib_dir}"/>
+        </copy>
+
+         <copy todir="${deploy_dir}/WEB-INF/lib">
+            <fileset dir="${wink_dist_dir}"/>
+        </copy>
+
+        <!-- copy services file -->
+        <copy file="conf/web.xml" todir="${deploy_dir}/WEB-INF"/>
+
+        <!-- create TestService.aar file -->
+        <jar destfile="${war_file}">
+            <zipfileset dir="${deploy_dir}" prefix=""/>
+        </jar>
+
+    </target>
+
+    <target name="clean" depends="init" description="deletes the old contents">
+
+        <delete dir="${deploy_dir}"/>
+        <delete dir="${classes_dir}"/>
+    </target>
+
+</project>

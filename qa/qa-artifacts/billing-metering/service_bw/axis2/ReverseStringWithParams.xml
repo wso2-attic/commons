@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+     <soapenv:Body>
+   <p:reverseIt xmlns:p="http://ws.apache.org/axis2">
+      <p:param>yumani</p:param>
+   </p:reverseIt>
+     </soapenv:Body>
+  </soapenv:Envelope>

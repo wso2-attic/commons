@@ -1,0 +1,2 @@
+Copy jms transport jars here. For activemq geronimo-jms_1.1_spec-1.1.1.jar, activemq-all-5.3.2.jar, activemq-core-5.3.2.jar.
+For jboss I had to copy all lib jars

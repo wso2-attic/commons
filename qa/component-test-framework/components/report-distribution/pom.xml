@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>component-test-framework</artifactId>
+        <groupId>org.wso2.carbon</groupId>
+        <version>SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>report-distribution</artifactId>
+    <name>Report Distribution Module</name>
+    <packaging>jar</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>3-extract-docs-from-components</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-aggregate/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../endpoints/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../esb-sample/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../event-sources/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../governance-api-test/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../localentry/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-cache/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-callout/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-class/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-clone/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-command/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-dbLookup/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-dbReport/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-drop/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-enrich/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-event/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-fault/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-filter/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-header/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-inout/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-iterate/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-log/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-property/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-router/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-rule/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-script/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-send/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-sequence/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-spring/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-switch/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-throttle/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-validate/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-xquery/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../mediators-xslt/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../priority-executors/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../provisioning/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../proxyservices/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../registry-resource/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="../../reporting/src/site/resources/report" overwrite="false">
+                                    <fileset dir="../remote-registry-test/target/report">
+                                        <exclude name="**/*.gif"/>
+                                        <exclude name="**/*.png"/>
+                                        <exclude name="**/*.css"/>
+                                        <include name="**/*.html"/>
+                                    </fileset>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>common</artifactId>
+            <version>SNAPSHOT</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>common</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>authenticator</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon</groupId>
+            <artifactId>authenticator</artifactId>
+            <version>SNAPSHOT</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

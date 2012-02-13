@@ -1,0 +1,413 @@
+<project name='DBconfiguration Automation' default='startServer' basedir='.'>
+
+    <taskdef resource='net/sf/antcontrib/antcontrib.properties'/>
+    <taskdef name='xmltask' classname='com.oopsconsultancy.xmltask.ant.XmlTask'/>
+    <!--<taskdef name="if" classname="ise.antelope.tasks.IfTask"/>-->
+
+    <property name='src.dir' value='src'/>
+    <property name='build.dir' value='build'/>
+    <property name='classes.dir' value='${build.dir}/classes'/>
+    <property name='jar.dir' value='${build.dir}/jar'/>
+    <property name='export.dir' value='export'/>
+    <property name='lib.dir' value='lib'/>
+    <property name='main-class' value='AllTestSuite'/>
+    <property name='registry.url' value='https://localhost:9443/registry/'/>
+    <property name='worker.num' value='1'/>
+    <property name='database.name' value=''/>
+    <property name='script' value=''/>
+
+    <!--=============change carbon.home property to your product installation path=============-->
+
+    <property name='carbon.home' value='/home/jayani/Desktop/WSAS/cluster/wso2greg-3.0.2'/>
+
+    <!--=============properies of oracle database configuration========================-->
+
+    <property name='oracle.driver.location' value='/home/krishantha/oracle/product/10.2.0/db_1/jdbc/lib/ojdbc14.jar'/>
+    <property name='oracle.userName' value='wso2'/>
+    <property name='oracle.password' value='wso2'/>
+    <property name='oracle.connection.url' value='jdbc:oracle:thin:@krishantha:1523:registry'/>
+    <property name='oracle.dialet' value='oracle'/>
+    <property name='oracle.driver.name' value='oracle.jdbc.driver.OracleDriver'/>
+
+    <!--=============properies of mysql database configuration========================-->
+
+    <property name='mysql.driver.location' value='/home/jayani/Desktop/WSAS/mysql-connector-java-5.1.7-bin.jar'/>
+    <property name='mysql.userName' value='root'/>
+    <property name='mysql.password' value=''/>
+    <property name='mysql.connection.url' value='jdbc:mysql://localhost:3306/regdb'/>
+    <property name='mysql.dialet' value='mysql'/>
+    <property name='mysql.driver.name' value='com.mysql.jdbc.Driver'/>
+
+    <!--=============properies of mssql database configuration========================-->
+
+    <property name='mssql.driver.location' value='/home/krishantha/Desktop/RegistryWithMSSQL/jtds-1.2.2-dist/jtds-1.2.2.jar'/>
+    <property name='mssql.userName' value='sa'/>
+    <property name='mssql.password' value='test'/>
+    <property name='mssql.connection.url' value='jdbc:jtds:sqlserver://10.100.1.236:1433/krishantha1'/>
+    <property name='mssql.dialet' value='sqlserver'/>
+    <property name='mssql.driver.name' value='net.sourceforge.jtds.jdbc.Driver'/>
+
+    <!--=============properies of derby database configuration========================-->
+
+    <property name='derby.driver.location' value='/home/krishantha/derby/db-derby-10.4.1.3-bin/lib'/>
+    <property name='derby.userName' value='me'/>
+    <property name='derby.password' value='mine'/>
+    <property name='derby.connection.url' value='jdbc:derby://localhost:1527/myDB1;create=true;user=me;password=mine'/>
+    <property name='derby.dialet' value='derby'/>
+    <property name='derby.driver.name' value='org.apache.derby.jdbc.ClientDriver'/>
+
+    <!--=============properies of h2 database configuration========================-->
+
+    <property name='h2.driver.location' value='/home/krishantha/h2/h2/bin/h2-1.1.106.jar'/>
+    <property name='h2.userName' value='regadmin1'/>
+    <property name='h2.password' value='regadmin1'/>
+    <property name='h2.connection.url' value='jdbc:h2:tcp://localhost/~/registryDB99;create=true;user=regadmin1;password=regadmin1'/>
+    <property name='h2.dialet' value='H2'/>
+    <property name='h2.driver.name' value='org.h2.Driver'/>
+
+     <!--==========================================================================-->
+
+    <target name='check-cond'>
+        <condition property='option-ok'>
+            <istrue value='${script}'/>
+        </condition>
+    </target>
+
+    <target name='check-os'>
+        <condition property='is.windows'>
+            <os family='windows'/>
+        </condition>
+
+        <condition property='is.unix'>
+            <os family='unix'/>
+        </condition>
+    </target>
+
+    <!--copy files in conf directory to backup directory and relevant driver jar files to {carbon.home}/repository/components/lib -->
+
+    <target name='copy-files'>
+        <echo message='copy driver files and backup conf directory'/>
+        <copy todir='${carbon.home}/conf/back'>
+            <fileset dir='${carbon.home}/conf'/>
+            <globmapper from='*.xml' to='*.bak'/>
+        </copy>
+
+        <if>
+            <equals arg1='${database.name}' arg2='oracle'/>
+            <then>
+                <copy todir='${carbon.home}/repository/components/lib' file='${oracle.driver.location}'/>
+            </then>
+            <elseif>
+                <equals arg1='${database.name}' arg2='mysql'/>
+                <then>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${mysql.driver.location}'/>
+                </then>
+            </elseif>
+            <elseif>
+                <equals arg1='${database.name}' arg2='mssql'/>
+                <then>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${mssql.driver.location}'/>
+                </then>
+            </elseif>
+            <elseif>
+                <equals arg1='${database.name}' arg2='derby'/>
+                <then>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${derby.driver.location}/derbynet.jar'/>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${derby.driver.location}/derby.jar'/>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${derby.driver.location}/derbyclient.jar'/>
+                </then>
+            </elseif>
+                        <elseif>
+                <equals arg1='${database.name}' arg2='h2'/>
+                <then>
+                    <copy todir='${carbon.home}/repository/components/lib' file='${h2.driver.location}'/>
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <target name='cond-if' if='option-ok' depends='check-cond'>
+        <echo message='yes'/>
+    </target>
+
+    <!--run database sql scripts-->
+
+    <target name='run-dbscripts' if='option-ok' depends='check-cond,copy-files'>
+        <echo message='Executing ${database.name} database script files.'/>
+
+        <if>
+            <equals arg1='${database.name}' arg2='oracle'/>
+             <then>
+                <sql url='${oracle.connection.url}' src='${carbon.home}/dbscripts/oracle.sql' print='yes' output='outputfile-oracle.txt' userid='${oracle.userName}' driver='${oracle.driver.name}' password='${oracle.password}' delimiter='/'>
+
+                    <classpath>
+                        <pathelement location='${oracle.driver.location}'/>
+                    </classpath>
+                </sql>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='mysql'/>
+            <then>
+                <sql url='${mysql.connection.url}' src='${carbon.home}/dbscripts/mysql.sql' print='yes' output='outputfile-mysql.txt' userid='${mysql.userName}' driver='${mysql.driver.name}' password='${mysql.password}'>
+                    <classpath>
+                        <pathelement location='${mysql.driver.location}'/>
+                    </classpath>
+                </sql>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='mssql'/>
+            <then>
+                <sql url='${mssql.connection.url}' src='${carbon.home}/dbscripts/mssql.sql' print='yes' output='outputfile-mssql.txt' userid='${mssql.userName}' driver='${mssql.driver.name}' password='${mssql.password}'>
+                    <classpath>
+                        <pathelement location='${mssql.driver.location}'/>
+                    </classpath>
+                </sql>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='derby'/>
+            <then>
+                <sql url='${derby.connection.url}' src='${carbon.home}/dbscripts/derby.sql' print='yes' output='outputfile-derby.txt' userid='${derby.userName}' driver='${derby.driver.name}' password='${derby.password}'>
+                    <classpath>
+                        <pathelement location='${derby.driver.location}/derby.jar'/>
+                        <pathelement location='${derby.driver.location}/derbyclient.jar'/>
+                        <pathelement location='${derby.driver.location}/derbynet.jar'/>
+                    </classpath>
+                </sql>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='h2'/>
+            <then>
+                <sql url='${h2.connection.url}' src='${carbon.home}/dbscripts/h2.sql' print='yes' output='outputfile-h2.txt' userid='${h2.userName}' driver='${h2.driver.name}' password='${h2.password}'>
+                    <classpath>
+                        <pathelement location='${h2.driver.location}'/>
+                    </classpath>
+                </sql>
+            </then>
+        </if>
+    </target>
+
+    <!--Edit registry.xml and user-mgt.xml files with database connections parameters-->
+
+    <target name='registryXMLedit'>
+        <echo message='Edit database configurations to ${database.name}'/>
+        <if>
+            <equals arg1='${database.name}' arg2='oracle'/>
+            <then>
+                <xmltask dest='${carbon.home}/conf/registry.xml' source='${carbon.home}/conf/registry.xml'>
+                    <replace path='/wso2regsitry/dbConfig/url/text()' withText='${oracle.connection.url}'/>
+                    <replace path='/wso2regsitry/dbConfig/userName/text()' withText='${oracle.userName}'/>
+                    <replace path='/wso2regsitry/dbConfig/password/text()' withText='${oracle.password}'/>
+                    <replace path='/wso2regsitry/dbConfig/driverName/text()' withText='${oracle.driver.name}'/>
+                </xmltask>
+
+                <xmltask dest='${carbon.home}/conf/user-mgt.xml' source='${carbon.home}/conf/user-mgt.xml'>
+                    <replace path='/UserManager/Database/URL/text()' withText='${oracle.connection.url}'/>
+                    <replace path='/UserManager/Database/UserName/text()' withText='${oracle.userName}'/>
+                    <replace path='/UserManager/Database/Password/text()' withText='${oracle.password}'/>
+                    <replace path='/UserManager/Database/Dialect/text()' withText='${oracle.dialet}'/>
+                    <replace path='/UserManager/Database/Driver/text()' withText='${oracle.driver.name}'/>
+                </xmltask>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='mysql'/>
+            <then>
+                <xmltask dest='${carbon.home}/conf/registry.xml' source='${carbon.home}/conf/registry.xml'>
+                    <replace path='/wso2regsitry/dbConfig/url/text()' withText='${mysql.connection.url}'/>
+                    <replace path='/wso2regsitry/dbConfig/userName/text()' withText='${mysql.userName}'/>
+                    <replace path='/wso2regsitry/dbConfig/password/text()' withText='${mysql.password}'/>
+                    <replace path='/wso2regsitry/dbConfig/driverName/text()' withText='${mysql.driver.name}'/>
+                </xmltask>
+
+                <xmltask dest='${carbon.home}/conf/user-mgt.xml' source='${carbon.home}/conf/user-mgt.xml'>
+                    <replace path='/UserManager/Database/URL/text()' withText='${mysql.connection.url}'/>
+                    <replace path='/UserManager/Database/UserName/text()' withText='${mysql.userName}'/>
+                    <replace path='/UserManager/Database/Password/text()' withText='${mysql.password}'/>
+                    <replace path='/UserManager/Database/Dialect/text()' withText='${mysql.dialet}'/>
+                    <replace path='/UserManager/Database/Driver/text()' withText='${mysql.driver.name}'/>
+                </xmltask>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='mssql'/>
+            <then>
+                <xmltask dest='${carbon.home}/conf/registry.xml' source='${carbon.home}/conf/registry.xml'>
+                    <replace path='/wso2regsitry/dbConfig/url/text()' withText='${mssql.connection.url}'/>
+                    <replace path='/wso2regsitry/dbConfig/userName/text()' withText='${mssql.userName}'/>
+                    <replace path='/wso2regsitry/dbConfig/password/text()' withText='${mssql.password}'/>
+                    <replace path='/wso2regsitry/dbConfig/driverName/text()' withText='${mssql.driver.name}'/>
+                </xmltask>
+
+                <xmltask dest='${carbon.home}/conf/user-mgt.xml' source='${carbon.home}/conf/user-mgt.xml'>
+                    <replace path='/UserManager/Database/URL/text()' withText='${mssql.connection.url}'/>
+                    <replace path='/UserManager/Database/UserName/text()' withText='${mssql.userName}'/>
+                    <replace path='/UserManager/Database/Password/text()' withText='${mssql.password}'/>
+                    <replace path='/UserManager/Database/Dialect/text()' withText='${mssql.dialet}'/>
+                    <replace path='/UserManager/Database/Driver/text()' withText='${mssql.driver.name}'/>
+                </xmltask>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='derby'/>
+            <then>
+                <xmltask dest='${carbon.home}/conf/registry.xml' source='${carbon.home}/conf/registry.xml'>
+                    <replace path='/wso2regsitry/dbConfig/url/text()' withText='${derby.connection.url}'/>
+                    <replace path='/wso2regsitry/dbConfig/userName/text()' withText='${derby.userName}'/>
+                    <replace path='/wso2regsitry/dbConfig/password/text()' withText='${derby.password}'/>
+                    <replace path='/wso2regsitry/dbConfig/driverName/text()' withText='${derby.driver.name}'/>
+                </xmltask>
+
+                <xmltask dest='${carbon.home}/conf/user-mgt.xml' source='${carbon.home}/conf/user-mgt.xml'>
+                    <replace path='/UserManager/Database/URL/text()' withText='${derby.connection.url}'/>
+                    <replace path='/UserManager/Database/UserName/text()' withText='${derby.userName}'/>
+                    <replace path='/UserManager/Database/Password/text()' withText='${derby.password}'/>
+                    <replace path='/UserManager/Database/Dialect/text()' withText='${derby.dialet}'/>
+                    <replace path='/UserManager/Database/Driver/text()' withText='${derby.driver.name}'/>
+                </xmltask>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1='${database.name}' arg2='h2'/>
+            <then>
+                <xmltask dest='${carbon.home}/conf/registry.xml' source='${carbon.home}/conf/registry.xml'>
+                    <replace path='/wso2regsitry/dbConfig/url/text()' withText='${h2.connection.url}'/>
+                    <replace path='/wso2regsitry/dbConfig/userName/text()' withText='${h2.userName}'/>
+                    <replace path='/wso2regsitry/dbConfig/password/text()' withText='${h2.password}'/>
+                    <replace path='/wso2regsitry/dbConfig/driverName/text()' withText='${h2.driver.name}'/>
+                </xmltask>
+
+                <xmltask dest='${carbon.home}/conf/user-mgt.xml' source='${carbon.home}/conf/user-mgt.xml'>
+                    <replace path='/UserManager/Database/URL/text()' withText='${h2.connection.url}'/>
+                    <replace path='/UserManager/Database/UserName/text()' withText='${h2.userName}'/>
+                    <replace path='/UserManager/Database/Password/text()' withText='${h2.password}'/>
+                    <replace path='/UserManager/Database/Dialect/text()' withText='${h2.dialet}'/>
+                    <replace path='/UserManager/Database/Driver/text()' withText='${h2.driver.name}'/>
+                </xmltask>
+            </then>
+        </if>
+    </target>
+
+    <!--help menu-->
+
+    <target name='help'>
+        <echo message='Usage:       ant [command] [system-properties]            '/>
+        <echo message='                                        '/>
+        <echo message='command:                                            '/>
+        <echo message='startServerUnix          :Start the sever on Linux'/>
+        <echo message='startServerWindows       :Start the sever on Windows'/>
+        <echo message='startServer              :Start server without configuring databases'/>
+        <echo message='                                                     '/>
+        <echo message='system-properties:                                   '/>
+        <echo message='-Dscript                 Option to run though script or -Dsetup option, set &apos;true&apos; for script execution and &apos;false&apos; to run with -Dsetup'/>
+        <echo message='-Ddatabase.name          Name of the database, available options are oracle, h2, mysql, mssql, derby'/>
+        <echo message='                                        '/>
+        <echo message='Example:                                 '/>
+        <echo message='ant startServerUnix -Dscript=true -Ddatabase.name=mysql [Unix]'/>
+        <echo message='ant startServerWindows -Dscript=false -Ddatabase.name=oracle [Windows]'/>
+        <echo message='                                        '/>
+     </target>
+
+    <!--start server on Linux-->
+
+    <target name='startServerUnix' if='is.unix' depends='check-os'>
+        <antcall target='registryXMLedit'/>
+        <antcall target='copy-files'/>
+        <echo message='Starting server on Linux with ${database.name}'/>
+        <if>
+            <equals arg1='${script}' arg2='true'/>
+            <then>
+                <antcall target='run-dbscripts'/>
+                <exec dir='${carbon.home}/bin' failonerror='false' executable='sh' os='Linux'>
+                    <arg line='wso2server.sh'/>
+                </exec>
+            </then>
+            <elseif>
+                <equals arg1='${script}' arg2='false'/>
+                <then>
+                    <exec dir='${carbon.home}/bin' failonerror='false' executable='sh' os='Linux'>
+                        <arg line='wso2server.sh -Dsetup'/>
+                    </exec>
+                </then>
+            </elseif>
+            <elseif>
+                <equals arg1='${script}' arg2='normal'/>
+                <then>
+                    <exec dir='${carbon.home}/bin' failonerror='false' executable='sh' os='Linux'>
+                        <!--arg line='wso2server.sh'/-->
+                    </exec>
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <!--start the server without any options-->
+
+    <target name='startServer' depends='check-os'>
+        <if>
+            <equals arg1='${is.unix}' arg2='true'/>
+            <then>
+                <exec dir='${carbon.home}/bin' failonerror='false' executable='sh' os='Linux'>
+                    <arg line='wso2server.sh'/>
+                </exec>
+            </then>
+            <elseif>
+                <equals arg1='${is.windows}' arg2='true'/>
+                <then>
+
+                    <exec dir='${carbon.home}/bin' failonerror='false' executable='cmd'>
+                        <arg value='/c'/>
+                        <arg line='wso2server.bat'/>
+                    </exec>
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <!--start the server on windows-->
+
+    <target name='startServerWindows' if='is.windows' depends='check-os'>
+        <antcall target='registryXMLedit'/>
+        <if>
+            <equals arg1='${script}' arg2='true'/>
+            <then>
+                <exec dir='${carbon.home}/bin' failonerror='false' executable='cmd'>
+                    <arg value='/c'/>
+                    <arg line='wso2server.bat'/>
+                </exec>
+            </then>
+            <elseif>
+                <equals arg1='${script}' arg2='false'/>
+                <then>
+                    <exec dir='${carbon.home}/bin' failonerror='false' executable='cmd'>
+                        <arg value='/c'/>
+                        <arg line='wso2server.bat -Dsetup'/>
+                    </exec>
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <target name='do-windows' if='is.windows' depends='check-os'>
+        <echo message='This is Windows'/>
+        <echo message='${is.windows}'/>
+
+    </target>
+
+    <target name='do-unix' if='is.unix' depends='check-os'>
+        <echo message='This is Unix'/>
+        <echo message='${is.unix}'/>
+    </target>
+
+</project>

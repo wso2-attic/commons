@@ -1,0 +1,8 @@
+<package xmlns="http://wso2.org/bps/bpel/package/config">
+    <endpoints xmlns="http://wso2.org/bps/bpel/endpoint/config">
+        <endpoint serviceName="CreditRatingService" servicePort="CreditRatingPort" serviceNS="http://wso2.org/bps/samples/CreditRating" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <!--<enableSec policyLocation="policy.xml"/>-->
+            <serviceDescription location="services.xml"/>
+        </endpoint>
+    </endpoints>
+</package>

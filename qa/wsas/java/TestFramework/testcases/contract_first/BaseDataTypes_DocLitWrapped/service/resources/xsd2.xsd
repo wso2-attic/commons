@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/System" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/System">
+    <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" schemaLocation="xsd1.xsd"/>
+    <xs:complexType name="DateTimeOffset">
+        <xs:sequence>
+            <xs:element name="DateTime" type="xs:dateTime"/>
+            <xs:element name="OffsetMinutes" type="xs:short"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="DateTimeOffset" nillable="true" type="tns:DateTimeOffset"/>
+</xs:schema>

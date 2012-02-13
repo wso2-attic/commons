@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ~ Licensed to the Apache Software Foundation (ASF) under one
+    ~ or more contributor license agreements.  See the NOTICE file
+    ~ distributed with this work for additional information
+    ~ regarding copyright ownership.  The ASF licenses this file
+    ~ to you under the Apache License, Version 2.0 (the
+    ~ "License"); you may not use this file except in compliance
+    ~ with the License.  You may obtain a copy of the License at
+    ~
+    ~    http://www.apache.org/licenses/LICENSE-2.0
+    ~
+    ~ Unless required by applicable law or agreed to in writing,
+    ~ software distributed under the License is distributed on anp
+    ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    ~ KIND, either express or implied.  See the License for the
+    ~ specific language governing permissions and limitations
+    ~ under the License.
+-->
+
+<process xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://docs.oasis-open.org/wsbpel/2.0/process/executable ../../../../../../../bpel-schemas/src/main/resources/wsbpel_executable.xsd"
+    xmlns:tns="http://ode/bpel/unit-test/testFaultHandlers"
+    xmlns:wns="http://ode/bpel/unit-test/testFaultHandlers.wsdl"
+    xmlns:ns2="http://SquareService.wsdl"
+ xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+ name="TestFaultHandlersProcess"
+    targetNamespace="http://ode/bpel/unit-test/testFaultHandlers"
+    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+ suppressJoinFailure="yes">
+
+    <import location="testFaultHandlers.wsdl"
+        namespace="http://ode/bpel/unit-test/testFaultHandlers.wsdl"
+        importType="http://schemas.xmlsoap.org/wsdl/" />
+    <import location="SquareService.wsdl"
+        namespace="http://SquareService.wsdl"
+        importType="http://schemas.xmlsoap.org/wsdl/"/>
+
+<!-- Unit test fault handlers	-->
+<!--	throw 					-->
+<!--	catch 					-->
+<!--	catchAll 				-->
+
+  <partnerLinks>
+    <partnerLink name="request" partnerLinkType="wns:testFaultHandlersRequest" myRole="testFaultHandlersService"/>
+    <partnerLink name="SquarePartnerLink" xmlns:ns2="http://SquareService.wsdl" partnerLinkType="ns2:SquareServicePartnerlinkType" partnerRole="squareRole"/>
+  </partnerLinks>
+
+  <variables>
+    <variable name="request"
+               messageType="wns:requestMessage"/>
+    <variable name="SquareOutput" xmlns:ns2="http://SquareService.wsdl" messageType="ns2:squareResponse"/>
+        <variable name="SquareInput" xmlns:ns2="http://SquareService.wsdl" messageType="ns2:squareRequest"/>
+    <variable name="reply"
+               messageType="wns:replyMessage"/>
+  </variables>
+
+  <faultHandlers>
+    <catchAll>
+       <sequence>
+            <assign>
+                <copy>
+                    <from>
+                        <literal><![CDATA[caught fault with catchAll]]></literal>
+                    </from>
+                    <to variable="SquareInput" part="parameters"/>
+                </copy>
+            </assign>
+            <invoke name="InvokeSquareService" partnerLink="SquarePartnerLink"
+		    xmlns:ns2="http://SquareService.wsdl"
+                    portType="ns2:SquareServicePortType"
+                    operation="square"
+                    inputVariable="SquareInput"
+                    outputVariable="SquareOutput">
+            </invoke>
+
+        <!-- copy internal accumulators to the reply message -->
+
+        <assign name="allFaultAssign">
+            <copy>
+                    <from variable="SquareInput" part="parameters"/>
+                    <to variable="reply" part="replyID"/>
+            </copy>
+            <copy>
+                    <from variable="SquareOutput" part="parameters"/>
+                    <to variable="reply" part="replyText"/>
+            </copy>
+        </assign>
+
+        <reply name="allFaultReply" partnerLink="request" portType="wns:testFaultHandlersPT"
+               operation="request" variable="reply">
+        </reply>
+       </sequence>
+    </catchAll>
+  </faultHandlers>
+
+  <sequence>
+
+        <receive name="receive1" partnerLink="request"
+            portType="wns:testFaultHandlersPT"
+                 operation="request" variable="request"
+                 createInstance="yes">
+        </receive>
+
+        <!-- Copy input variables to internal accumulators -->
+
+        <assign name="assign1">
+          <copy>
+            <from variable="request" part="requestID"/>
+            <to variable="SquareInput" part="parameters"/>
+          </copy>
+          <copy>
+            <from variable="request" part="requestText"/>
+            <to variable="SquareOutput" part="parameters"/>
+          </copy>
+        </assign>
+
+      <scope name="scopeOne">
+        <faultHandlers>
+            <catch faultName="tns:testFault">
+                <sequence>
+
+                      <assign>
+                        <copy>
+                            <from>
+                                <literal><![CDATA[caught testFault]]></literal>
+                            </from>
+                            <to variable="SquareInput" part="parameters"/>
+                        </copy>
+                      </assign>
+                        <invoke name="InvokeSquareService1" partnerLink="SquarePartnerLink"
+		    xmlns:ns2="http://SquareService.wsdl"
+                    portType="ns2:SquareServicePortType"
+                    operation="square"
+                    inputVariable="SquareInput"
+                    outputVariable="SquareOutput">
+            </invoke>
+SquareInput
+                    <!-- copy internal accumulators to the reply message -->
+
+                    <assign name="testFaultAssign">
+                        <copy>
+                    <from variable="SquareInput" part="parameters"/>
+                    <to variable="reply" part="replyID"/>
+            </copy>
+            <copy>
+                    <from variable="SquareOutput" part="parameters"/>
+                    <to variable="reply" part="replyText"/>
+            </copy>
+                    </assign>
+
+                </sequence>
+            </catch>
+        </faultHandlers>
+
+      <if>
+        <!-- throws a named fault -->
+        <condition>$request.faultIndicator1 = 'yes'</condition>
+        <sequence>
+            <assign>
+                    <copy>
+                        <from>
+                            <literal><![CDATA[throw testFault]]></literal>
+                        </from>
+                        <to variable="SquareInput" part="parameters"/>
+                    </copy>
+            </assign>
+            <invoke name="InvokeSquareService2" partnerLink="SquarePartnerLink"
+		    xmlns:ns2="http://SquareService.wsdl"
+                    portType="ns2:SquareServicePortType"
+                    operation="square"
+                    inputVariable="SquareInput"
+                    outputVariable="SquareOutput">
+            </invoke>
+            <throw faultName="tns:testFault"/>
+        </sequence>
+        <!-- throws an unknown fault -->
+        <elseif>
+            <condition>$request.faultIndicator2 = 'yes'</condition>
+            <sequence>
+                <assign>
+                    <copy>
+                        <from>
+                            <literal><![CDATA[throw unknown fault]]></literal>
+                        </from>
+                        <to variable="SquareInput" part="parameters"/>
+                    </copy>
+                </assign>
+                <invoke name="InvokeSquareService3" partnerLink="SquarePartnerLink"
+		    xmlns:ns2="http://SquareService.wsdl"
+                    portType="ns2:SquareServicePortType"
+                    operation="square"
+                    inputVariable="SquareInput"
+                    outputVariable="SquareOutput">
+            </invoke>
+
+                <throw faultName="tns:unknownFault"/>
+            </sequence>
+        </elseif>
+      </if>
+      </scope>
+
+                <assign>
+                        <copy>
+                            <from>
+                                <literal><![CDATA[process complete]]></literal>
+                            </from>
+                            <to variable="SquareInput" part="parameters"/>
+                        </copy>
+                </assign>
+
+       <invoke name="InvokeSquareService4" partnerLink="SquarePartnerLink"
+		    xmlns:ns2="http://SquareService.wsdl"
+                    portType="ns2:SquareServicePortType"
+                    operation="square"
+                    inputVariable="SquareInput"
+                    outputVariable="SquareOutput">
+            </invoke>
+
+
+      <!-- copy internal accumulators to the reply message -->
+
+      <assign name="assign2">
+          <copy>
+                    <from variable="SquareInput" part="parameters"/>
+                    <to variable="reply" part="replyID"/>
+            </copy>
+            <copy>
+                    <from variable="SquareOutput" part="parameters"/>
+                    <to variable="reply" part="replyText"/>
+            </copy>
+      </assign>
+
+    <reply name="reply" partnerLink="request" portType="wns:testFaultHandlersPT"
+               operation="request" variable="reply">
+      </reply>
+
+
+  </sequence>
+</process>

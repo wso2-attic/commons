@@ -1,0 +1,22 @@
+2010/11/05 13:46:53 INFO  - jmeter.util.JMeterUtils: Setting Locale to en_US 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: Copyright (c) 1998-2009 The Apache Software Foundation 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: Version 2.3.4 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: java.version=1.6.0_21 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: os.name=Linux 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: os.arch=amd64 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: os.version=2.6.35-22-generic 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: file.encoding=UTF-8 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: Default Locale=English (United States) 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: JMeter  Locale=English (United States) 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: JMeterHome=/usr/share/jmeter 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: user.dir  =/home/pavithra/Documents/BPS/New_BPEL/stratos/new/counter 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: PWD       =/home/pavithra/Documents/BPS/New_BPEL/stratos/new/counter 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: IP: 127.0.1.1 Name: pavithra-ThinkPad-T410 FullName: pavithra-ThinkPad-T410 
+2010/11/05 13:46:53 INFO  - jmeter.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties 
+2010/11/05 13:46:55 INFO  - jmeter.util.BSFTestElement: Registering JMeter version of JavaScript engine as work-round for BSF-22 
+2010/11/05 13:46:55 INFO  - jmeter.protocol.http.sampler.HTTPSamplerBase: No response parsers defined: text/html only will be scanned for embedded resources 
+2010/11/05 13:46:56 INFO  - jmeter.protocol.http.sampler.HTTPSampler: Maximum connection retries = 10 
+2010/11/05 13:46:56 INFO  - jmeter.protocol.http.sampler.HTTPSampler: Connection and read timeouts are available on this JVM 
+2010/11/05 13:46:56 INFO  - jmeter.samplers.SampleResult: Note: Sample TimeStamps are END times 
+2010/11/05 13:46:56 INFO  - jmeter.samplers.SampleResult: sampleresult.default.encoding is set to ISO-8859-1 

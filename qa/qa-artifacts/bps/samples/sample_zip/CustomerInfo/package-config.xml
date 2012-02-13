@@ -1,0 +1,7 @@
+<package xmlns="http://wso2.org/bps/bpel/package/config">
+    <endpoints xmlns="http://wso2.org/bps/bpel/endpoint/config">
+        <endpoint serviceName="CustomerInfoService" servicePort="CustomerInfoPort" serviceNS="http://wso2.org/bps/samples/CustomerInfo" xmlns="http://wso2.org/bps/bpel/endpoint/config">
+            <serviceDescription location="services.xml"/>
+        </endpoint>
+    </endpoints>
+</package>

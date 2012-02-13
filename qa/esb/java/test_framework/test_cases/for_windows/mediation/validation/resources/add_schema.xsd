@@ -1,0 +1,17 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns="http://service.esb.wso2.org" xmlns:ns0="http://service.esb.wso2.org" xmlns:ns1="http://org.apache.axis2/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.esb.wso2.org">
+	<xs:element name="add">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" name="x" type="xs:int" />
+				<xs:element minOccurs="0" name="y" type="xs:int" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="addResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" name="return" type="xs:int" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

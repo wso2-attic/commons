@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="urn:sms" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="urn:sms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <types>
+    <xsd:schema targetNamespace="urn:sms">
+ <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+ <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+</xsd:schema>
+  </types>
+  <message name="sendSMSToManyResponse">
+    <part name="status" type="xsd:string">
+    </part>
+  </message>
+  <message name="sendSMSToManyRequest">
+    <part name="uid" type="xsd:string">
+    </part>
+    <part name="pwd" type="xsd:string">
+    </part>
+    <part name="phone" type="xsd:string">
+    </part>
+    <part name="msg" type="xsd:string">
+    </part>
+  </message>
+  <portType name="SendSMSPortType">
+    <operation name="sendSMSToMany">
+<documentation>Sends the same SMS to multiple phone numbers. Give your 10 digit phone number for user ID. Separate each phone number with a semicolon(';').</documentation>
+      <input message="tns:sendSMSToManyRequest">
+    </input>
+      <output message="tns:sendSMSToManyResponse">
+    </output>
+    </operation>
+  </portType>
+  <binding name="SendSMSBinding" type="tns:SendSMSPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="sendSMSToMany">
+      <soap:operation soapAction="urn:sms#SendSMSToMany" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:SendSMSToMany"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:SendSMSToMany"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="SendSMS">
+    <port name="SendSMSPort" binding="tns:SendSMSBinding">
+      <soap:address location="http://www.aswinanand.com/sendsms.php"/>
+    </port>
+  </service>
+</definitions>

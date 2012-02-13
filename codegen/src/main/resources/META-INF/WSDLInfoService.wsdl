@@ -1,0 +1,212 @@
+<wsdl:definitions xmlns:axis2="http://service.codegen.wso2.org"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:ns0="http://org.apache.axis2/xsd"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:ns1="http://service.codegen.wso2.org/xsd"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  targetNamespace="http://service.codegen.wso2.org">
+    <wsdl:documentation>WSDLInfoService</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema xmlns:ns="http://org.apache.axis2/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="unqualified" targetNamespace="http://org.apache.axis2/xsd">
+            <xs:element name="isWSDLAvailableFault">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="isWSDLAvailableFault" type="xs:anyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="isWSDLAvailable">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceName" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="isWSDLAvailableResponse">
+
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="xs:boolean"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listServicesAndPortsFault">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="listServicesAndPortsFault" type="xs:anyType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="listServicesAndPorts">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="serviceName" nillable="true" type="xs:string"/>
+                        <xs:element name="wsdlVersion" nillable="true" type="ns0:WSDLRestriction"/>
+                        <xs:element name="wsdlLocation" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:simpleType name="WSDLRestriction">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="1.1"/>
+                    <xs:enumeration value="2.0"/>
+                </xs:restriction>
+            </xs:simpleType>
+
+            <xs:element name="listServicesAndPortsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="return" nillable="true" type="ns1:WSDLMetaData"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+        <xs:schema xmlns:ax21="http://service.codegen.wso2.org/xsd" attributeFormDefault="qualified"
+                   elementFormDefault="unqualified"
+                   targetNamespace="http://service.codegen.wso2.org/xsd">
+            <xs:element name="WSDLMetaData" type="ax21:WSDLMetaData"/>
+            <xs:complexType name="WSDLMetaData">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="serviceEndpointsData" nillable="true"
+                                type="ax21:ServiceEndpointsData"/>
+                    <xs:element name="wsdlVersion" nillable="true" type="xs:string"/>
+
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="ServiceEndpointsData" type="ax21:ServiceEndpointsData"/>
+            <xs:complexType name="ServiceEndpointsData">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="endpointNames" nillable="true"
+                                type="xs:string"/>
+                    <xs:element name="serviceName" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="listServicesAndPortsMessage">
+        <wsdl:part name="part1" element="ns0:listServicesAndPorts"/>
+    </wsdl:message>
+    <wsdl:message name="listServicesAndPortsResponse">
+        <wsdl:part name="part1" element="ns0:listServicesAndPortsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="listServicesAndPortsFault">
+        <wsdl:part name="part1" element="ns0:listServicesAndPortsFault"/>
+    </wsdl:message>
+    <wsdl:message name="isWSDLAvailableMessage">
+        <wsdl:part name="part1" element="ns0:isWSDLAvailable"/>
+    </wsdl:message>
+    <wsdl:message name="isWSDLAvailableResponse">
+        <wsdl:part name="part1" element="ns0:isWSDLAvailableResponse"/>
+    </wsdl:message>
+    <wsdl:message name="isWSDLAvailableFault">
+        <wsdl:part name="part1" element="ns0:isWSDLAvailableFault"/>
+    </wsdl:message>
+    <wsdl:portType name="WSDLInfoServicePortType">
+        <wsdl:operation name="listServicesAndPorts">
+            <wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                        message="axis2:listServicesAndPortsMessage"
+                        wsaw:Action="urn:listServicesAndPorts"/>
+            <wsdl:output message="axis2:listServicesAndPortsResponse"/>
+            <wsdl:fault message="axis2:listServicesAndPortsFault" name="listServicesAndPortsFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="isWSDLAvailable">
+            <wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+                        message="axis2:isWSDLAvailableMessage" wsaw:Action="urn:isWSDLAvailable"/>
+            <wsdl:output message="axis2:isWSDLAvailableResponse"/>
+            <wsdl:fault message="axis2:isWSDLAvailableFault" name="isWSDLAvailableFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="WSDLInfoServiceSOAP11Binding" type="axis2:WSDLInfoServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="listServicesAndPorts">
+            <soap:operation soapAction="urn:listServicesAndPorts" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="listServicesAndPortsFault">
+                <soap12:fault use="literal" name="listServicesAndPortsFault"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="isWSDLAvailable">
+            <soap:operation soapAction="urn:isWSDLAvailable" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="isWSDLAvailableFault">
+                <soap12:fault use="literal" name="isWSDLAvailableFault"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="WSDLInfoServiceSOAP12Binding" type="axis2:WSDLInfoServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="listServicesAndPorts">
+            <soap12:operation soapAction="urn:listServicesAndPorts" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="listServicesAndPortsFault">
+                <soap12:fault use="literal" name="listServicesAndPortsFault"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="isWSDLAvailable">
+            <soap12:operation soapAction="urn:isWSDLAvailable" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="isWSDLAvailableFault">
+                <soap12:fault use="literal" name="isWSDLAvailableFault"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="WSDLInfoServiceHttpBinding" type="axis2:WSDLInfoServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="listServicesAndPorts">
+            <http:operation location="listServicesAndPorts"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="isWSDLAvailable">
+            <http:operation location="isWSDLAvailable"/>
+            <wsdl:input>
+                <mime:content type="text/xml"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="text/xml"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="WSDLInfoService">
+        <wsdl:port name="WSDLInfoServiceSOAP11port_https"
+                   binding="axis2:WSDLInfoServiceSOAP11Binding">
+            <soap:address location="https://10.100.1.230:9443/services/WSDLInfoService"/>
+        </wsdl:port>
+        <wsdl:port name="WSDLInfoServiceSOAP12port_https"
+                   binding="axis2:WSDLInfoServiceSOAP12Binding">
+            <soap12:address location="https://10.100.1.230:9443/services/WSDLInfoService"/>
+        </wsdl:port>
+        <wsdl:port name="WSDLInfoServiceHttpport" binding="axis2:WSDLInfoServiceHttpBinding">
+            <http:address location="https://10.100.1.230:9443/services/WSDLInfoService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

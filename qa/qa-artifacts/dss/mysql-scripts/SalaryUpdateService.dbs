@@ -1,0 +1,27 @@
+<data name="SalaryUpdateService">
+   <config>
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://10.100.1.140:3306/DATASERVICE_SAMPLE1</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+      <property name="org.wso2.ws.dataservice.minpoolsize">1</property>
+      <property name="org.wso2.ws.dataservice.maxpoolsize">10</property>
+   </config>
+
+   <query id="salaryUpdateQuery">
+      <sql>call updateSalary(?,?)</sql>
+      <param name="newSalary" sqlType="DOUBLE" type="IN" ordinal="1" />
+      <result element="SalaryRevision" rowName="LastRevisedOn" defaultNamespace="http://test.org">
+         <element name="Date" column="beforeDate" />
+      </result>
+
+      <param name="beforeDate" sqlType="DATE" type="INOUT" ordinal="2" />
+   </query>
+
+   <operation name="updateSalary">
+      <call-query href="salaryUpdateQuery">
+         <with-param name="newSalary" query-param="newSalary" />
+         <with-param name="beforeDate" query-param="beforeDate" />
+      </call-query>
+   </operation>
+</data>

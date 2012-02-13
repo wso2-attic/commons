@@ -1,0 +1,6 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:pool="http://example.com/NewDiagram/Pool">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <pool:TaskRequest>test</pool:TaskRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

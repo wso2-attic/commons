@@ -1,0 +1,65 @@
+<service name="Access_throttling_service">
+
+    <Description>
+
+        This is a sample service to test access throttling in wso2 wsas
+
+    </Description>
+
+    <parameter name="ServiceClass" locked="false">org.wso2.wsas.service.Access_throttling_service</parameter>
+
+    <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+    
+    <module ref="wso2throttle" />
+    
+    <wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+            xmlns:throttle="http://www.wso2.org/products/wso2commons/throttle">
+    <throttle:ThrottleAssertion>
+        <wsp:All>
+            <throttle:ID throttle:type="IP">other</throttle:ID>
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <throttle:MaximumCount>10</throttle:MaximumCount>
+                    <throttle:UnitTime>800000</throttle:UnitTime>
+                    <throttle:ProhibitTimePeriod wsp:Optional="true">10000</throttle:ProhibitTimePeriod>
+                </wsp:All>
+                <throttle:IsAllow>true</throttle:IsAllow>
+            </wsp:ExactlyOne>
+        </wsp:All>
+        <wsp:All>
+            <throttle:ID throttle:type="IP">192.168.8.200-192.168.8.222</throttle:ID>
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <throttle:MaximumCount>8</throttle:MaximumCount>
+                    <throttle:UnitTime>800000</throttle:UnitTime>
+                    <throttle:ProhibitTimePeriod wsp:Optional="true">10</throttle:ProhibitTimePeriod>
+                </wsp:All>
+                <throttle:IsAllow>true</throttle:IsAllow>
+            </wsp:ExactlyOne>
+        </wsp:All>
+        <wsp:All>
+            <throttle:ID throttle:type="IP">192.168.8.201</throttle:ID>
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <throttle:MaximumCount>200</throttle:MaximumCount>
+                    <throttle:UnitTime>600000</throttle:UnitTime>
+                    <throttle:ProhibitTimePeriod wsp:Optional="true"></throttle:ProhibitTimePeriod>
+                </wsp:All>
+                <throttle:IsAllow>true</throttle:IsAllow>
+            </wsp:ExactlyOne>
+        </wsp:All>
+        <wsp:All>
+            <throttle:ID throttle:type="IP">192.168.8.198</throttle:ID>
+            <wsp:ExactlyOne>
+                <wsp:All>
+                    <throttle:MaximumCount>50</throttle:MaximumCount>
+                    <throttle:UnitTime>500000</throttle:UnitTime>
+                    <throttle:ProhibitTimePeriod wsp:Optional="true"></throttle:ProhibitTimePeriod>
+                </wsp:All>
+                <throttle:IsAllow>true</throttle:IsAllow>
+            </wsp:ExactlyOne>
+        </wsp:All>
+    </throttle:ThrottleAssertion>
+    </wsp:Policy>
+    
+</service>

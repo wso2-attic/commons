@@ -1,0 +1,8 @@
+WSO2 Mercury is a WS-ReliableMessaging Specification implementation for Apache Axis2. In addition to  WS-ReliableMessaging Specification Mercury supports The Replay Model Specification as well. Currently it fully interoperate with the WCF 3.0. 
+This release has tested for following scenarios with HTTP and SMTP transports.
+ 
+1.In only operations for duplex mode  
+2.In out operations for duplex mode  
+3.In only operations for annonymous mode (Replay model)
+4.In out operations for annonymous mode (Replay model)
+5.Persistence for In only operations

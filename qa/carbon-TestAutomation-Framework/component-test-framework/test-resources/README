@@ -1,0 +1,6 @@
+Pre-requisites
+==============
+1. Deploy the service archives in a preffered service deployer given at https://svn.wso2.org/repos/wso2/trunk/commons/qa/component-test-framework/test-resources/service-archives/. Throughout the framework, we have used WSO2 WSAS.
+2. Extract the JavaBench instance to a preffered location and when running the command, make sure you specify the request XML file paths appropriately.
+
+E.g.:- java -jar benchmark.jar -p [somepath]/echoString.xml -n 1 -c 1 -k -H "SOAPAction: urn:echoString" -H "Content-Type:text/xml; charset=UTF-8"  http://localhost:8280/ 
