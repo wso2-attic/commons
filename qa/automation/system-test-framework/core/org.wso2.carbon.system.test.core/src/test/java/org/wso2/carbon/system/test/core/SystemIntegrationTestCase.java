@@ -28,7 +28,7 @@ public class SystemIntegrationTestCase extends TestCase {
         if (FrameworkSettings.DEPLOYMENT_FRAMEWORK_ENABLE) {
             startServers();
         }
-        new UserPopulator().populateUsers();
+//        new UserPopulator().populateUsers();
     }
 
     @Override

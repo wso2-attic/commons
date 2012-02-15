@@ -54,7 +54,8 @@ public class GregApplyTagtoRootSeleniumTest extends TestTemplate {
         driver = BrowserManager.getWebDriver();
         selenium = new WebDriverBackedSelenium(driver, baseUrl);
         driver.get(baseUrl);
-        TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId(userId));
+        TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.
+                getTenantId(userId));
         username = tenantDetails.getTenantName();
         password = tenantDetails.getTenantPassword();
     }
@@ -85,7 +86,8 @@ public class GregApplyTagtoRootSeleniumTest extends TestTemplate {
             driver.findElement(By.xpath("//div[12]/div[3]/a[2]/img")).click();
             Thread.sleep(3000L);
             Assert.assertTrue("Delete Tag Pop-up fail :", selenium.isTextPresent("WSO2 Carbon"));
-            Assert.assertTrue("Delete Tag Pop-up fail :", selenium.isTextPresent("exact:Are you sure you want to delete this tag?"));
+            Assert.assertTrue("Delete Tag Pop-up fail :", selenium.isTextPresent
+                    ("exact:Are you sure you want to delete this tag?"));
             //click on "yes" button
             selenium.click("//button");
             selenium.waitForPageToLoad("30000");

@@ -57,8 +57,10 @@ public class FaultyWebAppDeploymentTest extends TestTemplate {
 
         //Redeploy correct web app
         log.info("Redeploy valid webapp");
-        String webAppArtifactPath = ProductConstant.SYSTEM_TEST_RESOURCE_LOCATION + File.separator + "artifacts" +
-                File.separator + "AS" + File.separator + "war" + File.separator + "duplicateWar" + File.separator +
+        String webAppArtifactPath = ProductConstant.SYSTEM_TEST_RESOURCE_LOCATION +
+                                    File.separator + "artifacts" +
+                File.separator + "AS" + File.separator + "war" + File.separator +
+                "duplicateWar" + File.separator +
                 "SimpleServlet-faulty.war";
 
         deployWebapp(webAppArtifactPath);
@@ -71,20 +73,25 @@ public class FaultyWebAppDeploymentTest extends TestTemplate {
     }
 
     private void deployWebapp(String filePath) {
-        AdminServiceAuthentication loginClient = new AdminServiceAuthentication(FrameworkSettings.APP_BACKEND_URL);
-        String sessionCookies = loginClient.login(tenantDetails.getTenantName(), tenantDetails.getTenantPassword(),
+        AdminServiceAuthentication loginClient = new AdminServiceAuthentication
+                (FrameworkSettings.APP_BACKEND_URL);
+        String sessionCookies = loginClient.login(tenantDetails.getTenantName(),
+                                                  tenantDetails.getTenantPassword(),
                 FrameworkSettings.APP_BACKEND_URL);
-        AdminServiceWebAppAdmin AdminServiceWebAppAdmin = new AdminServiceWebAppAdmin(FrameworkSettings.APP_BACKEND_URL);
+        AdminServiceWebAppAdmin AdminServiceWebAppAdmin = new AdminServiceWebAppAdmin
+                (FrameworkSettings.APP_BACKEND_URL);
         AdminServiceWebAppAdmin.warFileUplaoder(sessionCookies, filePath);
     }
 
     private String getWebAppURL(String webappContext) {
         String webAppURL;
         if (FrameworkSettings.STRATOS_TEST) {
-            webAppURL = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/t/" + tenantDetails.getTenantDomain() +
+            webAppURL = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/t/" +
+                        tenantDetails.getTenantDomain() +
                     "/webapps" + webappContext;
         } else {
-            webAppURL = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + ":" + FrameworkSettings.APP_SERVER_HTTP_PORT + webappContext;
+            webAppURL = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + ":" +
+                        FrameworkSettings.APP_SERVER_HTTP_PORT + webappContext;
         }
         return webAppURL;
     }

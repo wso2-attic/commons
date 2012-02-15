@@ -43,7 +43,7 @@ public class CarFileMultitenancyTest extends TestTemplate {
     @Override
     public void init() {
         log.info("Running CarFileMultitenancyTest test...");
-        String tenantId = "13";
+        String tenantId = "14";
         stratosStatus = FrameworkSettings.getStratosTestStatus();
         String serviceName = "Calculator";
 
@@ -61,6 +61,10 @@ public class CarFileMultitenancyTest extends TestTemplate {
         String operationName = "add";
         String expectedIntValue = "420";
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
         OMElement result = new AxisServiceClient().sendReceive(createPayLoad(), AXIS2SERVICE_EPR, operationName);
         log.debug("Response returned " + result);
         Assert.assertTrue((result.toString().indexOf(expectedIntValue) >= 1));
