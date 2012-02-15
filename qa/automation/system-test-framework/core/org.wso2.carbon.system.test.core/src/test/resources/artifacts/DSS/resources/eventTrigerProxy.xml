@@ -1,4 +1,4 @@
-<proxy xmlns="http://ws.apache.org/ns/synapse" name="eventTrigerProxy" transports="https,http,local"
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="eventTrigerProxy" transports="https,http"
        statistics="disable" trace="disable" startOnLoad="true">
     <target>
         <inSequence>
@@ -14,6 +14,8 @@
                     <arg value="600"/>
                 </args>
             </payloadFactory>
+            <property name="OUT_ONLY" value="true" />
+            <property name="FORCE_SC_ACCEPTED" value="true" scope="axis2"/>
             <log level="full"/>
         </inSequence>
         <outSequence>

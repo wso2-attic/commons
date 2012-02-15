@@ -45,7 +45,7 @@
       <param name="buyPrice" paramType="SCALAR" sqlType="DOUBLE" type="IN" ordinal="5" />                                    
    </query>   
    <query id="deleteProductQuery" useConfig="default">                  
-      <sql>delete Products where productCode=?</sql>                  
+      <sql>delete from Products where productCode=?</sql>                  
       <param name="productCode" paramType="SCALAR" sqlType="STRING" type="IN" ordinal="1" />                  
    </query>        
    <resource path="product/{productCode}" method="GET">
