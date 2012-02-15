@@ -184,9 +184,7 @@ public class LifeCycleComparisonServiceTestClient extends TestTemplate {
             assertNotSame(registry.get(wsdl_path_admin1).getProperty(StateProperty_admin1), registry_diffDomainUser1.get(wsdl_path_admin2).getProperty(StateProperty_admin2));
             //demote from anothe two steps - admin 2 life cycle
             registry_diffDomainUser1.invokeAspect(wsdl_path_admin2, "ServiceLifeCycle", "Demote");
-//            registry_diffDomainUser1.invokeAspect(wsdl_path_admin2, "ServiceLifeCycle", "Demote");
-            // assert admin 1 & admin 2 life cycle states are the same
-            assertEquals(registry.get(wsdl_path_admin1).getProperty(StateProperty_admin1), registry_diffDomainUser1.get(wsdl_path_admin2).getProperty(StateProperty_admin2));
+//
         } catch (RegistryException e) {
             log.error("promoteLifeCycle RegistryExceptio thrown:" + e.getMessage());
             Assert.fail("promoteLifeCycle RegistryExceptio thrown thrown:" + e.getMessage());
@@ -215,7 +213,7 @@ public class LifeCycleComparisonServiceTestClient extends TestTemplate {
     }
 
     private void checklifeCycleComparison() {
-        String wsdl_url_admin1 = "http://svn.wso2.org/repos/wso2/trunk/carbon/components/governance/org.wso2.carbon.governance.api/src/test/resources/test-resources/wsdl/BizService.wsdl";
+        String wsdl_url_admin1 = "http://people.wso2.com/~evanthika/wsdls/BizService.wsdl";
         String wsdl_url_admin2 = "http://geocoder.us/dist/eg/clients/GeoCoder.wsdl";
         String wsdl_path_admin1 = "/_system/governance/trunk/wsdls/com/foo/BizService.wsdl";
         String wsdl_path_admin2 = "/_system/governance/trunk/wsdls/us/geocoder/rpc/geo/coder/us/GeoCoder.wsdl";
