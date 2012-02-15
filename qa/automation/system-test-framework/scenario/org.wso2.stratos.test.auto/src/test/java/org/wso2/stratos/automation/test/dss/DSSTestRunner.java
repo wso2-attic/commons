@@ -20,30 +20,35 @@ package org.wso2.stratos.automation.test.dss;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class DSSTestRunner extends TestSuite{
-    
+public class DSSTestRunner extends TestSuite {
+
 
     public static Test suite() {
 
-            TestSuite suite = new TestSuite();
+        TestSuite suite = new TestSuite();
 
 
-            suite.addTestSuite(CSVDataServiceTestClient.class);
-            suite.addTestSuite(ExcelDataServiceTestClient.class);
-            suite.addTestSuite(GSpreadDataServiceTestClient.class);
-            suite.addTestSuite(MySqlDataServiceTestClient.class);
-            suite.addTestSuite(CarbonDataSourceTestClient.class);
-            suite.addTestSuite(DTPServiceTestClient.class);
-            suite.addTestSuite(EventingServiceTestClient.class);
-            suite.addTestSuite(NestedQueryTestClient.class);
-            suite.addTestSuite(TestBatchRequestTestClient.class);
-            suite.addTestSuite(TestMySqlFileServiceClient.class);
-            suite.addTestSuite(ResourcesServiceTestClient.class);
-            suite.addTestSuite(SecureDataServiceTestClient.class);
-            suite.addTestSuite(InputParametersValidationTest.class);
-            suite.addTestSuite(MySqlStoredProcedureTest.class);
+        suite.addTestSuite(CSVDataServiceTestClient.class);
+        suite.addTestSuite(ExcelDataServiceTestClient.class);
+        suite.addTestSuite(GSpreadDataServiceTestClient.class);
+        suite.addTestSuite(MySqlDataServiceTestClient.class);
+        suite.addTestSuite(CarbonDataSourceTestClient.class);
+        suite.addTestSuite(DTPServiceTestClient.class);
+        suite.addTestSuite(EventingServiceTestClient.class);
+        suite.addTestSuite(NestedQueryTestClient.class);
+        suite.addTestSuite(TestBatchRequestTestClient.class);
+        suite.addTestSuite(TestMySqlFileServiceClient.class);
+        suite.addTestSuite(ResourcesServiceTestClient.class);
+        suite.addTestSuite(SecureDataServiceTestClient.class);
+        suite.addTestSuite(InputParametersValidationTest.class);
+        suite.addTestSuite(MySqlStoredProcedureTest.class);
+        suite.addTestSuite(FaultyServiceTest.class);
+        suite.addTestSuite(EditFaultyDataServiceTest.class);
+        suite.addTestSuite(ServiceFaultyTest.class);
+//        suite.addTestSuite(ScheduleTaskAddTest.class);
+//        suite.addTestSuite(ReScheduleTaskTest.class);
 
-            return suite;
-        }
+        return suite;
+    }
 
 }

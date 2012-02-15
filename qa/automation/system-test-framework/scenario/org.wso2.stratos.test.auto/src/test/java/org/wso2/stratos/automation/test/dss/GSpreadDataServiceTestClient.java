@@ -49,9 +49,9 @@ public class GSpreadDataServiceTestClient extends TestTemplate {
     private static final String DSS_BACKEND_URL = FrameworkSettings.DSS_BACKEND_URL;
     private static final String RESOURCE_LOCATION = ProductConstant.getResourceLocations(ProductConstant.DSS_SERVER_NAME);
 
-    private static TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("3"));
-    private static final String USER_NAME = tenantDetails.getTenantName();
-    private static final String PASSWORD = tenantDetails.getTenantPassword();
+    private static TenantDetails TENANT_DETAILS = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("3"));
+    private static final String USER_NAME = TENANT_DETAILS.getTenantName();
+    private static final String PASSWORD = TENANT_DETAILS.getTenantPassword();
 
     private static final String SERVICE_FILE_LOCATION = RESOURCE_LOCATION + File.separator + "dbs" + File.separator + "gspread";
     private static final String SERVICE_FILE_NAME = "GSpreadDataService.dbs";
@@ -91,6 +91,13 @@ public class GSpreadDataServiceTestClient extends TestTemplate {
 
         log.info("waiting " + FrameworkSettings.SERVICE_DEPLOYMENT_DELAY + " millis for service deployment");
         adminServiceClientDSS.isServiceDeployed(sessionCookie, SERVICE_NAME, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+
+        //todo this sleep should be removed after fixing CARBON-11900 gira
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            Assert.fail("Thread InterruptedException");
+        }
 
         ServiceMetaData serviceMetaData = adminServiceClientDSS.getServiceData(sessionCookie, SERVICE_NAME);
         Assert.assertEquals("Service Name Mismatched", SERVICE_NAME, serviceMetaData.getName());

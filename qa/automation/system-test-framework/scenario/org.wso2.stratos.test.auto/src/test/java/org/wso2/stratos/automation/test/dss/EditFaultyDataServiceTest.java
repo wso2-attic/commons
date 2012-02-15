@@ -18,7 +18,6 @@
 package org.wso2.stratos.automation.test.dss;
 
 import junit.framework.Assert;
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -26,33 +25,36 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.carbon.admin.service.AdminServiceSecurity;
+import org.wso2.carbon.admin.service.AdminServiceAuthentication;
+import org.wso2.carbon.admin.service.AdminServiceService;
+import org.wso2.carbon.admin.service.DataServiceAdminService;
 import org.wso2.carbon.admin.service.utils.FrameworkSettings;
 import org.wso2.carbon.service.mgt.stub.types.carbon.ServiceMetaData;
-import org.wso2.carbon.system.test.core.utils.axis2Client.SecureAxisServiceClient;
+import org.wso2.carbon.system.test.core.utils.axis2Client.AxisServiceClient;
 import org.wso2.stratos.automation.test.dss.utils.AdminServiceClientDSS;
-import org.wso2.stratos.automation.test.dss.utils.FileManager;
 import org.wso2.stratos.automation.test.dss.utils.MySqlDatabaseManager;
-import org.wso2.stratos.automation.test.dss.utils.TestTemplateRSS;
+import org.wso2.stratos.automation.test.dss.utils.TestTemplateFaultyService;
 
 import javax.activation.DataHandler;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class SecureDataServiceTestClient extends TestTemplateRSS {
+public class EditFaultyDataServiceTest extends TestTemplateFaultyService {
 
-    private static final Log log = LogFactory.getLog(TestMySqlFileServiceClient.class);
+    private static final Log log = LogFactory.getLog(FaultyServiceTest.class);
 
     @Override
     public void setServiceMetaData() {
         serviceFileLocation = RESOURCE_LOCATION + File.separator + "dbs" + File.separator + "rdbms" + File.separator + "MySql";
-        serviceFileName = "SecureDataService.dbs";
-        serviceName = "SecureDataService";
-        serviceGroup = "secureService";
+        serviceFileName = "FaultyDataService.dbs";
+        serviceName = "FaultyDataService";
+        serviceGroup = "FaultyService";
     }
 
     @Override
@@ -81,9 +83,33 @@ public class SecureDataServiceTestClient extends TestTemplateRSS {
 
     @Override
     public void createArtifact() {
-        Assert.assertNotNull("Initialize jdbcUrl", jdbcUrl);
         try {
-            OMElement dbsFile = AXIOMUtil.stringToOM(FileManager.readFile(serviceFileLocation + File.separator + serviceFileName).trim());
+            serviceFile = new DataHandler(new URL("file://" + serviceFileLocation + File.separator + serviceFileName));
+        } catch (MalformedURLException e) {
+            log.error("Resource file Not Found " + e.getMessage());
+            Assert.fail("Resource file Not Found " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void runSuccessCase() {
+        AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
+        DataServiceAdminService dataServiceAdminService = new DataServiceAdminService(DSS_BACKEND_URL);
+        String serviceContent;
+        String newServiceContent = null;
+        String serviceEndpoint = null;
+        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
+        Assert.assertTrue("Service not in faulty service list", adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName));
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException " + e.getMessage());
+            Assert.fail("InterruptedException " + e.getMessage());
+        }
+        serviceContent = dataServiceAdminService.getDataServiceContent(sessionCookie, serviceName);
+
+        try {
+            OMElement dbsFile = AXIOMUtil.stringToOM(serviceContent);
             OMElement dbsConfig = dbsFile.getFirstChildWithName(new QName("config"));
             Iterator configElement1 = dbsConfig.getChildElements();
             while (configElement1.hasNext()) {
@@ -100,98 +126,73 @@ public class SecureDataServiceTestClient extends TestTemplateRSS {
                 }
             }
             log.debug(dbsFile);
-            ByteArrayDataSource dbs = new ByteArrayDataSource(dbsFile.toString().getBytes());
-            serviceFile = new DataHandler(dbs);
-
+            newServiceContent = dbsFile.toString();
         } catch (XMLStreamException e) {
-            log.error("XMLStreamException when Reading Service File" + e.getMessage());
-            Assert.fail("XMLStreamException when Reading Service File" + e.getMessage());
-        } catch (IOException e) {
-            log.error("IOException when Reading Service File" + e.getMessage());
-            Assert.fail("IOException  when Reading Service File" + e.getMessage());
+            log.error("XMLStreamException while handling data service content " + e.getMessage());
+            Assert.fail("XMLStreamException while handling data service content " + e.getMessage());
         }
-    }
+        Assert.assertNotNull("Could not edited service content", newServiceContent);
+        dataServiceAdminService.editDataService(sessionCookie, serviceName, "", newServiceContent);
+        adminServiceClientDSS.isServiceDeployed(sessionCookie, serviceName, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
 
-    @Override
-    public void runSuccessCase() {
-        OMElement response;
         //todo this sleep should be removed after fixing CARBON-11900 gira
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             Assert.fail("Thread InterruptedException");
         }
-        //secure service with username token
-        secureService(1);
 
-        SecureAxisServiceClient secureAxisServiceClient = new SecureAxisServiceClient();
-
-        AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
         ServiceMetaData serviceMetaData = adminServiceClientDSS.getServiceData(sessionCookie, serviceName);
         String[] endpoints = serviceMetaData.getEprs();
         Assert.assertNotNull("Service Endpoint object null", endpoints);
         Assert.assertTrue("No service endpoint found", (endpoints.length > 0));
-        for(String epr : endpoints){
-            if(epr.startsWith("https://")){
-                serviceEndPoint = epr;
+        for (String epr : endpoints) {
+            if (epr.startsWith("http://")) {
+                serviceEndpoint = epr;
                 break;
             }
         }
-        log.info("Service End point :" + serviceEndPoint);
+        log.info("Service End point :" + serviceEndpoint);
+        adminServiceClientDSS.logOut();
+        Assert.assertNotNull("Service Endpoint null", serviceEndpoint);
+        invokeService(serviceEndpoint);
+    }
 
+    private void invokeService(String serviceEndpoint) {
+        OMElement response;
         for (int i = 0; i < 5; i++) {
-            secureAxisServiceClient = new SecureAxisServiceClient();
-            response = secureAxisServiceClient.sendReceive(USER_NAME, PASSWORD, serviceEndPoint, "showAllOffices", getPayload(), 1);
+            AxisServiceClient axisServiceClient = new AxisServiceClient();
+            response = axisServiceClient.sendReceive(getPayload(), serviceEndpoint, "showAllOffices");
             Assert.assertTrue("Expected Result not Found", (response.toString().indexOf("<Office>") > 1));
             Assert.assertTrue("Expected Result not Found", (response.toString().indexOf("</Office>") > 1));
         }
-
-        response = null;
-        //todo should be enabled for kerberos i <17
-        for (int i = 2; i < 16; i++) {
-            secureService(i);
-
-            serviceMetaData = adminServiceClientDSS.getServiceData(sessionCookie, serviceName);
-            endpoints = serviceMetaData.getEprs();
-            Assert.assertNotNull("Service Endpoint object null", endpoints);
-            Assert.assertTrue("No service endpoint found", (endpoints.length > 0));
-            for (String epr : endpoints) {
-                if (epr.startsWith("http://")) {
-                    serviceEndPoint = epr;
-                    break;
-                }
-            }
-            log.info("Service End point :" + serviceEndPoint);
-            for (int j = 0; j < 5; j++) {
-                response = secureAxisServiceClient.sendReceive(USER_NAME, PASSWORD, serviceEndPoint, "showAllOffices", getPayload(), i);
-                Assert.assertTrue("Expected Result not Found", (response.toString().indexOf("<Office>") > 1));
-                Assert.assertTrue("Expected Result not Found", (response.toString().indexOf("</Office>") > 1));
-            }
-        }
-    }
-
-    private void secureService(int policyId) {
-        AdminServiceSecurity adminServiceSecurity = new AdminServiceSecurity(DSS_BACKEND_URL);
-        authenticate();
-        if (FrameworkSettings.STRATOS_TEST) {
-            adminServiceSecurity.applySecurity(sessionCookie, serviceName, policyId + "", new String[]{"admin"}, new String[]{TENANT_DOMAIN.replace('.', '-') + ".jks"}, TENANT_DOMAIN.replace('.', '-') + ".jks");
-        } else {
-            adminServiceSecurity.applySecurity(sessionCookie, serviceName, policyId + "", new String[]{"admin"}, new String[]{"wso2carbon.jks"}, "wso2carbon.jks");
-        }
-        log.info("Security Scenario " + policyId + " Applied");
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            Assert.fail("InterruptedException :" + e.getMessage());
-
-        }
-
     }
 
     private OMElement getPayload() {
         OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMNamespace omNs = fac.createOMNamespace("http://ws.wso2.org/dataservice/samples/secure_dataservice", "ns1");
+        OMNamespace omNs = fac.createOMNamespace("http://ws.wso2.org/dataservice/samples/faulty_dataservice", "ns1");
         OMElement payload = fac.createOMElement("showAllOffices", omNs);
         return payload;
+    }
+
+    @Override
+    public void artifactCleanup() {
+        try {
+            Thread.sleep(15 * 1000);
+        } catch (InterruptedException e) {
+            log.error(e);
+        }
+        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
+        AdminServiceService adminServiceService = new AdminServiceService(DSS_BACKEND_URL);
+        sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
+        adminServiceService.deleteService(sessionCookie, new String[]{serviceGroup});
+        log.info("Service undeployed");
+        try {
+            Thread.sleep(10 * 1000);
+        } catch (InterruptedException e) {
+            log.error(e);
+        }
+        Assert.assertFalse("Service Still in service list", adminServiceService.isServiceExists(sessionCookie, serviceName));
+
     }
 }

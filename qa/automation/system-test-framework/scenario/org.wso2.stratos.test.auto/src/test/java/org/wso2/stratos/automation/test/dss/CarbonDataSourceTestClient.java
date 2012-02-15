@@ -265,7 +265,7 @@ public class CarbonDataSourceTestClient extends TestTemplateRSS {
             dataSourceInfo = dataSourceAdminService.getCarbonDataSources(sessionCookie, createDataSourceResponse);
             dataSourceInfo.getSecretInformation().setAliasSecret(databasePassword);
             dataSourceAdminService.editCarbonDataSources(sessionCookie, createDataSourceResponse, dataSourceInfo);
-            
+
         } else {
             String dataSourceName = databaseName + "DataSource";
             if (list != null) {

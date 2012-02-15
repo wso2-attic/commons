@@ -99,7 +99,7 @@ public class TestBatchRequestTestClient extends TestTemplateRSS{
         deleteEmployee(5);
 
         for (int i = 1; i < 6; i++) {
-            Assert.assertEquals("Employee Not Found", "0", employeeExists( i + ""));
+            Assert.assertEquals("Employee Found. deletion failed", "0", employeeExists( i + ""));
         }
 
         //batch request for 25 records
@@ -113,7 +113,7 @@ public class TestBatchRequestTestClient extends TestTemplateRSS{
         deleteEmployeeBatchRequest();
 
         for (int i = 1; i < 26; i++) {
-            Assert.assertEquals("Employee Not Found", "0", employeeExists( i + ""));
+            Assert.assertEquals("Employee Found. batch deletion failed", "0", employeeExists( i + ""));
         }
 
 

@@ -50,12 +50,11 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
     private static final String DSS_IP = FrameworkSettings.DSS_SERVER_HOST_NAME;
     private static final String DSS_BACKEND_URL = FrameworkSettings.DSS_BACKEND_URL;
-    private static final String GR_BACKEND_URL = FrameworkSettings.GREG_BACKEND_URL;
     private static final String RESOURCE_LOCATION = ProductConstant.getResourceLocations(ProductConstant.DSS_SERVER_NAME);
 
-    private static TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("3"));
-    private static final String USER_NAME = tenantDetails.getTenantName();
-    private static final String PASSWORD = tenantDetails.getTenantPassword();
+    private static TenantDetails TENANT_DETAILS = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("3"));
+    private static final String USER_NAME = TENANT_DETAILS.getTenantName();
+    private static final String PASSWORD = TENANT_DETAILS.getTenantPassword();
 
     private static final String SERVICE_FILE_LOCATION = RESOURCE_LOCATION + File.separator + "dbs" + File.separator + "excel";
     private static final String SERVICE_FILE_NAME = "ExcelDataService.dbs";
@@ -91,9 +90,9 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
 
         //login to governance
-        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(GR_BACKEND_URL);
+        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
         sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
-        AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(GR_BACKEND_URL);
+        AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(DSS_BACKEND_URL);
 
         adminServiceResourceAdmin.addResource(sessionCookie, "/_system/governance/automation/resources/" + RESOURCE_FILE_NAME, "application/vnd.ms-excel", "", dhResource);
         adminServiceResourceAdmin.addResource(sessionCookie, "/_system/governance/automation/resources/" + XSLT_FILE_NAME, "application/xml", "", dhXslt);
@@ -116,6 +115,13 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
         log.info("waiting " + FrameworkSettings.SERVICE_DEPLOYMENT_DELAY + " millis for service deployment");
         adminServiceClientDSS.isServiceDeployed(sessionCookie, SERVICE_NAME, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+
+        //todo this sleep should be removed after fixing CARBON-11900 gira
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            Assert.fail("Thread InterruptedException");
+        }
 
         ServiceMetaData serviceMetaData = adminServiceClientDSS.getServiceData(sessionCookie, SERVICE_NAME);
         Assert.assertEquals("Service Name Mismatched", SERVICE_NAME, serviceMetaData.getName());
@@ -168,9 +174,9 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
     @Override
     public void cleanup() {
-        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(GR_BACKEND_URL);
+        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
         String sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
-        AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(GR_BACKEND_URL);
+        AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(DSS_BACKEND_URL);
 
         adminServiceResourceAdmin.deleteResource(sessionCookie, "/_system/governance/automation/resources/" + RESOURCE_FILE_NAME);
         adminServiceAuthentication.logOut();

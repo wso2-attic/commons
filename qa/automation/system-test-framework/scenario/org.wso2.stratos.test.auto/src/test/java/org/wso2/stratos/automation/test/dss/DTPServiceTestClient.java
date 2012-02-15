@@ -538,8 +538,7 @@ public class DTPServiceTestClient extends TestTemplateRSS {
                 sender.sendRobust(end_boxcar());
                 fail("Service validation failed. end_boxcar Not Working");
             } catch (AxisFault e) {
-                log.info("Operation failed");
-
+                
             }
 
             options.setAction("urn:" + "getAccountBalanceFromBank1");

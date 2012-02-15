@@ -29,7 +29,6 @@ import org.wso2.carbon.admin.service.utils.FrameworkSettings;
 import org.wso2.carbon.admin.service.utils.ProductConstant;
 import org.wso2.carbon.adminconsole.ui.stub.types.DatabaseUserEntry;
 import org.wso2.carbon.adminconsole.ui.stub.types.RSSInstanceEntry;
-import org.wso2.carbon.service.mgt.stub.types.carbon.ServiceMetaData;
 import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
@@ -39,14 +38,14 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public abstract class TestTemplateRSS extends TestTemplate {
+public abstract class TestTemplateFaultyService extends TestTemplate {
 
     static {
         FrameworkSettings.getFrameworkProperties();
 
     }
 
-    private static final Log log = LogFactory.getLog(TestTemplateRSS.class);
+    private static final Log log = LogFactory.getLog(TestTemplateFaultyService.class);
 
     protected static final String DSS_IP = FrameworkSettings.DSS_SERVER_HOST_NAME;
     protected static final String DSS_BACKEND_URL = FrameworkSettings.DSS_BACKEND_URL;
@@ -75,7 +74,6 @@ public abstract class TestTemplateRSS extends TestTemplate {
     protected String serviceGroup = null;
     protected DataHandler serviceFile = null;
 
-    protected String serviceEndPoint = null;
 
     public abstract void setServiceMetaData();
 
@@ -120,52 +118,7 @@ public abstract class TestTemplateRSS extends TestTemplate {
         log.info(serviceFileName + " Service File Uploaded");
         log.info("waiting " + FrameworkSettings.SERVICE_DEPLOYMENT_DELAY + " millis for service deployment");
 
-        adminServiceClientDSS.isServiceDeployed(sessionCookie, serviceName, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
-        //todo this sleep should be removed after fixing CARBON-11900 gira
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            Assert.fail("Thread InterruptedException");
-        }
-
-        ServiceMetaData serviceMetaData = adminServiceClientDSS.getServiceData(sessionCookie, serviceName);
-        Assert.assertEquals("Service Name Mismatched", serviceName, serviceMetaData.getName());
-        Assert.assertEquals("Service Group Mismatched", serviceGroup, serviceMetaData.getServiceGroupName());
-        log.info("Service Deployed");
-
-        String[] endpoints = serviceMetaData.getEprs();
-        Assert.assertNotNull("Service Endpoint object null", endpoints);
-        Assert.assertTrue("No service endpoint found", (endpoints.length > 0));
-        for (String epr : endpoints) {
-            if (epr.startsWith("http://")) {
-                serviceEndPoint = epr;
-                break;
-            }
-        }
-        log.info("Service End point :" + serviceEndPoint);
-        Assert.assertNotNull("service endpoint null", serviceEndPoint);
-        Assert.assertTrue("Service endpoint not contain service name", serviceEndPoint.contains(serviceName));
-
-    }
-
-    @Override
-    public void artifactCleanup() {
-        try {
-            Thread.sleep(15 * 1000);
-        } catch (InterruptedException e) {
-            log.error(e);
-        }
-        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
-        AdminServiceService adminServiceService = new AdminServiceService(DSS_BACKEND_URL);
-        sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
-        adminServiceService.deleteService(sessionCookie, new String[]{serviceGroup});
-        log.info("Service undeployed");
-        try {
-                Thread.sleep(10 * 1000);
-            } catch (InterruptedException e) {
-                Assert.fail("InterruptedException :" + e.getMessage());
-            }
-        Assert.assertFalse("Service Still in service list. service deletion failed", adminServiceService.isServiceExists(sessionCookie, serviceName));
+        adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
 
     }
 
@@ -198,7 +151,7 @@ public abstract class TestTemplateRSS extends TestTemplate {
             } catch (InterruptedException e) {
                 Assert.fail("InterruptedException :" + e.getMessage());
             }
-        } else if (adminServiceService.isServiceFaulty(sessionCookie, serviceName)) {
+        }else if (adminServiceService.isServiceFaulty(sessionCookie, serviceName)) {
             log.info("Service already in faulty service list");
             adminServiceService.deleteFaultyService(sessionCookie, File.separator + "dataservices" + File.separator + serviceFileName);
             log.info("Service Deleted from faulty service list");
@@ -208,7 +161,6 @@ public abstract class TestTemplateRSS extends TestTemplate {
                 Assert.fail("InterruptedException :" + e.getMessage());
             }
         }
-
         Assert.assertFalse("Service Still in service list. service deletion failed", adminServiceService.isServiceExists(sessionCookie, serviceName));
         Assert.assertFalse("Service Still in faulty service list. service deletion failed", adminServiceService.isServiceFaulty(sessionCookie, serviceName));
     }
@@ -346,6 +298,5 @@ public abstract class TestTemplateRSS extends TestTemplate {
         Assert.assertNotNull("Please set serviceFileLocation", serviceFileLocation);
 
     }
-
 
 }

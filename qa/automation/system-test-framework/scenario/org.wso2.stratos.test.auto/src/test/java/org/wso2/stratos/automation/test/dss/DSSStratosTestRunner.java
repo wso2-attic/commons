@@ -25,17 +25,23 @@ public class DSSStratosTestRunner extends TestSuite {
     public static Test suite() {
         TestSuite testSuite = new TestSuite();
 
-//        testSuite.addTestSuite(CarbonDataSourceTestClient.class);
-//        testSuite.addTestSuite(CSVDataServiceTestClient.class);
+        testSuite.addTestSuite(CSVDataServiceTestClient.class);
+        testSuite.addTestSuite(ExcelDataServiceTestClient.class);
+        testSuite.addTestSuite(GSpreadDataServiceTestClient.class);
+        testSuite.addTestSuite(MySqlDataServiceTestClient.class);
+        testSuite.addTestSuite(CarbonDataSourceTestClient.class);
         testSuite.addTestSuite(DTPServiceTestClient.class);
-//        testSuite.addTestSuite(EventingServiceTestClient.class);
-//        testSuite.addTestSuite(ExcelDataServiceTestClient.class);
-//        testSuite.addTestSuite(GSpreadDataServiceTestClient.class);
-//        testSuite.addTestSuite(MySqlDataServiceTestClient.class);
+        testSuite.addTestSuite(EventingServiceTestClient.class);
         testSuite.addTestSuite(NestedQueryTestClient.class);
-//        testSuite.addTestSuite(ResourcesServiceTestClient.class);
         testSuite.addTestSuite(TestBatchRequestTestClient.class);
-//        testSuite.addTestSuite(TestMySqlFileServiceClient.class);
+        testSuite.addTestSuite(TestMySqlFileServiceClient.class);
+        testSuite.addTestSuite(ResourcesServiceTestClient.class);
+        testSuite.addTestSuite(SecureDataServiceTestClient.class);
+        testSuite.addTestSuite(InputParametersValidationTest.class);
+        testSuite.addTestSuite(MySqlStoredProcedureTest.class);
+        testSuite.addTestSuite(FaultyServiceTest.class);
+        testSuite.addTestSuite(EditFaultyDataServiceTest.class);
+        testSuite.addTestSuite(ServiceFaultyTest.class);
 
         return testSuite;
     }

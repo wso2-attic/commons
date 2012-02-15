@@ -18,14 +18,13 @@
 package org.wso2.stratos.automation.test.dss.utils;
 
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.*;
 import org.wso2.carbon.authenticator.stub.LoginAuthenticationExceptionException;
 import org.wso2.carbon.security.mgt.stub.config.SecurityAdminServiceSecurityConfigExceptionException;
-import org.wso2.carbon.service.mgt.stub.Exception;
 import org.wso2.carbon.admin.service.AdminServiceDataServiceFileUploader;
+import org.wso2.carbon.service.mgt.stub.types.carbon.FaultyService;
 import org.wso2.carbon.service.mgt.stub.types.carbon.ServiceMetaData;
 
 import javax.activation.DataHandler;
@@ -40,7 +39,7 @@ public class AdminServiceClientDSS {
     public AdminServiceClientDSS(String backEndUrl) {
         this.backEndUrl = backEndUrl;
     }
-    
+
     public void uploadArtifact(String sessionCookie, String fileName, DataHandler dh) {
         AdminServiceDataServiceFileUploader adminServiceDataServiceFileUploader = new AdminServiceDataServiceFileUploader(backEndUrl);
         adminServiceDataServiceFileUploader.uploadDataServiceFile(sessionCookie, fileName, dh);
@@ -49,7 +48,13 @@ public class AdminServiceClientDSS {
     public void deleteService(String sessionCookie, String[] serviceGroup) {
         AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
         adminServiceService.deleteService(sessionCookie, serviceGroup);
-       
+
+    }
+
+    public void deleteFaultyService(String sessionCookie, String artifactPath) {
+        AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
+        adminServiceService.deleteFaultyService(sessionCookie, artifactPath);
+
     }
 
     public void activeteService(String sessionCookie, String serviceName) throws Exception, RemoteException {
@@ -57,15 +62,22 @@ public class AdminServiceClientDSS {
         adminServiceService.startService(sessionCookie, serviceName);
 
     }
+
     public void deactivateService(String sessionCookie, String serviceName) throws RemoteException, LoginAuthenticationExceptionException, Exception {
         AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
         adminServiceService.stopService(sessionCookie, serviceName);
 
     }
 
-    public void applySecurity(String sessionCookie, String serviceName, String policyId, String[] userGroups, String[] trustedKeyStoreArray, String privateStore)  {
+    public void applySecurity(String sessionCookie, String serviceName, String policyId, String[] userGroups, String[] trustedKeyStoreArray, String privateStore) {
         AdminServiceSecurity adminServiceSecurity = new AdminServiceSecurity(backEndUrl);
         adminServiceSecurity.applySecurity(sessionCookie, serviceName, policyId, userGroups, trustedKeyStoreArray, privateStore);
+
+    }
+
+    public void applyKerberosSecurity(String sessionCookie, String serviceName, String policyId, String ServicePrincipalName, String ServicePrincipalPassword) {
+        AdminServiceSecurity adminServiceSecurity = new AdminServiceSecurity(backEndUrl);
+        adminServiceSecurity.applyKerberosSecurityPolicy(sessionCookie, serviceName, policyId, ServicePrincipalName, ServicePrincipalPassword);
 
     }
 
@@ -93,24 +105,33 @@ public class AdminServiceClientDSS {
         adminServiceResourceAdmin.addResource(sessionCookie, destinationPath, mediaType, description, dh);
     }
 
-    public ServiceMetaData getServiceData(String sessionCookie,String serviceName){
-       AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
-       return  adminServiceService.getServicesData(sessionCookie, serviceName);
+    public ServiceMetaData getServiceData(String sessionCookie, String serviceName) {
+        AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
+        return adminServiceService.getServicesData(sessionCookie, serviceName);
     }
 
+    public FaultyService getFaultyServiceData(String sessionCookie, String serviceName) {
+        AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
+        return adminServiceService.getFaultyData(sessionCookie, serviceName);
+    }
 
-    public boolean isServiceExist(String sessionCookie,String serviceName) {
+    public boolean isServiceExist(String sessionCookie, String serviceName) {
         AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
         return adminServiceService.isServiceExists(sessionCookie, serviceName);
     }
 
-    public void isServiceDeployed(String sessionCookie,String serviceName, int waitingTimeInMillis){
+    public boolean isServiceFaulty(String sessionCookie, String serviceName) {
+        AdminServiceService adminServiceService = new AdminServiceService(backEndUrl);
+        return adminServiceService.isServiceFaulty(sessionCookie, serviceName);
+    }
+
+    public void isServiceDeployed(String sessionCookie, String serviceName, int waitingTimeInMillis) {
 
         boolean isServiceDeployed = false;
         Calendar startTime = Calendar.getInstance();
         long time;
-        while((time = (Calendar.getInstance().getTimeInMillis() - startTime.getTimeInMillis())) < waitingTimeInMillis) {
-            if(isServiceExist(sessionCookie, serviceName)){
+        while ((time = (Calendar.getInstance().getTimeInMillis() - startTime.getTimeInMillis())) < waitingTimeInMillis) {
+            if (isServiceExist(sessionCookie, serviceName)) {
                 isServiceDeployed = true;
                 break;
             }
@@ -121,8 +142,29 @@ public class AdminServiceClientDSS {
             }
         }
         Assert.assertTrue("Service Not Found, Deployment time out ", isServiceDeployed);
-        log.info("Service Deployed in "+ time +" millis");
-        
+        log.info("Service Deployed in " + time + " millis");
+
+
+    }
+
+    public void isServiceFaulty(String sessionCookie, String serviceName, int waitingTimeInMillis) {
+
+        boolean isServiceDeployed = false;
+        Calendar startTime = Calendar.getInstance();
+        long time;
+        while ((time = (Calendar.getInstance().getTimeInMillis() - startTime.getTimeInMillis())) < waitingTimeInMillis) {
+            if (isServiceFaulty(sessionCookie, serviceName)) {
+                isServiceDeployed = true;
+                break;
+            }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+
+            }
+        }
+        Assert.assertTrue("Service Not Found in faulty service list ", isServiceDeployed);
+
 
     }
 }
