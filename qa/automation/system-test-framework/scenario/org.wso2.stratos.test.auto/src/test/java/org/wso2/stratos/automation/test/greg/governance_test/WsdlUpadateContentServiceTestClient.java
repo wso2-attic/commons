@@ -60,7 +60,7 @@ public class WsdlUpadateContentServiceTestClient extends TestTemplate {
     }
 
     private void updateWsdlContent() {
-        String wsdl_url = "http://svn.wso2.org/repos/wso2/trunk/carbon/components/governance/org.wso2.carbon.governance.api/src/test/resources/test-resources/wsdl/BizService.wsdl";
+        String wsdl_url = "http://people.wso2.com/~evanthika/wsdls/BizService.wsdl";
         WsdlManager wsdlManager = new WsdlManager(governance);
         Wsdl wsdl = null;
         try {
@@ -74,7 +74,7 @@ public class WsdlUpadateContentServiceTestClient extends TestTemplate {
             r1 = registry.get(wsdl_path);
             String content = new String((byte[]) r1.getContent());
             //Assert Content location
-            assertTrue("Assert Content -location :", content.indexOf("http://localhost:8080/axis2/services/BizService") > 0);
+            assertTrue("Assert Content -location :", content.indexOf("http://people.wso2.com:9763/services/BizService") > 0);
 
             //Edit wsdl content
             OMElement contentElement = wsdl.getWsdlElement();
@@ -94,7 +94,7 @@ public class WsdlUpadateContentServiceTestClient extends TestTemplate {
             String content2 = new String((byte[]) r2.getContent());
 
             //Assert initial value has been updated properly
-            assertFalse("Assert Content wsdl file - key word 1", content2.indexOf("http://localhost:8080/axis2/services/BizService") > 0);
+            assertFalse("Assert Content wsdl file - key word 1", content2.indexOf("http://people.wso2.com:9763/services/BizService") > 0);
             assertEquals("http://my-custom-endpoint/hoooo", addressElement2.getAttributeValue(new QName("location")));
 
             //delete resource

@@ -135,8 +135,8 @@ public class EndpointServiceTestClient extends TestTemplate {
     }
 
     private void addWsdlWithEndpoints() {
-        String wsdl_url = "http://svn.wso2.org/repos/wso2/trunk/carbon/components/governance/org.wso2.carbon.governance.api/src/test/resources/test-resources/wsdl/BizService.wsdl";
-        String endpoint_path = "http://localhost:8080/axis2/services/BizService";
+        String wsdl_url = "http://people.wso2.com/~evanthika/wsdls/BizService.wsdl";
+        String endpoint_path = "http://people.wso2.com:9763/services/BizService";
 
         WsdlManager wsdlManager = new WsdlManager(governance);
         Wsdl wsdl;

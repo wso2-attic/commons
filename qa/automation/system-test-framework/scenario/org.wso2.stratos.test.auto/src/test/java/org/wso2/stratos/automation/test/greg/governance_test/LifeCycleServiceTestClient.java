@@ -46,7 +46,7 @@ public class LifeCycleServiceTestClient extends TestTemplate {
 
 
     public void addWSDL() {
-        String wsdl_url = "http://svn.wso2.org/repos/wso2/trunk/carbon/components/governance/org.wso2.carbon.governance.api/src/test/resources/test-resources/wsdl/BizService.wsdl";
+        String wsdl_url = "http://people.wso2.com/~evanthika/wsdls/BizService.wsdl";
         WsdlManager wsdlManager = new WsdlManager(governance);
         Wsdl wsdl = null;
         try {
