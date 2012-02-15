@@ -85,8 +85,8 @@ public abstract class TestTemplateRSS extends TestTemplate {
 
     @Override
     public void init() {
+        authenticate();
         if (FrameworkSettings.STRATOS_TEST) {
-            authenticate();
             setPriConditions();
             createDataBase();
             createPrivilegeGroup();
@@ -106,7 +106,6 @@ public abstract class TestTemplateRSS extends TestTemplate {
 
     @Override
     public void artifactDeployment() {
-        authenticate();
         setServiceMetaData();
         checkServiceMetaData();
         deleteServiceIfExist();
@@ -155,9 +154,7 @@ public abstract class TestTemplateRSS extends TestTemplate {
         } catch (InterruptedException e) {
             log.error(e);
         }
-        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
         AdminServiceService adminServiceService = new AdminServiceService(DSS_BACKEND_URL);
-        sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
         adminServiceService.deleteService(sessionCookie, new String[]{serviceGroup});
         log.info("Service undeployed");
         try {
@@ -172,10 +169,7 @@ public abstract class TestTemplateRSS extends TestTemplate {
     @Override
     public void cleanup() {
         if (FrameworkSettings.STRATOS_TEST) {
-            AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
             RSSAdminConsoleService rSSAdminConsoleService = new RSSAdminConsoleService(DSS_BACKEND_URL);
-
-            sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
 
             rSSAdminConsoleService.deleteUser(sessionCookie, databaseUserId, dbInstanceId);
             rSSAdminConsoleService.deletePrivilegeGroup(sessionCookie, userPrivilegeGroupId);
@@ -277,7 +271,7 @@ public abstract class TestTemplateRSS extends TestTemplate {
 
     }
 
-    protected void authenticate() {
+    private void authenticate() {
         AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
         sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
     }

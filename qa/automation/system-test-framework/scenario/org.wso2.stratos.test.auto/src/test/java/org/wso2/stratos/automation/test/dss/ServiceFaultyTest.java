@@ -110,7 +110,6 @@ public class ServiceFaultyTest extends TestTemplateRSS {
         DataServiceAdminService dataServiceAdminService = new DataServiceAdminService(DSS_BACKEND_URL);
         String serviceContent;
         String newServiceContent = null;
-        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
         Assert.assertTrue("Service not in faulty service list", adminServiceClientDSS.isServiceExist(sessionCookie, serviceName));
         try {
             Thread.sleep(10000);
@@ -166,6 +165,5 @@ public class ServiceFaultyTest extends TestTemplateRSS {
         }
 
         Assert.assertFalse("Faulty Service not deleted", adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName));
-        adminServiceClientDSS.logOut();
     }
 }

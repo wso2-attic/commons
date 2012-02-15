@@ -33,14 +33,14 @@ public class MySqlDatabaseManager {
         Class.forName("com.mysql.jdbc.Driver");
         log.debug("JDBC Url: "+jdbcUrl);
         connection = DriverManager.getConnection(jdbcUrl, userName, passWord);
-        log.info("Connected to database");
+        log.debug("Connected to database");
     }
 
     public void executeUpdate(String sql) throws SQLException {
         Statement st = connection.createStatement();
         log.debug(sql);
         st.executeUpdate(sql.trim());
-        log.info("Sql update Success");
+        log.debug("Sql update Success");
 
     }
 
@@ -53,7 +53,7 @@ public class MySqlDatabaseManager {
             log.debug(query);
             st.executeUpdate(query.trim());
         }
-        log.info("Sql execution Success");
+        log.debug("Sql execution Success");
     }
 
     public ResultSet executeQuery(String sql) throws SQLException {
@@ -66,12 +66,12 @@ public class MySqlDatabaseManager {
     public void execute(String sql) throws SQLException {
         Statement st = connection.createStatement();
         st.execute(sql);
-        log.info("Sql execution Success");
+        log.debug("Sql execution Success");
     }
 
     public void disconnect() throws SQLException {
         connection.close();
-        log.info("Disconnected from database");
+        log.debug("Disconnected from database");
     }
     protected void finalize ()  {
         try {

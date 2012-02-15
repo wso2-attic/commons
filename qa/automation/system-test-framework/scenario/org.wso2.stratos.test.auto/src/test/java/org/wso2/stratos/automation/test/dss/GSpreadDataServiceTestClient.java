@@ -59,11 +59,11 @@ public class GSpreadDataServiceTestClient extends TestTemplate {
     private static final String SERVICE_GROUP = "GSpread";
 
     private String serviceEndPoint;
+    private String sessionCookie;
 
     @Override
     public void init() {
         testClassName = ExcelDataServiceTestClient.class.getName();
-        String sessionCookie;
         URL urlServiceFile = null;
         try {
             urlServiceFile = new URL("file://" + SERVICE_FILE_LOCATION + File.separator + SERVICE_FILE_NAME);
@@ -116,8 +116,6 @@ public class GSpreadDataServiceTestClient extends TestTemplate {
         log.info("Service End point :" + serviceEndPoint);
         Assert.assertNotNull("service endpoint null", serviceEndPoint);
         Assert.assertTrue("Service endpoint not contain service name", serviceEndPoint.contains(SERVICE_NAME));
-        adminServiceClientDSS.logOut();
-
 
     }
 
@@ -138,7 +136,6 @@ public class GSpreadDataServiceTestClient extends TestTemplate {
     public void cleanup() {
 
         AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
-        String sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
         adminServiceClientDSS.deleteService(sessionCookie, new String[]{SERVICE_GROUP});
         adminServiceClientDSS.logOut();
 

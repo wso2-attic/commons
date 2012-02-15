@@ -67,12 +67,12 @@ public class ExcelDataServiceTestClient extends TestTemplate {
     private static final String XSLT_FILE_NAME = "transform.xslt";
 
     private String serviceEndPoint;
+    private String sessionCookie;
 
     @Override
     public void init() {
         testClassName = ExcelDataServiceTestClient.class.getName();
 
-        String sessionCookie;
         URL urlResourceFile = null;
         URL urlXsltFile = null;
         URL urlServiceFile = null;
@@ -91,16 +91,14 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
         //login to governance
         AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
-        sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
         AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(DSS_BACKEND_URL);
 
+        sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
         adminServiceResourceAdmin.addResource(sessionCookie, "/_system/governance/automation/resources/" + RESOURCE_FILE_NAME, "application/vnd.ms-excel", "", dhResource);
         adminServiceResourceAdmin.addResource(sessionCookie, "/_system/governance/automation/resources/" + XSLT_FILE_NAME, "application/xml", "", dhXslt);
-        adminServiceAuthentication.logOut();
 
         //login to data service
         AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
-        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
 
         if (adminServiceClientDSS.isServiceExist(sessionCookie, SERVICE_NAME)) {
             adminServiceClientDSS.deleteService(sessionCookie, new String[]{SERVICE_GROUP});
@@ -140,7 +138,6 @@ public class ExcelDataServiceTestClient extends TestTemplate {
         log.info("Service End point :" + serviceEndPoint);
         Assert.assertNotNull("service endpoint null", serviceEndPoint);
         Assert.assertTrue("Service endpoint not contain service name", serviceEndPoint.contains(SERVICE_NAME));
-        adminServiceClientDSS.logOut();
 
     }
 
@@ -174,16 +171,12 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
     @Override
     public void cleanup() {
-        AdminServiceAuthentication adminServiceAuthentication = new AdminServiceAuthentication(DSS_BACKEND_URL);
-        String sessionCookie = adminServiceAuthentication.login(USER_NAME, PASSWORD, "localhost");
         AdminServiceResourceAdmin adminServiceResourceAdmin = new AdminServiceResourceAdmin(DSS_BACKEND_URL);
 
         adminServiceResourceAdmin.deleteResource(sessionCookie, "/_system/governance/automation/resources/" + RESOURCE_FILE_NAME);
-        adminServiceAuthentication.logOut();
-
+        adminServiceResourceAdmin.deleteResource(sessionCookie, "/_system/governance/automation/resources/" + XSLT_FILE_NAME);
 
         AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
-        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
         adminServiceClientDSS.deleteService(sessionCookie, new String[]{SERVICE_GROUP});
         adminServiceClientDSS.logOut();
 

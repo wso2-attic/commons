@@ -83,7 +83,6 @@ public class FaultyServiceTest extends TestTemplateFaultyService {
     public void runSuccessCase() {
         AdminServiceClientDSS adminServiceClientDSS = new AdminServiceClientDSS(DSS_BACKEND_URL);
         FaultyService faultyService;
-        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
         Assert.assertTrue("Service not in faulty service list", adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName));
         try {
             Thread.sleep(10000);
@@ -101,7 +100,6 @@ public class FaultyServiceTest extends TestTemplateFaultyService {
             Assert.fail("InterruptedException " + e.getMessage());
         }
         Assert.assertFalse("Service Still in service list", adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName));
-        adminServiceClientDSS.logOut();
     }
 
 

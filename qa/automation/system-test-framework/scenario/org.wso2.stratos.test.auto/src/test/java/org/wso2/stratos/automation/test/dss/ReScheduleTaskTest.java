@@ -95,7 +95,6 @@ public class ReScheduleTaskTest extends TestTemplateRSS {
 
     @Override
     public void runSuccessCase() {
-        authenticate();
         DataServiceAdminService dataServiceAdminService = new DataServiceAdminService(DSS_BACKEND_URL);
         DSTaskInfo dsTaskInfo = new DSTaskInfo();
 

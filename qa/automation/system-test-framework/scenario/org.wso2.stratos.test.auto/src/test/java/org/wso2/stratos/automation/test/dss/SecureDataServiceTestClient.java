@@ -172,7 +172,6 @@ public class SecureDataServiceTestClient extends TestTemplateRSS {
 
     private void secureService(int policyId) {
         AdminServiceSecurity adminServiceSecurity = new AdminServiceSecurity(DSS_BACKEND_URL);
-        authenticate();
         if (FrameworkSettings.STRATOS_TEST) {
             adminServiceSecurity.applySecurity(sessionCookie, serviceName, policyId + "", new String[]{"admin"}, new String[]{TENANT_DOMAIN.replace('.', '-') + ".jks"}, TENANT_DOMAIN.replace('.', '-') + ".jks");
         } else {

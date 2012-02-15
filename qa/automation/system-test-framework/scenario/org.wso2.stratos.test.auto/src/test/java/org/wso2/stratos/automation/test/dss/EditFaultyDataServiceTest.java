@@ -98,7 +98,6 @@ public class EditFaultyDataServiceTest extends TestTemplateFaultyService {
         String serviceContent;
         String newServiceContent = null;
         String serviceEndpoint = null;
-        sessionCookie = adminServiceClientDSS.authenticate(USER_NAME, PASSWORD);
         Assert.assertTrue("Service not in faulty service list", adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName));
         try {
             Thread.sleep(10000);
@@ -153,7 +152,6 @@ public class EditFaultyDataServiceTest extends TestTemplateFaultyService {
             }
         }
         log.info("Service End point :" + serviceEndpoint);
-        adminServiceClientDSS.logOut();
         Assert.assertNotNull("Service Endpoint null", serviceEndpoint);
         invokeService(serviceEndpoint);
     }
