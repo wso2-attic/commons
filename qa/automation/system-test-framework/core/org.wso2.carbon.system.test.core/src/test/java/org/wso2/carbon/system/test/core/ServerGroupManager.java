@@ -19,6 +19,8 @@
 package org.wso2.carbon.system.test.core;
 
 import junit.framework.Assert;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.utils.FrameworkSettings;
@@ -26,11 +28,17 @@ import org.wso2.carbon.admin.service.utils.ProductConstant;
 import org.wso2.carbon.base.ServerConfigurationException;
 import org.wso2.carbon.system.test.core.utils.dbUtils.DatabaseFactory;
 import org.wso2.carbon.system.test.core.utils.dbUtils.DatabaseManager;
+import org.wso2.carbon.system.test.core.utils.fileUtils.FileManager;
 import org.wso2.carbon.system.test.core.utils.productUtils.PackageCreator;
 import org.wso2.carbon.system.test.core.utils.serverUtils.ServerManager;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ServerGroupManager {
@@ -41,31 +49,34 @@ public class ServerGroupManager {
     private static List<ServerManager> serverManagerList = new ArrayList<ServerManager>();
 
     public static synchronized void startServers() {
-        log.info("Server starting...");
 
         if (!serversRunning) {
             FrameworkSettings.getFrameworkProperties();
             Assert.assertNotNull("Product List is not provided", FrameworkSettings.PRODUCT_LIST_TO_START);
             Assert.assertNotNull("Deployment Framework Home not provided", FrameworkSettings.DEPLOYMENT_FRAMEWORK_HOME);
             Assert.assertTrue("Deployment Framework Script Execution Failed", PackageCreator.createPackage());
-            Assert.assertNotNull("System mount Database Name null", FrameworkSettings.SYSTEM_MOUNT_DATABASE);
-            Assert.assertFalse("Invalid System Mount Database Name", FrameworkSettings.SYSTEM_MOUNT_DATABASE.equals(""));
-            Assert.assertNotNull("System Mount Database Type null", FrameworkSettings.DATABASE_TYPE);
-            Assert.assertFalse("Invalid System Mount Database Type", FrameworkSettings.DATABASE_TYPE.equals(""));
-            ServerManager serverManager = null;
-            DatabaseManager databaseManager;
+
+            ServerManager serverManager;
             String[] productList = FrameworkSettings.PRODUCT_LIST_TO_START.split(",");
-
-
+            log.info("Servers starting...");
             try {
-                databaseManager = DatabaseFactory.getDatabaseConnector(FrameworkSettings.DATABASE_TYPE, FrameworkSettings.JDBC_URL, FrameworkSettings.DB_USER, FrameworkSettings.DB_PASSWORD);
-                databaseManager.executeUpdate("DROP DATABASE IF EXISTS " + FrameworkSettings.SYSTEM_MOUNT_DATABASE);
-                databaseManager.executeUpdate("CREATE DATABASE " + FrameworkSettings.SYSTEM_MOUNT_DATABASE);
-                log.info("wso2registry created");
-                databaseManager.disconnect();
+                OMElement commonConfig = AXIOMUtil.stringToOM(FileManager.readFile(FrameworkSettings.DEPLOYMENT_FRAMEWORK_HOME + File.separator + "config" + File.separator + "commonConfig.xml").trim());
+                OMElement databaseMount = commonConfig.getFirstChildWithName(new QName("MountDatabase"));
+
+                if (databaseMount != null) {
+                    createRegistryDB(databaseMount);
+                    log.info("WSO2 Registry Created");
+                }
 
                 for (String product : productList) {
-                    serverManager = new ServerManager(ProductConstant.getCarbonHome(product));
+                    String carbonHome = ProductConstant.getCarbonHome(product);
+                    OMElement databaseConfig = getCurrentDatabaseConfig(carbonHome);
+                    log.info("Strating.... " + product);
+                    if (!"org.h2.Driver".equalsIgnoreCase(databaseConfig.getFirstChildWithName(new QName("driverName")).getText().trim())) {
+                        createRegistryDB(databaseConfig);
+                        log.info("local Registry Created");
+                    }
+                    serverManager = new ServerManager(carbonHome);
                     serverManager.start();
                     serversRunning = true;
                     serverManagerList.add(serverManager);
@@ -80,6 +91,12 @@ public class ServerGroupManager {
             } catch (SQLException e) {
                 log.error("Database Server connection failed " + e.getMessage());
                 Assert.fail("Database Server connection failed " + e.getMessage());
+            } catch (IOException e) {
+                log.error("Exception while reading  commonConfig.xml in deployment framework " + e.getMessage());
+                Assert.fail("Exception while reading  commonConfig.xml in deployment framework " + e.getMessage());
+            } catch (XMLStreamException e) {
+                log.error("Exception while reading  commonConfig.xml in deployment framework " + e.getMessage());
+                Assert.fail("Exception while reading  commonConfig.xml in deployment framework " + e.getMessage());
             }
 
             //create users in each server
@@ -99,5 +116,89 @@ public class ServerGroupManager {
                 }
             });
         }
+    }
+
+    private static String getDatabaseName(String driverName, String url) {
+        String databaseName = null;
+        if ("com.mysql.jdbc.Driver".equalsIgnoreCase(driverName)) {
+//          databaseName = url.split("\\?")[0].split("//?")[2];
+            databaseName = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+        } else if ("oracle.jdbc.driver.OracleDriver".equalsIgnoreCase(driverName)) {
+//          databaseName = url.split("/")[1].split("@")[0];
+            databaseName = url.substring(url.lastIndexOf(':') + 1);
+        } else if ("org.h2.Driver".equalsIgnoreCase(driverName)) {
+
+        } else {
+            Assert.fail("could not find database name. Not implemented for the driver " + driverName);
+        }
+        Assert.assertNotNull("Database name null", databaseName);
+        return databaseName;
+    }
+
+    private static String getJdbcUrl(String driverName, String url) {
+        String jdbc = null;
+        if ("com.mysql.jdbc.Driver".equalsIgnoreCase(driverName)) {
+            jdbc = url.substring(0, url.lastIndexOf('/'));
+        } else if ("oracle.jdbc.driver.OracleDriver".equalsIgnoreCase(driverName)) {
+            jdbc = url.substring(0, url.lastIndexOf(':'));
+        } else if ("org.h2.Driver".equalsIgnoreCase(driverName)) {
+
+        } else {
+            Assert.fail("could not find server jdbc url. Not implemented for the driver " + driverName);
+        }
+        Assert.assertNotNull("jdbc url null", jdbc);
+        return jdbc;
+    }
+
+    private static OMElement getCurrentDatabaseConfig(String carbonHome) {
+        OMElement wso2registry = null;
+        try {
+            wso2registry = AXIOMUtil.stringToOM(FileManager.readFile(carbonHome + File.separator + "repository" + File.separator + "conf" + File.separator + "registry.xml").trim());
+
+        } catch (IOException e) {
+            log.error("Exception while reading  registry.xml in deployment framework " + e.getMessage());
+            Assert.fail("Exception while reading  registry.xml in deployment framework " + e.getMessage());
+        } catch (XMLStreamException e) {
+            log.error("Exception while reading  registry.xml in deployment framework " + e.getMessage());
+            Assert.fail("Exception while reading  registry.xml in deployment framework " + e.getMessage());
+        }
+        OMElement currentDBConfig = wso2registry.getFirstChildWithName(new QName("currentDBConfig"));
+        Iterator dbConfigList = wso2registry.getChildrenWithName(new QName("dbConfig"));
+
+        while (dbConfigList.hasNext()) {
+            OMElement dbConfig = (OMElement) dbConfigList.next();
+            String value = dbConfig.getAttributeValue(new QName("name"));
+            if (currentDBConfig.getText().trim().equals(value)) {
+                return dbConfig;
+
+            }
+
+        }
+        Assert.fail("Database Configuration not Found in registry.xml ");
+        return null;
+    }
+
+    private static void createRegistryDB(OMElement dbConfig) throws ClassNotFoundException, SQLException {
+        DatabaseManager databaseManager;
+        String driverName;
+        String url;
+        String userName;
+        String password;
+        String databaseName;
+        String jdbc;
+
+        driverName = dbConfig.getFirstChildWithName(new QName("driverName")).getText().trim();
+        url = dbConfig.getFirstChildWithName(new QName("url")).getText().trim();
+        userName = dbConfig.getFirstChildWithName(new QName("userName")).getText().trim();
+        password = dbConfig.getFirstChildWithName(new QName("password")).getText().trim();
+
+        databaseName = getDatabaseName(driverName, url);
+        jdbc = getJdbcUrl(driverName, url);
+
+        databaseManager = DatabaseFactory.getDatabaseConnector(driverName, jdbc, userName, password);
+        databaseManager.executeUpdate("DROP DATABASE IF EXISTS " + databaseName);
+        databaseManager.executeUpdate("CREATE DATABASE " + databaseName);
+        log.info("Database created");
+        databaseManager.disconnect();
     }
 }

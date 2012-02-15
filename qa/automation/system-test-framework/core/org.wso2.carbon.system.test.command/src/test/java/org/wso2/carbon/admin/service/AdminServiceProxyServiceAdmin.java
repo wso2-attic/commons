@@ -411,12 +411,12 @@ public class AdminServiceProxyServiceAdmin {
                     OMAttribute location = resourceElem.getAttribute
                             (new QName(XMLConfigConstants.NULL_NAMESPACE, "location"));
                     if (location == null) {
-                        // todo handle exception
+                        throw new XMLStreamException("location element not found in xml file");
                     }
                     OMAttribute key = resourceElem.getAttribute(
                             new QName(XMLConfigConstants.NULL_NAMESPACE, "key"));
                     if (key == null) {
-                        // todo handle exception
+                         throw new XMLStreamException("key element not found in xml file");
                     }
                     resource = new Entry();
                     resource.setKey(location.getAttributeValue());

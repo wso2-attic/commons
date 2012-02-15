@@ -66,18 +66,14 @@ public class ServerManager {
 //            log.info("Imported Code Coverage Details.");
             String temp;
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                tempProcess = Runtime.getRuntime().exec(new String[]{"bat", "bin/wso2server.bat"},
+
+                tempProcess = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "bin\\wso2server.bat", "-Dsetup"},
                         null, new File(carbonHome));
             } else {
                 //when starting wso2greg it crate all tables in registry
-                if (carbonHome.contains("wso2greg")) {
-                    tempProcess = Runtime.getRuntime().exec(new String[]{"sh", "bin/wso2server.sh", "-Dsetup test"},
-                            null, new File(carbonHome));
-                } else {
-                    tempProcess = Runtime.getRuntime().exec(new String[]{"sh", "bin/wso2server.sh", "test"},
-                            null, new File(carbonHome));
-                }
 
+                tempProcess = Runtime.getRuntime().exec(new String[]{"sh", "bin/wso2server.sh", "-Dsetup test"},
+                        null, new File(carbonHome));
             }
 //            Runtime.getRuntime().addShutdownHook(new Thread() {
 //                public void run() {
@@ -100,7 +96,7 @@ public class ServerManager {
                         public void run() {
                             try {
                                 String temp;
-                                while ((temp = reader.readLine()) != null && temp.equalsIgnoreCase(SERVER_SHUTDOWN_MESSAGE)) {
+                                while ((temp = reader.readLine()) != null) {
                                     log.info(temp);
                                 }
                             } catch (Exception ignore) {

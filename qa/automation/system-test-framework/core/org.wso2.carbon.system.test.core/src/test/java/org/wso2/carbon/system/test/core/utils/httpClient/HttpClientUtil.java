@@ -24,6 +24,7 @@ import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -32,54 +33,126 @@ import java.net.URL;
 
 public class HttpClientUtil {
     private static final Log log = LogFactory.getLog(HttpClientUtil.class);
+    private static final int connectionTimeOut = 30000;
 
     public OMElement get(String endpoint) {
         log.info("Endpoint : " + endpoint);
+        HttpURLConnection httpCon = null;
+        String xmlContent = null;
+        int responseCode = -1;
         try {
             URL url = new URL(endpoint);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setConnectTimeout(connectionTimeOut);
             InputStream in = httpCon.getInputStream();
-            String xmlContent = getStringFromInputStream(in);
+            xmlContent = getStringFromInputStream(in);
+            responseCode = httpCon.getResponseCode();
             in.close();
-            return AXIOMUtil.stringToOM(xmlContent);
         } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
             Assert.fail("Failed to get the response :" + e.getMessage());
+        } finally {
+            if(httpCon != null) {
+                httpCon.disconnect();
+            }
         }
-        return null;
+        Assert.assertEquals("Response code not 200", 200, responseCode);
+        if(xmlContent != null) {
+            try {
+                return AXIOMUtil.stringToOM(xmlContent);
+            } catch (XMLStreamException e) {
+                log.error("Error while processing response to OMElement" + e.getMessage());
+                Assert.fail("Error while processing response to OMElement" + e.getMessage());
+                return  null;
+            }
+        } else{
+            return  null;
+        }
     }
 
     public void delete(String endpoint, String params) {
         log.info("Endpoint : " + endpoint);
+        HttpURLConnection httpCon = null;
+        int responseCode = -1;
         try {
             URL url = new URL(endpoint + "?" + params);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setConnectTimeout(connectionTimeOut);
             httpCon.setRequestMethod("DELETE");
-            httpCon.getResponseCode();
+            responseCode = httpCon.getResponseCode();
         } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
             Assert.fail("Failed to get the response :" + e.getMessage());
+        }finally{
+           if(httpCon != null) {
+                httpCon.disconnect();
+            }
         }
+        Assert.assertEquals("Response Code not 202",202, responseCode);
     }
 
     public void post(String endpoint, String params) {
         log.info("Endpoint : " + endpoint);
+        HttpURLConnection httpCon = null;
+        int responseCode = -1;
         try {
             URL url = new URL(endpoint);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setConnectTimeout(connectionTimeOut);
             httpCon.setDoOutput(true);
             OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
             out.write(params);
             out.close();
+            responseCode = httpCon.getResponseCode();
             httpCon.getInputStream().close();
+
         } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
             Assert.fail("Failed to get the response :" + e.getMessage());
+        } finally {
+              if(httpCon != null) {
+                httpCon.disconnect();
+            }
         }
+        Assert.assertEquals("Response Code not 202", 202, responseCode);
     }
+
+public void post(String endpoint, String params, String contentType) {
+        log.info("Endpoint : " + endpoint);
+        HttpURLConnection httpCon = null;
+        int responseCode = -1;
+        try {
+            URL url = new URL(endpoint);
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setConnectTimeout(connectionTimeOut);
+            httpCon.setRequestProperty("Content-type", contentType);
+            httpCon.setDoOutput(true);
+            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+            out.write(params);
+            out.close();
+            responseCode = httpCon.getResponseCode();
+            httpCon.getInputStream().close();
+
+        } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
+            Assert.fail("Failed to get the response :" + e.getMessage());
+        } finally {
+              if(httpCon != null) {
+                httpCon.disconnect();
+            }
+        }
+        Assert.assertEquals("Response Code not 202", 202, responseCode);
+    }
+
 
     public void put(String endpoint, String params) {
         log.info("Endpoint : " + endpoint);
+        HttpURLConnection httpCon = null;
+        int responseCode = -1;
         try {
             URL url = new URL(endpoint);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setConnectTimeout(connectionTimeOut);
             httpCon.setDoOutput(true);
             httpCon.setRequestMethod("PUT");
             httpCon.setRequestProperty("Content-Length", String.valueOf(params.length()));
@@ -87,10 +160,17 @@ public class HttpClientUtil {
             OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
             out.write(params);
             out.close();
+            responseCode = httpCon.getResponseCode();
             httpCon.getInputStream().close();
         } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
             Assert.fail("Failed to get the response :" + e.getMessage());
+        } finally {
+              if(httpCon != null) {
+                httpCon.disconnect();
+            }
         }
+        Assert.assertEquals("Response Code not 202", 202, responseCode);
     }
 
     private static String getStringFromInputStream(InputStream in) {
@@ -103,6 +183,7 @@ public class HttpClientUtil {
                 retValue.append(new String(buff, 0, i));
             }
         } catch (Exception e) {
+            log.error("Failed to get the response " + e.getMessage());
             Assert.fail("Failed to get the response :" + e.getMessage());
         }
         return retValue.toString();

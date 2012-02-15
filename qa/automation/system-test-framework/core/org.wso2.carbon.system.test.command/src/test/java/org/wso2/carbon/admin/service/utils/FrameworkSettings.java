@@ -147,8 +147,7 @@ public class FrameworkSettings {
     public static String REMOTE_SELENIUM_WEBDRIVER_URL;
 
     //Database Configuration
-    public static String DATABASE_TYPE;
-    public static String SYSTEM_MOUNT_DATABASE;
+    public static String JDBC_DRIVER_NAME;
     public static String JDBC_URL;
     public static String DB_USER;
     public static String DB_PASSWORD;
@@ -218,7 +217,7 @@ public class FrameworkSettings {
             CEP_SERVER_HTTPS_PORT = (prop.getProperty("cep.https.port", "9452"));
             CEP_SERVER_WEB_CONTEXT_ROOT = (prop.getProperty("cep.webContext.root", null));
 
-            //initializing GS-server settings.            
+            //initializing GS-server settings.
             GS_SERVER_HOST_NAME = (prop.getProperty("gs.host.name", "localhost"));
             GS_SERVER_HTTP_PORT = (prop.getProperty("gs.http.port", "9771"));
             GS_SERVER_HTTPS_PORT = (prop.getProperty("gs.https.port", "9453"));
@@ -230,7 +229,7 @@ public class FrameworkSettings {
             BPS_SERVER_HTTPS_PORT = (prop.getProperty("bps.https.port", "9447"));
             BPS_SERVER_WEB_CONTEXT_ROOT = (prop.getProperty("bps.webContext.root", null));
 
-            //initializing MS-server settings.            
+            //initializing MS-server settings.
             MS_SERVER_HOST_NAME = (prop.getProperty("ms.host.name", "localhost"));
             MS_SERVER_HTTP_PORT = (prop.getProperty("ms.http.port", "9769"));
             MS_SERVER_HTTPS_PORT = (prop.getProperty("ms.https.port", "9449"));
@@ -260,8 +259,7 @@ public class FrameworkSettings {
             DEPLOYMENT_FRAMEWORK_ENABLE = Boolean.parseBoolean(prop.getProperty("deployment.framework.enable", "true"));
             DEPLOYMENT_FRAMEWORK_HOME = (prop.getProperty("deployment.framework.home", "/"));
 
-            DATABASE_TYPE = (prop.getProperty("database.type", "MySql"));
-            SYSTEM_MOUNT_DATABASE = (prop.getProperty("system.mount.database", "wso2regisrty"));
+            JDBC_DRIVER_NAME = (prop.getProperty("database.driver.name", "com.mysql.jdbc.Driver"));
             JDBC_URL = (prop.getProperty("jdbc.url", "jdbc:mysql://localhost:3306"));
             DB_USER = (prop.getProperty("db.user", "root"));
             DB_PASSWORD = (prop.getProperty("db.password", "root123"));

@@ -69,11 +69,11 @@ public class AdminServiceAuthentication {
         try {
             loginStatus = authenticationAdminStub.login(userName, password, hostName);
         } catch (RemoteException e) {
-            log.error("Login failed due to RemoteException :" + e.getMessage());
-            Assert.fail("Login failed due to RemoteException :" + e.getMessage());
+            log.error(endPoint + " Login failed due to RemoteException :" + e.getMessage());
+            Assert.fail(endPoint + " Login failed due to RemoteException :" + e.getMessage());
         } catch (LoginAuthenticationExceptionException e) {
-            log.error("Login failed due to LoginAuthenticationExceptionException :" + e.getMessage());
-            Assert.fail("Login failed due to LoginAuthenticationExceptionException :" + e.getMessage());
+            log.error(endPoint + " Login failed due to LoginAuthenticationExceptionException :" + e.getMessage());
+            Assert.fail(endPoint + " Login failed due to LoginAuthenticationExceptionException :" + e.getMessage());
         }
         Assert.assertTrue("Login unsuccessful", loginStatus);
         log.info("Login Successful");

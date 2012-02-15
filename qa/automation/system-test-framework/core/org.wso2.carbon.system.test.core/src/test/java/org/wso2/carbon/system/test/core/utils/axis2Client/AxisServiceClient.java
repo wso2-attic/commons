@@ -33,8 +33,8 @@ public class AxisServiceClient {
         ServiceClient sender;
         Options options;
         OMElement response = null;
-        log.debug("Service Endpoint : " + endPointReference);
-        log.debug("Service Operation : " + operation);
+        log.info("Service Endpoint : " + endPointReference);
+        log.info("Service Operation : " + operation);
         log.debug("Payload : " + payload);
         try {
             sender = new ServiceClient();

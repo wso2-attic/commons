@@ -84,7 +84,7 @@ public class ProductConstant {
 
     public static String getCarbonHome(String product) {
         FrameworkSettings.getFrameworkProperties();
-        String deploymentHome = FrameworkSettings.DEPLOYMENT_FRAMEWORK_HOME + "/SNAPSHOT/";
+        String deploymentHome = FrameworkSettings.DEPLOYMENT_FRAMEWORK_HOME + File.separator + "SNAPSHOT" + File.separator;
         File deploymentDir = new File(deploymentHome);
         String distributionPrefix = null;
 

@@ -22,10 +22,7 @@ import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.utils.AuthenticateStub;
-import org.wso2.carbon.security.mgt.stub.config.ApplySecurity;
-import org.wso2.carbon.security.mgt.stub.config.DisableSecurityOnService;
-import org.wso2.carbon.security.mgt.stub.config.SecurityAdminServiceSecurityConfigExceptionException;
-import org.wso2.carbon.security.mgt.stub.config.SecurityAdminServiceStub;
+import org.wso2.carbon.security.mgt.stub.config.*;
 
 import java.rmi.RemoteException;
 
@@ -67,6 +64,29 @@ public class AdminServiceSecurity {
         } catch (SecurityAdminServiceSecurityConfigExceptionException e) {
             log.error("SecurityAdminServiceSecurityConfigExceptionException when applying security " + applySecurity.getPolicyId() + " :" + e.getMessage());
             Assert.fail("SecurityAdminServiceSecurityConfigExceptionException when applying security " + applySecurity.getPolicyId() + " :" + e.getMessage());
+        }
+
+    }
+
+    public void applyKerberosSecurityPolicy(String sessionCookie, String serviceName, String policyId, String ServicePrincipalName, String ServicePrincipalPassword) {
+
+        new AuthenticateStub().authenticateStub(sessionCookie, securityAdminServiceStub);
+        ApplyKerberosSecurityPolicy applySecurity;
+        applySecurity = new ApplyKerberosSecurityPolicy();
+        applySecurity.setServiceName(serviceName);
+        applySecurity.setPolicyId("scenario" + policyId);
+        applySecurity.setServicePrincipalName(ServicePrincipalName);
+        applySecurity.setServicePrincipalPassword(ServicePrincipalPassword);
+
+        try {
+            securityAdminServiceStub.applyKerberosSecurityPolicy(applySecurity);
+            log.info("Security Applied");
+        } catch (RemoteException e) {
+            log.error("RemoteException when applying Kerberos security " + applySecurity.getPolicyId() + " :" + e.getMessage());
+            Assert.fail("RemoteException when applying Kerberos security " + applySecurity.getPolicyId() + " :" + e.getMessage());
+        } catch (SecurityAdminServiceSecurityConfigExceptionException e) {
+            log.error("SecurityAdminServiceSecurityConfigExceptionException when applying Kerberos security " + applySecurity.getPolicyId() + " :" + e.getMessage());
+            Assert.fail("SecurityAdminServiceSecurityConfigExceptionException when applying Kerberos security " + applySecurity.getPolicyId() + " :" + e.getMessage());
         }
 
     }

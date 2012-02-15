@@ -25,19 +25,20 @@ import java.sql.SQLException;
 public class DatabaseFactory {
     private static final Log log = LogFactory.getLog(DatabaseFactory.class);
 
-    private static final String MYSQL = "MySql";
-    private static final String ORACLE = "Oracle";
+    private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String ORACLE_DRIVER = "oracle.jdbc.driver.OracleDriver";
+    private static final String H2_DRIVER = "org.h2.Driver";
 
-    public static DatabaseManager getDatabaseConnector(String databaseType, String jdbcUrl, String userName, String passWord) throws ClassNotFoundException, SQLException {
+    public static DatabaseManager getDatabaseConnector(String databaseDriver, String jdbcUrl, String userName, String passWord) throws ClassNotFoundException, SQLException {
 
-        if (MYSQL.equalsIgnoreCase(databaseType)) {
+        if (MYSQL_DRIVER.equalsIgnoreCase(databaseDriver)) {
             return new MySqlDatabaseManager(jdbcUrl, userName, passWord);
 
-        } else if (ORACLE.equalsIgnoreCase(databaseType)) {
+        } else if (ORACLE_DRIVER.equalsIgnoreCase(databaseDriver)) {
             return new OracleDatabaseManager(jdbcUrl, userName, passWord);
 
         } else {
-            log.warn("No implementation for " + databaseType + " Database Connection");
+            log.warn("No implementation for " + databaseDriver + " Database Connection");
             return null;
         }
 

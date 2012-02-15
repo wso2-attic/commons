@@ -71,5 +71,19 @@ public class FileManager {
         writer.close();
 
     }
+    
+    public static void copyFile(File sourceFile, String destinationPath) throws IOException {
+        File destinationFile = new File(destinationPath);
+
+        FileReader in = new FileReader(sourceFile);
+        FileWriter out = new FileWriter(destinationFile);
+        int c;
+
+        while ((c = in.read()) != -1)
+            out.write(c);
+
+        in.close();
+        out.close();
+    }
 }
 
