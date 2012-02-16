@@ -26,6 +26,8 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.rmi.RemoteException;
+
 public class BpelDeoloyIlligalNameClient extends TestTemplate {
 
     String sessionCookie = null;
@@ -47,8 +49,8 @@ public class BpelDeoloyIlligalNameClient extends TestTemplate {
     }
 
     @Override
-    public void runSuccessCase() {
-        bpelUploader.deployBPEL("HelloW/orld.zip","illigalFiles", "HelloService", sessionCookie);
+    public void runSuccessCase() throws InterruptedException, RemoteException {
+        bpelUploader.deployBPEL("HelloW/orld.zip","illigalFiles", sessionCookie);
     }
 
     @Override

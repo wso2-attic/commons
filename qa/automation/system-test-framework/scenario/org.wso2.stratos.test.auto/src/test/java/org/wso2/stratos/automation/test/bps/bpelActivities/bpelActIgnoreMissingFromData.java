@@ -28,6 +28,8 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class bpelActIgnoreMissingFromData extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -64,7 +66,7 @@ public class bpelActIgnoreMissingFromData extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("TestCombineUrl", "TestCombineUrl", sessionCookie);
+        bpelUploader.deployBPEL("TestCombineUrl",  sessionCookie);
     }
 
     @Override

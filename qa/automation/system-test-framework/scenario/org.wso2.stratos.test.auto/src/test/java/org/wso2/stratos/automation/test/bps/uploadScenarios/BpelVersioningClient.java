@@ -29,6 +29,8 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class BpelVersioningClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -65,11 +67,11 @@ public class BpelVersioningClient extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("HelloWorld2", "HelloWorld2", sessionCookie);
+        bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
     }
 
     @Override
-    public void runSuccessCase() {
+    public void runSuccessCase() throws RemoteException {
         try {
             Thread.sleep(5000);
             PaginatedProcessInfoList processBefore = bpelProcrss.getProcessInfo("HelloWorld2");
@@ -91,7 +93,7 @@ public class BpelVersioningClient extends TestTemplate {
             requestSender.assertRequest(serviceUrl + serviceName, operation, payLoad,
                     1, expectedBefore, true);
 
-            bpelUploader.deployBPEL("HelloWorld2", "VersioningSamples", "HelloWorld2", sessionCookie);
+            bpelUploader.deployBPEL("HelloWorld2", "VersioningSamples", sessionCookie);
 
             PaginatedProcessInfoList processAfter = null;
             for (int a = 0; a <= 10; a++) {

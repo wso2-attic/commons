@@ -27,6 +27,9 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+
 public class BpelInMemoryDeploymentClient extends TestTemplate {
 
     String sessionCookie = null;
@@ -40,7 +43,7 @@ public class BpelInMemoryDeploymentClient extends TestTemplate {
     AdminServiceAuthentication adminServiceAuthentication;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -59,7 +62,7 @@ public class BpelInMemoryDeploymentClient extends TestTemplate {
         bpelManager = new AdminServiceBpelPackageManager(backEndUrl, sessionCookie);
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
-        bpelUploader.deployBPEL("CustomerInfo", "CustomerInfo", sessionCookie);
+        bpelUploader.deployBPEL("CustomerInfo", sessionCookie);
     }
 
     @Override

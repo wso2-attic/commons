@@ -26,6 +26,9 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+
 public class BpelDeployClient extends TestTemplate {
     String sessionCookie = null;
     private static final Log log = LogFactory.getLog(BpelDeployClient.class);
@@ -62,8 +65,16 @@ public class BpelDeployClient extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
-        assertTrue("Bpel service deployment failed", bpelUploader.deployBPEL("TestE4XDirect", "TestAssignMessage", sessionCookie));
+        try {
+            assertTrue("Bpel service deployment failed", bpelUploader.deployBPEL("TestE4XDirect", sessionCookie));
         assertTrue("Package is notavailable", bpelManager.checkProcessDeployment("TestE4XDirect"));
+        } catch (RemoteException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (MalformedURLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 

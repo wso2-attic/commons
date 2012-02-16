@@ -26,6 +26,9 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+
 public class BpelProcessManagementClient extends TestTemplate {
 
     String sessionCookie = null;
@@ -40,7 +43,7 @@ public class BpelProcessManagementClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -59,7 +62,7 @@ public class BpelProcessManagementClient extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("LoanService", "LoanService", sessionCookie);
+        bpelUploader.deployBPEL("LoanService", sessionCookie);
     }
 
     @Override
@@ -67,13 +70,13 @@ public class BpelProcessManagementClient extends TestTemplate {
         try {
             String processID = bpelProcrss.getProcessId("XKLoanService");
             bpelProcrss.setStatus(processID, "RETIRED");
+            Thread.sleep(5000);
             assertTrue("PPEL process is not set as RETIRED", bpelProcrss.getStatus(processID).equals("RETIRED"));
             assertFalse("Service is still available", requestSender.isServiceAvailable(serviceUrl + "/XKLoanService"));
-            Thread.sleep(5000);
             bpelProcrss.setStatus(processID, "ACTIVE");
             Thread.sleep(5000);
             assertTrue("PPEL process is not set as ACTIVE", bpelProcrss.getStatus(processID).equals("ACTIVE"));
-            assertTrue("Service is not available", !requestSender.isServiceAvailable(serviceUrl + "/XKLoanService"));
+            assertTrue("Service is not available", requestSender.isServiceAvailable(serviceUrl + "/XKLoanService"));
         } catch (InterruptedException e) {
             log.error("Process management failed" + e.getMessage());
             fail(e.getMessage());

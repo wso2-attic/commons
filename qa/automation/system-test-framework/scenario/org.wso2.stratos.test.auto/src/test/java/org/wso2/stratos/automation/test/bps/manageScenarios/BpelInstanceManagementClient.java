@@ -31,6 +31,8 @@ import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
 import javax.xml.stream.XMLStreamException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 
 public class BpelInstanceManagementClient extends TestTemplate {
 
@@ -46,14 +48,14 @@ public class BpelInstanceManagementClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
         System.out.println(FrameworkSettings.BPS_BACKEND_URL);
         testClassName = BpelProcessManagementClient.class.getName();
         if (FrameworkSettings.getStratosTestStatus()) {
-            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(3);
+            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(2);
             serviceUrl = "http://" + FrameworkSettings.BPS_SERVER_HOST_NAME + "/services/t/" + bpsTenant.getTenantName().split("@")[1];
             sessionCookie = adminServiceAuthentication.login(bpsTenant.getTenantName(), bpsTenant.getTenantPassword(), FrameworkSettings.BPS_SERVER_HOST_NAME);
 
@@ -66,7 +68,7 @@ public class BpelInstanceManagementClient extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-            bpelUploader.deployBPEL("TestPickOneWay", "TestPickOneWay", sessionCookie);
+          //  bpelUploader.deployBPEL("TestPickOneWay",  sessionCookie);
     }
 
     @Override
@@ -85,7 +87,6 @@ public class BpelInstanceManagementClient extends TestTemplate {
                 axisFault.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
             Thread.sleep(5000);
-
             PaginatedInstanceList instanceList = bpelInstance.filterPageInstances(bpelProcrss.getProcessId("PickProcess"));
             LimitedInstanceInfoType instanceInfo = instanceList.getInstance()[0];
             if (instanceList.getInstance().length != 0) {

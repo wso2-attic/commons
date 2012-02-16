@@ -27,6 +27,9 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+
 public class BpelRedeployClient extends TestTemplate {
     String sessionCookie = null;
     private static final Log log = LogFactory.getLog(BpelRedeployClient.class);
@@ -54,12 +57,17 @@ public class BpelRedeployClient extends TestTemplate {
     }
 
     @Override
-    public void runSuccessCase() {
+    public void runSuccessCase() throws InterruptedException, RemoteException {
         System.out.println(FrameworkSettings.BPS_BACKEND_URL);
-        bpelUploader.deployBPEL("HelloWorld2", "HelloService", sessionCookie);
+        try {
+            bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
+
         bpelManager.undeployBPEL("HelloWorld2");
-        bpelUploader.deployBPEL("HelloWorld2", "HelloService", sessionCookie);
+        bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
         bpelManager.checkProcessDeployment("HelloWorld2");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 

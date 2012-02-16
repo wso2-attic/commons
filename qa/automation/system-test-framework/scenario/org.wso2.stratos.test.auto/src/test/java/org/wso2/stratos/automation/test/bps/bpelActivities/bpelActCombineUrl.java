@@ -27,6 +27,8 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,14 +45,14 @@ public class bpelActCombineUrl extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
         System.out.println(FrameworkSettings.BPS_BACKEND_URL);
         testClassName = bpelActCombineUrl.class.getName();
         if (FrameworkSettings.getStratosTestStatus()) {
-            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(3);
+            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(4);
             serviceUrl = "http://" + FrameworkSettings.BPS_SERVER_HOST_NAME + "/services/t/" + bpsTenant.getTenantName().split("@")[1];
             sessionCookie = adminServiceAuthentication.login(bpsTenant.getTenantName(), bpsTenant.getTenantPassword(), FrameworkSettings.BPS_SERVER_HOST_NAME);
 
@@ -63,7 +65,7 @@ public class bpelActCombineUrl extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("TestCombineUrl", "TestCombineUrl", sessionCookie);
+        bpelUploader.deployBPEL( "TestCombineUrl", sessionCookie);
     }
 
     @Override
@@ -109,6 +111,7 @@ public class bpelActCombineUrl extends TestTemplate {
         List<String> expectedOutput = new ArrayList<String>();
         expectedOutput.add("http://www.google.lk/search");
 
+        System.out.println("SSS" + serviceUrl + serviceName);
         requestSender.sendRequest(serviceUrl + serviceName, operation, payload,
                 1, expectedOutput, true);
     }

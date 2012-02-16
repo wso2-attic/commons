@@ -21,13 +21,13 @@ package org.wso2.stratos.automation.test.bps;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.wso2.stratos.automation.test.bps.bpelActivities.bpelActCombineUrl;
-import org.wso2.stratos.automation.test.bps.bpelActivities.bpelActComposeUrl;
 import org.wso2.stratos.automation.test.bps.bpelActivities.bpelActIgnoreMissingFromData;
-import org.wso2.stratos.automation.test.bps.bpelActivities.bpelActxslTransform;
 import org.wso2.stratos.automation.test.bps.manageScenarios.BpelInstanceManagementClient;
 import org.wso2.stratos.automation.test.bps.manageScenarios.BpelProcessManagementClient;
 import org.wso2.stratos.automation.test.bps.manageStructuredActivities.*;
-import org.wso2.stratos.automation.test.bps.uploadScenarios.*;
+import org.wso2.stratos.automation.test.bps.uploadScenarios.BpelDeployClient;
+import org.wso2.stratos.automation.test.bps.uploadScenarios.BpelRedeployClient;
+import org.wso2.stratos.automation.test.bps.uploadScenarios.BpelRetireDeploymentClient;
 
 
 public class BPSStratosTestRunner extends TestSuite {
@@ -37,9 +37,7 @@ public class BPSStratosTestRunner extends TestSuite {
 
         //bpel activities
         testSuite.addTestSuite(bpelActCombineUrl.class);
-        testSuite.addTestSuite(bpelActComposeUrl.class);
         testSuite.addTestSuite(bpelActIgnoreMissingFromData.class);
-        testSuite.addTestSuite(bpelActxslTransform.class);
         testSuite.addTestSuite(bpelStructAct_FlowClient.class);
         testSuite.addTestSuite(bpelStructAct_forEachClient.class);
         testSuite.addTestSuite(bpelStructAct_IfClient.class);
@@ -50,13 +48,12 @@ public class BPSStratosTestRunner extends TestSuite {
         testSuite.addTestSuite(BpelInstanceManagementClient.class);
         testSuite.addTestSuite(BpelProcessManagementClient.class);
         testSuite.addTestSuite(BpelDeployClient.class);
-        testSuite.addTestSuite(BpelInMemoryDeploymentClient.class);
+
         testSuite.addTestSuite(BpelRedeployClient.class);
-        testSuite.addTestSuite(BpelVersioningClient.class);
         testSuite.addTestSuite(BpelRetireDeploymentClient.class);
 
         //BPEL manage structured activities
-        testSuite.addTestSuite(bpelStructAct_PickClient.class);
+
 
         return testSuite;
     }

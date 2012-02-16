@@ -30,6 +30,8 @@ import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
 import javax.xml.stream.XMLStreamException;
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 
 public class bpelStructAct_PickClient extends TestTemplate {
     String sessionCookie = null;
@@ -44,7 +46,7 @@ public class bpelStructAct_PickClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -64,7 +66,7 @@ public class bpelStructAct_PickClient extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("TestPickOneWay", "TestPickOneWay", sessionCookie);
+        bpelUploader.deployBPEL("TestPickOneWay", sessionCookie);
     }
 
     @Override

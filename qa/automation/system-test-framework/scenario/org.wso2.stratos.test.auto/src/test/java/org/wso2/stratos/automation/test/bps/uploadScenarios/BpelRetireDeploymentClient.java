@@ -28,6 +28,9 @@ import org.wso2.carbon.system.test.core.TestTemplate;
 import org.wso2.carbon.system.test.core.utils.TenantDetails;
 import org.wso2.carbon.system.test.core.utils.TenantListCsvReader;
 
+import java.net.MalformedURLException;
+import java.rmi.RemoteException;
+
 public class BpelRetireDeploymentClient extends TestTemplate {
     String sessionCookie = null;
     private static final Log log = LogFactory.getLog(BpelRetireDeploymentClient.class);
@@ -38,7 +41,7 @@ public class BpelRetireDeploymentClient extends TestTemplate {
     AdminServiceAuthentication adminServiceAuthentication;
 
     @Override
-    public void init() {
+    public void init() throws MalformedURLException, InterruptedException, RemoteException {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -54,7 +57,7 @@ public class BpelRetireDeploymentClient extends TestTemplate {
         bpelUploader = new AdminServiceBpelUploader(backEndUrl);
         bpelManager = new AdminServiceBpelPackageManager(backEndUrl, sessionCookie);
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl,sessionCookie);
-        bpelUploader.deployBPEL("HelloWorld-retire", "HelloWorld-retire", sessionCookie);
+        bpelUploader.deployBPEL("HelloWorld-retire", sessionCookie);
     }
 
     @Override
