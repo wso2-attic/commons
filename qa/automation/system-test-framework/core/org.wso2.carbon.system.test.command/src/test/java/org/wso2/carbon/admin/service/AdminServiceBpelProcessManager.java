@@ -31,6 +31,7 @@ import org.wso2.carbon.bpel.stub.mgt.types.ProcessStatus;
 
 import javax.xml.namespace.QName;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
 
 public class AdminServiceBpelProcessManager {
     String ServiceEndPoint = null;
@@ -102,26 +103,20 @@ public class AdminServiceBpelProcessManager {
     public String getProcessId(String packageName) {
         processManagementServiceStub = this.setProcessManagementStub();
         String processId = null;
-        final String processFilter = "name}}* namespace=*";
+        final String processFilter = "name}}";
         final String processListOrderBy = "-deployed";
         try {
-            PaginatedProcessInfoList processes =
-                    processManagementServiceStub.getPaginatedProcessList(processFilter,
-                            processListOrderBy, 0);
-            Assert.assertFalse("Process list cannot be empty", !processes.isProcessInfoSpecified() ||
-                    processes.getProcessInfo().length == 0);
+            String[] processList = processManagementServiceStub.getAllProcesses("y");
+            Assert.assertFalse("Process list cannot be empty", processList.length == 0);
 
             boolean processFound = false;
-
-            for (LimitedProcessInfoType processInfo : processes.getProcessInfo()) {
-                if (processInfo.getPid().contains(packageName + "-")) {
-                    processId = processInfo.getPid();
+            for (String id : processList) {
+                if (id.contains(packageName + "-")) {
                     processFound = true;
+                    processId = id;
                 }
             }
-
             Assert.assertFalse("Process: " + processId + " cannot be found", !processFound);
-
 
         } catch (RemoteException e) {
             log.error("Process management failed" + e.getMessage());
@@ -135,35 +130,59 @@ public class AdminServiceBpelProcessManager {
     }
 
     public PaginatedProcessInfoList getProcessInfo(String packageName) {
-           processManagementServiceStub = this.setProcessManagementStub();
+        processManagementServiceStub = this.setProcessManagementStub();
 
-        PaginatedProcessInfoList filteredProcess= new PaginatedProcessInfoList();
-           final String processFilter = "name}}* namespace=*";
-           final String processListOrderBy = "-deployed";
-           try {
-               PaginatedProcessInfoList processes =
-                       processManagementServiceStub.getPaginatedProcessList(processFilter,
-                               processListOrderBy, 0);
-               Assert.assertFalse("Process list cannot be empty", !processes.isProcessInfoSpecified() ||
-                       processes.getProcessInfo().length == 0);
+        PaginatedProcessInfoList filteredProcess = new PaginatedProcessInfoList();
+        final String processFilter = "name}}* namespace=*";
+        final String processListOrderBy = "-deployed";
+        try {
 
-               for (LimitedProcessInfoType processInfo : processes.getProcessInfo()) {
-                   if (processInfo.getPid().contains(packageName + "-")) {
-                       filteredProcess.addProcessInfo(processInfo);
-                   }
-               }
+            PaginatedProcessInfoList processes =
+                    processManagementServiceStub.getPaginatedProcessList(processFilter,
+                            processListOrderBy, 0);
+            Assert.assertFalse("Process list cannot be empty", !processes.isProcessInfoSpecified() ||
+                    processes.getProcessInfo().length == 0);
 
-           } catch (RemoteException e) {
-               log.error("Process management failed" + e.getMessage());
-               Assert.fail(e.getMessage());
-           } catch (ProcessManagementException e) {
-               log.error("Process management failed" + e.getMessage());
-               Assert.fail(e.getMessage());
-           }
-           return filteredProcess;
-       }
+            for (LimitedProcessInfoType processInfo : processes.getProcessInfo()) {
+                if (processInfo.getPid().contains(packageName + "-")) {
+                    filteredProcess.addProcessInfo(processInfo);
+                }
+            }
+
+        } catch (RemoteException e) {
+            log.error("Process management failed" + e.getMessage());
+            Assert.fail(e.getMessage());
+        } catch (ProcessManagementException e) {
+            log.error("Process management failed" + e.getMessage());
+            Assert.fail(e.getMessage());
+        }
+        return filteredProcess;
+    }
 
 
+    public LinkedList<String> getProcessInfoList(String packageName) {
+        processManagementServiceStub = this.setProcessManagementStub();
+
+        LinkedList<String> filteredProcess = new LinkedList<String>();
+        try {
+            String[] processList = processManagementServiceStub.getAllProcesses("y");
+            Assert.assertFalse("Process list cannot be empty", processList.length == 0);
+
+            for (String id : processList) {
+                if (id.contains(packageName + "-")) {
+                    filteredProcess.add(id);
+                }
+            }
+
+        } catch (RemoteException e) {
+            log.error("Process management failed" + e.getMessage());
+            Assert.fail(e.getMessage());
+        } catch (ProcessManagementException e) {
+            log.error("Process management failed" + e.getMessage());
+            Assert.fail(e.getMessage());
+        }
+        return filteredProcess;
+    }
 }
 
 

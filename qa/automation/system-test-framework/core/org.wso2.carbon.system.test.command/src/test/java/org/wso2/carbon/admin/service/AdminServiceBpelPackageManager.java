@@ -68,53 +68,56 @@ public class AdminServiceBpelPackageManager {
     }
 
     public void undeployBPEL(String packageName) {
+        bpelPackageManagementServiceStub = this.setPackageManagementStub();
+        boolean packageUndeployed = false;
         try {
-            bpelPackageManagementServiceStub = this.setPackageManagementStub();
             bpelPackageManagementServiceStub.undeployBPELPackage(packageName);
             Thread.sleep(10000);
             DeployedPackagesPaginated deployedPackages = bpelPackageManagementServiceStub.
                     listDeployedPackagesPaginated(0);
-            boolean packageUndeployed = true;
-            try {
-                for (Package_type0 bpelPackage : deployedPackages.get_package()) {
-                    if (bpelPackage.getName().equals(packageName)) {
+            packageUndeployed = true;
 
-                        packageUndeployed = false;
-                        Assert.fail("Service is not undeployed");
-                        log.error("Service stilll exists, Undeployment failed");
-                    }
+            for (Package_type0 bpelPackage : deployedPackages.get_package()) {
+                if (bpelPackage.getName().equals(packageName)) {
+
+                    packageUndeployed = false;
+                    Assert.fail("Service is not undeployed");
+                    log.error("Service stilll exists, Undeployment failed");
                 }
-            } catch (NullPointerException e) {
-                System.out.println(packageName + " has undeployed successfully");
             }
-            Assert.assertFalse(packageName + " undeplyment failed", !packageUndeployed);
-        } catch (AxisFault axisFault) {
-            log.error("Axis fault" + axisFault.getMessage());
-            Assert.fail(axisFault.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println(packageName + " has undeployed successfully");
         } catch (RemoteException e) {
-            log.error("Connection failed " + e.getMessage());
-            Assert.fail(e.getMessage());
-        } catch (InterruptedException e) {
-            log.error("Deployment Interuppted " + e.getMessage());
-            Assert.fail(e.getMessage());
+            packageUndeployed = false;
+            Assert.fail("Service is not undeployed");
+            log.error("Service stilll exists, Undeployment failed");
         } catch (PackageManagementException e) {
-            log.error("Package management failed" + e.getMessage());
-            Assert.fail(e.getMessage());
+            packageUndeployed = false;
+            Assert.fail("Service is not undeployed");
+            log.error("Service stilll exists, Undeployment failed");
+        } catch (InterruptedException e) {
+            packageUndeployed = false;
+            Assert.fail("Service is not undeployed");
+            log.error("Service stilll exists, Undeployment failed");
         }
+        Assert.assertFalse(packageName + " undeplyment failed", !packageUndeployed);
     }
 
     public boolean checkProcessDeployment(String packageName) {
         boolean packageDeployed = false;
         bpelPackageManagementServiceStub = this.setPackageManagementStub();
         try {
-            DeployedPackagesPaginated deployedPackages = bpelPackageManagementServiceStub.
-                    listDeployedPackagesPaginated(0);
-            packageDeployed = false;
-            for (Package_type0 bpelPackage : deployedPackages.get_package()) {
-                if (bpelPackage.getName().equals(packageName)) {
-                    System.out.println(packageName + " has deployed successfully");
-                    packageDeployed = true;
+            for (int page = 0; page <= 20; page++) {
+                DeployedPackagesPaginated deployedPackages = bpelPackageManagementServiceStub.
+                        listDeployedPackagesPaginated(page);
+                packageDeployed = false;
+                for (Package_type0 bpelPackage : deployedPackages.get_package()) {
+                    if (bpelPackage.getName().equals(packageName)) {
+                        System.out.println(packageName + " has deployed successfully");
+                        packageDeployed = true;
+                    }
                 }
+                if(packageDeployed){break;}
             }
             Assert.assertFalse(packageName + " deployment failed", !packageDeployed);
         } catch (RemoteException e) {
