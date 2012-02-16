@@ -17,6 +17,8 @@
 */
 package org.wso2.charon.core.protocol;
 
+import org.wso2.charon.core.exceptions.CharonException;
+
 import java.util.Map;
 
 public class SCIMResponse {
@@ -27,7 +29,7 @@ public class SCIMResponse {
 
     protected Map<String, String> headerParamMap;
 
-    public Map<String, String> getHeaderParamMap() {
+    public Map<String, String> getHeaderParameterMap() {
         return headerParamMap;
     }
 
@@ -35,14 +37,21 @@ public class SCIMResponse {
         this.headerParamMap = headerParamMap;
     }
 
-    public void setHTTPResponseHeader(String headerParam, String paramValue) {
+    public String getHeaderParameterValue(String parameterName) throws CharonException {
+        if (headerParamMap.containsKey(parameterName)) {
+            return headerParamMap.get(parameterName);
+        }
+        throw new CharonException("Requested HTTP header parameter not found.");
+    }
+
+    public void setHTTPHeaderParameter(String headerParam, String paramValue) {
         if (this.headerParamMap.containsKey(headerParam)) {
             //TODO:print a warning and override the value.
             headerParamMap.remove(headerParam);
             headerParamMap.put(headerParam, paramValue);
 
         } else {
-            headerParamMap.put(headerParam,paramValue);
+            headerParamMap.put(headerParam, paramValue);
 
         }
     }

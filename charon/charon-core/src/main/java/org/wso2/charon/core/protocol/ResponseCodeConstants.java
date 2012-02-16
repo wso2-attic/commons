@@ -41,6 +41,10 @@ public class ResponseCodeConstants {
     public static final String CODE_NOT_FOUND = "404";
     public static final String DESC_NOT_FOUND = "Requested resource is not found.";
 
+    public static final String CODE_BAD_REQUEST = "400";
+    public static final String DESC_BAD_REQUEST = "Request is unparseable, syntactically " +
+                                                  "incorrect, or violates schema";
+
     public static final String CODE_OK = "200";
 
 

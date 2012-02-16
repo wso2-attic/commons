@@ -47,8 +47,9 @@ public class FSBasedUserManager implements UserManager {
      *
      * @param user
      */
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     /**
@@ -56,8 +57,9 @@ public class FSBasedUserManager implements UserManager {
      *
      * @param updatedAttributes
      */
-    public void updateUser(List<Attribute> updatedAttributes) {
+    public User updateUser(List<Attribute> updatedAttributes) {
         //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     /**
@@ -74,8 +76,9 @@ public class FSBasedUserManager implements UserManager {
      *
      * @param user
      */
-    public void createUser(User user) {
+    public User createUser(User user) {
         //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public SCIMObject getResource(String resourceId) {

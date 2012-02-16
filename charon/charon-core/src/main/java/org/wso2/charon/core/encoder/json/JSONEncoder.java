@@ -20,6 +20,7 @@ package org.wso2.charon.core.encoder.json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+//import org.json.
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
@@ -52,6 +53,7 @@ public class JSONEncoder implements Encoder {
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();
 
+
             for (Attribute attribute : attributes.values()) {
                 if (attribute instanceof SimpleAttribute) {
                     encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
@@ -63,17 +65,12 @@ public class JSONEncoder implements Encoder {
                     encodeMultiValuedAttribute((MultiValuedAttribute) attribute, rootObject);
                 }
             }
-            /*//Until the json encoding logic is implemented, use hard coded json string.
-            return "{\n" +
-            "  \"schemas\": [\"urn:scim:schemas:core:1.0\"],\n" +
-            "  \"id\": \"2819c223-7f76-453a-919d-413861904646\",\n" +
-            "  \"userName\": \"bjensen@example.com\"\n" +
-            "}";*/
+            
         } catch (JSONException e) {
             String errorMessage = "Error in encoding resource..";
             //log the error
             throw new CharonException(errorMessage);
-        }
+        }                                       
         return rootObject.toString();
     }
 
@@ -95,11 +92,10 @@ public class JSONEncoder implements Encoder {
             //construct error object with details in the exception
             errorObject.put(ResponseCodeConstants.DESCRIPTION, exception.getDescription());
             errorObject.put(ResponseCodeConstants.CODE, exception.getCode());
-
+            //TODO:for the moment it is expected that an exception only contains one error.
             arrayOfErrors.put(errorObject);
             //construct the full json obj.
             rootErrorObject.put(ResponseCodeConstants.ERRORS, arrayOfErrors);
-
 
         } catch (JSONException e) {
             //usually errors occur rarely when encoding exceptions. and no need to pass them to clients.

@@ -19,6 +19,7 @@ package org.wso2.charon.core.protocol.endpoints;
 
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
+import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.InternalServerException;
@@ -28,6 +29,7 @@ import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.*;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
+import org.wso2.charon.core.schema.SCIMResourcesSchema;
 
 public class UserResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
 
@@ -59,11 +61,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     String error = "User not found in the user store.";
                     //log error.
 
-                    //set error code in encoded response and return- resource not found.
-                    String encodedException = encoder.encodeSCIMException(
-                            new ResourceNotFoundException());
-                    return buildResponse(ResponseCodeConstants.CODE_RESOURCE_NOT_FOUND,
-                                         encodedException);
+                    //throw resource not found.
+                    throw new ResourceNotFoundException();
                 }
 
                 //convert the user into specific format.
@@ -73,11 +72,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             } else {
                 String error = "Provided storage handler is not an implementation of UserManager";
                 //log the error as well.
-
-                //set error code in response and return- internal server error.
-                String encodedException = encoder.encodeSCIMException(new InternalServerException());
-                return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR,
-                                     encodedException);
+                //throw internal server error.
+                throw new InternalServerException();
             }
 
         } catch (FormatNotSupportedException e) {
@@ -86,8 +82,19 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             return buildResponse(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED, encodedException);
 
         } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
             String encodedException = encoder.encodeSCIMException(e);
             return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
+
+        } catch (InternalServerException e) {
+            String encodedException = encoder.encodeSCIMException(e);
+            return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
+
+        } catch (ResourceNotFoundException e) {
+            String encodedException = encoder.encodeSCIMException(e);
+            return buildResponse(ResponseCodeConstants.CODE_RESOURCE_NOT_FOUND, encodedException);
+
         }
     }
 
@@ -116,15 +123,25 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             decoder = AbstractResourceEndpoint.getDecoder(inputFormat);
 
             //decode the SCIM User object, encoded in the submitted payload.
-            
+            User user = (User) decoder.decodeSCIMResourceString(scimObjectString,new SCIMResourcesSchema());
 
             //handover the SCIM User object to the user storage provided by the SP.
+            User createdUser;
+            if (storage instanceof UserManager) {
+                //need to send back the newly created user in the response payload
+                createdUser = ((UserManager) storage).createUser(user);
 
-            //encode the returned SCIM user object.
+            } else {
+                String error = "Provided storage handler is not an implementation of UserManager";
+                //log the error as well.
+                //throw internal server error.
+                throw new InternalServerException();
+            }
+            //encode the newly created SCIM user object.
+            String encodedUser = encoder.encodeSCIMObject(createdUser);
 
             //put the URI of the User object in the response header parameter.
-
-
+            return buildResponse(ResponseCodeConstants.CODE_OK, encodedUser);
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.
@@ -132,10 +149,19 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             return buildResponse(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED, encodedException);
 
         } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
+            String encodedException = encoder.encodeSCIMException(e);
+            return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
+            
+        } catch (BadRequestException e) {
+            String encodedException = encoder.encodeSCIMException(e);
+            return buildResponse(ResponseCodeConstants.CODE_BAD_REQUEST, encodedException);
+
+        } catch (InternalServerException e) {
             String encodedException = encoder.encodeSCIMException(e);
             return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
         }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

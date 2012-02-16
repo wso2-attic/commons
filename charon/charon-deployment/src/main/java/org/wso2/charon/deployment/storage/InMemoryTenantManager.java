@@ -55,5 +55,5 @@ public class InMemoryTenantManager {
         tenantsMapping.put(1, "wso2.com");
         tenantsMapping.put(2, "wp.org");
     }
-
+                                
 }

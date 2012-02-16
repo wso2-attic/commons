@@ -17,6 +17,34 @@
 */
 package org.wso2.charon.core.encoder;
 
+import org.json.simple.parser.ParseException;
+import org.wso2.charon.core.exceptions.AbstractCharonException;
+import org.wso2.charon.core.exceptions.BadRequestException;
+import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.schema.SCIMResourcesSchema;
+
+/**
+ * SCIM API which is based on REST style, may support multiple formats of the resource.
+ * API users can use this interface to implement their own decoders and register them.
+ */
 public interface Decoder {
-    
+
+    /**
+     * Decode the resource string sent in the SCIM request/response payload.
+     *
+     * @param scimResourceString
+     * @return
+     */
+    public SCIMObject decodeSCIMResourceString(String scimResourceString,
+                                               SCIMResourcesSchema scimResourceSchema)
+            throws BadRequestException;
+
+    /**
+     * Decode the string sent in the SCIM response payload, which is an exception.
+     *
+     * @param scimExceptionString
+     * @return
+     */
+    public AbstractCharonException decodeSCIMException(String scimExceptionString);
+
 }

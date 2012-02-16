@@ -45,7 +45,7 @@ public class User extends Common {
                     SCIMSchemaConstants.SCIMUserSchemaConstants.USER_NAME)).updateValue(
                     userName, SimpleAttribute.DataType.STRING);
         } else {
-            //TODO:since the constrctor is too long, pass an attribute descriptor. 
+            //TODO:since the constrctor is too long, pass an attribute schema. 
             SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMSchemaConstants.SCIMUserSchemaConstants.USER_NAME,
                     SCIMSchemaConstants.coreSchemaURI, userName, SimpleAttribute.DataType.STRING,

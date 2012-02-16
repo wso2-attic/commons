@@ -39,16 +39,19 @@ public interface UserManager extends Storage{
 
     /**
      * Update the user in full.
-     * @param user
+     * @param user SCIM User object containing the updated attributes
+     * @return return the full updates user
      */
-    public void updateUser(User user);
+    public User updateUser(User user);
 
     /**
      * Update the user partially only with updated attributes.
-     * @param updatedAttributes
+     * @param updatedAttributes : list of attributes to be updated
+     * @return User : For a patch request, server can respond with either 200 ok + entire resource
+     * or 204 No content+appropriate response headers. But user manager should return the updated resource.
      */
 
-    public void updateUser(List<Attribute> updatedAttributes);
+    public User updateUser(List<Attribute> updatedAttributes);
 
     /**
      * Delete the user given the user id.
@@ -58,8 +61,10 @@ public interface UserManager extends Storage{
 
     /**
      * Create user with the given user object.
-     * @param user
+     * @param user User resource to be created in the user store of service provider.
+     * @return newly created SCIM User resource sent back to the client in the response.
      */
-    public void createUser(User user);
+    public User createUser(User user) throws CharonException;
+    
 
 }

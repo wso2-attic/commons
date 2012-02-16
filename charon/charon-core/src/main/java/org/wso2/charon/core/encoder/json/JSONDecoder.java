@@ -17,30 +17,43 @@
 */
 package org.wso2.charon.core.encoder.json;
 
+import org.json.simple.parser.ParseException;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
+import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.json.simple.parser.JSONParser;
+import org.wso2.charon.core.schema.SCIMResourcesSchema;
 
 public class JSONDecoder implements Decoder {
 
 
     /**
-     * Encode the given SCIM object.
+     * Decode the resource string sent in the SCIM request/response payload.
      *
-     * @param scimObject
-     * @return the resulting string after encoding.
+     * @param scimResourceString
+     * @return
      */
-    public String encodeSCIMObject(SCIMObject scimObject) {
+    public SCIMObject decodeSCIMResourceString(String scimResourceString,
+                                               SCIMResourcesSchema resourceSchema)
+            throws BadRequestException {
+        try {
+
+            JSONParser jsonParser = new JSONParser();            
+            jsonParser.parse(scimResourceString);
+        } catch (ParseException e) {
+            throw new BadRequestException();
+        }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
-     * Encode the Exception to be sent in the SCIM - response payload.
+     * Decode the string sent in the SCIM response payload, which is an exception.
      *
-     * @param exception
-     * @return the resulting string after encoding
+     * @param scimExceptionString
+     * @return
      */
-    public String encodeSCIMException(AbstractCharonException exception) {
+    public AbstractCharonException decodeSCIMException(String scimExceptionString) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
