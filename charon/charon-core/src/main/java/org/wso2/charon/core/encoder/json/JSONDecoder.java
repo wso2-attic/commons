@@ -17,13 +17,14 @@
 */
 package org.wso2.charon.core.encoder.json;
 
-import org.json.simple.parser.ParseException;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.objects.SCIMObject;
-import org.json.simple.parser.JSONParser;
-import org.wso2.charon.core.schema.SCIMResourcesSchema;
+import org.wso2.charon.core.schema.SCIMResourceSchema;
 
 public class JSONDecoder implements Decoder {
 
@@ -32,17 +33,21 @@ public class JSONDecoder implements Decoder {
      * Decode the resource string sent in the SCIM request/response payload.
      *
      * @param scimResourceString
+     * @param scimObject
      * @return
      */
-    public SCIMObject decodeSCIMResourceString(String scimResourceString,
-                                               SCIMResourcesSchema resourceSchema)
+    public SCIMObject decodeResource(String scimResourceString,
+                                     SCIMResourceSchema resourceSchema, SCIMObject scimObject)
             throws BadRequestException {
         try {
+            JSONObject decodedJsonObj = new JSONObject(new JSONTokener(scimResourceString));
 
-            JSONParser jsonParser = new JSONParser();            
-            jsonParser.parse(scimResourceString);
-        } catch (ParseException e) {
-            throw new BadRequestException();
+            //get the attribute list from the schema that defines the given resource
+
+            /*JSONParser jsonParser = new JSONParser();
+            jsonParser.parse(scimResourceString);*/
+        } catch (JSONException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -53,7 +58,7 @@ public class JSONDecoder implements Decoder {
      * @param scimExceptionString
      * @return
      */
-    public AbstractCharonException decodeSCIMException(String scimExceptionString) {
+    public AbstractCharonException decodeException(String scimExceptionString) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -20,5 +20,6 @@ package org.wso2.charon.core.schema;
 /**
  * This defines the attributes schema as in SCIM Spec.
  */
-public class SCIMAttributesSchema implements AttributeSchema{
+public class SCIMAttributeSchema implements AttributeSchema{
+    
 }

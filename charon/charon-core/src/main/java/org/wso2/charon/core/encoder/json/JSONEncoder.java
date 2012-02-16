@@ -30,7 +30,7 @@ import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.Common;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.schema.SCIMSchemaConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class JSONEncoder implements Encoder {
         JSONObject rootObject = new JSONObject();
         try {
             //encode schemas
-            this.encodeArrayOfValues(SCIMSchemaConstants.SCIMCommonSchemaConstants.SCHEMAS,
+            this.encodeArrayOfValues(SCIMConstants.SCIMCommonSchemaConstants.SCHEMAS,
                                      (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();

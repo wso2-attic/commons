@@ -27,7 +27,7 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
-import org.wso2.charon.core.schema.SCIMSchemaConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,7 +60,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         //if the encoder map is empty, register default json encoder
         if (encoderMap.isEmpty()) {
             Encoder jsonEncoder = new JSONEncoder();
-            registerEncoder(SCIMSchemaConstants.JSON, jsonEncoder);
+            registerEncoder(SCIMConstants.JSON, jsonEncoder);
         }
         //if the requested format not supported, return an error.
         if (!encoderMap.containsKey(format)) {
@@ -77,7 +77,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         //if the decoder map is empty, register default json encoder
         if (decoderMap.isEmpty()) {
             Decoder jsonDecoder = new JSONDecoder();
-            registerDecoder(SCIMSchemaConstants.JSON, jsonDecoder);
+            registerDecoder(SCIMConstants.JSON, jsonDecoder);
         }
         //if the requested format not supported, return an error.
         if (!decoderMap.containsKey(format)) {

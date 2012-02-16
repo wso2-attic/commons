@@ -29,7 +29,7 @@ import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.*;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
-import org.wso2.charon.core.schema.SCIMResourcesSchema;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 public class UserResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
 
@@ -123,7 +123,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             decoder = AbstractResourceEndpoint.getDecoder(inputFormat);
 
             //decode the SCIM User object, encoded in the submitted payload.
-            User user = (User) decoder.decodeSCIMResourceString(scimObjectString,new SCIMResourcesSchema());
+            User user = (User) decoder.decodeResource(scimObjectString,
+                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
 
             //handover the SCIM User object to the user storage provided by the SP.
             User createdUser;
@@ -153,7 +154,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //because inside API code throws CharonException.
             String encodedException = encoder.encodeSCIMException(e);
             return buildResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
-            
+
         } catch (BadRequestException e) {
             String encodedException = encoder.encodeSCIMException(e);
             return buildResponse(ResponseCodeConstants.CODE_BAD_REQUEST, encodedException);

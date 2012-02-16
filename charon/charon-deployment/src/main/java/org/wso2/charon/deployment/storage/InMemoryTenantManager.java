@@ -17,12 +17,9 @@
 */
 package org.wso2.charon.deployment.storage;
 
-import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.InternalServerException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.schema.SCIMSchemaConstants;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

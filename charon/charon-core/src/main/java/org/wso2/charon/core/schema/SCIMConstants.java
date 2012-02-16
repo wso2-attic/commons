@@ -20,9 +20,9 @@ package org.wso2.charon.core.schema;
 /**
  * Place to define the constants found in SCIM-Core schema.
  */
-public class SCIMSchemaConstants {
+public class SCIMConstants {
 
-    public static final String coreSchemaURI = "urn:scim:schemas:core:1.0";
+    public static final String CORE_SCHEMA_URI = "urn:scim:schemas:core:1.0";
 
     /*Data formats*/
     public static final String JSON = "json";
@@ -64,4 +64,20 @@ public class SCIMSchemaConstants {
     public static class AttributeConstants {
         public static final String MULTI_VALUED_ATTRIBUTE_OPERATION = "delete";
     }
+
+    /*Resource names as defined in SCIM Schema spec*/
+    public static final String USER = "User";
+    public static final String GROUP = "Group";
+    public static final String COMMON = "Common";
+
+
+    /*Resource and attribute descriptions according to SCIM spec.*/
+    public static final String COMMON_DESC = "Each SCIM Resource (Users, Groups, etc.) includes the " +
+                                             "common attributes of this schema. These attributes MUST be " +
+                                             "included in all Resources, including any extended Resource types";
+    
+    public static final String USER_DESC = "SCIM provided schema for representing Users.";
+    
+
+
 }

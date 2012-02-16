@@ -19,7 +19,7 @@ package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
-import org.wso2.charon.core.schema.SCIMSchemaConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,10 +123,10 @@ public class MultiValuedAttribute extends AbstractAttribute {
         for (Attribute attributeValue : attributeValues) {
             //get the 'value' attribute
             Attribute valueAttribute = ((ComplexAttribute) attributeValue).getSubAttribute(
-                    SCIMSchemaConstants.SCIMCommonSchemaConstants.VALUE);
+                    SCIMConstants.SCIMCommonSchemaConstants.VALUE);
             //get the 'type' attribute
             Attribute typeAttribute = ((ComplexAttribute) attributeValue).getSubAttribute(
-                    SCIMSchemaConstants.SCIMCommonSchemaConstants.TYPE);
+                    SCIMConstants.SCIMCommonSchemaConstants.TYPE);
             //get the value of 'value' attribute
             String attrValue = ((SimpleAttribute) (valueAttribute)).getStringValue();
             //compare
@@ -163,22 +163,22 @@ public class MultiValuedAttribute extends AbstractAttribute {
         ComplexAttribute attributeValue = new ComplexAttribute(null);
         //'type' of the value
         SimpleAttribute typeValue = new SimpleAttribute(
-                SCIMSchemaConstants.SCIMCommonSchemaConstants.TYPE, null, type,
+                SCIMConstants.SCIMCommonSchemaConstants.TYPE, null, type,
                 SimpleAttribute.DataType.STRING);
         attributeValue.setSubAttribute(typeValue);
         //set primary
         SimpleAttribute primaryValue = new SimpleAttribute(
-                SCIMSchemaConstants.SCIMCommonSchemaConstants.PRIMARY, null, primary,
+                SCIMConstants.SCIMCommonSchemaConstants.PRIMARY, null, primary,
                 SimpleAttribute.DataType.BOOLEAN);
         attributeValue.setSubAttribute(primaryValue);
         //set display
         SimpleAttribute displayValue = new SimpleAttribute(
-                SCIMSchemaConstants.SCIMCommonSchemaConstants.DISPLAY, null, display,
+                SCIMConstants.SCIMCommonSchemaConstants.DISPLAY, null, display,
                 SimpleAttribute.DataType.STRING, true, true);
         attributeValue.setSubAttribute(displayValue);
         //actual value with provided data type
         SimpleAttribute actualValue = new SimpleAttribute(
-                SCIMSchemaConstants.SCIMCommonSchemaConstants.VALUE, null, value, dataTypeOfValue);
+                SCIMConstants.SCIMCommonSchemaConstants.VALUE, null, value, dataTypeOfValue);
         attributeValue.setSubAttribute(actualValue);
         //canonicalize value before adding to the multi valued attribute
         canonicalizeAttributeValue(attributeValue);
@@ -196,7 +196,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
     public void setSimpleAttributeValue(Object value, SimpleAttribute.DataType dataType)
             throws CharonException {
         SimpleAttribute simpleAttributeValue = new SimpleAttribute(
-                SCIMSchemaConstants.SCIMCommonSchemaConstants.VALUE, null, value, dataType);
+                SCIMConstants.SCIMCommonSchemaConstants.VALUE, null, value, dataType);
         //canonicalizeAttributeValue(simpleAttributeValue);
         attributeValues.add(simpleAttributeValue);
     }
@@ -211,12 +211,12 @@ public class MultiValuedAttribute extends AbstractAttribute {
             if (attributeValue instanceof ComplexAttribute) {
                 SimpleAttribute primaryValue = (SimpleAttribute) (
                         (ComplexAttribute) attributeValue).getSubAttribute(
-                        SCIMSchemaConstants.SCIMCommonSchemaConstants.PRIMARY);
+                        SCIMConstants.SCIMCommonSchemaConstants.PRIMARY);
                 boolean primary = primaryValue.getBooleanValue();
                 if (primary) {
                     SimpleAttribute value = (SimpleAttribute) (
                             (ComplexAttribute) attributeValue).getSubAttribute(
-                            SCIMSchemaConstants.SCIMCommonSchemaConstants.VALUE);
+                            SCIMConstants.SCIMCommonSchemaConstants.VALUE);
                     return value.getValue();
                 }
             }
@@ -238,12 +238,12 @@ public class MultiValuedAttribute extends AbstractAttribute {
             if (attributeValue instanceof ComplexAttribute) {
                 SimpleAttribute typeValue = (SimpleAttribute) (
                         (ComplexAttribute) attributeValue).getSubAttribute(
-                        SCIMSchemaConstants.SCIMCommonSchemaConstants.TYPE);
+                        SCIMConstants.SCIMCommonSchemaConstants.TYPE);
                 String typeAttrVal = typeValue.getStringValue();
                 if (type.equals(typeAttrVal)) {
                     SimpleAttribute value = (SimpleAttribute) (
                             (ComplexAttribute) attributeValue).getSubAttribute(
-                            SCIMSchemaConstants.SCIMCommonSchemaConstants.VALUE);
+                            SCIMConstants.SCIMCommonSchemaConstants.VALUE);
                     return value.getValue();
                 }
             }

@@ -17,11 +17,29 @@
 */
 package org.wso2.charon.core.schema;
 
+import java.util.List;
+
 /**
  * This is the interface for resource schema definition. Default schema definitions included in
  * SCIMResourceSchema.
  * Any SCIM implementation can implement this/extend SCIMSchema to introduce schema extensions.
  */
 public interface ResourceSchema {
+
+    public String getName();
+
+    public void setName(String name);
+
+    public String getSchema();
+
+    public void setSchema(String schemaName);
+
+    public String getDescription();
+
+    public void setDescription(String description);
+
+    public List getAttributesList();
+
+    public void setAttributeList(List attributesList);
     
 }

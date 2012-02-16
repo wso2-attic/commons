@@ -17,11 +17,10 @@
 */
 package org.wso2.charon.core.encoder;
 
-import org.json.simple.parser.ParseException;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.objects.SCIMObject;
-import org.wso2.charon.core.schema.SCIMResourcesSchema;
+import org.wso2.charon.core.schema.SCIMResourceSchema;
 
 /**
  * SCIM API which is based on REST style, may support multiple formats of the resource.
@@ -33,10 +32,11 @@ public interface Decoder {
      * Decode the resource string sent in the SCIM request/response payload.
      *
      * @param scimResourceString
+     * @param scimObject
      * @return
      */
-    public SCIMObject decodeSCIMResourceString(String scimResourceString,
-                                               SCIMResourcesSchema scimResourceSchema)
+    public SCIMObject decodeResource(String scimResourceString,
+                                     SCIMResourceSchema scimResourceSchema, SCIMObject scimObject)
             throws BadRequestException;
 
     /**
@@ -45,6 +45,6 @@ public interface Decoder {
      * @param scimExceptionString
      * @return
      */
-    public AbstractCharonException decodeSCIMException(String scimExceptionString);
+    public AbstractCharonException decodeException(String scimExceptionString);
 
 }

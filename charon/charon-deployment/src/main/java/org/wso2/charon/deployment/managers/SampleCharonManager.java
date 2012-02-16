@@ -22,7 +22,7 @@ import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.schema.SCIMSchemaConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.deployment.storage.InMemoryTenantManager;
 import org.wso2.charon.deployment.storage.InMemroyUserManager;
 import org.wso2.charon.deployment.storage.SampleUser;
@@ -125,9 +125,9 @@ public class SampleCharonManager {
 
     public static String identifyResponseFormat(String format) {
         if (format.equals("application/json")) {
-            format = SCIMSchemaConstants.JSON;
+            format = SCIMConstants.JSON;
         } else if (format.equals("application/xml")) {
-            format = SCIMSchemaConstants.XML;
+            format = SCIMConstants.XML;
         }
         return format;
     }
