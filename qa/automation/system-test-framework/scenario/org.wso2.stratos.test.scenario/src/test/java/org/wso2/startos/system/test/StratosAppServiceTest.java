@@ -51,6 +51,7 @@ public class StratosAppServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running Appserver regression test");
         testClassName = StratosAppServiceTest.class.getName();
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));
         APPSERVER_STRATOS_URL = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/t/" + tenantDetails.getTenantDomain();

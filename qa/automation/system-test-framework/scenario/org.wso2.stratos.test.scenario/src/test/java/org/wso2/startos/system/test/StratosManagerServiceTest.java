@@ -39,6 +39,7 @@ public class StratosManagerServiceTest extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
+        log.info("Running Manager regression test");
         String managerServerHostName = FrameworkSettings.MANAGER_SERVER_HOST_NAME;
         String sessionCookie = ServiceLoginClient.loginChecker(managerServerHostName);
     }

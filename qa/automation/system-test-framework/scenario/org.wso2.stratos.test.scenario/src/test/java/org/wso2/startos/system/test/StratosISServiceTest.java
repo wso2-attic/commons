@@ -32,6 +32,7 @@ public class StratosISServiceTest extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
+        log.info("Running IS regression test");
         String isServerHostName = FrameworkSettings.IS_SERVER_HOST_NAME;
         ServiceLoginClient.loginChecker(isServerHostName);
     }

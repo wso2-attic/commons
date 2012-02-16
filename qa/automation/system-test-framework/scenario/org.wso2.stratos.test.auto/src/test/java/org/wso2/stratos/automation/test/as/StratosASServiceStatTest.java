@@ -65,6 +65,10 @@ public class StratosASServiceStatTest extends TestTemplate {
 
         log.info("Wait for service deployment");
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
 
         //get stats of other tenant prior to invoke service.
         String tenantId = "12";

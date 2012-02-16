@@ -49,6 +49,7 @@ public class StratosCEPServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running CEP regression test");
         testClassName = StratosCEPServiceTest.class.getName();
 
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));

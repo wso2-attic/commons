@@ -57,6 +57,7 @@ public class StratosMBServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running MB regression test");
         testClassName = StratosMBServiceTest.class.getName();
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));
         userName = tenantDetails.getTenantName().replaceAll("@", "!");

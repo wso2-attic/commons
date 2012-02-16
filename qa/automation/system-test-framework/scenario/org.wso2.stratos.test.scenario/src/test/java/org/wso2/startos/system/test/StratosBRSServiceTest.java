@@ -44,6 +44,7 @@ public class StratosBRSServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running BRS regression test");
         testClassName = StratosBRSServiceTest.class.getName();
         int tenantId = TenantListCsvReader.getTenantId("4");
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(tenantId);

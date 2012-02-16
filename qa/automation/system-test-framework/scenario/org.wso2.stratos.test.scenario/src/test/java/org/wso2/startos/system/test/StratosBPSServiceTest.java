@@ -41,6 +41,7 @@ public class StratosBPSServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running BPS regression test");
         testClassName = StratosBPSServiceTest.class.getName();
         int tenantId = TenantListCsvReader.getTenantId("4");
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(tenantId);

@@ -125,7 +125,6 @@ public class UserCountTest extends TestTemplate {
                 login(userName + userCount + "@" + tenantAdminDetails.getTenantDomain(), userPassword + userCount, FrameworkSettings.IS_BACKEND_URL);
             } catch (AssertionFailedError e) {
                 log.info("Deleted user cannot login");
-                System.out.println("Deleted users cannot login");
             }
         }
     }

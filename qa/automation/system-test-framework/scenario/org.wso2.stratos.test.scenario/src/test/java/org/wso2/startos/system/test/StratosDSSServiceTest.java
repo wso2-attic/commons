@@ -47,6 +47,7 @@ public class StratosDSSServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running DSS regression test");
         testClassName = StratosDSSServiceTest.class.getName();
         int tenantId = TenantListCsvReader.getTenantId("5");
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(tenantId);

@@ -55,7 +55,7 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         //get tenant1 info
         TenantDetails fistTenantInfo = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId
-                (tenantIdOfFirstTenant));
+                (tenantIdOfFirstTenant));         
 
         //get tenant2 info
         TenantDetails secondTenantInfo = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId
@@ -74,7 +74,7 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         testClassName = StratosASSoapTracerTest.class.getName();
         AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                fistTenantInfo.getTenantDomain() + "/Axis2Service/";
+                fistTenantInfo.getTenantDomain() + "/Axis2Service";
 
         //delete the service if it is already exists
         try {
@@ -106,6 +106,10 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         log.info("Wait for service deployment");
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
 
         OMElement result = new AxisServiceClient().sendReceive(createPayLoad(operation, expectedValue),
                 AXIS2SERVICE_EPR, operation);
@@ -118,7 +122,7 @@ public class StratosASSoapTracerTest extends TestTemplate {
         secondTenantSoapTracerServiceInfo = secondTenantSoupTrackerAdmin.getMessages(noOfMessagesToRetrieve, operation);
 
         messagePayload = firstTenantSoapTracerServiceInfo.getLastMessage();
-        Assert.assertTrue((messagePayload.getRequest().indexOf(expectedValue) >= 1));
+    Assert.assertTrue((messagePayload.getRequest().indexOf(expectedValue) >= 1));
         Assert.assertTrue((messagePayload.getResponse().indexOf(expectedValue) >= 1));
         log.info("Soap traser message assertion passed");
         log.debug("Request Payload" + messagePayload.getRequest());

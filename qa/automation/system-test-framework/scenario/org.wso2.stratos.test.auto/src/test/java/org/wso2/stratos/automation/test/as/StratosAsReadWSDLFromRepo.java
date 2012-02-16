@@ -64,6 +64,10 @@ public class StratosAsReadWSDLFromRepo extends TestTemplate {
     public void runSuccessCase() {
         addCalculatorSchema();
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
         serviceTest();
     }
 

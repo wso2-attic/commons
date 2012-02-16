@@ -49,6 +49,7 @@ public class StratosGSServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running GS regression test");
         testClassName = StratosGSServiceTest.class.getName();
         tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));
         HTTP_GADGET_SERVER_URL = "http://" + FrameworkSettings.GS_SERVER_HOST_NAME + "/t/" + tenantDetails.getTenantDomain();

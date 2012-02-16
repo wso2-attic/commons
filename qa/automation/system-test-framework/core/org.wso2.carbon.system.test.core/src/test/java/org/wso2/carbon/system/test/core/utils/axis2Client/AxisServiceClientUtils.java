@@ -98,6 +98,7 @@ public class AxisServiceClientUtils {
             if (read > 0) {
                 String wsdl = new String(bLine);
                 if (wsdl.contains("definitions")) {
+                    log.info("Service WSDL found");
                     return true;
                 }
             }
@@ -107,6 +108,7 @@ public class AxisServiceClientUtils {
     }
 
     public static void waitForServiceDeployment(String serviceUrl) {
+        log.info("Waiting for service deployment");
         int serviceTimeOut = 0;
         while (!isServiceAvailable(serviceUrl)) {
             if (serviceTimeOut == 0) {

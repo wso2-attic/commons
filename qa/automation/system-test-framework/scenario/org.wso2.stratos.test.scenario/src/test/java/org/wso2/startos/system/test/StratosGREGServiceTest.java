@@ -41,6 +41,7 @@ public class StratosGREGServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running GREG regression test");
         testClassName = StratosGREGServiceTest.class.getName();
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));
         HTTP_GOVERNANCE_URL = "http://" + FrameworkSettings.GREG_SERVER_HOST_NAME + "/t/" + tenantDetails.getTenantDomain();

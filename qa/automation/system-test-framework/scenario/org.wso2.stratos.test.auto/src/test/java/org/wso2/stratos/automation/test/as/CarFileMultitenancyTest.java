@@ -50,7 +50,8 @@ public class CarFileMultitenancyTest extends TestTemplate {
 
         testClassName = CarFileMultitenancyTest.class.getName();
         log.info("Test " + testClassName + " Started using tenant ID " + tenantId);
-        TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId(tenantId));
+        TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails
+                (TenantListCsvReader.getTenantId(tenantId));
 
         generateServiceEPR(tenantDetails, serviceName);
 
@@ -62,21 +63,24 @@ public class CarFileMultitenancyTest extends TestTemplate {
         String expectedIntValue = "420";
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
         try {
-            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+            Thread.sleep(30000);
         } catch (InterruptedException ignored) {
         }
-        OMElement result = new AxisServiceClient().sendReceive(createPayLoad(), AXIS2SERVICE_EPR, operationName);
+        log.info("Invoking the service");
+        OMElement result =
+                new AxisServiceClient().sendReceive(createPayLoad(), AXIS2SERVICE_EPR, operationName);
         log.debug("Response returned " + result);
         Assert.assertTrue((result.toString().indexOf(expectedIntValue) >= 1));
 
         if (stratosStatus) {
             //check service existence though other tenant login.
             String MultitenancyCheckerTenant = "12";
-            TenantDetails secoundTenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId(MultitenancyCheckerTenant));
+            TenantDetails secoundTenantDetails = TenantListCsvReader.getTenantDetails
+                    (TenantListCsvReader.getTenantId(MultitenancyCheckerTenant));
             String serviceEPROfSecoundTenant = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                    secoundTenantDetails.getTenantDomain() + "/Calculator/";
+                                               secoundTenantDetails.getTenantDomain() + "/Calculator";
             assertFalse("Same service deployed in other tenants",
-                    AxisServiceClientUtils.isServiceAvailable(serviceEPROfSecoundTenant));
+                        AxisServiceClientUtils.isServiceAvailable(serviceEPROfSecoundTenant));
             log.info("Car multitenancy verify test passed");
         }
     }
@@ -104,17 +108,19 @@ public class CarFileMultitenancyTest extends TestTemplate {
     private void generateServiceEPR(TenantDetails tenantDetails, String serviceName) {
         if (stratosStatus) {
             AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                    tenantDetails.getTenantDomain() + "/" + serviceName + "/";
+                               tenantDetails.getTenantDomain() + "/" + serviceName;
+            log.info("EPR -" + AXIS2SERVICE_EPR);
         } else {
             //construct HTTP EPR based on webcontext root availability
             if (FrameworkSettings.APP_SERVER_WEB_CONTEXT_ROOT != null) {
                 AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + ":" +
-                        FrameworkSettings.APP_SERVER_HTTP_PORT + "/" + FrameworkSettings.APP_SERVER_WEB_CONTEXT_ROOT +
-                        "/services" + "/" + serviceName;
+                                   FrameworkSettings.APP_SERVER_HTTP_PORT + "/" +
+                                   FrameworkSettings.APP_SERVER_WEB_CONTEXT_ROOT +
+                                   "/services" + "/" + serviceName;
             } else {
                 AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + ":" +
-                        FrameworkSettings.APP_SERVER_HTTP_PORT +
-                        "/services" + "/" + serviceName;
+                                   FrameworkSettings.APP_SERVER_HTTP_PORT +
+                                   "/services" + "/" + serviceName;
             }
             log.debug("Axis2 service EPR is " + AXIS2SERVICE_EPR);
         }

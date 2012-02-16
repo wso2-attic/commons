@@ -47,6 +47,7 @@ public class StratosESBServiceTest extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
+        log.info("Running ESB regression test");
         String esbServerHostName = FrameworkSettings.ESB_SERVER_HOST_NAME;
         ServiceLoginClient.loginChecker(esbServerHostName);
         demoProxyTestClient();

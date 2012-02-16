@@ -39,7 +39,7 @@ public class StratosMSServiceTest extends TestTemplate {
 
     @Override
     public void init() {
-
+        log.info("Running MS regression test");
         testClassName = StratosMSServiceTest.class.getName();
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId("4"));
         HTTP_MASHUP_STRATOSLIVE_URL = "http://" + FrameworkSettings.MS_SERVER_HOST_NAME + "/services/t/" + tenantDetails.getTenantDomain();

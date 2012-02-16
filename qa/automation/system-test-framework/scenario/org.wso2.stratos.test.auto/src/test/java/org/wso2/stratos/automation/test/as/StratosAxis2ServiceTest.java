@@ -61,6 +61,10 @@ public class StratosAxis2ServiceTest extends TestTemplate {
         String expectedValue = "123";
 
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
         OMElement result = new AxisServiceClient().sendReceive(createPayLoad(operation, expectedValue),
                 AXIS2SERVICE_EPR, operation);
         log.debug("Response returned " + result);
@@ -72,7 +76,7 @@ public class StratosAxis2ServiceTest extends TestTemplate {
             TenantDetails secoundTenantDetails = TenantListCsvReader.getTenantDetails
                     (TenantListCsvReader.getTenantId(MultitenancyCheckerTenant));
             String serviceEPROfSecoundTenant = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                    secoundTenantDetails.getTenantDomain() + "/" + AXIS2_SERVICE_NAME + "/";
+                    secoundTenantDetails.getTenantDomain() + "/" + AXIS2_SERVICE_NAME;
             assertFalse("Same service deployed in other tenants",
                     AxisServiceClientUtils.isServiceAvailable(serviceEPROfSecoundTenant));
             log.info(AXIS2_SERVICE_NAME + " multitenancy verify test passed");

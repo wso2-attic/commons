@@ -27,6 +27,7 @@ public class StratosBAMServiceTest extends TestTemplate {
 
     @Override
     public void init() {
+        log.info("Running BAM regression test");
         testClassName = StratosBAMServiceTest.class.getName();
     }
 
