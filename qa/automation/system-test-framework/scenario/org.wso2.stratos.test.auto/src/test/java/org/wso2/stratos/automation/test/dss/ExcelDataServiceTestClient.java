@@ -116,7 +116,7 @@ public class ExcelDataServiceTestClient extends TestTemplate {
 
         //todo this sleep should be removed after fixing CARBON-11900 gira
         try {
-            Thread.sleep(30000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             Assert.fail("Thread InterruptedException");
         }

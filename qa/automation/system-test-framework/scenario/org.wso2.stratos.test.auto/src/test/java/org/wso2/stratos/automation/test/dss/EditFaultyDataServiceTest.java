@@ -136,7 +136,7 @@ public class EditFaultyDataServiceTest extends TestTemplateFaultyService {
 
         //todo this sleep should be removed after fixing CARBON-11900 gira
         try {
-            Thread.sleep(10000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             Assert.fail("Thread InterruptedException");
         }

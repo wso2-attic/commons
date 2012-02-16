@@ -52,8 +52,8 @@ import java.util.Iterator;
 public class DTPServiceTestClient extends TestTemplateRSS {
     private static final Log log = LogFactory.getLog(DTPServiceTestClient.class);
     private String jdbcUrlNew;
-    private String databaseNameNew = "testDatabase2";
-    private String databaseUserNew = "tstAto4";
+    private String databaseNameNew = "testDatabase5";
+    private String databaseUserNew = "tstAto5";
     private String databasePasswordNew = "test123";
     private String userPrivilegeGroupNew = "automation1";
 

@@ -63,9 +63,9 @@ public abstract class TestTemplateFaultyService extends TestTemplate {
     protected int userPrivilegeGroupId = -1;
     protected String jdbcUrl = null;
     protected int databaseUserId = -1;
-    protected String databaseName = "testDatabase1";
-    protected String databaseUser = "tstAto3";
-    protected String databasePassword = "test123";
+    protected String databaseName = FrameworkSettings.getProperty("database.name");
+    protected String databaseUser = FrameworkSettings.getProperty("rss.database.user");
+    protected String databasePassword = FrameworkSettings.getProperty("rss.database.password");
     protected String userPrivilegeGroup = "automation";
 
     protected String serviceFileLocation = null;
@@ -84,7 +84,10 @@ public abstract class TestTemplateFaultyService extends TestTemplate {
     @Override
     public void init() {
         authenticate();
+        Assert.assertNotNull("Database Name not configured properly. please update database.name in framework property", databaseName);
         if (FrameworkSettings.STRATOS_TEST) {
+            Assert.assertNotNull("Database User not configured properly. please update rss.database.user in framework property", databaseUser);
+            Assert.assertNotNull("Database Password Name not configured properly. please update rss.database.password in framework property", databasePassword);
             setPriConditions();
             createDataBase();
             createPrivilegeGroup();
@@ -118,6 +121,12 @@ public abstract class TestTemplateFaultyService extends TestTemplate {
         log.info("waiting " + FrameworkSettings.SERVICE_DEPLOYMENT_DELAY + " millis for service deployment");
 
         adminServiceClientDSS.isServiceFaulty(sessionCookie, serviceName, FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        //todo this sleep should be removed after fixing CARBON-11900 gira
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            Assert.fail("Thread InterruptedException");
+        }
 
     }
 
@@ -143,7 +152,7 @@ public abstract class TestTemplateFaultyService extends TestTemplate {
             adminServiceService.deleteService(sessionCookie, new String[]{serviceGroup});
             log.info("Service Deleted");
             try {
-                Thread.sleep(10 * 1000);
+                Thread.sleep(10 * 1000 * 3);
             } catch (InterruptedException e) {
                 Assert.fail("InterruptedException :" + e.getMessage());
             }
@@ -152,7 +161,7 @@ public abstract class TestTemplateFaultyService extends TestTemplate {
             adminServiceService.deleteFaultyService(sessionCookie, File.separator + "dataservices" + File.separator + serviceFileName);
             log.info("Service Deleted from faulty service list");
             try {
-                Thread.sleep(10 * 1000);
+                Thread.sleep(10 * 1000 * 3);
             } catch (InterruptedException e) {
                 Assert.fail("InterruptedException :" + e.getMessage());
             }
