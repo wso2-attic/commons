@@ -399,4 +399,7 @@ public class FrameworkSettings {
         }
         FrameworkSettings.setBackendUrls();
     }
+    public static String getProperty(String propertyName) {
+        return prop.getProperty(propertyName);
+    }
 }
