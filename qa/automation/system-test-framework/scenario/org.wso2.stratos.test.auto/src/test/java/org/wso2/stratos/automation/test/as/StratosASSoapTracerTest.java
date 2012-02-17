@@ -55,26 +55,26 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         //get tenant1 info
         TenantDetails fistTenantInfo = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId
-                (tenantIdOfFirstTenant));         
+                (tenantIdOfFirstTenant));
 
         //get tenant2 info
         TenantDetails secondTenantInfo = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId
                 (tenantIdOfSecondTenant));
 
         String sessionCookieOfFirstTenant = login(fistTenantInfo.getTenantName(), fistTenantInfo.getTenantPassword(),
-                FrameworkSettings.APP_BACKEND_URL);
+                                                  FrameworkSettings.APP_BACKEND_URL);
 
         String sessionCookieOfSecondTenant = login(secondTenantInfo.getTenantName(), secondTenantInfo.getTenantPassword(),
-                FrameworkSettings.APP_BACKEND_URL);
+                                                   FrameworkSettings.APP_BACKEND_URL);
 
         firstTenantSoupTrackerAdmin = new AdminServiceTracerAdmin(FrameworkSettings.APP_BACKEND_URL,
-                sessionCookieOfFirstTenant);
+                                                                  sessionCookieOfFirstTenant);
         secondTenantSoupTrackerAdmin = new AdminServiceTracerAdmin(FrameworkSettings.APP_BACKEND_URL,
-                sessionCookieOfSecondTenant);
+                                                                   sessionCookieOfSecondTenant);
 
         testClassName = StratosASSoapTracerTest.class.getName();
         AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                fistTenantInfo.getTenantDomain() + "/Axis2Service";
+                           fistTenantInfo.getTenantDomain() + "/Axis2Service";
 
         //delete the service if it is already exists
         try {
@@ -100,19 +100,16 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         firstTenantSoapTracerServiceInfo = firstTenantSoupTrackerAdmin.setMonitoring("ON"); //Enable soap tracer of first tenant
         secondTenantSoapTracerServiceInfo = secondTenantSoupTrackerAdmin.setMonitoring("ON"); //Enable soap tracer of second tenant
-
+        waitForOperation();
         assertEquals("Soap tracer ON flag not set", soapTrackerONFlag, firstTenantSoapTracerServiceInfo.getFlag());
         assertEquals("Soap tracer ON flag not set", soapTrackerONFlag, secondTenantSoapTracerServiceInfo.getFlag());
 
         log.info("Wait for service deployment");
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
-        try {
-            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
-        } catch (InterruptedException ignored) {
-        }
+        waitForOperation();
 
         OMElement result = new AxisServiceClient().sendReceive(createPayLoad(operation, expectedValue),
-                AXIS2SERVICE_EPR, operation);
+                                                               AXIS2SERVICE_EPR, operation);
         log.debug("Response for request " + result);
         Assert.assertTrue((result.toString().indexOf(expectedValue) >= 1));
 
@@ -122,7 +119,7 @@ public class StratosASSoapTracerTest extends TestTemplate {
         secondTenantSoapTracerServiceInfo = secondTenantSoupTrackerAdmin.getMessages(noOfMessagesToRetrieve, operation);
 
         messagePayload = firstTenantSoapTracerServiceInfo.getLastMessage();
-    Assert.assertTrue((messagePayload.getRequest().indexOf(expectedValue) >= 1));
+        Assert.assertTrue((messagePayload.getRequest().indexOf(expectedValue) >= 1));
         Assert.assertTrue((messagePayload.getResponse().indexOf(expectedValue) >= 1));
         log.info("Soap traser message assertion passed");
         log.debug("Request Payload" + messagePayload.getRequest());
@@ -146,6 +143,13 @@ public class StratosASSoapTracerTest extends TestTemplate {
 
         secondTenantSoapTracerServiceInfo = secondTenantSoupTrackerAdmin.setMonitoring(soapTrackerOFFFlag);
         assertEquals("Soap tracer OFF flag not set", soapTrackerOFFFlag, secondTenantSoapTracerServiceInfo.getFlag());
+    }
+
+    private void waitForOperation() {
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     @Override
@@ -177,5 +181,5 @@ public class StratosASSoapTracerTest extends TestTemplate {
         return method;
     }
 
-    
+
 }

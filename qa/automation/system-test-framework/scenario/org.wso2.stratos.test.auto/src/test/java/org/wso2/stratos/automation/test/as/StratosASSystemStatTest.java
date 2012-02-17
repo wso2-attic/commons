@@ -57,12 +57,12 @@ public class StratosASSystemStatTest extends TestTemplate {
         String sessionCookie = login(tenantDetails.getTenantName(), tenantDetails.getTenantPassword(),
                 FrameworkSettings.APP_BACKEND_URL);
         adminServiceStatistics = new AdminServiceStaticstics(FrameworkSettings.APP_BACKEND_URL, sessionCookie);
-        testClassName = StratosASSystemStatTest.class.getName();
+        testClassName = StratosASSystemStatTest.class.getName() +1;
         AXIS2SERVICE_EPR = "http://" + FrameworkSettings.APP_SERVER_HOST_NAME + "/services/t/" +
-                tenantDetails.getTenantDomain() + "/Axis2Service/";
+                tenantDetails.getTenantDomain() + "/Axis2Service";
         try {
             log.debug("Delete already existing services");
-            deleteAllNotAdminServices(sessionCookie, FrameworkSettings.APP_BACKEND_URL);
+//            deleteAllNotAdminServices(sessionCookie, FrameworkSettings.APP_BACKEND_URL);
             log.debug("Wait for service undeployment");
             AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR);
         } catch (AssertionFailedError e) {
@@ -79,6 +79,7 @@ public class StratosASSystemStatTest extends TestTemplate {
 
         log.info("Wait for service deployment");
         AxisServiceClientUtils.waitForServiceDeployment(AXIS2SERVICE_EPR); // wait for service deployment
+        waitForOperation();
 
         //get stats of other tenant prior to invoke service.
         try {
@@ -177,5 +178,12 @@ public class StratosASSystemStatTest extends TestTemplate {
         adminServiceService = new AdminServiceService(serviceURL);
         adminServiceService.deleteAllNonAdminServiceGroups(sessionCookie);
         return appList;
+    }
+
+    private void waitForOperation() {
+        try {
+            Thread.sleep(FrameworkSettings.SERVICE_DEPLOYMENT_DELAY);
+        } catch (InterruptedException ignored) {
+        }
     }
 }
