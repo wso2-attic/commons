@@ -48,7 +48,7 @@ public class JSONEncoder implements Encoder {
         JSONObject rootObject = new JSONObject();
         try {
             //encode schemas
-            this.encodeArrayOfValues(SCIMConstants.SCIMCommonSchemaConstants.SCHEMAS,
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.SCHEMAS,
                                      (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();

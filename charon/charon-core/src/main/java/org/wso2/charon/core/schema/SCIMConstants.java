@@ -30,7 +30,7 @@ public class SCIMConstants {
 
     /*Constants found in core-common schema.*/
 
-    public static class SCIMCommonSchemaConstants {
+    public static class CommonSchemaConstants {
         public static final String ID = "id";
         public static final String EXTERNAL_ID = "externalId";
         public static final String META = "meta";
@@ -52,7 +52,7 @@ public class SCIMConstants {
 
     /*Constants found in core-user schema.*/
 
-    public static class SCIMUserSchemaConstants {
+    public static class UserSchemaConstants {
         public static final String USER_NAME = "userName";
         public static final String EMAILS = "emails";
 
@@ -72,12 +72,30 @@ public class SCIMConstants {
 
 
     /*Resource and attribute descriptions according to SCIM spec.*/
+
+    /**
+     * ******Resource Descriptions********************
+     */
     public static final String COMMON_DESC = "Each SCIM Resource (Users, Groups, etc.) includes the " +
                                              "common attributes of this schema. These attributes MUST be " +
                                              "included in all Resources, including any extended Resource types";
-    
+
     public static final String USER_DESC = "SCIM provided schema for representing Users.";
+
+    /**
+     * ******Attributes Descriptions of the attributes found in Common Schema**************
+     */
+    public static final String ID_DESC = "Unique identifier for the SCIM Resource as defined by the Service Provider.";
+
+    public static final String EXTERNAL_ID_DESC = "Unique identifier for the Resource as defined by the Service Consumer." +
+                                                  "The Service Provider MUST always interpret the externalId as scoped to the Service Consumer's tenant.";
+
+
+    /**
+     * ******Attributes descriptions of the attributes found in User Schema************
+     */
+    public static final String USER_NAME_DESC = "Unique identifier for the User, typically " +
+                                                "used by the user to directly authenticate to the service provider.";
     
-
-
+    public static final String EMAILS = "E-mail addresses for the User.The value SHOULD be canonicalized by the Service Provider,";
 }

@@ -22,6 +22,7 @@ import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 /**
  * Represents the object which is a collection of attributes defined by SCIM User-schema.
@@ -40,17 +41,17 @@ public class User extends Common {
      * @throws CharonException
      */
     public void setUserName(String userName) throws CharonException {
-        if (isAttributeExist(SCIMConstants.SCIMUserSchemaConstants.USER_NAME)) {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMUserSchemaConstants.USER_NAME)).updateValue(
-                    userName, SimpleAttribute.DataType.STRING);
+                    SCIMConstants.UserSchemaConstants.USER_NAME)).updateValue(
+                    userName, DataType.STRING);
         } else {
             //TODO:since the constrctor is too long, pass an attribute schema. 
             SimpleAttribute userNameAttribute = new SimpleAttribute(
-                    SCIMConstants.SCIMUserSchemaConstants.USER_NAME,
-                    SCIMConstants.CORE_SCHEMA_URI, userName, SimpleAttribute.DataType.STRING,
+                    SCIMConstants.UserSchemaConstants.USER_NAME,
+                    SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
                     false, false);
-            attributeList.put(SCIMConstants.SCIMUserSchemaConstants.USER_NAME,
+            attributeList.put(SCIMConstants.UserSchemaConstants.USER_NAME,
                               userNameAttribute);
         }
     }
@@ -63,9 +64,9 @@ public class User extends Common {
      * @throws CharonException
      */
     public String getUserName() throws NotFoundException, CharonException {
-        if (isAttributeExist(SCIMConstants.SCIMUserSchemaConstants.USER_NAME)) {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             return ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMUserSchemaConstants.USER_NAME)).getStringValue();
+                    SCIMConstants.UserSchemaConstants.USER_NAME)).getStringValue();
 
         } else {
             throw new NotFoundException();
@@ -85,10 +86,10 @@ public class User extends Common {
      */
     public void setWorkEmail(String email, boolean isPrimary) throws CharonException {
         MultiValuedAttribute emailsAttribute = new MultiValuedAttribute(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
-        emailsAttribute.setAttributeValue(SCIMConstants.SCIMUserSchemaConstants.WORK,
-                                          isPrimary, null, email, SimpleAttribute.DataType.STRING);
-        attributeList.put(SCIMConstants.SCIMUserSchemaConstants.EMAILS, emailsAttribute);
+                SCIMConstants.UserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
+        emailsAttribute.setAttributeValue(SCIMConstants.UserSchemaConstants.WORK,
+                                          isPrimary, null, email, DataType.STRING);
+        attributeList.put(SCIMConstants.UserSchemaConstants.EMAILS, emailsAttribute);
     }
 
     /**
@@ -100,9 +101,9 @@ public class User extends Common {
      */
     public String getWorkEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS);
+                SCIMConstants.UserSchemaConstants.EMAILS);
         return (String) emailsAttribute.getAttrbuteValueByType(
-                SCIMConstants.SCIMUserSchemaConstants.WORK);
+                SCIMConstants.UserSchemaConstants.WORK);
     }
 
     /**
@@ -114,10 +115,10 @@ public class User extends Common {
      */
     public void setHomeEmail(String email, boolean isPrimary) throws CharonException {
         MultiValuedAttribute emailsAttribute = new MultiValuedAttribute(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
-        emailsAttribute.setAttributeValue(SCIMConstants.SCIMUserSchemaConstants.HOME,
-                                          isPrimary, null, email, SimpleAttribute.DataType.STRING);
-        attributeList.put(SCIMConstants.SCIMUserSchemaConstants.EMAILS, emailsAttribute);
+                SCIMConstants.UserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
+        emailsAttribute.setAttributeValue(SCIMConstants.UserSchemaConstants.HOME,
+                                          isPrimary, null, email, DataType.STRING);
+        attributeList.put(SCIMConstants.UserSchemaConstants.EMAILS, emailsAttribute);
     }
 
     /**
@@ -127,9 +128,9 @@ public class User extends Common {
      */
     public String getHomeEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS);
+                SCIMConstants.UserSchemaConstants.EMAILS);
         return (String) emailsAttribute.getAttrbuteValueByType(
-                SCIMConstants.SCIMUserSchemaConstants.HOME);
+                SCIMConstants.UserSchemaConstants.HOME);
     }
 
     /**
@@ -142,24 +143,25 @@ public class User extends Common {
      */
     public void setOtherEmail(String email, boolean isPrimary, String type) throws CharonException {
         MultiValuedAttribute emailsAttribute = new MultiValuedAttribute(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
+                SCIMConstants.UserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
         emailsAttribute.setAttributeValue(type,
-                                          isPrimary, null, email, SimpleAttribute.DataType.STRING);
-        attributeList.put(SCIMConstants.SCIMUserSchemaConstants.EMAILS, emailsAttribute);
+                                          isPrimary, null, email, DataType.STRING);
+        attributeList.put(SCIMConstants.UserSchemaConstants.EMAILS, emailsAttribute);
     }
 
 
     public void setEmails(String[] emails) throws CharonException {
         MultiValuedAttribute emailsAttribute = new MultiValuedAttribute(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
+                SCIMConstants.UserSchemaConstants.EMAILS, SCIMConstants.CORE_SCHEMA_URI);
         for (String email : emails) {
-            emailsAttribute.setSimpleAttributeValue(email, SimpleAttribute.DataType.STRING);
+            emailsAttribute.setSimpleAttributeValue(email, DataType.STRING);
         }
-        attributeList.put(SCIMConstants.SCIMUserSchemaConstants.EMAILS, emailsAttribute);
+        attributeList.put(SCIMConstants.UserSchemaConstants.EMAILS, emailsAttribute);
     }
 
     /**
      * TODO
+     *
      * @return
      */
     /*public String[] getEmails() {
@@ -167,10 +169,9 @@ public class User extends Common {
                 SCIMSchemaConstants.SCIMUserSchemaConstants.EMAILS);
         return emailsAttribute.g       
     }*/
-
     public String getPrimaryEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS);
+                SCIMConstants.UserSchemaConstants.EMAILS);
         return (String) emailsAttribute.getPrimaryValue();
     }
 
@@ -184,7 +185,7 @@ public class User extends Common {
      */
     public String getEmailByType(String type) throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMConstants.SCIMUserSchemaConstants.EMAILS);
+                SCIMConstants.UserSchemaConstants.EMAILS);
         return (String) emailsAttribute.getAttrbuteValueByType(type);
     }
 

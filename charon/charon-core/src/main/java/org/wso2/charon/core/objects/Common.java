@@ -26,6 +26,7 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,7 +62,7 @@ public abstract class Common implements SCIMObject {
         this.schemaList = schemaList;
         //TODO:set these as attribute also
     }
-                                
+
     /**
      * Create an attribute and set in the SCIM Object.
      *
@@ -83,7 +84,6 @@ public abstract class Common implements SCIMObject {
      * attributes.
      *
      * @param attributeName
-     * @param attributeValue
      */
     //public abstract void updateAttribute(String attributeName, Object attributeValue);
     public Attribute getAttribute(String attributeName) throws NotFoundException {
@@ -114,14 +114,14 @@ public abstract class Common implements SCIMObject {
      * @param id Unique identifier for the SCIM Resource as defined by the Service Provider.
      */
     public void setId(String id) throws CharonException {
-        if (isAttributeExist(SCIMConstants.SCIMCommonSchemaConstants.ID)) {
+        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID)).updateValue(
-                    id, SimpleAttribute.DataType.STRING);
+                    SCIMConstants.CommonSchemaConstants.ID)).updateValue(
+                    id, DataType.STRING);
         } else {
             Attribute idAttribute = new SimpleAttribute(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID,
-                    SCIMConstants.CORE_SCHEMA_URI, id, SimpleAttribute.DataType.STRING, true,
+                    SCIMConstants.CommonSchemaConstants.ID,
+                    SCIMConstants.CORE_SCHEMA_URI, id, DataType.STRING, true,
                     false);
             this.setAttribute(idAttribute);
         }
@@ -136,9 +136,9 @@ public abstract class Common implements SCIMObject {
      * @return
      */
     public String getId(String id) throws CharonException, NotFoundException {
-        if (isAttributeExist(SCIMConstants.SCIMCommonSchemaConstants.ID)) {
+        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             return ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID)).getStringValue();
+                    SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
         } else {
             throw new NotFoundException();
         }
@@ -153,14 +153,14 @@ public abstract class Common implements SCIMObject {
      * @param externalId
      */
     public void setExternalId(String externalId) throws CharonException {
-        if (isAttributeExist(SCIMConstants.SCIMCommonSchemaConstants.EXTERNAL_ID)) {
+        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID)) {
             ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID)).updateValue(
-                    externalId, SimpleAttribute.DataType.STRING);
+                    SCIMConstants.CommonSchemaConstants.ID)).updateValue(
+                    externalId, DataType.STRING);
         } else {
             Attribute externalIdAttribute = new SimpleAttribute(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID,
-                    SCIMConstants.CORE_SCHEMA_URI, externalId, SimpleAttribute.DataType.STRING,
+                    SCIMConstants.CommonSchemaConstants.ID,
+                    SCIMConstants.CORE_SCHEMA_URI, externalId, DataType.STRING,
                     true, false);
             this.setAttribute(externalIdAttribute);
         }
@@ -175,9 +175,9 @@ public abstract class Common implements SCIMObject {
      * @throws NotFoundException
      */
     public String getExternalId(String id) throws CharonException, NotFoundException {
-        if (isAttributeExist(SCIMConstants.SCIMCommonSchemaConstants.ID)) {
+        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             return ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.SCIMCommonSchemaConstants.ID)).getStringValue();
+                    SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
         } else {
             throw new NotFoundException();
         }
@@ -195,8 +195,8 @@ public abstract class Common implements SCIMObject {
     public void setCreatedDate(Date createdDate) throws CharonException {
         //create the created date attribute as defined in schema.
         SimpleAttribute createdDateAttribute = new SimpleAttribute(
-                SCIMConstants.SCIMCommonSchemaConstants.CREATED, null, createdDate,
-                SimpleAttribute.DataType.DATE_TIME, true, false);
+                SCIMConstants.CommonSchemaConstants.CREATED, null, createdDate,
+                DataType.DATE_TIME, true, false);
         ComplexAttribute metaAttribute;
         //check meta complex attribute already exist.
         if (getMeAttribute() != null) {
@@ -226,7 +226,7 @@ public abstract class Common implements SCIMObject {
     public Date getCreatedDate() throws NotFoundException, CharonException {
         if (isMetaAttributeExist()) {
             SimpleAttribute createdDate = (SimpleAttribute) getMeAttribute().getSubAttribute(
-                    SCIMConstants.SCIMCommonSchemaConstants.CREATED);
+                    SCIMConstants.CommonSchemaConstants.CREATED);
             if (createdDate != null) {
                 return createdDate.getDateValue();
             } else {
@@ -240,24 +240,24 @@ public abstract class Common implements SCIMObject {
     //TODO:do the same above for the other sub attributes defined under meta attribute.
 
     protected boolean isMetaAttributeExist() {
-        return attributeList.containsKey(SCIMConstants.SCIMCommonSchemaConstants.META);
+        return attributeList.containsKey(SCIMConstants.CommonSchemaConstants.META);
     }
 
     protected void createMetaAttribute() throws CharonException {
         Attribute metaAttribute = new ComplexAttribute(
-                SCIMConstants.SCIMCommonSchemaConstants.META,
+                SCIMConstants.CommonSchemaConstants.META,
                 SCIMConstants.CORE_SCHEMA_URI, false, new HashMap<String, Attribute>(), false);
         if (isMetaAttributeExist()) {
             throw new CharonException(ResponseCodeConstants.ATTRIBUTE_ALREADY_EXIST);
         } else {
-            attributeList.put(SCIMConstants.SCIMCommonSchemaConstants.META, metaAttribute);
+            attributeList.put(SCIMConstants.CommonSchemaConstants.META, metaAttribute);
         }
     }
 
     protected ComplexAttribute getMeAttribute() {
         if (isMetaAttributeExist()) {
             return (ComplexAttribute) attributeList.get(
-                    SCIMConstants.SCIMCommonSchemaConstants.META);
+                    SCIMConstants.CommonSchemaConstants.META);
         } else {
             return null;
         }

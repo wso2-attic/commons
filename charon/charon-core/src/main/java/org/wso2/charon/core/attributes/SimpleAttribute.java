@@ -19,6 +19,7 @@ package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
@@ -33,9 +34,7 @@ public class SimpleAttribute extends AbstractAttribute {
 
     /*Data type of the attribute value.*/
     protected DataType dataType;
-
-    /*Enum that defines the data types that the attribute value can take.*/
-
+    
     /**
      * Validate whether the attribute adheres to the SCIM schema.
      *
@@ -46,9 +45,9 @@ public class SimpleAttribute extends AbstractAttribute {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public enum DataType {
+    /*public enum DataType {
         STRING, BOOLEAN, DECIMAL, INTEGER, DATE_TIME, BINARY
-    }
+    }*/
 
     /**
      * Create the attribute with the given name. Attribute name can be set only when creating the

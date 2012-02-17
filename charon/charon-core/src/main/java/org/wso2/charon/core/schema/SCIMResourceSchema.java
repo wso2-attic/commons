@@ -25,11 +25,17 @@ import java.util.List;
  */
 public class SCIMResourceSchema implements ResourceSchema {
 
+    //The Resource name
     private String name;
+    //The Resource's associated schema
     private String schema;
     //private List<String> schemaList;
+    //The Resource's human readable description
     private String description;
+    //The Resource's HTTP addressable endpoint relative to the Base URL; e.g., /Users
     private String endpoint;
+    //following is corresponding to the 'attributes' attribute in resource schema.
+    // A complex type that specifies the set of Resource attributes. 
     private List<AttributeSchema> attributeSchemas;
 
     //define a private method to add core schema attributes to every SCIM resource schema.
