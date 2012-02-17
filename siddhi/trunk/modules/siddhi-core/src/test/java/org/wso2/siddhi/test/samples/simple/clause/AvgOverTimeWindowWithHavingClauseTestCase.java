@@ -97,12 +97,12 @@ public class AvgOverTimeWindowWithHavingClauseTestCase {
 //        );
 //        query.having(qf.condition("StockQuote.avgPrice", ConditionOperator.GREATERTHAN, "100"));
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, avgPrice=avg(price) " +
-                                 "from CSEStream[win.time=500] " +
-                                 "where symbol=='IBM' " +
-                                 "having avgPrice > 100 ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, avgPrice=avg(price) " +
+                                        "from CSEStream[win.time=500] " +
+                                        "where symbol=='IBM' " +
+                                        "having avgPrice > 100 ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

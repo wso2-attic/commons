@@ -80,11 +80,11 @@ public class SumOverTimeBatchWindowTestCase {
                                    SiddhiException, InterruptedException, SiddhiPraserException {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
-                                 "from CSEStream  [win.time.batch=500] " +
-                                 "where symbol == 'IBM';");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
+                                        "from CSEStream  [win.time.batch=500] " +
+                                        "where symbol == 'IBM';");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

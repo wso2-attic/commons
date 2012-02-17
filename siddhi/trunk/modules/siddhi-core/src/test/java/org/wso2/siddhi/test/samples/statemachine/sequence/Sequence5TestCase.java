@@ -97,14 +97,14 @@ public class Sequence5TestCase {
         SiddhiManager siddhiManager = new SiddhiManager();
         QueryFactory qf = SiddhiManager.getQueryFactory();
 
-        siddhiManager.addQueries("StockQuoteStream:= timestamp[int], symbol [string], price [int], volume [int]; \n" +
-                                 "" +
-                                 "StockQuote:=select priceA=$a1.price,priceB=$a2[last].price, priceC=$a3.price \n" +
-                                 "from StockQuoteStream \n" +
-                                 "sequence [a1=StockQuoteStream.price>500,\n" +
-                                 "a2=StockQuoteStream.price >= $this[prev].price, \n" +
-                                 "a3=StockQuoteStream.price < $a2[last].price] \n" +
-                                 "$a1 $a2* $a3 ;");
+        siddhiManager.addConfigurations("StockQuoteStream:= timestamp[int], symbol [string], price [int], volume [int]; \n" +
+                                        "" +
+                                        "StockQuote:=select priceA=$a1.price,priceB=$a2[last].price, priceC=$a3.price \n" +
+                                        "from StockQuoteStream \n" +
+                                        "sequence [a1=StockQuoteStream.price>500,\n" +
+                                        "a2=StockQuoteStream.price >= $this[prev].price, \n" +
+                                        "a3=StockQuoteStream.price < $a2[last].price] \n" +
+                                        "$a1 $a2* $a3 ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

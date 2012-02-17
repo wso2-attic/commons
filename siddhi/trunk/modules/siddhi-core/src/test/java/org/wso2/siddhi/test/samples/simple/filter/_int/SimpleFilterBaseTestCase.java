@@ -80,11 +80,11 @@ public abstract class SimpleFilterBaseTestCase {
         SiddhiManager siddhiManager = new SiddhiManager();
 
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select price " +
-                                 "from CSEStream " +
-                                 "where " + createQueryCondition() + ";");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select price " +
+                                        "from CSEStream " +
+                                        "where " + createQueryCondition() + ";");
 
 
         siddhiManager.addCallback(assignCallback());

@@ -96,11 +96,11 @@ public class FirstUniqueTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("UserRegistration:= userId[int], name[string], org [string]; \n" +
-                                 "" +
-                                 "RegedUser:= select * " +
-                                 "from UserRegistration [std.firstUnique=userId] " +
-                                 "where org == 'apache';");
+        siddhiManager.addConfigurations("UserRegistration:= userId[int], name[string], org [string]; \n" +
+                                        "" +
+                                        "RegedUser:= select * " +
+                                        "from UserRegistration [std.firstUnique=userId] " +
+                                        "where org == 'apache';");
 
 
         InputHandler inputHandler = siddhiManager.getInputHandler("UserRegistration");

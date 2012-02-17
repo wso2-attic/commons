@@ -91,13 +91,13 @@ public class Sequence1TestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("StockQuoteStream:= timestamp[int], symbol [string], price [int], volume [int]; \n" +
-                                 "" +
-                                 "StockQuote:=select priceA=$a1.price, priceB=$a2.price \n" +
-                                 "from StockQuoteStream \n" +
-                                 "sequence [a1=StockQuoteStream.price<500,\n" +
-                                 "a2=StockQuoteStream.price < 150] \n" +
-                                 "$a1 $a2 ;");
+        siddhiManager.addConfigurations("StockQuoteStream:= timestamp[int], symbol [string], price [int], volume [int]; \n" +
+                                        "" +
+                                        "StockQuote:=select priceA=$a1.price, priceB=$a2.price \n" +
+                                        "from StockQuoteStream \n" +
+                                        "sequence [a1=StockQuoteStream.price<500,\n" +
+                                        "a2=StockQuoteStream.price < 150] \n" +
+                                        "$a1 $a2 ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

@@ -83,11 +83,11 @@ public class SumOverLengthWindowTestCase {
                                    SiddhiPraserException {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
-                                 "from CSEStream  [win.length=4] " +
-                                 "where symbol == 'IBM';");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
+                                        "from CSEStream  [win.length=4] " +
+                                        "where symbol == 'IBM';");
 
         siddhiManager.addCallback(assignCallback());
 

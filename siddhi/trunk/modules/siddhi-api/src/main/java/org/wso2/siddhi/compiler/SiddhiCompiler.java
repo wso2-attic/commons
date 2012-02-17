@@ -45,7 +45,15 @@ public class SiddhiCompiler {
 //    }
 
     public static List<EventStream> parse(String source) throws SiddhiPraserException {
+        return parse(source, null);
+    }
+
+    public static List<EventStream> parse(String source, List<EventStream> existingStreams)
+            throws SiddhiPraserException {
         try {
+            if (existingStreams == null) {
+                existingStreams = new ArrayList<EventStream>();
+            }
             SiddhiGrammarLexer lexer = new SiddhiGrammarLexer();
             lexer.setCharStream(new ANTLRStringStream(source));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -57,7 +65,7 @@ public class SiddhiCompiler {
             CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
             nodes.setTokenStream(tokens);
             SiddhiGrammarWalker walker = new SiddhiGrammarWalker(nodes);
-            return walker.siddhiGrammar(new ArrayList<EventStream>());
+            return walker.siddhiGrammar(existingStreams);
 
         } catch (Exception e) {
             throw new SiddhiPraserException(e.getMessage(), e);

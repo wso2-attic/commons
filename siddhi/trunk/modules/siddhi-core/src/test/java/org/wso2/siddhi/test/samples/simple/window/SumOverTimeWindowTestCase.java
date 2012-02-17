@@ -83,11 +83,11 @@ public class SumOverTimeWindowTestCase {
         SiddhiManager siddhiManager = new SiddhiManager();
         QueryFactory qf = SiddhiManager.getQueryFactory();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
-                                 "from CSEStream  [win.time=500] " +
-                                 "where symbol == 'IBM';");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, totalPrice=sum(CSEStream.price) " +
+                                        "from CSEStream  [win.time=500] " +
+                                        "where symbol == 'IBM';");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

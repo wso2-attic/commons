@@ -34,18 +34,18 @@ public class PatternProcessorSample {
         SiddhiManager siddhiManager = new SiddhiManager();
 
         // Assign the Callback to receive the outputs
-        siddhiManager.addQueries("CSEStream:=  symbol[string], price[int];" +
-                                 "InfoStock:=  action[string], symbol[string];" +
-                                 "StockQuote:=  select symbol=$cond1.symbol, price1=$cond2.price, price2=$cond3.price" +
-                                 "              from CSEStream,InfoStock                            " +
-                                 "              pattern [                                           " +
-                                 "                  cond1=InfoStock.action == 'buy',                " +
-                                 "                  cond2=CSEStream.price > 100                     " +
-                                 "                        and CSEStream.symbol == $cond1.symbol,    " +
-                                 "                  cond3=CSEStream.price > $cond2.price            " +
-                                 "                        and CSEStream.symbol == $cond1.symbol     " +
-                                 "              ]                                                   " +
-                                 "              every($cond1) -> $cond2 -> $cond3 ;                 ");
+        siddhiManager.addConfigurations("CSEStream:=  symbol[string], price[int];" +
+                                        "InfoStock:=  action[string], symbol[string];" +
+                                        "StockQuote:=  select symbol=$cond1.symbol, price1=$cond2.price, price2=$cond3.price" +
+                                        "              from CSEStream,InfoStock                            " +
+                                        "              pattern [                                           " +
+                                        "                  cond1=InfoStock.action == 'buy',                " +
+                                        "                  cond2=CSEStream.price > 100                     " +
+                                        "                        and CSEStream.symbol == $cond1.symbol,    " +
+                                        "                  cond3=CSEStream.price > $cond2.price            " +
+                                        "                        and CSEStream.symbol == $cond1.symbol     " +
+                                        "              ]                                                   " +
+                                        "              every($cond1) -> $cond2 -> $cond3 ;                 ");
 
         // Define the Input Streams and the Queries
         siddhiManager.addCallback(new CallbackHandler("StockQuote") {

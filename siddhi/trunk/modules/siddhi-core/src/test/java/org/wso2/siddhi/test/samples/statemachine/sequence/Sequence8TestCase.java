@@ -99,14 +99,14 @@ public class Sequence8TestCase {
         SiddhiManager siddhiManager = new SiddhiManager();
 
         QueryFactory qf = SiddhiManager.getQueryFactory();
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "infoStock:= action[string],timeStamp[long]; \n" +
-                                 "" +
-                                 "StockQuote:=select priceA=$a1.price, priceA=$a1[0].price, priceB=$a1[last].price, action=$a2.action \n" +
-                                 "from CSEStream, infoStock \n" +
-                                 "sequence [a1=CSEStream.price > 70,\n" +
-                                 "a2= infoStock.action == 'sell' ] \n" +
-                                 "$a1* $a2 ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "infoStock:= action[string],timeStamp[long]; \n" +
+                                        "" +
+                                        "StockQuote:=select priceA=$a1.price, priceA=$a1[0].price, priceB=$a1[last].price, action=$a2.action \n" +
+                                        "from CSEStream, infoStock \n" +
+                                        "sequence [a1=CSEStream.price > 70,\n" +
+                                        "a2= infoStock.action == 'sell' ] \n" +
+                                        "$a1* $a2 ;");
 
         siddhiManager.addCallback(assignCallback());
 

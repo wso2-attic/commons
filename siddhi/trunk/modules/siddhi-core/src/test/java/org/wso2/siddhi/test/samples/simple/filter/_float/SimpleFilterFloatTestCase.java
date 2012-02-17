@@ -93,11 +93,11 @@ public class SimpleFilterFloatTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [float]; \n" +
-                                 "" +
-                                 "StockQuote:= select price " +
-                                 "from CSEStream " +
-                                 "where price > 2.50;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [float]; \n" +
+                                        "" +
+                                        "StockQuote:= select price " +
+                                        "from CSEStream " +
+                                        "where price > 2.50;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

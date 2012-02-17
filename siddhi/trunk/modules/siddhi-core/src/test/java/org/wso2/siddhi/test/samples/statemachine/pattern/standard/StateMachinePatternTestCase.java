@@ -95,15 +95,15 @@ public class StateMachinePatternTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-      siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                               "infoStock:= action[string],timeStamp[long]; \n" +
-                               "" +
-                               "StockQuote:=select action=$a1.action, priceA=$b1.price, priceA=$b2.price\n" +
-                               "from CSEStream, infoStock\n" +
-                               "pattern [a1=infoStock.action==\"buy\",\n" +
-                               "b1=CSEStream.price>70,\n" +
-                               "b2=CSEStream.price>75]\n" +
-                               "$a1 -> every($b1 -> $b2[within.time=30]) ;");
+      siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                      "infoStock:= action[string],timeStamp[long]; \n" +
+                                      "" +
+                                      "StockQuote:=select action=$a1.action, priceA=$b1.price, priceA=$b2.price\n" +
+                                      "from CSEStream, infoStock\n" +
+                                      "pattern [a1=infoStock.action==\"buy\",\n" +
+                                      "b1=CSEStream.price>70,\n" +
+                                      "b2=CSEStream.price>75]\n" +
+                                      "$a1 -> every($b1 -> $b2[within.time=30]) ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

@@ -102,11 +102,11 @@ public class UniqueTimeWindowedTestCase {
         SiddhiManager siddhiManager = new SiddhiManager();
 
         QueryFactory qf = SiddhiManager.getQueryFactory();
-        siddhiManager.addQueries("UserRegistration:= userId[int], name[string],  salary[int], org [string]; \n" +
-                                 "" +
-                                 "RegedUser:= select userId , name ,salary,avgSalary=avg(UserRegistration.salary)" +
-                                 "from UserRegistration [win.time=200,std.unique=userId] " +
-                                 "where org == 'apache';");
+        siddhiManager.addConfigurations("UserRegistration:= userId[int], name[string],  salary[int], org [string]; \n" +
+                                        "" +
+                                        "RegedUser:= select userId , name ,salary,avgSalary=avg(UserRegistration.salary)" +
+                                        "from UserRegistration [win.time=200,std.unique=userId] " +
+                                        "where org == 'apache';");
 
         //condition is always true here. This is included since there must be
         // some condition for a Query.

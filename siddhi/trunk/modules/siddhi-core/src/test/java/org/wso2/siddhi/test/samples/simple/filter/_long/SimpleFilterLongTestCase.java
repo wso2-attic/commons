@@ -91,11 +91,11 @@ public class SimpleFilterLongTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [long]; \n" +
-                                 "" +
-                                 "StockQuote:= select price " +
-                                 "from CSEStream " +
-                                 "where price > 3000;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [long]; \n" +
+                                        "" +
+                                        "StockQuote:= select price " +
+                                        "from CSEStream " +
+                                        "where price > 3000;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

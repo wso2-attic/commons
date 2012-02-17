@@ -81,11 +81,11 @@ public class ComplexExpression2TestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, avgPrice=avg(price), symbolCount=count(symbol) " +
-                                 "from CSEStream[win.time=2000] " +
-                                 "where  7+(8*2) < price*2  ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, avgPrice=avg(price), symbolCount=count(symbol) " +
+                                        "from CSEStream[win.time=2000] " +
+                                        "where  7+(8*2) < price*2  ;");
 
 
         siddhiManager.addCallback(assignCallback());

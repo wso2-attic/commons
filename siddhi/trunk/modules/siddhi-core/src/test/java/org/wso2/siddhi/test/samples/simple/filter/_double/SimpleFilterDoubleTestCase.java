@@ -81,11 +81,11 @@ public class SimpleFilterDoubleTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [double]; \n" +
-                                 "" +
-                                 "StockQuote:= select price " +
-                                 "from CSEStream " +
-                                 "where price > 4000.555;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [double]; \n" +
+                                        "" +
+                                        "StockQuote:= select price " +
+                                        "from CSEStream " +
+                                        "where price > 4000.555;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

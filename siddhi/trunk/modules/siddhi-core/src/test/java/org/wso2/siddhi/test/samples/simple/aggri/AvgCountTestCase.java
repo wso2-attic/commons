@@ -71,16 +71,17 @@ public class AvgCountTestCase {
         siddhiManager.shutDownTask();
 
     }
- @Test
+
+    @Test
     public void testQuery() throws SiddhiException, SiddhiPraserException {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, avgPrice=avg(price), noPrice=count(price) " +
-                                 "from CSEStream[win.time=500] " +
-                                 "where symbol=='IBM' ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; ");
+        siddhiManager.update();
+        siddhiManager.addConfigurations("StockQuote:= select symbol, avgPrice=avg(price), noPrice=count(price) " +
+                                        "from CSEStream[win.time=500] " +
+                                        "where symbol=='IBM' ;");
 
         siddhiManager.addCallback(assignCallback());
 

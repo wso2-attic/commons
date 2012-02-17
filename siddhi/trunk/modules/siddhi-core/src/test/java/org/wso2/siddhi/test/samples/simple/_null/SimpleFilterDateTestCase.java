@@ -103,15 +103,15 @@ public class SimpleFilterDateTestCase {
         date = (Date) formatter.parse("15-June-07");
 
         SiddhiManager siddhiManager = new SiddhiManager();
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [long], eventDate[date];\n" +
-                                 "" +
-                                 "StockQuoteDate:=select price,eventDate " +
-                                 "from CSEStream " +
-                                 "where eventDate > '" + newFormatter.format(date) + "'; \n" +
-                                 "" +
-                                 "StockQuoteSymbol:= select symbol, eventDate " +
-                                 "from CSEStream " +
-                                 "where symbol=='IBM' ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [long], eventDate[date];\n" +
+                                        "" +
+                                        "StockQuoteDate:=select price,eventDate " +
+                                        "from CSEStream " +
+                                        "where eventDate > '" + newFormatter.format(date) + "'; \n" +
+                                        "" +
+                                        "StockQuoteSymbol:= select symbol, eventDate " +
+                                        "from CSEStream " +
+                                        "where symbol=='IBM' ;");
 
         assignCallbacks(siddhiManager);
         siddhiManager.update();

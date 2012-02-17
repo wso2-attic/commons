@@ -78,12 +78,12 @@ public class AvgOverTimeWindowWithGroupByClauseTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, price, avgPrice=avg(price) " +
-                                 "from CSEStream[win.time=500] " +
-                                 "where symbol=='IBM' or  symbol=='WSO2'" +
-                                 "group by symbol;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, price, avgPrice=avg(price) " +
+                                        "from CSEStream[win.time=500] " +
+                                        "where symbol=='IBM' or  symbol=='WSO2'" +
+                                        "group by symbol;");
 
         siddhiManager.addCallback(assignCallback());
 

@@ -102,11 +102,11 @@ public class SimpleFilterDateTestCase {
         DateFormat newFormatter = DateFormat.getDateInstance(DateFormat.LONG);
         Date date = null;
         date = (Date) formatter.parse("15-June-07");
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int],aDate[date]; \n" +
-                                 "" +
-                                 "StockQuote:= select price,aDate " +
-                                 "from CSEStream[win.time=2000] " +
-                                 "where aDate >'"+newFormatter.format(date) +"' ;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int],aDate[date]; \n" +
+                                        "" +
+                                        "StockQuote:= select price,aDate " +
+                                        "from CSEStream[win.time=2000] " +
+                                        "where aDate >'" + newFormatter.format(date) + "' ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

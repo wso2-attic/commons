@@ -90,11 +90,11 @@ public class SimpleFilterTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [float]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol " +
-                                 "from CSEStream " +
-                                 "where symbol == 'IBM';");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [float]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol " +
+                                        "from CSEStream " +
+                                        "where symbol == 'IBM';");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

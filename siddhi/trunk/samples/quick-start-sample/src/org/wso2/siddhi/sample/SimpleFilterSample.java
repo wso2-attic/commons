@@ -34,10 +34,10 @@ public class SimpleFilterSample {
         SiddhiManager siddhiManager = new SiddhiManager();
 
         // Define the Input Streams and the Queries
-        siddhiManager.addQueries("CSEStream:=  symbol[string], price[int];" +
-                                 "StockQuote:=  select *        " +
-                                 "              from CSEStream  " +
-                                 "              where price > 60 ;");
+        siddhiManager.addConfigurations("CSEStream:=  symbol[string], price[int];" +
+                                        "StockQuote:=  select *        " +
+                                        "              from CSEStream  " +
+                                        "              where price > 60 ;");
 
         // Assign the Callback to receive the outputs
         siddhiManager.addCallback(new CallbackHandler("StockQuote") {

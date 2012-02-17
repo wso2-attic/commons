@@ -82,11 +82,11 @@ public class DefaultOutputTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select symbol, avgPrice=avg(price), symbolCount=count(symbol), typeNo=(int)23 " +
-                                 "from CSEStream[win.time=2000] " +
-                                 "where symbol=='IBM');");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select symbol, avgPrice=avg(price), symbolCount=count(symbol), typeNo=(int)23 " +
+                                        "from CSEStream[win.time=2000] " +
+                                        "where symbol=='IBM');");
 
         siddhiManager.addCallback(assignCallback());
 

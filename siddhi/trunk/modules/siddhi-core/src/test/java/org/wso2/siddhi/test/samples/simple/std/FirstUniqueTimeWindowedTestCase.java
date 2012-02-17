@@ -92,11 +92,11 @@ public class FirstUniqueTimeWindowedTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("UserRegistration:= userId[int], name[string], org [string]; \n" +
-                                 "" +
-                                 "RegedUser:= select * " +
-                                 "from UserRegistration [std.firstUnique=userId,win.time=200] " +
-                                 "where org == 'apache';");
+        siddhiManager.addConfigurations("UserRegistration:= userId[int], name[string], org [string]; \n" +
+                                        "" +
+                                        "RegedUser:= select * " +
+                                        "from UserRegistration [std.firstUnique=userId,win.time=200] " +
+                                        "where org == 'apache';");
 
         siddhiManager.addCallback(assignCallback());
 

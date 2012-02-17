@@ -84,11 +84,11 @@ public class SimpleFilterWithStarSelectIntTestCase {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.addQueries("CSEStream:= symbol[string], price [int]; \n" +
-                                 "" +
-                                 "StockQuote:= select * " +
-                                 "from CSEStream " +
-                                 "where price == 20;");
+        siddhiManager.addConfigurations("CSEStream:= symbol[string], price [int]; \n" +
+                                        "" +
+                                        "StockQuote:= select * " +
+                                        "from CSEStream " +
+                                        "where price == 20;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();

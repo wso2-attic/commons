@@ -116,9 +116,12 @@ public class SiddhiManager {
         } catch (InvalidEventStreamDefinitionException e) {
             throw new SiddhiException(e);
         }
-        InputHandler inputHandler = new InputHandler(eventStream);
-        this.inputHandlerMap.put(eventStream.getStreamId(), inputHandler);
-        this.newEventSourceList.add(inputHandler);
+        InputHandler inputHandler = inputHandlerMap.get(eventStream.getStreamId());
+        if (inputHandler == null) {
+            inputHandler = new InputHandler(eventStream);
+            this.inputHandlerMap.put(eventStream.getStreamId(), inputHandler);
+            this.newEventSourceList.add(inputHandler);
+        }
         return inputHandler;
     }
 
@@ -448,15 +451,27 @@ public class SiddhiManager {
     }
 
 
-    public void addQueries(String siddhiQueries) throws SiddhiPraserException, SiddhiException {
-       List<EventStream> eventStreamList=SiddhiCompiler.parse(siddhiQueries);
-        for(EventStream eventStream:eventStreamList){
-            if(eventStream instanceof InputEventStream){
+    public void addConfigurations(String siddhiConfigurations) throws SiddhiPraserException, SiddhiException {
+        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiConfigurations, new ArrayList<EventStream>(eventStreamMap.values()));
+        for (EventStream eventStream : eventStreamList) {
+            if (eventStream instanceof InputEventStream) {
                 addInputEventStream((InputEventStream) eventStream);
             } else {
                 addQuery((Query) eventStream);
             }
         }
+    }
+
+    public int addQuery(String siddhiQuery) throws SiddhiPraserException, SiddhiException {
+        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiQuery, new ArrayList<EventStream>(eventStreamMap.values()));
+        if (eventStreamList.size() > 1) {
+            String steamIds = "";
+            for (EventStream eventStream : eventStreamList) {
+                steamIds += eventStream.getStreamId() + ", ";
+            }
+            throw new SiddhiPraserException(eventStreamList.size() + " Queries found (" + steamIds + ")insted on one");
+        }
+        return addQuery((Query) eventStreamList.get(0));
     }
 }
 

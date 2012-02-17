@@ -35,10 +35,10 @@ public class TimeWindowSample {
         SiddhiManager siddhiManager = new SiddhiManager();
 
         // Define the Input Streams and the Queries
-        siddhiManager.addQueries("CSEStream:=  symbol[string], price[double];      " +
-                                 "StockQuote:=  select avgPrice=avg(price),eventCount=count(symbol)" +
-                                 "              from CSEStream[win.time=1000]                  " +
-                                 "              where price > 60 and symbol=='IBM' ;              ");
+        siddhiManager.addConfigurations("CSEStream:=  symbol[string], price[double];      " +
+                                        "StockQuote:=  select avgPrice=avg(price),eventCount=count(symbol)" +
+                                        "              from CSEStream[win.time=1000]                  " +
+                                        "              where price > 60 and symbol=='IBM' ;              ");
 
         // Assign the Callback to receive the outputs
         siddhiManager.addCallback(new CallbackHandler("StockQuote") {
