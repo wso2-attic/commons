@@ -153,13 +153,13 @@ public class MultipleDynamicQueryAllocationTestCase {
 
 
         log.debug("1st set of Queries end");
-        Thread.sleep(500);
+        Thread.sleep(1000);
         siddhiManager.removeStream(streamReference);
         siddhiManager.removeStream(streamReference2);
 
         siddhiManager.update();
 
-        Thread.sleep(500);
+        Thread.sleep(1000);
         Query query4 = qf.createQuery(
                 "StockQuoteOutput",
                 qf.output("price=CSEStream.price"),
@@ -178,7 +178,7 @@ public class MultipleDynamicQueryAllocationTestCase {
 
         log.debug("2nd set of Queries end");
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
         Assert.assertTrue(eventCaptured);
         Assert.assertTrue(i == 18);
