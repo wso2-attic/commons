@@ -97,20 +97,25 @@ siddhiGrammar [List<EventStream> inputEventStreamList ]  returns [List<EventStre
     @after{
         $eventStreamList=streamList;
     }
-	: stream+
+	: (s=stream[streamList] { streamList.add($s.eventStream);} )+
 	;
-stream
+stream  [List<EventStream> inputEventStreamList] returns [EventStream eventStream]
     scope{
         String name;
     }
-    : ^( s=stmName {$stream::name=$s.value;} streamType )
+    @init{
+        if(streamList.size()==0 && inputEventStreamList!=null){
+            streamList = $inputEventStreamList;
+        }
+    }
+    : ^( s=stmName {$stream::name=$s.value;} es=streamType {$eventStream=$es.eventStream;})
 	;
-streamType
-    : inputStm[$stream::name]
-	| queryStm[$stream::name]
+streamType returns [EventStream eventStream]
+    :  es = inputStm[$stream::name] {$eventStream=$es.inputEventStream;}
+	|  q = queryStm[$stream::name] {$eventStream=$q.query;}
 	;
 
-inputStm [String name]
+inputStm [String name] returns [InputEventStream inputEventStream]
     @init{
         List<String> nameList =new ArrayList<String>();
         List<Class> classList =new ArrayList<Class>();
@@ -118,11 +123,11 @@ inputStm [String name]
     @after{
         String[] nameArray=new String[nameList.size()];
         Class[] classArray=new Class[classList.size()];
-        streamList.add(new InputEventStream(
-            $name,
-            nameList.toArray(nameArray),
-            classList.toArray(classArray)
-        ));
+        $inputEventStream = new InputEventStream(
+                                $name,
+                                nameList.toArray(nameArray),
+                                classList.toArray(classArray)
+                            );
     }
     : (^(NAME c=type) {nameList.add($NAME.text); classList.add($c.classType);})+
 	;
@@ -177,7 +182,6 @@ queryStm [String name] returns [Query query]
         }else{
             throw new SiddhiCompilationException("Not fall under valid Query type: number of input streams="+$queryStm::inputStreamList.size());
         }
-        streamList.add($query);
     }
     : queryInput queryCond? queryOutput?
 	;
@@ -406,10 +410,10 @@ aggregate returns [String value]
 val returns [String value]
     :unsignNum          {$value=$unsignNum.value;}
     |'+' unsignNum      {$value=$unsignNum.value;}
-    | '-' unsignNum    {$value="-"+$unsignNum.value;}
-    |t='true'            {$value=$t.text;}
-    |f='false'           {$value=$f.text;}
-    |string            {$value=$string.value;}
+    |'-' unsignNum      {$value="-"+$unsignNum.value;}
+    |t='true'           {$value=$t.text;}
+    |f='false'          {$value=$f.text;}
+    |string             {$value=$string.value;}
 	;
 unsignNum returns [String value]
     :NUM                {$value=$NUM.text;}

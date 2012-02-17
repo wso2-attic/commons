@@ -72,5 +72,29 @@ public class SiddhiCompiler {
         }
     }
 
+  public static EventStream parseSingleStream(String source, List<EventStream> existingStreams)
+            throws SiddhiPraserException {
+        try {
+            if (existingStreams == null) {
+                existingStreams = new ArrayList<EventStream>();
+            }
+            SiddhiGrammarLexer lexer = new SiddhiGrammarLexer();
+            lexer.setCharStream(new ANTLRStringStream(source));
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            SiddhiGrammarParser parser = new SiddhiGrammarParser(tokens);
+
+            SiddhiGrammarParser.siddhiGrammar_return r = parser.siddhiGrammar();
+            CommonTree t = (CommonTree) r.getTree();
+
+            CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
+            nodes.setTokenStream(tokens);
+            SiddhiGrammarWalker walker = new SiddhiGrammarWalker(nodes);
+            return walker.stream(existingStreams);
+
+        } catch (Exception e) {
+            throw new SiddhiPraserException(e.getMessage(), e);
+        }
+    }
+
 
 }

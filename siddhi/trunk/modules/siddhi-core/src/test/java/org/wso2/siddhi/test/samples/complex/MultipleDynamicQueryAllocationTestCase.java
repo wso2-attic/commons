@@ -40,6 +40,7 @@ public class MultipleDynamicQueryAllocationTestCase {
 
     private static final Logger log = Logger.getLogger(MultipleDynamicQueryAllocationTestCase.class);
     private volatile int i = 0;
+    private volatile int j = 0;
     private volatile boolean eventCaptured = false;
 
     public static void main(String[] args)
@@ -57,8 +58,8 @@ public class MultipleDynamicQueryAllocationTestCase {
 
     @Test
     public void testCase() throws SiddhiException, ProcessorInitializationException,
-                                  InvalidQueryException, InterruptedException,
-                                  InterruptedException, InterruptedException {
+                                  InvalidQueryException,
+                                  InterruptedException {
 
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -104,52 +105,11 @@ public class MultipleDynamicQueryAllocationTestCase {
         );
         StreamReference streamReference3 = siddhiManager.addQuery(query3);
 
-        siddhiManager.addCallback(new CallbackHandler("StockQuoteOutput") {
-            public void callBack(Event event) {
-                log.debug("       Event captured  " + event + " ");
-                if ((Integer) event.getNthAttribute(0) == 105) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 109) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 110) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 100) {
-                    eventCaptured = true;
-                } else {
-                    Assert.fail();
-                }
-                i++;
-            }
-        }
-        );
-
-        siddhiManager.addCallback(new CallbackHandler("StockQuote") {
-            public void callBack(Event event) {
-                log.debug("       Event captured  " + event + " ");
-                if ((Integer) event.getNthAttribute(0) == 102) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 100) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 105) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 109) {
-                    eventCaptured = true;
-                } else if ((Integer) event.getNthAttribute(0) == 110) {
-                    eventCaptured = true;
-                } else {
-                    Assert.fail();
-                }
-                i++;
-            }
-        }
-        );
+        siddhiManager.addCallback(addCallback1());
+        siddhiManager.addCallback(addCallback2());
         siddhiManager.update();
 
-        inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 102}));
-        inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 105}));
-        inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"WSO2", 100}));
-        inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 110}));
-        inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"WSO2", 109}));
+        sendEvents(inputHandler);
 
 
         log.debug("1st set of Queries end");
@@ -167,23 +127,71 @@ public class MultipleDynamicQueryAllocationTestCase {
                 qf.condition("CSEStream.symbol", EQUAL, "WSO2"));
 
         siddhiManager.addQuery(query4);
-
         siddhiManager.update();
 
+        sendEvents(inputHandler);
+
+        log.debug("2nd set of Queries end");
+        assertEvents();
+        siddhiManager.shutDownTask();
+    }
+
+    private void assertEvents() throws InterruptedException {
+        Thread.sleep(1000);
+
+        Assert.assertTrue(eventCaptured);
+        Assert.assertTrue(i == 10);
+        Assert.assertTrue(j == 8);
+    }
+
+    private CallbackHandler addCallback1() {
+        return new CallbackHandler("StockQuoteOutput") {
+            public void callBack(Event event) {
+                log.debug("       Event captured  " + event + " ");
+                if ((Integer) event.getNthAttribute(0) == 105) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 109) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 110) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 100) {
+                    eventCaptured = true;
+                } else {
+                    Assert.fail();
+                }
+                i++;
+            }
+        };
+    }
+
+    private CallbackHandler addCallback2() {
+        return new CallbackHandler("StockQuote") {
+            public void callBack(Event event) {
+                log.debug("       Event captured  " + event + " ");
+                if ((Integer) event.getNthAttribute(0) == 102) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 100) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 105) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 109) {
+                    eventCaptured = true;
+                } else if ((Integer) event.getNthAttribute(0) == 110) {
+                    eventCaptured = true;
+                } else {
+                    Assert.fail();
+                }
+                j++;
+            }
+        };
+    }
+
+    private void sendEvents(InputHandler inputHandler) {
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 102}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 105}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"WSO2", 100}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 110}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"WSO2", 109}));
-
-        log.debug("2nd set of Queries end");
-
-        Thread.sleep(1000);
-
-        Assert.assertTrue(eventCaptured);
-        Assert.assertTrue(i == 18);
-
-        siddhiManager.shutDownTask();
     }
 
 

@@ -33,22 +33,24 @@ public class SimpleQueryTestCase {
     @Test
     public void QueryTestCase1() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
-            SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
-                                 "StockQuote:=select symbol, price from cseEventStream where symbol=='IBM';");
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "StockQuote:=select symbol, price from cseEventStream where symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);
     }
+
     @Test
     public void QueryTestCase2() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
-            SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
-                                 "StockQuote:=select symbol, price from cseEventStream [win.time=100, std.firstUnique=symbol] where symbol=='IBM';");
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "StockQuote:=select symbol, price from cseEventStream [win.time=100, std.firstUnique=symbol] where symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);
     }
+
     @Test
     public void QueryTestCase3() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
-            SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
-                                 "StockQuote:=select newSymbol=symbol, price from cseEventStream [win.time=100, std.firstUnique=symbol] where symbol=='IBM';");
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "StockQuote:=select newSymbol=symbol, price from cseEventStream [win.time=100, std.firstUnique=symbol] where symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);
     }
 
@@ -59,6 +61,7 @@ public class SimpleQueryTestCase {
                                      "StockQuote:=select symbol, price from cseEventStream [win.time=100, std.firstUnique=symbol] where symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);
     }
+
     @Test
     public void QueryTestCase5() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -67,6 +70,7 @@ public class SimpleQueryTestCase {
         Assert.assertTrue(eventStreamList.size() == 2);
         Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof OrCondition);
     }
+
     @Test
     public void QueryTestCase6() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -75,6 +79,7 @@ public class SimpleQueryTestCase {
         Assert.assertTrue(eventStreamList.size() == 2);
         Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof OrCondition);
     }
+
     @Test
     public void QueryTestCase7() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -83,14 +88,16 @@ public class SimpleQueryTestCase {
         Assert.assertTrue(eventStreamList.size() == 2);
         Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition);
     }
+
     @Test
     public void QueryTestCase8() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
                 SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
                                      "StockQuote:=select symbol, price from cseEventStream where not( symbol=='IBM' or price>10 ) and symbol=='WSO2';");
         Assert.assertTrue(eventStreamList.size() == 2);
-        Assert.assertTrue(((AndCondition)((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof NotCondition);
+        Assert.assertTrue(((AndCondition) ((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof NotCondition);
     }
+
     @Test
     public void QueryTestCase9() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -100,8 +107,9 @@ public class SimpleQueryTestCase {
                                      "from CSEStream[win.time=500] " +
                                      "where  (7+(8*2)< price*2) and symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);
-        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition );
+        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition);
     }
+
     @Test
     public void QueryTestCase10() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -112,10 +120,11 @@ public class SimpleQueryTestCase {
                                      "where   (symbol== 'IBM') and (7+ (8*2) < price*3 )  ;");
 
         Assert.assertTrue(eventStreamList.size() == 2);
-        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition );
-        Assert.assertTrue(((AndCondition)((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition );
-        Assert.assertTrue(((AndCondition)((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof SimpleCondition );
+        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition);
+        Assert.assertTrue(((AndCondition) ((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition);
+        Assert.assertTrue(((AndCondition) ((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof SimpleCondition);
     }
+
     @Test
     public void QueryTestCase11() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -125,11 +134,12 @@ public class SimpleQueryTestCase {
                                      "from CSEStream[win.time=500] " +
                                      "where  7+(8*2)<price*2+price or symbol=='IBM' and symbol=='WSO2' ;");
         Assert.assertTrue(eventStreamList.size() == 2);
-        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof OrCondition );
-        Assert.assertTrue(((OrCondition)((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition );
-        Assert.assertTrue(((OrCondition)((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof AndCondition );
+        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof OrCondition);
+        Assert.assertTrue(((OrCondition) ((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition);
+        Assert.assertTrue(((OrCondition) ((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof AndCondition);
 
     }
+
     @Test
     public void QueryTestCase12() throws SiddhiPraserException {
         List<EventStream> eventStreamList =
@@ -139,10 +149,17 @@ public class SimpleQueryTestCase {
                                      "from CSEStream[win.time=500] " +
                                      "where  7+(8*2)<price*2+price and symbol=='IBM' and symbol=='WSO2' ;");
         Assert.assertTrue(eventStreamList.size() == 2);
-        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition );
-        Assert.assertTrue(((AndCondition)((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition );
-        Assert.assertTrue(((AndCondition)((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof AndCondition );
+        Assert.assertTrue(((Query) eventStreamList.get(1)).getCondition() instanceof AndCondition);
+        Assert.assertTrue(((AndCondition) ((Query) eventStreamList.get(1)).getCondition()).getLeftCondition() instanceof SimpleCondition);
+        Assert.assertTrue(((AndCondition) ((Query) eventStreamList.get(1)).getCondition()).getRightCondition() instanceof AndCondition);
 
+    }
+
+    @Test
+    public void QueryTestCase13() throws SiddhiPraserException {
+        List<EventStream> eventStreamList = SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];");
+        eventStreamList.add(SiddhiCompiler.parseSingleStream("StockQuote:=select symbol, price from cseEventStream where symbol=='IBM';", eventStreamList));
+        Assert.assertTrue(eventStreamList.size() == 2);
     }
 
 }

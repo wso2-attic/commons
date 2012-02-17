@@ -225,15 +225,8 @@ public class SiddhiManager {
 
     public StreamReference addQuery(String siddhiQuery)
             throws SiddhiPraserException, SiddhiException {
-        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiQuery, new ArrayList<EventStream>(eventStreamMap.values()));
-        if (eventStreamList.size() > 1) {
-            String steamIds = "";
-            for (EventStream eventStream : eventStreamList) {
-                steamIds += eventStream.getStreamId() + ", ";
-            }
-            throw new SiddhiPraserException(eventStreamList.size() + " Queries found (" + steamIds + ")insted on one");
-        }
-        return addQuery((Query) eventStreamList.get(0));
+        EventStream eventStream = SiddhiCompiler.parseSingleStream(siddhiQuery, new ArrayList<EventStream>(eventStreamMap.values()));
+        return addQuery((Query) eventStream);
     }
 
     public List<StreamReference> addConfigurations(String siddhiConfigurations)
