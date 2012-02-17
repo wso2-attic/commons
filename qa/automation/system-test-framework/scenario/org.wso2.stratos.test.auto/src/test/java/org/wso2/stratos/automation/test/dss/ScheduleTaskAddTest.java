@@ -129,6 +129,13 @@ public class ScheduleTaskAddTest extends TestTemplateRSS {
         dsTaskInfo.setTaskCount(9);
         dataServiceAdminService.scheduleTask(sessionCookie, dsTaskInfo);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException :", e);
+            Assert.fail("InterruptedException :" + e.getMessage());
+        }
+
         //if task count is 9
         for (int i = 0; i < 10; i++) {
             double currentSalary = getEmployeeSalary(getEmployeeById(employeeId));

@@ -132,6 +132,13 @@ public class ReScheduleTaskTest extends TestTemplateRSS {
         dsTaskInfo.setTaskCount(-1);
         dataServiceAdminService.scheduleTask(sessionCookie, dsTaskInfo);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException :", e);
+            Assert.fail("InterruptedException :" + e.getMessage());
+        }
+
         for (int i = 0; i < 4; i++) {
             double currentSalary = getEmployeeSalary(getEmployeeById(employeeId));
             log.info("current salary after task: " + currentSalary);
@@ -156,6 +163,13 @@ public class ReScheduleTaskTest extends TestTemplateRSS {
         log.info("Schedule Task Start time " + getTime(startTime));
         log.info("Current Time " + getTime(Calendar.getInstance()));
         dataServiceAdminService.rescheduleTask(sessionCookie, dsTaskInfo);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            log.error("InterruptedException :", e);
+            Assert.fail("InterruptedException :" + e.getMessage());
+        }
 
         //task should be stopped
         for (int i = 0; i < 5; i++) {

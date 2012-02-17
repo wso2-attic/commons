@@ -45,8 +45,8 @@ public class DSSTestRunner extends TestSuite {
         suite.addTestSuite(FaultyServiceTest.class);
         suite.addTestSuite(EditFaultyDataServiceTest.class);
         suite.addTestSuite(ServiceFaultyTest.class);
-//        suite.addTestSuite(ScheduleTaskAddTest.class);
-//        suite.addTestSuite(ReScheduleTaskTest.class);
+        suite.addTestSuite(ScheduleTaskAddTest.class);
+        suite.addTestSuite(ReScheduleTaskTest.class);
 
         return suite;
     }
