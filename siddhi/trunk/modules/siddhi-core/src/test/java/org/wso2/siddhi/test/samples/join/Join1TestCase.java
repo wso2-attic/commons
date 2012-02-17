@@ -54,7 +54,7 @@ public class Join1TestCase {
     }
 
     @Test
-    public void testCase() throws SiddhiException, InterruptedException,
+    public void testCase() throws SiddhiException,
                                   EventStreamNotFoundException, InterruptedException {
 
         //Instantiate SiddhiManager

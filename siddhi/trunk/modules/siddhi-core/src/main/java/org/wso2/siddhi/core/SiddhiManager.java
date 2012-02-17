@@ -29,6 +29,7 @@ import org.wso2.siddhi.api.exception.SiddhiPraserException;
 import org.wso2.siddhi.compiler.SiddhiCompiler;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.generator.EventGenerator;
+import org.wso2.siddhi.core.eventstream.StreamReference;
 import org.wso2.siddhi.core.eventstream.handler.InputStreamHandler;
 import org.wso2.siddhi.core.exception.InvalidEventStreamDefinitionException;
 import org.wso2.siddhi.core.exception.InvalidEventStreamIdException;
@@ -61,7 +62,7 @@ public class SiddhiManager {
     private SiddhiThreadPool threadPool;
     private Map<String, EventStream> eventStreamMap;
     private HashMap<String, InputHandler> inputHandlerMap;
-    private static int nodeId = 0;
+    private static int currentNodeId = 0;
 
     private List<EventSource> eventSourceList;
     private List<EventSink> eventSinkList;
@@ -109,6 +110,11 @@ public class SiddhiManager {
 //    }
 
 
+    public static int getNextNodeId() {
+        return currentNodeId++;
+    }
+
+
     public InputHandler addInputEventStream(InputEventStream eventStream)
             throws SiddhiException {
         try {
@@ -125,7 +131,6 @@ public class SiddhiManager {
         return inputHandler;
     }
 
-
     /**
      * Returns the eventstream of the streamId. Either from inputeventstreams or the outputstreams of the query.
      *
@@ -136,7 +141,7 @@ public class SiddhiManager {
         return this.eventStreamMap.get(streamId);
     }
 
-    public int addQuery(Query query) throws SiddhiException {
+    public StreamReference addQuery(Query query) throws SiddhiException {
         Processor processor = null;
         try {
             assignEventStream(query);
@@ -152,20 +157,21 @@ public class SiddhiManager {
         } catch (InvalidEventStreamIdException e) {
             throw new SiddhiException(e);
         }
-        int nodeId = getNextNodeId();
         this.newEventSourceList.add(processor);
         this.newEventSinkList.add(processor);
-        return nodeId;
+        return new StreamReference(query.getStreamId(), processor.getNodeId());
     }
 
-    public SiddhiManager removeNode(int nodeId) {
+
+    public SiddhiManager removeStream(StreamReference streamReference) {
+
         String duplicateEventStreamId = null;
         for (Node aNode : eventSourceList) {
-            if (aNode.getNodeId() == nodeId) {
+            if (aNode.getNodeId() == streamReference.getNodeId()) {
                 oldEventSourceList.add((EventSource) aNode);
                 duplicateEventStreamId = ((EventSource) aNode).getStreamId();
                 for (Node otherNode : eventSourceList) {
-                    if (otherNode.getNodeId() != nodeId && otherNode instanceof EventSource) {
+                    if (otherNode.getNodeId() != streamReference.getNodeId() && otherNode instanceof EventSource) {
                         if (((EventSource) otherNode).getStreamId().equals(((EventSource) aNode).getStreamId())) {
                             duplicateEventStreamId = null;
                             break;
@@ -180,7 +186,7 @@ public class SiddhiManager {
             eventStreamMap.remove(duplicateEventStreamId);
         }
         for (Node aNode : eventSinkList) {
-            if (aNode.getNodeId() == nodeId) {
+            if (aNode.getNodeId() == streamReference.getNodeId()) {
                 oldEventSinkList.add((EventSink) aNode);
                 break;
             }
@@ -188,17 +194,6 @@ public class SiddhiManager {
 
         return this;
     }
-
-    public SiddhiManager removeQuery(Query query) {
-        for (Node aNode : eventSinkList) {
-            if (aNode instanceof Processor && ((Processor) aNode).getQuery().equals(query)) {
-                removeNode(aNode.getNodeId());
-                break;
-            }
-        }
-        return this;
-    }
-
 
     /**
      * to add call back
@@ -224,12 +219,35 @@ public class SiddhiManager {
         }
     }
 
-    public static int getNextNodeId() {
-        return nodeId++;
-    }
-
     public static QueryFactory getQueryFactory() {
         return QueryFactory.getInstance();
+    }
+
+    public StreamReference addQuery(String siddhiQuery)
+            throws SiddhiPraserException, SiddhiException {
+        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiQuery, new ArrayList<EventStream>(eventStreamMap.values()));
+        if (eventStreamList.size() > 1) {
+            String steamIds = "";
+            for (EventStream eventStream : eventStreamList) {
+                steamIds += eventStream.getStreamId() + ", ";
+            }
+            throw new SiddhiPraserException(eventStreamList.size() + " Queries found (" + steamIds + ")insted on one");
+        }
+        return addQuery((Query) eventStreamList.get(0));
+    }
+
+    public List<StreamReference> addConfigurations(String siddhiConfigurations)
+            throws SiddhiPraserException, SiddhiException {
+        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiConfigurations, new ArrayList<EventStream>(eventStreamMap.values()));
+        List<StreamReference> streamReferences = new ArrayList<StreamReference>(eventStreamList.size());
+        for (EventStream eventStream : eventStreamList) {
+            if (eventStream instanceof InputEventStream) {
+                streamReferences.add(new StreamReference(eventStream.getStreamId(), addInputEventStream((InputEventStream) eventStream).getNodeId()));
+            } else {
+                streamReferences.add(addQuery((Query) eventStream));
+            }
+        }
+        return streamReferences;
     }
 
     public void init()
@@ -448,30 +466,6 @@ public class SiddhiManager {
             throw new InvalidQueryException("Wrong query type: " + query.getStreamId());
         }
         return processor;
-    }
-
-
-    public void addConfigurations(String siddhiConfigurations) throws SiddhiPraserException, SiddhiException {
-        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiConfigurations, new ArrayList<EventStream>(eventStreamMap.values()));
-        for (EventStream eventStream : eventStreamList) {
-            if (eventStream instanceof InputEventStream) {
-                addInputEventStream((InputEventStream) eventStream);
-            } else {
-                addQuery((Query) eventStream);
-            }
-        }
-    }
-
-    public int addQuery(String siddhiQuery) throws SiddhiPraserException, SiddhiException {
-        List<EventStream> eventStreamList = SiddhiCompiler.parse(siddhiQuery, new ArrayList<EventStream>(eventStreamMap.values()));
-        if (eventStreamList.size() > 1) {
-            String steamIds = "";
-            for (EventStream eventStream : eventStreamList) {
-                steamIds += eventStream.getStreamId() + ", ";
-            }
-            throw new SiddhiPraserException(eventStreamList.size() + " Queries found (" + steamIds + ")insted on one");
-        }
-        return addQuery((Query) eventStreamList.get(0));
     }
 }
 

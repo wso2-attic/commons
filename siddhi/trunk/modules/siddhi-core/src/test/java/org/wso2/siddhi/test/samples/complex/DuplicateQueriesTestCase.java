@@ -25,6 +25,7 @@ import org.wso2.siddhi.api.eventstream.query.Query;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.EventImpl;
+import org.wso2.siddhi.core.eventstream.StreamReference;
 import org.wso2.siddhi.core.exception.SiddhiException;
 import org.wso2.siddhi.core.node.CallbackHandler;
 import org.wso2.siddhi.core.node.InputHandler;
@@ -78,7 +79,7 @@ public class DuplicateQueriesTestCase {
                 qf.condition("CSEStream.symbol", EQUAL, "IBM")
         );
 
-        int queryId = siddhiManager.addQuery(query1);
+        StreamReference streamReference = siddhiManager.addQuery(query1);
 
         siddhiManager.addCallback(new CallbackHandler("StockQuote") {
             public void callBack(Event event) {
@@ -104,7 +105,7 @@ public class DuplicateQueriesTestCase {
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 110}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"WSO2", 109}));
 
-        siddhiManager.removeQuery(query);
+        siddhiManager.removeStream(streamReference);
 
         Thread.sleep(500);
 

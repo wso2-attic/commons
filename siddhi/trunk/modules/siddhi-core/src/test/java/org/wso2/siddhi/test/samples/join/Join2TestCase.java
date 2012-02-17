@@ -59,7 +59,7 @@ public class Join2TestCase {
     @Test
     public void testCase() throws SiddhiException, EventStreamNotFoundException,
                                   ProcessorInitializationException, InvalidQueryException,
-                                  InterruptedException, InterruptedException {
+                                  InterruptedException {
 
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();

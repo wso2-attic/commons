@@ -25,6 +25,7 @@ import org.wso2.siddhi.api.eventstream.query.Query;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.EventImpl;
+import org.wso2.siddhi.core.eventstream.StreamReference;
 import org.wso2.siddhi.core.exception.InvalidQueryException;
 import org.wso2.siddhi.core.exception.ProcessorInitializationException;
 import org.wso2.siddhi.core.exception.SiddhiException;
@@ -77,7 +78,7 @@ public class DynamicQueryAllocationTestCase {
                 qf.condition("CSEStream.symbol", EQUAL, "IBM")
         );
 
-        siddhiManager.addQuery(query);
+        StreamReference streamReference = siddhiManager.addQuery(query);
 
         siddhiManager.addCallback(new CallbackHandler("StockQuote") {
             public void callBack(Event event) {
@@ -100,7 +101,7 @@ public class DynamicQueryAllocationTestCase {
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 490}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 300}));
         inputHandler.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 350}));
-        siddhiManager.removeQuery(query);
+        siddhiManager.removeStream(streamReference);
 
         Query query1 = qf.createQuery(
                 "StockQuote",

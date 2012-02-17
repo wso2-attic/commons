@@ -22,14 +22,15 @@ import org.junit.Test;
 import org.wso2.siddhi.api.QueryFactory;
 import org.wso2.siddhi.api.eventstream.InputEventStream;
 import org.wso2.siddhi.api.eventstream.query.Query;
-import org.wso2.siddhi.core.exception.SiddhiException;
-import org.wso2.siddhi.core.node.CallbackHandler;
-import org.wso2.siddhi.core.node.InputHandler;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.EventImpl;
-import org.wso2.siddhi.core.exception.ProcessorInitializationException;
+import org.wso2.siddhi.core.eventstream.StreamReference;
 import org.wso2.siddhi.core.exception.InvalidQueryException;
+import org.wso2.siddhi.core.exception.ProcessorInitializationException;
+import org.wso2.siddhi.core.exception.SiddhiException;
+import org.wso2.siddhi.core.node.CallbackHandler;
+import org.wso2.siddhi.core.node.InputHandler;
 
 import static org.wso2.siddhi.api.condition.where.ConditionOperator.EQUAL;
 import static org.wso2.siddhi.api.condition.where.ConditionOperator.GREATERTHAN;
@@ -76,7 +77,7 @@ public class MultipleDynamicQueryAllocationTestCase {
                 qf.from(cseEventStream),
                 qf.condition("CSEStream.symbol", EQUAL, "WSO2")
         );
-        siddhiManager.addQuery(query);
+        StreamReference streamReference = siddhiManager.addQuery(query);
 
         Query query1 = qf.createQuery(
                 "StockQuote",
@@ -84,7 +85,7 @@ public class MultipleDynamicQueryAllocationTestCase {
                 qf.from(cseEventStream),
                 qf.condition("CSEStream.symbol", EQUAL, "IBM")
         );
-        siddhiManager.addQuery(query1);
+        StreamReference streamReference1 = siddhiManager.addQuery(query1);
 
         Query query2 = qf.createQuery(
                 "StockQuoteOutput",
@@ -92,7 +93,7 @@ public class MultipleDynamicQueryAllocationTestCase {
                 qf.from(query1),
                 qf.condition("StockQuote.price", GREATERTHAN, "102")
         );
-        siddhiManager.addQuery(query2);
+        StreamReference streamReference2 = siddhiManager.addQuery(query2);
 
         Query query3 = qf.createQuery(
                 "StockQuoteOutput",
@@ -101,7 +102,7 @@ public class MultipleDynamicQueryAllocationTestCase {
                 qf.condition("StockQuote.price", GREATERTHAN, "102")
 
         );
-        siddhiManager.addQuery(query3);
+        StreamReference streamReference3 = siddhiManager.addQuery(query3);
 
         siddhiManager.addCallback(new CallbackHandler("StockQuoteOutput") {
             public void callBack(Event event) {
@@ -153,8 +154,8 @@ public class MultipleDynamicQueryAllocationTestCase {
 
         log.debug("1st set of Queries end");
         Thread.sleep(500);
-        siddhiManager.removeQuery(query);
-        siddhiManager.removeQuery(query2);
+        siddhiManager.removeStream(streamReference);
+        siddhiManager.removeStream(streamReference2);
 
         siddhiManager.update();
 
@@ -177,7 +178,7 @@ public class MultipleDynamicQueryAllocationTestCase {
 
         log.debug("2nd set of Queries end");
 
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         Assert.assertTrue(eventCaptured);
         Assert.assertTrue(i == 18);
