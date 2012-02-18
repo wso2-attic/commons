@@ -69,6 +69,7 @@ public abstract class Query extends AbstractEventStream {
 
     /**
      * Get the having condition
+     *
      * @return the having condition
      */
     public Condition getHavingCondition() {
@@ -77,6 +78,7 @@ public abstract class Query extends AbstractEventStream {
 
     /**
      * set the having condition
+     *
      * @param havingCondition
      */
     public void having(Condition havingCondition) {
@@ -98,13 +100,19 @@ public abstract class Query extends AbstractEventStream {
         return false;
     }
 
-    public boolean hasHaving(){
-        if (null != havingCondition){
+    public boolean hasHaving() {
+        if (null != havingCondition) {
             return true;
         }
         return false;
     }
 
+    public boolean hasCondition() {
+        if (null != condition) {
+            return true;
+        }
+        return false;
+    }
 
 
 }

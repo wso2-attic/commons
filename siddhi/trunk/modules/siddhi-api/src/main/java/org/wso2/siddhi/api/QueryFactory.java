@@ -87,12 +87,25 @@ public class QueryFactory {
         return new SimpleQuery(streamName, outputDefinition, queryInputStream, condition);
     }
 
+    /**
+     * create a simple query
+     *
+     * @param streamName       name of the query
+     * @param outputDefinition output definition of the query
+     * @param queryInputStream input event stream of the query
+     * @return a simple query
+     */
+    public Query createQuery(String streamName, OutputDefinition outputDefinition,
+                             QueryInputStream queryInputStream) {
+        return createQuery(streamName, outputDefinition, queryInputStream, null);
+    }
+
     private OutputDefinition convertToFullyQualifiedName(QueryInputStream queryInputStream,
                                                          List<String> propertyList) {
         List<String> fullNamePropertyList = new ArrayList<String>();
         for (String attribute : propertyList) {
-            if (attribute.contains("avg(")||attribute.contains("sum(")||attribute.contains("max(")
-                ||attribute.contains("min(")||attribute.contains("count(")  ) {   //to handle aggregations
+            if (attribute.contains("avg(") || attribute.contains("sum(") || attribute.contains("max(")
+                || attribute.contains("min(") || attribute.contains("count(")) {   //to handle aggregations
                 if (!attribute.contains(".")) {
                     String[] attributeFragments = attribute.split("\\(");
                     attribute = attributeFragments[0] + "(" + queryInputStream.getEventStream().getStreamId() + "." + attributeFragments[1];
@@ -103,7 +116,7 @@ public class QueryFactory {
                     String[] attributeFragments2 = attributeFragments1[1].split("\\.");
                     attribute = attributeFragments1[0] + "_" + attributeFragments2[1].replace(")", "");   // default
                 }
-            } else if(!attribute.contains("(")){
+            } else if (!attribute.contains("(")) {
                 if (!attribute.contains(".")) {
                     String[] attributeFragments = attribute.split("=");
                     attribute = queryInputStream.getEventStream().getStreamId() + "." + attributeFragments[attributeFragments.length - 1];

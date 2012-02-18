@@ -79,7 +79,7 @@ public class SimpleProcessor extends AbstractProcessor {
     private static final Logger log = Logger.getLogger(SimpleProcessor.class);
 
     private SimpleQuery query;
-    private Executor executor;
+    private Executor executor = null;
     private Executor havingExecutor;
     private List<MapObj> outPutEventGenMapList;
     private EventGenerator eventGenerator;
@@ -138,8 +138,10 @@ public class SimpleProcessor extends AbstractProcessor {
                 havingExecutor = havingConditionParser.getExecutor();
             }
 
-            ConditionParser conditionParser = new ConditionParser(condition, eventStream);
-            executor = conditionParser.getExecutor();
+            if (query.hasCondition()) {
+                ConditionParser conditionParser = new ConditionParser(condition, eventStream);
+                executor = conditionParser.getExecutor();
+            }
 
 
             //output
@@ -321,7 +323,7 @@ public class SimpleProcessor extends AbstractProcessor {
                 }
 
                 //If match found after executing the 'conditions' do the following
-                if (executor.execute(event)) {
+                if (executor == null || executor.execute(event)) {
                     String groupByConditionKey = null;
                     if (dataItemsInputMapListSize > 0) {
                         StringBuffer groupByConditionKeyBuf = new StringBuffer();
