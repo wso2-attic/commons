@@ -140,11 +140,11 @@ stmStd
 queryCond
     @init { paraphrases.push("in Query Condition"); }
     @after { paraphrases.pop(); }
-	: whareCond? gpByCond ? havingCond? -> ^(COND whareCond? gpByCond ? havingCond?)
+	: whereCond? gpByCond ? havingCond? -> ^(COND whereCond? gpByCond ? havingCond?)
 	| 'pattern' condDefs pattern 		-> ^('pattern'  ^(COND_DEF condDefs)  ^(COND pattern) )
 	| 'sequence' condDefs seq		-> ^('sequence' ^(COND_DEF condDefs) ^(COND seq))
 	;
-whareCond
+whereCond
     @init { paraphrases.push("in Where Condition"); }
     @after { paraphrases.pop(); }
 	:'where' cond			->^('where' cond)

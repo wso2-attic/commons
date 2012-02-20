@@ -248,11 +248,11 @@ stmStd
 	;
 	
 queryCond
-	: ^(COND whareCond? gpByCond ? havingCond?)
+	: ^(COND whereCond? gpByCond ? havingCond?)
 	| ^('pattern'  ^(COND_DEF condDefs)  ^(COND pattern[false] {$queryStm::patternCond=new FollowedByCondition($pattern.condList);}) )
 	| ^('sequence' ^(COND_DEF condDefs) ^(COND seq {$queryStm::SequenceCond=new SequenceCondition($seq.condList);}))
 	;
-whareCond
+whereCond
 	:^('where' cond)
 	{$queryStm::whereCond=(WhereCondition)$cond.value;}
 	;
