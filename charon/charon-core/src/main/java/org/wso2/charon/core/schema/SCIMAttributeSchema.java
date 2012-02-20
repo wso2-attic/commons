@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * This defines the attributes schema as in SCIM Spec.
+ * Unless otherwise specified are optional, modifiable by Consumers, and of type String.
  */
 public class SCIMAttributeSchema implements AttributeSchema {
     //name of the attribute

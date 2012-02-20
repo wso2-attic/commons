@@ -32,6 +32,8 @@ public class SCIMSchemaDefinitions {
         STRING, BOOLEAN, DECIMAL, INTEGER, DATE_TIME, BINARY
     }
 
+    //schemas of the resources as defined in SCIM Schema spec.
+
     /**
      * **********SCIM defined Resource Schemas****************************
      */
@@ -64,10 +66,23 @@ public class SCIMSchemaDefinitions {
 
 
     //attribute schemas of the attributes defined in user schema.
+
+    /*Unique identifier for the User, typically used by the user to directly authenticate to the service provider.*/
     public static final AttributeSchema USER_NAME =
             new SCIMAttributeSchema(SCIMConstants.UserSchemaConstants.USER_NAME,
-                                    SCIMSchemaDefinitions.DataType.STRING, false, null, "",
+                                    SCIMSchemaDefinitions.DataType.STRING, false, null, SCIMConstants.USER_NAME_DESC,
                                     SCIMConstants.CORE_SCHEMA_URI, false, true, false, null);
 
-    public static final AttributeSchema EMAILS = new SCIMAttributeSchema();
+    /*E-mail addresses for the User. The value SHOULD be canonicalized by the Service Provider*/
+    //TODO:how 'work','home' and 'other' specified in emails 
+    public static final AttributeSchema EMAILS =
+            new SCIMAttributeSchema(SCIMConstants.UserSchemaConstants.EMAILS,
+                                    SCIMSchemaDefinitions.DataType.STRING, true,
+                                    SCIMConstants.UserSchemaConstants.EMAIL,
+                                    SCIMConstants.EMAILS_DESC, SCIMConstants.CORE_SCHEMA_URI,
+                                    false, false, false, null);
+
+
+
+    //sub attribute schemas of the attributes defined in User Schema,
 }

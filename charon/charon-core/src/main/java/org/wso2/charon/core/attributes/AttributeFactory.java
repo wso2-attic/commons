@@ -17,6 +17,9 @@
 */
 package org.wso2.charon.core.attributes;
 
+import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.schema.AttributeSchema;
+
 /**
  * Provides a factory interface to create different types of attributes
  * defined in SCIM Schema spec. An implementer can provide a handler to an implementation of this
@@ -25,7 +28,19 @@ package org.wso2.charon.core.attributes;
 public interface AttributeFactory {
 
     public Attribute createSimpleAttribute(String attributeId);
+
     public Attribute createComplexAttribute(String attributeId);
+
     public Attribute createMultiValuedAttribute(String attributeId);
+
+    /**
+     * Create the attribute given the attribute schema and the attribute object - may be with
+     * attribute value set.
+     * @param attributeSchema
+     * @param attribute
+     * @return
+     */
+    public Attribute createAttribute(AttributeSchema attributeSchema, Attribute attribute)
+            throws CharonException;
 
 }

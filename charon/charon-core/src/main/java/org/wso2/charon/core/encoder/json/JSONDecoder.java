@@ -20,11 +20,16 @@ package org.wso2.charon.core.encoder.json;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMResourceSchema;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+
+import java.util.List;
 
 public class JSONDecoder implements Decoder {
 
@@ -42,7 +47,17 @@ public class JSONDecoder implements Decoder {
         try {
             JSONObject decodedJsonObj = new JSONObject(new JSONTokener(scimResourceString));
 
-            //get the attribute list from the schema that defines the given resource
+            //get the attribute schemas list from the schema that defines the given resource
+            List<AttributeSchema> attributeSchemas = resourceSchema.getAttributesList();
+            for (AttributeSchema attributeSchema : attributeSchemas) {
+                Object attributeValObj = decodedJsonObj.opt(attributeSchema.getName());
+                if (attributeValObj instanceof String) {
+                    SimpleAttribute attribute = new SimpleAttribute(attributeSchema.getName());
+                    //attribute.updateValue(attributeValObj, SCIMSchemaDefinitions.DataType.S);
+                }
+
+
+            }
 
             /*JSONParser jsonParser = new JSONParser();
             jsonParser.parse(scimResourceString);*/

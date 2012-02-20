@@ -22,5 +22,9 @@ package org.wso2.charon.core.schema;
  * in the ResourceSchema defined in SCIM.
  */
 public interface AttributeSchema {
+
+    public String getName();
+
+    public void setName(String name);
     
 }

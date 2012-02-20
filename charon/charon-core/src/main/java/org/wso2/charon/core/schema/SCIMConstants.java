@@ -55,6 +55,7 @@ public class SCIMConstants {
     public static class UserSchemaConstants {
         public static final String USER_NAME = "userName";
         public static final String EMAILS = "emails";
+        public static final String EMAIL = "email";
 
         //types for multi-valued attributes like emails
         public static final String HOME = "home";
@@ -97,5 +98,5 @@ public class SCIMConstants {
     public static final String USER_NAME_DESC = "Unique identifier for the User, typically " +
                                                 "used by the user to directly authenticate to the service provider.";
     
-    public static final String EMAILS = "E-mail addresses for the User.The value SHOULD be canonicalized by the Service Provider,";
+    public static final String EMAILS_DESC = "E-mail addresses for the User.The value SHOULD be canonicalized by the Service Provider,";
 }

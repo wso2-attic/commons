@@ -38,18 +38,23 @@ public class SCIMResourceSchema implements ResourceSchema {
     // A complex type that specifies the set of Resource attributes. 
     private List<AttributeSchema> attributeSchemas;
 
-    //define a private method to add core schema attributes to every SCIM resource schema.
-    private void addCoreSchema(){
+    //define a private method to add common schema attributes to every SCIM resource schema.
+
+    private void addCommonSchema() {
+        if (this.name != SCIMConstants.COMMON) {
+            this.attributeSchemas.addAll(SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList());
+        }
 
     }
+
     public SCIMResourceSchema(String name, String schema, String description, String endpoint,
                               AttributeSchema... attributeSchemas) {
         this.name = name;
         this.schema = schema;
         this.description = description;
         this.endpoint = endpoint;
-        addCoreSchema();
         this.attributeSchemas = Arrays.asList(attributeSchemas);
+        addCommonSchema();
     }
 
     public String getEndpoint() {

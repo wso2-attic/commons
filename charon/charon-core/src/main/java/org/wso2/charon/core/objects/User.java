@@ -166,7 +166,7 @@ public class User extends Common {
      */
     /*public String[] getEmails() {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMSchemaConstants.SCIMUserSchemaConstants.EMAILS);
+                SCIMSchemaConstants.SCIMUserSchemaConstants.EMAILS_DESC);
         return emailsAttribute.g       
     }*/
     public String getPrimaryEmail() throws CharonException, NotFoundException {
