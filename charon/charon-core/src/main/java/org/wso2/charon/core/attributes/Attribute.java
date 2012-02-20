@@ -24,10 +24,11 @@ public interface Attribute {
 
     /**
      * Get the name of the attribute.
+     *
      * @return Name of the attribute.
      */
     public String getName();
-    
+
     /**
      * Get the attribute value.
      * @return Value of the attribute.
@@ -47,16 +48,17 @@ public interface Attribute {
 
     /**
      * Set the schema of the attribute.
+     *
      * @param schema
      */
     public void setSchema(String schema);
 
     /**
      * Validate whether the attribute adheres to the SCIM schema.
+     *
      * @param attribute
      * @return
      */
     public boolean validate(Attribute attribute);
 
-    
 }

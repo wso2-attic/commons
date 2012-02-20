@@ -138,13 +138,13 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      *
      * @return
      */
-    public static AttributeFactory getAttributeFactory() {
+    /*public static AttributeFactory getAttributeFactory() {
         if (attributeFactory != null) {
             return attributeFactory;
         } else {
             attributeFactory = new DefaultAttributeFactory();
             return attributeFactory;
         }
-    }
+    }*/
 
 }

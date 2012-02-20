@@ -26,7 +26,7 @@ public class BadRequestException extends AbstractCharonException {
 
     public BadRequestException() {
         this.code = ResponseCodeConstants.CODE_BAD_REQUEST;
-        this.description = ResponseCodeConstants.DESCRIPTION;
+        this.description = ResponseCodeConstants.DESC_BAD_REQUEST;
     }
 
     public BadRequestException(String code, String description) {

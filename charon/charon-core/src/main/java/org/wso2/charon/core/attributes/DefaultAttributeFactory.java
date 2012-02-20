@@ -25,7 +25,7 @@ import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 /**
  * Default implementation of AttributeFactory according to SCIM Schema spec V1.
  */
-public class DefaultAttributeFactory implements AttributeFactory {
+public class DefaultAttributeFactory /*implements AttributeFactory*/ {
 
     public Attribute createSimpleAttribute(String attributeId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
@@ -47,7 +47,7 @@ public class DefaultAttributeFactory implements AttributeFactory {
      * @param attribute
      * @return
      */
-    public Attribute createAttribute(AttributeSchema attributeSchema, Attribute attribute)
+    public static Attribute createAttribute(AttributeSchema attributeSchema, Attribute attribute)
             throws CharonException {
         //Default attribute factory knows about SCIMAttribute schema
         if (attributeSchema instanceof SCIMAttributeSchema) {
@@ -60,11 +60,13 @@ public class DefaultAttributeFactory implements AttributeFactory {
         throw new CharonException(error);
     }
 
-    public Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema, Attribute attribute) {
+    public static Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema, Attribute attribute) {
+        //things like set the attribute properties according to the schema
+        //if multivalued, check if it is simple-multivalued or complex multivalued..
         return null;
     }
 
-    public Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
+    public static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
                                             Attribute attribute) {
         return null;
     }

@@ -99,4 +99,7 @@ public class SCIMConstants {
                                                 "used by the user to directly authenticate to the service provider.";
     
     public static final String EMAILS_DESC = "E-mail addresses for the User.The value SHOULD be canonicalized by the Service Provider,";
+
+    /*Resource endpoints relative to the base SCIM URL*/
+    public static final String USER_ENDPOINT = "/Users";
 }

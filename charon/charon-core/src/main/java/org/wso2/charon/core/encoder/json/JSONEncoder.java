@@ -52,8 +52,7 @@ public class JSONEncoder implements Encoder {
                                      (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();
-
-
+            
             for (Attribute attribute : attributes.values()) {
                 if (attribute instanceof SimpleAttribute) {
                     encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
@@ -201,7 +200,8 @@ public class JSONEncoder implements Encoder {
     protected void encodeMultiValuedAttribute(MultiValuedAttribute multiValuedAttribute,
                                               JSONObject jsonObject) throws JSONException {
         JSONArray jsonArray = new JSONArray();
-
+        //TODO:what if values are set as list of string values.For the moment it is ok, since only schemas
+        //attribute has such values and we handle it separately in encoding.
         List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
         for (Attribute attributeValue : attributeValues) {
             if (attributeValue instanceof SimpleAttribute) {
@@ -213,8 +213,5 @@ public class JSONEncoder implements Encoder {
             }
         }
         jsonObject.put(multiValuedAttribute.getName(), jsonArray);
-
     }
-
-
 }

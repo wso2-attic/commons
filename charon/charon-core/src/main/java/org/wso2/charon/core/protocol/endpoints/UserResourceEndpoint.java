@@ -55,12 +55,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
                 //TODO:needs a validator to see that the User returned by the custom user manager
                 // adheres to SCIM spec.
-
+                
                 //if user not found, return an error in relevant format.
                 if (user == null) {
                     String error = "User not found in the user store.";
                     //log error.
-
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }

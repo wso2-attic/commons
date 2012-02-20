@@ -19,6 +19,7 @@ package org.wso2.charon.core.encoder;
 
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.schema.SCIMResourceSchema;
 
@@ -37,7 +38,7 @@ public interface Decoder {
      */
     public SCIMObject decodeResource(String scimResourceString,
                                      SCIMResourceSchema scimResourceSchema, SCIMObject scimObject)
-            throws BadRequestException;
+            throws BadRequestException, CharonException;
 
     /**
      * Decode the string sent in the SCIM response payload, which is an exception.

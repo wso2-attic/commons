@@ -42,9 +42,10 @@ public class SCIMSchemaDefinitions {
             SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID);
 
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =
-            new SCIMResourceSchema(SCIMConstants.COMMON, SCIMConstants.CORE_SCHEMA_URI,
-                                   SCIMConstants.USER_DESC, null, SCIMSchemaDefinitions.USER_NAME,
-                                   SCIMSchemaDefinitions.EMAILS);
+            new SCIMResourceSchema(SCIMConstants.USER, SCIMConstants.CORE_SCHEMA_URI,
+                                   SCIMConstants.USER_DESC, SCIMConstants.USER_ENDPOINT,
+                                   SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS);
+
     /**
      * *********SCIM defined attribute schemas***************************
      */
@@ -81,7 +82,6 @@ public class SCIMSchemaDefinitions {
                                     SCIMConstants.UserSchemaConstants.EMAIL,
                                     SCIMConstants.EMAILS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                     false, false, false, null);
-
 
 
     //sub attribute schemas of the attributes defined in User Schema,

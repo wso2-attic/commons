@@ -39,9 +39,10 @@ public class MultiValuedAttribute extends AbstractAttribute {
     //whether this is the primary value
     protected String multiValuedAttributePrimary;
     //usually used in a PATCH operation of an attribute.
-    protected String operation;
-    //array of values for a multi-valued attribute
-    protected Object[] multiValuedAttributeValues;*/
+    protected String operation;*/
+
+    //array of string values for a multi-valued attribute
+    protected List<String> stringAttributeValues;
 
     //Multi valued attributes can also have VALUES as an array of complex or simple attributes.
     protected List<Attribute> attributeValues = new ArrayList<Attribute>();
@@ -112,6 +113,24 @@ public class MultiValuedAttribute extends AbstractAttribute {
      */
     public void setValuesAsSubAttributes(List<Attribute> subAttributes) {
         this.attributeValues = subAttributes;
+    }
+
+    /**
+     * There can be multivalued attributes whose value is an array of strings. eg: schemas attribute.
+     * Set the attribute values in such a multivalued attribute.
+     * @return
+     */
+    public List<String> getValuesAsStrings(){
+        return stringAttributeValues;
+    }
+
+    /**
+     * There can be multivalued attributes whose value is an array of strings. eg: schemas attribute.
+     * Set the attribute values in such a multivalued attribute.
+     * @param attributeValues
+     */
+    public void setValuesAsStrings(List<String> attributeValues) {
+        this.stringAttributeValues = attributeValues;
     }
 
     /**
@@ -268,4 +287,5 @@ public class MultiValuedAttribute extends AbstractAttribute {
     public boolean validate(Attribute attribute) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
 }
