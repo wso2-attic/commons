@@ -67,7 +67,7 @@
             <dependency>
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr-runtime</artifactId>
-                <version>${antlr.version}</version>
+                <version>${antlr.runtime.version}</version>
                 <scope>compile</scope>
             </dependency>
         </dependencies>
@@ -131,7 +131,7 @@
                                 <artifactItem>
                                     <groupId>log4j</groupId>
                                     <artifactId>log4j</artifactId>
-                                    <version>1.2.16</version>
+                                    <version>${log4j.version}</version>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.basedir}/samples/lib
                                     </outputDirectory>
@@ -139,7 +139,7 @@
                                 <artifactItem>
                                     <groupId>org.mvel</groupId>
                                     <artifactId>mvel2</artifactId>
-                                    <version>2.0.19</version>
+                                    <version>${mvel2.version}</version>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.basedir}/samples/lib
                                     </outputDirectory>
@@ -147,7 +147,7 @@
                                 <artifactItem>
                                     <groupId>org.antlr</groupId>
                                     <artifactId>antlr-runtime</artifactId>
-                                    <version>3.3</version>
+                                    <version>${antlr.runtime.version}</version>
                                     <overWrite>false</overWrite>
                                     <outputDirectory>${project.basedir}/samples/lib
                                     </outputDirectory>
@@ -162,11 +162,10 @@
 
     <properties>
         <junit.version>4.10</junit.version>
-        <log4j.version>1.2.16</log4j.version>
+        <log4j.version>1.2.14</log4j.version>
         <mvel2.version>2.0.19</mvel2.version>
-        <antlr.version>3.4</antlr.version>
+        <antlr.runtime.version>3.4</antlr.runtime.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
     </properties>
 
 </project>
