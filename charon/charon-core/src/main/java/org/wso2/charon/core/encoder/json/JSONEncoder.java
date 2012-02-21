@@ -154,6 +154,7 @@ public class JSONEncoder implements Encoder {
         Map<String, Attribute> subAttributes = attribute.getSubAttributes();
         for (Attribute attributeValue : subAttributes.values()) {
             if (attributeValue instanceof SimpleAttribute) {
+                //most of the time, this if condition is hit according to current SCIM spec.
                 encodeSimpleAttribute((SimpleAttribute) attributeValue, subObject);
 
             } else if (attributeValue instanceof ComplexAttribute) {

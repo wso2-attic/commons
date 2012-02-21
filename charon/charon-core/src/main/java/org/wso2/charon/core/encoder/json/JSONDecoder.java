@@ -120,7 +120,6 @@ public class JSONDecoder implements Decoder {
         simpleAttribute.setValue(attributeValue);
         return (SimpleAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                          simpleAttribute);
-
     }
 
     /**
@@ -196,13 +195,14 @@ public class JSONDecoder implements Decoder {
             throws CharonException {
         try {
             MultiValuedAttribute multiValuedAttribute = new MultiValuedAttribute(attributeSchema.getName());
-            Map<String, Attribute> complexAttributeValues = new HashMap<String, Attribute>();
+            List<Attribute> complexAttributeValues = new ArrayList<Attribute>();
             //iterate through JSONArray and create the list of values as complex attributes..
             for (int i = 0; i < attributeValues.length(); i++) {
                 JSONObject complexAttributeValue = (JSONObject) attributeValues.get(i);
-                complexAttributeValues.put(attributeSchema.getName(),
-                                           buildComplexAttribute(attributeSchema, complexAttributeValue));
+                complexAttributeValues.add(buildComplexAttribute(attributeSchema, complexAttributeValue));
             }
+            //set values as complex attributes
+            multiValuedAttribute.setValuesAsSubAttributes(complexAttributeValues);
             return (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                                   multiValuedAttribute);
         } catch (JSONException e) {
@@ -220,13 +220,24 @@ public class JSONDecoder implements Decoder {
      * @return
      */
     private ComplexAttribute buildComplexAttribute(AttributeSchema attributeSchema,
-                                                   JSONObject jsonObject) {
+                                                   JSONObject jsonObject) throws CharonException {
+
+        ComplexAttribute complexAttribute = new ComplexAttribute(attributeSchema.getName());
+        Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
         List<SCIMSubAttributeSchema> subAttributeSchemas =
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
-        /*for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
-            ((JSONObject) attributeValObj).opt(subAttributeSchema.getName());
-            //create attribute add to complex attribute
-        }*/
-        return null;
+
+        for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
+
+            //we assume - according to current SCIM spec, that sub attributes are always simple attributes.
+            Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
+            if (subAttributeValue instanceof String) {
+                subAttributesMap.put(subAttributeSchema.getName(),
+                                     buildSimpleAttribute(subAttributeSchema, subAttributeValue));
+            }
+        }
+        complexAttribute.setSubAttributes(subAttributesMap);
+        return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
+                                                                          complexAttribute);
     }
 }

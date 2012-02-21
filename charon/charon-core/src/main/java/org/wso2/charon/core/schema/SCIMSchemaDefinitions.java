@@ -75,7 +75,8 @@ public class SCIMSchemaDefinitions {
                                     SCIMConstants.CORE_SCHEMA_URI, false, true, false, null);
 
     /*E-mail addresses for the User. The value SHOULD be canonicalized by the Service Provider*/
-    //TODO:how 'work','home' and 'other' specified in emails 
+    //TODO:how 'work','home' and 'other' specified in emails
+    //TODO:NOTE:MULTI-VALUED ATTRIBUTES HAVE SUB ATTRIBUTES - DEFINED IN SCHEMA
     public static final AttributeSchema EMAILS =
             new SCIMAttributeSchema(SCIMConstants.UserSchemaConstants.EMAILS,
                                     SCIMSchemaDefinitions.DataType.STRING, true,

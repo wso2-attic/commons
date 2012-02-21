@@ -63,6 +63,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     public static Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema, Attribute attribute) {
         //things like set the attribute properties according to the schema
         //if multivalued, check if it is simple-multivalued or complex multivalued..
+        //if complex-multi-valued, ignore the names of complex attributes. Consider only the names of
+        //sub attributes of the complex attribute.
         return null;
     }
 
