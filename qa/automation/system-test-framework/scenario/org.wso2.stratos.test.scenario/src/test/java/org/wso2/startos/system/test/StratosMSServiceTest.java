@@ -201,7 +201,6 @@ public class StratosMSServiceTest extends TestTemplate {
             serviceclient.setOptions(opts);
 
             result = serviceclient.sendReceive(payload);
-            System.out.println();
 
             if ((result.toString().indexOf(userName)) > 0) {
                 status = true;
