@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.schema;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,24 +37,42 @@ public class SCIMResourceSchema implements ResourceSchema {
     private String endpoint;
     //following is corresponding to the 'attributes' attribute in resource schema.
     // A complex type that specifies the set of Resource attributes. 
-    private List<AttributeSchema> attributeSchemas;
+    private List<AttributeSchema> attributeSchemas = new ArrayList<AttributeSchema>();
 
     //define a private method to add common schema attributes to every SCIM resource schema.
 
     private void addCommonSchema() {
         if (this.name != SCIMConstants.COMMON) {
-            this.attributeSchemas.addAll(SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList());
+            List<AttributeSchema> commonAttributeSchemas =
+                    SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList();
+            for (AttributeSchema commonAttributeSchema : commonAttributeSchemas) {
+                attributeSchemas.add(commonAttributeSchema);
+            }
+            //following add all gave an exception:java.lang.UnsupportedOperationException
+            //this.attributeSchemas.addAll(SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList());
         }
 
     }
 
-    public SCIMResourceSchema(String name, String schema, String description, String endpoint,
-                              AttributeSchema... attributeSchemas) {
+    public static SCIMResourceSchema createSCIMResourceSchema(String name, String schema,
+                                                              String description, String endpoint,
+                                                              AttributeSchema... attributeSchemas) {
+        return new SCIMResourceSchema(name, schema, description, endpoint, attributeSchemas);
+
+    }
+
+    private SCIMResourceSchema(String name, String schema, String description, String endpoint,
+                               AttributeSchema... attributeSchemas) {
         this.name = name;
         this.schema = schema;
         this.description = description;
         this.endpoint = endpoint;
-        this.attributeSchemas = Arrays.asList(attributeSchemas);
+        for (AttributeSchema attributeSchema : attributeSchemas) {
+            this.attributeSchemas.add(attributeSchema);
+        }
+        //when used below, got UnsupportedOperationException when called add/addAll on attributeSchemas
+        // inside addCommonSchema method.
+        //this.attributeSchemas = Arrays.asList((AttributeSchema[]) attributeSchemas);
         addCommonSchema();
     }
 
@@ -90,7 +109,7 @@ public class SCIMResourceSchema implements ResourceSchema {
         this.description = description;
     }
 
-    public List getAttributesList() {
+    public List<AttributeSchema> getAttributesList() {
         return attributeSchemas;
     }
 

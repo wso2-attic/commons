@@ -38,7 +38,7 @@ public interface ResourceSchema {
 
     public void setDescription(String description);
 
-    public List getAttributesList();
+    public List<AttributeSchema> getAttributesList();
 
     public void setAttributeList(List attributesList);
     

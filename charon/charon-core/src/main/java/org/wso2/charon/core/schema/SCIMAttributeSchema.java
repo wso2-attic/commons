@@ -46,12 +46,27 @@ public class SCIMAttributeSchema implements AttributeSchema {
     //A list specifying the contained attributes. OPTIONAL.
     List<SCIMSubAttributeSchema> subAttributes;
 
-    public SCIMAttributeSchema(String name, SCIMSchemaDefinitions.DataType type,
-                               Boolean multiValued,
-                               String multiValuedAttributeChildName, String description,
-                               String schema,
-                               Boolean readOnly, Boolean required, Boolean caseExact,
-                               SCIMSubAttributeSchema... subAttributes) {
+    public static SCIMAttributeSchema createSCIMAttributeSchema(String name,
+                                                                SCIMSchemaDefinitions.DataType type,
+                                                                Boolean multiValued,
+                                                                String multiValuedAttributeChildName,
+                                                                String description,
+                                                                String schema,
+                                                                Boolean readOnly, Boolean required,
+                                                                Boolean caseExact,
+                                                                SCIMSubAttributeSchema... subAttributes) {
+
+        return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                                       schema, readOnly, required, caseExact, subAttributes);
+
+    }
+
+    private SCIMAttributeSchema(String name, SCIMSchemaDefinitions.DataType type,
+                                Boolean multiValued,
+                                String multiValuedAttributeChildName, String description,
+                                String schema,
+                                Boolean readOnly, Boolean required, Boolean caseExact,
+                                SCIMSubAttributeSchema... subAttributes) {
         this.name = name;
         this.type = type;
         this.multiValued = multiValued;

@@ -24,6 +24,7 @@ import org.wso2.charon.deployment.managers.SampleCharonManager;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -63,6 +64,39 @@ public class UsersResource {
             //needs to check the code of the response and return 200 0k or other error codes
             // appropriately.
             return (userResourceEndpoint.get(id, format, userManager)).getResponseMessage();
+
+        } catch (InternalServerException e) {
+            throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @POST
+    public String createUser(@HeaderParam("Content-Type") String inputFormat,
+                             @HeaderParam("Accept") String outputFormat,
+                             @HeaderParam("userName") String userName,
+                             @HeaderParam("password") String password,
+                             @HeaderParam("Authorization") String authorization,
+                             String resourceString) {
+        try {
+            //authenticate the request
+            SampleCharonManager.handleAuthentication(userName, password, authorization);
+
+            //set the format in which the response should be encoded.
+            inputFormat = SampleCharonManager.identifyResponseFormat(inputFormat);
+
+            //set the format in which the response should be encoded.
+            outputFormat = SampleCharonManager.identifyResponseFormat(outputFormat);
+
+            //obtain the user store manager according to the relevant tenant.
+            UserManager userManager = SampleCharonManager.getUserManager(
+                    userName);
+
+            //create charon-SCIM user endpoint and hand-over the request.
+            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+
+            //needs to check the code of the response and return 200 0k or other error codes
+            // appropriately.
+            return (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager)).getResponseMessage();
 
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
