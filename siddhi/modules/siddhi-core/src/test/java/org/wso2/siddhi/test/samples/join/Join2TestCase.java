@@ -23,6 +23,7 @@ import org.wso2.siddhi.api.QueryFactory;
 import org.wso2.siddhi.api.eventstream.InputEventStream;
 import org.wso2.siddhi.api.eventstream.query.Query;
 import org.wso2.siddhi.api.eventstream.query.inputstream.property.WindowType;
+import org.wso2.siddhi.api.exception.SiddhiPraserException;
 import org.wso2.siddhi.core.exception.SiddhiException;
 import org.wso2.siddhi.core.node.CallbackHandler;
 import org.wso2.siddhi.core.node.InputHandler;
@@ -42,38 +43,33 @@ public class Join2TestCase {
     private volatile int i = 0;
     private volatile boolean eventCaptured = false;
 
-    public static void main(String[] args)
-            throws InvalidQueryException, ProcessorInitializationException,
-                   EventStreamNotFoundException, InterruptedException, SiddhiException {
-        // Test code
-        Join2TestCase simSimpleFilterTestCase = new Join2TestCase();
-        simSimpleFilterTestCase.testCase();
-    }
 
     @Before
     public void info() {
-        log.debug("-----Query processed: Testing join on time window-----");
+        log.debug("-----Query processed: Testing join on time window with less time -----");
+        i = 0;
+        eventCaptured = false;
 
     }
 
     @Test
-    public void testCase() throws SiddhiException, EventStreamNotFoundException,
-                                  ProcessorInitializationException, InvalidQueryException,
-                                  InterruptedException {
+    public void testAPI() throws SiddhiException, EventStreamNotFoundException,
+                                 ProcessorInitializationException, InvalidQueryException,
+                                 InterruptedException {
 
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
         QueryFactory qf = SiddhiManager.getQueryFactory();
 
         InputEventStream reserveConfirmationEventStream = new InputEventStream("confirmation",
-                                                                                               new String[]{"time", "memberId", "payMethod"},
-                                                                                               new Class[]{Long.class, Integer.class, String.class}
+                                                                               new String[]{"time", "memberId", "payMethod"},
+                                                                               new Class[]{Long.class, Integer.class, String.class}
         );
 
 
         InputEventStream requestEventStream = new InputEventStream("request",
-                                                                                   new String[]{"time", "memberId", "noOfRooms"},
-                                                                                   new Class[]{Long.class, Integer.class, Integer.class}
+                                                                   new String[]{"time", "memberId", "noOfRooms"},
+                                                                   new Class[]{Long.class, Integer.class, Integer.class}
         );
 
 
@@ -88,23 +84,43 @@ public class Join2TestCase {
         );
 
         siddhiManager.addQuery(query);
-
-        siddhiManager.addCallback(new CallbackHandler("bought") {
-            public void callBack(Event event) {
-                log.debug("       Event captured  " + event + " ");
-                if ((Integer) event.getNthAttribute(0) == 101 & i == 0) {
-                    eventCaptured = true;
-                }
-                if ((Integer) event.getNthAttribute(0) == 105 & i == 1) {
-                    eventCaptured = true;
-                }
-                i++;
-            }
-        }
-        );
+        siddhiManager.addCallback(assignCallback());
 
         siddhiManager.update();
 
+        sendEvents(siddhiManager);
+        assertEvents();
+        siddhiManager.shutDownTask();
+    }
+
+    @Test
+    public void testQuery() throws SiddhiException, EventStreamNotFoundException,
+                                   ProcessorInitializationException, InvalidQueryException,
+                                   InterruptedException, SiddhiPraserException {
+
+        //Instantiate SiddhiManager
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        siddhiManager.addConfigurations("confirmation:=timeStamp[long], memberId[int], payMethod[string];" +
+                                        "request:=timeStamp[long], memberId[int], noOfRooms[int];" +
+                                        "bought:=select id=confirmation.memberId, payMethod=confirmation.payMethod, rooms=request.noOfRooms from confirmation[win.length=50],request[win.time=500] where confirmation.memberId==request.memberId;");
+
+        siddhiManager.addCallback(assignCallback());
+
+        siddhiManager.update();
+
+        sendEvents(siddhiManager);
+        assertEvents();
+        siddhiManager.shutDownTask();
+    }
+
+    private void assertEvents() {
+        Assert.assertTrue(eventCaptured);
+        Assert.assertTrue(i == 2);
+    }
+
+    private void sendEvents(SiddhiManager siddhiManager)
+            throws SiddhiException, InterruptedException {
         InputHandler inputHandlerRequest = siddhiManager.getInputHandler("request");
         InputHandler inputHandlerConfirmation = siddhiManager.getInputHandler("confirmation");
 
@@ -122,9 +138,20 @@ public class Join2TestCase {
         inputHandlerConfirmation.sendEvent(new EventImpl("confirmation", new Object[]{31, 105, "card"}));
 
         Thread.sleep(1000);
+    }
 
-        Assert.assertTrue(eventCaptured);
-        Assert.assertTrue(i == 2);
-        siddhiManager.shutDownTask();
+    private CallbackHandler assignCallback() {
+        return new CallbackHandler("bought") {
+            public void callBack(Event event) {
+                log.debug("       Event captured  " + event + " ");
+                if ((Integer) event.getNthAttribute(0) == 101 & i == 0) {
+                    eventCaptured = true;
+                }
+                if ((Integer) event.getNthAttribute(0) == 105 & i == 1) {
+                    eventCaptured = true;
+                }
+                i++;
+            }
+        };
     }
 }

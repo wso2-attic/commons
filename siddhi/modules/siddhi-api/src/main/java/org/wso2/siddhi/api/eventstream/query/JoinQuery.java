@@ -56,7 +56,7 @@ public class JoinQuery extends Query {
                 } else if (right.getStreamId().equals(streamId)) {
                     classArray[i] = right.getTypeForName(attribute);
                 } else {
-                    throw new InvalidEventStreamIdException("Wrong stream ID");
+                    throw new InvalidEventStreamIdException("Wrong stream ID "+ streamId);
                 }
 
             }

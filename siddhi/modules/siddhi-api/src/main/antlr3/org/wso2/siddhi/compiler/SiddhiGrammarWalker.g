@@ -170,6 +170,9 @@ queryStm [String name] returns [Query query]
                                      $queryStm::outputDef,
                                      qf.innerJoin($queryStm::inputStreamList.get(0),$queryStm::inputStreamList.get(1)),
                                      $queryStm::whereCond);
+            if($queryStm::havingCond!=null){
+                $query.having($queryStm::havingCond);
+            }
         } else if($queryStm::inputStreamList.size()==1 ){
              $query = qf.createQuery( $name, $queryStm::outputDef,$queryStm::inputStreamList.get(0),$queryStm::whereCond);
 

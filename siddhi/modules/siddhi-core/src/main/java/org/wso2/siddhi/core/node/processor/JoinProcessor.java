@@ -55,6 +55,7 @@ public class JoinProcessor extends AbstractProcessor {
     private JoinQuery query;
 
     private Executor executor;
+    private Executor havingExecutor =null;
     private List<StreamMapObj> outPutEventGenMapList;
 
     private EventGenerator eventGenerator;
@@ -102,6 +103,8 @@ public class JoinProcessor extends AbstractProcessor {
             List<EventStream> inputEventStreams = new ArrayList<EventStream>();
             inputEventStreams.add(joinEventStream.getQueryLeftInputStream().getEventStream());
             inputEventStreams.add(joinEventStream.getQueryRightInputStream().getEventStream());
+
+            initHavingExecutor();
 
             ConditionParser conditionParser = new ConditionParser(condition, inputEventStreams);
             executor = conditionParser.getExecutor();
@@ -204,11 +207,28 @@ public class JoinProcessor extends AbstractProcessor {
                 }
             }
             try {
-                outputEventStream.put(eventGenerator.createEvent(obj));
+                Event generatedEvent = eventGenerator.createEvent(obj);
+                if (successHavingCondition(generatedEvent)) {
+                    outputEventStream.put(generatedEvent);
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }
+    }
+
+    private void initHavingExecutor()
+            throws UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException,
+                   PropertyFormatException, SiddhiException {
+        if (query.hasHaving()) {
+            Condition havingCondition = query.getHavingCondition();
+            ConditionParser havingConditionParser = new ConditionParser(havingCondition, query);
+            havingExecutor = havingConditionParser.getExecutor();
+        }
+    }
+
+    private boolean successHavingCondition(Event generatedEvent) {
+        return havingExecutor==null||havingExecutor.execute(generatedEvent);
     }
 
     class EventCouple {

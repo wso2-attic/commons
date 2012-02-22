@@ -13,7 +13,7 @@
  * under the License.
  */
 
-package org.wso2.siddhi.test.samples.join;
+package org.wso2.siddhi.test.samples.join.clause;
 
 import junit.framework.Assert;
 import org.apache.log4j.Logger;
@@ -33,25 +33,25 @@ import org.wso2.siddhi.core.node.CallbackHandler;
 import org.wso2.siddhi.core.node.InputHandler;
 
 import static org.wso2.siddhi.api.condition.where.ConditionOperator.EQUAL;
+import static org.wso2.siddhi.api.condition.where.ConditionOperator.GREATERTHAN;
 
 
-public class Join1TestCase {
+public class HavingTestCase {
 
-    private static final Logger log = Logger.getLogger(Join1TestCase.class);
+    private static final Logger log = Logger.getLogger(HavingTestCase.class);
     private volatile int i = 0;
     private volatile boolean eventCaptured = false;
 
     @Before
     public void info() {
-        log.debug("-----Query processed: Testing join on time window-----");
+        log.debug("-----Query processed: Testing join with having clause and time window-----");
         i = 0;
         eventCaptured = false;
-
     }
 
     @Test
     public void testAPI() throws SiddhiException,
-                                  EventStreamNotFoundException, InterruptedException {
+                                 EventStreamNotFoundException, InterruptedException {
 
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -81,11 +81,12 @@ public class Join1TestCase {
                              qf.from(requestEventStream).setWindow(WindowType.TIME, 1000)),
                 qf.condition("confirmation.memberId", EQUAL, "request.memberId")
         );
+        query.having(qf.condition("bought.id", GREATERTHAN, "102"));
 
         siddhiManager.addQuery(query);
-        siddhiManager.addCallback(addCallback());
+        siddhiManager.addCallback(assignCallback());
+
         siddhiManager.update();
-        Thread.sleep(1000);
 
         sendEvents(siddhiManager);
         assertEvents();
@@ -102,11 +103,14 @@ public class Join1TestCase {
 
         siddhiManager.addConfigurations("confirmation:=timeStamp[long], memberId[int], payMethod[string];" +
                                         "request:=timeStamp[long], memberId[int], noOfRooms[int];" +
-                                        "bought:=select id=confirmation.memberId, payMethod=confirmation.payMethod, rooms=request.noOfRooms from confirmation[win.length=50],request[win.time=1000] where confirmation.memberId==request.memberId;");
+                                        "bought:=select id=confirmation.memberId, payMethod=confirmation.payMethod, rooms=request.noOfRooms " +
+                                        "from confirmation[win.length=50],request[win.time=1000] " +
+                                        "where confirmation.memberId==request.memberId " +
+                                        "having id>102;");
 
-        siddhiManager.addCallback(addCallback());
+        siddhiManager.addCallback(assignCallback());
+
         siddhiManager.update();
-        Thread.sleep(1000);
 
         sendEvents(siddhiManager);
         assertEvents();
@@ -117,10 +121,13 @@ public class Join1TestCase {
         Thread.sleep(1000);
 
         Assert.assertTrue(eventCaptured);
-        Assert.assertTrue(i == 5);
+        Assert.assertTrue(i == 3);
     }
 
-    private void sendEvents(SiddhiManager siddhiManager) throws SiddhiException {
+    private void sendEvents(SiddhiManager siddhiManager)
+            throws InterruptedException, SiddhiException {
+        Thread.sleep(1000);
+
         InputHandler inputHandlerRequest = siddhiManager.getInputHandler("request");
         InputHandler inputHandlerConfirmation = siddhiManager.getInputHandler("confirmation");
 
@@ -142,17 +149,11 @@ public class Join1TestCase {
         inputHandlerConfirmation.sendEvent(new EventImpl("confirmation", new Object[]{31, 105, "card"}));
     }
 
-    private CallbackHandler addCallback() {
+    private CallbackHandler assignCallback() {
         return new CallbackHandler("bought") {
             public void callBack(Event event) {
                 log.debug("       Event captured  " + event + " ");
-                if ((Integer) event.getNthAttribute(0) == 101) {
-                    eventCaptured = true;
-                    i++;
-                } else if ((Integer) event.getNthAttribute(0) == 102) {
-                    eventCaptured = true;
-                    i++;
-                } else if ((Integer) event.getNthAttribute(0) == 103) {
+                if ((Integer) event.getNthAttribute(0) == 103) {
                     eventCaptured = true;
                     i++;
                 } else if ((Integer) event.getNthAttribute(0) == 104) {

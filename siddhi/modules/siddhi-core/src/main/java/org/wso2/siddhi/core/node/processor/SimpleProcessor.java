@@ -80,7 +80,7 @@ public class SimpleProcessor extends AbstractProcessor {
 
     private SimpleQuery query;
     private Executor executor = null;
-    private Executor havingExecutor;
+    private Executor havingExecutor =null;
     private List<MapObj> outPutEventGenMapList;
     private EventGenerator eventGenerator;
     private List<StreamMapObj> dataItemsInputMapList;                 //hold the mapping of Event attributes to groupsToDataItemMap
@@ -132,11 +132,7 @@ public class SimpleProcessor extends AbstractProcessor {
             Condition condition = query.getCondition();
             EventStream eventStream = query.getQueryInputStream().getEventStream();
 
-            if (query.hasHaving()) {
-                Condition havingCondition = query.getHavingCondition();
-                ConditionParser havingConditionParser = new ConditionParser(havingCondition, query);
-                havingExecutor = havingConditionParser.getExecutor();
-            }
+            initHavingExecutor();
 
             if (query.hasCondition()) {
                 ConditionParser conditionParser = new ConditionParser(condition, eventStream);
@@ -399,12 +395,8 @@ public class SimpleProcessor extends AbstractProcessor {
                     } else {
                         generatedEvent = eventGenerator.createExpiredEvent(obj);
                     }
-                    if (!query.hasHaving()) {
+                    if (successHavingCondition(generatedEvent)) {
                         outputEventStream.put(generatedEvent);
-                    } else {
-                        if (havingExecutor.execute(generatedEvent)) {
-                            outputEventStream.put(generatedEvent);
-                        }
                     }
 
 
@@ -415,6 +407,20 @@ public class SimpleProcessor extends AbstractProcessor {
         }
         log.debug(this.getClass().getSimpleName() + " ended");
 
+    }
+
+    private void initHavingExecutor()
+            throws UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException,
+                   PropertyFormatException, SiddhiException {
+        if (query.hasHaving()) {
+            Condition havingCondition = query.getHavingCondition();
+            ConditionParser havingConditionParser = new ConditionParser(havingCondition, query);
+            havingExecutor = havingConditionParser.getExecutor();
+        }
+    }
+
+    private boolean successHavingCondition(Event generatedEvent) {
+        return havingExecutor==null||havingExecutor.execute(generatedEvent);
     }
 
     private Class getType(String streamId, String propertyAttribute) {
