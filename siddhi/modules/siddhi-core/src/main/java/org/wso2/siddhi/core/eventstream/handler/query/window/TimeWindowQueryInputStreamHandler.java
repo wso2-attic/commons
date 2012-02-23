@@ -132,17 +132,15 @@ public class TimeWindowQueryInputStreamHandler extends AbstractTimeWindowQueryIn
         }
 
         private Event peekEvent() {
-            Event event = window.peek();
-            if (event != null) {
-                return event;
-            } else {
+            Event event;
+            for ( event = window.peek(); event == null; event = window.peek()) {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                return peekEvent();
             }
+            return event;
         }
     }
 
