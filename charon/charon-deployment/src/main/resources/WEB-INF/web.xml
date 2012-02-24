@@ -36,6 +36,6 @@
 
 	<servlet-mapping>
 		<servlet-name>restSdkService</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
+		<url-pattern>/scim/*</url-pattern>
 	</servlet-mapping>
 </web-app>

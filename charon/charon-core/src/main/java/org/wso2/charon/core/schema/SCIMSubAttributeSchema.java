@@ -42,16 +42,30 @@ public class SCIMSubAttributeSchema implements AttributeSchema {
     //A collection of canonical values
     private List<String> canonicalValues;
 
-    public SCIMSubAttributeSchema(String name, DataType type, String description,
-                                  Boolean readOnly, Boolean required, Boolean caseExact,
-                                  String... canonicalValues) {
+    public static SCIMSubAttributeSchema createSCIMSubAttributeSchema(String name, DataType type,
+                                                                      String description,
+                                                                      Boolean readOnly,
+                                                                      Boolean required,
+                                                                      Boolean caseExact,
+                                                                      String... canonicalValues) {
+        return new SCIMSubAttributeSchema(name, type, description, readOnly, required, caseExact, canonicalValues);
+    }
+
+    private SCIMSubAttributeSchema(String name, DataType type, String description,
+                                   Boolean readOnly, Boolean required, Boolean caseExact,
+                                   String... canonicalValues) {
         this.name = name;
         this.type = type;
         this.description = description;
         this.readOnly = readOnly;
         this.required = required;
         this.caseExact = caseExact;
-        this.canonicalValues = Arrays.asList(canonicalValues);
+        if (canonicalValues != null) {
+            for (String canonicalValue : canonicalValues) {
+
+                this.canonicalValues.add(canonicalValue);
+            }
+        }
     }
 
     public String getName() {

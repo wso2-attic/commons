@@ -67,8 +67,10 @@ public class SCIMResourceSchema implements ResourceSchema {
         this.schema = schema;
         this.description = description;
         this.endpoint = endpoint;
-        for (AttributeSchema attributeSchema : attributeSchemas) {
-            this.attributeSchemas.add(attributeSchema);
+        if (attributeSchemas != null) {
+            for (AttributeSchema attributeSchema : attributeSchemas) {
+                this.attributeSchemas.add(attributeSchema);
+            }
         }
         //when used below, got UnsupportedOperationException when called add/addAll on attributeSchemas
         // inside addCommonSchema method.

@@ -97,8 +97,22 @@ public class SCIMConstants {
      */
     public static final String USER_NAME_DESC = "Unique identifier for the User, typically " +
                                                 "used by the user to directly authenticate to the service provider.";
-    
+
     public static final String EMAILS_DESC = "E-mail addresses for the User.The value SHOULD be canonicalized by the Service Provider,";
+
+    public static final String TYPE_DESC = "A label indicating the attribute's function; e.g., \"work\" or \"home\".";
+
+    public static final String PRIMARY_DESC = "A Boolean value indicating the 'primary' or preferred attribute value for this attribute, " +
+                                              "e.g. the preferred mailing address or primary e-mail address. " +
+                                              "The primary attribute value 'true' MUST appear no more than once";
+
+    public static final String DISPLAY_DESC = "A human readable name, primarily used for display purposes. READ-ONLY.";
+
+    public static final String OPERATION_DESC = "The operation to perform on the multi-valued attribute during a PATCH request. " +
+                                                "The only valid value is \"delete\", which signifies that this instance should be removed from the Resource.";
+
+    public static final String VALUE_DESC = "The attribute's significant value; e.g., the e-mail address, phone number, etc. " +
+                                            "Attributes that define a \"value\" sub-attribute MAY be alternately represented as a collection of primitive types";
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";

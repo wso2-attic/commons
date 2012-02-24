@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.wso2.charon.core.attributes.Attribute;
-import org.wso2.charon.core.attributes.AttributeFactory;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
@@ -34,9 +33,8 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.DefaultResourceFactory;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.schema.AttributeSchema;
+import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
-import org.wso2.charon.core.schema.SCIMResourceSchema;
-import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 
 import java.util.ArrayList;
@@ -51,11 +49,11 @@ public class JSONDecoder implements Decoder {
      * Decode the resource string sent in the SCIM request/response payload.
      *
      * @param scimResourceString
-     * @param scimObject
-     * @return
+     * @param resourceSchema
+     *@param scimObject  @return
      */
     public SCIMObject decodeResource(String scimResourceString,
-                                     SCIMResourceSchema resourceSchema, SCIMObject scimObject)
+                                     ResourceSchema resourceSchema, SCIMObject scimObject)
             throws BadRequestException, CharonException {
         try {
             //decode the string into json representation

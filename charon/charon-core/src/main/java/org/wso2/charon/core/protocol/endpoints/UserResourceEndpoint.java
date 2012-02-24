@@ -55,7 +55,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
                 //TODO:needs a validator to see that the User returned by the custom user manager
                 // adheres to SCIM spec.
-                
+
                 //if user not found, return an error in relevant format.
                 if (user == null) {
                     String error = "User not found in the user store.";
@@ -138,7 +138,16 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 throw new InternalServerException();
             }
             //encode the newly created SCIM user object.
-            String encodedUser = encoder.encodeSCIMObject(createdUser);
+            String encodedUser;
+            if (createdUser != null) {
+
+                encodedUser = encoder.encodeSCIMObject(createdUser);
+
+            } else {
+                //TODO:log the error
+                String error = "Newly created User resource is null..";
+                throw new InternalServerException();
+            }
 
             //put the URI of the User object in the response header parameter.
             return buildResponse(ResponseCodeConstants.CODE_OK, encodedUser);

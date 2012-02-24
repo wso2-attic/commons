@@ -28,7 +28,7 @@ import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.Common;
+import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
 
@@ -43,7 +43,7 @@ public class JSONEncoder implements Encoder {
      * @param abstractSCIMObject
      * @return the resulting string after encoding.
      */
-    public String encodeSCIMObject(Common abstractSCIMObject) throws CharonException {
+    public String encodeSCIMObject(AbstractSCIMObject abstractSCIMObject) throws CharonException {
         //root json object containing the encoded SCIM Object.
         JSONObject rootObject = new JSONObject();
         try {

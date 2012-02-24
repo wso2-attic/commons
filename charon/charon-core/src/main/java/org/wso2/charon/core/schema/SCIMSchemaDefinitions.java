@@ -18,6 +18,7 @@
 package org.wso2.charon.core.schema;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class contains the schema definitions in
@@ -31,6 +32,34 @@ public class SCIMSchemaDefinitions {
     public static enum DataType {
         STRING, BOOLEAN, DECIMAL, INTEGER, DATE_TIME, BINARY
     }
+
+    /*sub attribute schemas for the sub attributes defined in SCIM Schema - including the common set
+    * of sub attributes in Multi-Valued Attributes.*/
+
+    //TODO:add canonical values.
+    public static final SCIMSubAttributeSchema TYPE =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.TYPE,
+                                                                DataType.STRING, SCIMConstants.TYPE_DESC,
+                                                                false, false, false, null);
+    public static final SCIMSubAttributeSchema PRIMARY =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.PRIMARY,
+                                                                DataType.BOOLEAN, SCIMConstants.PRIMARY_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema DISPLAY =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.DISPLAY,
+                                                                DataType.STRING, SCIMConstants.DISPLAY_DESC,
+                                                                true, false, false, null);
+
+    public static final SCIMSubAttributeSchema OPERATION =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.OPERATION,
+                                                                DataType.STRING, SCIMConstants.OPERATION_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema VALUE =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.VALUE,
+                                                                DataType.STRING, SCIMConstants.VALUE_DESC,
+                                                                false, false, false, null);
 
     /**
      * *********SCIM defined attribute schemas***************************

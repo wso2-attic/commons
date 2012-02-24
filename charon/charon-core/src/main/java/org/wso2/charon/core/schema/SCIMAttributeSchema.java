@@ -56,8 +56,17 @@ public class SCIMAttributeSchema implements AttributeSchema {
                                                                 Boolean caseExact,
                                                                 SCIMSubAttributeSchema... subAttributes) {
 
-        return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
-                                       schema, readOnly, required, caseExact, subAttributes);
+        /*if this is multivalued attribute, add the common sub attributes of a multivalued attribute*/
+        if (multiValued) {
+            return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                                           schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,
+                                           SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
+                                           SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION);
+        } else {
+
+            return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                                           schema, readOnly, required, caseExact, subAttributes);
+        }
 
     }
 

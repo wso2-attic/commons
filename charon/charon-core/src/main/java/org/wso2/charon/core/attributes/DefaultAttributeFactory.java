@@ -71,6 +71,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
 
     public static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
                                                    Attribute attribute) {
-        return null;
+        //check things like if it is a sub attribute like "operation" in a multivalued attribute,
+        //only allowed value is delete likewise.
+        return attribute;
     }
 }

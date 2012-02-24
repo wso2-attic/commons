@@ -27,7 +27,7 @@ import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 /**
  * Represents the object which is a collection of attributes defined by SCIM User-schema.
  */
-public class User extends Common {
+public class User extends AbstractSCIMObject {
 
     public User() {
         super();
@@ -46,7 +46,7 @@ public class User extends Common {
                     SCIMConstants.UserSchemaConstants.USER_NAME)).updateValue(
                     userName, DataType.STRING);
         } else {
-            //TODO:since the constrctor is too long, pass an attribute schema. 
+            //TODO:since the constructor is too long, pass an attribute schema.
             SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMConstants.UserSchemaConstants.USER_NAME,
                     SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,

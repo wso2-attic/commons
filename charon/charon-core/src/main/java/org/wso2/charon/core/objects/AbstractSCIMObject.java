@@ -38,7 +38,14 @@ import java.util.Map;
  * This represents the object which is a collection of attributes defined by common-schema.
  * These attributes MUST be included in all other objects which become SCIM resources.
  */
-public abstract class Common implements SCIMObject {
+public abstract class AbstractSCIMObject implements SCIMObject {
+
+    /**
+     * Constructor that sets mandatory fields in a SCIM object.. like Core Schema URI et.
+     */
+    public AbstractSCIMObject(){
+
+    }
 
     /*Collection of attributes which constitute this resource.*/
     protected Map<String, Attribute> attributeList = new HashMap<String, Attribute>();

@@ -96,8 +96,9 @@ public class UsersResource {
 
             //needs to check the code of the response and return 200 0k or other error codes
             // appropriately.
-            return (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager)).getResponseMessage();
-
+            return //Response.ok().toString();
+            (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager)).getResponseMessage();
+            //TODO: get the SCIM response, set the approprate code in the actual reponse.
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }
