@@ -43,10 +43,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
     /*Keeps a map of supported encoders of SCIM server side.*/
     private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();
-
-
-    private static AttributeFactory attributeFactory;
-
+    
     /**
      * Returns the encoder given the encoding format.
      *
@@ -119,19 +116,16 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
     }
 
+    /**
+     * Build SCIM Response given the response code and response message.
+     * @param responseCode
+     * @param responseMessage
+     * @return
+     */
     protected SCIMResponse buildResponse(String responseCode, String responseMessage) {
         return new SCIMResponse(responseCode, responseMessage);
     }
-
-    /**
-     * Allows an extension point for the implementers to register a custom AttributeFactory Impl.
-     *
-     * @param customAttributeFactory
-     */
-    public static void registerAttributeFactory(AttributeFactory customAttributeFactory) {
-        attributeFactory = customAttributeFactory;
-    }
-
+    
     /**
      * Obtain the AttributeFactory to be used in current deployment. If a custom implementation is
      * not registered, use the DefaultAttributeFactory.

@@ -47,6 +47,11 @@ public class ResponseCodeConstants {
 
     public static final String CODE_OK = "200";
 
+    public static final String CODE_CREATED = "201";
+    public static final String DESC_CREATED = "Created";
+
+    //Custom HTTP headers used in SCIM communication
+    public static final String LOCATION_HEADER = "Location";
 
     //Other common error messages thrown by the API
     public static final String MISMATCH_IN_REQUESTED_DATATYPE = "Requested datatype doesn't match " +

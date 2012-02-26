@@ -43,7 +43,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     /**
      * Constructor that sets mandatory fields in a SCIM object.. like Core Schema URI et.
      */
-    public AbstractSCIMObject(){
+    public AbstractSCIMObject() {
 
     }
 
@@ -139,10 +139,9 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      * Get the value of id attribute.
      * Unique identifier for the SCIM Resource as defined by the Service Provider.
      *
-     * @param id
      * @return
      */
-    public String getId(String id) throws CharonException, NotFoundException {
+    public String getId() throws CharonException, NotFoundException {
         if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
@@ -176,17 +175,15 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     /**
      * Get the value of externalId attribute.
      *
-     * @param id
      * @return
      * @throws CharonException
-     * @throws NotFoundException
      */
-    public String getExternalId(String id) throws CharonException, NotFoundException {
+    public String getExternalId() throws CharonException {
         if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
         } else {
-            throw new NotFoundException();
+            return null;
         }
     }
 

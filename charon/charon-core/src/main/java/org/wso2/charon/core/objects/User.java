@@ -17,12 +17,17 @@
 */
 package org.wso2.charon.core.objects;
 
+import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the object which is a collection of attributes defined by SCIM User-schema.
@@ -63,13 +68,13 @@ public class User extends AbstractSCIMObject {
      * @throws NotFoundException
      * @throws CharonException
      */
-    public String getUserName() throws NotFoundException, CharonException {
+    public String getUserName() throws CharonException {
         if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.USER_NAME)).getStringValue();
 
         } else {
-            throw new NotFoundException();
+            return null;
         }
     }
 
@@ -160,15 +165,45 @@ public class User extends AbstractSCIMObject {
     }
 
     /**
-     * TODO
+     * Get the email addresses as an array of Strings. Since emails is an multi-valued attribute
+     * and since a multi-valued attribute can contain the values in different ways, needs to check
+     * for all those possible ways.
      *
      * @return
      */
-    /*public String[] getEmails() {
+    public String[] getEmails() throws CharonException {
+
+        //get the emails attribute
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
-                SCIMSchemaConstants.SCIMUserSchemaConstants.EMAILS_DESC);
-        return emailsAttribute.g       
-    }*/
+                SCIMConstants.UserSchemaConstants.EMAILS);
+        //check if the values are stored just as a list of Strings.
+        if (emailsAttribute.getValuesAsStrings() != null &&
+            emailsAttribute.getValuesAsStrings().size() != 0) {
+
+            return (String[]) emailsAttribute.getValuesAsStrings().toArray();
+        } else {
+            //check is the values are stored as simple of complex attributes
+            List<Attribute> subAttributes = emailsAttribute.getValuesAsSubAttributes();
+            List<String> values = new ArrayList<String>();
+            if (subAttributes != null && subAttributes.size() != 0) {
+                for (Attribute subAttribute : subAttributes) {
+                    //if value is a simple attribute of type: "value : "email";
+                    if (subAttribute instanceof SimpleAttribute) {
+                        values.add((String) ((SimpleAttribute) subAttribute).getValue());
+                    } else if (subAttribute instanceof ComplexAttribute) {
+                        //if the value is a complex attribute itself, obtain the "value" sub attribute and get the value
+                        SimpleAttribute valueAttribute =
+                                (SimpleAttribute) (((ComplexAttribute) subAttribute).getSubAttribute(
+                                        SCIMConstants.CommonSchemaConstants.VALUE));
+                        values.add((String) valueAttribute.getValue());
+                    }
+                }
+
+            }
+            return (String[]) values.toArray();
+        }
+    }
+
     public String getPrimaryEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
                 SCIMConstants.UserSchemaConstants.EMAILS);

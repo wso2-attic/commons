@@ -135,10 +135,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 String error = "Provided storage handler is not an implementation of UserManager";
                 //log the error as well.
                 //throw internal server error.
-                throw new InternalServerException();
+                throw new InternalServerException(error);
             }
-            //encode the newly created SCIM user object.
+            //encode the newly created SCIM user object and add id attribute to Location header.
             String encodedUser;
+            //Map<String,String>
             if (createdUser != null) {
 
                 encodedUser = encoder.encodeSCIMObject(createdUser);
@@ -146,11 +147,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             } else {
                 //TODO:log the error
                 String error = "Newly created User resource is null..";
-                throw new InternalServerException();
+                throw new InternalServerException(error);
             }
 
             //put the URI of the User object in the response header parameter.
-            return buildResponse(ResponseCodeConstants.CODE_OK, encodedUser);
+            return buildResponse(ResponseCodeConstants.CODE_CREATED, encodedUser);
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.

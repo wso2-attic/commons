@@ -23,6 +23,7 @@ package org.wso2.charon.deployment.storage;
 public class SampleUser {
 
     private String id;
+    private String fullyQualifiedName;
     private String userName;
     private String[] emails;
 
@@ -48,6 +49,14 @@ public class SampleUser {
 
     public void setEmails(String[] emails) {
         this.emails = emails;
+    }
+
+    public String getFullyQualifiedName() {
+        return fullyQualifiedName;
+    }
+
+    public void setFullyQualifiedName(String fullyQualifiedName) {
+        this.fullyQualifiedName = fullyQualifiedName;
     }
 
 }

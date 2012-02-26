@@ -44,6 +44,7 @@ public class SCIMConstants {
         //characteristics of multi valued attribute
         public static final String TYPE = "type";
         public static final String PRIMARY = "primary";
+
         public static final String DISPLAY = "display";
         public static final String OPERATION = "operation";
         public static final String VALUE = "value";

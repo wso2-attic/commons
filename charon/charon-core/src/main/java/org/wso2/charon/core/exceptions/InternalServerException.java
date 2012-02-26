@@ -18,12 +18,18 @@
 package org.wso2.charon.core.exceptions;
 
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
 
-public class InternalServerException extends AbstractCharonException{
+public class InternalServerException extends AbstractCharonException {
 
-    public InternalServerException(){
+    public InternalServerException() {
         this.code = ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR;
         this.description = ResponseCodeConstants.DESC_INTERNAL_SERVER_ERROR;
+    }
+
+    public InternalServerException(String description) {
+        this.code = ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR;
+        this.description = description;
     }
 
     public InternalServerException(String code, String description) {

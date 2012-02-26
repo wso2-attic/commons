@@ -55,11 +55,12 @@ public class ComplexAttribute extends AbstractAttribute {
      * @param attributeName
      * @return
      */
-    public Attribute getSubAttribute(String attributeName) throws NotFoundException {
+    public Attribute getSubAttribute(String attributeName) throws CharonException {
         if (subAttributes.containsKey(attributeName)) {
             return subAttributes.get(attributeName);
         } else {
-            throw new NotFoundException();
+            String error = "Requested attribute not found in the resource..";
+            throw new CharonException(error);
         }
     }
 

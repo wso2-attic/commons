@@ -19,8 +19,11 @@ package org.wso2.charon.deployment.resources;
 
 import org.wso2.charon.core.exceptions.InternalServerException;
 import org.wso2.charon.core.extensions.UserManager;
+import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
+import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.deployment.managers.SampleCharonManager;
+import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -41,17 +44,21 @@ public class UsersResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getUser(@PathParam("id") String id,
-                          @HeaderParam("userName") String userName,
-                          @HeaderParam("password") String password,
-                          @HeaderParam("Accept") String format,
-                          @HeaderParam("Authorization") String authorization) {
+    public Response getUser(@PathParam("id") String id,
+                            @HeaderParam("userName") String userName,
+                            @HeaderParam("password") String password,
+                            @HeaderParam("Accept") String format,
+                            @HeaderParam("Authorization") String authorization) {
 
         try {
             //authenticate the request
             SampleCharonManager.handleAuthentication(userName, password, authorization);
 
-            //set the format in which the response should be encoded.
+            //set the format in which the response should be encoded. if not specified in the request,
+            // defaults to application/json.
+            if (format == null) {
+                format = SCIMConstants.JSON;
+            }
             format = SampleCharonManager.identifyResponseFormat(format);
 
             //obtain the user store manager according to the relevant tenant.
@@ -61,9 +68,10 @@ public class UsersResource {
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
 
+            SCIMResponse scimResponse = userResourceEndpoint.get(id, format, userManager);
             //needs to check the code of the response and return 200 0k or other error codes
             // appropriately.
-            return (userResourceEndpoint.get(id, format, userManager)).getResponseMessage();
+            return new JAXRSResponseBuilder().buildResponse(scimResponse, format);
 
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -71,12 +79,12 @@ public class UsersResource {
     }
 
     @POST
-    public String createUser(@HeaderParam("Content-Type") String inputFormat,
-                             @HeaderParam("Accept") String outputFormat,
-                             @HeaderParam("userName") String userName,
-                             @HeaderParam("password") String password,
-                             @HeaderParam("Authorization") String authorization,
-                             String resourceString) {
+    public Response createUser(@HeaderParam("Content-Type") String inputFormat,
+                               @HeaderParam("Accept") String outputFormat,
+                               @HeaderParam("userName") String userName,
+                               @HeaderParam("password") String password,
+                               @HeaderParam("Authorization") String authorization,
+                               String resourceString) {
         try {
             //authenticate the request
             SampleCharonManager.handleAuthentication(userName, password, authorization);
@@ -84,7 +92,11 @@ public class UsersResource {
             //set the format in which the response should be encoded.
             inputFormat = SampleCharonManager.identifyResponseFormat(inputFormat);
 
-            //set the format in which the response should be encoded.
+            //set the format in which the response should be encoded, if not specified in the request,
+            // defaults to application/json.
+            if (outputFormat == null) {
+                outputFormat = SCIMConstants.JSON;
+            }
             outputFormat = SampleCharonManager.identifyResponseFormat(outputFormat);
 
             //obtain the user store manager according to the relevant tenant.
@@ -94,11 +106,10 @@ public class UsersResource {
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
 
-            //needs to check the code of the response and return 200 0k or other error codes
-            // appropriately.
-            return //Response.ok().toString();
-            (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager)).getResponseMessage();
-            //TODO: get the SCIM response, set the approprate code in the actual reponse.
+            SCIMResponse response = (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager));
+
+            return new JAXRSResponseBuilder().buildResponse(response, outputFormat);
+
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
         }

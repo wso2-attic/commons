@@ -19,6 +19,7 @@ package org.wso2.charon.core.extensions;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.User;
 
 import java.util.List;

@@ -29,6 +29,12 @@ public class SCIMResponse {
 
     protected Map<String, String> headerParamMap;
 
+    public SCIMResponse(String responseCode, String responseMessage) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+    }
+
+    //public SCIMResponse(St)
     public Map<String, String> getHeaderParameterMap() {
         return headerParamMap;
     }
@@ -54,11 +60,6 @@ public class SCIMResponse {
             headerParamMap.put(headerParam, paramValue);
 
         }
-    }
-
-    public SCIMResponse(String responseCode, String responseMessage) {
-        this.responseCode = responseCode;
-        this.responseMessage = responseMessage;
     }
 
     public String getResponseMessage() {

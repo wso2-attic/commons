@@ -19,11 +19,13 @@ package org.wso2.charon.deployment.storage;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class InMemroyUserManager implements UserManager {
 
@@ -47,15 +49,17 @@ public class InMemroyUserManager implements UserManager {
     public User getUser(String userId) throws CharonException {
         User scimUser = null;
         //obtain the user from the storage which matches the requested id
-        for (SampleUser sampleUser : userList) {
-            if (userId.equals(sampleUser.getId())) {
-                //create SCIM User corresponding to the matching user in storage
-                scimUser = new User();
-                
-                scimUser.setSchemaList(new ArrayList<String>());
-                scimUser.setId(sampleUser.getId());
-                scimUser.setUserName(sampleUser.getUserName());
-                scimUser.setEmails(sampleUser.getEmails());
+        if (userList != null && userList.size() != 0) {
+            for (SampleUser sampleUser : userList) {
+                if (userId.equals(sampleUser.getId())) {
+                    //create SCIM User corresponding to the matching user in storage
+                    scimUser = new User();
+
+                    scimUser.setSchemaList(new ArrayList<String>());
+                    scimUser.setId(sampleUser.getId());
+                    scimUser.setUserName(sampleUser.getUserName());
+                    scimUser.setEmails(sampleUser.getEmails());
+                }
             }
         }
         return scimUser;  //To change body of implemented methods use File | Settings | File Templates.
@@ -99,9 +103,29 @@ public class InMemroyUserManager implements UserManager {
      * @param user
      */
     @Override
-    public User createUser(User user) {
-        //To change body of implemented methods use File | Settings | File Templates.
-        return null;
+    public User createUser(User user) throws CharonException {
+        //check if the user already exist in the system.
+        String id = null;
+        if (userList != null && userList.size() != 0) {
+            for (SampleUser sampleUser : userList) {
+                if (user.getExternalId().equals(sampleUser.getFullyQualifiedName())) {
+                    //TODO: log the error
+                    String error = "User already in the system";
+                    throw new CharonException(error);
+                } else {
+                    //creates a uuid and assigns to id attribute
+                    id = UUID.randomUUID().toString();
+                    sampleUser.setId(id);
+                    sampleUser.setFullyQualifiedName(user.getExternalId());
+                    sampleUser.setUserName(user.getUserName());
+                    sampleUser.setEmails(user.getEmails());
+                }
+            }
+        }
+        //now prepare the SCIM User representation of the created user to be returned.
+        //only additionally added value is: id
+        user.setId(id);
+        return user;
     }
 
     @Override
