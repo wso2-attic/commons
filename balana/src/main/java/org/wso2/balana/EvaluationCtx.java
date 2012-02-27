@@ -43,8 +43,10 @@ import org.wso2.balana.attr.TimeAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 
 import java.net.URI;
+import java.util.Set;
 
 import org.w3c.dom.Node;
+import org.wso2.balana.xacml3.Attributes;
 
 /**
  * Manages the context of a single policy evaluation. Typically, an instance is instantiated
@@ -224,5 +226,26 @@ public interface EvaluationCtx {
      */
     public EvaluationResult getAttribute(String contextPath, Node namespaceNode, URI type,
             String xpathVersion);
+
+    /**
+     * Returns all attribute values 
+     *
+     * @return  <code>Set</code> of <code>Attributes</code>
+     */
+    public Set<Attributes> getAllAttributes();
+
+    /**
+     * Return whether child <code>EvaluationCtx</code> is supported or not
+     *
+     * @return <code>boolean</code> true of false
+     */
+    public boolean isSupportChildren();
+
+    /**
+     * Return set of children with <code>EvaluationCtx</code>
+     *
+     * @return a <code>Set</code> of <code>EvaluationCtx</code>
+     */
+    public Set<EvaluationCtx> getChildren();
 
 }

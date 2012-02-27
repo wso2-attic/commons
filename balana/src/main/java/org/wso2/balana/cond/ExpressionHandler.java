@@ -29,7 +29,7 @@ import org.w3c.dom.Node;
  * @since 2.0
  * @author Seth Proctor
  */
-class ExpressionHandler {
+public class ExpressionHandler {
 
     /**
      * Parses an expression, recursively handling any sub-elements. This is provided as a utility
@@ -56,16 +56,23 @@ class ExpressionHandler {
             } catch (UnknownIdentifierException uie) {
                 throw new ParsingException("Unknown DataType", uie);
             }
-        } else if (name.equals("SubjectAttributeDesignator")) {
+        } else if("AttributeDesignator".equals(name) &&
+                PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
+            return AttributeDesignator.getInstance(root, 0, metaData);
+        } else if (name.equals("SubjectAttributeDesignator") &&
+                !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
             return AttributeDesignator.getInstance(root, AttributeDesignator.SUBJECT_TARGET,
                     metaData);
-        } else if (name.equals("ResourceAttributeDesignator")) {
+        } else if (name.equals("ResourceAttributeDesignator") &&
+                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
             return AttributeDesignator.getInstance(root, AttributeDesignator.RESOURCE_TARGET,
                     metaData);
-        } else if (name.equals("ActionAttributeDesignator")) {
+        } else if (name.equals("ActionAttributeDesignator") &&
+                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
             return AttributeDesignator.getInstance(root, AttributeDesignator.ACTION_TARGET,
                     metaData);
-        } else if (name.equals("EnvironmentAttributeDesignator")) {
+        } else if (name.equals("EnvironmentAttributeDesignator") &&
+                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
             return AttributeDesignator.getInstance(root, AttributeDesignator.ENVIRONMENT_TARGET,
                     metaData);
         } else if (name.equals("AttributeSelector")) {

@@ -8,7 +8,7 @@
  *
  *   1. Redistribution of source code must retain the above copyright notice,
  *      this list of conditions and the following disclaimer.
- * 
+ *
  *   2. Redistribution in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
@@ -16,7 +16,7 @@
  * Neither the name of Sun Microsystems, Inc. or the names of contributors may
  * be used to endorse or promote products derived from this software without
  * specific prior written permission.
- * 
+ *
  * This software is provided "AS IS," without a warranty of any kind. ALL
  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING
  * ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
@@ -43,15 +43,17 @@ import org.wso2.balana.ctx.Result;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This is the standard Deny Overrides rule combining algorithm. It allows a single evaluation of
  * Deny to take precedence over any number of permit, not applicable or indeterminate results. Note
  * that since this implementation does an ordered evaluation, this class also supports the Ordered
  * Deny Overrides algorithm.
- * 
+ *
  * @since 1.0
  * @author Seth Proctor
  */
@@ -89,7 +91,7 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
 
     /**
      * Protected constructor used by the ordered version of this algorithm.
-     * 
+     *
      * @param identifier the algorithm's identifier
      */
     protected DenyOverridesRuleAlg(URI identifier) {
@@ -98,12 +100,12 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
 
     /**
      * Applies the combining rule to the set of rules based on the evaluation context.
-     * 
+     *
      * @param context the context from the request
      * @param parameters a (possibly empty) non-null <code>List</code> of
      *            <code>CombinerParameter<code>s
      * @param ruleElements the rules to combine
-     * 
+     *
      * @return the result of running the combining algorithm
      */
     public Result combine(EvaluationCtx context, List parameters, List ruleElements) {
@@ -111,6 +113,7 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
         boolean potentialDeny = false;
         boolean atLeastOnePermit = false;
         Result firstIndeterminateResult = null;
+        Set permitObligations = new HashSet();
         Iterator it = ruleElements.iterator();
 
         while (it.hasNext()) {
@@ -120,8 +123,8 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
 
             // if there was a value of DENY, then regardless of what else
             // we've seen, we always return DENY
-            if (value == Result.DECISION_DENY)
-                return result;
+            if (value == Result.DECISION_DENY)     // TODO  -- i changed
+                return new Result(Result.DECISION_DENY, result.getObligations());
 
             // if it was INDETERMINATE, then we couldn't figure something
             // out, so we keep track of these cases...
@@ -141,8 +144,11 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
             } else {
                 // keep track of whether we had at least one rule that
                 // actually pertained to the request
-                if (value == Result.DECISION_PERMIT)
+                if (value == Result.DECISION_PERMIT){
                     atLeastOnePermit = true;
+                    permitObligations.addAll(result.getObligations());
+                }
+
             }
         }
 
@@ -153,8 +159,11 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
 
         // some Rule said PERMIT, so since nothing could have denied,
         // we return PERMIT
-        if (atLeastOnePermit)
-            return new Result(Result.DECISION_PERMIT, context.getResourceId().encode());
+        if (atLeastOnePermit) {
+            return new Result(Result.DECISION_PERMIT, context.getResourceId().encode(),
+                              permitObligations);
+        }
+
 
         // we didn't find anything that said PERMIT, but if we had a
         // problem with one of the Rules, then we're INDETERMINATE

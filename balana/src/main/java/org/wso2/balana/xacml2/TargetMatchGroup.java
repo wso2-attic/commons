@@ -33,7 +33,7 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana;
+package org.wso2.balana.xacml2;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -47,6 +47,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.*;
 
 /**
  * This class contains a group of <code>TargetMatch</code> instances and represents the Subject,
@@ -90,7 +91,7 @@ public class TargetMatchGroup {
      * 
      * @return a new <code>TargetMatchGroup</code> constructed by parsing
      * 
-     * @throws ParsingException if the DOM node is invalid
+     * @throws org.wso2.balana.ParsingException if the DOM node is invalid
      */
     public static TargetMatchGroup getInstance(Node root, int matchType, PolicyMetaData metaData)
             throws ParsingException {
@@ -100,8 +101,8 @@ public class TargetMatchGroup {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             String name = child.getNodeName();
-
-            if (name.equals(TargetMatch.NAMES[matchType] + "Match")) {
+            String matchName = TargetMatch.NAMES[matchType] + "Match";
+            if (name.equals(matchName)) {
                 matches.add(TargetMatch.getInstance(child, matchType, metaData));
             }
         }
@@ -118,7 +119,7 @@ public class TargetMatchGroup {
      * @return the result of trying to match the group with the context
      */
     public MatchResult match(EvaluationCtx context) {
-        Iterator it = matches.iterator();
+        Iterator it = matches.iterator();     //No false
         MatchResult result = null;
 
         while (it.hasNext()) {

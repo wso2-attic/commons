@@ -37,10 +37,7 @@ package org.wso2.balana.attr;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.*;
 
 import org.wso2.balana.cond.Evaluatable;
 import org.wso2.balana.cond.EvaluationResult;
@@ -111,6 +108,11 @@ public class AttributeDesignator implements Evaluatable {
     // if we're a subject this is the category
     private URI subjectCategory;
 
+    /**
+     * XACML 3 
+     */
+    private URI category;
+
     // the logger we'll use for all messages
     private static Log logger = LogFactory.getLog(AttributeDesignator.class);
 
@@ -122,8 +124,8 @@ public class AttributeDesignator implements Evaluatable {
      * @param id the attribute id looked for by this designator
      * @param mustBePresent whether resolution must find a value
      */
-    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent) {
-        this(target, type, id, mustBePresent, null);
+    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, URI category) {
+        this(target, type, id, mustBePresent, null, category);
     }
 
     /**
@@ -137,8 +139,8 @@ public class AttributeDesignator implements Evaluatable {
      * 
      * @throws IllegalArgumentException if the input target isn't a valid value
      */
-    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, URI issuer)
-            throws IllegalArgumentException {
+    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, URI issuer,
+                               URI category) throws IllegalArgumentException {
 
         // check if input target is a valid value
         if ((target != SUBJECT_TARGET) && (target != RESOURCE_TARGET) && (target != ACTION_TARGET)
@@ -149,8 +151,7 @@ public class AttributeDesignator implements Evaluatable {
         this.id = id;
         this.mustBePresent = mustBePresent;
         this.issuer = issuer;
-
-        subjectCategory = null;
+        this.category = category;
     }
 
     /**
@@ -199,6 +200,7 @@ public class AttributeDesignator implements Evaluatable {
         URI type = null;
         URI id = null;
         URI issuer = null;
+        URI category = null;
         boolean mustBePresent = false;
         URI subjectCategory = null;
 
@@ -210,6 +212,36 @@ public class AttributeDesignator implements Evaluatable {
         } catch (Exception e) {
             throw new ParsingException("Required AttributeId missing in " + "AttributeDesignator",
                     e);
+        }
+
+        if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
+            try {
+                // there's always an Id
+                category = new URI(attrs.getNamedItem("Category").getNodeValue());
+
+                if(XACMLConstants.SUBJECT_CATEGORY.equals(category.toString())){
+                    target = SUBJECT_TARGET;
+                } else if(XACMLConstants.RESOURCE_CATEGORY.equals(category.toString())){
+                    target = RESOURCE_TARGET;
+                } else if(XACMLConstants.ACTION_CATEGORY.equals(category.toString())){
+                    target = ACTION_TARGET;
+                } else if(XACMLConstants.ENT_CATEGORY.equals(category.toString())){
+                    target = ENVIRONMENT_TARGET;   
+                }
+
+            } catch (Exception e) {
+                throw new ParsingException("Required Category missing in " + "AttributeDesignator", e);
+            }
+
+            try {
+                // there's always a data type
+                String nodeValue = attrs.getNamedItem("MustBePresent").getNodeValue();
+                if("true".equals(nodeValue)){
+                    mustBePresent = true;
+                }
+            } catch (Exception e) {
+                throw new ParsingException("Required DataType missing in " + "AttributeDesignator", e);
+            }            
         }
 
         try {
@@ -235,10 +267,12 @@ public class AttributeDesignator implements Evaluatable {
             }
 
             // there might be a mustBePresent flag
-            node = attrs.getNamedItem("MustBePresent");
-            if (node != null)
-                if (node.getNodeValue().equals("true"))
-                    mustBePresent = true;
+            if(!(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())){
+                node = attrs.getNamedItem("MustBePresent");
+                if (node != null)
+                    if (node.getNodeValue().equals("true"))
+                        mustBePresent = true;
+            }
         } catch (Exception e) {
             // this shouldn't ever happen, but in theory something could go
             // wrong in the code in this try block
@@ -246,7 +280,7 @@ public class AttributeDesignator implements Evaluatable {
                     "Error parsing AttributeDesignator " + "optional attributes", e);
         }
 
-        AttributeDesignator ad = new AttributeDesignator(target, type, id, mustBePresent, issuer);
+        AttributeDesignator ad = new AttributeDesignator(target, type, id, mustBePresent, issuer, category);
         ad.setSubjectCategory(subjectCategory);
 
         return ad;

@@ -60,7 +60,7 @@ import org.xml.sax.SAXParseException;
  * @since 1.0
  * @author Seth Proctor
  */
-class InputParser implements ErrorHandler {
+public class InputParser implements ErrorHandler {
 
     // the schema file, if provided
     private File schemaFile;
@@ -110,7 +110,7 @@ class InputParser implements ErrorHandler {
      * 
      * @throws ParsingException if a problem occurred parsing the document
      */
-    static Node parseInput(InputStream input, String rootTag) throws ParsingException {
+    public static Node parseInput(InputStream input, String rootTag) throws ParsingException {
         NodeList nodes = null;
 
         try {

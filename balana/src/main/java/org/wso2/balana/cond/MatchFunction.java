@@ -37,6 +37,7 @@ package org.wso2.balana.cond;
 
 import org.wso2.balana.EvaluationCtx;
 
+import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.AnyURIAttribute;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BooleanAttribute;
@@ -45,7 +46,7 @@ import org.wso2.balana.attr.IPAddressAttribute;
 import org.wso2.balana.attr.RFC822NameAttribute;
 import org.wso2.balana.attr.StringAttribute;
 import org.wso2.balana.attr.X500NameAttribute;
-import org.wso2.balana.ctx.RequestCtx;
+import org.wso2.balana.xacml2.ctx.RequestCtx;
 
 import java.util.HashSet;
 import java.util.List;
@@ -265,7 +266,7 @@ public class MatchFunction extends FunctionBase {
             String arg0 = ((StringAttribute) (argValues[0])).getValue();
             String arg1 = ((StringAttribute) (argValues[1])).getValue();
 
-            if (context.isSearching() && arg1.equals(RequestCtx.ANY)) {
+            if (context.isSearching() && arg1.equals(XACMLConstants.ANY)) {
                 boolResult = true;
             } else {
                 boolResult = regexpHelper(arg0, arg1);

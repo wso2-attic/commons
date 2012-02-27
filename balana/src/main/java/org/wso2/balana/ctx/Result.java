@@ -8,7 +8,7 @@
  *
  *   1. Redistribution of source code must retain the above copyright notice,
  *      this list of conditions and the following disclaimer.
- * 
+ *
  *   2. Redistribution in binary form must reproduce the above copyright
  *      notice, this list of conditions and the following disclaimer in the
  *      documentation and/or other materials provided with the distribution.
@@ -16,7 +16,7 @@
  * Neither the name of Sun Microsystems, Inc. or the names of contributors may
  * be used to endorse or promote products derived from this software without
  * specific prior written permission.
- * 
+ *
  * This software is provided "AS IS," without a warranty of any kind. ALL
  * EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING
  * ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
@@ -37,8 +37,9 @@ package org.wso2.balana.ctx;
 
 import org.wso2.balana.Indenter;
 import org.wso2.balana.MatchResult;
-import org.wso2.balana.Obligation;
+import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ParsingException;
+import org.wso2.balana.xacml3.advice.Advice;
 import org.wso2.balana.cond.EvaluationResult;
 
 import java.io.OutputStream;
@@ -52,12 +53,14 @@ import java.util.Set;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.xacml3.Attributes;
+import org.wso2.balana.xacml3.Obligation;
 
 /**
  * Represents the ResultType XML object from the Context schema. Any number of these may included in
  * a <code>ResponseCtx</code>. This class encodes the decision effect, as well as an optional
  * resource identifier and optional status data. Any number of obligations may also be included.
- * 
+ *
  * @since 1.0
  * @author Seth Proctor
  * @author Marco Barreno
@@ -83,9 +86,9 @@ public class Result {
      * The decision that nothing applied to us
      */
     public static final int DECISION_NOT_APPLICABLE = 3;
-    
+
     public static final int SEARCH = 4;
-    
+
     private List<MatchResult> matches;
 
 
@@ -102,128 +105,151 @@ public class Result {
     private String resource = null;
 
     // the set of obligations which may be empty
-    private Set obligations;
-    
+    private Set<ObligationResult> obligations;
+
+    private Set advices;
+
     private EvaluationResult evalResult;
-    
+
     public void setDecision(int decision) {
         this.decision = decision;
     }
 
     /**
+     * XAMCL 3
+     */
+    private Set<Attributes> attributes;
+
+    /**
      * Constructs a <code>Result</code> object with default status data (OK).
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision) throws IllegalArgumentException {
-        this(decision, null, null, null);
+        this(decision, null, null, null, null);
     }
 
     /**
      * Constructs a <code>Result</code> object with default status data (OK), and obligations, but
      * no resource identifier.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param obligations the obligations the PEP must handle
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision, Set obligations) throws IllegalArgumentException {
-        this(decision, null, null, obligations);
+        this(decision, null, null, obligations, null);
     }
 
     /**
      * Constructs a <code>Result</code> object with status data but without a resource identifier.
      * Typically the decision is DECISION_INDETERMINATE in this case, though that's not always true.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision, Status status) throws IllegalArgumentException {
-        this(decision, status, null, null);
+        this(decision, status, null, null, null);
     }
 
     /**
      * Constructs a <code>Result</code> object with status data and obligations but without a
      * resource identifier. Typically the decision is DECISION_INDETERMINATE in this case, though
      * that's not always true.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
      * @param obligations the obligations the PEP must handle
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision, Status status, Set obligations) throws IllegalArgumentException {
-        this(decision, status, null, obligations);
+        this(decision, status, null, obligations, null);
     }
 
     /**
      * Constructs a <code>Result</code> object with a resource identifier, but default status data
      * (OK). The resource being named must match the resource (or a descendent of the resource in
      * the case of a hierarchical resource) from the associated request.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param resource a <code>String</code> naming the resource
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision, String resource) throws IllegalArgumentException {
-        this(decision, null, resource, null);
+        this(decision, null, resource, null, null);
     }
+
+    /**
+     * Constructs a <code>Result</code> object with a resource identifier, but default status data
+     * (OK). The resource being named must match the resource (or a descendent of the resource in
+     * the case of a hierarchical resource) from the associated request.
+     *
+     * @param decision the decision effect to include in this result. This must be one of the four
+     *            fields in this class.
+     * @param resource a <code>String</code> naming the resource
+     *
+     * @throws IllegalArgumentException if decision is not valid
+     */
+    public Result(int decision, String resource, Set obligations) throws IllegalArgumentException {
+        this(decision, null, resource, obligations, null);
+    }
+
 
     /**
      * Constructs a <code>Result</code> object with a resource identifier, and obligations, but
      * default status data (OK). The resource being named must match the resource (or a descendent
      * of the resource in the case of a hierarchical resource) from the associated request.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param resource a <code>String</code> naming the resource
      * @param obligations the obligations the PEP must handle
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
-    public Result(int decision, String resource, Set obligations) throws IllegalArgumentException {
-        this(decision, null, resource, obligations);
+    public Result(int decision, String resource, Set obligations, Set advices) throws IllegalArgumentException {
+        this(decision, null, resource, obligations, advices);
     }
 
     /**
      * Constructs a <code>Result</code> object with status data and a resource identifier.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
      * @param resource a <code>String</code> naming the resource
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
     public Result(int decision, Status status, String resource) throws IllegalArgumentException {
-        this(decision, status, resource, null);
+        this(decision, status, resource, null, null);
     }
 
     /**
      * Constructs a <code>Result</code> object with status data, a resource identifier, and
      * obligations.
-     * 
+     *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
      * @param resource a <code>String</code> naming the resource
      * @param obligations the obligations the PEP must handle
-     * 
+     *
      * @throws IllegalArgumentException if decision is not valid
      */
-    public Result(int decision, Status status, String resource, Set obligations)
+    public Result(int decision, Status status, String resource, Set obligations, Set advices)
             throws IllegalArgumentException {
         // check that decision is valid
         if ((decision != DECISION_PERMIT) && (decision != DECISION_DENY) && (decision != SEARCH)
@@ -242,16 +268,22 @@ public class Result {
             this.obligations = new HashSet();
         else
             this.obligations = obligations;
+
+        if(advices != null){
+            this.advices = new HashSet();
+        } else {
+            this.advices = advices;
+        }
     }
 
     /**
      * Creates a new instance of a <code>Result</code> based on the given DOM root node. A
      * <code>ParsingException</code> is thrown if the DOM root doesn't represent a valid ResultType.
-     * 
+     *
      * @param root the DOM root of a ResultType
-     * 
+     *
      * @return a new <code>Result</code>
-     * 
+     *
      * @throws ParsingException if the node is invalid
      */
     public static Result getInstance(Node root) throws ParsingException {
@@ -259,6 +291,7 @@ public class Result {
         Status status = null;
         String resource = null;
         Set obligations = null;
+        Set adviceExpressions = null;
 
         NamedNodeMap attrs = root.getAttributes();
         Node resourceAttr = attrs.getNamedItem("ResourceId");
@@ -285,10 +318,12 @@ public class Result {
                 status = Status.getInstance(node);
             } else if (name.equals("Obligations")) {
                 obligations = parseObligations(node);
+            } else if (name.equals("")){
+                adviceExpressions = parseAdviceExpressions(node);
             }
         }
 
-        return new Result(decision, status, resource, obligations);
+        return new Result(decision, status, resource, obligations, adviceExpressions);
     }
 
     public EvaluationResult getEvalResult() {
@@ -318,10 +353,30 @@ public class Result {
         return set;
     }
 
+
+    /**
+     * Helper method that handles the Advice Expressions
+     */
+    private static Set parseAdviceExpressions(Node root) throws ParsingException {
+        Set set = new HashSet();
+
+        NodeList nodes = root.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node node = nodes.item(i);
+            if (node.getNodeName().equals("AdviceExpression"))
+                set.add(Obligation.getInstance(node));
+        }
+
+        if (set.size() == 0)
+            throw new ParsingException("AdviceExpressionType must not be empty");
+
+        return set;
+    }
+
     /**
      * Returns the decision associated with this <code>Result</code>. This will be one of the four
      * <code>DECISION_*</code> fields in this class.
-     * 
+     *
      * @return the decision effect
      */
     public int getDecision() {
@@ -331,13 +386,13 @@ public class Result {
     /**
      * Returns the status data included in this <code>Result</code>. Typically this will be
      * <code>STATUS_OK</code> except when the decision is <code>INDETERMINATE</code>.
-     * 
+     *
      * @return status associated with this Result
      */
     public Status getStatus() {
         return status;
     }
-    
+
 
     public List<MatchResult> getMatches() {
         return matches;
@@ -349,7 +404,7 @@ public class Result {
 
     /**
      * Returns the resource to which this Result applies, or null if none is specified.
-     * 
+     *
      * @return a resource identifier or null
      */
     public String getResource() {
@@ -360,9 +415,9 @@ public class Result {
      * Sets the resource identifier if it has not already been set before. The core code does not
      * set the resource identifier, so this is useful if you want to write wrapper code that needs
      * this information.
-     * 
+     *
      * @param resource the resource identifier
-     * 
+     *
      * @return true if the resource identifier was set, false if it already had a value
      */
     public boolean setResource(String resource) {
@@ -376,7 +431,7 @@ public class Result {
 
     /**
      * Returns the set of obligations that the PEP must fulfill, which may be empty.
-     * 
+     *
      * @return the set of obligations
      */
     public Set getObligations() {
@@ -384,19 +439,38 @@ public class Result {
     }
 
     /**
+     *
+     * @param attributes
+     */
+    public void setAttributes(Set<Attributes> attributes) {
+        this.attributes = attributes;
+    }
+    
+    /**
      * Adds an obligation to the set of obligations that the PEP must fulfill
-     * 
+     *
      * @param obligation the <code>Obligation</code> to add
      */
-    public void addObligation(Obligation obligation) {
+    public void addObligation(ObligationResult obligation) {
         if (obligation != null)
             obligations.add(obligation);
     }
 
+
+    /**
+     * Adds an obligation to the set of obligations that the PEP must fulfill
+     *
+     * @param advice the <code>Advice</code> to add
+     */
+    public void addAdvice(Advice advice) {
+        if (advice != null){
+            advices.add(advice);
+        }
+    }
     /**
      * Encodes this <code>Result</code> into its XML form and writes this out to the provided
      * <code>OutputStream<code> with no indentation.
-     * 
+     *
      * @param output a stream into which the XML-encoded data is written
      */
     public void encode(OutputStream output) {
@@ -406,7 +480,7 @@ public class Result {
     /**
      * Encodes this <code>Result</code> into its XML form and writes this out to the provided
      * <code>OutputStream<code> with indentation.
-     * 
+     *
      * @param output a stream into which the XML-encoded data is written
      * @param indenter an object that creates indentation strings
      */
@@ -444,6 +518,19 @@ public class Result {
 
             indenter.out();
             out.println(indentNext + "</Obligations>");
+        }
+
+        // encode the attributes
+        if (attributes != null && attributes.size() != 0) {
+            Iterator it = attributes.iterator();
+            indenter.in();
+
+            while (it.hasNext()) {
+                Attributes attributes = (Attributes) (it.next());
+                attributes.encodeWithIncludedAttributes(output, indenter);
+            }
+
+            indenter.out();
         }
 
         indenter.out();

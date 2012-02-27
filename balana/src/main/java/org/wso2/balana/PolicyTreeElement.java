@@ -82,7 +82,7 @@ public interface PolicyTreeElement {
      * 
      * @return the element's target
      */
-    public Target getTarget();
+    public AbstractTarget getTarget();
 
     /**
      * Given the input context sees whether or not the request matches this element's target. The

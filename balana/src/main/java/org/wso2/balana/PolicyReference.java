@@ -305,7 +305,7 @@ public class PolicyReference extends AbstractPolicy {
      * 
      * @throws ProcessingException if the referenced policy can't be retrieved
      */
-    public Target getTarget() {
+    public AbstractTarget getTarget() {
         return resolvePolicy().getTarget();
     }
 
@@ -354,8 +354,8 @@ public class PolicyReference extends AbstractPolicy {
      * 
      * @throws ProcessingException if the referenced policy can't be retrieved
      */
-    public Set getObligations() {
-        return resolvePolicy().getObligations();
+    public Set getObligationExpressions() {
+        return resolvePolicy().getObligationExpressions();
     }
 
     /**

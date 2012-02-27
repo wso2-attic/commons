@@ -39,7 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.attr.AttributeValue;
 
-import org.wso2.balana.ctx.RequestCtx;
+import org.wso2.balana.xacml2.ctx.RequestCtx;
 import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.ctx.Result;
 import org.wso2.balana.ctx.Status;
@@ -123,7 +123,7 @@ public class PDP {
 			}
 			return evaluate(evalContext);
 		} catch (ParsingException pe) {
-			logger.error("the PDP receieved an invalid request", pe);
+			logger.error("the PDP received an invalid request", pe);
 
 			// there was something wrong with the request, so we return
 			// Indeterminate with a status of syntax error...though this

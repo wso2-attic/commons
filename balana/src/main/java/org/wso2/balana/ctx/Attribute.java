@@ -35,10 +35,7 @@
 
 package org.wso2.balana.ctx;
 
-import org.wso2.balana.Indenter;
-
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.UnknownIdentifierException;
+import org.wso2.balana.*;
 
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
@@ -48,6 +45,7 @@ import java.io.PrintStream;
 import java.io.OutputStream;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -65,12 +63,18 @@ public class Attribute {
     private URI id;
     private URI type;
 
+    /**
+     * option attribute in XACML 3 to define to 
+     */
+    private boolean includeInResult;
     // optional meta-data attributes
     private String issuer = null;
     private DateTimeAttribute issueInstant = null;
 
     // the single value associated with this attribute
     private AttributeValue value;
+
+    private int xacmlVersion;
 
     /**
      * Creates a new <code>Attribute</code> of the type specified in the given
@@ -81,8 +85,13 @@ public class Attribute {
      * @param issueInstant the moment when the attribute was issued, or null if it's unspecified
      * @param value the actual value associated with the attribute meta-data
      */
+    public Attribute(URI id, String issuer, DateTimeAttribute issueInstant, AttributeValue value,
+                      boolean includeInResult) {
+        this(id, value.getType(), issuer, issueInstant, value, includeInResult, 0);
+    }
+
     public Attribute(URI id, String issuer, DateTimeAttribute issueInstant, AttributeValue value) {
-        this(id, value.getType(), issuer, issueInstant, value);
+        this(id, value.getType(), issuer, issueInstant, value, false, 0);
     }
 
     /**
@@ -102,12 +111,18 @@ public class Attribute {
      * @param value the actual value associated with the attribute meta-data
      */
     public Attribute(URI id, URI type, String issuer, DateTimeAttribute issueInstant,
-            AttributeValue value) {
+            AttributeValue value, boolean includeInResult, int xacmlVersion) {
         this.id = id;
         this.type = type;
         this.issuer = issuer;
         this.issueInstant = issueInstant;
         this.value = value;
+        this.includeInResult = includeInResult;
+        this.xacmlVersion = xacmlVersion;
+    }
+
+    public static Attribute getInstance(Node root) throws ParsingException {
+        return getInstance(root, new PolicyMetaData());
     }
 
     /**
@@ -119,12 +134,14 @@ public class Attribute {
      * 
      *         throws ParsingException if the data is invalid
      */
-    public static Attribute getInstance(Node root) throws ParsingException {
+    public static Attribute getInstance(Node root, PolicyMetaData metaData) throws ParsingException {
         URI id = null;
         URI type = null;
         String issuer = null;
         DateTimeAttribute issueInstant = null;
         AttributeValue value = null;
+        boolean includeInResult = false ;
+        int version  = metaData.getXACMLVersion();
 
         AttributeFactory attrFactory = AttributeFactory.getInstance();
 
@@ -143,21 +160,37 @@ public class Attribute {
                     + "AttributeId in AttributeType", e);
         }
 
-        try {
-            type = new URI(attrs.getNamedItem("DataType").getNodeValue());
-        } catch (Exception e) {
-            throw new ParsingException("Error parsing required attribute "
-                    + "DataType in AttributeType", e);
+        if(!(version == PolicyMetaData.XACML_VERSION_3_0)){
+            try {
+                type = new URI(attrs.getNamedItem("DataType").getNodeValue());
+            } catch (Exception e) {
+                throw new ParsingException("Error parsing required attribute "
+                        + "DataType in AttributeType", e);
+            }
+        }
+
+        if(version == PolicyMetaData.XACML_VERSION_3_0){
+            try {
+                String includeInResultString = attrs.getNamedItem("IncludeInResult").getNodeValue();
+                if("true".equals(includeInResultString)){
+                    includeInResult = true;
+                }
+            } catch (Exception e) {
+                throw new ParsingException("Error parsing required attribute "
+                        + "IncludeInResult in AttributeType", e);
+            }            
         }
 
         try {
             Node issuerNode = attrs.getNamedItem("Issuer");
             if (issuerNode != null)
                 issuer = issuerNode.getNodeValue();
-
-            Node instantNode = attrs.getNamedItem("IssueInstant");
-            if (instantNode != null)
-                issueInstant = DateTimeAttribute.getInstance(instantNode.getNodeValue());
+            if(!(version == PolicyMetaData.XACML_VERSION_3_0)){
+                Node instantNode = attrs.getNamedItem("IssueInstant");
+                if (instantNode != null){
+                    issueInstant = DateTimeAttribute.getInstance(instantNode.getNodeValue());
+                }
+            }
         } catch (Exception e) {
             // shouldn't happen, but just in case...
             throw new ParsingException("Error parsing optional AttributeType" + " attribute", e);
@@ -169,11 +202,22 @@ public class Attribute {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("AttributeValue")) {
                 // only one value can be in an Attribute
-                if (value != null)
+                if (value != null){
                     throw new ParsingException("Too many values in Attribute");
-
+                }
                 // now get the value
-                try {
+
+                if(version == PolicyMetaData.XACML_VERSION_3_0){
+                    NamedNodeMap dataTypeAttribute = node.getAttributes();
+                    try {
+                        type = new URI(dataTypeAttribute.getNamedItem("DataType").getNodeValue());
+                    } catch (Exception e) {
+                        throw new ParsingException("Error parsing required attribute "
+                                + "DataType in AttributeType", e);
+                    }
+                }
+
+                try {                    
                     value = attrFactory.createValue(node, type);
                 } catch (UnknownIdentifierException uie) {
                     throw new ParsingException("Unknown AttributeId", uie);
@@ -185,7 +229,7 @@ public class Attribute {
         if (value == null)
             throw new ParsingException("Attribute must contain a value");
 
-        return new Attribute(id, type, issuer, issueInstant, value);
+        return new Attribute(id, type, issuer, issueInstant, value, includeInResult, version);
     }
 
     /**
@@ -222,6 +266,14 @@ public class Attribute {
      */
     public DateTimeAttribute getIssueInstant() {
         return issueInstant;
+    }
+
+    /**
+     * Returns whether attribute must be present in response or not
+     * @return
+     */
+    public boolean isIncludeInResult() {
+        return includeInResult;
     }
 
     /**
@@ -266,14 +318,20 @@ public class Attribute {
      * @return the text-encoded XML
      */
     public String encode() {
-        String encoded = "<Attribute AttributeId=\"" + id.toString() + "\" " + "DataType=\""
-                + type.toString() + "\"";
+        String encoded = "<Attribute AttributeId=" + id.toString();
 
-        if (issuer != null)
-            encoded += " Issuer=\"" + issuer + "\"";
+        if((xacmlVersion == PolicyMetaData.XACML_VERSION_3_0)){
+            encoded += " IncludeInResult=" + includeInResult;
+        } else {
+            encoded += " DataType=" + type.toString();
+            if (issueInstant != null){
+                encoded += " IssueInstant=" + issueInstant.encode();
+            }
+        }
 
-        if (issueInstant != null)
-            encoded += " IssueInstant=\"" + issueInstant.encode() + "\"";
+        if (issuer != null) {
+            encoded += " Issuer=" + issuer;
+        }
 
         encoded += ">" + value.encodeWithTags(false) + "</Attribute>";
 

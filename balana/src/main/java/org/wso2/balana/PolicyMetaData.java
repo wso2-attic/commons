@@ -64,6 +64,11 @@ public class PolicyMetaData {
     public static final String XACML_2_0_IDENTIFIER = "urn:oasis:names:tc:xacml:2.0:policy:schema:os";
 
     /**
+     * XACML 2.0 identifier
+     */
+    public static final String XACML_3_0_IDENTIFIER = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";    
+
+    /**
      * Version identifier for XACML 1.0
      */
     public static final int XACML_VERSION_1_0 = 0;
@@ -80,13 +85,18 @@ public class PolicyMetaData {
     public static final int XACML_VERSION_2_0 = 2;
 
     /**
+     * Version identifier for XACML 3.0
+     */
+    public static final int XACML_VERSION_3_0 = 3;
+
+    /**
      * The default version of XACML, 1.0, used if no namespace string is specified
      */
     public static final int XACML_DEFAULT_VERSION = XACML_VERSION_1_0;
 
     // private mapping from XACML version number to identifier string
     private static String[] xacmlIdentifiers = { XACML_1_0_IDENTIFIER, XACML_1_0_IDENTIFIER,
-            XACML_2_0_IDENTIFIER };
+            XACML_2_0_IDENTIFIER, XACML_3_0_IDENTIFIER };
 
     /**
      * XPath 1.0 identifier
@@ -184,14 +194,17 @@ public class PolicyMetaData {
             AttributeFactoryProxy attributeFactoryProxy,
             CombiningAlgFactoryProxy combiningAlgFactoryProxy,
             FunctionFactoryProxy functionFactoryProxy) {
-        if (xacmlVersion == null)
+        if (xacmlVersion == null){
             this.xacmlVersion = XACML_DEFAULT_VERSION;
-        else if (xacmlVersion.equals(XACML_1_0_IDENTIFIER))
+        } else if (xacmlVersion.equals(XACML_1_0_IDENTIFIER)){
             this.xacmlVersion = XACML_VERSION_1_0;
-        else if (xacmlVersion.equals(XACML_2_0_IDENTIFIER))
+        } else if (xacmlVersion.equals(XACML_2_0_IDENTIFIER)){
             this.xacmlVersion = XACML_VERSION_2_0;
-        else
+        } else if (xacmlVersion.equals(XACML_3_0_IDENTIFIER)){
+            this.xacmlVersion = XACML_VERSION_3_0;
+        } else {
             throw new IllegalArgumentException("Unknown XACML version " + "string: " + xacmlVersion);
+        }
 
         if (xpathVersion != null) {
             if (!xpathVersion.equals(XPATH_1_0_IDENTIFIER))

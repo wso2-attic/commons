@@ -34,8 +34,9 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana;
+package org.wso2.balana.xacml2;
 
+import org.wso2.balana.*;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -98,7 +99,7 @@ public class TargetSection
      *
      * @return a new <code>Target</code> constructed by parsing
      *
-     * @throws ParsingException if the DOM node is invalid
+     * @throws org.wso2.balana.ParsingException if the DOM node is invalid
      */
     public static TargetSection getInstance(Node root, int matchType,
                                             PolicyMetaData metaData)

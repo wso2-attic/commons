@@ -48,7 +48,8 @@ import org.wso2.balana.attr.TimeAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 
 import org.wso2.balana.ctx.Attribute;
-import org.wso2.balana.ctx.RequestCtx;
+import org.wso2.balana.xacml2.ctx.RequestCtx;
+import org.wso2.balana.xacml3.Attributes;
 import org.wso2.balana.ctx.Subject;
 
 import org.wso2.balana.finder.AttributeFinder;
@@ -173,7 +174,6 @@ public class BasicEvaluationCtx implements EvaluationCtx {
             throws ParsingException {
         // keep track of the finder
         this.finder = finder;
-
         // remember the root of the DOM tree for XPath queries
         requestRoot = request.getDocumentRoot();
 
@@ -660,4 +660,15 @@ public class BasicEvaluationCtx implements EvaluationCtx {
         }
     }
 
+    public boolean isSupportChildren() {
+        return false;
+    }
+
+    public Set<EvaluationCtx> getChildren() {
+        return null;
+    }
+
+    public Set<Attributes> getAllAttributes() {
+        return null; 
+    }
 }

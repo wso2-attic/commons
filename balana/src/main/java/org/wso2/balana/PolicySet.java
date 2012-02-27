@@ -54,6 +54,7 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.xacml2.Target;
 
 /**
  * Represents one of the two top-level constructs in XACML, the PolicySetType. This can contain
@@ -150,7 +151,7 @@ public class PolicySet extends AbstractPolicy {
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
             String description, Target target, List policies, String defaultVersion, Set obligations) {
-        super(id, version, combiningAlg, description, target, defaultVersion, obligations, null);
+        super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
         List list = null;
 
@@ -197,7 +198,7 @@ public class PolicySet extends AbstractPolicy {
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
             String description, Target target, List policyElements, String defaultVersion,
             Set obligations, List parameters) {
-        super(id, version, combiningAlg, description, target, defaultVersion, obligations,
+        super(id, version, combiningAlg, description, target, defaultVersion, obligations, null,
                 parameters);
 
         // check that the list contains only CombinerElements
@@ -388,7 +389,7 @@ public class PolicySet extends AbstractPolicy {
             out.println("<PolicySetDefaults><XPathVersion>" + version
                     + "</XPathVersion></PolicySetDefaults>");
 
-        getTarget().encode(output, indenter);
+        //getTarget().encode(output, indenter);   TODO
         encodeCommonElements(output, indenter);
 
         indenter.out();

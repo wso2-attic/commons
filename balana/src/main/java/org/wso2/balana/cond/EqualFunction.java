@@ -37,6 +37,7 @@ package org.wso2.balana.cond;
 
 import org.wso2.balana.EvaluationCtx;
 
+import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.AnyURIAttribute;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.Base64BinaryAttribute;
@@ -54,7 +55,7 @@ import org.wso2.balana.attr.StringAttribute;
 import org.wso2.balana.attr.TimeAttribute;
 import org.wso2.balana.attr.YearMonthDurationAttribute;
 import org.wso2.balana.attr.X500NameAttribute;
-import org.wso2.balana.ctx.RequestCtx;
+import org.wso2.balana.xacml2.ctx.RequestCtx;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -264,7 +265,7 @@ public class EqualFunction extends FunctionBase {
             return result;
 
         if (argValues[1] instanceof StringAttribute && context.isSearching()
-                && RequestCtx.ANY.equals(((StringAttribute) argValues[1]).getValue())) {
+                && XACMLConstants.ANY.equals(((StringAttribute) argValues[1]).getValue())) {
             return EvaluationResult.getInstance(true);
         }
 

@@ -33,63 +33,38 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana.ctx;
+package org.wso2.balana.xacml2.ctx;
 
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
-import org.wso2.balana.attr.StringAttribute;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.ctx.*;
+import org.wso2.balana.xacml3.Attributes;
 
 /**
- * Represents a request made to the PDP. This is the class that contains all the data used to start
+ * Represents a XACML2 request made to the PDP. This is the class that contains all the data used to start
  * a policy evaluation.
  * 
  * @since 1.0
  * @author Seth Proctor
  * @author Marco Barreno
  */
-public class RequestCtx {
+public class RequestCtx extends AbstractRequestCtx {
 
-    public static final String STRING_DATA_TYPE = "http://www.w3.org/2001/XMLSchema#string";
-    public static final String ACTION_ID_DEFAULT = "urn:oasis:names:tc:xacml:1.0:action:action-id";
-
-    public static final String ENVIRONMENT_ID_DEFAULT = "urn:oasis:names:tc:xacml:1.0:environment:environment-id";
-    public static final String ANY = "ANY";
-
-    // There must be at least one subject
-    private Set subjects = null;
-
-    // There must be exactly one resource
-    private Set resource = null;
-
-    // There must be exactly one action
-    private Set action = null;
-
-    // There may be any number of environment attributes
-    private Set environment = null;
-
-    // Hold onto the root of the document for XPath searches
-    private Node documentRoot = null;
-
-    // The optional, generic resource content
+    /**
+     * The optional, generic resource content
+     */
     private String resourceContent;
-
-    private boolean isSearch;
-
+    
     /**
      * Constructor that creates a <code>RequestCtx</code> from components.
      * 
@@ -98,9 +73,11 @@ public class RequestCtx {
      * @param action a <code>Set</code> of <code>Attribute</code>s
      * @param environment a <code>Set</code> of environment attributes
      */
-    public RequestCtx(Set subjects, Set resource, Set action, Set environment) {
+    public RequestCtx(Set<Subject> subjects, Set<Attribute> resource, Set<Attribute> action,
+                      Set<Attribute> environment) {
         this(subjects, resource, action, environment, null, null);
     }
+
 
     /**
      * Constructor that creates a <code>RequestCtx</code> from components.
@@ -111,7 +88,8 @@ public class RequestCtx {
      * @param environment a <code>Set</code> of environment attributes
      * @param documentRoot the root node of the DOM tree for this request
      */
-    public RequestCtx(Set subjects, Set resource, Set action, Set environment, Node documentRoot) {
+    public RequestCtx(Set<Subject> subjects, Set<Attribute> resource, Set<Attribute> action,
+                      Set<Attribute> environment, Node documentRoot) {
         this(subjects, resource, action, environment, documentRoot, null);
     }
 
@@ -125,14 +103,14 @@ public class RequestCtx {
      * @param resourceContent a text-encoded version of the content, suitable for including in the
      *            RequestType, including the root <code>RequestContent</code> node
      */
-    public RequestCtx(Set subjects, Set resource, Set action, Set environment,
-            String resourceContent) {
+    public RequestCtx(Set<Subject> subjects, Set<Attribute> resource, Set<Attribute> action,
+                      Set<Attribute> environment, String resourceContent) {
         this(subjects, resource, action, environment, null, resourceContent);
     }
 
     /**
      * Constructor that creates a <code>RequestCtx</code> from components.
-     * 
+     *
      * @param subjects a <code>Set</code> of <code>Subject</code>s
      * @param resource a <code>Set</code> of <code>Attribute</code>s
      * @param action a <code>Set</code> of <code>Attribute</code>s
@@ -143,8 +121,9 @@ public class RequestCtx {
      * 
      * @throws IllegalArgumentException if the inputs are not well formed
      */
-    public RequestCtx(Set subjects, Set resource, Set action, Set environment, Node documentRoot,
-            String resourceContent) throws IllegalArgumentException {
+    public RequestCtx(Set<Subject> subjects, Set<Attribute> resource, Set<Attribute> action,
+                      Set<Attribute> environment, Node documentRoot, String resourceContent)
+                                                                    throws IllegalArgumentException {
 
         // make sure subjects is well formed
         Iterator sIter = subjects.iterator();
@@ -152,7 +131,7 @@ public class RequestCtx {
             if (!(sIter.next() instanceof Subject))
                 throw new IllegalArgumentException("Subjects input is not " + "well formed");
         }
-        this.subjects = Collections.unmodifiableSet(new HashSet(subjects));
+        this.subjects = Collections.unmodifiableSet(new HashSet<Subject>(subjects));
 
         // make sure resource is well formed
         Iterator rIter = resource.iterator();
@@ -160,7 +139,7 @@ public class RequestCtx {
             if (!(rIter.next() instanceof Attribute))
                 throw new IllegalArgumentException("Resource input is not " + "well formed");
         }
-        this.resource = Collections.unmodifiableSet(new HashSet(resource));
+        this.resource = Collections.unmodifiableSet(new HashSet<Attribute>(resource));
 
         // make sure action is well formed
         Iterator aIter = action.iterator();
@@ -168,7 +147,7 @@ public class RequestCtx {
             if (!(aIter.next() instanceof Attribute))
                 throw new IllegalArgumentException("Action input is not " + "well formed");
         }
-        this.action = Collections.unmodifiableSet(new HashSet(action));
+        this.action = Collections.unmodifiableSet(new HashSet<Attribute>(action));
 
         // make sure environment is well formed
         Iterator eIter = environment.iterator();
@@ -176,7 +155,7 @@ public class RequestCtx {
             if (!(eIter.next() instanceof Attribute))
                 throw new IllegalArgumentException("Environment input is not" + " well formed");
         }
-        this.environment = Collections.unmodifiableSet(new HashSet(environment));
+        this.environment = Collections.unmodifiableSet(new HashSet<Attribute>(environment));
 
         this.documentRoot = documentRoot;
         this.resourceContent = resourceContent;
@@ -190,15 +169,18 @@ public class RequestCtx {
      * 
      * @return a new <code>RequestCtx</code> constructed by parsing
      * 
-     * @throws URISyntaxException if there is a badly formed URI
      * @throws ParsingException if the DOM node is invalid
      */
     public static RequestCtx getInstance(Node root) throws ParsingException {
-        Set newSubjects = new HashSet();
-        Set newResource = null;
-        Set newAction = null;
-        Set newEnvironment = null;
+
+        Set<Subject> newSubjects = new HashSet<Subject>();
+        Set<Attribute> newResource = null;
+        Set<Attribute> newAction = null;
+        Set<Attribute> newEnvironment = null;
+        Set<Attributes> attributesElements = null;
         String resourceContent;
+        boolean returnPolicyIdList = false;
+        boolean combinedDecision = false;
 
         // First check to be sure the node passed is indeed a Request node.
         String tagName = root.getNodeName();
@@ -206,7 +188,7 @@ public class RequestCtx {
             throw new ParsingException("Request cannot be constructed using " + "type: "
                     + root.getNodeName());
         }
-
+        
         // Now go through its child nodes, finding Subject,
         // Resource, Action, and Environment data
         NodeList children = root.getChildNodes();
@@ -251,19 +233,19 @@ public class RequestCtx {
         // if we didn't have an environment section, the only optional section
         // of the four, then create a new empty set for it
         if (newEnvironment == null)
-            newEnvironment = new HashSet();
+            newEnvironment = new HashSet<Attribute>();
 
         // Now create and return the RequestCtx from the information
         // gathered
-        return new RequestCtx(newSubjects, newResource, newAction, newEnvironment, root);
+        return new RequestCtx(newSubjects, newResource, newAction, newEnvironment, root, null);
     }
 
     /*
      * Helper method that parses a set of Attribute types. The Subject, Action and Environment
      * sections all look like this.
      */
-    private static Set parseAttributes(Node root) throws ParsingException {
-        Set set = new HashSet();
+    private static Set<Attribute> parseAttributes(Node root) throws ParsingException {
+        Set<Attribute> set = new HashSet<Attribute>();
 
         // the Environment section is just a list of Attributes
         NodeList nodes = root.getChildNodes();
@@ -287,65 +269,10 @@ public class RequestCtx {
      * 
      * @return a new <code>RequestCtx</code>
      * 
-     * @throws ParserException if there is an error parsing the input
+     * @throws <code>ParserException</Code> if there is an error parsing the input
      */
     public static RequestCtx getInstance(InputStream input) throws ParsingException {
         return getInstance(InputParser.parseInput(input, "Request"));
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Subject</code> objects.
-     * 
-     * @return the request's subject attributes
-     */
-    public Set getSubjects() {
-        return subjects;
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     * 
-     * @return the request's resource attributes
-     */
-    public Set getResource() {
-        return resource;
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     * 
-     * @return the request's action attributes
-     */
-    public Set getAction() {
-        return action;
-    }
-
-    public boolean isSearch() {
-        return isSearch;
-    }
-
-    public void setSearch(boolean isSearch) {
-        this.isSearch = isSearch;
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     * 
-     * @return the request's environment attributes
-     */
-    public Set getEnvironmentAttributes() {
-        return environment;
-    }
-
-    /**
-     * Returns the root DOM node of the document used to create this object, or null if this object
-     * was created by hand (ie, not through the <code>getInstance</code> method) or if the root node
-     * was not provided to the constructor.
-     * 
-     * @return the root DOM node or null
-     */
-    public Node getDocumentRoot() {
-        return documentRoot;
     }
 
     /**
@@ -448,14 +375,6 @@ public class RequestCtx {
             Attribute attr = (Attribute) (it.next());
             attr.encode(out, indenter);
         }
-    }
-
-    /*
-     * 
-     */
-    private static Attribute getAttribute(String uri, String type, final String value)
-            throws URISyntaxException {
-        return new Attribute(new URI(uri), null, null, new StringAttribute(value));
     }
 
 }

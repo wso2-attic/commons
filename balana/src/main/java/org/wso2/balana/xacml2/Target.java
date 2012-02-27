@@ -33,15 +33,18 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana;
+package org.wso2.balana.xacml2;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.*;
 
 /**
  * Represents the TargetType XML type in XACML. This also stores several other XML types: Subjects,
@@ -52,7 +55,7 @@ import org.w3c.dom.NodeList;
  * @since 1.0
  * @author Seth Proctor
  */
-public class Target {
+public class Target extends AbstractTarget {
 
     // the four sections of a Target
     private TargetSection subjectsSection;
@@ -141,6 +144,7 @@ public class Target {
      * Creates a <code>Target</code> by parsing a node.
      * 
      * @param root the node to parse for the <code>Target</code>
+     * @param metaData
      * @return a new <code>Target</code> constructed by parsing
      * 
      * @throws ParsingException if the DOM node is invalid
@@ -150,8 +154,10 @@ public class Target {
         TargetSection resources = null;
         TargetSection actions = null;
         TargetSection environments = null;
-
+        Set<TargetSection> anyOfSet = new HashSet<TargetSection>();
+        int version = metaData.getXACMLVersion();
         NodeList children = root.getChildNodes();
+
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
             String name = child.getNodeName();
@@ -170,7 +176,7 @@ public class Target {
         // starting in 2.0 an any-matching section is represented by a
         // missing element, and in 1.x there were no Environments elements,
         // so these need to get turned into non-null arguments
-        int version = metaData.getXACMLVersion();
+
 
         if (subjects == null)
             subjects = new TargetSection(null, TargetMatch.SUBJECT, version);
@@ -186,6 +192,7 @@ public class Target {
         } else {
             return new Target(subjects, resources, actions);
         }
+
     }
 
     /**

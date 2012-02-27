@@ -35,6 +35,8 @@
 
 package org.wso2.balana;
 
+import org.wso2.balana.xacml3.advice.Advice;
+import org.wso2.balana.xacml3.advice.AdviceExpression;
 import org.wso2.balana.attr.BooleanAttribute;
 
 import org.wso2.balana.cond.Apply;
@@ -51,13 +53,14 @@ import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.xacml3.Obligation;
+import org.wso2.balana.xacml3.ObligationExpression;
+import org.wso2.balana.xacml3.Target;
 
 /**
  * Represents the RuleType XACML type. This has a target for matching, and encapsulates the
@@ -71,10 +74,14 @@ public class Rule implements PolicyTreeElement {
     // the attributes associated with this Rule
     private URI idAttr;
     private int effectAttr;
+    // any obligations held by this Rule
+    private Set<ObligationExpression> obligationExpressions;
 
+    // any obligations held by this Rule
+    private Set<AdviceExpression> adviceExpressions;
     // the elements in the rule, each of which is optional
     private String description = null;
-    private Target target = null;
+    private AbstractTarget target = null;
     private Condition condition = null;
 
     /**
@@ -88,12 +95,15 @@ public class Rule implements PolicyTreeElement {
      *            encompassing policy
      * @param condition the rule's condition, or null if there is none
      */
-    public Rule(URI id, int effect, String description, Target target, Condition condition) {
+    public Rule(URI id, int effect, String description, AbstractTarget target, Condition condition,
+                Set<ObligationExpression> obligationExpressions, Set<AdviceExpression> adviceExpressions) {
         idAttr = id;
         effectAttr = effect;
         this.description = description;
         this.target = target;
         this.condition = condition;
+        this.adviceExpressions = adviceExpressions;
+        this.obligationExpressions = obligationExpressions;
     }
 
     /**
@@ -110,7 +120,7 @@ public class Rule implements PolicyTreeElement {
      *            encompassing policy
      * @param condition the rule's condition, or null if there is none
      */
-    public Rule(URI id, int effect, String description, Target target, Apply condition) {
+    public Rule(URI id, int effect, String description, AbstractTarget target, Apply condition) {
         idAttr = id;
         effectAttr = effect;
         this.description = description;
@@ -118,6 +128,28 @@ public class Rule implements PolicyTreeElement {
         this.condition = new Condition(condition.getFunction(), condition.getChildren());
     }
 
+
+    /**
+     * Creates a new <code>Rule</code> object for XACML 1.x only.
+     *
+     * @deprecated As of 2.0 you should use the Constructor that accepts the new
+     *             <code>Condition</code> class.
+     *
+     * @param id the rule's identifier
+     * @param effect the effect to return if the rule applies (either Pemit or Deny) as specified in
+     *            <code>Result</code>
+     * @param description a textual description, or null
+     * @param target the rule's target, or null if the target is to be inherited from the
+     *            encompassing policy
+     * @param condition the rule's condition, or null if there is none
+     */
+    public Rule(URI id, int effect, String description, AbstractTarget target, Condition condition) {
+        idAttr = id;
+        effectAttr = effect;
+        this.description = description;
+        this.target = target;
+        this.condition = new Condition(condition.getFunction(), condition.getChildren());
+    }
     /**
      * Returns a new instance of the <code>Rule</code> class based on a DOM node. The node must be
      * the root of an XML RuleType.
@@ -155,8 +187,10 @@ public class Rule implements PolicyTreeElement {
         String name = null;
         int effect = 0;
         String description = null;
-        Target target = null;
+        AbstractTarget target = null;
         Condition condition = null;
+        Set<ObligationExpression> obligationExpressions = new HashSet<ObligationExpression>();
+        Set<AdviceExpression> adviceExpressions = new HashSet<AdviceExpression>();
 
         // first, get the attributes
         NamedNodeMap attrs = root.getAttributes();
@@ -186,13 +220,32 @@ public class Rule implements PolicyTreeElement {
             if (cname.equals("Description")) {
                 description = child.getFirstChild().getNodeValue();
             } else if (cname.equals("Target")) {
-                target = Target.getInstance(child, metaData);
+                if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
+                    target = Target.getInstance(child, metaData);
+                } else {
+                    target = org.wso2.balana.xacml2.Target.getInstance(child, metaData);
+                }
             } else if (cname.equals("Condition")) {
                 condition = Condition.getInstance(child, metaData, manager);
+            } else if("ObligationExpressions".equals(cname)){
+                NodeList nodes = child.getChildNodes();
+                for (int j = 0; j < nodes.getLength(); j++) {
+                    Node node = nodes.item(j);
+                    if ("ObligationExpression".equals(node.getNodeName())){
+                        obligationExpressions.add(ObligationExpression.getInstance(node, metaData));
+                    }
+                }
+            } else if("AdviceExpressions".equals(cname)){
+                NodeList nodes = child.getChildNodes();
+                for (int j = 0; j < nodes.getLength(); j++) {
+                    Node node = nodes.item(j);
+                    if ("AdviceExpression".equals(node.getNodeName()))
+                        adviceExpressions.add(AdviceExpression.getInstance(node, metaData));
+                }
             }
         }
 
-        return new Rule(id, effect, description, target, condition);
+        return new Rule(id, effect, description, target, condition, obligationExpressions, adviceExpressions);
     }
 
     /**
@@ -228,7 +281,7 @@ public class Rule implements PolicyTreeElement {
      * 
      * @return the rule's target
      */
-    public Target getTarget() {
+    public AbstractTarget getTarget() {
         return target;
     }
 
@@ -309,9 +362,14 @@ public class Rule implements PolicyTreeElement {
         }
 
         // if there's no condition, then we just return the effect...
-        if (condition == null)
-            return new Result(effectAttr, context.getResourceId().encode());
-
+        if (condition == null){
+            if(obligationExpressions != null || adviceExpressions != null){
+                return new Result(effectAttr, context.getResourceId().encode(),
+                        evaluateObligationExpressions(context), evaluateAdviceExpressions(context));
+            } else {
+                return new Result(effectAttr, context.getResourceId().encode());                
+            }
+        }
         // ...otherwise we evaluate the condition
         EvaluationResult result = condition.evaluate(context);
 
@@ -324,7 +382,14 @@ public class Rule implements PolicyTreeElement {
             BooleanAttribute bool = (BooleanAttribute) (result.getAttributeValue());
 
             if (bool.getValue()) {
-                Result tmpResult = new Result(effectAttr, context.getResourceId().encode());
+                Result tmpResult;
+                if(obligationExpressions != null || adviceExpressions != null){
+                    tmpResult = new Result(effectAttr, context.getResourceId().encode(),
+                            evaluateObligationExpressions(context), evaluateAdviceExpressions(context));
+                } else {
+                    tmpResult = new Result(effectAttr, context.getResourceId().encode());                    
+                }
+
                 result.setMatchResult(match);
                 tmpResult.setEvalResult(result);
                 return tmpResult;
@@ -333,6 +398,37 @@ public class Rule implements PolicyTreeElement {
             }
         }
     }
+
+    /**
+     *
+     * @param context
+     * @return
+     */
+    private Set<Obligation> evaluateObligationExpressions(EvaluationCtx context){
+        Set<Obligation> obligations  = new HashSet<Obligation>();
+        for(ObligationExpression obligationExpression : obligationExpressions){
+            if(obligationExpression.getFulfillOn() == effectAttr) {
+                obligations.add((Obligation)obligationExpression.evaluate(context));
+            }
+        }
+        return obligations;
+    }
+
+    /**
+     *
+     * @param context
+     * @return
+     */
+    private Set<Advice> evaluateAdviceExpressions(EvaluationCtx context){
+        Set<Advice> advices = new HashSet<Advice>();
+        for(AdviceExpression adviceExpression : adviceExpressions){
+            if(adviceExpression.getAppliesTo() == effectAttr) {
+                advices.add(adviceExpression.evaluate(context));
+            }
+        }
+        return advices;
+    }
+
 
     /**
      * Encodes this <code>Rule</code> into its XML representation and writes this encoding to the
@@ -368,8 +464,8 @@ public class Rule implements PolicyTreeElement {
             if (description != null)
                 out.println(nextIndent + "<Description>" + description + "</Description>");
 
-            if (target != null)
-                target.encode(output, indenter);
+//            if (target != null)                //TODO
+//                target.encode(output, indenter);
 
             if (condition != null)
                 condition.encode(output, indenter);
