@@ -122,9 +122,9 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      * @param responseMessage
      * @return
      */
-    protected SCIMResponse buildResponse(String responseCode, String responseMessage) {
+    /*protected SCIMResponse buildResponse(String responseCode, String responseMessage) {
         return new SCIMResponse(responseCode, responseMessage);
-    }
+    }*/
     
     /**
      * Obtain the AttributeFactory to be used in current deployment. If a custom implementation is

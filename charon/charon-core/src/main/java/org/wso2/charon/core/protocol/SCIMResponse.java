@@ -21,20 +21,41 @@ import org.wso2.charon.core.exceptions.CharonException;
 
 import java.util.Map;
 
+/**
+ * Represents a SCIMResponse to be returned for every operation of SCIM REST API
+ */
 public class SCIMResponse {
 
     protected String responseCode;
     protected String responseMessage;
     //If there are any HTTP header parameters to be set in response other than response code,
-
     protected Map<String, String> headerParamMap;
 
+    /**
+     * Constructor with two param
+     *
+     * @param responseCode
+     * @param responseMessage
+     */
     public SCIMResponse(String responseCode, String responseMessage) {
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
     }
 
-    //public SCIMResponse(St)
+    /**
+     * Constructor with three params
+     *
+     * @param responseCode
+     * @param responseMessage
+     * @param headerMap
+     */
+    public SCIMResponse(String responseCode, String responseMessage,
+                        Map<String, String> headerMap) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+        this.headerParamMap = headerMap;
+    }
+
     public Map<String, String> getHeaderParameterMap() {
         return headerParamMap;
     }

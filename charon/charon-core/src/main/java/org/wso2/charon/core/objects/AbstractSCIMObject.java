@@ -141,12 +141,12 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      *
      * @return
      */
-    public String getId() throws CharonException, NotFoundException {
+    public String getId() throws CharonException {
         if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
         } else {
-            throw new NotFoundException();
+            return null;
         }
     }
 
