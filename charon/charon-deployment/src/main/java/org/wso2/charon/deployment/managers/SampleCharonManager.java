@@ -54,7 +54,7 @@ public class SampleCharonManager {
     private static List<SampleUser> tenant2UserList;
 
     private static List<SampleUser> createTenant1UserList() {
-       /* tenant1UserList = new ArrayList<SampleUser>();
+        /* tenant1UserList = new ArrayList<SampleUser>();
         //create some dummy users and add to the list.
         SampleUser user1 = new SampleUser();
         user1.setId("wso2001");
@@ -89,7 +89,6 @@ public class SampleCharonManager {
         return tenant2UserList;
     }
 
-
     /**
      * ***********************************************************************
      */
@@ -121,15 +120,6 @@ public class SampleCharonManager {
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-    }
-
-    public static String identifyResponseFormat(String format) {
-        if (format.equals("application/json")) {
-            format = SCIMConstants.JSON;
-        } else if (format.equals("application/xml")) {
-            format = SCIMConstants.XML;
-        }
-        return format;
     }
 
     /**

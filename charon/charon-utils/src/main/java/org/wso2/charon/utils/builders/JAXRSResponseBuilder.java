@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class JAXRSResponseBuilder {
 
-    public Response buildResponse(SCIMResponse scimResponse, String outputFormat) {
+    public Response buildResponse(SCIMResponse scimResponse) {
         //create a response builder with the status code of the response to be returned.
         Response.ResponseBuilder responseBuilder = Response.status(Integer.parseInt(
                 scimResponse.getResponseCode()));
@@ -45,9 +45,6 @@ public class JAXRSResponseBuilder {
         if (scimResponse.getResponseMessage() != null) {
             responseBuilder.entity(scimResponse.getResponseMessage());
         }
-        //set the content-type header according to the returned format.
-        responseBuilder.type(outputFormat);
-        //build and return the response.
         return responseBuilder.build();
     }
 }

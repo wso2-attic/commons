@@ -52,6 +52,7 @@ public class ResponseCodeConstants {
 
     //Custom HTTP headers used in SCIM communication
     public static final String LOCATION_HEADER = "Location";
+    public static final String CONTENT_TYPE_HEADER = "Content-Type";
 
     //Other common error messages thrown by the API
     public static final String MISMATCH_IN_REQUESTED_DATATYPE = "Requested datatype doesn't match " +

@@ -28,6 +28,9 @@ public class SCIMConstants {
     public static final String JSON = "json";
     public static final String XML = "xml";
 
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String APPLICATION_XMLA = "application/xml";
+
     /*Constants found in core-common schema.*/
 
     public static class CommonSchemaConstants {

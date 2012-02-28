@@ -43,7 +43,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
     /*Keeps a map of supported encoders of SCIM server side.*/
     private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();
-    
+
     /**
      * Returns the encoder given the encoding format.
      *
@@ -83,7 +83,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
                                                   ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
         }
         return decoderMap.get(format);
-        
+
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
     /*protected SCIMResponse buildResponse(String responseCode, String responseMessage) {
         return new SCIMResponse(responseCode, responseMessage);
     }*/
-    
+
     /**
      * Obtain the AttributeFactory to be used in current deployment. If a custom implementation is
      * not registered, use the DefaultAttributeFactory.
@@ -140,5 +140,13 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
             return attributeFactory;
         }
     }*/
+    public static String identifyFormat(String format) {
+        if (format.equals("application/json")) {
+            format = SCIMConstants.JSON;
+        } else if (format.equals("application/xml")) {
+            format = SCIMConstants.XML;
+        }
+        return format;
+    }
 
 }

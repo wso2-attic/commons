@@ -59,7 +59,6 @@ public class UsersResource {
             if (format == null) {
                 format = SCIMConstants.JSON;
             }
-            format = SampleCharonManager.identifyResponseFormat(format);
 
             //obtain the user store manager according to the relevant tenant.
             UserManager userManager = SampleCharonManager.getUserManager(
@@ -71,7 +70,7 @@ public class UsersResource {
             SCIMResponse scimResponse = userResourceEndpoint.get(id, format, userManager);
             //needs to check the code of the response and return 200 0k or other error codes
             // appropriately.
-            return new JAXRSResponseBuilder().buildResponse(scimResponse, format);
+            return new JAXRSResponseBuilder().buildResponse(scimResponse);
 
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
@@ -88,16 +87,12 @@ public class UsersResource {
         try {
             //authenticate the request
             SampleCharonManager.handleAuthentication(userName, password, authorization);
-
-            //set the format in which the response should be encoded.
-            inputFormat = SampleCharonManager.identifyResponseFormat(inputFormat);
-
+            
             //set the format in which the response should be encoded, if not specified in the request,
             // defaults to application/json.
             if (outputFormat == null) {
-                outputFormat = SCIMConstants.JSON;
+                outputFormat = SCIMConstants.APPLICATION_JSON;
             }
-            outputFormat = SampleCharonManager.identifyResponseFormat(outputFormat);
 
             //obtain the user store manager according to the relevant tenant.
             UserManager userManager = SampleCharonManager.getUserManager(
@@ -108,7 +103,7 @@ public class UsersResource {
 
             SCIMResponse response = (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager));
 
-            return new JAXRSResponseBuilder().buildResponse(response, outputFormat);
+            return new JAXRSResponseBuilder().buildResponse(response);
 
         } catch (InternalServerException e) {
             throw new WebApplicationException(Response.Status.INTERNAL_SERVER_ERROR);
