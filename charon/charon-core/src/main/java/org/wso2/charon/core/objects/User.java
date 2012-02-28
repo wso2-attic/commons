@@ -200,7 +200,17 @@ public class User extends AbstractSCIMObject {
                 }
 
             }
-            return (String[]) values.toArray();
+            String[] valuesAsStrings = null;
+            if (values.size() != 0) {
+                valuesAsStrings = new String[values.size()];
+                int i = 0;
+                for (String value : values) {
+                    valuesAsStrings[i] = value;
+                    i++;
+                }
+            }
+            //return (String[])values.toString gave class cast exception
+            return valuesAsStrings;
         }
     }
 

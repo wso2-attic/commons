@@ -54,7 +54,7 @@ public class SampleCharonManager {
     private static List<SampleUser> tenant2UserList;
 
     private static List<SampleUser> createTenant1UserList() {
-        tenant1UserList = new ArrayList<SampleUser>();
+       /* tenant1UserList = new ArrayList<SampleUser>();
         //create some dummy users and add to the list.
         SampleUser user1 = new SampleUser();
         user1.setId("wso2001");
@@ -66,13 +66,13 @@ public class SampleCharonManager {
         user2.setId("wso2002");
         user2.setUserName("jane");
         user2.setEmails(new String[]{"jane@wso2.com", "jane@gmail.com"});
-        tenant1UserList.add(user2);
+        tenant1UserList.add(user2);*/
 
         return tenant1UserList;
     }
 
     private static List<SampleUser> createTenant2UserList() {
-        tenant2UserList = new ArrayList<SampleUser>();
+        /*tenant2UserList = new ArrayList<SampleUser>();
         //create some dummy users and add to the list.
         SampleUser user1 = new SampleUser();
         user1.setId("wp001");
@@ -84,7 +84,7 @@ public class SampleCharonManager {
         user2.setId("wp002");
         user2.setUserName("jane");
         user2.setEmails(new String[]{"ann@wp.org", "ann@gmail.com"});
-        tenant2UserList.add(user2);
+        tenant2UserList.add(user2);*/
 
         return tenant2UserList;
     }

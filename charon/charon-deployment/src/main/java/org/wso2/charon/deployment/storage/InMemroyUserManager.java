@@ -34,9 +34,9 @@ public class InMemroyUserManager implements UserManager {
     List<SampleUser> userList;
 
     public InMemroyUserManager(List<SampleUser> userList, int tenantId, String tenantDomain) {
-        this.tenantId = tenantId;
+        /*this.tenantId = tenantId;
         this.tenantDomain = tenantDomain;
-        this.userList = userList;
+        this.userList = userList;*/
     }
 
     /**
@@ -106,6 +106,7 @@ public class InMemroyUserManager implements UserManager {
     public User createUser(User user) throws CharonException {
         //check if the user already exist in the system.
         String id = null;
+        SampleUser customUser = null;
         if (userList != null && userList.size() != 0) {
             for (SampleUser sampleUser : userList) {
                 if (user.getExternalId().equals(sampleUser.getFullyQualifiedName())) {
@@ -114,22 +115,36 @@ public class InMemroyUserManager implements UserManager {
                     throw new CharonException(error);
                 } else {
                     //creates a uuid and assigns to id attribute
-                    id = UUID.randomUUID().toString();
-                    sampleUser.setId(id);
-                    sampleUser.setFullyQualifiedName(user.getExternalId());
-                    sampleUser.setUserName(user.getUserName());
-                    sampleUser.setEmails(user.getEmails());
+                    customUser = createCustomUser(user);
+                    userList.add(customUser);
                 }
             }
+        } else {
+            //if this is the first time a user is created, create the user and add it to the list
+            userList = new ArrayList<SampleUser>();
+            customUser = createCustomUser(user);
+            userList.add(customUser);
+
         }
         //now prepare the SCIM User representation of the created user to be returned.
         //only additionally added value is: id
-        user.setId(id);
+        user.setId(customUser.getId());
         return user;
     }
 
     @Override
     public SCIMObject getResource(String resourceId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private SampleUser createCustomUser(User user) throws CharonException {
+        SampleUser sampleUser = new SampleUser();
+        String id = UUID.randomUUID().toString();
+        sampleUser.setId(id);
+        sampleUser.setFullyQualifiedName(user.getExternalId());
+        sampleUser.setUserName(user.getUserName());
+        sampleUser.setEmails(user.getEmails());
+
+        return sampleUser;
     }
 }

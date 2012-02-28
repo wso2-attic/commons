@@ -50,7 +50,7 @@ public class JSONDecoder implements Decoder {
      *
      * @param scimResourceString
      * @param resourceSchema
-     *@param scimObject  @return
+     * @param scimObject         @return
      */
     public SCIMObject decodeResource(String scimResourceString,
                                      ResourceSchema resourceSchema, SCIMObject scimObject)
@@ -230,8 +230,9 @@ public class JSONDecoder implements Decoder {
             //we assume - according to current SCIM spec, that sub attributes are always simple attributes.
             Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
             if (subAttributeValue instanceof String) {
-                subAttributesMap.put(subAttributeSchema.getName(),
-                                     buildSimpleAttribute(subAttributeSchema, subAttributeValue));
+                SimpleAttribute simpleAttribute =
+                        buildSimpleAttribute(subAttributeSchema, subAttributeValue);
+                subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
             }
         }
         complexAttribute.setSubAttributes(subAttributesMap);

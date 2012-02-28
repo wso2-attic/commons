@@ -35,7 +35,7 @@ public class SCIMAttributeSchema implements AttributeSchema {
     private String multiValuedAttributeChildName;
     //The attribute's human readable description
     private String description;
-    //A complex type that specifies the set of Resource attributes.
+    //The attribute's associated schema; e.g., urn:scim:schemas:core:1.0.
     private String schema;
     //A Boolean value that specifies if the attribute is mutable.
     private Boolean readOnly;

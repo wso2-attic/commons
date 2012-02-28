@@ -161,11 +161,11 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     public void setExternalId(String externalId) throws CharonException {
         if (isAttributeExist(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID)) {
             ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.CommonSchemaConstants.ID)).updateValue(
+                    SCIMConstants.CommonSchemaConstants.EXTERNAL_ID)).updateValue(
                     externalId, DataType.STRING);
         } else {
             Attribute externalIdAttribute = new SimpleAttribute(
-                    SCIMConstants.CommonSchemaConstants.ID,
+                    SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
                     SCIMConstants.CORE_SCHEMA_URI, externalId, DataType.STRING,
                     true, false);
             this.setAttribute(externalIdAttribute);
@@ -179,9 +179,9 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      * @throws CharonException
      */
     public String getExternalId() throws CharonException {
-        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
+        if (isAttributeExist(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID)) {
             return ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.CommonSchemaConstants.ID)).getStringValue();
+                    SCIMConstants.CommonSchemaConstants.EXTERNAL_ID)).getStringValue();
         } else {
             return null;
         }

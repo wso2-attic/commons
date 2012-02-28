@@ -35,24 +35,6 @@ public class SimpleAttribute extends AbstractAttribute {
     /*Data type of the attribute value.*/
     protected DataType dataType;
 
-    /**
-     * Validate whether the attribute adheres to the SCIM schema.
-     *
-     * @param attribute
-     * @return
-     */
-    public boolean validate(Attribute attribute) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    /**
-     * Set the value of an attribute. After setting this, attribute factory should be invoked with
-     * relevant attribute schema to set the correct data type etc.
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
     /*public enum DataType {
         STRING, BOOLEAN, DECIMAL, INTEGER, DATE_TIME, BINARY
     }*/
@@ -138,6 +120,27 @@ public class SimpleAttribute extends AbstractAttribute {
         }
     }
 
+    /**
+     * Validate whether the attribute adheres to the SCIM schema.
+     *
+     * @param attribute
+     * @return
+     */
+    public boolean validate(Attribute attribute) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * Set the value of an attribute. After setting this, attribute factory should be invoked with
+     * relevant attribute schema to set the correct data type etc.
+     */
+    public void setValue(Object value) {
+        this.value = value;
+    }
+
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
 
     /**
      * Get the attribute value. This method is implemented to return the attribute value in the

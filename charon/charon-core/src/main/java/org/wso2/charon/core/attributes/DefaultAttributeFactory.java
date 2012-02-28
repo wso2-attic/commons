@@ -52,6 +52,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         //Default attribute factory knows about SCIMAttribute schema
         if (attributeSchema instanceof SCIMAttributeSchema) {
             return createSCIMAttribute((SCIMAttributeSchema) attributeSchema, attribute);
+            //TODO:once the attribute is created, before returning it, needs to validate the attribute
+            //like - whether attribute value is the same type as data type etc..
         } else if (attributeSchema instanceof SCIMSubAttributeSchema) {
             return createSCIMSubAttribute((SCIMSubAttributeSchema) attributeSchema, attribute);
         }
@@ -66,6 +68,15 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         //if multivalued, check if it is simple-multivalued or complex multivalued..
         //if complex-multi-valued, ignore the names of complex attributes. Consider only the names of
         //sub attributes of the complex attribute.
+
+        //do common tasks related to creating an attribute and identify the type of the attribute
+        //and then call separate methods on creating each type of attribute
+        attribute.setSchema(attributeSchema.getSchema());
+
+        //set data type of the attribute value, if simple attribute
+        if (attribute instanceof SimpleAttribute) {
+            return createSimpleAttribute(attributeSchema, (SimpleAttribute) attribute);
+        }
         return attribute;
     }
 
@@ -73,6 +84,29 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                                                    Attribute attribute) {
         //check things like if it is a sub attribute like "operation" in a multivalued attribute,
         //only allowed value is delete likewise.
+        if (attribute instanceof SimpleAttribute) {
+            return createSimpleAttribute(attributeSchema, (SimpleAttribute) attribute);
+        }
         return attribute;
+    }
+
+    /**
+     * Once identified that constructing attribute is a simple attribute & related attribute schema is a
+     * SCIMAttributeSchema, perform attribute construction operations specific to Simple Attribute.
+     *
+     * @param attributeSchema
+     * @param simpleAttribute
+     * @return
+     */
+    public static SimpleAttribute createSimpleAttribute(SCIMAttributeSchema attributeSchema,
+                                                        SimpleAttribute simpleAttribute) {
+        simpleAttribute.dataType = attributeSchema.getType();
+        return simpleAttribute;
+    }
+
+    public static SimpleAttribute createSimpleAttribute(SCIMSubAttributeSchema subAttributeSchema,
+                                                        SimpleAttribute simpleAttribute) {
+        simpleAttribute.dataType = subAttributeSchema.getType();
+        return simpleAttribute;
     }
 }
