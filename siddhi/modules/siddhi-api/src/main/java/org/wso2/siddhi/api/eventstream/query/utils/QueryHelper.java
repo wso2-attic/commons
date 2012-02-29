@@ -17,7 +17,13 @@
 */
 package org.wso2.siddhi.api.eventstream.query.utils;
 
+import org.wso2.siddhi.api.condition.pattern.FollowedByCondition;
+import org.wso2.siddhi.api.condition.sequence.SequenceCondition;
+import org.wso2.siddhi.api.eventstream.query.PatternQuery;
 import org.wso2.siddhi.api.eventstream.query.Query;
+import org.wso2.siddhi.api.eventstream.query.SequenceQuery;
+import org.wso2.siddhi.api.exception.InvalidEventStreamIdException;
+import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
 
 import java.util.List;
 
@@ -25,6 +31,12 @@ public class QueryHelper {
 
     public static Class[] generateAttributeClasses(List<String> outputPropertyList,
                                                    Query query) {
+        List<String> streamIdListFromConditions = null;
+        if (query instanceof SequenceQuery) {
+            streamIdListFromConditions = OutputDefinitionParserUtil.createStreamIdListFromConditions((SequenceCondition) query.getCondition());
+        } else if (query instanceof PatternQuery) {
+            streamIdListFromConditions = OutputDefinitionParserUtil.createStreamIdListFromConditions((FollowedByCondition) query.getCondition());
+        }
 
         Class[] classArray = new Class[outputPropertyList.size()];
         for (int i = 0; i < outputPropertyList.size(); i++) {
@@ -57,11 +69,17 @@ public class QueryHelper {
                 }
             } else {        //Without an aggregator
                 String[] property = outputPropertyList.get(i).split("=")[1].split("\\.");  //property[0]=StreamId,property[1]=Attribute
-                classArray[i] = query.getInputEventStream(property[0]).getTypeForName(property[1]
-                );
+                if (property[0].contains("$")) {
+                    int streamNumber = Integer.valueOf(property[0].substring(1));
+                    if (streamIdListFromConditions != null) {
+                        property[0] = streamIdListFromConditions.get(streamNumber);
+                    } else {
+                        throw new InvalidEventStreamIdException(property[0] + " is not a valid stream id for query " + query.getStreamId());
+                    }
+                }
+                classArray[i] = query.getInputEventStream(property[0]).getTypeForName(property[property.length - 1]);  //to get rid of $0.last.price -> last
             }
         }
         return classArray;
-
     }
 }

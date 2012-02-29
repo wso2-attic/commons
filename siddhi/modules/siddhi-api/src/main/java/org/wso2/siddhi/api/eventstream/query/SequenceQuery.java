@@ -18,8 +18,7 @@ import org.wso2.siddhi.api.OutputDefinition;
 import org.wso2.siddhi.api.condition.sequence.SequenceCondition;
 import org.wso2.siddhi.api.eventstream.EventStream;
 import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
-import org.wso2.siddhi.api.exception.UnsupportedQueryFormatException;
-import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
+import org.wso2.siddhi.api.eventstream.query.utils.QueryHelper;
 
 import java.util.List;
 
@@ -39,36 +38,7 @@ public class SequenceQuery extends Query {
         for (int i = 0, queryInputStreamListSize = queryInputStreamList.size(); i < queryInputStreamListSize; i++) {
             inputEventStreams[i]=queryInputStreamList.get(i).getEventStream();
         }
-        setSchema(getAttributeNames(), getAttributeClasses());
-    }
-
-    //Todo move to Query Helper
-    protected Class[] getAttributeClasses() {
-        List<String> propertyList = outputDefinition.getPropertyList();
-        Class[] classArray = new Class[propertyList.size()];
-        if (queryInputStreamList != null) {   // for a pattern query
-            for (int i = 0; i < propertyList.size(); i++) { //action=$0.action
-                List<String> list = OutputDefinitionParserUtil.createStreamIdListFromConditions((SequenceCondition) getCondition());
-                String temp = propertyList.get(i).trim().split("=")[1].split("\\.")[0].substring(1);
-                int position = Integer.valueOf(temp);
-                String streamName = list.get(position);
-                for (QueryInputStream queryInputStream : queryInputStreamList) {
-                    if (queryInputStream.getEventStream().getStreamId().equals(streamName)) {
-
-                        try {
-                            classArray[i] = queryInputStream.getEventStream().getTypeForName(propertyList.get(i).split("=")[1].split("\\.")[2]);
-                        } catch (Exception e) {
-                            classArray[i] = queryInputStream.getEventStream().getTypeForName(propertyList.get(i).split("=")[1].split("\\.")[1]);
-                        }
-                        break;
-                        
-                    }
-                }
-            }
-            return classArray;
-        } else {
-            throw new UnsupportedQueryFormatException("Unsupported query type");
-        }
+        setSchema(getAttributeNames(), QueryHelper.generateAttributeClasses(outputDefinition.getPropertyList(),this));
     }
 
     /**
