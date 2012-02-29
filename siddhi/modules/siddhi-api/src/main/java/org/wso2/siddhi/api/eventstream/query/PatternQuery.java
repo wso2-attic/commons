@@ -21,13 +21,11 @@ import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
 import org.wso2.siddhi.api.exception.UnsupportedQueryFormatException;
 import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PatternQuery extends Query {
 
     private List<QueryInputStream> queryInputStreamList = null;
-    List<EventStream> inputEventStreams= new ArrayList<EventStream>();
 
     /**
      * @param streamId            id of the query
@@ -38,12 +36,14 @@ public class PatternQuery extends Query {
     public PatternQuery(String streamId, OutputDefinition outputDefinition, List<QueryInputStream> queryInputStreamList, FollowedByCondition followedByCondition) {
         super(streamId, outputDefinition, followedByCondition);
         this.queryInputStreamList = queryInputStreamList;
-        for(QueryInputStream queryInputStream:queryInputStreamList ) {
-            inputEventStreams.add(queryInputStream.getEventStream());
+        this.inputEventStreams=new EventStream[queryInputStreamList.size()];
+        for (int i = 0, queryInputStreamListSize = queryInputStreamList.size(); i < queryInputStreamListSize; i++) {
+            inputEventStreams[i]=queryInputStreamList.get(i).getEventStream();
         }
         setSchema(getAttributeNames(), getAttributeClasses());
     }
 
+    //Todo move to Query Helper
     protected Class[] getAttributeClasses() {
         List<String> propertyList = outputDefinition.getPropertyList();
         Class[] classArray = new Class[propertyList.size()];
@@ -73,14 +73,6 @@ public class PatternQuery extends Query {
      */
     public List<QueryInputStream> getQueryInputStreamList() {
         return queryInputStreamList;
-    }
-    /**
-     * get the list of input event streams
-     *
-     * @return the list of input event streams
-     */
-    public List<EventStream> getEventStreamList() {
-        return inputEventStreams;
     }
 
 

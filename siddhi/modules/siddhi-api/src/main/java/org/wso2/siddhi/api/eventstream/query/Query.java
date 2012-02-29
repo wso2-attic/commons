@@ -17,6 +17,8 @@ package org.wso2.siddhi.api.eventstream.query;
 import org.wso2.siddhi.api.OutputDefinition;
 import org.wso2.siddhi.api.condition.*;
 import org.wso2.siddhi.api.eventstream.AbstractEventStream;
+import org.wso2.siddhi.api.eventstream.EventStream;
+import org.wso2.siddhi.api.exception.InvalidEventStreamIdException;
 
 import java.util.List;
 
@@ -26,13 +28,14 @@ public abstract class Query extends AbstractEventStream {
     protected Condition condition;
     protected Condition havingCondition;
     protected String[] groupBy;
+    protected EventStream[] inputEventStreams=new EventStream[1];
 
     /**
      * @param streamId         id of the query (output id)
      * @param outputDefinition definition of the output
      * @param condition        query condition
      */
-    public Query(String streamId, OutputDefinition outputDefinition, Condition condition) {
+    public Query(String streamId, OutputDefinition outputDefinition, Condition condition ) {
         super(streamId);
         this.outputDefinition = outputDefinition;
         this.condition = condition;
@@ -46,8 +49,6 @@ public abstract class Query extends AbstractEventStream {
         }
         return names;
     }
-
-    protected abstract Class[] getAttributeClasses();
 
     /**
      * get the output definition of the query
@@ -115,4 +116,38 @@ public abstract class Query extends AbstractEventStream {
     }
 
 
+
+    public EventStream[] getInputEventStreams() {
+        return inputEventStreams;
+    }
+
+    /**
+     * Inefficient method
+     * @param streamId
+     * @return
+     */
+
+    public EventStream getInputEventStream(String streamId) {
+        for(EventStream eventStream:inputEventStreams){
+            if(eventStream.getStreamId().equals(streamId)){
+                return eventStream;
+            }
+        }
+        throw new InvalidEventStreamIdException("There is no stream with "+streamId );
+    }
+
+    /**
+     * Inefficient method
+     * @param streamId
+     * @return
+     */
+    public int getInputEventStreamPosition(String streamId) {
+        for (int i = 0, inputEventStreamsLength = inputEventStreams.length; i < inputEventStreamsLength; i++) {
+            EventStream eventStream = inputEventStreams[i];
+            if (eventStream.getStreamId().equals(streamId)) {
+                return i;
+            }
+        }
+        throw new InvalidEventStreamIdException("There is no stream with "+streamId );
+    }
 }

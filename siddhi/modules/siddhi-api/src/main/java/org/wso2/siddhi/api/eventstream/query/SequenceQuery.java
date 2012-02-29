@@ -21,13 +21,11 @@ import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
 import org.wso2.siddhi.api.exception.UnsupportedQueryFormatException;
 import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SequenceQuery extends Query {
 
     private List<QueryInputStream> queryInputStreamList = null;
-    List<EventStream> inputEventStreams= new ArrayList<EventStream>();
     /**
      * @param streamId            id of the query
      * @param outputDefinition    definition of the output of the query
@@ -37,12 +35,14 @@ public class SequenceQuery extends Query {
     public SequenceQuery(String streamId, OutputDefinition outputDefinition, List<QueryInputStream> eventStreamList, SequenceCondition sequenceCondition) {
         super(streamId, outputDefinition, sequenceCondition);
         this.queryInputStreamList = eventStreamList;
-        for(QueryInputStream queryInputStream:queryInputStreamList ) {
-            inputEventStreams.add(queryInputStream.getEventStream());
+        this.inputEventStreams=new EventStream[queryInputStreamList.size()];
+        for (int i = 0, queryInputStreamListSize = queryInputStreamList.size(); i < queryInputStreamListSize; i++) {
+            inputEventStreams[i]=queryInputStreamList.get(i).getEventStream();
         }
         setSchema(getAttributeNames(), getAttributeClasses());
     }
 
+    //Todo move to Query Helper
     protected Class[] getAttributeClasses() {
         List<String> propertyList = outputDefinition.getPropertyList();
         Class[] classArray = new Class[propertyList.size()];
@@ -78,14 +78,5 @@ public class SequenceQuery extends Query {
      */
     public List<QueryInputStream> getQueryInputStreamList() {
         return queryInputStreamList;
-    }
-
-    /**
-     * get the list of input event streams
-     *
-     * @return the list of input event streams
-     */
-    public List<EventStream> getEventStreamList() {
-        return inputEventStreams;
     }
 }

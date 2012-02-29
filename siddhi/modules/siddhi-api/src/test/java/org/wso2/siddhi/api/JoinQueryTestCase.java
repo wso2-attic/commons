@@ -51,4 +51,54 @@ public class JoinQueryTestCase {
         Assert.assertTrue(((Query) eventStreamList.get(2)).hasHaving());
         Assert.assertTrue(!((Query) eventStreamList.get(2)).hasGroupBy());
     }
+
+    @Test
+    public void QueryTestCase3() throws SiddhiPraserException {
+        List<EventStream> eventStreamList =
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "infoStock:=action[string], timeStamp[long];" +
+                                     "StockQuote:=select symbol=cseEventStream.symbol, price=cseEventStream.price, timeStamp=infoStock.timeStamp from cseEventStream,infoStock where cseEventStream.symbol==infoStock.action having price>100;");
+        Assert.assertTrue(eventStreamList.size() == 3);
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasCondition());
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasHaving());
+        Assert.assertTrue(!((Query) eventStreamList.get(2)).hasGroupBy());
+    }
+
+    @Test
+    public void QueryTestCase4() throws SiddhiPraserException {
+        List<EventStream> eventStreamList =
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "infoStock:=action[string], timeStamp[long];" +
+                                     "StockQuote:=select symbol=cseEventStream.symbol, avgPrice=avg(cseEventStream.price), timeStamp=infoStock.timeStamp from cseEventStream,infoStock where cseEventStream.symbol==infoStock.action;");
+        Assert.assertTrue(eventStreamList.size() == 3);
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasCondition());
+        Assert.assertTrue(!((Query) eventStreamList.get(2)).hasHaving());
+        Assert.assertTrue(!((Query) eventStreamList.get(2)).hasGroupBy());
+    }
+
+    @Test
+    public void QueryTestCase5() throws SiddhiPraserException {
+        List<EventStream> eventStreamList =
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "infoStock:=action[string], timeStamp[long];" +
+                                     "StockQuote:=select symbol=cseEventStream.symbol, avgPrice=avg(cseEventStream.price), timeStamp=infoStock.timeStamp from cseEventStream,infoStock where cseEventStream.symbol==infoStock.action group by cseEventStream.symbol;");
+        Assert.assertTrue(eventStreamList.size() == 3);
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasCondition());
+        Assert.assertTrue(!((Query) eventStreamList.get(2)).hasHaving());
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasGroupBy());
+    }
+
+    @Test
+    public void QueryTestCase6() throws SiddhiPraserException {
+        List<EventStream> eventStreamList =
+                SiddhiCompiler.parse("cseEventStream:=symbol[string], price[int];" +
+                                     "infoStock:=action[string], timeStamp[long];" +
+                                     "StockQuote:=select symbol=cseEventStream.symbol, avgPrice=avg(cseEventStream.price), timeStamp=infoStock.timeStamp from cseEventStream,infoStock where cseEventStream.symbol==infoStock.action group by cseEventStream.symbol having avgPrice>100;");
+        Assert.assertTrue(eventStreamList.size() == 3);
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasCondition());
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasHaving());
+        Assert.assertTrue(((Query) eventStreamList.get(2)).hasGroupBy());
+    }
+
+
 }

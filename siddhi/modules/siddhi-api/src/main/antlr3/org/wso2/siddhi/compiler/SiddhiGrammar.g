@@ -89,7 +89,7 @@ inputStm
 queryStm
     @init { paraphrases.push("in Query Stream"); }
     @after { paraphrases.pop(); }
-    :queryOutput? queryInput queryCond? 	-> queryInput  queryCond? queryOutput?
+    :queryOutput queryInput queryCond? 	-> queryInput  queryCond? queryOutput
 	;
 queryOutput
     @init { paraphrases.push("in Query output"); }

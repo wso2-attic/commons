@@ -88,14 +88,14 @@ options {
         }
 }
 
-siddhiGrammar [List<EventStream> inputEventStreamList ]  returns [List<EventStream> eventStreamList ]
+siddhiGrammar [List<EventStream> inputEventStreamList ]  returns [List<EventStream> eventStreams ]
     @init{
         if(inputEventStreamList!=null){
             streamList = $inputEventStreamList;
         }
     }
     @after{
-        $eventStreamList=streamList;
+        $eventStreams=streamList;
     }
 	: (s=stream[streamList] { streamList.add($s.eventStream);} )+
 	;
@@ -170,6 +170,10 @@ queryStm [String name] returns [Query query]
                                      $queryStm::outputDef,
                                      qf.innerJoin($queryStm::inputStreamList.get(0),$queryStm::inputStreamList.get(1)),
                                      $queryStm::whereCond);
+
+            if($queryStm::gpByCond!=null){
+                $query.groupBy($queryStm::gpByCond);
+            }
             if($queryStm::havingCond!=null){
                 $query.having($queryStm::havingCond);
             }
@@ -186,7 +190,7 @@ queryStm [String name] returns [Query query]
             throw new SiddhiCompilationException("Not fall under valid Query type: number of input streams="+$queryStm::inputStreamList.size());
         }
     }
-    : queryInput queryCond? queryOutput?
+    : queryInput queryCond? queryOutput
 	;
 	
 queryOutput

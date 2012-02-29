@@ -44,18 +44,8 @@ public abstract class AbstractProcessor  implements Processor {
         return nodeId;
     }
 
-//    protected boolean checkPoison(Event event, String eventStreamId) throws InterruptedException {
-//        if (eventStreamId.equals(SiddhiManager.POISON_PILL)) {
-//            if ((Integer) event.getNthAttribute(0) == SiddhiManager.KILL_ALL) {
-//                outputEventStream.put(event);
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
-
     @Override
-    public void startRunnable(SiddhiThreadPool siddhiThreadPool) {
+    public  void startRunnable(SiddhiThreadPool siddhiThreadPool) {
         this.inputEventStream.startRunnable(siddhiThreadPool);
         siddhiThreadPool.execute(this);
     }

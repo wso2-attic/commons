@@ -21,7 +21,7 @@ public class PeekDemo {
     private static int NUMBER_OF_EVENTS = 1000;
     private static final Logger log = Logger.getLogger(PeekDemo.class);
 
-    public static void main(String[] args) throws SiddhiException {
+    public static void main(String[] args) throws SiddhiException, InterruptedException {
         new PeekDemo().testCase();
     }
 
@@ -32,13 +32,13 @@ public class PeekDemo {
     }
 
     @Test
-    public void testCase() throws SiddhiException {
+    public void testCase() throws SiddhiException, InterruptedException {
         //Instantiate SiddhiManager
         SiddhiManager siddhiManager = new SiddhiManager();
 
         QueryFactory qf = SiddhiManager.getQueryFactory();
 
-        InputEventStream stockExchangeStream = new InputEventStream("stockExchangeStream",
+        InputEventStream stockExchangeStream = new InputEventStream("StockExchangeStream",
                                                                     new String[]{"symbol", "time", "price", "volume"},
                                                                     new Class[]{String.class, Long.class, Double.class, Integer.class}
         );
@@ -49,7 +49,7 @@ public class PeekDemo {
                 "IBMStockQuote",
                 qf.output("*"),
                 qf.from(stockExchangeStream),
-                qf.condition("stockExchangeStream.symbol", EQUAL, "IBM")
+                qf.condition("StockExchangeStream.symbol", EQUAL, "IBM")
         );
         siddhiManager.addQuery(IBMStockQuote);
 
@@ -76,14 +76,21 @@ public class PeekDemo {
         }
         );
 
-        siddhiManager.update();
+//        siddhiManager.addCallback(new CallbackHandler("IBMStockQuote") {
+//            public void callBack(Event event) {
+//                System.out.println(" >>> IBM Event captured: " + event);
+//            }
+//        }
+//        );
+
+        siddhiManager.init();
 
 
         PeekStockQuoteDemoEG eventGenerator = new PeekStockQuoteDemoEG();
         //printing the Events
         for (int i = 0; i < NUMBER_OF_EVENTS; i++) {
             Event event = eventGenerator.generateEvent();
-            System.out.println("Event send: " + event);
+          // System.out.println("Event send: " + event);
             inputHandler.sendEvent(event);
 //                if (i == 200) {
 //                    try {
@@ -94,7 +101,8 @@ public class PeekDemo {
 //                    }
 //                }
         }
-        siddhiManager.shutDownTask();
+        Thread.sleep(20000);
+     //   siddhiManager.shutDownTask();
 
     }
 

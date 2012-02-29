@@ -53,7 +53,7 @@ public class ConditionParser {
     private ConditionParserUtil parserUtil;
 
     private Condition condition;
-    private List<EventStream> eventStreamList;
+    private EventStream[] eventStreams;
     private Executor executor = null;
 
     //used only for state machine
@@ -69,59 +69,34 @@ public class ConditionParser {
      * ConditionParser constructor
      *
      * @param condition       the condition that need to be parsed
-     * @param eventStreamList the List of streams available for the condition
+     * @param eventStreams the List of streams available for the condition
      * @throws UndefinedPropertyException
      * @throws InvalidAttributeCastException
      * @throws InvalidQueryException
      * @throws org.wso2.siddhi.core.exception.PropertyFormatException
-     */
-    public ConditionParser(Condition condition, List<EventStream> eventStreamList)
-            throws UndefinedPropertyException,
-                   InvalidAttributeCastException, InvalidQueryException, PropertyFormatException,
-                   SiddhiException {
-        this.condition = condition;
-        if (null == eventStreamList) {
-            this.eventStreamList = new ArrayList<EventStream>();
-        } else {
-            this.eventStreamList = eventStreamList;
-        }
-        generateExecutor();
-    }
-
-    /**
-     * ConditionParser constructor
      *
-     * @param condition   the condition te need to be parsed
-     * @param eventStream the stream available for the condition
-     * @throws UndefinedPropertyException
-     * @throws InvalidAttributeCastException
-     * @throws InvalidQueryException
-     * @throws org.wso2.siddhi.core.exception.PropertyFormatException
      */
-    public ConditionParser(Condition condition, EventStream eventStream)
+    public ConditionParser(Condition condition, EventStream[] eventStreams)
             throws UndefinedPropertyException,
                    InvalidAttributeCastException, InvalidQueryException, PropertyFormatException,
                    SiddhiException {
         this.condition = condition;
-        this.eventStreamList = new ArrayList<EventStream>();
-        if (null != eventStream) {
-            this.eventStreamList.add(eventStream);
-        }
+        this.eventStreams = eventStreams;
         generateExecutor();
     }
 
     private void generateExecutor()
             throws UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException,
                    PropertyFormatException, SiddhiException {
-        parserUtil = new ConditionParserUtil(condition, eventStreamList);
-            if (condition instanceof FollowedByCondition) {
-                followedbyExecutorList = generateFollowedByExecutorList((FollowedByCondition) condition);
-            } else if (condition instanceof SequenceCondition) {
-                //           parserList = OutputDefinitionParserUtil.findNameListOfAttribute((SequenceCondition) condition);
-                sequenceExecutorList = generatePatternExecutorList((SequenceCondition) condition);
-            } else {
-                executor = parse(condition);
-            }
+        parserUtil = new ConditionParserUtil(condition, eventStreams);
+        if (condition instanceof FollowedByCondition) {
+            followedbyExecutorList = generateFollowedByExecutorList((FollowedByCondition) condition);
+        } else if (condition instanceof SequenceCondition) {
+            //           parserList = OutputDefinitionParserUtil.findNameListOfAttribute((SequenceCondition) condition);
+            sequenceExecutorList = generatePatternExecutorList((SequenceCondition) condition);
+        } else {
+            executor = parse(condition);
+        }
 
     }
 
@@ -186,6 +161,7 @@ public class ConditionParser {
      * @throws InvalidQueryException
      * @throws SiddhiException
      * @throws org.wso2.siddhi.core.exception.PropertyFormatException
+     *
      */
     private Executor evaluateAnd(AndCondition andCondition)
             throws InvalidQueryException, PropertyFormatException, UndefinedPropertyException,
@@ -205,6 +181,7 @@ public class ConditionParser {
      * @throws InvalidQueryException
      * @throws SiddhiException
      * @throws org.wso2.siddhi.core.exception.PropertyFormatException
+     *
      */
     private Executor evaluateOr(OrCondition orCondition)
             throws InvalidQueryException, PropertyFormatException, UndefinedPropertyException,
@@ -224,6 +201,7 @@ public class ConditionParser {
      * @throws InvalidQueryException
      * @throws SiddhiException
      * @throws org.wso2.siddhi.core.exception.PropertyFormatException
+     *
      */
     private Executor evaluateNot(NotCondition notCondition)
             throws InvalidQueryException, PropertyFormatException, UndefinedPropertyException,
@@ -241,25 +219,29 @@ public class ConditionParser {
      * @throws InvalidAttributeCastException
      * @throws InvalidQueryException
      * @throws org.wso2.siddhi.core.exception.PropertyFormatException
+     *
      * @throws SiddhiException
      */
     private Executor evaluateSimpleCondition(SimpleCondition simpleCondition)
             throws InvalidQueryException, PropertyFormatException, UndefinedPropertyException,
                    SiddhiException {
         if (null == simpleConditionParser) {
-            simpleConditionParser = new SimpleConditionParser(condition, eventStreamList, parserUtil);
+            simpleConditionParser = new SimpleConditionParser(condition, parserUtil);
         }
         return simpleConditionParser.parse(simpleCondition, state);
     }
 
 
-    private Executor evaluateExpressionCondition(ExpressionCondition condition) throws SiddhiException, PropertyFormatException {
+    private Executor evaluateExpressionCondition(ExpressionCondition condition)
+            throws SiddhiException, PropertyFormatException {
         List<String> inputPropertyList = condition.getStreamInputs();
         List<String> expressionPropertyList = condition.getExpressionInputs();
         return new ExpressionExecutor(condition.getExpression(), parserUtil.moderatedStreamIdList(inputPropertyList), parserUtil.createExpressionPropertyPositionMap(inputPropertyList, expressionPropertyList, state));
     }
 
-    private Executor evaluateNonOccurrenceCondition(NonOccurrenceCondition condition) throws SiddhiException, PropertyFormatException, InvalidQueryException, UndefinedPropertyException, InvalidAttributeCastException {
+    private Executor evaluateNonOccurrenceCondition(NonOccurrenceCondition condition)
+            throws SiddhiException, PropertyFormatException, InvalidQueryException,
+                   UndefinedPropertyException, InvalidAttributeCastException {
         Condition nonOccurringCondition = condition.getNonOccurringCondition();
         Condition followingCondition = condition.getFollowingCondition();
         Executor thisExecutor;
@@ -276,8 +258,12 @@ public class ConditionParser {
         return thisExecutor;
     }
 
-    private List<FollowedByExecutor> generateFollowedByExecutorList(FollowedByCondition followedByCondition) throws
-            UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException, SiddhiException, PropertyFormatException {
+    private List<FollowedByExecutor> generateFollowedByExecutorList(
+            FollowedByCondition followedByCondition) throws
+                                                     UndefinedPropertyException,
+                                                     InvalidAttributeCastException,
+                                                     InvalidQueryException, SiddhiException,
+                                                     PropertyFormatException {
         List<FollowedByExecutor> executorList = new ArrayList<FollowedByExecutor>();
         List<Condition> conditionsList = followedByCondition.getFollowingConditions();
         state = 0;
@@ -331,7 +317,9 @@ public class ConditionParser {
         return executorList;
     }
 
-    private List<SequenceExecutor> generatePatternExecutorList(SequenceCondition sequenceCondition) throws UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException, PropertyFormatException, SiddhiException {
+    private List<SequenceExecutor> generatePatternExecutorList(SequenceCondition sequenceCondition)
+            throws UndefinedPropertyException, InvalidAttributeCastException, InvalidQueryException,
+                   PropertyFormatException, SiddhiException {
 
         List<SequenceExecutor> executorList = new ArrayList<SequenceExecutor>();
         List<Condition> conditionsList = sequenceCondition.getPatternConditions();

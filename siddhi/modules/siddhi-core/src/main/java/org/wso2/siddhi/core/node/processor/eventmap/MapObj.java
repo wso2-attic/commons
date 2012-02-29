@@ -16,19 +16,20 @@
 package org.wso2.siddhi.core.node.processor.eventmap;
 
 public abstract class MapObj {
-    String id;
-    int position;
+    int streamPosition;
+    int attributePosition;
 
-    public MapObj(String id, int position) {
-        this.position = position;
-        this.id = id;
+    public MapObj(int streamPosition, int attributePosition) {
+        this.streamPosition = streamPosition;
+        this.attributePosition = attributePosition;
     }
 
-    public String getId() {
-        return id;
+    public int getAttributePosition() {
+        return attributePosition;
     }
 
-    public int getPosition() {
-        return position;
+    public int getStreamPosition() {
+        return streamPosition;
     }
+
 }

@@ -17,20 +17,27 @@ package org.wso2.siddhi.core.node.processor;
 
 import org.wso2.siddhi.api.eventstream.query.Query;
 import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
+import org.wso2.siddhi.core.exception.InvalidAttributeCastException;
+import org.wso2.siddhi.core.exception.InvalidQueryException;
 import org.wso2.siddhi.core.exception.InvalidQueryInputStreamException;
 import org.wso2.siddhi.core.exception.ProcessorInitializationException;
+import org.wso2.siddhi.core.exception.PropertyFormatException;
 import org.wso2.siddhi.core.exception.SiddhiException;
+import org.wso2.siddhi.core.exception.UndefinedPropertyException;
 import org.wso2.siddhi.core.node.EventSink;
 import org.wso2.siddhi.core.node.EventSource;
 import org.wso2.siddhi.core.node.ExecutableNode;
 
 public interface Processor extends EventSink, EventSource, ExecutableNode {
 
-     public Query getQuery();
+    public Query getQuery();
 
     public void assignQueryInputStream(QueryInputStream queryInputStream)
             throws InvalidQueryInputStreamException;
 
-    public void init() throws ProcessorInitializationException, SiddhiException;
+    public void init()
+            throws ProcessorInitializationException, SiddhiException, InvalidQueryException,
+                   PropertyFormatException, UndefinedPropertyException,
+                   InvalidAttributeCastException;
 }
 

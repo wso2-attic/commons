@@ -16,10 +16,9 @@ package org.wso2.siddhi.api.eventstream.query;
 
 import org.wso2.siddhi.api.OutputDefinition;
 import org.wso2.siddhi.api.condition.Condition;
+import org.wso2.siddhi.api.eventstream.EventStream;
 import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
-import org.wso2.siddhi.api.exception.UnsupportedQueryFormatException;
-
-import java.util.List;
+import org.wso2.siddhi.api.eventstream.query.utils.QueryHelper;
 
 public class SimpleQuery extends Query {
 
@@ -35,56 +34,8 @@ public class SimpleQuery extends Query {
                        QueryInputStream queryInputStream, Condition condition) {
         super(streamId, outputDefinition, condition);
         this.queryInputStream = queryInputStream;
-        setSchema(getAttributeNames(), getAttributeClasses());
-    }
-
-    /**
-     * Determine the classes of the output-stream's attributes
-     *
-     * @return An array containing the classes of the attributes
-     */
-    protected Class[] getAttributeClasses() {
-        List<String> propertyList = outputDefinition.getPropertyList();
-        Class[] classArray = new Class[propertyList.size()];
-        if (queryInputStream != null) {   //for normal Query
-            for (int i = 0; i < propertyList.size(); i++) {
-
-                String function = propertyList.get(i).split("=")[1];
-
-                if (function.contains("(")) {    //Aggregator //avg(CSEStream.price)
-                    String[] funcArr = function.split("\\("); //[0]=functionName, [1]=functionParameters
-
-                    //If the aggregator function is COUNT, then set the output class type as Long
-                    if ("COUNT".equals(funcArr[0].replaceAll(" ", "").toUpperCase())) {
-                        classArray[i] = java.lang.Long.class;
-                    } else if ("".equals(funcArr[0].replaceAll(" ", "").toUpperCase())) {
-                        String classTypeString = funcArr[1].split("\\)")[0].replace(" ", "").toUpperCase();
-                        if (classTypeString.equals("INT")) {
-                            classArray[i] = Integer.class;
-                        } else if (classTypeString.equals("LONG")) {
-                            classArray[i] = Long.class;
-                        } else if (classTypeString.equals("FLOAT")) {
-                            classArray[i] = Float.class;
-                        } else if (classTypeString.equals("DOUBLE")) {
-                            classArray[i] = Double.class;
-                        } else {//    if(classTypeString.equals("STRING")){
-                            classArray[i] = String.class;
-                        }
-                    } else {    //For other aggregators
-                        classArray[i] = queryInputStream.getEventStream().getTypeForName(
-                                funcArr[1].split("\\.")[1].replace(")", "") //ex: price
-                        );
-                    }
-                } else {        //Without an aggregator
-                    classArray[i] = queryInputStream.getEventStream().getTypeForName(
-                            propertyList.get(i).split("=")[1].split("\\.")[1]
-                    );
-                }
-            }
-            return classArray;
-        } else {
-            throw new UnsupportedQueryFormatException("Unsupported query type");
-        }
+        this.inputEventStreams=new EventStream[]{queryInputStream.getEventStream()};
+        setSchema(getAttributeNames(), QueryHelper.generateAttributeClasses(outputDefinition.getPropertyList(), this));
     }
 
     /**

@@ -20,10 +20,7 @@ import org.wso2.siddhi.api.OutputDefinition;
 import org.wso2.siddhi.api.condition.Condition;
 import org.wso2.siddhi.api.eventstream.EventStream;
 import org.wso2.siddhi.api.eventstream.query.jointstream.Join;
-import org.wso2.siddhi.api.exception.InvalidEventStreamIdException;
-import org.wso2.siddhi.api.exception.UnsupportedQueryFormatException;
-
-import java.util.List;
+import org.wso2.siddhi.api.eventstream.query.utils.QueryHelper;
 
 public class JoinQuery extends Query {
 
@@ -35,36 +32,13 @@ public class JoinQuery extends Query {
      * @param jointStream
      * @param condition        query condition
      */
-    public JoinQuery(String streamId, OutputDefinition outputDefinition, Join jointStream, Condition condition) {
+    public JoinQuery(String streamId, OutputDefinition outputDefinition, Join jointStream,
+                     Condition condition) {
         super(streamId, outputDefinition, condition);
         this.jointStream = jointStream;
-        setSchema(getAttributeNames(), getAttributeClasses());
-    }
-
-    protected Class[] getAttributeClasses() {
-        List<String> propertyList = outputDefinition.getPropertyList();
-        Class[] classArray = new Class[propertyList.size()];
-        if (jointStream != null) {                    //for Join Query
-            EventStream left = jointStream.getQueryLeftInputStream().getEventStream();
-            EventStream right = jointStream.getQueryRightInputStream().getEventStream();
-            for (int i = 0; i < propertyList.size(); i++) {
-                String streamId = propertyList.get(i).split("=")[1].split("\\.")[0];
-                String attribute = propertyList.get(i).split("=")[1].split("\\.")[1];
-
-                if (left.getStreamId().equals(streamId)) {
-                    classArray[i] = left.getTypeForName(attribute);
-                } else if (right.getStreamId().equals(streamId)) {
-                    classArray[i] = right.getTypeForName(attribute);
-                } else {
-                    throw new InvalidEventStreamIdException("Wrong stream ID "+ streamId);
-                }
-
-            }
-            return classArray;
-        } else {
-            throw new UnsupportedQueryFormatException("Unsupported query type");
-        }
-
+        this.inputEventStreams=new EventStream[]{jointStream.getQueryLeftInputStream().getEventStream(),
+                                               jointStream.getQueryRightInputStream().getEventStream()};
+        setSchema(getAttributeNames(), QueryHelper.generateAttributeClasses(outputDefinition.getPropertyList(), this));
     }
 
     /**

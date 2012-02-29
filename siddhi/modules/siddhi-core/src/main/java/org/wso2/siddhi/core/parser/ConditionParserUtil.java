@@ -38,13 +38,13 @@ public class ConditionParserUtil {
     private static final Random random = new Random();
     private static final char[] buf = new char[7];
 
-    List<EventStream> eventStreamList;
+    EventStream[] eventStreams;
     List<String> streamIdListFromConditions = null;
     private Condition condition;
 
-    public ConditionParserUtil(Condition condition, List<EventStream> eventStreamList) {
+    public ConditionParserUtil(Condition condition, EventStream[]  eventStreams) {
         this.condition = condition;
-        this.eventStreamList = eventStreamList;
+        this.eventStreams = eventStreams;
     }
 
     static {
@@ -108,7 +108,7 @@ public class ConditionParserUtil {
 
     private int[] getPosition(String streamId, String selfEventPosition, String attributeName, int state) {
         if (isInteger(streamId)) {
-            for (EventStream anEventStreamList : eventStreamList) {
+            for (EventStream anEventStreamList : eventStreams) {
                 if (anEventStreamList.getStreamId().equals(streamId)) {
                     return new int[]{Integer.parseInt(streamId), anEventStreamList.getAttributePositionForName(attributeName)};
                 }
@@ -116,16 +116,16 @@ public class ConditionParserUtil {
             return new int[2];
         } else {
             if (state < 0) {// for simple and join
-                for (int i = 0; i < eventStreamList.size(); i++) {
-                    if (eventStreamList.get(i).getStreamId().equals(streamId)) {
-                        return new int[]{i, eventStreamList.get(i).getAttributePositionForName(attributeName)};
+                for (int i = 0; i < eventStreams.length; i++) {
+                    if (eventStreams[i].getStreamId().equals(streamId)) {
+                        return new int[]{i,eventStreams[i].getAttributePositionForName(attributeName)};
                     }
                 }
                 return new int[2];
             } else {       // for pattern
                 if (streamId.startsWith("$")) { // for $1.price like conditions
                     int stateId = Integer.parseInt(streamId.replace("$", ""));
-                    for (EventStream anEventStreamList : eventStreamList) {
+                    for (EventStream anEventStreamList : eventStreams) {
                         if (anEventStreamList.getStreamId().equals(streamIdListFromConditions.get(stateId))) {
                             if (selfEventPosition == null) {
                                 return new int[]{stateId, anEventStreamList.getAttributePositionForName(attributeName)};
@@ -141,7 +141,7 @@ public class ConditionParserUtil {
                         }
                     }
                 } else {
-                    for (EventStream anEventStreamList : eventStreamList) {
+                    for (EventStream anEventStreamList : eventStreams) {
                         if (anEventStreamList.getStreamId().equals(streamId)) {
                             return new int[]{state, anEventStreamList.getAttributePositionForName(attributeName)};
                         }
@@ -204,13 +204,13 @@ public class ConditionParserUtil {
                 }
             }
             int state = Integer.parseInt(streamId.replace("$", ""));
-            for (EventStream anEventStreamList : eventStreamList) {
+            for (EventStream anEventStreamList : eventStreams) {
                 if (anEventStreamList.getStreamId().equals(streamIdListFromConditions.get(state))) {
                     return anEventStreamList.getStreamId();
                 }
             }
         } else {
-            for (EventStream anEventStreamList : eventStreamList) {
+            for (EventStream anEventStreamList : eventStreams) {
                 if (anEventStreamList.getStreamId().equals(streamId)) {
                     return streamId;
                 }
@@ -258,7 +258,7 @@ public class ConditionParserUtil {
      * @return the attribute class
      */
     private Class getType(String streamId, String propertyAttribute) {
-        for (EventStream anEventStreamList : eventStreamList) {
+        for (EventStream anEventStreamList : eventStreams) {
             if (anEventStreamList.getStreamId().equals(streamId)) {
                 return anEventStreamList.getTypeForName(propertyAttribute);
             }

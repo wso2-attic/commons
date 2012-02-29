@@ -15,11 +15,15 @@
 
 package org.wso2.siddhi.core.node.processor.eventmap;
 
-public class AggregatorMapObj extends org.wso2.siddhi.core.node.processor.eventmap.MapObj {
+public class AggregatorMapObj extends MapObj {
+    private int dataItemPosition;
 
-    public AggregatorMapObj(int position) {
-        super(null,position);
-
+    public AggregatorMapObj(int streamPosition, int attributePosition, int dataItemPosition) {
+        super(streamPosition, attributePosition);
+        this.dataItemPosition = dataItemPosition;
     }
-        
+
+    public int getDataItemPosition() {
+        return dataItemPosition;
+    }
 }

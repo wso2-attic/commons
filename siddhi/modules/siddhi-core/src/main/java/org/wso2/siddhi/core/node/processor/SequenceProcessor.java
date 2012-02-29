@@ -19,21 +19,17 @@ import org.wso2.siddhi.api.condition.Condition;
 import org.wso2.siddhi.api.condition.sequence.SequenceCondition;
 import org.wso2.siddhi.api.eventstream.EventStream;
 import org.wso2.siddhi.api.eventstream.query.Query;
-import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
 import org.wso2.siddhi.api.eventstream.query.SequenceQuery;
+import org.wso2.siddhi.api.eventstream.query.inputstream.QueryInputStream;
 import org.wso2.siddhi.api.util.OutputDefinitionParserUtil;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.generator.EventGenerator;
 import org.wso2.siddhi.core.event.generator.EventGeneratorImpl;
+import org.wso2.siddhi.core.exception.InvalidQueryInputStreamException;
 import org.wso2.siddhi.core.exception.ProcessorInitializationException;
 import org.wso2.siddhi.core.exception.SiddhiException;
 import org.wso2.siddhi.core.node.processor.eventmap.SequenceOutputMapObj;
-import org.wso2.siddhi.core.exception.InvalidAttributeCastException;
-import org.wso2.siddhi.core.exception.InvalidQueryException;
-import org.wso2.siddhi.core.exception.InvalidQueryInputStreamException;
-import org.wso2.siddhi.core.exception.PropertyFormatException;
-import org.wso2.siddhi.core.exception.UndefinedPropertyException;
 import org.wso2.siddhi.core.node.processor.executor.SequenceExecutor;
 import org.wso2.siddhi.core.parser.ConditionParser;
 import org.wso2.siddhi.core.parser.QueryInputStreamParser;
@@ -117,7 +113,7 @@ public class SequenceProcessor extends AbstractProcessor {
 
             // Query
             Condition condition = query.getCondition();
-            List<EventStream> inputEventStreams = query.getEventStreamList();
+            EventStream[] inputEventStreams = query.getInputEventStreams();
             ConditionParser conditionParser = new ConditionParser(condition, inputEventStreams);
 
             executorList = conditionParser.getSequenceExecutorList(); // Get list of Executors
@@ -167,18 +163,8 @@ public class SequenceProcessor extends AbstractProcessor {
                     }
                 }
             }
-        } catch (UndefinedPropertyException ex) {
-            log.warn(ex.getMessage());
-            throw new ProcessorInitializationException("UndefinedPropertyException occurred " + ex.getMessage());
-        } catch (InvalidAttributeCastException ex) {
-            log.warn(ex.getMessage());
-            throw new ProcessorInitializationException("InvalidAttributeCastException occurred " + ex.getMessage());
-        } catch (InvalidQueryException ex) {
-            log.warn(ex.getMessage());
-            throw new ProcessorInitializationException("InvalidQueryException occurred " + ex.getMessage());
-        } catch (PropertyFormatException ex) {
-            log.warn(ex.getMessage());
-            throw new ProcessorInitializationException("PropertyFormatException occurred " + ex.getMessage());
+        } catch (Exception ex) {
+            throw new ProcessorInitializationException("Cannot initialize  Sequence  Processor query "+query.getStreamId(),ex);
         }
 
     }

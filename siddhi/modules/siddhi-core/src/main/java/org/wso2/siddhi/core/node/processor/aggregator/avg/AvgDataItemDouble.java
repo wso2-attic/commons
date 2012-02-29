@@ -38,7 +38,7 @@ public class AvgDataItemDouble implements GeneralDataItem<Double> {
     }
 
     @Override
-    public Double getValue() {
+    public  Double getValue() {
         return data;
     }
 

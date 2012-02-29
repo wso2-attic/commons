@@ -15,16 +15,11 @@
 
 package org.wso2.siddhi.core.node.processor.eventmap;
 
-public class StreamMapObj extends org.wso2.siddhi.core.node.processor.eventmap.MapObj {
+public class StreamMapObj extends MapObj {
     
-    public StreamMapObj(String streamId, int position) {
-        super(streamId,position);
+    public StreamMapObj(int streamPosition, int attributePosition) {
+        super(streamPosition,attributePosition);
 
     }
-
-    public String getStreamId() {
-        return super.getId();
-    }
-
 
 }

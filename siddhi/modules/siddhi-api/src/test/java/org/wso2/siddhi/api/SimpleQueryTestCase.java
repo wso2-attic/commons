@@ -103,7 +103,7 @@ public class SimpleQueryTestCase {
         List<EventStream> eventStreamList =
                 SiddhiCompiler.parse("CSEStream:= symbol [string], price [int]; \n" +
                                      "" +
-                                     "StockQuote:= select symbol, avgPrice=avg(price), symbolCount=count(symbol) " +
+                                     "StockQuote:= select symbol, avgPrice=avg(CSEStream.price), symbolCount=count(symbol) " +
                                      "from CSEStream[win.time=500] " +
                                      "where  (7+(8*2)< price*2) and symbol=='IBM';");
         Assert.assertTrue(eventStreamList.size() == 2);

@@ -19,7 +19,7 @@ public class DefaultMapObj extends org.wso2.siddhi.core.node.processor.eventmap.
     Object value = null;
 
     public DefaultMapObj(Object value) {
-        super(null, -1);
+        super(-1, -1);
         this.value = value;
     }
 

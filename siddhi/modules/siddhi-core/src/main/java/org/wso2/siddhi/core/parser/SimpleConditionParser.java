@@ -18,10 +18,20 @@ import org.mvel2.MVEL;
 import org.wso2.siddhi.api.condition.Condition;
 import org.wso2.siddhi.api.condition.where.ConditionOperator;
 import org.wso2.siddhi.api.condition.where.SimpleCondition;
-import org.wso2.siddhi.api.eventstream.EventStream;
-import org.wso2.siddhi.core.exception.*;
+import org.wso2.siddhi.core.exception.InvalidQueryException;
+import org.wso2.siddhi.core.exception.MoreComplexEventException;
+import org.wso2.siddhi.core.exception.PropertyFormatException;
+import org.wso2.siddhi.core.exception.SiddhiException;
+import org.wso2.siddhi.core.exception.UndefinedPropertyException;
 import org.wso2.siddhi.core.node.processor.executor.Executor;
-import org.wso2.siddhi.core.node.processor.executor.simple.*;
+import org.wso2.siddhi.core.node.processor.executor.simple.AbstractSimpleExecutor;
+import org.wso2.siddhi.core.node.processor.executor.simple.Contains;
+import org.wso2.siddhi.core.node.processor.executor.simple.Equal;
+import org.wso2.siddhi.core.node.processor.executor.simple.GreatThan;
+import org.wso2.siddhi.core.node.processor.executor.simple.GreatThanEqual;
+import org.wso2.siddhi.core.node.processor.executor.simple.LessThan;
+import org.wso2.siddhi.core.node.processor.executor.simple.LessThanEqual;
+import org.wso2.siddhi.core.node.processor.executor.simple.NotEqual;
 import org.wso2.siddhi.core.node.processor.executor.simple.property.ComplexProperty;
 import org.wso2.siddhi.core.node.processor.executor.simple.property.Property;
 import org.wso2.siddhi.core.node.processor.executor.simple.property.StreamProperty;
@@ -29,7 +39,9 @@ import org.wso2.siddhi.core.node.processor.executor.simple.property.ValuePropert
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import static org.wso2.siddhi.core.parser.ConditionParserUtil.nextUniqueString;
@@ -41,12 +53,10 @@ public class SimpleConditionParser {
 
     private ConditionParserUtil parserUtil;
     private Condition condition;
-    private List<EventStream> eventStreamList;
     private  DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG);
 
-    public SimpleConditionParser(Condition condition, List<EventStream> eventStreamList, ConditionParserUtil parserUtil) {
+    public SimpleConditionParser(Condition condition, ConditionParserUtil parserUtil) {
         this.condition = condition;
-        this.eventStreamList = eventStreamList;
         this.parserUtil = parserUtil;
     }
 
