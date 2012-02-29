@@ -32,12 +32,11 @@ import org.wso2.siddhi.test.samples.statemachine.pattern.SimpleStockQuotePattern
 
 import static org.wso2.siddhi.api.condition.where.ConditionOperator.EQUAL;
 import static org.wso2.siddhi.api.condition.where.ConditionOperator.GREATERTHAN;
-import static org.wso2.siddhi.api.condition.where.ConditionOperator.GREATERTHAN_EQUAL;
 
 
-public class StateMachineTestCase {
+public class StateMachine1TestCase {
 
-    private static final Logger log = Logger.getLogger(StateMachineTestCase.class);
+    private static final Logger log = Logger.getLogger(StateMachine1TestCase.class);
     private volatile boolean eventCaptured;
 
     @Before
@@ -75,7 +74,7 @@ public class StateMachineTestCase {
                         qf.condition("infoStock.action", EQUAL, "buy"),  //0
                         qf.every(
                                 qf.condition("CSEStream.price*2", GREATERTHAN, "75"), //1
-                                qf.condition("CSEStream.price", GREATERTHAN_EQUAL, "$1.price")  //2
+                                qf.condition("CSEStream.price", GREATERTHAN, "$1.price")  //2
                         )
                 )
         );
