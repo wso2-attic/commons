@@ -57,17 +57,14 @@ public class BpelRedeployClient extends TestTemplate {
     }
 
     @Override
-    public void runSuccessCase() throws InterruptedException, RemoteException {
+    public void runSuccessCase() {
         System.out.println(FrameworkSettings.BPS_BACKEND_URL);
-        try {
-            bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
+        bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
 
         bpelManager.undeployBPEL("HelloWorld2");
         bpelUploader.deployBPEL("HelloWorld2", sessionCookie);
         bpelManager.checkProcessDeployment("HelloWorld2");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
     }
 
 

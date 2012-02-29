@@ -48,14 +48,14 @@ public class BpelInstanceManagementClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() throws MalformedURLException, InterruptedException, RemoteException {
+    public void init() {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
         System.out.println(FrameworkSettings.BPS_BACKEND_URL);
         testClassName = BpelProcessManagementClient.class.getName();
         if (FrameworkSettings.getStratosTestStatus()) {
-            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(2);
+            TenantDetails bpsTenant = TenantListCsvReader.getTenantDetails(3);
             serviceUrl = "http://" + FrameworkSettings.BPS_SERVER_HOST_NAME + "/services/t/" + bpsTenant.getTenantName().split("@")[1];
             sessionCookie = adminServiceAuthentication.login(bpsTenant.getTenantName(), bpsTenant.getTenantPassword(), FrameworkSettings.BPS_SERVER_HOST_NAME);
 

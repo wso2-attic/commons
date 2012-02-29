@@ -59,9 +59,9 @@ public abstract class TestTemplate extends SystemIntegrationTestCase {
         System.setProperty("javax.net.ssl.trustStoreType", "JKS");
     }
 
-    public abstract void init();
+    public abstract void init() throws MalformedURLException, InterruptedException;
 
-    public abstract void runSuccessCase();
+    public abstract void runSuccessCase() throws InterruptedException;
 
     public abstract void cleanup();
 

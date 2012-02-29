@@ -18,6 +18,7 @@
 package org.wso2.carbon.admin.service;
 
 import junit.framework.Assert;
+import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.utils.AuthenticateStub;
@@ -42,31 +43,61 @@ public class AdminServiceBpelUploader {
     }
 
 
-    public boolean deployBPEL(String packageName, String sessionCookie) throws RemoteException, MalformedURLException, InterruptedException {
+    public boolean deployBPEL(String packageName, String sessionCookie){
 
         final String uploaderServiceURL = ServiceEndPoint + "BPELUploader";
         AdminServiceBpelPackageManager manager = new AdminServiceBpelPackageManager(ServiceEndPoint, sessionCookie);
 
         boolean success = true;
         AuthenticateStub authenticateStub = new AuthenticateStub();
-        BPELUploaderStub bpelUploaderStub = new BPELUploaderStub(uploaderServiceURL);
+        BPELUploaderStub bpelUploaderStub = null;
+        try {
+            bpelUploaderStub = new BPELUploaderStub(uploaderServiceURL);
+       
         authenticateStub.authenticateStub(sessionCookie, bpelUploaderStub);
-        deployPackage(packageName, bpelUploaderStub);
-        Thread.sleep(10000);
+       
+            deployPackage(packageName, bpelUploaderStub);
+        } catch (MalformedURLException e) {
+            Assert.fail(e.getMessage());
+        } catch (RemoteException e) {
+            Assert.fail(e.getMessage());
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
         success = manager.checkProcessDeployment(packageName);
         return success;
     }
 
-    public boolean deployBPEL(String packageName, String dirPath, String sessionCookie) throws RemoteException, InterruptedException {
+    public boolean deployBPEL(String packageName, String dirPath, String sessionCookie) {
 
         final String uploaderServiceURL = ServiceEndPoint + "BPELUploader";
         AdminServiceBpelPackageManager manager = new AdminServiceBpelPackageManager(ServiceEndPoint, sessionCookie);
         boolean success = false;
         AuthenticateStub authenticateStub = new AuthenticateStub();
-        BPELUploaderStub bpelUploaderStub = new BPELUploaderStub(uploaderServiceURL);
+        BPELUploaderStub bpelUploaderStub = null;
+        try {
+            bpelUploaderStub = new BPELUploaderStub(uploaderServiceURL);
+        } catch (AxisFault axisFault) {
+            Assert.fail(axisFault.getMessage());
+        }
         authenticateStub.authenticateStub(sessionCookie, bpelUploaderStub);
-        deployPackage(packageName, dirPath, bpelUploaderStub);
-        Thread.sleep(10000);
+        try {
+            deployPackage(packageName, dirPath, bpelUploaderStub);
+        } catch (RemoteException e) {
+            Assert.fail(e.getMessage());
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            Assert.fail(e.getMessage());
+        }
         success = manager.checkProcessDeployment(packageName);
         Assert.assertTrue("Service did not deployed successfully", success);
 

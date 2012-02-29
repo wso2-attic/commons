@@ -65,16 +65,10 @@ public class BpelDeployClient extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
-        try {
+
             assertTrue("Bpel service deployment failed", bpelUploader.deployBPEL("TestE4XDirect", sessionCookie));
         assertTrue("Package is notavailable", bpelManager.checkProcessDeployment("TestE4XDirect"));
-        } catch (RemoteException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (MalformedURLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+
     }
 
 

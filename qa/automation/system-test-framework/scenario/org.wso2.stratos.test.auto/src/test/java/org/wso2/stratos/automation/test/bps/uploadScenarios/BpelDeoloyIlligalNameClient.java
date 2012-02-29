@@ -17,6 +17,7 @@
 */
 package org.wso2.stratos.automation.test.bps.uploadScenarios;
 
+import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.AdminServiceAuthentication;
@@ -49,8 +50,10 @@ public class BpelDeoloyIlligalNameClient extends TestTemplate {
     }
 
     @Override
-    public void runSuccessCase() throws InterruptedException, RemoteException {
-        bpelUploader.deployBPEL("HelloW/orld.zip","illigalFiles", sessionCookie);
+    public void runSuccessCase() {
+
+            bpelUploader.deployBPEL("HelloW/orld.zip","illigalFiles", sessionCookie);
+
     }
 
     @Override

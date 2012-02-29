@@ -47,7 +47,7 @@ public class BpelVersioningClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() throws MalformedURLException, InterruptedException, RemoteException {
+    public void init(){
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -71,7 +71,7 @@ public class BpelVersioningClient extends TestTemplate {
     }
 
     @Override
-    public void runSuccessCase() throws RemoteException {
+    public void runSuccessCase() {
         try {
             Thread.sleep(5000);
             PaginatedProcessInfoList processBefore = bpelProcrss.getProcessInfo("HelloWorld2");

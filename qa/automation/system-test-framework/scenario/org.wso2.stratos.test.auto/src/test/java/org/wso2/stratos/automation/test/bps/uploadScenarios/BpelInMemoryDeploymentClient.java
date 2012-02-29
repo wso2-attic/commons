@@ -43,7 +43,7 @@ public class BpelInMemoryDeploymentClient extends TestTemplate {
     AdminServiceAuthentication adminServiceAuthentication;
 
     @Override
-    public void init() throws MalformedURLException, InterruptedException, RemoteException {
+    public void init() {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);

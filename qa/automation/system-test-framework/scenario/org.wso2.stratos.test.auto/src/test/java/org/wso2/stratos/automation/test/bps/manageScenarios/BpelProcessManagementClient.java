@@ -17,6 +17,7 @@
 */
 package org.wso2.stratos.automation.test.bps.manageScenarios;
 
+import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.admin.service.*;
@@ -43,7 +44,7 @@ public class BpelProcessManagementClient extends TestTemplate {
     RequestSender requestSender;
 
     @Override
-    public void init() throws MalformedURLException, InterruptedException, RemoteException {
+    public void init() {
         FrameworkSettings.getFrameworkProperties();
         backEndUrl = FrameworkSettings.BPS_BACKEND_URL;
         adminServiceAuthentication = new AdminServiceAuthentication(backEndUrl);
@@ -62,7 +63,9 @@ public class BpelProcessManagementClient extends TestTemplate {
         bpelProcrss = new AdminServiceBpelProcessManager(backEndUrl, sessionCookie);
         bpelInstance = new AdminServiceBpelInstanceManager(backEndUrl, sessionCookie);
         requestSender = new RequestSender();
-        bpelUploader.deployBPEL("LoanService", sessionCookie);
+
+            bpelUploader.deployBPEL("LoanService", sessionCookie);
+
     }
 
     @Override
