@@ -67,8 +67,6 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }
-                int k = 5;
-                String.valueOf(k);
                 //convert the user into specific format.
                 String encodedUser = encoder.encodeSCIMObject(user);
                 //if there are any http headers to be added in the response header.

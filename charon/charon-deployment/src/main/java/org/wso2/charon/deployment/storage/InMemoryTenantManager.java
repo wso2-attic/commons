@@ -42,7 +42,6 @@ public class InMemoryTenantManager {
         }
         throw new InternalServerException(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR,
                                           "Tenant not found.");
-
     }
 
     /**

@@ -19,9 +19,9 @@ package org.wso2.charon.deployment.storage;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
-import org.wso2.charon.core.objects.*;
+import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.objects.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +31,9 @@ public class InMemroyUserManager implements UserManager {
 
     private String tenantDomain = null;
     private int tenantId = 0;
-    List<SampleUser> userList;
+    List<SampleUser> userList = new ArrayList<SampleUser>();
 
-    public InMemroyUserManager(List<SampleUser> userList, int tenantId, String tenantDomain) {
+    public InMemroyUserManager(int tenantId, String tenantDomain) {
         /*this.tenantId = tenantId;
         this.tenantDomain = tenantDomain;
         this.userList = userList;*/
@@ -121,7 +121,6 @@ public class InMemroyUserManager implements UserManager {
             }
         } else {
             //if this is the first time a user is created, create the user and add it to the list
-            userList = new ArrayList<SampleUser>();
             customUser = createCustomUser(user);
             userList.add(customUser);
 
