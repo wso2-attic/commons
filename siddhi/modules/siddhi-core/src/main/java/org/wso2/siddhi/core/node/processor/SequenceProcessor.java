@@ -35,9 +35,11 @@ import org.wso2.siddhi.core.parser.ConditionParser;
 import org.wso2.siddhi.core.parser.QueryInputStreamParser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains the Query processor implementation for processing Sequence queries
@@ -50,10 +52,12 @@ public class SequenceProcessor extends AbstractProcessor {
     private EventGenerator eventGenerator;
     private List<SequenceExecutor> executorList;
     private List<SequenceExecutor> activeExecutors; // Events are sent to these Executors
+    private Map<String, List<SequenceExecutor>> partitioningExecutors;
     private boolean cleanOldExecutors = false;
     private long executorCleaningTime = 0;
     private long executorCleaningInterval = 1000;
     private boolean skipTillNextMatch = true;
+    private Object[][] partitioningPropertyPositions;
 
     /**
      * @param query sequence query
@@ -66,7 +70,6 @@ public class SequenceProcessor extends AbstractProcessor {
             throws InvalidQueryInputStreamException, ProcessorInitializationException,
                    SiddhiException {
         this.query = query;
-        this.activeExecutors = new LinkedList<SequenceExecutor>();
         for (QueryInputStream queryInputStream : query.getQueryInputStreamList()) {
             assignQueryInputStream(queryInputStream);
         }
@@ -119,14 +122,29 @@ public class SequenceProcessor extends AbstractProcessor {
             executorList = conditionParser.getSequenceExecutorList(); // Get list of Executors
 
             SequenceExecutor firstExecutor = executorList.get(0).getNewInstance();
-            activeExecutors.add(firstExecutor); //adding first SequenceExecutor to activeExecutors
-            addNextExecutorOfStarExecutor(activeExecutors, firstExecutor);
 
             for (SequenceExecutor sequenceExecutor : executorList) {
                 if (sequenceExecutor.getLifeTime() > -1) {
                     cleanOldExecutors = true;
                     break;
                 }
+            }
+            if (query.hasGroupBy()) {
+                partitioningExecutors = new HashMap<String, List<SequenceExecutor>>();
+                partitioningExecutors.put(null, getInitialExecutorList(firstExecutor));
+
+                String[] groupByNames = query.getGroupBy();
+                partitioningPropertyPositions = new Object[groupByNames.length][2];
+                for (int i = 0; i < groupByNames.length; i++) {
+                    String streamId = groupByNames[i].split("\\.")[0];   //Ex. streamId
+                    String groupByAttribute = groupByNames[i].split("\\.")[1];   //Ex. price
+                    EventStream eventStream = query.getInputEventStream(streamId);
+                    partitioningPropertyPositions[i][1] = eventStream.getAttributePositionForName(groupByAttribute);
+                    partitioningPropertyPositions[i][0] = streamId;
+                }
+
+            } else {
+              activeExecutors=  getInitialExecutorList(firstExecutor);
             }
 
             // Output
@@ -164,9 +182,16 @@ public class SequenceProcessor extends AbstractProcessor {
                 }
             }
         } catch (Exception ex) {
-            throw new ProcessorInitializationException("Cannot initialize  Sequence  Processor query "+query.getStreamId(),ex);
+            throw new ProcessorInitializationException("Cannot initialize  Sequence  Processor query " + query.getStreamId(), ex);
         }
 
+    }
+
+    private List<SequenceExecutor> getInitialExecutorList(SequenceExecutor firstExecutor) {
+        List<SequenceExecutor> executors = new LinkedList<SequenceExecutor>();
+        executors.add(firstExecutor); //adding first SequenceExecutor to executorList
+        addNextExecutorOfStarExecutor(executors, firstExecutor);
+        return executors;
     }
 
     @Override
@@ -198,6 +223,23 @@ public class SequenceProcessor extends AbstractProcessor {
             List<SequenceExecutor> newlyAddedActiveListeners = new ArrayList<SequenceExecutor>();
             boolean isEventFired = false;
 
+            if (partitioningExecutors != null) {
+                String groupByConditionKey = null;
+                for (Object[] position : partitioningPropertyPositions) {
+                    if (event.getEventStreamId().equals(position[0])) {
+                        StringBuilder groupByConditionKeyBuf = new StringBuilder();
+
+                        groupByConditionKeyBuf.append(event.getNthAttribute((Integer) position[1])).
+                                append(":");
+                        groupByConditionKey = groupByConditionKeyBuf.toString();
+                    }
+                }
+                activeExecutors = partitioningExecutors.get(groupByConditionKey);
+                if (activeExecutors == null) {
+                    activeExecutors = getInitialExecutorList(executorList.get(0).getNewInstance());
+                    partitioningExecutors.put(groupByConditionKey, activeExecutors);
+                }
+            }
             for (Iterator<SequenceExecutor> it = activeExecutors.iterator(); it.hasNext(); ) {
                 SequenceExecutor currentSequenceExecutor = it.next();
 

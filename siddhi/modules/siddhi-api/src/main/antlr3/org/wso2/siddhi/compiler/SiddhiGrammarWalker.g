@@ -165,6 +165,11 @@ queryStm [String name] returns [Query query]
             $query = qf.createQuery( $name,$queryStm::outputDef, $queryStm::inputStreamList,$queryStm::patternCond);
         } else if($queryStm::SequenceCond!=null){
             $query = qf.createQuery( $name,$queryStm::outputDef, $queryStm::inputStreamList,$queryStm::SequenceCond);
+
+            if($queryStm::gpByCond!=null){
+                $query.groupBy($queryStm::gpByCond);
+            }
+
         } else if($queryStm::inputStreamList.size()==2 &&$queryStm::whereCond!=null){
             $query = qf.createQuery( $name,
                                      $queryStm::outputDef,
@@ -255,9 +260,9 @@ stmStd
 	;
 	
 queryCond
-	: ^(COND whereCond? gpByCond ? havingCond?)
+	: ^(COND whereCond? gpByCond? havingCond?)
 	| ^('pattern'  ^(COND_DEF condDefs)  ^(COND pattern[false] {$queryStm::patternCond=new FollowedByCondition($pattern.condList);}) )
-	| ^('sequence' ^(COND_DEF condDefs) ^(COND seq {$queryStm::SequenceCond=new SequenceCondition($seq.condList);}))
+	| ^('sequence' ^(COND_DEF condDefs) ^(COND seq {$queryStm::SequenceCond=new SequenceCondition($seq.condList);})  gpByCond? )
 	;
 whereCond
 	:^('where' cond)

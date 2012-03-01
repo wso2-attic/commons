@@ -18,6 +18,7 @@ package org.wso2.siddhi.api;
 import org.junit.Assert;
 import org.junit.Test;
 import org.wso2.siddhi.api.eventstream.EventStream;
+import org.wso2.siddhi.api.eventstream.query.Query;
 import org.wso2.siddhi.api.exception.SiddhiPraserException;
 import org.wso2.siddhi.compiler.SiddhiCompiler;
 
@@ -63,6 +64,21 @@ public class SequenceQueryTestCase {
                                      "a3=StockQuoteStream.price < $a2[last].price] \n" +
                                      "$a1 $a2* $a3 ;");
         Assert.assertTrue(eventStreamList.size() == 2);
+    }
+  @Test
+    public void QueryTestCase4() throws SiddhiPraserException {
+        List<EventStream> eventStreamList =
+                SiddhiCompiler.parse("StockQuoteStream:= timestamp[int], symbol [string], price [int], volume [int]; \n" +
+                                     "" +
+                                     "StockQuote:=select priceA=$a1[last].price, priceB=$a2.price \n" +
+                                     "from StockQuoteStream \n" +
+                                     "sequence [a1=StockQuoteStream.price>500,\n" +
+                                     "a2=StockQuoteStream.price >= $this[prev].price, \n" +
+                                     "a3=StockQuoteStream.price < $a2[last].price] \n" +
+                                     "$a1 $a2* $a3 " +
+                                     "group by StockQuoteStream.symbol;");
+        Assert.assertTrue(eventStreamList.size() == 2);
+      Assert.assertTrue(((Query) eventStreamList.get(1) ).hasGroupBy());
     }
 
 
