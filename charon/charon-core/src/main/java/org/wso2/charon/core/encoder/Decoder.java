@@ -20,6 +20,7 @@ package org.wso2.charon.core.encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMResourceSchema;
@@ -35,10 +36,10 @@ public interface Decoder {
      *
      * @param scimResourceString
      * @param resourceSchema
-     *@param scimObject  @return
+     * @param scimObject  @return
      */
     public SCIMObject decodeResource(String scimResourceString,
-                                     ResourceSchema resourceSchema, SCIMObject scimObject)
+                                     ResourceSchema resourceSchema, AbstractSCIMObject scimObject)
             throws BadRequestException, CharonException;
 
     /**
@@ -47,6 +48,7 @@ public interface Decoder {
      * @param scimExceptionString
      * @return
      */
-    public AbstractCharonException decodeException(String scimExceptionString);
+    public AbstractCharonException decodeException(String scimExceptionString)
+            throws CharonException;
 
 }

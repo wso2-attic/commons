@@ -90,7 +90,7 @@ public class JSONEncoder implements Encoder {
         try {
             //construct error object with details in the exception
             errorObject.put(ResponseCodeConstants.DESCRIPTION, exception.getDescription());
-            errorObject.put(ResponseCodeConstants.CODE, exception.getCode());
+            errorObject.put(ResponseCodeConstants.CODE, String.valueOf(exception.getCode()));
             //TODO:for the moment it is expected that an exception only contains one error.
             arrayOfErrors.put(errorObject);
             //construct the full json obj.

@@ -30,7 +30,7 @@ public class FormatNotSupportedException extends AbstractCharonException {
         this.description = ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED;
     }
 
-    public FormatNotSupportedException(String code, String description) {
+    public FormatNotSupportedException(int code, String description) {
         super(code, description);
     }
 

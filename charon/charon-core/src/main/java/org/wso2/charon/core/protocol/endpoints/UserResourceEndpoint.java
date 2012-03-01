@@ -50,7 +50,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         Encoder encoder = null;
         try {
             //obtain the correct encoder according to the format requested.
-            encoder = AbstractResourceEndpoint.getEncoder(identifyFormat(format));
+            encoder = AbstractResourceEndpoint.getEncoder(SCIMConstants.identifyFormat(format));
 
             //API user should pass a UserManager storage to UserResourceEndpoint.
             if (storage instanceof UserManager) {
@@ -67,7 +67,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }
-
+                int k = 5;
+                String.valueOf(k);
                 //convert the user into specific format.
                 String encodedUser = encoder.encodeSCIMObject(user);
                 //if there are any http headers to be added in the response header.
@@ -124,9 +125,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
         try {
             //obtain the encoder matching the requested output format.
-            encoder = AbstractResourceEndpoint.getEncoder(identifyFormat(outputFormat));
+            encoder = AbstractResourceEndpoint.getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //obtain the decoder matching the submitted format.
-            decoder = AbstractResourceEndpoint.getDecoder(identifyFormat(inputFormat));
+            decoder = AbstractResourceEndpoint.getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
             //decode the SCIM User object, encoded in the submitted payload.
             User user = (User) decoder.decodeResource(scimObjectString,

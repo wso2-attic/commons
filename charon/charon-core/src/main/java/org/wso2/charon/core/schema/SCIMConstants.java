@@ -31,6 +31,15 @@ public class SCIMConstants {
     public static final String APPLICATION_JSON = "application/json";
     public static final String APPLICATION_XMLA = "application/xml";
 
+    public static String identifyFormat(String format) {
+        if (format.equals("application/json")) {
+            format = SCIMConstants.JSON;
+        } else if (format.equals("application/xml")) {
+            format = SCIMConstants.XML;
+        }
+        return format;
+    }
+
     /*Constants found in core-common schema.*/
 
     public static class CommonSchemaConstants {

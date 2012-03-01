@@ -31,8 +31,7 @@ public class JAXRSResponseBuilder {
 
     public Response buildResponse(SCIMResponse scimResponse) {
         //create a response builder with the status code of the response to be returned.
-        Response.ResponseBuilder responseBuilder = Response.status(Integer.parseInt(
-                scimResponse.getResponseCode()));
+        Response.ResponseBuilder responseBuilder = Response.status(scimResponse.getResponseCode());
         //set the headers on the response
         Map<String, String> httpHeaders = scimResponse.getHeaderParameterMap();
         if (httpHeaders != null && httpHeaders.size() != 0) {

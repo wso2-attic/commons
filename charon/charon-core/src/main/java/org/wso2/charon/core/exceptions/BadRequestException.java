@@ -19,7 +19,7 @@ package org.wso2.charon.core.exceptions;
 
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 
-/**                                                                               
+/**
  * Request is unparseable, syntactically incorrect, or violates schema, this exception is thrown.
  */
 public class BadRequestException extends AbstractCharonException {
@@ -29,7 +29,12 @@ public class BadRequestException extends AbstractCharonException {
         this.description = ResponseCodeConstants.DESC_BAD_REQUEST;
     }
 
-    public BadRequestException(String code, String description) {
+    public BadRequestException(String description) {
+        this.code = ResponseCodeConstants.CODE_BAD_REQUEST;
+        this.description = description;
+    }
+
+    public BadRequestException(int code, String description) {
         this.code = code;
         this.description = description;
     }

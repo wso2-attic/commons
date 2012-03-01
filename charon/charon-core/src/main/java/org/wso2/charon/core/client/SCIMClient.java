@@ -21,11 +21,13 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
+import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
@@ -53,13 +55,12 @@ public class SCIMClient {
         jsonDecoder = new JSONDecoder();
     }
 
-    public SCIMClient(ClientConfig clientConfig) {
+    public SCIMClient(CharonClientConfig clientConfig) {
         //to allow to set extensions in the SCIM Clientside like: encoder/decoders, AuthHandlers etc.
         //TODO:decide how to register schema extension in client side - i.e: If an extended schema
         //is registered for User, how to access that user, when "createUser" method is called.
         //we can have user, group objects of parent type and initialize relevant type through config constructor.
     }
-
 
     /**
      * Return a SCIMUser object as defined in SCIM schema
@@ -92,6 +93,8 @@ public class SCIMClient {
     /**
      * Decode the SCIMResponse, given the format and the resource type.
      * Here we assume the resource type is of an existing SCIMObject type.
+     * Int type is given as parameter rather than AbstractSCIMObject - so that API user can
+     * select out of existing type without worrying about which extended type to pass.
      *
      * @param scimResponse
      * @param format
@@ -135,7 +138,8 @@ public class SCIMClient {
      * @return
      */
     public SCIMObject decodeSCIMResponse(String scimResponse, String format,
-                                         ResourceSchema resourceSchema, SCIMObject scimObject)
+                                         ResourceSchema resourceSchema,
+                                         AbstractSCIMObject scimObject)
             throws CharonException, BadRequestException {
         if ((format.equals(SCIMConstants.JSON)) && (jsonDecoder != null)) {
             return jsonDecoder.decodeResource(scimResponse, resourceSchema, scimObject);
@@ -149,9 +153,62 @@ public class SCIMClient {
 
     }
 
-    
+    /**
+     * Once the response is identified as containing exception, decode the relevant e
+     *
+     * @param scimResponse
+     * @param format
+     * @return
+     * @throws CharonException
+     */
+    public AbstractCharonException decodeSCIMException(String scimResponse, String format)
+            throws CharonException {
+        if ((format.equals(SCIMConstants.JSON)) && (jsonDecoder != null)) {
+            return jsonDecoder.decodeException(scimResponse);
 
-    
+        } else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
+            return xmlDecoder.decodeException(scimResponse);
 
+        } else {
+            throw new CharonException("Encoder in the given format is not properly initialized..");
+        }
+    }
 
+    /**
+     * Identify whether the response includes a success response or failure response according to the
+     * response status code.
+     *
+     * @param statusCode
+     * @return
+     */
+    public boolean evaluateResponseStatus(int statusCode) {
+        switch (statusCode) {
+            //ok
+            case ResponseCodeConstants.CODE_OK:
+                return true;
+            case ResponseCodeConstants.CODE_CREATED:
+                return true;
+
+            case ResponseCodeConstants.CODE_NO_CONTENT:
+                return true;
+
+            case ResponseCodeConstants.CODE_UNAUTHORIZED:
+                return false;
+
+            case ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED:
+                return false;
+
+            case ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR:
+                return false;
+
+            case ResponseCodeConstants.CODE_RESOURCE_NOT_FOUND:
+                return false;
+
+            case ResponseCodeConstants.CODE_BAD_REQUEST:
+                return false;
+
+            default:
+                return false;
+        }
+    }
 }

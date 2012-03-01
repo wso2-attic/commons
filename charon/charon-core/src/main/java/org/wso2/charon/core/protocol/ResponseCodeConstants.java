@@ -28,27 +28,30 @@ public class ResponseCodeConstants {
     public static final String CODE = "code";
     public static final String DESCRIPTION = "description";
 
-    public static final String CODE_FORMAT_NOT_SUPPORTED = "406";
+    public static final int CODE_FORMAT_NOT_SUPPORTED = 406;
     public static final String DESC_FORMAT_NOT_SUPPORTED = "Requested format is not supported.";
 
-    public static final String CODE_INTERNAL_SERVER_ERROR = "500";
+    public static final int CODE_INTERNAL_SERVER_ERROR = 500;
     public static final String DESC_INTERNAL_SERVER_ERROR =
             "The server encountered an unexpected condition which prevented it from fulfilling the request";
 
-    public static final String CODE_RESOURCE_NOT_FOUND = "404";
+    public static final int CODE_RESOURCE_NOT_FOUND = 404;
     public static final String DESC_RESOURCE_NOT_FOUND = "Specified resource does not exist.";
 
-    public static final String CODE_NOT_FOUND = "404";
-    public static final String DESC_NOT_FOUND = "Requested resource is not found.";
-
-    public static final String CODE_BAD_REQUEST = "400";
+    public static final int CODE_BAD_REQUEST = 400;
     public static final String DESC_BAD_REQUEST = "Request is unparseable, syntactically " +
                                                   "incorrect, or violates schema";
 
-    public static final String CODE_OK = "200";
+    public static final int CODE_OK = 200;
 
-    public static final String CODE_CREATED = "201";
+    public static final int CODE_CREATED = 201;
     public static final String DESC_CREATED = "Created";
+
+    public static final int CODE_NO_CONTENT = 204;
+    public static final String DESC_NO_CONTENT = "No Content";
+
+    public static final int CODE_UNAUTHORIZED = 401;
+    public static final String DESC_UNAUTHORIZED = "Authorization failure";
 
     //Custom HTTP headers used in SCIM communication
     public static final String LOCATION_HEADER = "Location";
@@ -60,6 +63,8 @@ public class ResponseCodeConstants {
     public static final String ATTRIBUTE_ALREADY_EXIST = "Attribute with the same attribute name " +
                                                          "already exist.";
     public static final String ATTRIBUTE_READ_ONLY = "Attribute is read only. Hence can not set again.";
+
+    public static final String JSON_DECODE_ERROR = "Error in building resource from the JSON representation";
 
 
 }

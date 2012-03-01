@@ -140,13 +140,4 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
             return attributeFactory;
         }
     }*/
-    public static String identifyFormat(String format) {
-        if (format.equals("application/json")) {
-            format = SCIMConstants.JSON;
-        } else if (format.equals("application/xml")) {
-            format = SCIMConstants.XML;
-        }
-        return format;
-    }
-
 }

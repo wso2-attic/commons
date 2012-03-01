@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class SCIMResponse {
 
-    protected String responseCode;
+    protected int responseCode;
     protected String responseMessage;
     //If there are any HTTP header parameters to be set in response other than response code,
     protected Map<String, String> headerParamMap;
@@ -37,7 +37,7 @@ public class SCIMResponse {
      * @param responseCode
      * @param responseMessage
      */
-    public SCIMResponse(String responseCode, String responseMessage) {
+    public SCIMResponse(int responseCode, String responseMessage) {
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
     }
@@ -49,7 +49,7 @@ public class SCIMResponse {
      * @param responseMessage
      * @param headerMap
      */
-    public SCIMResponse(String responseCode, String responseMessage,
+    public SCIMResponse(int responseCode, String responseMessage,
                         Map<String, String> headerMap) {
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
@@ -91,11 +91,11 @@ public class SCIMResponse {
         this.responseMessage = responseMessage;
     }
 
-    public String getResponseCode() {
+    public int getResponseCode() {
         return responseCode;
     }
 
-    public void setResponseCode(String responseCode) {
+    public void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
     }
 

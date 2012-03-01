@@ -30,25 +30,25 @@ public class AbstractCharonException extends Exception {
     protected String description;
 
     //relevant HTTP code. 
-    protected String code;
+    protected int code;
 
-    public AbstractCharonException(String code, String description){
+    public AbstractCharonException(int code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    public AbstractCharonException(String message){
+    public AbstractCharonException(String message) {
         this.description = message;
     }
 
     public AbstractCharonException() {
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

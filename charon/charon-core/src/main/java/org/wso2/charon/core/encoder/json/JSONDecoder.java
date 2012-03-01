@@ -20,6 +20,7 @@ package org.wso2.charon.core.encoder.json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.json.JSONTokener;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
@@ -30,8 +31,10 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.DefaultResourceFactory;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
@@ -53,7 +56,7 @@ public class JSONDecoder implements Decoder {
      * @param scimObject         @return
      */
     public SCIMObject decodeResource(String scimResourceString,
-                                     ResourceSchema resourceSchema, SCIMObject scimObject)
+                                     ResourceSchema resourceSchema, AbstractSCIMObject scimObject)
             throws BadRequestException, CharonException {
         try {
             //decode the string into json representation
@@ -96,12 +99,44 @@ public class JSONDecoder implements Decoder {
 
     /**
      * Decode the string sent in the SCIM response payload, which is an exception.
+     * JSON encoded exception is usually like:
+     * {
+     * "Errors":[
+     * {
+     * "description":"Resource 2819c223-7f76-453a-919d-413861904646 not found",
+     * "code":"404"
+     * }
+     * ]
+     * }
      *
      * @param scimExceptionString
      * @return
      */
-    public AbstractCharonException decodeException(String scimExceptionString) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public AbstractCharonException decodeException(String scimExceptionString)
+            throws CharonException {
+        //decode the string into json representation
+        try {
+            JSONObject decodedJsonObj = new JSONObject(new JSONTokener(scimExceptionString));
+            Object jsonError = decodedJsonObj.opt(ResponseCodeConstants.ERRORS);
+            List<JSONObject> jsonErrorValues = new ArrayList<JSONObject>();
+            //according to the SCIM spec, Error details returned as multivalued attribute.
+            //so we assume the same
+            if (jsonError instanceof JSONArray) {
+                //according to the spec, ERRORS are composed as complex attributes with
+                //"description" & "code" as the sub attributes. Since we return only one exception,
+                //only the first error is read.
+                JSONObject errorObject = (JSONObject) ((JSONArray) jsonError).get(0);
+                //decode the details of the error
+                String errorCode = (String) errorObject.opt(ResponseCodeConstants.CODE);
+                String errorDescription = (String) errorObject.opt(ResponseCodeConstants.DESCRIPTION);
+                return new AbstractCharonException(Integer.parseInt(errorCode), errorDescription);
+            }
+        } catch (JSONException e) {
+            //log error
+            String error = "Error in building exception from the JSON representation";
+            throw new CharonException(error);
+        }
+        return null;
     }
 
     /**

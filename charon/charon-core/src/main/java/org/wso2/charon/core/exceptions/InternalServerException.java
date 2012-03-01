@@ -32,7 +32,7 @@ public class InternalServerException extends AbstractCharonException {
         this.description = description;
     }
 
-    public InternalServerException(String code, String description) {
+    public InternalServerException(int code, String description) {
         super(code, description);
     }
 }
