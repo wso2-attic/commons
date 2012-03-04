@@ -25,8 +25,14 @@ public interface AuthenticationHandler {
 
     /**
      * Validate authentication information according to the auth handling implementation.
+     *
      * @param authInfo
      * @return
      */
     public boolean isAuthenticated(AuthenticationInfo authInfo);
+
+    public AuthenticationInfo getAuthenticationToken(AuthenticationInfo authInfo);
+
+
+
 }

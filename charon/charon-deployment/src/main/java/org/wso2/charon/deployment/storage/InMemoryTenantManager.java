@@ -17,7 +17,11 @@
 */
 package org.wso2.charon.deployment.storage;
 
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.InternalServerException;
+import org.wso2.charon.core.extensions.TenantDTO;
+import org.wso2.charon.core.extensions.TenantManager;
+import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 
 import java.util.Map;
@@ -26,30 +30,68 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * In memroy tenant manager implementation for demo purpose only.
  */
-public class InMemoryTenantManager {
+public class InMemoryTenantManager implements TenantManager {
 
-    private static Map<Integer, String> tenantsMapping = new ConcurrentHashMap<Integer, String>();
+    private static Map<Integer, TenantInfo> tenantsList = new ConcurrentHashMap<Integer, TenantInfo>();
 
-    public static int getTenantId(String tenantDomain) throws InternalServerException {
-        if (tenantsMapping.isEmpty()) {
-            initTenantsMap();
-        }
-        //traverse through in-memory tenants map and obtain tenant id.
-        for (Map.Entry<Integer, String> tenantMapping : tenantsMapping.entrySet()) {
-            if (tenantDomain.equals(tenantMapping.getValue())) {
-                return tenantMapping.getKey();
+    public void createTenant(TenantDTO tenantDTO) throws CharonException {
+        if (tenantsList.size() != 0) {
+            for (Map.Entry<Integer, TenantInfo> entry : tenantsList.entrySet()) {
+                if (tenantDTO.getTenantDomain().equals(entry.getValue().getTenantDomain())) {
+                    String error = "Tenant with the same domain name already exists.";
+                    throw new CharonException(error);
+                }
             }
+            tenantsList.put(tenantsList.size(), (TenantInfo) tenantDTO);
+
+        } else {
+            tenantsList.put(0, (TenantInfo) tenantDTO);
         }
-        throw new InternalServerException(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR,
-                                          "Tenant not found.");
     }
 
     /**
-     * ********For Demo purpose only***********************
+     * Retrieve the corresponding tenant given the tenant admin's username.
+     *
+     * @param fullyQualifiedUserName
+     * @return
+     * @throws org.wso2.charon.core.exceptions.CharonException
+     *
      */
-    private static void initTenantsMap() {
-        tenantsMapping.put(1, "wso2.com");
-        tenantsMapping.put(2, "wp.org");
+    @Override
+    public int getTenantID(String fullyQualifiedUserName) throws CharonException {
+        return this.getTenantIDFromDomain(getTenantDomain(fullyQualifiedUserName));
     }
-                                
+
+    /**
+     * Retrieve the tenant domain name given the tenant admin user name.
+     *
+     * @param fullyQualifiedUserName
+     * @return
+     * @throws org.wso2.charon.core.exceptions.CharonException
+     *
+     */
+    @Override
+    public String getTenantDomain(String fullyQualifiedUserName) throws CharonException {
+        return fullyQualifiedUserName.split("@")[1];
+    }
+
+    /**
+     * Identify the tenantID given the tenant domain name.
+     *
+     * @param tenantDomainName
+     * @return
+     */
+
+    private int getTenantIDFromDomain(String tenantDomainName) throws CharonException {
+        if (tenantsList.size() != 0) {
+            for (Map.Entry<Integer, TenantInfo> entry : tenantsList.entrySet()) {
+                if (tenantDomainName.equals(entry.getValue().getTenantDomain())) {
+                    return entry.getKey();
+                }
+            }
+        }
+        String error = "No tenant registered with given domain name";
+        throw new CharonException(error);
+    }
+
 }

@@ -20,6 +20,8 @@ package org.wso2.charon.utils.authentication;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 
+import java.util.Map;
+
 /**
  * AuthenticationHandler for validating API access through basic auth - authentication mechanism.
  */
@@ -35,4 +37,10 @@ public class BasicAuthHandler implements AuthenticationHandler {
         return ((userName.equals(((BasicAuthInfo) authInfo).getUserName()) &&
              (password.equals(((BasicAuthInfo) authInfo).getPassword()))));
     }
+
+    @Override
+    public AuthenticationInfo getAuthenticationToken(AuthenticationInfo authInfo) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    
 }

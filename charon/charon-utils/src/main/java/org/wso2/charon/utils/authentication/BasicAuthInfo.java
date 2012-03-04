@@ -19,6 +19,9 @@ package org.wso2.charon.utils.authentication;
 
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 
+/**
+ * Represents the authentication information exchanged with the BasicAuthHandler.
+ */
 public class BasicAuthInfo implements AuthenticationInfo {
 
     private String userName;
@@ -38,5 +41,14 @@ public class BasicAuthInfo implements AuthenticationInfo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * This is not implemented for BasicAuth.
+     * @return
+     */
+    @Override
+    public String getAuthenticationToken() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -17,20 +17,10 @@
 */
 package org.wso2.charon.core.protocol.endpoints;
 
-import org.wso2.charon.core.attributes.AttributeFactory;
-import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
-import org.wso2.charon.core.encoder.json.JSONDecoder;
-import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
-import org.wso2.charon.core.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.protocol.SCIMResponse;
-import org.wso2.charon.core.schema.SCIMConstants;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is an abstract layer for all the resource endpoint to abstract out common
@@ -38,11 +28,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
-    /*Keeps a map of supported encoders of SCIM server side.*/
+    /*Keeps a map of supported encoders of SCIM server side.*//*
     private static Map<String, Encoder> encoderMap = new ConcurrentHashMap<String, Encoder>();
 
-    /*Keeps a map of supported encoders of SCIM server side.*/
-    private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();
+    *//*Keeps a map of supported encoders of SCIM server side.*//*
+    private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();*/
 
     /**
      * Returns the encoder given the encoding format.
@@ -51,38 +41,15 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      * @return
      * @throws FormatNotSupportedException
      */
-    public static Encoder getEncoder(String format)
+    public Encoder getEncoder(String format)
             throws FormatNotSupportedException, CharonException {
-        //TODO:this should be in SCIMManager
-        //if the encoder map is empty, register default json encoder
-        if (encoderMap.isEmpty()) {
-            Encoder jsonEncoder = new JSONEncoder();
-            registerEncoder(SCIMConstants.JSON, jsonEncoder);
-        }
-        //if the requested format not supported, return an error.
-        if (!encoderMap.containsKey(format)) {
-            //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
-        }
-        return encoderMap.get(format);
+        return null;/*org.wso2.charon.deployment.managers.DefaultCharonManager.;*/
     }
 
-    public static Decoder getDecoder(String format)
+    public Decoder getDecoder(String format)
             throws FormatNotSupportedException, CharonException {
-        //TODO:this should be in SCIMManager
-        //if the decoder map is empty, register default json encoder
-        if (decoderMap.isEmpty()) {
-            Decoder jsonDecoder = new JSONDecoder();
-            registerDecoder(SCIMConstants.JSON, jsonDecoder);
-        }
-        //if the requested format not supported, return an error.
-        if (!decoderMap.containsKey(format)) {
-            //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
-        }
-        return decoderMap.get(format);
+
+        return null;
 
     }
 
@@ -92,7 +59,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      * @param format  - format that the registering encoder supports.
      * @param encoder
      */
-    public static void registerEncoder(String format, Encoder encoder) throws CharonException {
+    /*public static void registerEncoder(String format, Encoder encoder) throws CharonException {
         //TODO:this should be in SCIM Manager
         if (encoderMap.containsKey(format)) {
             //log the error and throw.
@@ -114,7 +81,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
             decoderMap.put(format, decoder);
         }
 
-    }
+    }*/
 
     /**
      * Build SCIM Response given the response code and response message.

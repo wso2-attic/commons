@@ -79,6 +79,20 @@ public class SCIMConstants {
         public static final String MULTI_VALUED_ATTRIBUTE_OPERATION = "delete";
     }
 
+    /*Constants found in Service Provider Configuration Schema*/
+
+    //constants related to supported authentication mechanism
+
+    public static final String AUTH_TYPE_BASIC = "httpbasic";
+    public static final String AUTH_TYPE_OAUTH = "oauthbearertoken";
+    public static final String AUTH_PROPERTY_PRIMARY = "primary";
+
+    //authentication header names
+    public static final String AUTH_HEADER_USERNAME = "userName";
+    public static final String AUTH_HEADER_PASSWORD = "password";
+    public static final String AUTH_HEADER_OAUTH_KEY = "Authorization";
+
+
     /*Resource names as defined in SCIM Schema spec*/
     public static final String USER = "User";
     public static final String GROUP = "Group";
@@ -129,4 +143,10 @@ public class SCIMConstants {
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";
+
+    //HTTP Headers used in SCIM request/response other than auth headers.
+    public static final String LOCATION_HEADER = "Location";
+    public static final String CONTENT_TYPE_HEADER = "Content-Type";
+
+
 }

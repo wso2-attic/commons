@@ -15,15 +15,10 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.core.extensions;
+package org.wso2.charon.utils.config;
 
-/**
- * Any custom implementation of authentication handling can implement this interface for passing
- * authentication information into the AuthenticationHandler and also to get authentication token
- * at the time of tenant registration.
- */
-public interface AuthenticationInfo {
+public class CharonConfig {
 
-    public String getAuthenticationToken();
+    
     
 }

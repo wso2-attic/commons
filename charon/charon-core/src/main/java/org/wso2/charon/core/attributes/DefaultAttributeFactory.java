@@ -18,9 +18,13 @@
 package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
+
+import java.util.Date;
 
 /**
  * Default implementation of AttributeFactory according to SCIM Schema spec V1.
@@ -104,9 +108,48 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         return simpleAttribute;
     }
 
+    /**
+     * Once identified that constructing attribute is a simple attribute & related attribute schema is a
+     * SCIMSubAttributeSchema, perform attribute construction operations specific to Simple Attribute,
+     * which is a Sub Attribute.
+     * 
+     * @param subAttributeSchema
+     * @param simpleAttribute
+     * @return
+     */
     public static SimpleAttribute createSimpleAttribute(SCIMSubAttributeSchema subAttributeSchema,
                                                         SimpleAttribute simpleAttribute) {
         simpleAttribute.dataType = subAttributeSchema.getType();
         return simpleAttribute;
+    }
+
+    /**
+     * When an attribute is created with value and data type provided, we need to validate whether
+     * they are matching.
+     *
+     * @param attributeValue
+     * @param attributeDataType
+     * @return
+     * @throws CharonException
+     */
+    protected boolean isAttributeDataTypeValid(Object attributeValue,
+                                               SCIMSchemaDefinitions.DataType attributeDataType)
+            throws CharonException {
+        switch (attributeDataType) {
+            case STRING:
+                return attributeValue instanceof String;
+            case BOOLEAN:
+                return attributeValue instanceof Boolean;
+            case DECIMAL:
+                return attributeValue instanceof Double;
+            case INTEGER:
+                return attributeValue instanceof Integer;
+            case DATE_TIME:
+                return attributeValue instanceof Date;
+            case BINARY:
+                return attributeValue instanceof Byte[];
+
+        }
+        throw new CharonException(ResponseCodeConstants.MISMATCH_IN_REQUESTED_DATATYPE);
     }
 }

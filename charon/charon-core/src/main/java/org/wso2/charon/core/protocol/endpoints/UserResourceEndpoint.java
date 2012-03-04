@@ -50,7 +50,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         Encoder encoder = null;
         try {
             //obtain the correct encoder according to the format requested.
-            encoder = AbstractResourceEndpoint.getEncoder(SCIMConstants.identifyFormat(format));
+            encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
             //API user should pass a UserManager storage to UserResourceEndpoint.
             if (storage instanceof UserManager) {
@@ -71,7 +71,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 String encodedUser = encoder.encodeSCIMObject(user);
                 //if there are any http headers to be added in the response header.
                 Map<String, String> httpHeaders = new HashMap<String, String>();
-                httpHeaders.put(ResponseCodeConstants.CONTENT_TYPE_HEADER, format);
+                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
                 return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
 
             } else {
@@ -123,9 +123,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
         try {
             //obtain the encoder matching the requested output format.
-            encoder = AbstractResourceEndpoint.getEncoder(SCIMConstants.identifyFormat(outputFormat));
+            encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //obtain the decoder matching the submitted format.
-            decoder = AbstractResourceEndpoint.getDecoder(SCIMConstants.identifyFormat(inputFormat));
+            decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
             //decode the SCIM User object, encoded in the submitted payload.
             User user = (User) decoder.decodeResource(scimObjectString,
@@ -150,8 +150,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
                 encodedUser = encoder.encodeSCIMObject(createdUser);
                 //add location header
-                httpHeaders.put(ResponseCodeConstants.LOCATION_HEADER, createdUser.getId());
-                httpHeaders.put(ResponseCodeConstants.CONTENT_TYPE_HEADER, outputFormat);
+                httpHeaders.put(SCIMConstants.LOCATION_HEADER, createdUser.getId());
+                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
                 //TODO:log the error

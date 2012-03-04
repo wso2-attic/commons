@@ -15,8 +15,27 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.core.client;
+package org.wso2.charon.core.extensions;
 
-public class ClientConfig {
-    
+/**
+ * To represent a tenant created in SCIM service provider side.
+ */
+public interface TenantDTO {
+
+    public String getTenantAdminUserName();
+
+    public void setTenantAdminUserName(String tenantAdminUserName);
+
+    public String getTenantAdminPassword();
+
+    public void setTenantAdminPassword(String tenantAdminPassword);
+
+    public String getTenantDomain();
+
+    public void setTenantDomain(String tenantDomain);
+
+    public String getAuthenticationMechanism();
+
+    public void setAuthenticationMechanism(String authenticationMechanism);
+
 }

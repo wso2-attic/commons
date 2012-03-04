@@ -19,11 +19,14 @@ package org.wso2.charon.core.objects;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
+import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import java.util.ArrayList;
@@ -52,12 +55,15 @@ public class User extends AbstractSCIMObject {
                     userName, DataType.STRING);
         } else {
             //TODO:since the constructor is too long, pass an attribute schema.
-            SimpleAttribute userNameAttribute = new SimpleAttribute(
+            SimpleAttribute userNameAttribute = new SimpleAttribute(SCIMConstants.UserSchemaConstants.USER_NAME);
+            userNameAttribute.setValue(userName);
+            /*SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMConstants.UserSchemaConstants.USER_NAME,
                     SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
-                    false, false);
+                    false, false);*/
             attributeList.put(SCIMConstants.UserSchemaConstants.USER_NAME,
-                              userNameAttribute);
+                              DefaultAttributeFactory.createSCIMAttribute(
+                                      (SCIMAttributeSchema) SCIMSchemaDefinitions.USER_NAME, userNameAttribute));
         }
     }
 

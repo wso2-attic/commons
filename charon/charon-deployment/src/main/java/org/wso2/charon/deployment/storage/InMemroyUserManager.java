@@ -34,9 +34,8 @@ public class InMemroyUserManager implements UserManager {
     List<SampleUser> userList = new ArrayList<SampleUser>();
 
     public InMemroyUserManager(int tenantId, String tenantDomain) {
-        /*this.tenantId = tenantId;
+        this.tenantId = tenantId;
         this.tenantDomain = tenantDomain;
-        this.userList = userList;*/
     }
 
     /**
