@@ -55,7 +55,7 @@ public class CreateUserSample {
 
             //enable, disable SSL.
 
-            String response = userResource.header("userName", "hasini@wso2.com").header("password", "hasini").
+            String response = userResource.header("userName", "hasinig@wso2.com").header("password", "hasinig").
                     contentType("application/json").accept("application/json").post(String.class, encodedUser);
 
             //decode the response

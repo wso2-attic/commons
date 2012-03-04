@@ -22,6 +22,7 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
+import org.wso2.charon.core.exceptions.UnauthorizedException;
 
 import java.util.Map;
 
@@ -100,6 +101,6 @@ public interface CharonManager {
      * @param httpAuthHeaders
      */
     public void handleAuthentication(Map<String, String> httpAuthHeaders)
-            throws UnauthorizedAccessException;
+            throws UnauthorizedException;
 
 }

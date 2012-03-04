@@ -23,6 +23,7 @@ import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.UnauthorizedException;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
@@ -204,7 +205,7 @@ public class DefaultCharonManager implements CharonManager {
 
     @Override
     public void handleAuthentication(Map<String, String> httpAuthHeaders)
-            throws UnauthorizedAccessException {
+            throws UnauthorizedException {
         try {
             //identify authentication mechanism according to the http headers sent
             String authenticationMechanism = identifyAuthMechanism(httpAuthHeaders);
@@ -216,15 +217,17 @@ public class DefaultCharonManager implements CharonManager {
                 //get the authentication handler.
                 BasicAuthHandler basicAuthHandler = (BasicAuthHandler) authenticators.get(
                         SCIMConstants.AUTH_TYPE_BASIC).get(INSTANCE);
+                //pass a handler of charon manager to auth handler
+                basicAuthHandler.setCharonManager(getInstance());
                 //if not authenticated only, throw 401 exception.
                 if (!basicAuthHandler.isAuthenticated(authInfo)) {
-                    throw new UnauthorizedAccessException();
+                    throw new UnauthorizedException();
                 }
             } else if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_OAUTH)) {
                 //perform authentication according to oauth.
             }
         } catch (CharonException e) {
-            throw new UnauthorizedAccessException(e.getDescription());
+            throw new UnauthorizedException(e.getDescription());
         }
     }
 
@@ -236,10 +239,10 @@ public class DefaultCharonManager implements CharonManager {
      * @throws CharonException
      */
     public String identifyAuthMechanism(Map<String, String> authHeaders) throws CharonException {
-        if (authHeaders.containsKey(SCIMConstants.AUTH_HEADER_USERNAME) &&
-            authHeaders.containsKey(SCIMConstants.AUTH_HEADER_PASSWORD)) {
+        if ((authHeaders.get(SCIMConstants.AUTH_HEADER_USERNAME)) != null &&
+            (authHeaders.get(SCIMConstants.AUTH_HEADER_PASSWORD)) != null) {
             return SCIMConstants.AUTH_TYPE_BASIC;
-        } else if (authHeaders.containsKey(SCIMConstants.AUTH_TYPE_OAUTH)) {
+        } else if (authHeaders.get(SCIMConstants.AUTH_TYPE_OAUTH) != null) {
             return SCIMConstants.AUTH_TYPE_OAUTH;
         } else {
             String error = "Provided authentication headers do not contain supported authentication headers.";

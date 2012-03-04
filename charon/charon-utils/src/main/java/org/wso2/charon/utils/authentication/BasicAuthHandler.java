@@ -23,6 +23,7 @@ import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.extensions.TenantDTO;
 import org.wso2.charon.core.extensions.TenantManager;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 /**
  * AuthenticationHandler for validating API access through basic auth - authentication mechanism.
@@ -58,7 +59,7 @@ public class BasicAuthHandler implements AuthenticationHandler {
      */
     @Override
     public void setCharonManager(CharonManager charonManager) {
-        if (charonManager == null) {
+        if (this.charonManager == null) {
             this.charonManager = charonManager;
         }
     }

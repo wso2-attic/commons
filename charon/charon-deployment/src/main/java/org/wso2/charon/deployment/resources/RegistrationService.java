@@ -74,7 +74,7 @@ public class RegistrationService {
 
         } catch (CharonException e) {
             SCIMResponse faultyResponse = new SCIMResponse(
-                    ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, e.getMessage());
+                    ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, e.getDescription());
             return new JAXRSResponseBuilder().buildResponse(faultyResponse);
         }
     }

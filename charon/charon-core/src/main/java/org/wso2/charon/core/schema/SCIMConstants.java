@@ -33,11 +33,13 @@ public class SCIMConstants {
 
     public static String identifyFormat(String format) {
         if (format.equals("application/json")) {
-            format = SCIMConstants.JSON;
+            return SCIMConstants.JSON;
         } else if (format.equals("application/xml")) {
-            format = SCIMConstants.XML;
+            return SCIMConstants.XML;
+        } else {
+
+            return null;
         }
-        return format;
     }
 
     /*Constants found in core-common schema.*/
@@ -147,6 +149,7 @@ public class SCIMConstants {
     //HTTP Headers used in SCIM request/response other than auth headers.
     public static final String LOCATION_HEADER = "Location";
     public static final String CONTENT_TYPE_HEADER = "Content-Type";
+    public static final String ACCEPT_HEADER = "Accept";
 
 
 }

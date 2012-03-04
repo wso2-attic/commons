@@ -31,7 +31,7 @@ import org.wso2.charon.samples.utils.CharonResponseHandler;
 public class GetUserSample {
 
     public static final String USER_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/Users/";
-    public static final String USER_ID = "4287a5c-2e2c-4c7b-8e2d-f545ec3e5c4d";
+    public static final String USER_ID = "02e6134b-7724-499a-b1a9-daafb73ed49";
 
     public static void main(String[] args) {
 
@@ -56,7 +56,7 @@ public class GetUserSample {
 
             //enable, disable SSL.
 
-            String response = userResource.header("userName", "hasini@wso2.com").header("password", "hasini").
+            String response = userResource.header("userName", "hasinig@wso2.com").header("password", "hasinig").
                     contentType("application/json").accept("application/json").get(String.class);
 
             //decode the response

@@ -47,8 +47,17 @@ public class CharonResponseHandler implements ClientHandler {
             if (!(scimClient.evaluateResponseStatus(cr.getStatusCode()))) {
                 AbstractCharonException charonException = null;
                 try {
-                    String format = SCIMConstants.identifyFormat(cr.getHeaders().getFirst(SCIMConstants.CONTENT_TYPE_HEADER));
-                    charonException = scimClient.decodeSCIMException(cr.getEntity(String.class), format);
+                    if (cr.getHeaders().getFirst(SCIMConstants.CONTENT_TYPE_HEADER) != null) {
+
+                        String format = SCIMConstants.identifyFormat(cr.getHeaders().getFirst(SCIMConstants.CONTENT_TYPE_HEADER));
+                        if (format != null) {
+                            charonException = scimClient.decodeSCIMException(cr.getEntity(String.class), format);
+                        } else {
+                            charonException = new CharonException(cr.getEntity(String.class));
+                        }
+                    } else {
+                        charonException = new CharonException(cr.getEntity(String.class));
+                    }
                 } catch (CharonException e) {
                     System.out.println(e.getDescription());
                 }

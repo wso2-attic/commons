@@ -38,10 +38,13 @@ public class AbstractCharonException extends Exception {
     }
 
     public AbstractCharonException(String message) {
+        this.code = -1;
         this.description = message;
     }
 
     public AbstractCharonException() {
+        this.code = -1;
+        this.description = null;
     }
 
     public int getCode() {
