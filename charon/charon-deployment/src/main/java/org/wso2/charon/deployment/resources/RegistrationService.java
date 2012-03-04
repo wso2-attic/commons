@@ -22,9 +22,8 @@ import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
-import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.deployment.managers.DefaultCharonManager;
-import org.wso2.charon.deployment.storage.TenantInfo;
+import org.wso2.charon.utils.DefaultCharonManager;
+import org.wso2.charon.utils.storage.TenantInfo;
 import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
 
 import javax.ws.rs.HeaderParam;
@@ -66,9 +65,13 @@ public class RegistrationService {
             AuthenticationInfo authInfo = charonManger.registerTenant(tenantInfo);
             /*for the moment, we get the auth token as a string and return it in response,
             in a more generalized way, we can encode authentication info and return it int the response.*/
-            SCIMResponse successResponse = new SCIMResponse(ResponseCodeConstants.CODE_OK, authInfo.getAuthenticationToken());
+            String authToken = null;
+            if (authInfo != null) {
+                authToken = authInfo.getAuthenticationToken();
+            }
+            SCIMResponse successResponse = new SCIMResponse(ResponseCodeConstants.CODE_OK, authToken);
             return new JAXRSResponseBuilder().buildResponse(successResponse);
-            
+
         } catch (CharonException e) {
             SCIMResponse faultyResponse = new SCIMResponse(
                     ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, e.getMessage());

@@ -7,8 +7,8 @@
             <Property name="priority">1</Property>
         </Authenticator>
     </Authenticators>
-    <TenantManager class="org.wso2.charon.deployment.storage.InMemoryTenantManager"/>
-    <UserManager class="org.wso2.charon.deployment.storage.InMemroyUserManager"/>
+    <TenantManager class="org.wso2.charon.utils.storage.InMemoryTenantManager"/>
+    <UserManager class="org.wso2.charon.utils.storage.InMemroyUserManager"/>
     <Encoders>
         <Encoder class="org.wso2.charon.core.encoder.json.JSONEncoder" format="json"/>
     </Encoders>

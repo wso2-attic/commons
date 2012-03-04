@@ -15,25 +15,26 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.deployment.managers;
+package org.wso2.charon.utils;
 
+import com.sun.servicetag.UnauthorizedAccessException;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.extensions.TenantDTO;
 import org.wso2.charon.core.extensions.TenantManager;
 import org.wso2.charon.core.extensions.UserManager;
-import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.deployment.storage.InMemoryTenantManager;
-import org.wso2.charon.deployment.storage.InMemroyUserManager;
 import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
+import org.wso2.charon.utils.storage.InMemoryTenantManager;
+import org.wso2.charon.utils.storage.InMemroyUserManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,20 +61,22 @@ public class DefaultCharonManager implements CharonManager {
     /**
      * Perform initialization.
      */
-    private void init() {
+    private void init() throws CharonException {
         //TODO:read config and init stuff 
         tenantManager = new InMemoryTenantManager();
         encoderMap.put(SCIMConstants.JSON, new JSONEncoder());
         decoderMap.put(SCIMConstants.JSON, new JSONDecoder());
         //create basic auth - authenticator property
         Map<String, Object> basicAuthAuthenticator = new HashMap<String, Object>();
-        basicAuthAuthenticator.put("", new BasicAuthHandler());
+        basicAuthAuthenticator.put(INSTANCE, new BasicAuthHandler());
         basicAuthAuthenticator.put(SCIMConstants.AUTH_PROPERTY_PRIMARY, true);
         //add basic auth authenticator properties to authenticators list.
         authenticators.put(SCIMConstants.AUTH_TYPE_BASIC, basicAuthAuthenticator);
+        //register encoder,decoders in AbstractResourceEndpoint, since they are called with in the API
+        registerCoders();
     }
 
-    private DefaultCharonManager() {
+    private DefaultCharonManager() throws CharonException {
         init();
     }
 
@@ -83,7 +86,7 @@ public class DefaultCharonManager implements CharonManager {
      *
      * @return
      */
-    public static DefaultCharonManager getInstance() {
+    public static DefaultCharonManager getInstance() throws CharonException {
         if (defaultCharonManager == null) {
             synchronized (DefaultCharonManager.class) {
                 if (defaultCharonManager == null) {
@@ -96,64 +99,6 @@ public class DefaultCharonManager implements CharonManager {
         } else {
             return defaultCharonManager;
         }
-    }
-
-
-    /**
-     * Handle authentication using implementation specific authentication mechanism.
-     *
-     * @param userName
-     * @param password
-     * @param authorization
-     */
-    /*public static void handleAuthentication(String userName, String password,
-                                            String authorization) {
-        //get the authenticator, according to the authenticator,
-        if (authenticationHandler == null && authenticationInfo == null) {
-            initAuthenticationHandler();
-        }
-        if (userName != null && password != null) {
-            ((BasicAuthInfo) authenticationInfo).setUserName(userName);
-            ((BasicAuthInfo) authenticationInfo).setPassword(password);
-            if (!authenticationHandler.isAuthenticated(authenticationInfo)) {
-                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-            }
-        } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-    }
-*/
-
-    /**
-     * Obtain the encoder for the given format.
-     *
-     * @return
-     */
-    @Override
-    public Encoder getEncoder(String format) throws FormatNotSupportedException {
-        //if the requested format not supported, return an error.
-        if (!encoderMap.containsKey(format)) {
-            //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
-        }
-        return encoderMap.get(format);
-    }
-
-    /**
-     * Obtain the decoder for the given format.
-     *
-     * @return
-     */
-    @Override
-    public Decoder getDecoder(String format) throws FormatNotSupportedException {
-        //if the requested format not supported, return an error.
-        if (!decoderMap.containsKey(format)) {
-            //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
-        }
-        return decoderMap.get(format);
     }
 
     /**
@@ -258,10 +203,38 @@ public class DefaultCharonManager implements CharonManager {
     }
 
     @Override
-    public void handleAuthentication(Map<String, String> httpAuthHeaders) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void handleAuthentication(Map<String, String> httpAuthHeaders)
+            throws UnauthorizedAccessException {
+        try {
+            //identify authentication mechanism according to the http headers sent
+            String authenticationMechanism = identifyAuthMechanism(httpAuthHeaders);
+            //create authentication info according to the auth mechanism
+            if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_BASIC)) {
+                BasicAuthInfo authInfo = new BasicAuthInfo();
+                authInfo.setUserName(httpAuthHeaders.get(SCIMConstants.AUTH_HEADER_USERNAME));
+                authInfo.setPassword(httpAuthHeaders.get(SCIMConstants.AUTH_HEADER_PASSWORD));
+                //get the authentication handler.
+                BasicAuthHandler basicAuthHandler = (BasicAuthHandler) authenticators.get(
+                        SCIMConstants.AUTH_TYPE_BASIC).get(INSTANCE);
+                //if not authenticated only, throw 401 exception.
+                if (!basicAuthHandler.isAuthenticated(authInfo)) {
+                    throw new UnauthorizedAccessException();
+                }
+            } else if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_OAUTH)) {
+                //perform authentication according to oauth.
+            }
+        } catch (CharonException e) {
+            throw new UnauthorizedAccessException(e.getDescription());
+        }
     }
 
+    /**
+     * Identify the authentication mechanism, given the http headers sent in the SCIM API access request.
+     *
+     * @param authHeaders
+     * @return
+     * @throws CharonException
+     */
     public String identifyAuthMechanism(Map<String, String> authHeaders) throws CharonException {
         if (authHeaders.containsKey(SCIMConstants.AUTH_HEADER_USERNAME) &&
             authHeaders.containsKey(SCIMConstants.AUTH_HEADER_PASSWORD)) {
@@ -288,6 +261,23 @@ public class DefaultCharonManager implements CharonManager {
             //TODO:create OAUTHInfo out of tenant info submitted, and return.
         }
         return authInfo;
+
+    }
+
+    /**
+     * Register encoders and decoders in AbstractResourceEndpoint.
+     */
+    private void registerCoders() throws CharonException {
+        if (!encoderMap.isEmpty()) {
+            for (Map.Entry<String, Encoder> encoderEntry : encoderMap.entrySet()) {
+                AbstractResourceEndpoint.registerEncoder(encoderEntry.getKey(), encoderEntry.getValue());
+            }
+        }
+        if (!encoderMap.isEmpty()) {
+            for (Map.Entry<String, Decoder> decoderEntry : decoderMap.entrySet()) {
+                AbstractResourceEndpoint.registerDecoder(decoderEntry.getKey(), decoderEntry.getValue());
+            }
+        }
 
     }
 }

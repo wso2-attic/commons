@@ -17,6 +17,8 @@
 */
 package org.wso2.charon.core.extensions;
 
+import org.wso2.charon.core.exceptions.CharonException;
+
 /**
  * Interface for handling authentication into SCIM Service Provider API.
  * Implementers can plugin their own implementation for handling authentication.
@@ -29,10 +31,21 @@ public interface AuthenticationHandler {
      * @param authInfo
      * @return
      */
-    public boolean isAuthenticated(AuthenticationInfo authInfo);
+    public boolean isAuthenticated(AuthenticationInfo authInfo) throws CharonException;
 
+    /**
+     * Returns authentication token at the registeration, used in case of OAUTH.
+     * @param authInfo
+     * @return
+     */
     public AuthenticationInfo getAuthenticationToken(AuthenticationInfo authInfo);
 
+    /**
+     * Pass a handler of Charon Manager - who knows about other extensions such as TenantManager,UserManagers etc,
+     * so that authentication handler can utilize them if needed.
+     * @param charonManager
+     */
+    public void setCharonManager(CharonManager charonManager);
 
 
 }

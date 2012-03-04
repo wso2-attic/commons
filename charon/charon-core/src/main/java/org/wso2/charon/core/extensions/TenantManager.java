@@ -39,6 +39,7 @@ public interface TenantManager {
 
     /**
      * Retrieve the corresponding tenant given the tenant admin's username
+     *
      * @param fullyQualifiedUserName
      * @return
      * @throws CharonException
@@ -47,10 +48,19 @@ public interface TenantManager {
 
     /**
      * Retrieve the tenant domain name given the tenant admin user name.
+     *
      * @param fullyQualifiedUserName
      * @return
      * @throws CharonException
      */
     public String getTenantDomain(String fullyQualifiedUserName) throws CharonException;
+
+    /**
+     * Get the Tenant Info, given the tenantID. 
+     * @param tenantID
+     * @return
+     * @throws CharonException
+     */
+    public TenantDTO getTenantInfo(int tenantID) throws CharonException;
 }
 

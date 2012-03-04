@@ -18,13 +18,11 @@
 package org.wso2.charon.deployment.resources;
 
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.exceptions.InternalServerException;
-import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.deployment.managers.DefaultCharonManager;
+import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
 
 import javax.ws.rs.GET;
@@ -33,7 +31,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -53,12 +50,10 @@ public class UsersResource {
                             @HeaderParam("Accept") String format,
                             @HeaderParam("Authorization") String authorization) {
 
-        /*try {
+        try {
             //authenticate the request
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
-            String authMechanism = defaultCharonManager.identifyAuthMechanism(new HashMap<String, String>());
-            defaultCharonManager.getAuthenticationHandler(authMechanism).isAuthenticated();
-            //set the format in which the response should be encoded. if not specified in the request,
+            defaultCharonManager.handleAuthentication(new HashMap<String,String>());
             // defaults to application/json.
             if (format == null) {
                 format = SCIMConstants.JSON;
@@ -80,7 +75,7 @@ public class UsersResource {
             //create SCIM response with code as the same of exception and message as error message of the exception
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.\
 
-        }*/
+        }
         return null;
     }
 

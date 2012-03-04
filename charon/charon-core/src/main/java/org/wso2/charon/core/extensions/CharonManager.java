@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.extensions;
 
+import com.sun.servicetag.UnauthorizedAccessException;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.CharonException;
@@ -29,24 +30,25 @@ import java.util.Map;
  * Default implementation is at charon-deployment.  This is responsible for reading charon - configurations
  * for reading extensions such as user manager, custom encoders, decoders etc.
  * And the static instance should be initialized at the initialization of the SCIM service provider
- * application or when the first request is received at the service provider. 
+ * application or when the first request is received at the service provider.
  */
 public interface CharonManager {
 
     /**
      * Obtain the encoder for the given format. 
      * @return
-     */
+     *//*
     public Encoder getEncoder(String format) throws FormatNotSupportedException;
 
-    /**
+    *//**
      * Obtain the decoder for the given format.
      * @return
-     */
-    public Decoder getDecoder(String format) throws FormatNotSupportedException;
+     *//*
+    public Decoder getDecoder(String format) throws FormatNotSupportedException;*/
 
     /**
      * Obtain the authentication handler, given the authentication mechanism.
+     *
      * @return
      */
     public AuthenticationHandler getAuthenticationHandler(String authMechanism)
@@ -55,6 +57,7 @@ public interface CharonManager {
     /**
      * Obtain the user manager, according to the tenantAdminUser
      * who invokes the SCIM API exposed by the service provider.
+     *
      * @param tenantAdminUserName
      * @return
      */
@@ -62,6 +65,7 @@ public interface CharonManager {
 
     /**
      * Obtain the the instance of registered tenant manager implementation.
+     *
      * @return
      */
     public TenantManager getTenantManager();
@@ -72,6 +76,7 @@ public interface CharonManager {
      * as well as obtaining credentials to access SCIM SP API for subsequent provisioning activities.
      * Therefore. proper credentials should be returned according to the authentication handler.
      * For basic auth, do not return any authentication info. For oauth, return bearer token.
+     *
      * @param tenantInfo
      * @return
      * @throws CharonException
@@ -80,11 +85,21 @@ public interface CharonManager {
 
     /**
      * Returns true if the registered authenticators support the given authentication mechanism.
+     *
      * @param authmechanism
      * @return
      */
     public boolean isAuthenticationSupported(String authmechanism);
 
-    public void handleAuthentication(Map<String,String> httpAuthHeaders);
+    /**
+     * Custom resource endpoints can delegate the authentication handling to Charon Manager, who -
+     * looking at the authentication related headers, decides the relevant authentication handler out
+     * of the registered authenticators and call the authentication logic of it.
+     * If not authenticated, should throw 401 unauthorized exception.
+     *
+     * @param httpAuthHeaders
+     */
+    public void handleAuthentication(Map<String, String> httpAuthHeaders)
+            throws UnauthorizedAccessException;
 
 }

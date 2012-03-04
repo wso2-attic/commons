@@ -17,30 +17,50 @@
 */
 package org.wso2.charon.utils.authentication;
 
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
-
-import java.util.Map;
+import org.wso2.charon.core.extensions.CharonManager;
+import org.wso2.charon.core.extensions.TenantDTO;
+import org.wso2.charon.core.extensions.TenantManager;
 
 /**
  * AuthenticationHandler for validating API access through basic auth - authentication mechanism.
  */
 public class BasicAuthHandler implements AuthenticationHandler {
 
-    //for demo purpose, use hard coded credentials
-    private String userName = "hasini@wso2.com";
-    private String password = "hasini";
+    private static CharonManager charonManager;
 
     @Override
-    public boolean isAuthenticated(AuthenticationInfo authInfo) {
-        
-        return ((userName.equals(((BasicAuthInfo) authInfo).getUserName()) &&
-             (password.equals(((BasicAuthInfo) authInfo).getPassword()))));
+    public boolean isAuthenticated(AuthenticationInfo authInfo) throws CharonException {
+
+        TenantManager tenantManager = charonManager.getTenantManager();
+        //TODO: is it ok that the following methods called by any class?
+        int tenantID = tenantManager.getTenantID(((BasicAuthInfo) authInfo).getUserName());
+        TenantDTO tenantInfo = tenantManager.getTenantInfo(tenantID);
+        if (((BasicAuthInfo) authInfo).getPassword().equals(tenantInfo.getTenantAdminPassword())){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public AuthenticationInfo getAuthenticationToken(AuthenticationInfo authInfo) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-    
+
+    /**
+     * Pass a handler of Charon Manager - who knows about other extensions such as TenantManager,UserManagers etc,
+     * so that authentication handler can utilize them if needed.
+     *
+     * @param charonManager
+     */
+    @Override
+    public void setCharonManager(CharonManager charonManager) {
+        if (charonManager == null) {
+            this.charonManager = charonManager;
+        }
+    }
+
 }

@@ -19,8 +19,15 @@ package org.wso2.charon.core.protocol.endpoints;
 
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
+import org.wso2.charon.core.encoder.json.JSONDecoder;
+import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.SCIMConstants;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This is an abstract layer for all the resource endpoint to abstract out common
@@ -28,11 +35,11 @@ import org.wso2.charon.core.exceptions.FormatNotSupportedException;
  */
 public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
-    /*Keeps a map of supported encoders of SCIM server side.*//*
+    //Keeps a map of supported encoders of SCIM server side.
     private static Map<String, Encoder> encoderMap = new ConcurrentHashMap<String, Encoder>();
 
-    *//*Keeps a map of supported encoders of SCIM server side.*//*
-    private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();*/
+    //Keeps a map of supported encoders of SCIM server side.
+    private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();
 
     /**
      * Returns the encoder given the encoding format.
@@ -43,13 +50,33 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      */
     public Encoder getEncoder(String format)
             throws FormatNotSupportedException, CharonException {
-        return null;/*org.wso2.charon.deployment.managers.DefaultCharonManager.;*/
+        //if the encoder map is empty, register default json encoder
+        if (encoderMap.isEmpty()) {
+            encoderMap.put(SCIMConstants.JSON, new JSONEncoder());
+        }
+        //if the requested format not supported, return an error.
+        if (!encoderMap.containsKey(format)) {
+            //Error is logged by the caller.
+            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
+                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+        }
+        return encoderMap.get(format);
     }
 
     public Decoder getDecoder(String format)
             throws FormatNotSupportedException, CharonException {
 
-        return null;
+        //if the decoder map is empty, register default json encoder
+        if (decoderMap.isEmpty()) {
+            decoderMap.put(SCIMConstants.JSON, new JSONDecoder());
+        }
+        //if the requested format not supported, return an error.
+        if (!decoderMap.containsKey(format)) {
+            //Error is logged by the caller.
+            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
+                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+        }
+        return decoderMap.get(format);
 
     }
 
@@ -59,8 +86,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      * @param format  - format that the registering encoder supports.
      * @param encoder
      */
-    /*public static void registerEncoder(String format, Encoder encoder) throws CharonException {
-        //TODO:this should be in SCIM Manager
+    public static void registerEncoder(String format, Encoder encoder) throws CharonException {
         if (encoderMap.containsKey(format)) {
             //log the error and throw.
             String error = "Encoder for the given format is already registered.";
@@ -68,11 +94,9 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         } else {
             encoderMap.put(format, encoder);
         }
-
     }
 
     public static void registerDecoder(String format, Decoder decoder) throws CharonException {
-        //TODO:this should be in SCIM Manager
         if (decoderMap.containsKey(format)) {
             //log the error and throw.
             String error = "Decoder for the given format is already registered.";
@@ -80,8 +104,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         } else {
             decoderMap.put(format, decoder);
         }
-
-    }*/
+    }
 
     /**
      * Build SCIM Response given the response code and response message.
