@@ -58,6 +58,7 @@ public class InMemroyUserManager implements UserManager {
                     scimUser.setId(sampleUser.getId());
                     scimUser.setUserName(sampleUser.getUserName());
                     scimUser.setEmails(sampleUser.getEmails());
+                    scimUser.setExternalId(sampleUser.getFullyQualifiedName());
                 }
             }
         }

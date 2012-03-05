@@ -31,18 +31,23 @@ public class RegisterTenantSample {
 
     public static void main(String[] args) {
 
+        //create SCIM Client
         SCIMClient scimClient = new SCIMClient();
-        ClientConfig clientConfig = new ClientConfig();
+        //create a apache wink ClientHandler to intercept and identify response messages
         CharonResponseHandler responseHandler = new CharonResponseHandler();
         responseHandler.setSCIMClient(scimClient);
+        //set the handler in wink client config
+        ClientConfig clientConfig = new ClientConfig();
         clientConfig.handlers(new ClientHandler[]{responseHandler});
+        //create a wink rest client with the above config
         RestClient restClient = new RestClient(clientConfig);
 
-        //create resource endpoint
+        //create resource endpoint to access RegistrationService
         Resource registrationService = restClient.resource(REG_SERVICE_ENDPOINT);
 
-        //enable, disable SSL.
+        //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
 
+        //send the tenant details in the http headers. TODO: send them in the body encoded in json/xml
         registrationService.header("tenantAdminUserName", "hasinig@wso2.com").
                 header("tenantAdminPassword", "hasinig").header("tenantDomain", "wso2.com").
                 header("authMechanism", SCIMConstants.AUTH_TYPE_BASIC).post(String.class, "");

@@ -87,6 +87,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         } catch (CharonException e) {
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
@@ -161,6 +164,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         } catch (CharonException e) {
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);

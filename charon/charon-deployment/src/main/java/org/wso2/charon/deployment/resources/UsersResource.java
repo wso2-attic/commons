@@ -59,12 +59,6 @@ public class UsersResource {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
-            Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
-            //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
 
             // defaults to application/json.
             if (format == null) {
@@ -72,6 +66,14 @@ public class UsersResource {
             }
             //obtain the encoder at this layer in case exceptions needs to be encoded.
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
+            //perform authentication
+            Map<String, String> headerMap = new HashMap<String, String>();
+            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
+            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
+            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            //authenticate the request
+            defaultCharonManager.handleAuthentication(headerMap);
+
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
@@ -111,12 +113,6 @@ public class UsersResource {
         try {
             //obtain default charon manager
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
-            Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
-            //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
 
             //content-type header is compulsory in post request.
             if (inputFormat == null) {
@@ -130,6 +126,14 @@ public class UsersResource {
             }
             //obtain the encoder at this layer in case exceptions needs to be encoded.
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(outputFormat));
+            //perform authentication
+            Map<String, String> headerMap = new HashMap<String, String>();
+            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
+            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
+            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            //authenticate the request
+            defaultCharonManager.handleAuthentication(headerMap);
+
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
