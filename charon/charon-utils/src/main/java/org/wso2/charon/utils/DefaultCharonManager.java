@@ -23,6 +23,7 @@ import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.UnauthorizedException;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
@@ -30,6 +31,7 @@ import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.extensions.TenantDTO;
 import org.wso2.charon.core.extensions.TenantManager;
 import org.wso2.charon.core.extensions.UserManager;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.authentication.BasicAuthHandler;
@@ -55,15 +57,20 @@ public class DefaultCharonManager implements CharonManager {
     private static Map<String, Encoder> encoderMap = new HashMap<String, Encoder>();
     private static Map<String, Decoder> decoderMap = new HashMap<String, Decoder>();
     private static Map<String, Map> authenticators = new HashMap<String, Map>();
+    private static Map<String, String> endpointURLs = new HashMap<String, String>();
 
     private static Map<Integer, UserManager> userManagers = new ConcurrentHashMap<Integer, UserManager>();
     private static final String INSTANCE = "instance";
+
+    //TODO:should be moved to charon-config
+    private static final String USERS_URL = "http://localhost:8080/charonDemoApp/scim/Users/";
+    private static final String GROUPS_URL = "http://localhost:8081/charonDemoApp/scim/Groups";
 
     /**
      * Perform initialization.
      */
     private void init() throws CharonException {
-        //TODO:read config and init stuff 
+        //TODO:read config and init stuff, if nothing in config, make sure to initialize default stuff. 
         tenantManager = new InMemoryTenantManager();
         encoderMap.put(SCIMConstants.JSON, new JSONEncoder());
         decoderMap.put(SCIMConstants.JSON, new JSONDecoder());
@@ -75,6 +82,11 @@ public class DefaultCharonManager implements CharonManager {
         authenticators.put(SCIMConstants.AUTH_TYPE_BASIC, basicAuthAuthenticator);
         //register encoder,decoders in AbstractResourceEndpoint, since they are called with in the API
         registerCoders();
+        //Define endpoint urls to be used in Location Header
+        endpointURLs.put(SCIMConstants.USER_ENDPOINT, USERS_URL);
+        endpointURLs.put(SCIMConstants.GROUP_ENDPOINT, GROUPS_URL);
+        //register endpoint URLs in AbstractResourceEndpoint since they are called with in the API
+        registerEndpointURLs();
     }
 
     private DefaultCharonManager() throws CharonException {
@@ -100,6 +112,36 @@ public class DefaultCharonManager implements CharonManager {
         } else {
             return defaultCharonManager;
         }
+    }
+
+    /**
+     * Obtain the encoder for the given format.
+     *
+     * @return
+     */
+    @Override
+    public Encoder getEncoder(String format) throws FormatNotSupportedException {
+        if (!encoderMap.containsKey(format)) {
+            //Error is logged by the caller.
+            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
+                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+        }
+        return encoderMap.get(format);
+    }
+
+    /**
+     * Obtain the decoder for the given format.
+     *
+     * @return
+     */
+    @Override
+    public Decoder getDecoder(String format) throws FormatNotSupportedException {
+        if (!decoderMap.containsKey(format)) {
+            //Error is logged by the caller.
+            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
+                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+        }
+        return decoderMap.get(format);
     }
 
     /**
@@ -282,6 +324,12 @@ public class DefaultCharonManager implements CharonManager {
             }
         }
 
+    }
+
+    private void registerEndpointURLs() {
+        if (endpointURLs != null && endpointURLs.size() != 0) {
+            AbstractResourceEndpoint.registerResourceEndpointURLs(endpointURLs);
+        }
     }
 }
 

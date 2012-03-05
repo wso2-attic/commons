@@ -17,11 +17,15 @@
 */
 package org.wso2.charon.deployment.resources;
 
+import org.wso2.charon.core.encoder.Decoder;
+import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.UnauthorizedException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
+import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
@@ -52,7 +56,7 @@ public class UsersResource {
                             @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                             @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
                             @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
-
+        Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
             Map<String, String> headerMap = new HashMap<String, String>();
@@ -64,9 +68,10 @@ public class UsersResource {
 
             // defaults to application/json.
             if (format == null) {
-                format = SCIMConstants.JSON;
+                format = SCIMConstants.APPLICATION_JSON;
             }
-
+            //obtain the encoder at this layer in case exceptions needs to be encoded.
+            encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
@@ -84,11 +89,14 @@ public class UsersResource {
             if (e.getCode() == -1) {
                 e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
             }
-            SCIMResponse scimResponse = new SCIMResponse(e.getCode(), e.getDescription());
-            return new JAXRSResponseBuilder().buildResponse(scimResponse);
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         } catch (UnauthorizedException e) {
-            SCIMResponse scimResponse = new SCIMResponse(e.getCode(), e.getDescription());
-            return new JAXRSResponseBuilder().buildResponse(scimResponse);
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (FormatNotSupportedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         }
     }
 
@@ -99,7 +107,9 @@ public class UsersResource {
                                @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                                @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
                                String resourceString) {
+        Encoder encoder = null;
         try {
+            //obtain default charon manager
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
             Map<String, String> headerMap = new HashMap<String, String>();
             headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
@@ -108,12 +118,18 @@ public class UsersResource {
             //authenticate the request
             defaultCharonManager.handleAuthentication(headerMap);
 
+            //content-type header is compulsory in post request.
+            if (inputFormat == null) {
+                String error = SCIMConstants.CONTENT_TYPE_HEADER + " not present in the request header";
+                throw new FormatNotSupportedException(error);
+            }
             //set the format in which the response should be encoded, if not specified in the request,
             // defaults to application/json.
             if (outputFormat == null) {
                 outputFormat = SCIMConstants.APPLICATION_JSON;
             }
-
+            //obtain the encoder at this layer in case exceptions needs to be encoded.
+            encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
@@ -121,7 +137,8 @@ public class UsersResource {
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
 
-            SCIMResponse response = (userResourceEndpoint.create(resourceString, inputFormat, outputFormat, userManager));
+            SCIMResponse response = (userResourceEndpoint.create(resourceString, inputFormat,
+                                                                 outputFormat, userManager));
 
             return new JAXRSResponseBuilder().buildResponse(response);
 
@@ -130,12 +147,14 @@ public class UsersResource {
             if (e.getCode() == -1) {
                 e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
             }
-            //TODO:encode exception
-            SCIMResponse scimResponse = new SCIMResponse(e.getCode(), e.getDescription());
-            return new JAXRSResponseBuilder().buildResponse(scimResponse);
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         } catch (UnauthorizedException e) {
-            SCIMResponse scimResponse = new SCIMResponse(e.getCode(), e.getDescription());
-            return new JAXRSResponseBuilder().buildResponse(scimResponse);
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (FormatNotSupportedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         }
     }
 }

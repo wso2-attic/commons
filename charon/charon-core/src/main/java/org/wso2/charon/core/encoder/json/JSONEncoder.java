@@ -37,6 +37,12 @@ import java.util.Map;
 
 public class JSONEncoder implements Encoder {
 
+    private String format;
+
+    public JSONEncoder() {
+        format = SCIMConstants.JSON;
+    }
+
     /**
      * Encode the given SCIM object.
      *
@@ -52,7 +58,7 @@ public class JSONEncoder implements Encoder {
                                      (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();
-            
+
             for (Attribute attribute : attributes.values()) {
                 if (attribute instanceof SimpleAttribute) {
                     encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
@@ -64,12 +70,12 @@ public class JSONEncoder implements Encoder {
                     encodeMultiValuedAttribute((MultiValuedAttribute) attribute, rootObject);
                 }
             }
-            
+
         } catch (JSONException e) {
             String errorMessage = "Error in encoding resource..";
             //log the error
             throw new CharonException(errorMessage);
-        }                                       
+        }
         return rootObject.toString();
     }
 
@@ -105,6 +111,16 @@ public class JSONEncoder implements Encoder {
         //return json string
         return rootErrorObject.toString();
 
+    }
+
+    /**
+     * Obtain the format that the particular encoder supports. This can be initialized in the constructor.
+     *
+     * @return
+     */
+    @Override
+    public String getFormat() {
+        return format;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected void encodeArrayOfValues(String arrayName, Object[] arrayValues,

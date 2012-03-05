@@ -36,16 +36,18 @@ import java.util.Map;
 public interface CharonManager {
 
     /**
-     * Obtain the encoder for the given format. 
+     * Obtain the encoder for the given format.
+     *
      * @return
-     *//*
+     */
     public Encoder getEncoder(String format) throws FormatNotSupportedException;
 
-    *//**
+    /**
      * Obtain the decoder for the given format.
+     *
      * @return
-     *//*
-    public Decoder getDecoder(String format) throws FormatNotSupportedException;*/
+     */
+    public Decoder getDecoder(String format) throws FormatNotSupportedException;
 
     /**
      * Obtain the authentication handler, given the authentication mechanism.

@@ -29,15 +29,31 @@ public class SCIMConstants {
     public static final String XML = "xml";
 
     public static final String APPLICATION_JSON = "application/json";
-    public static final String APPLICATION_XMLA = "application/xml";
+    public static final String APPLICATION_XML = "application/xml";
 
+    /**
+     * Identify the format, given the Content-Type,Accept-Headers.
+     *
+     * @param format
+     * @return
+     */
     public static String identifyFormat(String format) {
-        if (format.equals("application/json")) {
+        if (format.equals(APPLICATION_JSON)) {
             return SCIMConstants.JSON;
-        } else if (format.equals("application/xml")) {
+        } else if (format.equals(APPLICATION_XML)) {
             return SCIMConstants.XML;
         } else {
 
+            return null;
+        }
+    }
+
+    public static String identifyContentType(String contentType) {
+        if (contentType.equals(JSON)) {
+            return APPLICATION_JSON;
+        } else if (contentType.equals(XML)) {
+            return APPLICATION_XML;
+        } else {
             return null;
         }
     }
@@ -145,6 +161,8 @@ public class SCIMConstants {
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";
+    public static final String GROUP_ENDPOINT = "/Groups";
+
 
     //HTTP Headers used in SCIM request/response other than auth headers.
     public static final String LOCATION_HEADER = "Location";

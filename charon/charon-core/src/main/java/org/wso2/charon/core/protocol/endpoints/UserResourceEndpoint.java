@@ -83,23 +83,15 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
         } catch (FormatNotSupportedException e) {
             //if requested format not supported, encode exception and set it in the response.
-            String encodedException = encoder.encodeSCIMException(new FormatNotSupportedException());
-            return new SCIMResponse(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_RESOURCE_NOT_FOUND, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }
 
@@ -150,7 +142,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
                 encodedUser = encoder.encodeSCIMObject(createdUser);
                 //add location header
-                httpHeaders.put(SCIMConstants.LOCATION_HEADER, createdUser.getId());
+                httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
+                        SCIMConstants.USER_ENDPOINT) + createdUser.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -164,22 +157,15 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.
-            String encodedException = encoder.encodeSCIMException(new FormatNotSupportedException());
-            return new SCIMResponse(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_BAD_REQUEST, encodedException);
-
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
-            String encodedException = encoder.encodeSCIMException(e);
-            return new SCIMResponse(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, encodedException);
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
 
     }

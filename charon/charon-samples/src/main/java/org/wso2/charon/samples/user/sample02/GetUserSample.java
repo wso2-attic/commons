@@ -31,7 +31,7 @@ import org.wso2.charon.samples.utils.CharonResponseHandler;
 public class GetUserSample {
 
     public static final String USER_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/Users/";
-    public static final String USER_ID = "02e6134b-7724-499a-b1a9-daafb73ed49";
+    public static final String USER_ID = "7ea9695b-fee7-49c0-b8cb-0e81e516f22f";
 
     public static void main(String[] args) {
 

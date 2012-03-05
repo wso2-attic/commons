@@ -41,5 +41,11 @@ public interface Encoder {
      * @return the resulting string after encoding
      */
     public String encodeSCIMException(AbstractCharonException exception);
+
+    /**
+     * Obtain the format that the particular encoder supports. This can be initialized in the constructor.
+     * @return
+     */
+    public String getFormat();
     
 }

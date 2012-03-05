@@ -21,11 +21,14 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
+import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,6 +43,9 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
     //Keeps a map of supported encoders of SCIM server side.
     private static Map<String, Decoder> decoderMap = new ConcurrentHashMap<String, Decoder>();
+
+    //Keeps  a map of endpoint urls of the exposed resources.
+    private static Map<String, String> endpointURLMap;
 
     /**
      * Returns the encoder given the encoding format.
@@ -81,7 +87,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
     }
 
     /**
-     * Register encoders to be supported by SCIM Server Side.
+     * Register encoders to be supported by SCIM Server Side, which will be used in Charon-API.
      *
      * @param format  - format that the registering encoder supports.
      * @param encoder
@@ -96,6 +102,13 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         }
     }
 
+    /**
+     * Register decoders to be supported by SCIM Server Side, which will be used in Charon-API.
+     *
+     * @param format
+     * @param decoder
+     * @throws CharonException
+     */
     public static void registerDecoder(String format, Decoder decoder) throws CharonException {
         if (decoderMap.containsKey(format)) {
             //log the error and throw.
@@ -106,6 +119,38 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         }
     }
 
+    /**
+     * Endpoint URLs defined in configuration needs to be registered here for the API to use them
+     * in Location header etc.
+     *
+     * @param endpointURLs
+     */
+    public static void registerResourceEndpointURLs(Map<String, String> endpointURLs) {
+        endpointURLMap = endpointURLs;
+    }
+
+    public static String getResourceEndpointURL(String resource) {
+        if (endpointURLMap != null && endpointURLMap.size() != 0) {
+            return endpointURLMap.get(resource);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Util method to encode the exception and construct the SCIMResponse, given the encoder
+     * and the exception
+     *
+     * @param encoder
+     * @param exception
+     * @return
+     */
+    public static SCIMResponse encodeSCIMException(Encoder encoder,
+                                                   AbstractCharonException exception) {
+        Map<String, String> httpHeaders = new HashMap<String, String>();
+        httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, SCIMConstants.identifyContentType(encoder.getFormat()));
+        return new SCIMResponse(exception.getCode(), encoder.encodeSCIMException(exception), httpHeaders);
+    }
     /**
      * Build SCIM Response given the response code and response message.
      * @param responseCode
