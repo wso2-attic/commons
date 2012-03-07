@@ -27,10 +27,6 @@
 
     <repositories>
         <repository>
-            <id>wso2-maven2-repository-snapshot</id>
-            <url>http://dist.wso2.org/snapshots/maven2</url>
-        </repository>
-        <repository>
             <id>snapshots</id>
             <name>Maven Central Development Repository</name>
             <url>http://snapshots.maven.codehaus.org/maven2</url>
@@ -47,10 +43,6 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-        <repository>
-            <id>ws-zones-repository</id>
-            <url>http://ws.zones.apache.org/repository2</url>
         </repository>
         <repository>
             <id>wso2-nexus</id>
