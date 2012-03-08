@@ -50,6 +50,17 @@ public class SimpleAttribute extends AbstractAttribute {
     }
 
     /**
+     * Create a simple attribute with name and value object. After creating with this constructor,
+     * AttributeFactory should be used to b build attribute properly with correct data type etc.  
+     * @param attributeName
+     * @param value
+     */
+    public SimpleAttribute(String attributeName, Object value) {
+        this.attributeName = attributeName;
+        this.value = value;
+    }
+
+    /**
      * Create the attribute with given name and schema name.
      *
      * @param attributeName - Name of the attribute
@@ -60,12 +71,12 @@ public class SimpleAttribute extends AbstractAttribute {
     }
 
     /**
-     * Create attribute with given name, schema name,whether it is readOnly and optional.
+     * Create attribute with given name, schema name,whether it is readOnly and required.
      *
      * @param attributeName - Name of the attribute
      * @param schema        - schema in which the attribute is defined
      * @param readOnly      - whether attribute is readOnly
-     * @param optional      - whether attribute is optional
+     * @param optional      - whether attribute is required
      */
     public SimpleAttribute(String attributeName, String schema, boolean readOnly,
                            boolean optional) {
@@ -74,14 +85,14 @@ public class SimpleAttribute extends AbstractAttribute {
 
     /**
      * Create attribute with given name, schema name,attribute value, attribute data type,
-     * whether it is readOnly and optional.
+     * whether it is readOnly and required.
      *
      * @param attributeName  - Name of the attribute
      * @param schema         - schema in which the attribute is defined
      * @param attributeValue - value of the attribute
      * @param dataType       - data type of the attribute value.
      * @param readOnly       - whether attribute is readOnly
-     * @param optional       - whether attribute is optional
+     * @param optional       - whether attribute is required
      */
     public SimpleAttribute(String attributeName, String schema, Object attributeValue,
                            DataType dataType, boolean readOnly, boolean optional)

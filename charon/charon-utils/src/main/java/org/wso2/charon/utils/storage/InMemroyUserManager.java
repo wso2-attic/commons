@@ -20,6 +20,7 @@ package org.wso2.charon.utils.storage;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.extensions.UserManager;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 
@@ -32,6 +33,7 @@ public class InMemroyUserManager implements UserManager {
     private String tenantDomain = null;
     private int tenantId = 0;
     List<SampleUser> userList = new ArrayList<SampleUser>();
+    
 
     public InMemroyUserManager(int tenantId, String tenantDomain) {
         this.tenantId = tenantId;
@@ -127,8 +129,37 @@ public class InMemroyUserManager implements UserManager {
         }
         //now prepare the SCIM User representation of the created user to be returned.
         //only additionally added value is: id
+        //id should not be added here, it should be added in DefaultResourceFactory.
         user.setId(customUser.getId());
         return user;
+    }
+
+    /**
+     * ****************Group manipulation operations*******************
+     */
+    @Override
+    public Group getGroup(String groupId) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group createGroup(Group group) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group updateGroup(Group group) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group updateGroup(List<Attribute> attributes) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group deleteGroup(String groupId) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -138,6 +169,7 @@ public class InMemroyUserManager implements UserManager {
 
     private SampleUser createCustomUser(User user) throws CharonException {
         SampleUser sampleUser = new SampleUser();
+        //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
         String id = UUID.randomUUID().toString();
         sampleUser.setId(id);
         sampleUser.setFullyQualifiedName(user.getExternalId());

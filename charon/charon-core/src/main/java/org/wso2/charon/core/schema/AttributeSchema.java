@@ -26,5 +26,25 @@ public interface AttributeSchema {
     public String getName();
 
     public void setName(String name);
-    
+
+    public SCIMSchemaDefinitions.DataType getType();
+
+    public void setType(SCIMSchemaDefinitions.DataType type);
+
+    public Boolean getReadOnly();
+
+    public void setReadOnly(Boolean readOnly);
+
+    public Boolean getRequired();
+
+    public void setRequired(Boolean required);
+
+    public Boolean getCaseExact();
+
+    public void setCaseExact(Boolean caseExact);
+
+    public String getDescription();
+
+    public void setDescription(String description);
+
 }

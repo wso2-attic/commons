@@ -17,21 +17,33 @@
 */
 package org.wso2.charon.core.schema;
 
+import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
-import org.wso2.charon.core.objects.SCIMObject;
 
 /**
- * To validate whether a SCIMObject constructed by SCIM service provider - to be returned to
- * SCIM consumer,or whether a decoded SCIMObject from a received request payload from client side,
- * adheres to the schema of the resource.
+ * Contains common functionality to any SCIM object schema validator.
+ * TODO:If all required attributes are there, if additional attributes not there
+ * according to the schema,and do this after creating the resource by decoder and usermanager
+ * and client.
  */
-public interface SchemaValidator {
+public class DefaultSchemaValidator implements SchemaValidator {
 
     /**
      * Validate SCIMObject given the object and the corresponding schema.
-     * 
+     *
      * @param scimObject
      * @param resourceSchema
      */
-    public void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema);
+    @Override
+    public void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema) {
+        //get attributes from schema.
+        //get attribute list from scim object.
+        //compare everything fine.
+        //To change body of implemented methods use File | Settings | File Templates.
+        //check if required attributes are there.
+    }
+
+    public void validateAttribute(AbstractAttribute attribute, AttributeSchema attributeSchema) {
+        
+    }
 }

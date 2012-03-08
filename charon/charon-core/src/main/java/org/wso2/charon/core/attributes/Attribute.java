@@ -17,6 +17,8 @@
 */
 package org.wso2.charon.core.attributes;
 
+import org.wso2.charon.core.schema.AttributeSchema;
+
 /**
  * Interface to represent Attribute defined in SCIM schema spec.
  */
@@ -44,14 +46,14 @@ public interface Attribute {
     /**
      * Get the schema where the attribute is defined.
      */
-    public String getSchema();
+    public String getSchemaName();
 
     /**
      * Set the schema of the attribute.
      *
      * @param schema
      */
-    public void setSchema(String schema);
+    public void setSchemaName(String schema);
 
     /**
      * Validate whether the attribute adheres to the SCIM schema.
@@ -60,5 +62,7 @@ public interface Attribute {
      * @return
      */
     public boolean validate(Attribute attribute);
+
+    /*public AttributeSchema getSchema();*/
 
 }

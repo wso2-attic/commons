@@ -28,17 +28,11 @@ import org.wso2.charon.core.exceptions.NotFoundException;
  */
 public interface SCIMObject {
 
-    public void setAttribute(Attribute newAttribute);
+    //public void setAttribute(Attribute newAttribute);
 
     public Attribute getAttribute(String attributeName) throws NotFoundException;
 
     public void deleteAttribute(String attributeName) throws NotFoundException;
-
-    /**
-     * Validates whether the given SCIM object adheres to the SCIM schema.
-     * @param scimObject
-     * @return
-     */
-    public boolean validate(SCIMObject scimObject);
+    
 
 }

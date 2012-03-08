@@ -20,6 +20,7 @@ package org.wso2.charon.core.extensions;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
 
 import java.util.List;
@@ -27,12 +28,14 @@ import java.util.List;
 /**
  * This is the interface for UserManager extension.
  * An implementation can plugin their own user manager-(either LDAP based, DB based etc)
- * by implementing this interface and mentioning it in configuration. 
+ * by implementing this interface and mentioning it in configuration.
  */
-public interface UserManager extends Storage{
+public interface UserManager extends Storage {
 
+    /***************User Manipulation operations*******************/
     /**
      * Obtains the user given the id.
+     *
      * @param userId
      * @return
      */
@@ -40,6 +43,7 @@ public interface UserManager extends Storage{
 
     /**
      * Update the user in full.
+     *
      * @param user SCIM User object containing the updated attributes
      * @return return the full updates user
      */
@@ -47,25 +51,41 @@ public interface UserManager extends Storage{
 
     /**
      * Update the user partially only with updated attributes.
+     *
      * @param updatedAttributes : list of attributes to be updated
      * @return User : For a patch request, server can respond with either 200 ok + entire resource
-     * or 204 No content+appropriate response headers. But user manager should return the updated resource.
+     *         or 204 No content+appropriate response headers. But user manager should return the updated resource.
      */
 
     public User updateUser(List<Attribute> updatedAttributes);
 
     /**
      * Delete the user given the user id.
+     *
      * @param userId
      */
     public void deleteUser(String userId);
 
     /**
      * Create user with the given user object.
+     *
      * @param user User resource to be created in the user store of service provider.
      * @return newly created SCIM User resource sent back to the client in the response.
      */
     public User createUser(User user) throws CharonException;
-    
+
+    /**
+     * ****************Group manipulation operations*******************
+     */
+
+    public Group getGroup(String groupId) throws CharonException;
+
+    public Group createGroup(Group group) throws CharonException;
+
+    public Group updateGroup(Group group) throws CharonException;
+
+    public Group updateGroup(List<Attribute> attributes) throws CharonException;
+
+    public Group deleteGroup(String groupId) throws CharonException;
 
 }

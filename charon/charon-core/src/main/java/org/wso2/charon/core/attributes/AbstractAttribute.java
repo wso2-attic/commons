@@ -20,7 +20,7 @@ package org.wso2.charon.core.attributes;
 /**
  * This class abstracts out the common characteristics of different types of attributes defined in
  * SCIM Core Schema Spec.
- * Unless otherwise specified, attributes are optional, modifiable by Consumers, and of type String.
+ * Unless otherwise specified, attributes are required, modifiable by Consumers, and of type String.
  * TODO:Can achieve more decoupling if we define an interface for attribute schema. And pass the
  * relevant impl of it into the constructor when creating the attribute.
  */
@@ -32,8 +32,8 @@ public abstract class AbstractAttribute implements Attribute {
     protected String schema;
     /*Name of the attribute*/
     protected String attributeName;
-    /*Whether attribute is optional or mandatory*/
-    boolean optional = true;
+    /*Whether attribute is required or mandatory*/
+    boolean required = true;
 
     public boolean isReadOnly() {
         return readOnly;
@@ -43,12 +43,12 @@ public abstract class AbstractAttribute implements Attribute {
         this.readOnly = readOnly;
     }
 
-    public boolean isOptional() {
-        return optional;
+    public boolean isRequired() {
+        return required;
     }
 
-    public void setOptional(boolean optional) {
-        this.optional = optional;
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     /**
@@ -72,18 +72,18 @@ public abstract class AbstractAttribute implements Attribute {
     }
 
     /**
-     * Create attribute with given name, schema name,whether it is readOnly and optional. 
+     * Create attribute with given name, schema name,whether it is readOnly and required.
      * @param attributeName Name of the attribute
      * @param schema schema in which the attribute is defined
      * @param readOnly whether attribute is readOnly
-     * @param optional whether attribute is optional
+     * @param optional whether attribute is required
      */
     public AbstractAttribute(String attributeName, String schema, boolean readOnly,
                              boolean optional){
         this.attributeName = attributeName;
         this.schema = schema;
         this.readOnly = readOnly;
-        this.optional = optional;
+        this.required = optional;
     }
 
     /**
@@ -121,11 +121,11 @@ public abstract class AbstractAttribute implements Attribute {
     /**
      * Get the schema where the attribute is defined.
      */
-    public String getSchema() {
+    public String getSchemaName() {
         return schema;
     }
     
-    public void setSchema(String schema) {
+    public void setSchemaName(String schema) {
         this.schema = schema;
     }
 }

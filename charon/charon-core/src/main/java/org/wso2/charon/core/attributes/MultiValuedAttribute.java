@@ -57,6 +57,11 @@ public class MultiValuedAttribute extends AbstractAttribute {
         super(attributeName);
     }
 
+    public MultiValuedAttribute(String attributeName, List<Attribute> attributeValues){
+        this.attributeName = attributeName;
+        this.attributeValues = attributeValues;
+    }
+
     /**
      * Create the attribute with given name and schema name.
      *
@@ -68,12 +73,12 @@ public class MultiValuedAttribute extends AbstractAttribute {
     }
 
     /**
-     * Create attribute with given name, schema name,whether it is readOnly and optional.
+     * Create attribute with given name, schema name,whether it is readOnly and required.
      *
      * @param attributeName Name of the attribute
      * @param schema        schema in which the attribute is defined
      * @param readOnly      whether attribute is readOnly
-     * @param optional      whether attribute is optional
+     * @param optional      whether attribute is required
      */
     public MultiValuedAttribute(String attributeName, String schema, boolean readOnly,
                                 boolean optional) {

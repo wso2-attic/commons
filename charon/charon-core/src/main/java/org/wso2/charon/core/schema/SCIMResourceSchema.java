@@ -32,7 +32,7 @@ public class SCIMResourceSchema implements ResourceSchema {
     private String schema;
     //private List<String> schemaList;
     //The Resource's human readable description
-    private String description;
+    private String description; 
     //The Resource's HTTP addressable endpoint relative to the Base URL; e.g., /Users
     private String endpoint;
     //following is corresponding to the 'attributes' attribute in resource schema.

@@ -18,7 +18,6 @@
 package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.exceptions.NotFoundException;
 
 import java.util.Map;
 
@@ -130,12 +129,12 @@ public class ComplexAttribute extends AbstractAttribute {
     }
 
     /**
-     * Create attribute with given name, schema name,whether it is readOnly and optional.
+     * Create attribute with given name, schema name,whether it is readOnly and required.
      *
      * @param attributeName Name of the attribute
      * @param schema        schema in which the attribute is defined
      * @param readOnly      whether attribute is readOnly
-     * @param optional      whether attribute is optional
+     * @param optional      whether attribute is required
      */
     public ComplexAttribute(String attributeName, String schema, boolean readOnly,
                             Map<String, Attribute> subAttributeMap,
@@ -155,6 +154,14 @@ public class ComplexAttribute extends AbstractAttribute {
                             Map<String, Attribute> subAttributeMap) {
         super(attributeName, attributeSchema);
         this.subAttributes = subAttributeMap;
+    }
+
+    /**
+     * It should be possible to create complex attribute without an explicit attribute name
+     * in case it is used as a attribute value of a multi valued attribute.
+     */
+    public ComplexAttribute() {
+        
     }
 
     /**

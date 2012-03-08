@@ -17,7 +17,6 @@
 */
 package org.wso2.charon.deployment.resources;
 
-import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
@@ -26,7 +25,7 @@ import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
-import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
+import org.wso2.charon.core.protocol.endpoints.GroupResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
@@ -43,11 +42,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JAX-RS Service that exposes the Users Resource in SCIM Service Provider/
+ * JAX-RS Service that exposes the Group Resource in SCIM Service Provider/
  */
-@Path("/Users")
-public class UsersResource {
-
+@Path("/Groups")
+public class GroupResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,10 +76,10 @@ public class UsersResource {
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
 
-            //create charon-SCIM user endpoint and hand-over the request.
-            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+            //create charon-SCIM Group endpoint and hand-over the request.
+            GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
 
-            SCIMResponse scimResponse = userResourceEndpoint.get(id, format, userManager);
+            SCIMResponse scimResponse = groupResourceEndpoint.get(id, format, userManager);
             //needs to check the code of the response and return 200 0k or other error codes
             // appropriately.
             return new JAXRSResponseBuilder().buildResponse(scimResponse);
@@ -139,10 +137,10 @@ public class UsersResource {
                     userName);
 
             //create charon-SCIM user endpoint and hand-over the request.
-            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+            GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
 
-            SCIMResponse response = userResourceEndpoint.create(resourceString, inputFormat,
-                                                                outputFormat, userManager);
+            SCIMResponse response = groupResourceEndpoint.create(resourceString, inputFormat,
+                                                                 outputFormat, userManager);
 
             return new JAXRSResponseBuilder().buildResponse(response);
 
@@ -161,4 +159,5 @@ public class UsersResource {
                     AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         }
     }
+
 }

@@ -21,11 +21,13 @@ package org.wso2.charon.core.objects;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
+import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
 
     /**
      * Constructor that sets mandatory fields in a SCIM object.. like Core Schema URI et.
+     * (Doesn't need any moresince it is done in attribute factory.)
      */
     public AbstractSCIMObject() {
 
@@ -71,16 +74,18 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     }
 
     /**
-     * Create an attribute and set in the SCIM Object.
+     * Set the attribute in the SCIM Object. This is made private since we do not allow to set
+     * any attribute through SCIMObject API from outside - that can be done via DefaultResourceFactory,
+     * but this is needed in the member methods.
      *
      * @param newAttribute
      */
-    public void setAttribute(Attribute newAttribute) {
+    private void setAttribute(Attribute newAttribute) {
         //and update the schemas list if any new schema used in the attribute, and create schemas array.
-        if (!isSchemaExists(newAttribute.getSchema())) {
-            schemaList.add(newAttribute.getSchema());
+        if (!isSchemaExists(newAttribute.getSchemaName())) {
+            schemaList.add(newAttribute.getSchemaName());
         }
-        //add the attribute to attribute map
+        //add the attribute to attribute map    //TODO:check if read only, if so only we do not cha
         if (!isAttributeExist(newAttribute.getName())) {
             attributeList.put(newAttribute.getName(), newAttribute);
         }
@@ -238,6 +243,33 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             }
         } else {
             throw new NotFoundException();
+        }
+    }
+
+    public void setLastModified(Date lastModifiedDate) throws CharonException {
+        //create the lastModified date attribute as defined in schema.
+        SimpleAttribute createdDateAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                SCIMSchemaDefinitions.LAST_MODIFIED,
+                new SimpleAttribute(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED));
+
+        ComplexAttribute metaAttribute;
+        //check meta complex attribute already exist.
+        if (getMeAttribute() != null) {
+            metaAttribute = getMeAttribute();
+            //check created date attribute already exist
+            if (metaAttribute.isSubAttributeExist(createdDateAttribute.getName())) {
+                //log info level log that created date already set and can't set again.
+                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+            } else {
+
+                metaAttribute.setSubAttribute(createdDateAttribute);
+            }
+
+        } else {
+            //create meta attribute and set the sub attribute.
+            createMetaAttribute();
+            getMeAttribute().setSubAttribute(createdDateAttribute);
+
         }
     }
 

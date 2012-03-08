@@ -33,8 +33,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This is an abstract layer for all the resource endpoint to abstract out common
- * operations to all resource endpoints.
+ * This is an abstract layer for all the resource endpoints to abstract out common
+ * operations. And and entry point for CharonManager implementations to pass handlers to the
+ * implementations of extension points.
  */
 public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 

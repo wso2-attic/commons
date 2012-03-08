@@ -69,6 +69,7 @@ public class SCIMConstants {
         public static final String LOCATION = "location";
         public static final String VERSION = "version";
         public static final String ATTRIBUTES = "attributes";
+
         public static final String SCHEMAS = "schemas";
 
         //characteristics of multi valued attribute
@@ -91,6 +92,12 @@ public class SCIMConstants {
         //types for multi-valued attributes like emails
         public static final String HOME = "home";
         public static final String WORK = "work";
+    }
+
+    public static class GroupSchemaConstants {
+        public static final String DISPLAY_NAME = "displayName";
+        public static final String MEMBERS = "members";
+        public static final String MEMBER = "member";
     }
 
     public static class AttributeConstants {
@@ -127,6 +134,7 @@ public class SCIMConstants {
                                              "included in all Resources, including any extended Resource types";
 
     public static final String USER_DESC = "SCIM provided schema for representing Users.";
+    public static final String GROUP_DESC = "Schema for representing groups.";
 
     /**
      * ******Attributes Descriptions of the attributes found in Common Schema**************
@@ -135,6 +143,11 @@ public class SCIMConstants {
 
     public static final String EXTERNAL_ID_DESC = "Unique identifier for the Resource as defined by the Service Consumer." +
                                                   "The Service Provider MUST always interpret the externalId as scoped to the Service Consumer's tenant.";
+    public static final String CREATED_DESC = "The DateTime the Resource was added to the Service Provider.";
+    public static final String LAST_MODIFIED_DESC = "The most recent DateTime the details of this Resource were updated at the Service Provider. " +
+                                                    "If this Resource has never been modified since its initial creation, the value MUST be the same as the value of created.";
+    public static final String LOCATION_DESC = "The URI of the Resource being returned. This value MUST be the same as the Location HTTP response header.";
+    public static final String VERSION_DESC = "The version of the Resource being returned. This value must be the same as the ETag HTTP response header.";
 
 
     /**
@@ -158,6 +171,15 @@ public class SCIMConstants {
 
     public static final String VALUE_DESC = "The attribute's significant value; e.g., the e-mail address, phone number, etc. " +
                                             "Attributes that define a \"value\" sub-attribute MAY be alternately represented as a collection of primitive types";
+    public static final String ATTRIBUTES_DESC = "The names of the attributes to remove from the Resource during a PATCH operation.";
+    public static final String META_DESC = "A complex attribute containing resource metadata.";
+
+    /**
+     * ****************** Attributes descriptions of the attributes found in Group Schema***********
+     */
+    public static final String DISPLAY_NAME_DESC = "A human readable name for the Group.";
+    public static final String MEMBERS_DESC = "A list of members of the Group. The value must be the \"id\" of a SCIM resource, either a User, or a Group. " +
+                                              "The intention of the Group type is to allow the Service Provider to support nested Groups.";
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";

@@ -14,5 +14,6 @@
 # specific language governing permissions and limitations
 # under the License.
 org.wso2.charon.deployment.resources.UsersResource
+org.wso2.charon.deployment.resources.GroupResource
 org.wso2.charon.deployment.resources.RegistrationService
 org.apache.wink.server.internal.servlet.AdminServlet

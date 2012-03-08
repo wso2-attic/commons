@@ -31,18 +31,6 @@ import java.util.Date;
  */
 public class DefaultAttributeFactory /*implements AttributeFactory*/ {
 
-    public Attribute createSimpleAttribute(String attributeId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Attribute createComplexAttribute(String attributeId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    public Attribute createMultiValuedAttribute(String attributeId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
     /**
      * Create the attribute given the attribute schema and the attribute object - may be with
      * attribute value set.
@@ -51,8 +39,13 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param attribute
      * @return
      */
-    public static Attribute createAttribute(AttributeSchema attributeSchema, Attribute attribute)
+    public static Attribute createAttribute(AttributeSchema attributeSchema,
+                                            AbstractAttribute attribute)
             throws CharonException {
+
+        attribute.setReadOnly(attributeSchema.getReadOnly());
+        attribute.setRequired(attributeSchema.getRequired());
+
         //Default attribute factory knows about SCIMAttribute schema
         if (attributeSchema instanceof SCIMAttributeSchema) {
             return createSCIMAttribute((SCIMAttributeSchema) attributeSchema, attribute);
@@ -66,8 +59,9 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         throw new CharonException(error);
     }
 
-    public static Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema,
-                                                Attribute attribute) {
+    protected static Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema,
+                                                AbstractAttribute attribute)
+            throws CharonException {
         //things like set the attribute properties according to the schema
         //if multivalued, check if it is simple-multivalued or complex multivalued..
         //if complex-multi-valued, ignore the names of complex attributes. Consider only the names of
@@ -75,7 +69,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
 
         //do common tasks related to creating an attribute and identify the type of the attribute
         //and then call separate methods on creating each type of attribute
-        attribute.setSchema(attributeSchema.getSchema());
+        //see whether a read only attribute is trying to be modified.
+        attribute.setSchemaName(attributeSchema.getSchema());
 
         //set data type of the attribute value, if simple attribute
         if (attribute instanceof SimpleAttribute) {
@@ -84,8 +79,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         return attribute;
     }
 
-    public static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
-                                                   Attribute attribute) {
+    protected static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
+                                                   AbstractAttribute attribute) {
         //check things like if it is a sub attribute like "operation" in a multivalued attribute,
         //only allowed value is delete likewise.
         if (attribute instanceof SimpleAttribute) {
@@ -102,22 +97,33 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param simpleAttribute
      * @return
      */
-    public static SimpleAttribute createSimpleAttribute(SCIMAttributeSchema attributeSchema,
-                                                        SimpleAttribute simpleAttribute) {
-        simpleAttribute.dataType = attributeSchema.getType();
-        return simpleAttribute;
+    protected static SimpleAttribute createSimpleAttribute(SCIMAttributeSchema attributeSchema,
+                                                        SimpleAttribute simpleAttribute)
+            throws CharonException {
+        if (simpleAttribute.getValue() != null) {
+            if (isAttributeDataTypeValid(simpleAttribute.getValue(), attributeSchema.getType())) {
+
+                simpleAttribute.dataType = attributeSchema.getType();
+                return simpleAttribute;
+            } else {
+                String error = "Violation in attribute shcema. DataType doesn't match that of the value.";
+                throw new CharonException(error);
+            }
+        } else {
+            return simpleAttribute;
+        }
     }
 
     /**
      * Once identified that constructing attribute is a simple attribute & related attribute schema is a
      * SCIMSubAttributeSchema, perform attribute construction operations specific to Simple Attribute,
      * which is a Sub Attribute.
-     * 
+     *
      * @param subAttributeSchema
      * @param simpleAttribute
      * @return
      */
-    public static SimpleAttribute createSimpleAttribute(SCIMSubAttributeSchema subAttributeSchema,
+    protected static SimpleAttribute createSimpleAttribute(SCIMSubAttributeSchema subAttributeSchema,
                                                         SimpleAttribute simpleAttribute) {
         simpleAttribute.dataType = subAttributeSchema.getType();
         return simpleAttribute;
@@ -132,8 +138,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @return
      * @throws CharonException
      */
-    protected boolean isAttributeDataTypeValid(Object attributeValue,
-                                               SCIMSchemaDefinitions.DataType attributeDataType)
+    protected static boolean isAttributeDataTypeValid(Object attributeValue,
+                                                      SCIMSchemaDefinitions.DataType attributeDataType)
             throws CharonException {
         switch (attributeDataType) {
             case STRING:
@@ -152,4 +158,5 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         }
         throw new CharonException(ResponseCodeConstants.MISMATCH_IN_REQUESTED_DATATYPE);
     }
+
 }

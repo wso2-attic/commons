@@ -26,7 +26,8 @@ import org.wso2.charon.core.exceptions.InternalServerException;
 import org.wso2.charon.core.exceptions.ResourceNotFoundException;
 import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
-import org.wso2.charon.core.objects.*;
+import org.wso2.charon.core.objects.Group;
+import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -40,10 +41,10 @@ import java.util.Map;
  * Any SCIM service provider can call this API perform relevant CRUD operations on USER ,
  * based on the HTTP requests received by SCIM Client.
  */
-public class UserResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
+public class GroupResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
 
     /**
-     * Retrieves a user resource given an unique user id. Mapped to HTTP GET request.
+     * Retrieves a group resource given an unique group id. Mapped to HTTP GET request.
      *
      * @param id      - unique resource id
      * @param format  - requested format of the response.
@@ -60,24 +61,24 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //API user should pass a UserManager storage to UserResourceEndpoint.
             if (storage instanceof UserManager) {
                 //retrieve the user from the provided storage.
-                User user = ((UserManager) storage).getUser(id);
+                Group group = ((UserManager) storage).getGroup(id);
 
                 //TODO:needs a validator to see that the User returned by the custom user manager
                 // adheres to SCIM spec.
 
                 //if user not found, return an error in relevant format.
-                if (user == null) {
-                    String error = "User not found in the user store.";
+                if (group == null) {
+                    String error = "Group not found in the user store.";
                     //log error.
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }
                 //convert the user into specific format.
-                String encodedUser = encoder.encodeSCIMObject(user);
+                String encodedGroup = encoder.encodeSCIMObject(group);
                 //if there are any http headers to be added in the response header.
                 Map<String, String> httpHeaders = new HashMap<String, String>();
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
-                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
+                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedGroup, httpHeaders);
 
             } else {
                 String error = "Provided storage handler is not an implementation of UserManager";
@@ -104,7 +105,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     }
 
     /**
-     * Create User in the service provider given the submitted payload that contains the SCIM user
+     * Create group in the service provider given the submitted payload that contains the SCIM group
      * resource, format and the handler to storage.
      *
      * @param scimObjectString - Payload of HTTP request, which contains the SCIM object.
@@ -127,15 +128,16 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //obtain the decoder matching the submitted format.
             decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
-            //decode the SCIM User object, encoded in the submitted payload.
-            User user = (User) decoder.decodeResource(scimObjectString,
-                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+            //decode the SCIM group object, encoded in the submitted payload.
+            Group group = (Group) decoder.decodeResource(scimObjectString,
+                                                         SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA,
+                                                         new Group());
 
-            //handover the SCIM User object to the user storage provided by the SP.
-            User createdUser;
+            //handover the SCIM User object to the group storage provided by the SP.
+            Group createdGroup;
             if (storage instanceof UserManager) {
-                //need to send back the newly created user in the response payload
-                createdUser = ((UserManager) storage).createUser(user);
+                //need to send back the newly created group in the response payload
+                createdGroup = ((UserManager) storage).createGroup(group);
 
             } else {
                 String error = "Provided storage handler is not an implementation of UserManager";
@@ -143,25 +145,25 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 //throw internal server error.
                 throw new InternalServerException(error);
             }
-            //encode the newly created SCIM user object and add id attribute to Location header.
-            String encodedUser;
+            //encode the newly created SCIM group object and add id attribute to Location header.
+            String encodedGroup;
             Map<String, String> httpHeaders = new HashMap<String, String>();
-            if (createdUser != null) {
+            if (createdGroup != null) {
 
-                encodedUser = encoder.encodeSCIMObject(createdUser);
+                encodedGroup = encoder.encodeSCIMObject(createdGroup);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + createdUser.getId());
+                        SCIMConstants.GROUP_ENDPOINT) + createdGroup.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
                 //TODO:log the error
-                String error = "Newly created User resource is null..";
+                String error = "Newly created Group resource is null..";
                 throw new InternalServerException(error);
             }
 
             //put the URI of the User object in the response header parameter.
-            return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedUser, httpHeaders);
+            return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedGroup, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.
@@ -180,4 +182,5 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
 
     }
+
 }

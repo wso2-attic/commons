@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents the object which is a collection of attributes defined by SCIM User-schema.
+ * Represents the User object which is a collection of attributes defined by SCIM User-schema.
  */
 public class User extends AbstractSCIMObject {
 
@@ -55,15 +55,15 @@ public class User extends AbstractSCIMObject {
                     userName, DataType.STRING);
         } else {
             //TODO:since the constructor is too long, pass an attribute schema.
-            SimpleAttribute userNameAttribute = new SimpleAttribute(SCIMConstants.UserSchemaConstants.USER_NAME);
-            userNameAttribute.setValue(userName);
+            SimpleAttribute userNameAttribute = new SimpleAttribute(
+                    SCIMConstants.UserSchemaConstants.USER_NAME, userName);
             /*SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMConstants.UserSchemaConstants.USER_NAME,
                     SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
                     false, false);*/
-            attributeList.put(SCIMConstants.UserSchemaConstants.USER_NAME,
-                              DefaultAttributeFactory.createSCIMAttribute(
-                                      (SCIMAttributeSchema) SCIMSchemaDefinitions.USER_NAME, userNameAttribute));
+            userNameAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                    SCIMSchemaDefinitions.USER_NAME, userNameAttribute);
+            attributeList.put(SCIMConstants.UserSchemaConstants.USER_NAME, userNameAttribute);
         }
     }
 

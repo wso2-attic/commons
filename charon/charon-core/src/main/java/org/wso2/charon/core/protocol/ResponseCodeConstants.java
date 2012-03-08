@@ -55,11 +55,11 @@ public class ResponseCodeConstants {
     
 
     //Other common error messages thrown by the API
-    public static final String MISMATCH_IN_REQUESTED_DATATYPE = "Requested datatype doesn't match " +
+    public static final String MISMATCH_IN_REQUESTED_DATATYPE = "Datatype doesn't match " +
                                                                 "the datatype of the attribute value";
     public static final String ATTRIBUTE_ALREADY_EXIST = "Attribute with the same attribute name " +
                                                          "already exist.";
-    public static final String ATTRIBUTE_READ_ONLY = "Attribute is read only. Hence can not set again.";
+    public static final String ATTRIBUTE_READ_ONLY = "Attribute is read only. Hence can not be modified..";
 
     public static final String JSON_DECODE_ERROR = "Error in building resource from the JSON representation";
 

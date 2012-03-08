@@ -17,8 +17,13 @@
 */
 package org.wso2.charon.core.objects;
 
-import org.wso2.charon.core.schema.AttributeSchema;
+import org.wso2.charon.core.attributes.AbstractAttribute;
+import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.schema.ResourceSchema;
+
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * This resource factory class is to handle factory aspect of constructing  a resource given a
@@ -26,12 +31,51 @@ import org.wso2.charon.core.schema.ResourceSchema;
  */
 public class DefaultResourceFactory {
 
+    /**
+     * When a scim resource is constructed from a decoded json/xml string, user this method.
+     * This unifies the creation of SCIM object by taking into consideration all common tasks related to
+     * SCIM object creation.
+     *
+     * @param resourceSchema
+     * @param abstractSCIMObject
+     * @return
+     * @throws CharonException
+     */
     public static SCIMObject createSCIMObject(ResourceSchema resourceSchema,
-                                              SCIMObject scimObject) {
+                                              AbstractSCIMObject abstractSCIMObject)
+            throws CharonException {
         //perform and actions related to constructing the SCIMObject
         //TODO: Validate the constructed SCIMObject against the schema
         //for the moment return the SCIMObject
-        return scimObject;
+        //add the attributes that the service provider adds to the resource such as id, meta - created,lastmodified,
+        //location,version
+        String id = UUID.randomUUID().toString();
+        abstractSCIMObject.setId(id);
+        Date date = new Date();
+        abstractSCIMObject.setCreatedDate(date);
+
+        return abstractSCIMObject;
+    }
+
+    /**
+     * Set the attribute in a SCIM object. Used when constructing and setting attributes from
+     * decoded json/xml strings. This layer filters out setting READ-ONLY attributes.
+     *
+     * @param scimObject
+     * @param attribute
+     */
+    public static void setAttribute(AbstractSCIMObject scimObject, AbstractAttribute attribute) {
+        //update the schemas list if any new schema used in the attribute, and create schemas array.
+        if (!scimObject.isSchemaExists(attribute.getSchemaName())) {
+            scimObject.getSchemaList().add(attribute.getSchemaName());
+        }
+        //add the attribute to attribute map if not already existing and if not read-only.
+        if (!scimObject.isAttributeExist(attribute.getName())) {
+            if (!attribute.isReadOnly()) {
+                scimObject.getAttributeList().put(attribute.getName(), attribute);
+            }
+        }
+
     }
 
 }

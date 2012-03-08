@@ -18,7 +18,9 @@
 package org.wso2.charon.utils.user.mgt;
 
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.extensions.UserManager;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 
@@ -79,6 +81,34 @@ public class FSBasedUserManager implements UserManager {
     public User createUser(User user) {
         //To change body of implemented methods use File | Settings | File Templates.
         return null;
+    }
+
+    /**
+     * ****************Group manipulation operations*******************
+     */
+    @Override
+    public Group getGroup(String groupId) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group createGroup(Group group) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group updateGroup(Group group) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group updateGroup(List<Attribute> attributes) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Group deleteGroup(String groupId) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public SCIMObject getResource(String resourceId) {
