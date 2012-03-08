@@ -103,7 +103,7 @@ public class StateMachinePatternTestCase {
                                       "pattern [a1=infoStock.action==\"buy\",\n" +
                                       "b1=CSEStream.price>70,\n" +
                                       "b2=CSEStream.price>75]\n" +
-                                      "$a1 -> every($b1 -> $b2[within.time=30]) ;");
+                                      "$a1 -> every($b1 -> $b2[within.time=200]) ;");
 
         siddhiManager.addCallback(assignCallback());
         siddhiManager.update();
@@ -128,7 +128,7 @@ public class StateMachinePatternTestCase {
         inputHandlerCseStream.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 80}));
         inputHandlerCseStream.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 85}));
         inputHandlerCseStream.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 95}));
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         inputHandlerCseStream.sendEvent(new EventImpl("CSEStream", new Object[]{"IBM", 105}));
     }
 
