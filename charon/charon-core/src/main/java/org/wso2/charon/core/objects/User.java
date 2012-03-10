@@ -25,7 +25,6 @@ import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.schema.AttributeSchema;
-import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
@@ -117,7 +116,7 @@ public class User extends AbstractSCIMObject {
     public String getWorkEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
                 SCIMConstants.UserSchemaConstants.EMAILS);
-        return (String) emailsAttribute.getAttrbuteValueByType(
+        return (String) emailsAttribute.getAttributeValueByType(
                 SCIMConstants.UserSchemaConstants.WORK);
     }
 
@@ -144,7 +143,7 @@ public class User extends AbstractSCIMObject {
     public String getHomeEmail() throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
                 SCIMConstants.UserSchemaConstants.EMAILS);
-        return (String) emailsAttribute.getAttrbuteValueByType(
+        return (String) emailsAttribute.getAttributeValueByType(
                 SCIMConstants.UserSchemaConstants.HOME);
     }
 
@@ -241,7 +240,7 @@ public class User extends AbstractSCIMObject {
     public String getEmailByType(String type) throws CharonException, NotFoundException {
         MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
                 SCIMConstants.UserSchemaConstants.EMAILS);
-        return (String) emailsAttribute.getAttrbuteValueByType(type);
+        return (String) emailsAttribute.getAttributeValueByType(type);
     }
 
     /**

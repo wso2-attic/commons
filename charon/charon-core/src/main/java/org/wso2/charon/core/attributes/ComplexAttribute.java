@@ -64,6 +64,19 @@ public class ComplexAttribute extends AbstractAttribute {
     }
 
     /**
+     * Applies to multi-valued attributes only.
+     * Add complex type value to multi-valued attribute given the properties of the value.
+     *
+     * @param multiValueAttributeProperties
+     */
+    @Override
+    public void setComplexValue(Map<String, Object> multiValueAttributeProperties)
+            throws CharonException {
+        throw new CharonException("Error: setComplexValue method is not supported by ComplexAttribute.");
+    }
+
+
+    /**
      * Set a sub attribute on the complex attribute.
      *
      * @param subAttribute
@@ -80,10 +93,11 @@ public class ComplexAttribute extends AbstractAttribute {
 
     /**
      * Remove a sub attribute from the complex attribute given the sub attribute name.
+     *
      * @param attributeName
      */
     public void removeSubAttribute(String attributeName) {
-        if(subAttributes.containsKey(attributeName)){
+        if (subAttributes.containsKey(attributeName)) {
             subAttributes.remove(attributeName);
         }
     }

@@ -23,6 +23,7 @@ import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * This class represents a SimpleAttribute defined in SCIM Core Schema Spec.
@@ -51,7 +52,8 @@ public class SimpleAttribute extends AbstractAttribute {
 
     /**
      * Create a simple attribute with name and value object. After creating with this constructor,
-     * AttributeFactory should be used to b build attribute properly with correct data type etc.  
+     * AttributeFactory should be used to b build attribute properly with correct data type etc.
+     *
      * @param attributeName
      * @param value
      */
@@ -139,6 +141,31 @@ public class SimpleAttribute extends AbstractAttribute {
      */
     public boolean validate(Attribute attribute) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * Applies to complex attributes only. Retrieve the sub attribute given the sub attribute name.
+     *
+     * @param attributeName
+     * @return
+     * @throws org.wso2.charon.core.exceptions.CharonException
+     *
+     */
+    @Override
+    public Attribute getSubAttribute(String attributeName) throws CharonException {
+        throw new CharonException("Error: getSubAttribute method not supported by SimpleAttribute.");
+    }
+
+    /**
+     * Applies to multi-valued attributes only.
+     * Add complex type value to multi-valued attribute given the properties of the value.
+     *
+     * @param multiValueAttributeProperties
+     */
+    @Override
+    public void setComplexValue(Map<String, Object> multiValueAttributeProperties)
+            throws CharonException {
+        throw new CharonException("Error: setComplexValue method is not supported by SimpleAttribute.");
     }
 
     /**

@@ -17,7 +17,10 @@
 */
 package org.wso2.charon.core.attributes;
 
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.schema.AttributeSchema;
+
+import java.util.Map;
 
 /**
  * Interface to represent Attribute defined in SCIM schema spec.
@@ -64,5 +67,24 @@ public interface Attribute {
     public boolean validate(Attribute attribute);
 
     /*public AttributeSchema getSchema();*/
+
+    /**
+     * Applies to complex attributes only. Retrieve the sub attribute given the sub attribute name.
+     *
+     * @param attributeName
+     * @return
+     * @throws org.wso2.charon.core.exceptions.CharonException
+     *
+     */
+    public Attribute getSubAttribute(String attributeName) throws CharonException;
+
+    /**
+     * Applies to multi-valued attributes only.
+     * Add complex type value to multi-valued attribute given the properties of the value.
+     *
+     * @param multiValueAttributeProperties
+     */
+    public void setComplexValue(Map<String, Object> multiValueAttributeProperties)
+            throws CharonException;
 
 }

@@ -122,37 +122,41 @@ public class MultiValuedAttribute extends AbstractAttribute {
     }
 
     /**
-     * Create attribute with given name, schema name,whether it is readOnly and required.
+     * Get all the values of given type
      *
-     * @param attributeName Name of the attribute
-     * @param schema        schema in which the attribute is defined
-     * @param readOnly      whether attribute is readOnly
-     * @param optional      whether attribute is required
-     *//*
-    public MultiValuedAttribute(String attributeName, String schema, boolean readOnly,
-                                boolean optional) {
-        super(attributeName, schema, readOnly, optional);
+     * @param type
+     */
+    public List<String> getAttributeValuesByType(String type) throws CharonException {
+        List<String> values = new ArrayList<String>();
+        if (attributeValues != null) {
+            for (Attribute attributeValue : attributeValues) {
+                if (type != null) {
+                    SimpleAttribute typeAttribute =
+                            (SimpleAttribute) attributeValue.getSubAttribute(
+                                    SCIMConstants.CommonSchemaConstants.TYPE);
+                    if (typeAttribute != null && type.equals(typeAttribute.getStringValue())) {
+                        SimpleAttribute valueAttribute =
+                                (SimpleAttribute) attributeValue.getSubAttribute(
+                                        SCIMConstants.CommonSchemaConstants.VALUE);
+                        if (valueAttribute != null) {
+                            values.add(valueAttribute.getStringValue());
+                        }
+                    }
+                } else {
+                    SimpleAttribute valueAttribute =
+                            (SimpleAttribute) attributeValue.getSubAttribute(
+                                    SCIMConstants.CommonSchemaConstants.VALUE);
+                    if (valueAttribute != null) {
+                        values.add(valueAttribute.getStringValue());
+                    }
+                }
+            }
+        }
+        return values;
     }
 
-    *//**
-     * Create multi valued attribute by providing values as a list of attributes (Complex or Simple)
-     * along with other info about the attribute.
-     *
-     * @param attributeName
-     * @param schema
-     * @param values
-     * @param readOnly
-     * @param optional
-     *//*
-    public MultiValuedAttribute(String attributeName, String schema, List<Attribute> values,
-                                boolean readOnly, boolean optional) {
-        super(attributeName, schema, readOnly, optional);
-        attributeValues = values;
-
-    }*/
-
     /**
-     * Get the attribute values as sub attributes.
+     * Get attribute values of complex type
      *
      * @return
      */
@@ -212,14 +216,6 @@ public class MultiValuedAttribute extends AbstractAttribute {
         }
         throw new NotFoundException();
     }
-
-    /*public Object[] getMultiValuedAttributeValues() {
-        return multiValuedAttributeValues;
-    }
-
-    public void setMultiValuedAttributeValues(Object[] multiValuedAttributeValues) {
-        this.multiValuedAttributeValues = multiValuedAttributeValues;
-    }*/
 
     /**
      * Set one value on the MultiValuedAttribute. Value goes as a complex attribute consisting of
@@ -308,7 +304,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
      * @throws NotFoundException
      * @throws CharonException
      */
-    public Object getAttrbuteValueByType(String type)
+    public Object getAttributeValueByType(String type)
             throws NotFoundException, CharonException {
         for (Attribute attributeValue : attributeValues) {
             if (attributeValue instanceof ComplexAttribute) {
@@ -331,7 +327,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
         //iterate through attribute values.
         //compare type and value - in one case, with the given attribute. If same, print error and
         //do not add the given attribute to the values.
-
+        //This is done in DefaultAttributeFactory
     }
 
     /**
@@ -342,6 +338,19 @@ public class MultiValuedAttribute extends AbstractAttribute {
      */
     public boolean validate(Attribute attribute) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * Applies to complex attributes only. Retrieve the sub attribute given the sub attribute name.
+     *
+     * @param attributeName
+     * @return
+     * @throws org.wso2.charon.core.exceptions.CharonException
+     *
+     */
+    @Override
+    public Attribute getSubAttribute(String attributeName) throws CharonException {
+        throw new CharonException("Error: getSubAttribute method not supported by MultiValuedAttribute.");
     }
 
 }
