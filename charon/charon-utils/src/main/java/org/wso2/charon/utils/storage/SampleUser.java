@@ -24,8 +24,10 @@ public class SampleUser {
 
     private String id;
     private String fullyQualifiedName;
+    //can map to displayName of SCIM User
     private String userName;
     private String[] emails;
+    
 
     public String getId() {
         return id;

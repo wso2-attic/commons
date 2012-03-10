@@ -20,7 +20,6 @@ package org.wso2.charon.core.encoder.json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-//import org.json.
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
@@ -140,7 +139,9 @@ public class JSONEncoder implements Encoder {
      */
     protected void encodeSimpleAttribute(SimpleAttribute attribute, JSONObject rootObject)
             throws JSONException {
-        rootObject.put(attribute.getName(), attribute.getValue());
+        if (attribute.getValue() != null) {
+            rootObject.put(attribute.getName(), attribute.getValue());
+        }
     }
 
     /**
@@ -152,9 +153,11 @@ public class JSONEncoder implements Encoder {
      */
     protected void encodeSimpleAttributeValue(SimpleAttribute attributeValue, JSONArray jsonArray)
             throws JSONException {
-        JSONObject attributeValueObject = new JSONObject();
-        attributeValueObject.put(attributeValue.getName(), attributeValue.getValue());
-        jsonArray.put(attributeValueObject);
+        if (attributeValue.getValue() != null) {
+            JSONObject attributeValueObject = new JSONObject();
+            attributeValueObject.put(attributeValue.getName(), attributeValue.getValue());
+            jsonArray.put(attributeValueObject);
+        }
     }
 
 

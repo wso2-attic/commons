@@ -26,10 +26,11 @@ import java.util.List;
 public class SampleGroup {
 
     private String id;
+    private String groupName;
     private String displayName;
     /*Members of a SCIM Group can either be users or groups.*/
     private List<SampleUser> userMembers;
-    private List<SampleGroup> sampleGroup;
+    private List<SampleGroup> subGroupMembers;
 
     public String getId() {
         return id;
@@ -37,6 +38,14 @@ public class SampleGroup {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getDisplayName() {
@@ -55,12 +64,12 @@ public class SampleGroup {
         this.userMembers = userMembers;
     }
 
-    public List<SampleGroup> getSampleGroup() {
-        return sampleGroup;
+    public List<SampleGroup> getSubGroupMembers() {
+        return subGroupMembers;
     }
 
-    public void setSampleGroup(List<SampleGroup> sampleGroup) {
-        this.sampleGroup = sampleGroup;
+    public void setSubGroupMembers(List<SampleGroup> subGroupMembers) {
+        this.subGroupMembers = subGroupMembers;
     }
 
 

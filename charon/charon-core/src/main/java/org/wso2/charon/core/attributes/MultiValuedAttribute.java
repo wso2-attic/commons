@@ -20,10 +20,12 @@ package org.wso2.charon.core.attributes;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents Multi-Valued Attribute as defined in SCIM spec.
@@ -57,7 +59,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
         super(attributeName);
     }
 
-    public MultiValuedAttribute(String attributeName, List<Attribute> attributeValues){
+    public MultiValuedAttribute(String attributeName, List<Attribute> attributeValues) {
         this.attributeName = attributeName;
         this.attributeValues = attributeValues;
     }
@@ -73,19 +75,66 @@ public class MultiValuedAttribute extends AbstractAttribute {
     }
 
     /**
+     * Add complex type value to multi-valued attribute given the properties of the value.
+     *
+     * @param multiValueAttributeProperties
+     */
+    public void setComplexValue(Map<String, Object> multiValueAttributeProperties)
+            throws CharonException {
+        //attribute value as a complex attribute.
+        ComplexAttribute attributeValue = new ComplexAttribute();
+        for (Map.Entry<String, Object> entry : multiValueAttributeProperties.entrySet()) {
+            if ((SCIMConstants.CommonSchemaConstants.TYPE).equals(entry.getKey())) {
+                SimpleAttribute typeAttribute =
+                        new SimpleAttribute(SCIMConstants.CommonSchemaConstants.TYPE, entry.getValue());
+                typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.TYPE, typeAttribute);
+                attributeValue.setSubAttribute(typeAttribute);
+            } else if ((SCIMConstants.CommonSchemaConstants.VALUE).equals(entry.getKey())) {
+                SimpleAttribute typeAttribute =
+                        new SimpleAttribute(SCIMConstants.CommonSchemaConstants.VALUE, entry.getValue());
+                typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.VALUE, typeAttribute);
+                attributeValue.setSubAttribute(typeAttribute);
+            } else if ((SCIMConstants.CommonSchemaConstants.DISPLAY).equals(entry.getKey())) {
+                SimpleAttribute typeAttribute =
+                        new SimpleAttribute(SCIMConstants.CommonSchemaConstants.DISPLAY, entry.getValue());
+                typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.DISPLAY, typeAttribute);
+                attributeValue.setSubAttribute(typeAttribute);
+            } else if ((SCIMConstants.CommonSchemaConstants.PRIMARY).equals(entry.getKey())) {
+                SimpleAttribute typeAttribute =
+                        new SimpleAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY, entry.getValue());
+                typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.PRIMARY, typeAttribute);
+                attributeValue.setSubAttribute(typeAttribute);
+            } else if ((SCIMConstants.CommonSchemaConstants.OPERATION).equals(entry.getKey())) {
+                SimpleAttribute typeAttribute =
+                        new SimpleAttribute(SCIMConstants.CommonSchemaConstants.OPERATION, entry.getValue());
+                typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.OPERATION, typeAttribute);
+                attributeValue.setSubAttribute(typeAttribute);
+            }
+        }
+        if (attributeValue.getSubAttributes() != null && !attributeValue.getSubAttributes().isEmpty()) {
+            this.attributeValues.add(attributeValue);
+        }
+    }
+
+    /**
      * Create attribute with given name, schema name,whether it is readOnly and required.
      *
      * @param attributeName Name of the attribute
      * @param schema        schema in which the attribute is defined
      * @param readOnly      whether attribute is readOnly
      * @param optional      whether attribute is required
-     */
+     *//*
     public MultiValuedAttribute(String attributeName, String schema, boolean readOnly,
                                 boolean optional) {
         super(attributeName, schema, readOnly, optional);
     }
 
-    /**
+    *//**
      * Create multi valued attribute by providing values as a list of attributes (Complex or Simple)
      * along with other info about the attribute.
      *
@@ -94,13 +143,13 @@ public class MultiValuedAttribute extends AbstractAttribute {
      * @param values
      * @param readOnly
      * @param optional
-     */
+     *//*
     public MultiValuedAttribute(String attributeName, String schema, List<Attribute> values,
                                 boolean readOnly, boolean optional) {
         super(attributeName, schema, readOnly, optional);
         attributeValues = values;
 
-    }
+    }*/
 
     /**
      * Get the attribute values as sub attributes.
@@ -123,15 +172,17 @@ public class MultiValuedAttribute extends AbstractAttribute {
     /**
      * There can be multivalued attributes whose value is an array of strings. eg: schemas attribute.
      * Set the attribute values in such a multivalued attribute.
+     *
      * @return
      */
-    public List<String> getValuesAsStrings(){
+    public List<String> getValuesAsStrings() {
         return stringAttributeValues;
     }
 
     /**
      * There can be multivalued attributes whose value is an array of strings. eg: schemas attribute.
      * Set the attribute values in such a multivalued attribute.
+     *
      * @param attributeValues
      */
     public void setValuesAsStrings(List<String> attributeValues) {

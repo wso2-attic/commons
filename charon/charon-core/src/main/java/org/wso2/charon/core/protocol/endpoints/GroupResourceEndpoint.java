@@ -183,4 +183,16 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
 
     }
 
+    /**
+     * Method of the ResourceEndpoint that is mapped to HTTP Delete method..
+     *
+     * @param id
+     * @param storage
+     * @return
+     */
+    @Override
+    public SCIMResponse delete(String id, Storage storage) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }

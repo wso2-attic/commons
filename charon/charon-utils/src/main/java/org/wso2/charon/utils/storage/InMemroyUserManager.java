@@ -25,7 +25,9 @@ import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class InMemroyUserManager implements UserManager {
@@ -33,7 +35,8 @@ public class InMemroyUserManager implements UserManager {
     private String tenantDomain = null;
     private int tenantId = 0;
     List<SampleUser> userList = new ArrayList<SampleUser>();
-    
+    List<SampleGroup> groupList = new ArrayList<SampleGroup>();
+
 
     public InMemroyUserManager(int tenantId, String tenantDomain) {
         this.tenantId = tenantId;
@@ -74,6 +77,7 @@ public class InMemroyUserManager implements UserManager {
      */
     @Override
     public User updateUser(User user) {
+        //TODO:should set last modified date
         //To change body of implemented methods use File | Settings | File Templates.
         return null;
     }
@@ -85,6 +89,7 @@ public class InMemroyUserManager implements UserManager {
      */
     @Override
     public User updateUser(List<Attribute> updatedAttributes) {
+        //TODO:should set last modified date
         //To change body of implemented methods use File | Settings | File Templates.
         return null;
     }
@@ -127,6 +132,7 @@ public class InMemroyUserManager implements UserManager {
             userList.add(customUser);
 
         }
+        //TODO:should set last modified date
         //now prepare the SCIM User representation of the created user to be returned.
         //only additionally added value is: id
         //id should not be added here, it should be added in DefaultResourceFactory.
@@ -139,22 +145,44 @@ public class InMemroyUserManager implements UserManager {
      */
     @Override
     public Group getGroup(String groupId) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Group group = null;
+        if (groupList != null && (!groupList.isEmpty())) {
+            for (SampleGroup sampleGroup : groupList) {
+                if (groupId.equals(sampleGroup.getId())) {
+                    group = new Group();
+                    group.setId(sampleGroup.getId());
+                    group.setExternalId(sampleGroup.getGroupName());
+                    group.setDisplayName(sampleGroup.getDisplayName());
+                    //create members map
+                    Map<String, String> membersMap = new HashMap<String, String>();
+                    //fill members map with user member and group member details.
+                    List<SampleUser> userMembers = sampleGroup.getUserMembers();
+                    if (userMembers != null && !userMembers.isEmpty()) {
+                        for (SampleUser userMember : userMembers) {
+                            
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public Group createGroup(Group group) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Group updateGroup(Group group) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        //TODO:should set last modified date
+        return null;
     }
 
     @Override
     public Group updateGroup(List<Attribute> attributes) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        //TODO:should set last modified date
+        return null;
     }
 
     @Override
@@ -167,6 +195,11 @@ public class InMemroyUserManager implements UserManager {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+
+    /**
+     * ****************private methods*************************************
+     */
+
     private SampleUser createCustomUser(User user) throws CharonException {
         SampleUser sampleUser = new SampleUser();
         //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
@@ -177,5 +210,9 @@ public class InMemroyUserManager implements UserManager {
         sampleUser.setEmails(user.getEmails());
 
         return sampleUser;
+    }
+
+    private SampleGroup createSampleGroup(Group group) throws CharonException {
+        return new SampleGroup();
     }
 }

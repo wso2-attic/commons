@@ -21,10 +21,12 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
+import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Default implementation of AttributeFactory according to SCIM Schema spec V1.
@@ -60,7 +62,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     }
 
     protected static Attribute createSCIMAttribute(SCIMAttributeSchema attributeSchema,
-                                                AbstractAttribute attribute)
+                                                   AbstractAttribute attribute)
             throws CharonException {
         //things like set the attribute properties according to the schema
         //if multivalued, check if it is simple-multivalued or complex multivalued..
@@ -76,11 +78,14 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         if (attribute instanceof SimpleAttribute) {
             return createSimpleAttribute(attributeSchema, (SimpleAttribute) attribute);
         }
+        if (attribute instanceof MultiValuedAttribute) {
+
+        }
         return attribute;
     }
 
     protected static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
-                                                   AbstractAttribute attribute) {
+                                                      AbstractAttribute attribute) {
         //check things like if it is a sub attribute like "operation" in a multivalued attribute,
         //only allowed value is delete likewise.
         if (attribute instanceof SimpleAttribute) {
@@ -98,7 +103,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @return
      */
     protected static SimpleAttribute createSimpleAttribute(SCIMAttributeSchema attributeSchema,
-                                                        SimpleAttribute simpleAttribute)
+                                                           SimpleAttribute simpleAttribute)
             throws CharonException {
         if (simpleAttribute.getValue() != null) {
             if (isAttributeDataTypeValid(simpleAttribute.getValue(), attributeSchema.getType())) {
@@ -123,10 +128,64 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param simpleAttribute
      * @return
      */
-    protected static SimpleAttribute createSimpleAttribute(SCIMSubAttributeSchema subAttributeSchema,
-                                                        SimpleAttribute simpleAttribute) {
+    protected static SimpleAttribute createSimpleAttribute(
+            SCIMSubAttributeSchema subAttributeSchema, SimpleAttribute simpleAttribute) {
         simpleAttribute.dataType = subAttributeSchema.getType();
         return simpleAttribute;
+    }
+
+    /**
+     * Once identified that constructing attribute as a multivalued attribute, perform specific operations
+     * in creating a multi valued attribute. Such as canonicalization, and validating primary is not
+     * repeated etc.
+     *
+     * @param attributeSchema
+     * @param multiValuedAttribute
+     * @return
+     * @throws CharonException
+     */
+    protected static MultiValuedAttribute createMultiValuedAttribute(
+            SCIMAttributeSchema attributeSchema, MultiValuedAttribute multiValuedAttribute)
+            throws CharonException {
+        List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
+        if (attributeValues != null && !attributeValues.isEmpty()) {
+            //if value is complex attribute, compare it with other values to canonicalize and
+            //validate primary property.
+            for (Attribute attribute : attributeValues) {
+                if (attribute instanceof SimpleAttribute) {
+                    continue;
+                }
+                for (Attribute otherAttribute : attributeValues) {
+                    ComplexAttribute complexAttribute = (ComplexAttribute) attribute;
+                    ComplexAttribute complexOtherAttribute = (ComplexAttribute) otherAttribute;
+                    SimpleAttribute type = (SimpleAttribute) complexAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.TYPE);
+                    SimpleAttribute typeOther = (SimpleAttribute) complexAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.TYPE);
+                    SimpleAttribute value = (SimpleAttribute) complexAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.VALUE);
+                    SimpleAttribute valueOther = (SimpleAttribute) complexAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.VALUE);
+                    //canonicalize and remove one if two equal found
+                    if (type != null && typeOther != null && value != null && valueOther != null) {
+                        if ((type.getStringValue().equals((typeOther).getStringValue())) &&
+                            (value.getValue().equals(valueOther.getValue()))) {
+                            attributeValues.remove(otherAttribute);
+                        }
+                    }
+                    //see if primary is repeated more than once and remove repeated if so,
+                    SimpleAttribute primary = (SimpleAttribute) complexAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    SimpleAttribute primaryOther = (SimpleAttribute) complexOtherAttribute.getSubAttribute(
+                            SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    if (primary != null && primaryOther != null) {
+                        //remove primary from one
+                        complexOtherAttribute.removeSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    }
+                }
+            }
+        }
+        return multiValuedAttribute;
     }
 
     /**
@@ -159,4 +218,18 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         throw new CharonException(ResponseCodeConstants.MISMATCH_IN_REQUESTED_DATATYPE);
     }
 
+    /**
+     * Add a sub attribute built by decoder to a complex attribute. Factory checks whether the any
+     * schema violations happen when adding a decoded sub attribute to a complex attribute.
+     *
+     * @param parentAttribute
+     * @param subAttribute
+     */
+    public static void setSubAttribute(ComplexAttribute parentAttribute,
+                                       SimpleAttribute subAttribute) throws CharonException {
+        //for the moment only check is whether a read-only attribute is trying to be added.
+        if (!subAttribute.isReadOnly()) {
+            parentAttribute.setSubAttribute(subAttribute);
+        }
+    }
 }

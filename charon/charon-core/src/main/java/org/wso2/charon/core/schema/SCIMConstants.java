@@ -92,6 +92,8 @@ public class SCIMConstants {
         //types for multi-valued attributes like emails
         public static final String HOME = "home";
         public static final String WORK = "work";
+
+        public static final String DISPLAY_NAME = "displayName";
     }
 
     public static class GroupSchemaConstants {
@@ -174,6 +176,7 @@ public class SCIMConstants {
     public static final String ATTRIBUTES_DESC = "The names of the attributes to remove from the Resource during a PATCH operation.";
     public static final String META_DESC = "A complex attribute containing resource metadata.";
 
+    public static final String USER_DISPLAY_NAME_DESC = "The name of the User, suitable for display to end-users.";
     /**
      * ****************** Attributes descriptions of the attributes found in Group Schema***********
      */

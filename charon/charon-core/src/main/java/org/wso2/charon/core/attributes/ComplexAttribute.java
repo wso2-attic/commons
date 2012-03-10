@@ -78,6 +78,16 @@ public class ComplexAttribute extends AbstractAttribute {
         }
     }
 
+    /**
+     * Remove a sub attribute from the complex attribute given the sub attribute name.
+     * @param attributeName
+     */
+    public void removeSubAttribute(String attributeName) {
+        if(subAttributes.containsKey(attributeName)){
+            subAttributes.remove(attributeName);
+        }
+    }
+
     public boolean isSubAttributeExist(String attributeName) {
         return subAttributes.containsKey(attributeName);
     }
@@ -161,7 +171,7 @@ public class ComplexAttribute extends AbstractAttribute {
      * in case it is used as a attribute value of a multi valued attribute.
      */
     public ComplexAttribute() {
-        
+
     }
 
     /**

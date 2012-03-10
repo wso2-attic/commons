@@ -17,19 +17,11 @@
 */
 package org.wso2.charon.core.objects;
 
-import org.wso2.charon.core.attributes.Attribute;
-import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.DefaultAttributeFactory;
-import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a Group object which is a collection of attributes as defined by SCIM-Group schema.
@@ -58,6 +50,31 @@ public class Group extends AbstractSCIMObject {
         }
     }
 
+    //get members - only the ids
+    
+
+    //get user members - only ids
+
+    //get group members - only ids
+
+    //get user members with display name - Map<ID,DisplayName>
+
+    //get group members with display name - Map<ID,DisplayName>
+
+    //set member- Map<propertyName,property value>
+
+    //set user member - id
+
+    //set group member - id
+
+    //set member - id, displayName, type
+
+    //set member - id, display name,
+
+    //set userMember - id, display name.
+
+    //set groupMember - id, display name,
+
     /**
      * Set the display name of the group. If already set, update it.
      *
@@ -82,7 +99,7 @@ public class Group extends AbstractSCIMObject {
      *
      * @return
      * @throws CharonException
-     */
+     *//*
     public List<String> getMembersID() throws CharonException {
         if (attributeList != null && (!attributeList.isEmpty())) {
             List<String> membersID = new ArrayList<String>();
@@ -104,12 +121,12 @@ public class Group extends AbstractSCIMObject {
         }
     }
 
-    /**
+    *//**
      * Get ID and display values of the member attribute of group.
      *
      * @return
      * @throws CharonException
-     */
+     *//*
     public Map<String, String> getMembersMap() throws CharonException {
         if (attributeList != null && (!attributeList.isEmpty())) {
             Map<String, String> membersMap = new HashMap<String, String>();
@@ -126,7 +143,6 @@ public class Group extends AbstractSCIMObject {
                         membersMap.put(valueSubAttribute.getStringValue(), displaySubAttribute.getStringValue());
                     }
                 }
-
             }
             return membersMap;
         } else {
@@ -135,11 +151,11 @@ public class Group extends AbstractSCIMObject {
 
     }
 
-    /**
+    *//**
      * Set ID values of the member attribute of group.
      *
      * @param members
-     */
+     *//*
     public void setMembersID(List<String> members) throws CharonException {
         //check if exist, if so add
         if (isAttributeExist(SCIMConstants.GroupSchemaConstants.MEMBERS)) {
@@ -182,11 +198,11 @@ public class Group extends AbstractSCIMObject {
         return attributeValues;
     }
 
-    /**
+    *//**
      * Set both ID and display values of Members attribute of Group.
      *
      * @param members <value,display>
-     */
+     *//*
     public void setMembersMap(Map<String, String> members) throws CharonException {
         //check if exist, if so add
         if (isAttributeExist(SCIMConstants.GroupSchemaConstants.MEMBERS)) {
@@ -235,5 +251,6 @@ public class Group extends AbstractSCIMObject {
         }
         return attributeValues;
     }
+*/
 
 }

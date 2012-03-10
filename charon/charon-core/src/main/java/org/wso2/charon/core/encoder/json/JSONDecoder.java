@@ -245,6 +245,8 @@ public class JSONDecoder implements Decoder {
             }
             //set values as complex attributes
             multiValuedAttribute.setValuesAsSubAttributes(complexAttributeValues);
+            //canonicalize before storing.
+            //see primary is not set twice.
             return (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                                   multiValuedAttribute);
         } catch (JSONException e) {
@@ -265,7 +267,7 @@ public class JSONDecoder implements Decoder {
                                                    JSONObject jsonObject) throws CharonException {
 
         ComplexAttribute complexAttribute = new ComplexAttribute(attributeSchema.getName());
-        Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
+        //Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
         List<SCIMSubAttributeSchema> subAttributeSchemas =
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
@@ -276,10 +278,12 @@ public class JSONDecoder implements Decoder {
             if (subAttributeValue instanceof String) {
                 SimpleAttribute simpleAttribute =
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
-                subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+                //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
+                DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
+                //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
             }
         }
-        complexAttribute.setSubAttributes(subAttributesMap);
+        //complexAttribute.setSubAttributes(subAttributesMap);
         return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                           complexAttribute);
     }

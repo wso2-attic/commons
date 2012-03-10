@@ -24,6 +24,7 @@ import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
@@ -49,7 +50,9 @@ public class User extends AbstractSCIMObject {
      * @throws CharonException
      */
     public void setUserName(String userName) throws CharonException {
-        if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.USER_NAME, SCIMSchemaDefinitions.USER_NAME,
+                           userName, DataType.STRING);
+        /*if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             ((SimpleAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.USER_NAME)).updateValue(
                     userName, DataType.STRING);
@@ -57,14 +60,14 @@ public class User extends AbstractSCIMObject {
             //TODO:since the constructor is too long, pass an attribute schema.
             SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMConstants.UserSchemaConstants.USER_NAME, userName);
-            /*SimpleAttribute userNameAttribute = new SimpleAttribute(
+            *//*SimpleAttribute userNameAttribute = new SimpleAttribute(
                     SCIMConstants.UserSchemaConstants.USER_NAME,
                     SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
-                    false, false);*/
+                    false, false);*//*
             userNameAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                     SCIMSchemaDefinitions.USER_NAME, userNameAttribute);
             attributeList.put(SCIMConstants.UserSchemaConstants.USER_NAME, userNameAttribute);
-        }
+        }*/
     }
 
     /**
@@ -75,13 +78,14 @@ public class User extends AbstractSCIMObject {
      * @throws CharonException
      */
     public String getUserName() throws CharonException {
-        if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.DISPLAY_NAME);
+        /*if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.USER_NAME)).getStringValue();
 
         } else {
             return null;
-        }
+        }*/
     }
 
     /**
@@ -240,6 +244,18 @@ public class User extends AbstractSCIMObject {
         return (String) emailsAttribute.getAttrbuteValueByType(type);
     }
 
+    /**
+     * ************DisplayName manipulation methods.**********************
+     */
+
+    public String getDisplayName() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.DISPLAY_NAME);
+    }
+
+    public void setDisplayName(String displayName) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.DISPLAY_NAME,
+                           SCIMSchemaDefinitions.USER_DISPLAY_NAME, displayName, DataType.STRING);
+    }
 
     /**
      * Update the attribute value by attribute name. Needs to be overloaded by specific types of
@@ -267,4 +283,40 @@ public class User extends AbstractSCIMObject {
     public boolean validate(SCIMObject scimObject) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Take common functionality of setting a value to a simple attribute, into one place.
+     *
+     * @param attributeName
+     * @param attributeSchema
+     * @param value
+     * @param dataType
+     * @throws CharonException
+     */
+    private void setSimpleAttribute(String attributeName, AttributeSchema attributeSchema,
+                                    Object value, DataType dataType) throws CharonException {
+        if (isAttributeExist(attributeName)) {
+            ((SimpleAttribute) attributeList.get(attributeName)).updateValue(value, dataType);
+        } else {
+            SimpleAttribute simpleAttribute = new SimpleAttribute(
+                    attributeName, value);
+            /*SimpleAttribute userNameAttribute = new SimpleAttribute(
+                    SCIMConstants.UserSchemaConstants.USER_NAME,
+                    SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
+                    false, false);*/
+            simpleAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                    attributeSchema, simpleAttribute);
+            attributeList.put(attributeName, simpleAttribute);
+        }
+    }
+
+    private String getSimpleAttributeStringVal(String attributeName) throws CharonException {
+        if (isAttributeExist(attributeName)) {
+            return ((SimpleAttribute) attributeList.get(attributeName)).getStringValue();
+        } else {
+            return null;
+        }
+    }
+
+
 }

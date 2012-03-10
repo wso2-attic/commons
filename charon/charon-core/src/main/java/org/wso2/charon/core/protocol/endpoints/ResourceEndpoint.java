@@ -49,4 +49,12 @@ public interface ResourceEndpoint {
      */
     public SCIMResponse create(String scimObjectString, String inputFormat, String outputFormat,
                                Storage storage);
+
+    /**
+     * Method of the ResourceEndpoint that is mapped to HTTP Delete method..
+     * @param id
+     * @param storage
+     * @return
+     */
+    public SCIMResponse delete(String id, Storage storage);
 }

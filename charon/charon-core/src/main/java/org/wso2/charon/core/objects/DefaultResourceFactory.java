@@ -65,15 +65,15 @@ public class DefaultResourceFactory {
      * @param attribute
      */
     public static void setAttribute(AbstractSCIMObject scimObject, AbstractAttribute attribute) {
-        //update the schemas list if any new schema used in the attribute, and create schemas array.
-        if (!scimObject.isSchemaExists(attribute.getSchemaName())) {
-            scimObject.getSchemaList().add(attribute.getSchemaName());
-        }
         //add the attribute to attribute map if not already existing and if not read-only.
         if (!scimObject.isAttributeExist(attribute.getName())) {
             if (!attribute.isReadOnly()) {
                 scimObject.getAttributeList().put(attribute.getName(), attribute);
             }
+        }
+        //update the schemas list if any new schema used in the attribute, and create schemas array.
+        if (!scimObject.isSchemaExists(attribute.getSchemaName())) {
+            scimObject.getSchemaList().add(attribute.getSchemaName());
         }
 
     }

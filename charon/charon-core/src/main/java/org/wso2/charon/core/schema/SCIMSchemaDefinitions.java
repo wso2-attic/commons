@@ -132,8 +132,14 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.EMAILS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, null);
 
-
+    public static final SCIMAttributeSchema USER_DISPLAY_NAME =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.DISPLAY_NAME,
+                                                          SCIMSchemaDefinitions.DataType.STRING, false, null,
+                                                          SCIMConstants.USER_DISPLAY_NAME_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false,
+                                                          false, false, null);
     //sub attribute schemas of the attributes defined in User Schema,
+
 
     //attribute schemas of the attributes defined in group schema.
     public static final SCIMAttributeSchema DISPLAY_NAME =

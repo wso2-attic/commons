@@ -60,9 +60,9 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         return attributeList;
     }
 
-    public void setAttributeList(Map<String, Attribute> attributeList) {
+    /*public void setAttributeList(Map<String, Attribute> attributeList) {
         this.attributeList = attributeList;
-    }
+    }*/
 
     public List<String> getSchemaList() {
         return schemaList;
