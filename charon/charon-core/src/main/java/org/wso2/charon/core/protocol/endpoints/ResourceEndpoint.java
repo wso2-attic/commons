@@ -27,34 +27,38 @@ import org.wso2.charon.core.protocol.SCIMResponse;
 public interface ResourceEndpoint {
 
     /**
-     * Method of resource endpoint which is mapped to HTTP GET request. 
-     * @param id - unique resource id
-     * @param format - format mentioned in HTTP Content-Type header.
+     * Method of resource endpoint which is mapped to HTTP GET request.
+     *
+     * @param id      - unique resource id
+     * @param format  - format mentioned in HTTP Content-Type header.
      * @param storage - handler to storage that should be passed by the API user.
-     * @return SCIMResponse 
+     * @return SCIMResponse
      */
     public SCIMResponse get(String id, String format, Storage storage);
 
     /**
      * Method of resource endpoint which is mapped to HTTP POST request.
+     *
      * @param scimObjectString - Payload of HTTP request, which contains the SCIM object.
-     * @param inputFormat - format mentioned in HTTP Content-Type header.
-     * @param outputFormat - format mentioned in HTTP Accept header.
-     * @param storage - handler to storage that should be passed by the API user.
+     * @param inputFormat      - format mentioned in HTTP Content-Type header.
+     * @param outputFormat     - format mentioned in HTTP Accept header.
+     * @param storage          - handler to storage that should be passed by the API user.
      * @return SCIMResponse -
-     * From Spec: {Since the server is free to alter and/or ignore POSTed content,
-     * returning the full representation can be useful to the client, enabling it to correlate the
-     * client and server views of the new Resource. When a Resource is created, its URI must be returned
-     * in the response Location header.}
+     *         From Spec: {Since the server is free to alter and/or ignore POSTed content,
+     *         returning the full representation can be useful to the client, enabling it to correlate the
+     *         client and server views of the new Resource. When a Resource is created, its URI must be returned
+     *         in the response Location header.}
      */
     public SCIMResponse create(String scimObjectString, String inputFormat, String outputFormat,
                                Storage storage);
 
     /**
      * Method of the ResourceEndpoint that is mapped to HTTP Delete method..
+     *
      * @param id
      * @param storage
+     * @param outputFormat - required to encode exceptions if any
      * @return
      */
-    public SCIMResponse delete(String id, Storage storage);
+    public SCIMResponse delete(String id, Storage storage, String outputFormat);
 }

@@ -19,6 +19,7 @@ package org.wso2.charon.utils.user.mgt;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
@@ -107,8 +108,8 @@ public class FSBasedUserManager implements UserManager {
     }
 
     @Override
-    public Group deleteGroup(String groupId) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public void deleteGroup(String groupId) throws NotFoundException {
+
     }
 
     public SCIMObject getResource(String resourceId) {

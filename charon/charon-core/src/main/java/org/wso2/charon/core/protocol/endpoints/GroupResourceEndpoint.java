@@ -23,11 +23,11 @@ import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.InternalServerException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.exceptions.ResourceNotFoundException;
 import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
-import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -188,11 +188,41 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
      *
      * @param id
      * @param storage
+     * @param outputFormat
      * @return
      */
     @Override
-    public SCIMResponse delete(String id, Storage storage) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public SCIMResponse delete(String id, Storage storage, String outputFormat) {
+        Encoder encoder = null;
+        try {
+            //obtain the encoder matching the requested output format.
+            encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
+            if (storage instanceof UserManager) {
+                //delete user
+                ((UserManager) storage).deleteGroup(id);
+
+            } else {
+                String error = "Provided storage handler is not an implementation of UserManager";
+                //log the error as well.
+                //throw internal server error.
+                throw new InternalServerException(error);
+            }
+            //on successful deletion SCIMResponse only has 200 OK status code.
+            return new SCIMResponse(ResponseCodeConstants.CODE_OK, null, null);
+        } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (NotFoundException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (FormatNotSupportedException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        }
     }
 
 }

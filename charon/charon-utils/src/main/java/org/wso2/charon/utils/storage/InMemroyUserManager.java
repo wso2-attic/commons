@@ -18,7 +18,6 @@
 package org.wso2.charon.utils.storage;
 
 import org.wso2.charon.core.attributes.Attribute;
-import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
@@ -107,7 +106,21 @@ public class InMemroyUserManager implements UserManager {
      * @param userId
      */
     @Override
-    public void deleteUser(String userId) {
+    public void deleteUser(String userId) throws NotFoundException {
+        if (!userList.isEmpty()) {
+            for (SampleUser sampleUser : userList) {
+                if (userId.equals(sampleUser.getId())) {
+                    userList.remove(sampleUser);
+                    return;
+                }
+            }
+            //if no user id maps with requested id,
+            throw new NotFoundException();
+
+        } else {
+            //if user list is empty
+            throw new NotFoundException();
+        }
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -155,21 +168,53 @@ public class InMemroyUserManager implements UserManager {
                 if (groupId.equals(sampleGroup.getId())) {
                     group = new Group();
                     group.setId(sampleGroup.getId());
-                    group.setExternalId(sampleGroup.getGroupName());
-                    group.setDisplayName(sampleGroup.getDisplayName());
-                    //create members map
-                    Map<String, String> membersMap = new HashMap<String, String>();
-                    //fill members map with user member and group member details.
+                    if (sampleGroup.getExternalId() != null) {
+                        group.setExternalId(sampleGroup.getGroupName());
+                    }
+                    if (sampleGroup.getDisplayName() != null) {
+                        group.setDisplayName(sampleGroup.getDisplayName());
+                    }
+                    group.setCreatedDate(sampleGroup.getCreatedDate());
+                    group.setLastModified(sampleGroup.getLastModified());
+
+                    //fill members map with user member details.
                     List<String> userMembers = sampleGroup.getUserMembers();
                     if (userMembers != null && !userMembers.isEmpty()) {
+                        //create user members map - <ID,displayName>
+                        Map<String, String> userMembersMap = new HashMap<String, String>();
                         for (String userMember : userMembers) {
-
+                            //fetch displayName attribute from users and set it in user members map.
+                            for (SampleUser sampleUser : userList) {
+                                if (userMember.equals(sampleUser.getId())) {
+                                    userMembersMap.put(userMember, sampleUser.getUserName());
+                                }
+                            }
+                        }
+                        //set above user members in group to be returned.
+                        for (Map.Entry<String, String> entry : userMembersMap.entrySet()) {
+                            group.setMember(entry.getKey(), entry.getValue(), SCIMConstants.USER);
+                        }
+                    }
+                    //fill members map with group member details.
+                    List<String> groupMembers = sampleGroup.getSubGroupMembers();
+                    if (groupMembers != null && !groupMembers.isEmpty()) {
+                        //create group member map - <ID,displayName>
+                        Map<String, String> groupMembersMap = new HashMap<String, String>();
+                        for (String groupMember : groupMembers) {
+                            for (SampleGroup customGroup : groupList) {
+                                if (groupMember.equals(customGroup.getId())) {
+                                    groupMembersMap.put(groupMember, customGroup.getDisplayName());
+                                }
+                            }
+                        }
+                        for (Map.Entry<String, String> entry : groupMembersMap.entrySet()) {
+                            group.setMember(entry.getKey(), entry.getValue(), SCIMConstants.GROUP);
                         }
                     }
                 }
             }
         }
-        return null;
+        return group;
     }
 
     @Override
@@ -177,7 +222,7 @@ public class InMemroyUserManager implements UserManager {
         SampleGroup customGroup = null;
         if (this.groupList != null && !this.groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
-                if (group.getDisplayName().equals(sampleGroup.getDisplayName())) {
+                if (group.getExternalId().equals(sampleGroup.getExternalId())) {
                     //TODO: log the error
                     String error = "Group already in the system";
                     throw new CharonException(error);
@@ -205,14 +250,27 @@ public class InMemroyUserManager implements UserManager {
     }
 
     @Override
-    public Group deleteGroup(String groupId) throws CharonException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public void deleteGroup(String groupId) throws NotFoundException {
+        if (!groupList.isEmpty()) {
+            for (SampleGroup sampleGroup : groupList) {
+                if (groupId.equals(sampleGroup.getId())) {
+                    groupList.remove(sampleGroup);
+                    return;
+                }
+            }
+            //if requested id is not among group list
+            throw new NotFoundException();
+
+        } else {
+            //if group list is empty
+            throw new NotFoundException();
+        }
     }
 
-    @Override
+    /*@Override
     public SCIMObject getResource(String resourceId) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+    }*/
 
 
     /**
@@ -235,6 +293,9 @@ public class InMemroyUserManager implements UserManager {
     private SampleGroup createCustomGroup(Group group) throws CharonException {
         SampleGroup sampleGroup = new SampleGroup();
         sampleGroup.setId(group.getId());
+        if (group.getExternalId() != null) {
+            sampleGroup.setExternalId(group.getExternalId());
+        }
         if (group.getCreatedDate() != null) {
             sampleGroup.setCreatedDate(group.getCreatedDate());
         }
@@ -260,7 +321,7 @@ public class InMemroyUserManager implements UserManager {
                             userMemberIDs.add(memberID);
                             //prepare to set id n displayName in group->members
                             userMemberMap.put(memberID, sampleUser.getUserName());
-                            //TODO:update group attribute of user to update the groups that he belongs to.
+                            //TODO:update group attribute of sample user to update the groups that he belongs to.
                         }
                     }
                 }

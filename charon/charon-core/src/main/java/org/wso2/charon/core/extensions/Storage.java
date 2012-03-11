@@ -25,5 +25,6 @@ import org.wso2.charon.core.objects.SCIMObject;
  */
 public interface Storage {
 
-    SCIMObject getResource (String resourceId);
+    //TODO: get rid of this stupid Storage interface
+    //SCIMObject getResource (String resourceId);
 }

@@ -53,6 +53,8 @@ public class DefaultResourceFactory {
         abstractSCIMObject.setId(id);
         Date date = new Date();
         abstractSCIMObject.setCreatedDate(date);
+        //created n last modified are the same if not updated.
+        abstractSCIMObject.setLastModified(date);
         //Validate the constructed SCIMObject against the schema
         DefaultSchemaValidator.validateSCIMObject(abstractSCIMObject, resourceSchema);
         return abstractSCIMObject;

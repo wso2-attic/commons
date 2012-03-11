@@ -187,10 +187,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      *
      * @param id
      * @param storage
+     * @param outputFormat
      * @return
      */
     @Override
-    public SCIMResponse delete(String id, Storage storage) {
+    public SCIMResponse delete(String id, Storage storage, String outputFormat) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

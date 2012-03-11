@@ -26,6 +26,7 @@ import java.util.List;
 public class SampleGroup extends AbstractSampleResource {
 
     private String id;
+    private String externalId;
     private String groupName;
     private String displayName;
     /*Members of a SCIM Group can either be users or groups.*/
@@ -70,6 +71,14 @@ public class SampleGroup extends AbstractSampleResource {
 
     public void setSubGroupMembers(List<String> subGroupMembers) {
         this.subGroupMembers = subGroupMembers;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
 
