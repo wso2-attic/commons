@@ -31,6 +31,7 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -145,6 +146,59 @@ public class UsersResource {
                                                                 outputFormat, userManager);
 
             return new JAXRSResponseBuilder().buildResponse(response);
+
+        } catch (CharonException e) {
+            //create SCIM response with code as the same of exception and message as error message of the exception
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (UnauthorizedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (FormatNotSupportedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        }
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteUser(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
+                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
+                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
+                               @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                               @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
+        Encoder encoder = null;
+        try {
+            DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
+
+            // defaults to application/json.
+            if (format == null) {
+                format = SCIMConstants.APPLICATION_JSON;
+            }
+            //obtain the encoder at this layer in case exceptions needs to be encoded.
+            encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
+            //perform authentication
+            Map<String, String> headerMap = new HashMap<String, String>();
+            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
+            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
+            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            //authenticate the request
+            defaultCharonManager.handleAuthentication(headerMap);
+
+            //obtain the user store manager
+            UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
+                    userName);
+
+            //create charon-SCIM user endpoint and hand-over the request.
+            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+
+            SCIMResponse scimResponse = userResourceEndpoint.delete(id, userManager, format);
+            //needs to check the code of the response and return 200 0k or other error codes
+            // appropriately.
+            return new JAXRSResponseBuilder().buildResponse(scimResponse);
 
         } catch (CharonException e) {
             //create SCIM response with code as the same of exception and message as error message of the exception
