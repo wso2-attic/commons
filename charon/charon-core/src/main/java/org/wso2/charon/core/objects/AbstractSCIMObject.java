@@ -122,19 +122,21 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      * Set a value for the id attribute. If attribute not already created in the resource,
      * create attribute and set the value.
      * Unique identifier for the SCIM Resource as defined by the Service Provider
+     * This is read-only. So can only set once.
      *
      * @param id Unique identifier for the SCIM Resource as defined by the Service Provider.
      */
     public void setId(String id) throws CharonException {
         if (isAttributeExist(SCIMConstants.CommonSchemaConstants.ID)) {
-            ((SimpleAttribute) attributeList.get(
-                    SCIMConstants.CommonSchemaConstants.ID)).updateValue(
-                    id, DataType.STRING);
+            throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
         } else {
-            Attribute idAttribute = new SimpleAttribute(
+            /*Attribute idAttribute = new SimpleAttribute(
                     SCIMConstants.CommonSchemaConstants.ID,
                     SCIMConstants.CORE_SCHEMA_URI, id, DataType.STRING, true,
-                    false);
+                    false);*/
+            SimpleAttribute idAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.ID, id);
+            idAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                    SCIMSchemaDefinitions.ID, idAttribute);
             this.setAttribute(idAttribute);
         }
 
@@ -250,7 +252,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         //create the lastModified date attribute as defined in schema.
         SimpleAttribute createdDateAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                 SCIMSchemaDefinitions.LAST_MODIFIED,
-                new SimpleAttribute(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED));
+                new SimpleAttribute(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED, lastModifiedDate));
 
         ComplexAttribute metaAttribute;
         //check meta complex attribute already exist.

@@ -47,7 +47,7 @@ public class DefaultResourceFactory {
         //perform and actions related to constructing the SCIMObject
         //TODO: Validate the constructed SCIMObject against the schema
         //for the moment return the SCIMObject
-        //add the attributes that the service provider adds to the resource such as id, meta - created,lastmodified,
+        //add the attributes that the service provider adds to the resource such as id, meta - created,last modified,
         //location,version
         String id = UUID.randomUUID().toString();
         abstractSCIMObject.setId(id);

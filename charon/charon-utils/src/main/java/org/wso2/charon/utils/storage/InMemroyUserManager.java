@@ -114,17 +114,15 @@ public class InMemroyUserManager implements UserManager {
         //check if the user already exist in the system.
         String id = null;
         SampleUser customUser = null;
-        if (userList != null && userList.size() != 0) {
+        if (userList != null && !userList.isEmpty()) {
             for (SampleUser sampleUser : userList) {
                 if (user.getExternalId().equals(sampleUser.getFullyQualifiedName())) {
                     //TODO: log the error
                     String error = "User already in the system";
                     throw new CharonException(error);
-                } else {
-                    //creates a uuid and assigns to id attribute
-                    customUser = createCustomUser(user);
-                    userList.add(customUser);
                 }
+                customUser = createCustomUser(user);
+                userList.add(customUser);
             }
         } else {
             //if this is the first time a user is created, create the user and add it to the list
@@ -132,11 +130,10 @@ public class InMemroyUserManager implements UserManager {
             userList.add(customUser);
 
         }
-        //TODO:should set last modified date
         //now prepare the SCIM User representation of the created user to be returned.
         //only additionally added value is: id
         //id should not be added here, it should be added in DefaultResourceFactory.
-        user.setId(customUser.getId());
+        //user.setId(customUser.getId());
         return user;
     }
 
@@ -159,7 +156,7 @@ public class InMemroyUserManager implements UserManager {
                     List<SampleUser> userMembers = sampleGroup.getUserMembers();
                     if (userMembers != null && !userMembers.isEmpty()) {
                         for (SampleUser userMember : userMembers) {
-                            
+
                         }
                     }
                 }
@@ -170,7 +167,22 @@ public class InMemroyUserManager implements UserManager {
 
     @Override
     public Group createGroup(Group group) throws CharonException {
-        return null;
+        SampleGroup customGroup = null;
+        if (this.groupList != null && !this.groupList.isEmpty()) {
+            for (SampleGroup sampleGroup : groupList) {
+                if (group.getDisplayName().equals(sampleGroup.getDisplayName())) {
+                    //TODO: log the error
+                    String error = "Group already in the system";
+                    throw new CharonException(error);
+                }
+                customGroup = createSampleGroup(group);
+                groupList.add(customGroup);
+            }
+        } else {
+            customGroup = createSampleGroup(group);
+            groupList.add(customGroup);
+        }
+        return group;
     }
 
     @Override
@@ -203,6 +215,7 @@ public class InMemroyUserManager implements UserManager {
     private SampleUser createCustomUser(User user) throws CharonException {
         SampleUser sampleUser = new SampleUser();
         //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
+        //TODO:before setting an attribute value in custom user, check whether the value is null
         String id = UUID.randomUUID().toString();
         sampleUser.setId(id);
         sampleUser.setFullyQualifiedName(user.getExternalId());

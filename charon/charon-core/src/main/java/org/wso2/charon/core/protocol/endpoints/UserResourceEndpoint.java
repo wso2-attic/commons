@@ -192,4 +192,6 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     public SCIMResponse delete(String id, Storage storage) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    //TODO: set last modified date with put/patch/bulk update operations.
 }
