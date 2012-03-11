@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="transformproxy" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <xslt key="conf:/transform_echo.xslt"/>
+                <send>
+                    <endpoint>
+                        <address uri="http://192.168.1.3:9771/services/Axis2Service/"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <xslt key="conf:/transformback_echo.xslt"/>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="http://192.168.1.3:9770/services/Axis2Service?wsdl"/>
+    </proxy>
+   <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
