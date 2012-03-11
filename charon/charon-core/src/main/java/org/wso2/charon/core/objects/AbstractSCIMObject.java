@@ -234,17 +234,17 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      *
      * @return
      */
-    public Date getCreatedDate() throws NotFoundException, CharonException {
+    public Date getCreatedDate() throws CharonException {
         if (isMetaAttributeExist()) {
             SimpleAttribute createdDate = (SimpleAttribute) getMeAttribute().getSubAttribute(
                     SCIMConstants.CommonSchemaConstants.CREATED);
             if (createdDate != null) {
                 return createdDate.getDateValue();
             } else {
-                throw new NotFoundException();
+                return null;
             }
         } else {
-            throw new NotFoundException();
+            return null;
         }
     }
 
@@ -272,6 +272,20 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             createMetaAttribute();
             getMeAttribute().setSubAttribute(createdDateAttribute);
 
+        }
+    }
+
+    public Date getLastModified() throws CharonException {
+        if (isMetaAttributeExist()) {
+            SimpleAttribute createdDate = (SimpleAttribute) getMeAttribute().getSubAttribute(
+                    SCIMConstants.CommonSchemaConstants.LAST_MODIFIED);
+            if (createdDate != null) {
+                return createdDate.getDateValue();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 
@@ -306,11 +320,9 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      *
      * @param id
      */
-    public void deleteAttribute(String id) throws NotFoundException {
+    public void deleteAttribute(String id) {
         if (attributeList.containsKey(id)) {
             attributeList.remove(id);
-        } else {
-            throw new NotFoundException();
         }
     }
 

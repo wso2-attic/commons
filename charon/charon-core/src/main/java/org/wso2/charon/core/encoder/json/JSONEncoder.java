@@ -36,6 +36,8 @@ import java.util.Map;
 
 public class JSONEncoder implements Encoder {
 
+    //TODO:remove instance of and do it in polymorphic way
+
     private String format;
 
     public JSONEncoder() {

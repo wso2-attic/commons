@@ -136,6 +136,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             if (storage instanceof UserManager) {
                 //need to send back the newly created user in the response payload
                 createdUser = ((UserManager) storage).createUser(user);
+                //validate User
 
             } else {
                 String error = "Provided storage handler is not an implementation of UserManager";

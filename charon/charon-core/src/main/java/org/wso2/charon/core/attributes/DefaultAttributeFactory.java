@@ -33,6 +33,8 @@ import java.util.List;
  */
 public class DefaultAttributeFactory /*implements AttributeFactory*/ {
 
+    //TODO: remove instance of and do it in polymorphic way
+
     /**
      * Create the attribute given the attribute schema and the attribute object - may be with
      * attribute value set.
@@ -79,13 +81,15 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
             return createSimpleAttribute(attributeSchema, (SimpleAttribute) attribute);
         }
         if (attribute instanceof MultiValuedAttribute) {
-
+            return createMultiValuedAttribute(attributeSchema, (MultiValuedAttribute) attribute);
         }
+        //validate the created attribute against the schema.
         return attribute;
     }
 
     protected static Attribute createSCIMSubAttribute(SCIMSubAttributeSchema attributeSchema,
-                                                      AbstractAttribute attribute) {
+                                                      AbstractAttribute attribute)
+            throws CharonException {
         //check things like if it is a sub attribute like "operation" in a multivalued attribute,
         //only allowed value is delete likewise.
         if (attribute instanceof SimpleAttribute) {
@@ -102,7 +106,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param simpleAttribute
      * @return
      */
-    protected static SimpleAttribute createSimpleAttribute(SCIMAttributeSchema attributeSchema,
+    protected static SimpleAttribute createSimpleAttribute(AttributeSchema attributeSchema,
                                                            SimpleAttribute simpleAttribute)
             throws CharonException {
         if (simpleAttribute.getValue() != null) {
@@ -127,12 +131,23 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param subAttributeSchema
      * @param simpleAttribute
      * @return
-     */
+     *//*
     protected static SimpleAttribute createSimpleAttribute(
-            SCIMSubAttributeSchema subAttributeSchema, SimpleAttribute simpleAttribute) {
-        simpleAttribute.dataType = subAttributeSchema.getType();
-        return simpleAttribute;
-    }
+            SCIMSubAttributeSchema subAttributeSchema, SimpleAttribute simpleAttribute)
+            throws CharonException {
+        if (simpleAttribute.getValue() != null) {
+            if (isAttributeDataTypeValid(simpleAttribute.getValue(), subAttributeSchema.getType())) {
+
+                simpleAttribute.dataType = subAttributeSchema.getType();
+                return simpleAttribute;
+            } else {
+                String error = "Violation in attribute shcema. DataType doesn't match that of the value.";
+                throw new CharonException(error);
+            }
+        } else {
+            return simpleAttribute;
+        }
+    }*/
 
     /**
      * Once identified that constructing attribute as a multivalued attribute, perform specific operations

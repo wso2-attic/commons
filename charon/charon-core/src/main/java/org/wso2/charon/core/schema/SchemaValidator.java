@@ -33,5 +33,5 @@ public interface SchemaValidator {
      * @param scimObject
      * @param resourceSchema
      */
-    public void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema);
+    //public static void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema);
 }

@@ -23,14 +23,14 @@ import java.util.List;
  * Representation of a custom Group entity used in InMemoryUserStoreManager.
  * This can be mapped to LDAP Group object when using LDAPUserStoreManager.
  */
-public class SampleGroup {
+public class SampleGroup extends AbstractSampleResource {
 
     private String id;
     private String groupName;
     private String displayName;
     /*Members of a SCIM Group can either be users or groups.*/
-    private List<SampleUser> userMembers;
-    private List<SampleGroup> subGroupMembers;
+    private List<String> userMembers;
+    private List<String> subGroupMembers;
 
     public String getId() {
         return id;
@@ -56,19 +56,19 @@ public class SampleGroup {
         this.displayName = displayName;
     }
 
-    public List<SampleUser> getUserMembers() {
+    public List<String> getUserMembers() {
         return userMembers;
     }
 
-    public void setUserMembers(List<SampleUser> userMembers) {
+    public void setUserMembers(List<String> userMembers) {
         this.userMembers = userMembers;
     }
 
-    public List<SampleGroup> getSubGroupMembers() {
+    public List<String> getSubGroupMembers() {
         return subGroupMembers;
     }
 
-    public void setSubGroupMembers(List<SampleGroup> subGroupMembers) {
+    public void setSubGroupMembers(List<String> subGroupMembers) {
         this.subGroupMembers = subGroupMembers;
     }
 

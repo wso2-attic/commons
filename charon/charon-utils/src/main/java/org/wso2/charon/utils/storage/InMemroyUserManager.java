@@ -18,11 +18,16 @@
 package org.wso2.charon.utils.storage;
 
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.schema.DefaultSchemaValidator;
+import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +72,8 @@ public class InMemroyUserManager implements UserManager {
                 }
             }
         }
+        //Validate the constructed SCIMObject against the schema
+        DefaultSchemaValidator.validateSCIMObject(scimUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
         return scimUser;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -153,9 +160,9 @@ public class InMemroyUserManager implements UserManager {
                     //create members map
                     Map<String, String> membersMap = new HashMap<String, String>();
                     //fill members map with user member and group member details.
-                    List<SampleUser> userMembers = sampleGroup.getUserMembers();
+                    List<String> userMembers = sampleGroup.getUserMembers();
                     if (userMembers != null && !userMembers.isEmpty()) {
-                        for (SampleUser userMember : userMembers) {
+                        for (String userMember : userMembers) {
 
                         }
                     }
@@ -175,11 +182,11 @@ public class InMemroyUserManager implements UserManager {
                     String error = "Group already in the system";
                     throw new CharonException(error);
                 }
-                customGroup = createSampleGroup(group);
+                customGroup = createCustomGroup(group);
                 groupList.add(customGroup);
             }
         } else {
-            customGroup = createSampleGroup(group);
+            customGroup = createCustomGroup(group);
             groupList.add(customGroup);
         }
         return group;
@@ -225,7 +232,72 @@ public class InMemroyUserManager implements UserManager {
         return sampleUser;
     }
 
-    private SampleGroup createSampleGroup(Group group) throws CharonException {
-        return new SampleGroup();
+    private SampleGroup createCustomGroup(Group group) throws CharonException {
+        SampleGroup sampleGroup = new SampleGroup();
+        sampleGroup.setId(group.getId());
+        if (group.getCreatedDate() != null) {
+            sampleGroup.setCreatedDate(group.getCreatedDate());
+        }
+        if (group.getLastModified() != null) {
+            sampleGroup.setLastModified(group.getLastModified());
+        }
+        //we assume displayName is not null
+        sampleGroup.setDisplayName(group.getDisplayName());
+
+        if (group.getMembers() != null && !group.getMembers().isEmpty()) {
+            //get all member ids
+            List<String> memberIDs = group.getMembers();
+            List<String> userMemberIDs = new ArrayList<String>();
+            //<ID,displayName>
+            Map<String, String> userMemberMap = new HashMap<String, String>();
+            //see whether those ids in existing users
+            if (!userList.isEmpty()) {
+                for (SampleUser sampleUser : userList) {
+                    for (String memberID : memberIDs) {
+                        if (memberID.equals(sampleUser.getId())) {
+                            //member is a user.
+                            //prepare to set the ids in sampleGroup->userList
+                            userMemberIDs.add(memberID);
+                            //prepare to set id n displayName in group->members
+                            userMemberMap.put(memberID, sampleUser.getUserName());
+                            //TODO:update group attribute of user to update the groups that he belongs to.
+                        }
+                    }
+                }
+                //set user members in sampleGroup->userList, if non empty
+                if (!userMemberIDs.isEmpty()) {
+                    sampleGroup.setUserMembers(userMemberIDs);
+                }
+            }
+            //see whether those ids in existing groups
+            List<String> groupMemberIDs = new ArrayList<String>();
+            Map<String, String> groupMemberMap = new HashMap<String, String>();
+            if (!groupList.isEmpty()) {
+                for (SampleGroup customGroup : groupList) {
+                    for (String memberID : memberIDs) {
+                        if (memberID.equals(customGroup.getId())) {
+                            //member is a group
+                            //prepare to set the id in sampleGroup->groupList
+                            groupMemberIDs.add(memberID);
+                            //prepare to set id n displayName in group->members
+                            groupMemberMap.put(memberID, customGroup.getDisplayName());
+                        }
+                    }
+                }
+                //set group members in sampleGroup->groupList
+                sampleGroup.setSubGroupMembers(groupMemberIDs);
+            }
+            //remove existing members attribute
+            group.deleteAttribute(SCIMConstants.GroupSchemaConstants.MEMBERS);
+            //set above first in group,as userMembers, by setting display name and type
+            for (Map.Entry<String, String> userEntry : userMemberMap.entrySet()) {
+                group.setMember(userEntry.getKey(), userEntry.getValue(), SCIMConstants.USER);
+            }
+            //set above second in group,as groupMembers, by setting display name and type
+            for (Map.Entry<String, String> groupEntry : groupMemberMap.entrySet()) {
+                group.setMember(groupEntry.getKey(), groupEntry.getValue(), SCIMConstants.GROUP);
+            }
+        }
+        return sampleGroup;
     }
 }

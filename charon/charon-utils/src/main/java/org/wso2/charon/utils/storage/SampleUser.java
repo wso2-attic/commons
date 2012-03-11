@@ -20,14 +20,14 @@ package org.wso2.charon.utils.storage;
 /**
  * Sample representation of a user stored in implementation specific storage.
  */
-public class SampleUser {
+public class SampleUser extends AbstractSampleResource {
 
     private String id;
     private String fullyQualifiedName;
     //can map to displayName of SCIM User
     private String userName;
     private String[] emails;
-    
+
 
     public String getId() {
         return id;

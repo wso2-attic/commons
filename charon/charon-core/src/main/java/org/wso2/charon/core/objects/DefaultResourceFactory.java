@@ -20,6 +20,7 @@ package org.wso2.charon.core.objects;
 import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.schema.DefaultSchemaValidator;
 import org.wso2.charon.core.schema.ResourceSchema;
 
 import java.util.Date;
@@ -45,7 +46,6 @@ public class DefaultResourceFactory {
                                               AbstractSCIMObject abstractSCIMObject)
             throws CharonException {
         //perform and actions related to constructing the SCIMObject
-        //TODO: Validate the constructed SCIMObject against the schema
         //for the moment return the SCIMObject
         //add the attributes that the service provider adds to the resource such as id, meta - created,last modified,
         //location,version
@@ -53,7 +53,8 @@ public class DefaultResourceFactory {
         abstractSCIMObject.setId(id);
         Date date = new Date();
         abstractSCIMObject.setCreatedDate(date);
-
+        //Validate the constructed SCIMObject against the schema
+        DefaultSchemaValidator.validateSCIMObject(abstractSCIMObject, resourceSchema);
         return abstractSCIMObject;
     }
 

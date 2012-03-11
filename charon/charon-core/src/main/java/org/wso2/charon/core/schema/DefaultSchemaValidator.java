@@ -18,7 +18,12 @@
 package org.wso2.charon.core.schema;
 
 import org.wso2.charon.core.attributes.AbstractAttribute;
+import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains common functionality to any SCIM object schema validator.
@@ -34,16 +39,26 @@ public class DefaultSchemaValidator implements SchemaValidator {
      * @param scimObject
      * @param resourceSchema
      */
-    @Override
-    public void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema) {
+    public static void validateSCIMObject(AbstractSCIMObject scimObject,
+                                          ResourceSchema resourceSchema)
+            throws CharonException {
         //get attributes from schema.
+        List<AttributeSchema> attributeSchemaList = resourceSchema.getAttributesList();
         //get attribute list from scim object.
-        //compare everything fine.
-        //To change body of implemented methods use File | Settings | File Templates.
+        Map<String, Attribute> attributeList = scimObject.getAttributeList();
+        for (AttributeSchema attributeSchema : attributeSchemaList) {
+            if (attributeSchema.getRequired()) {
+                if (!attributeList.containsKey(attributeSchema.getName())) {
+                    String error = "Required attribute is missing in the SCIM Object.";
+                    throw new CharonException(error);
+                }
+            }
+        }
         //check if required attributes are there.
     }
 
-    public void validateAttribute(AbstractAttribute attribute, AttributeSchema attributeSchema) {
-        
+    public static void validateAttribute(AbstractAttribute attribute,
+                                         AttributeSchema attributeSchema) {
+
     }
 }
