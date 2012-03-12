@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.samples.user.sample01;
+package org.wso2.charon.samples.group.sample02;
 
 import org.apache.wink.client.ClientConfig;
 import org.apache.wink.client.ClientWebException;
@@ -23,31 +23,18 @@ import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
-import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 
-public class CreateUserSample {
-
-    //user details
-    public static final String USER_NAME = "umeshag";
-    public static final String EXTERNAL_ID = "umeshasg@gmail.com";
-    public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
+public class GetGroupSample {
+    public static final String GROUP_ID = "7ea9695b-fee7-49c0-b8cb-0e81e516f22f";
 
     public static void main(String[] args) {
 
         try {
             //create SCIM client
             SCIMClient scimClient = new SCIMClient();
-            //create a user according to SCIM User Schema
-            User scimUser = scimClient.createUser();
-            scimUser.setUserName(USER_NAME);
-            scimUser.setExternalId(EXTERNAL_ID);
-            scimUser.setEmails(EMAILS);
-            //encode the user in JSON format
-            String encodedUser = scimClient.encodeSCIMObject(scimUser, SCIMConstants.JSON);
             //create a apache wink ClientHandler to intercept and identify response messages
             CharonResponseHandler responseHandler = new CharonResponseHandler();
             responseHandler.setSCIMClient(scimClient);
@@ -56,25 +43,23 @@ public class CreateUserSample {
             clientConfig.handlers(new ClientHandler[]{responseHandler});
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
-            //create resource endpoint to access User resource
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT);
 
-            //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
-            //send previously registered SCIM consumer credentials in http headers.
-            String response = userResource.
+            //create resource endpoint to access a known user resource.
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            String response = groupResource.
                     header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
                     header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
-                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON).
-                    post(String.class, encodedUser);
+                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
+                    .get(String.class);
 
             //decode the response
             System.out.println(response);
-        } catch (CharonException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (ClientWebException e) {
             System.out.println(e.getRequest().getEntity());
             System.out.println(e.getResponse().getMessage());
             e.printStackTrace();
         }
+
     }
+
 }

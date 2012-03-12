@@ -22,7 +22,6 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
-import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.DefaultSchemaValidator;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class InMemroyUserManager implements UserManager {
 
@@ -66,8 +64,15 @@ public class InMemroyUserManager implements UserManager {
                     scimUser.setSchemaList(new ArrayList<String>());
                     scimUser.setId(sampleUser.getId());
                     scimUser.setUserName(sampleUser.getUserName());
-                    scimUser.setEmails(sampleUser.getEmails());
-                    scimUser.setExternalId(sampleUser.getFullyQualifiedName());
+                    if (sampleUser.getDisplayName() != null) {
+                        scimUser.setDisplayName(sampleUser.getDisplayName());
+                    }
+                    if (sampleUser.getEmails() != null) {
+                        scimUser.setEmails(sampleUser.getEmails());
+                    }
+                    if (scimUser.getExternalId() != null) {
+                        scimUser.setExternalId(sampleUser.getFullyQualifiedName());
+                    }
                 }
             }
         }
@@ -186,7 +191,7 @@ public class InMemroyUserManager implements UserManager {
                             //fetch displayName attribute from users and set it in user members map.
                             for (SampleUser sampleUser : userList) {
                                 if (userMember.equals(sampleUser.getId())) {
-                                    userMembersMap.put(userMember, sampleUser.getUserName());
+                                    userMembersMap.put(userMember, sampleUser.getDisplayName());
                                 }
                             }
                         }
@@ -267,12 +272,6 @@ public class InMemroyUserManager implements UserManager {
         }
     }
 
-    /*@Override
-    public SCIMObject getResource(String resourceId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }*/
-
-
     /**
      * ****************private methods*************************************
      */
@@ -281,12 +280,21 @@ public class InMemroyUserManager implements UserManager {
         SampleUser sampleUser = new SampleUser();
         //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
         //TODO:before setting an attribute value in custom user, check whether the value is null
-        String id = UUID.randomUUID().toString();
-        sampleUser.setId(id);
-        sampleUser.setFullyQualifiedName(user.getExternalId());
+        sampleUser.setId(user.getId());
+        if (user.getExternalId() != null) {
+            sampleUser.setFullyQualifiedName(user.getExternalId());
+        }
+        if (user.getCreatedDate() != null) {
+            sampleUser.setCreatedDate(user.getCreatedDate());
+        }
+        if (user.getLastModified() != null) {
+            sampleUser.setLastModified(user.getLastModified());
+        }
         sampleUser.setUserName(user.getUserName());
         sampleUser.setEmails(user.getEmails());
-
+        if (user.getDisplayName() != null) {
+            sampleUser.setDisplayName(user.getDisplayName());
+        }
         return sampleUser;
     }
 
@@ -320,7 +328,7 @@ public class InMemroyUserManager implements UserManager {
                             //prepare to set the ids in sampleGroup->userList
                             userMemberIDs.add(memberID);
                             //prepare to set id n displayName in group->members
-                            userMemberMap.put(memberID, sampleUser.getUserName());
+                            userMemberMap.put(memberID, sampleUser.getDisplayName());
                             //TODO:update group attribute of sample user to update the groups that he belongs to.
                         }
                     }

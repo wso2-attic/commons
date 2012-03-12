@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.samples.user.sample01;
+package org.wso2.charon.samples.group.sample01;
 
 import org.apache.wink.client.ClientConfig;
 import org.apache.wink.client.ClientWebException;
@@ -24,30 +24,33 @@ import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 
-public class CreateUserSample {
-
+public class CreateGroupSample {
     //user details
-    public static final String USER_NAME = "umeshag";
-    public static final String EXTERNAL_ID = "umeshasg@gmail.com";
-    public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
+    public static final String DISPLAY_NAME = "marketing";
+    public static final String EXTERNAL_ID = "marketing";
+    public static final String[] MEMBERS = {"7ea9695b-fee7-49c0-b8cb-0e81e516f22f",
+                                            "7ea9695b-fee7-49c0-b8cb-0e81e516f22f"};
 
     public static void main(String[] args) {
 
         try {
             //create SCIM client
             SCIMClient scimClient = new SCIMClient();
-            //create a user according to SCIM User Schema
-            User scimUser = scimClient.createUser();
-            scimUser.setUserName(USER_NAME);
-            scimUser.setExternalId(EXTERNAL_ID);
-            scimUser.setEmails(EMAILS);
-            //encode the user in JSON format
-            String encodedUser = scimClient.encodeSCIMObject(scimUser, SCIMConstants.JSON);
+            //create a group according to SCIM Group Schema
+            Group scimGroup = scimClient.createGroup();
+            scimGroup.setExternalId(EXTERNAL_ID);
+            scimGroup.setDisplayName(DISPLAY_NAME);
+            //set group members
+            for (String member : MEMBERS) {
+                scimGroup.setMember(member);
+            }
+            //encode the group in JSON format
+            String encodedGroup = scimClient.encodeSCIMObject(scimGroup, SCIMConstants.JSON);
             //create a apache wink ClientHandler to intercept and identify response messages
             CharonResponseHandler responseHandler = new CharonResponseHandler();
             responseHandler.setSCIMClient(scimClient);
@@ -57,20 +60,21 @@ public class CreateUserSample {
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
             //create resource endpoint to access User resource
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT);
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT);
 
             //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
             //send previously registered SCIM consumer credentials in http headers.
-            String response = userResource.
+            String response = groupResource.
                     header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
                     header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON).
-                    post(String.class, encodedUser);
+                    post(String.class, encodedGroup);
 
             //decode the response
             System.out.println(response);
+
         } catch (CharonException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (ClientWebException e) {
             System.out.println(e.getRequest().getEntity());
             System.out.println(e.getResponse().getMessage());

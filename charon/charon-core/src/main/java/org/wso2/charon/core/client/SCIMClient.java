@@ -25,6 +25,7 @@ import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
@@ -69,6 +70,10 @@ public class SCIMClient {
      */
     public User createUser() {
         return new User();
+    }
+
+    public Group createGroup() {
+        return new Group();
     }
 
     /**
@@ -211,5 +216,5 @@ public class SCIMClient {
                 return false;
         }
     }
-    
+
 }

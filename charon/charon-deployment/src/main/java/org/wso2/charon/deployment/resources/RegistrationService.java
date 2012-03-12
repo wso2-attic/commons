@@ -22,6 +22,7 @@ import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
+import org.wso2.charon.utils.CharonConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.storage.TenantInfo;
 import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
@@ -50,10 +51,11 @@ public class RegistrationService {
      * @return
      */
     @POST
-    public Response registerTenant(@HeaderParam("tenantAdminUserName") String adminUserName,
-                                   @HeaderParam("tenantAdminPassword") String adminPassword,
-                                   @HeaderParam("tenantDomain") String tenantDomain,
-                                   @HeaderParam("authMechanism") String authMechanism) {
+    public Response registerTenant(
+            @HeaderParam(CharonConstants.TENANT_ADMIN_USER_NAME) String adminUserName,
+            @HeaderParam(CharonConstants.TENANT_ADMIN_PASSWORD) String adminPassword,
+            @HeaderParam(CharonConstants.TENANT_DOMAIN) String tenantDomain,
+            @HeaderParam(CharonConstants.AUTH_MECHANISM) String authMechanism) {
         try {
             CharonManager charonManger = DefaultCharonManager.getInstance();
 

@@ -152,6 +152,14 @@ public class Group extends AbstractSCIMObject {
         setMember(propertyValues);
     }
 
+    //set member - id
+
+    public void setMember(String id) throws CharonException {
+        Map<String, Object> propertyValues = new HashMap<String, Object>();
+        propertyValues.put(SCIMConstants.CommonSchemaConstants.VALUE, id);
+        setMember(propertyValues);
+    }
+
     //set userMember - id, display name.
 
     public void setUserMember(String id, String displayName) throws CharonException {

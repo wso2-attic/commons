@@ -24,10 +24,9 @@ public class SampleUser extends AbstractSampleResource {
 
     private String id;
     private String fullyQualifiedName;
-    //can map to displayName of SCIM User
     private String userName;
     private String[] emails;
-
+    private String displayName;
 
     public String getId() {
         return id;
@@ -59,6 +58,14 @@ public class SampleUser extends AbstractSampleResource {
 
     public void setFullyQualifiedName(String fullyQualifiedName) {
         this.fullyQualifiedName = fullyQualifiedName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
 }

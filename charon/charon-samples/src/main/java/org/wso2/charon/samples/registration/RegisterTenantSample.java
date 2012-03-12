@@ -24,10 +24,10 @@ import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
+import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.CharonConstants;
 
 public class RegisterTenantSample {
-
-    public static final String REG_SERVICE_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/RegistrationService";
 
     public static void main(String[] args) {
 
@@ -43,14 +43,15 @@ public class RegisterTenantSample {
         RestClient restClient = new RestClient(clientConfig);
 
         //create resource endpoint to access RegistrationService
-        Resource registrationService = restClient.resource(REG_SERVICE_ENDPOINT);
+        Resource registrationService = restClient.resource(SampleConstants.REG_SERVICE_ENDPOINT);
 
         //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
 
         //send the tenant details in the http headers. TODO: send them in the body encoded in json/xml
-        registrationService.header("tenantAdminUserName", "hasinig@wso2.com").
-                header("tenantAdminPassword", "hasinig").header("tenantDomain", "wso2.com").
-                header("authMechanism", SCIMConstants.AUTH_TYPE_BASIC).post(String.class, "");
+        registrationService.header(CharonConstants.TENANT_ADMIN_USER_NAME, SampleConstants.CRED_USER_NAME).
+                header(CharonConstants.TENANT_ADMIN_PASSWORD, SampleConstants.CRED_PASSWORD).
+                header(CharonConstants.TENANT_DOMAIN, SampleConstants.CRED_TENANT_DOMAIN).
+                header(CharonConstants.AUTH_MECHANISM, SCIMConstants.AUTH_TYPE_BASIC).post(String.class, "");
 
     }
 
