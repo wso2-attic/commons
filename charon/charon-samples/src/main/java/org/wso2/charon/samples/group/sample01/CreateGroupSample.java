@@ -31,11 +31,11 @@ import org.wso2.charon.samples.utils.SampleConstants;
 
 public class CreateGroupSample {
     //user details
-    public static final String DISPLAY_NAME = "marketingsnjk";
-    public static final String EXTERNAL_ID = "marketingsnjk";
+    public static final String DISPLAY_NAME = "marketingsnj";
+    public static final String EXTERNAL_ID = "marketingsnj";
     //replace following IDs with already existing member IDs.
-    public static final String[] MEMBERS = {"2e54c490-c510-4d70-a95d-6eb3b21ee941",
-                                            "30e99938-3bd3-412f-a29d-8531b940c4a9"};
+    public static final String[] MEMBERS = {"badde771-49cf-4faa-805c-82e2b56fbc3c",
+                                            "e2a118e1-8465-4c6f-9ae1-2e19db75a0a4"};
 
     public static void main(String[] args) {
 

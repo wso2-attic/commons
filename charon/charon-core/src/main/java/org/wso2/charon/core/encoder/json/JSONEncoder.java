@@ -209,8 +209,8 @@ public class JSONEncoder implements Encoder {
             } else if (value instanceof MultiValuedAttribute) {
                 encodeMultiValuedAttribute((MultiValuedAttribute) value, subObject);
             }
-            jsonArray.put(subObject);
         }
+        jsonArray.put(subObject);
     }
 
     /**
