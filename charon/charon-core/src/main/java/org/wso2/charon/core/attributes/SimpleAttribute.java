@@ -67,10 +67,10 @@ public class SimpleAttribute extends AbstractAttribute {
      *
      * @param attributeName - Name of the attribute
      * @param schema        - schema in which the attribute is defined.
-     */
+     *//*
     public SimpleAttribute(String attributeName, String schema) {
         super(attributeName, schema);
-    }
+    }*/
 
     /**
      * Create attribute with given name, schema name,whether it is readOnly and required.
@@ -181,14 +181,14 @@ public class SimpleAttribute extends AbstractAttribute {
     }
 
     /**
-     * Get the attribute value. This method is implemented to return the attribute value in the
-     * data type of the attribute value which was set when setting the attribute value.
+     * Get the attribute value.
      *
      * @return Value of the attribute.
      */
     //@Override
     public Object getValue() {
-        switch (dataType) {
+        return value;
+        /*switch (dataType) {
             case STRING:
                 return (String) value;
             case BOOLEAN:
@@ -204,7 +204,7 @@ public class SimpleAttribute extends AbstractAttribute {
 
         }
         //if data type is not set, return the string value.
-        return (String) value;
+        return (String) value;*/
     }
 
     /**

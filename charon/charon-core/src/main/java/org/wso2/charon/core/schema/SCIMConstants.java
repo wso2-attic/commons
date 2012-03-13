@@ -43,7 +43,6 @@ public class SCIMConstants {
         } else if (format.equals(APPLICATION_XML)) {
             return SCIMConstants.XML;
         } else {
-
             return null;
         }
     }

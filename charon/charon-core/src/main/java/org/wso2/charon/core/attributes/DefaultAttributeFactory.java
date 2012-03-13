@@ -171,15 +171,27 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                     continue;
                 }
                 for (Attribute otherAttribute : attributeValues) {
+                    //do not compare the same attribute
+                    if (attribute == otherAttribute) {
+                        continue;
+                    }
                     ComplexAttribute complexAttribute = (ComplexAttribute) attribute;
                     ComplexAttribute complexOtherAttribute = (ComplexAttribute) otherAttribute;
-                    SimpleAttribute type = (SimpleAttribute) complexAttribute.getSubAttribute(
-                            SCIMConstants.CommonSchemaConstants.TYPE);
-                    SimpleAttribute typeOther = (SimpleAttribute) complexAttribute.getSubAttribute(
-                            SCIMConstants.CommonSchemaConstants.TYPE);
+                    SimpleAttribute type = null;
+                    if (complexAttribute.getSubAttribute(SCIMConstants.CommonSchemaConstants.TYPE) != null) {
+                        type = (SimpleAttribute) complexAttribute.getSubAttribute(
+                                SCIMConstants.CommonSchemaConstants.TYPE);
+                    }
+                    SimpleAttribute typeOther = null;
+                    if (complexOtherAttribute.getSubAttribute(SCIMConstants.CommonSchemaConstants.TYPE) != null) {
+                        typeOther = (SimpleAttribute) complexAttribute.getSubAttribute(
+                                SCIMConstants.CommonSchemaConstants.TYPE);
+                    }
+                    //we assume value sub attribute is always there in a non null complex value of a
+                    // multi-valued attribute.
                     SimpleAttribute value = (SimpleAttribute) complexAttribute.getSubAttribute(
                             SCIMConstants.CommonSchemaConstants.VALUE);
-                    SimpleAttribute valueOther = (SimpleAttribute) complexAttribute.getSubAttribute(
+                    SimpleAttribute valueOther = (SimpleAttribute) complexOtherAttribute.getSubAttribute(
                             SCIMConstants.CommonSchemaConstants.VALUE);
                     //canonicalize and remove one if two equal found
                     if (type != null && typeOther != null && value != null && valueOther != null) {
@@ -189,13 +201,21 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                         }
                     }
                     //see if primary is repeated more than once and remove repeated if so,
-                    SimpleAttribute primary = (SimpleAttribute) complexAttribute.getSubAttribute(
-                            SCIMConstants.CommonSchemaConstants.PRIMARY);
-                    SimpleAttribute primaryOther = (SimpleAttribute) complexOtherAttribute.getSubAttribute(
-                            SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    SimpleAttribute primary = null;
+                    if (complexAttribute.getSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY) != null) {
+                        primary = (SimpleAttribute) complexAttribute.getSubAttribute(
+                                SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    }
+                    SimpleAttribute primaryOther = null;
+                    if (complexOtherAttribute.getSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY) != null) {
+                        primaryOther = (SimpleAttribute) complexOtherAttribute.getSubAttribute(
+                                SCIMConstants.CommonSchemaConstants.PRIMARY);
+                    }
                     if (primary != null && primaryOther != null) {
-                        //remove primary from one
-                        complexOtherAttribute.removeSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY);
+                        if (primary.getBooleanValue() && primaryOther.getBooleanValue()) {
+                            //remove primary from one
+                            complexOtherAttribute.removeSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY);
+                        }
                     }
                 }
             }

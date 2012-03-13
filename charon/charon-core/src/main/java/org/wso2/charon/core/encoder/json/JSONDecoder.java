@@ -241,7 +241,7 @@ public class JSONDecoder implements Decoder {
             //iterate through JSONArray and create the list of values as complex attributes..
             for (int i = 0; i < attributeValues.length(); i++) {
                 JSONObject complexAttributeValue = (JSONObject) attributeValues.get(i);
-                complexAttributeValues.add(buildComplexAttribute(attributeSchema, complexAttributeValue));
+                complexAttributeValues.add(buildComplexValue(attributeSchema, complexAttributeValue));
             }
             //set values as complex attributes
             multiValuedAttribute.setValuesAsSubAttributes(complexAttributeValues);
@@ -267,6 +267,37 @@ public class JSONDecoder implements Decoder {
                                                    JSONObject jsonObject) throws CharonException {
 
         ComplexAttribute complexAttribute = new ComplexAttribute(attributeSchema.getName());
+        //Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
+        List<SCIMSubAttributeSchema> subAttributeSchemas =
+                ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
+
+        for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
+
+            //we assume - according to current SCIM spec, that sub attributes are always simple attributes.
+            Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
+            if (subAttributeValue instanceof String) {
+                SimpleAttribute simpleAttribute =
+                        buildSimpleAttribute(subAttributeSchema, subAttributeValue);
+                //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
+                DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
+                //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+            }
+        }
+        //complexAttribute.setSubAttributes(subAttributesMap);
+        return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
+                                                                          complexAttribute);
+    }
+
+    /**
+     * To build a complex type value of a Multi Valued Attribute.
+     *
+     * @param attributeSchema
+     * @param jsonObject
+     * @return
+     */
+    private ComplexAttribute buildComplexValue(AttributeSchema attributeSchema,
+                                               JSONObject jsonObject) throws CharonException {
+        ComplexAttribute complexAttribute = new ComplexAttribute();
         //Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
         List<SCIMSubAttributeSchema> subAttributeSchemas =
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();

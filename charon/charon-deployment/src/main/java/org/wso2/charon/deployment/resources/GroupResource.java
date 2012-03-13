@@ -51,7 +51,7 @@ public class GroupResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
+    public Response getGroup(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
                             @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
                             @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                             @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
@@ -103,7 +103,7 @@ public class GroupResource {
     }
 
     @POST
-    public Response createUser(@HeaderParam(SCIMConstants.CONTENT_TYPE_HEADER) String inputFormat,
+    public Response createGroup(@HeaderParam(SCIMConstants.CONTENT_TYPE_HEADER) String inputFormat,
                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
                                @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
                                @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
@@ -164,7 +164,7 @@ public class GroupResource {
 
     @DELETE
     @Path("{id}")
-    public Response deleteUser(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
+    public Response deleteGroup(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
                                @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
                                @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,

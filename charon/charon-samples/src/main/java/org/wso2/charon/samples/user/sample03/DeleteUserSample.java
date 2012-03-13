@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.samples.group.sample03;
+package org.wso2.charon.samples.user.sample03;
 
 import org.apache.wink.client.ClientConfig;
 import org.apache.wink.client.ClientWebException;
@@ -23,13 +23,16 @@ import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
+import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 
-public class DeleteGroupSample {
-    public static final String GROUP_ID = "d6b59ddd-1133-4d9a-a4f8-72661ca39ede";
+public class DeleteUserSample {
 
+    public static final String USER_ID = "6135a5fe-13c6-4cc5-a7d0-cce9fc99605b";
+    
     public static void main(String[] args) {
 
         try {
@@ -40,11 +43,11 @@ public class DeleteGroupSample {
             RestClient restClient = new RestClient(clientConfig);
 
             //create resource endpoint
-            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
 
             //enable, disable SSL.
             //had to set content type for the delete request as well, coz wink client sets */* by default.
-            String response = groupResource.
+            String response = userResource.
                     header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
                     header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
                     accept(SCIMConstants.APPLICATION_JSON).
@@ -59,4 +62,5 @@ public class DeleteGroupSample {
         }
 
     }
+
 }

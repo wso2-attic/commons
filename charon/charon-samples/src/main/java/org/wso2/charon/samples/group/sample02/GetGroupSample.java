@@ -28,7 +28,7 @@ import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 
 public class GetGroupSample {
-    public static final String GROUP_ID = "7ea9695b-fee7-49c0-b8cb-0e81e516f22f";
+    public static final String GROUP_ID = "0d6c1125-98de-49c7-95b4-4188a312c08a";
 
     public static void main(String[] args) {
 

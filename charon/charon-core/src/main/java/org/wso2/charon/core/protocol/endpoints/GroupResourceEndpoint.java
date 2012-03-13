@@ -198,7 +198,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             //obtain the encoder matching the requested output format.
             encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
             if (storage instanceof UserManager) {
-                //delete user
+                //delete group
                 ((UserManager) storage).deleteGroup(id);
 
             } else {

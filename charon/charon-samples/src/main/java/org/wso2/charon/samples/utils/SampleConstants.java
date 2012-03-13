@@ -29,6 +29,6 @@ public class SampleConstants {
 
     public static final String USER_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/Users/";
     public static final String GROUP_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/Groups/";
-    public static final String REG_SERVICE_ENDPOINT = "http://localhost:8081/charonDemoApp/scim/RegistrationService";
+    public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/RegistrationService";
 
 }

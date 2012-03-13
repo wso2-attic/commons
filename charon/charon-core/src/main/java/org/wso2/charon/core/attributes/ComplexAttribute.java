@@ -19,6 +19,7 @@ package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,7 +29,7 @@ import java.util.Map;
 public class ComplexAttribute extends AbstractAttribute {
 
     /*If it is a complex attribute, has a list of sub attributes.*/
-    protected Map<String, Attribute> subAttributes;
+    protected Map<String, Attribute> subAttributes = new HashMap<String, Attribute>();
 
     /**
      * Retrieve the map of sub attributes.
@@ -58,8 +59,7 @@ public class ComplexAttribute extends AbstractAttribute {
         if (subAttributes.containsKey(attributeName)) {
             return subAttributes.get(attributeName);
         } else {
-            String error = "Requested attribute not found in the resource..";
-            throw new CharonException(error);
+            return null;
         }
     }
 
@@ -84,12 +84,13 @@ public class ComplexAttribute extends AbstractAttribute {
      */
     public void setSubAttribute(Attribute subAttribute) throws CharonException {
         if (subAttributes.containsKey(subAttribute.getName())) {
-            String errorMessage = "Attribute with the same attribute name already exist in the system";
+            String errorMessage = "Sub attribute with the same attribute name already exist in the complex attribute.";
             throw new CharonException(errorMessage);
         } else {
             subAttributes.put(subAttribute.getName(), subAttribute);
         }
     }
+
 
     /**
      * Remove a sub attribute from the complex attribute given the sub attribute name.

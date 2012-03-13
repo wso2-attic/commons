@@ -31,7 +31,8 @@ import org.wso2.charon.samples.utils.SampleConstants;
 
 public class GetUserSample {
 
-    public static final String USER_ID = "7ea9695b-fee7-49c0-b8cb-0e81e516f22f";
+    public static final String USER_ID = "ece82b9d-a603-4358-ae0d-0dc2823f03cc";
+    public static final String USER_ID1 = "38d3a090-365a-4bb5-a976-f67cc03eff29";
 
     public static void main(String[] args) {
 

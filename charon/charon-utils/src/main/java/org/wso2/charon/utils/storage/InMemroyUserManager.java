@@ -70,14 +70,16 @@ public class InMemroyUserManager implements UserManager {
                     if (sampleUser.getEmails() != null) {
                         scimUser.setEmails(sampleUser.getEmails());
                     }
-                    if (scimUser.getExternalId() != null) {
+                    if (sampleUser.getFullyQualifiedName() != null) {
                         scimUser.setExternalId(sampleUser.getFullyQualifiedName());
                     }
                 }
             }
         }
-        //Validate the constructed SCIMObject against the schema
-        DefaultSchemaValidator.validateSCIMObject(scimUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+        //Validate the constructed SCIMObject against the schema if object not null
+        if (scimUser != null) {
+            DefaultSchemaValidator.validateSCIMObject(scimUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+        }
         return scimUser;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -126,7 +128,6 @@ public class InMemroyUserManager implements UserManager {
             //if user list is empty
             throw new NotFoundException();
         }
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     /**
@@ -146,9 +147,9 @@ public class InMemroyUserManager implements UserManager {
                     String error = "User already in the system";
                     throw new CharonException(error);
                 }
-                customUser = createCustomUser(user);
-                userList.add(customUser);
             }
+            customUser = createCustomUser(user);
+            userList.add(customUser);
         } else {
             //if this is the first time a user is created, create the user and add it to the list
             customUser = createCustomUser(user);
@@ -191,7 +192,7 @@ public class InMemroyUserManager implements UserManager {
                             //fetch displayName attribute from users and set it in user members map.
                             for (SampleUser sampleUser : userList) {
                                 if (userMember.equals(sampleUser.getId())) {
-                                    userMembersMap.put(userMember, sampleUser.getDisplayName());
+                                    userMembersMap.put(userMember, getMemberDisplayForUser(sampleUser));
                                 }
                             }
                         }
@@ -232,9 +233,9 @@ public class InMemroyUserManager implements UserManager {
                     String error = "Group already in the system";
                     throw new CharonException(error);
                 }
-                customGroup = createCustomGroup(group);
-                groupList.add(customGroup);
             }
+            customGroup = createCustomGroup(group);
+            groupList.add(customGroup);
         } else {
             customGroup = createCustomGroup(group);
             groupList.add(customGroup);
@@ -256,6 +257,7 @@ public class InMemroyUserManager implements UserManager {
 
     @Override
     public void deleteGroup(String groupId) throws NotFoundException {
+        //TODO:when removing group, remove group membership of its members - i.e: consider updating group attribute of Users.
         if (!groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
                 if (groupId.equals(sampleGroup.getId())) {
@@ -316,8 +318,9 @@ public class InMemroyUserManager implements UserManager {
         if (group.getMembers() != null && !group.getMembers().isEmpty()) {
             //get all member ids
             List<String> memberIDs = group.getMembers();
+            //to be set in sample group
             List<String> userMemberIDs = new ArrayList<String>();
-            //<ID,displayName>
+            //<ID,displayName> - to be set in SCIM Group to be returned.
             Map<String, String> userMemberMap = new HashMap<String, String>();
             //see whether those ids in existing users
             if (!userList.isEmpty()) {
@@ -328,7 +331,7 @@ public class InMemroyUserManager implements UserManager {
                             //prepare to set the ids in sampleGroup->userList
                             userMemberIDs.add(memberID);
                             //prepare to set id n displayName in group->members
-                            userMemberMap.put(memberID, sampleUser.getDisplayName());
+                            userMemberMap.put(memberID, getMemberDisplayForUser(sampleUser));
                             //TODO:update group attribute of sample user to update the groups that he belongs to.
                         }
                     }
@@ -368,5 +371,20 @@ public class InMemroyUserManager implements UserManager {
             }
         }
         return sampleGroup;
+    }
+
+    /**
+     * Display value of multivalued group members attribute is set by SP. This function returns which
+     * to set out of available attributes.
+     *
+     * @param sampleUser
+     * @return
+     */
+    private String getMemberDisplayForUser(SampleUser sampleUser) {
+        if (sampleUser.getDisplayName() != null) {
+            return sampleUser.getDisplayName();
+        } else {
+            return sampleUser.getFullyQualifiedName();
+        }
     }
 }
