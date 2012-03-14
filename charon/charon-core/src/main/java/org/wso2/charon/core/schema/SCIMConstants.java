@@ -31,6 +31,8 @@ public class SCIMConstants {
     public static final String APPLICATION_JSON = "application/json";
     public static final String APPLICATION_XML = "application/xml";
 
+    public static final String dateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss";
+
     /**
      * Identify the format, given the Content-Type,Accept-Headers.
      *

@@ -384,7 +384,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         if (getMetaAttribute() != null) {
             ComplexAttribute metaAttribute = getMetaAttribute();
             //since this is not read-only, we just replace the attribute with newly created one.
-            metaAttribute.setSubAttribute(metaAttribute);
+            metaAttribute.setSubAttribute(attributes);
         } else {
             createMetaAttribute();
             getMetaAttribute().setSubAttribute(attributes);

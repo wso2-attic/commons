@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
+import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
@@ -34,11 +35,15 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class JSONEncoderTest {
+
     //test encoding of a simple attribute with string value.
     @Test
     public void testEncodeSimpleAttributeStringVal() {
@@ -81,7 +86,7 @@ public class JSONEncoderTest {
             //test whether properly encoded
             JSONObject decodedObject = new JSONObject(new JSONTokener(encodedString));
             String dateTimeString = (String) decodedObject.opt(SCIMConstants.CommonSchemaConstants.CREATED);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(SCIMConstants.dateTimeFormat);
             Assert.assertEquals(sdf.format(now), dateTimeString);
 
         } catch (CharonException e) {
@@ -162,9 +167,54 @@ public class JSONEncoderTest {
             User testUser = new User();
             Date createdDate = new Date();
             testUser.setCreatedDate(createdDate);
-            
+            Date lastModified = new Date();
+            testUser.setLastModified(lastModified);
+
+            SimpleDateFormat sdf = new SimpleDateFormat(SCIMConstants.dateTimeFormat);
+
+            String version = "v1";
+            String location = "http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Users/";
+            List<String> attributesToBeRemoved = new ArrayList<String>();
+            attributesToBeRemoved.add(SCIMConstants.UserSchemaConstants.DISPLAY_NAME);
+            attributesToBeRemoved.add(SCIMConstants.UserSchemaConstants.USER_NAME);
+
+            testUser.setVersion(version);
+            testUser.setLocation(location);
+            testUser.setAttributesOfMeta(attributesToBeRemoved);
+
+            ComplexAttribute metaAttribute = (ComplexAttribute) testUser.getAttribute(
+                    SCIMConstants.CommonSchemaConstants.META);
+
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            JSONObject encodedObject = new JSONObject();
+            jsonEncoder.encodeComplexAttribute(metaAttribute, encodedObject);
+
+            JSONObject decodedObject = new JSONObject(new JSONTokener(encodedObject.toString()));
+            JSONObject metaObject = decodedObject.optJSONObject(SCIMConstants.CommonSchemaConstants.META);
+            String created = (String) metaObject.opt(SCIMConstants.CommonSchemaConstants.CREATED);
+
+            Assert.assertEquals(sdf.format(createdDate), created);
+
+            String locationString = (String) metaObject.opt(SCIMConstants.CommonSchemaConstants.LOCATION);
+
+            Assert.assertEquals(location, locationString);
+
+            JSONArray attributes = metaObject.optJSONArray(SCIMConstants.CommonSchemaConstants.ATTRIBUTES);
+            if (!((SCIMConstants.UserSchemaConstants.DISPLAY_NAME.equals(attributes.get(0)) ||
+                   (SCIMConstants.UserSchemaConstants.USER_NAME.equals(attributes.get(0)))))) {
+                Assert.fail();
+            }
+            if (!((SCIMConstants.UserSchemaConstants.DISPLAY_NAME.equals(attributes.get(1)) ||
+                   (SCIMConstants.UserSchemaConstants.USER_NAME.equals(attributes.get(1)))))) {
+                Assert.fail();
+            }
+
         } catch (CharonException e) {
-            Assert.fail("Error in creating complex attribute: User->Meta");            
+            Assert.fail("Error in creating complex attribute: User->Meta");
+        } catch (JSONException e) {
+            Assert.fail("Complex attribute encoding failed.");
+        } catch (NotFoundException e) {
+            Assert.fail("Error in setting the attribute: User->Meta");
         }
     }
 
