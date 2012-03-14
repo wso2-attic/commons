@@ -22,6 +22,7 @@ package org.wso2.charon.core.objects;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.DefaultAttributeFactory;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
@@ -208,10 +209,11 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         SimpleAttribute createdDateAttribute = new SimpleAttribute(
                 SCIMConstants.CommonSchemaConstants.CREATED, null, createdDate,
                 DataType.DATE_TIME, true, false);
-        ComplexAttribute metaAttribute;
+        createdDateAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                SCIMSchemaDefinitions.CREATED, createdDateAttribute);
         //check meta complex attribute already exist.
-        if (getMeAttribute() != null) {
-            metaAttribute = getMeAttribute();
+        if (getMetaAttribute() != null) {
+            ComplexAttribute metaAttribute = getMetaAttribute();
             //check created date attribute already exist
             if (metaAttribute.isSubAttributeExist(createdDateAttribute.getName())) {
                 //log info level log that created date already set and can't set again.
@@ -224,7 +226,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMeAttribute().setSubAttribute(createdDateAttribute);
+            getMetaAttribute().setSubAttribute(createdDateAttribute);
 
         }
     }
@@ -236,7 +238,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
      */
     public Date getCreatedDate() throws CharonException {
         if (isMetaAttributeExist()) {
-            SimpleAttribute createdDate = (SimpleAttribute) getMeAttribute().getSubAttribute(
+            SimpleAttribute createdDate = (SimpleAttribute) getMetaAttribute().getSubAttribute(
                     SCIMConstants.CommonSchemaConstants.CREATED);
             if (createdDate != null) {
                 return createdDate.getDateValue();
@@ -250,34 +252,33 @@ public abstract class AbstractSCIMObject implements SCIMObject {
 
     public void setLastModified(Date lastModifiedDate) throws CharonException {
         //create the lastModified date attribute as defined in schema.
-        SimpleAttribute createdDateAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+        SimpleAttribute lastModifiedAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                 SCIMSchemaDefinitions.LAST_MODIFIED,
                 new SimpleAttribute(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED, lastModifiedDate));
 
-        ComplexAttribute metaAttribute;
         //check meta complex attribute already exist.
-        if (getMeAttribute() != null) {
-            metaAttribute = getMeAttribute();
+        if (getMetaAttribute() != null) {
+            ComplexAttribute metaAttribute = getMetaAttribute();
             //check created date attribute already exist
-            if (metaAttribute.isSubAttributeExist(createdDateAttribute.getName())) {
+            if (metaAttribute.isSubAttributeExist(lastModifiedAttribute.getName())) {
                 //log info level log that created date already set and can't set again.
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(createdDateAttribute);
+                metaAttribute.setSubAttribute(lastModifiedAttribute);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMeAttribute().setSubAttribute(createdDateAttribute);
+            getMetaAttribute().setSubAttribute(lastModifiedAttribute);
 
         }
     }
 
     public Date getLastModified() throws CharonException {
         if (isMetaAttributeExist()) {
-            SimpleAttribute createdDate = (SimpleAttribute) getMeAttribute().getSubAttribute(
+            SimpleAttribute createdDate = (SimpleAttribute) getMetaAttribute().getSubAttribute(
                     SCIMConstants.CommonSchemaConstants.LAST_MODIFIED);
             if (createdDate != null) {
                 return createdDate.getDateValue();
@@ -289,7 +290,125 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         }
     }
 
-    //TODO:do the same above for the other sub attributes defined under meta attribute.
+    public void setVersion(String version) throws CharonException {
+        //create the version attribute as defined in schema.
+        SimpleAttribute versionAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                SCIMSchemaDefinitions.VERSION,
+                new SimpleAttribute(SCIMConstants.CommonSchemaConstants.VERSION, version));
+
+        //check meta complex attribute already exist.
+        if (getMetaAttribute() != null) {
+            ComplexAttribute metaAttribute = getMetaAttribute();
+            //check version attribute already exist
+            if (metaAttribute.isSubAttributeExist(versionAttribute.getName())) {
+                //log info level log that version already set and can't set again.
+                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+            } else {
+
+                metaAttribute.setSubAttribute(versionAttribute);
+            }
+
+        } else {
+            //create meta attribute and set the sub attribute.
+            createMetaAttribute();
+            getMetaAttribute().setSubAttribute(versionAttribute);
+
+        }
+    }
+
+    public String getVersion() throws CharonException {
+        if (isMetaAttributeExist()) {
+            SimpleAttribute version = (SimpleAttribute) getMetaAttribute().getSubAttribute(
+                    SCIMConstants.CommonSchemaConstants.VERSION);
+            if (version != null) {
+                return version.getStringValue();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public void setLocation(String location) throws CharonException {
+        //create the version attribute as defined in schema.
+        SimpleAttribute versionAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                SCIMSchemaDefinitions.LOCATION,
+                new SimpleAttribute(SCIMConstants.CommonSchemaConstants.LOCATION, location));
+
+        //check meta complex attribute already exist.
+        if (getMetaAttribute() != null) {
+            ComplexAttribute metaAttribute = getMetaAttribute();
+            //check version attribute already exist
+            if (metaAttribute.isSubAttributeExist(versionAttribute.getName())) {
+                //log info level log that version already set and can't set again.
+                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+            } else {
+
+                metaAttribute.setSubAttribute(versionAttribute);
+            }
+
+        } else {
+            //create meta attribute and set the sub attribute.
+            createMetaAttribute();
+            getMetaAttribute().setSubAttribute(versionAttribute);
+
+        }
+    }
+
+    public String getLocation() throws CharonException {
+        if (isMetaAttributeExist()) {
+            SimpleAttribute version = (SimpleAttribute) getMetaAttribute().getSubAttribute(
+                    SCIMConstants.CommonSchemaConstants.LOCATION);
+            if (version != null) {
+                return version.getStringValue();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set the attributes to be removed in a patch operation.
+     *
+     * @param attributeNames
+     */
+    public void setAttributesOfMeta(List<String> attributeNames) throws CharonException {
+        MultiValuedAttribute attributes = new MultiValuedAttribute(
+                SCIMConstants.CommonSchemaConstants.ATTRIBUTES);
+        attributes.setValuesAsStrings(attributeNames);
+        attributes = (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(
+                SCIMSchemaDefinitions.ATTRIBUTES, attributes);
+        if (getMetaAttribute() != null) {
+            ComplexAttribute metaAttribute = getMetaAttribute();
+            //since this is not read-only, we just replace the attribute with newly created one.
+            metaAttribute.setSubAttribute(metaAttribute);
+        } else {
+            createMetaAttribute();
+            getMetaAttribute().setSubAttribute(attributes);
+        }
+    }
+
+    /**
+     * Get the attributes to be removed in a patch operation.
+     *
+     * @return
+     */
+    public List<String> getAttributesOfMeta() throws CharonException {
+        if (isMetaAttributeExist()) {
+            MultiValuedAttribute attributes = (MultiValuedAttribute) getMetaAttribute().getSubAttribute(
+                    SCIMConstants.CommonSchemaConstants.ATTRIBUTES);
+            if (attributes != null) {
+                return attributes.getValuesAsStrings();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
     protected boolean isMetaAttributeExist() {
         return attributeList.containsKey(SCIMConstants.CommonSchemaConstants.META);
@@ -306,7 +425,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         }
     }
 
-    protected ComplexAttribute getMeAttribute() {
+    protected ComplexAttribute getMetaAttribute() {
         if (isMetaAttributeExist()) {
             return (ComplexAttribute) attributeList.get(
                     SCIMConstants.CommonSchemaConstants.META);

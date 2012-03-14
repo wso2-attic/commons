@@ -19,6 +19,7 @@ package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import javax.xml.bind.DatatypeConverter;
@@ -34,6 +35,7 @@ public class SimpleAttribute extends AbstractAttribute {
     protected Object value;
 
     /*Data type of the attribute value.*/
+
     protected DataType dataType;
 
     /*public enum DataType {
@@ -178,6 +180,10 @@ public class SimpleAttribute extends AbstractAttribute {
 
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
+    }
+
+    public DataType getDataType() {
+        return dataType;
     }
 
     /**

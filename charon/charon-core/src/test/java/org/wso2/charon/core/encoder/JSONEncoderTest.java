@@ -1,0 +1,172 @@
+/*
+*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+package org.wso2.charon.core.encoder;
+
+import junit.framework.Assert;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.junit.Test;
+import org.wso2.charon.core.attributes.DefaultAttributeFactory;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
+import org.wso2.charon.core.attributes.SimpleAttribute;
+import org.wso2.charon.core.encoder.json.JSONEncoder;
+import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.objects.Group;
+import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
+public class JSONEncoderTest {
+    //test encoding of a simple attribute with string value.
+    @Test
+    public void testEncodeSimpleAttributeStringVal() {
+        try {
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            //create and encode a simple attribute with string value.
+            SimpleAttribute simpleAttribute = new SimpleAttribute(SCIMConstants.UserSchemaConstants.USER_NAME);
+            simpleAttribute.setValue("hasini");
+            DefaultAttributeFactory.createAttribute(SCIMSchemaDefinitions.USER_NAME, simpleAttribute);
+            JSONObject jsonObject = new JSONObject();
+            jsonEncoder.encodeSimpleAttribute(simpleAttribute, jsonObject);
+            String encodedString = jsonObject.toString();
+
+            //test whether properly encoded
+            JSONObject decodedObject = new JSONObject(new JSONTokener(encodedString));
+            String userName = (String) decodedObject.opt(SCIMConstants.UserSchemaConstants.USER_NAME);
+            Assert.assertEquals("hasini", userName);
+
+        } catch (CharonException e) {
+            Assert.fail("Simple attribute creation failed.");
+        } catch (JSONException e) {
+            Assert.fail("Simple attribute encoding failed.");
+        }
+    }
+
+    //test encoding of a simple attribute with DateTime Value.
+    @Test
+    public void testEncodeSimpleAttributeDateTimeVal() {
+        try {
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            //create and encode a simple attribute with string value.
+            SimpleAttribute simpleAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.CREATED);
+            Date now = new Date();
+            simpleAttribute.setValue(now);
+            DefaultAttributeFactory.createAttribute(SCIMSchemaDefinitions.CREATED, simpleAttribute);
+            JSONObject jsonObject = new JSONObject();
+            jsonEncoder.encodeSimpleAttribute(simpleAttribute, jsonObject);
+            String encodedString = jsonObject.toString();
+
+            //test whether properly encoded
+            JSONObject decodedObject = new JSONObject(new JSONTokener(encodedString));
+            String dateTimeString = (String) decodedObject.opt(SCIMConstants.CommonSchemaConstants.CREATED);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Assert.assertEquals(sdf.format(now), dateTimeString);
+
+        } catch (CharonException e) {
+            Assert.fail("Simple attribute creation failed.");
+        } catch (JSONException e) {
+            Assert.fail("Simple attribute encoding failed.");
+        }
+    }
+
+    //test encoding a multivalued attribute: Members attribute of Group schema
+    @Test
+    public void testEncodeMultivaluedAttribute() {
+        try {
+            //group members
+            String group1DisplayName = "eng";
+            String group1Value = UUID.randomUUID().toString();
+
+            String group2DisplayName = "qa";
+            String group2Value = UUID.randomUUID().toString();
+
+            //user members
+            String user1DisplayName = "hasini";
+            String user1Value = UUID.randomUUID().toString();
+
+            String user2DisplayName = "umesha";
+            String user2Value = UUID.randomUUID().toString();
+
+            Group testGroup = new Group();
+            testGroup.setMember(group1Value, group1DisplayName, SCIMConstants.GROUP);
+            testGroup.setMember(group2Value, group2DisplayName, SCIMConstants.GROUP);
+            testGroup.setMember(user1Value, user1DisplayName, SCIMConstants.USER);
+            testGroup.setMember(user2Value, user2DisplayName, SCIMConstants.USER);
+
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            JSONObject jsonObject = new JSONObject();
+            jsonEncoder.encodeMultiValuedAttribute(
+                    ((MultiValuedAttribute) testGroup.getAttribute(SCIMConstants.GroupSchemaConstants.MEMBERS)), jsonObject);
+
+            JSONObject decodedObject = new JSONObject(new JSONTokener(jsonObject.toString()));
+            JSONArray membersAttribute = (JSONArray) decodedObject.opt(SCIMConstants.GroupSchemaConstants.MEMBERS);
+            for (int i = 0; i < membersAttribute.length(); i++) {
+                JSONObject member = (JSONObject) membersAttribute.get(i);
+                String type = member.optString(SCIMConstants.CommonSchemaConstants.TYPE);
+                if (SCIMConstants.GROUP.equals(type)) {
+                    String value = member.optString(SCIMConstants.CommonSchemaConstants.VALUE);
+                    if (group1Value.equals(value)) {
+                        Assert.assertEquals(group1DisplayName, member.optString(
+                                SCIMConstants.CommonSchemaConstants.DISPLAY));
+                    } else if (group2Value.equals(value)) {
+                        Assert.assertEquals(group2DisplayName, member.optString(
+                                SCIMConstants.CommonSchemaConstants.DISPLAY));
+                    }
+                } else if (SCIMConstants.USER.equals(type)) {
+                    String value = member.optString(SCIMConstants.CommonSchemaConstants.VALUE);
+                    if (user1Value.equals(value)) {
+                        Assert.assertEquals(user1DisplayName, member.optString(
+                                SCIMConstants.CommonSchemaConstants.DISPLAY));
+                    } else if (user2Value.endsWith(value)) {
+                        Assert.assertEquals(user2DisplayName, member.optString(
+                                SCIMConstants.CommonSchemaConstants.DISPLAY));
+                    }
+                }
+            }
+
+        } catch (CharonException e) {
+            Assert.fail("Error in creating multi valued attribute: Group->Members");
+        } catch (NotFoundException e) {
+            Assert.fail("Error in setting the attribute: Group->Members");
+        } catch (JSONException e) {
+            Assert.fail("Multivalued attribute encoding failed.");
+        }
+    }
+
+    //test encoding a complex attribute: User->Meta attribute
+    @Test
+    public void testComplexAttribute() {
+        try {
+            User testUser = new User();
+            Date createdDate = new Date();
+            testUser.setCreatedDate(createdDate);
+            
+        } catch (CharonException e) {
+            Assert.fail("Error in creating complex attribute: User->Meta");            
+        }
+    }
+
+
+}

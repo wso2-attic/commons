@@ -30,7 +30,10 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -139,9 +142,15 @@ public class JSONEncoder implements Encoder {
      * @param attribute
      * @param rootObject
      */
-    protected void encodeSimpleAttribute(SimpleAttribute attribute, JSONObject rootObject)
+    public void encodeSimpleAttribute(SimpleAttribute attribute, JSONObject rootObject)
             throws JSONException {
         if (attribute.getValue() != null) {
+            //if type is DateTime, convert before encoding.
+            if (attribute.getDataType() != null &&
+                attribute.getDataType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
+                rootObject.put(attribute.getName(), formatDateTime((Date) attribute.getValue()));
+                return;
+            }
             rootObject.put(attribute.getName(), attribute.getValue());
         }
     }
@@ -157,6 +166,13 @@ public class JSONEncoder implements Encoder {
             throws JSONException {
         if (attributeValue.getValue() != null) {
             JSONObject attributeValueObject = new JSONObject();
+            //if type is DateTime, convert before encoding.
+            if (attributeValue.getDataType() != null &&
+                attributeValue.getDataType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
+                attributeValueObject.put(attributeValue.getName(),
+                                         formatDateTime((Date) attributeValue.getValue()));
+                return;
+            }
             attributeValueObject.put(attributeValue.getName(), attributeValue.getValue());
             jsonArray.put(attributeValueObject);
         }
@@ -169,7 +185,7 @@ public class JSONEncoder implements Encoder {
      * @param attribute
      * @param rootObject
      */
-    protected void encodeComplexAttribute(ComplexAttribute attribute, JSONObject rootObject)
+    public void encodeComplexAttribute(ComplexAttribute attribute, JSONObject rootObject)
             throws JSONException {
         JSONObject subObject = new JSONObject();
         Map<String, Attribute> subAttributes = attribute.getSubAttributes();
@@ -219,21 +235,41 @@ public class JSONEncoder implements Encoder {
      * @param multiValuedAttribute
      * @param jsonObject
      */
-    protected void encodeMultiValuedAttribute(MultiValuedAttribute multiValuedAttribute,
-                                              JSONObject jsonObject) throws JSONException {
+    public void encodeMultiValuedAttribute(MultiValuedAttribute multiValuedAttribute,
+                                           JSONObject jsonObject) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         //TODO:what if values are set as list of string values.For the moment it is ok, since only schemas
         //attribute has such values and we handle it separately in encoding.
+        List<String> stringAttributeValues = multiValuedAttribute.getValuesAsStrings();
         List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
-        for (Attribute attributeValue : attributeValues) {
-            if (attributeValue instanceof SimpleAttribute) {
-                encodeSimpleAttributeValue((SimpleAttribute) attributeValue, jsonArray);
+        //if values are strings,
+        if (stringAttributeValues != null && !stringAttributeValues.isEmpty()) {
+            for (String stringAttributeValue : stringAttributeValues) {
+                jsonArray.put(stringAttributeValue);
+            }
+        }
+        if (attributeValues != null && !attributeValues.isEmpty()) {
+            for (Attribute attributeValue : attributeValues) {
+                if (attributeValue instanceof SimpleAttribute) {
+                    encodeSimpleAttributeValue((SimpleAttribute) attributeValue, jsonArray);
 
-            } else if (attributeValue instanceof ComplexAttribute) {
+                } else if (attributeValue instanceof ComplexAttribute) {
 
-                encodeComplexAttributeValue((ComplexAttribute) attributeValue, jsonArray);
+                    encodeComplexAttributeValue((ComplexAttribute) attributeValue, jsonArray);
+                }
             }
         }
         jsonObject.put(multiValuedAttribute.getName(), jsonArray);
+    }
+
+    /**
+     * SCIM spec requires date time to be adhered to XML Schema Datatypes Specification
+     *
+     * @param date
+     */
+    private String formatDateTime(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
 }

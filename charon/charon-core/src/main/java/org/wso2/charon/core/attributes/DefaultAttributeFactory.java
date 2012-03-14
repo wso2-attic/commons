@@ -261,7 +261,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
      * @param subAttribute
      */
     public static void setSubAttribute(ComplexAttribute parentAttribute,
-                                       SimpleAttribute subAttribute) throws CharonException {
+                                       AbstractAttribute subAttribute) throws CharonException {
         //for the moment only check is whether a read-only attribute is trying to be added.
         if (!subAttribute.isReadOnly()) {
             parentAttribute.setSubAttribute(subAttribute);

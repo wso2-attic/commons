@@ -37,9 +37,13 @@ import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,6 +162,10 @@ public class JSONDecoder implements Decoder {
      */
     private SimpleAttribute buildSimpleAttribute(AttributeSchema attributeSchema,
                                                  Object attributeValue) throws CharonException {
+        //if expecting to decode an attribute of date time type, parse it to Date type.
+        if (attributeSchema.getType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
+            attributeValue = parseDateTime((String) attributeValue);
+        }
         SimpleAttribute simpleAttribute = new SimpleAttribute(attributeSchema.getName(), attributeValue);
 //      simpleAttribute.setValue(attributeValue);
         return (SimpleAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
@@ -281,6 +289,11 @@ public class JSONDecoder implements Decoder {
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
                 DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
                 //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+            } else if (subAttributeValue instanceof JSONArray) {
+                //there can be sub attributes which are multivalued: such as: Meta->attributes
+                DefaultAttributeFactory.setSubAttribute(
+                        complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
+                                                                    (JSONArray) subAttributeValue));
             }
         }
         //complexAttribute.setSubAttributes(subAttributesMap);
@@ -304,7 +317,6 @@ public class JSONDecoder implements Decoder {
 
         for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
 
-            //we assume - according to current SCIM spec, that sub attributes are always simple attributes.
             Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
             if (subAttributeValue instanceof String) {
                 SimpleAttribute simpleAttribute =
@@ -312,10 +324,32 @@ public class JSONDecoder implements Decoder {
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
                 DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
                 //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+            } else if (subAttributeValue instanceof JSONArray) {
+                //there can be sub attributes which are multivalued: such as: Meta->attributes
+                DefaultAttributeFactory.setSubAttribute(
+                        complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
+                                                                    (JSONArray) subAttributeValue));
             }
         }
         //complexAttribute.setSubAttributes(subAttributesMap);
         return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                           complexAttribute);
+    }
+
+    /**
+     * SCIM spec requires date time to be adhered to XML Schema Datatypes Specification
+     *
+     * @param dateTimeString
+     * @return
+     * @throws ParseException
+     */
+    private Date parseDateTime(String dateTimeString) throws CharonException {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            return sdf.parse(dateTimeString);
+        } catch (ParseException e) {
+            throw new CharonException("Error in parsing date time. " +
+                                      "Date time should adhere to the format: yyyy-MM-dd'T'HH:mm:ss");
+        }
     }
 }
