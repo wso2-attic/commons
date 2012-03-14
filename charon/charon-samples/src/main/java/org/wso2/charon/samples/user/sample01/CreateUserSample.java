@@ -33,7 +33,7 @@ public class CreateUserSample {
 
     //user details
     public static final String USER_NAME = "hasini";
-    public static final String EXTERNAL_ID = "hasini@gmail.com";
+    public static final String EXTERNAL_ID = "hasinig@gmail.com";
     public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
 
     public static void main(String[] args) {
