@@ -32,6 +32,7 @@ import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+import org.wso2.charon.core.schema.ServerSideValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +74,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }
+                //perform service provider side validation. 
+                ServerSideValidator.validateRetrievedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
                 //convert the user into specific format.
                 String encodedUser = encoder.encodeSCIMObject(user);
                 //if there are any http headers to be added in the response header.
@@ -145,6 +148,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 //throw internal server error.
                 throw new InternalServerException(error);
             }
+
+            //validate the created user
+            ServerSideValidator.validateCreatedSCIMObject(createdUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
             //encode the newly created SCIM user object and add id attribute to Location header.
             String encodedUser;
             Map<String, String> httpHeaders = new HashMap<String, String>();

@@ -22,10 +22,10 @@ package org.wso2.charon.samples.utils;
  */
 public class SampleConstants {
     //credentials for accessing API
-    public static final String CRED_USER_NAME = "hasini@wso2.org";
+    public static final String CRED_USER_NAME = "hasini@wso2.edu";
     public static final String CRED_PASSWORD = "hasinig";
 
-    public static final String CRED_TENANT_DOMAIN = "wso2.org";
+    public static final String CRED_TENANT_DOMAIN = "wso2.edu";
 
     /*public static final String USER_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Users/";
     public static final String GROUP_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Groups/";

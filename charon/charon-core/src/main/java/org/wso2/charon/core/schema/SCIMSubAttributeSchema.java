@@ -84,6 +84,17 @@ public class SCIMSubAttributeSchema implements AttributeSchema {
         this.description = description;
     }
 
+    @Override
+    public String getSchema() {
+        //no implementation of this method in SubAttributeSchema
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setSchema(String schema) {
+        //no implementation of this method in SubAttributeSchema
+    }
+
     public DataType getType() {
         return type;
     }

@@ -29,6 +29,7 @@ import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.ClientSideValidator;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
@@ -121,13 +122,22 @@ public class SCIMClient {
     private SCIMObject decodeSCIMResponse(String scimResponse, Decoder decoder,
                                           int resourceType)
             throws CharonException, BadRequestException {
+
         switch (resourceType) {
             case 1:
-                return decoder.decodeResource(scimResponse,
-                                              SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+                User userObject = (User) decoder.decodeResource(scimResponse,
+                                                                SCIMSchemaDefinitions.SCIM_USER_SCHEMA,
+                                                                new User());
+                ClientSideValidator.validateRetrievedSCIMObject(userObject,
+                                                                SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+                return userObject;
             case 2:
-                return decoder.decodeResource(scimResponse,
-                                              SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+                Group groupObject = (Group) decoder.decodeResource(scimResponse,
+                                                                   SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA,
+                                                                   new Group());
+                ClientSideValidator.validateRetrievedSCIMObject(groupObject,
+                                                                SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
+                return groupObject;
             default:
                 throw new CharonException("Resource type didn't match any existing types.");
         }

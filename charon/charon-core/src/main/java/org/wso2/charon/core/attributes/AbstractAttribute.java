@@ -134,4 +134,14 @@ public abstract class AbstractAttribute implements Attribute {
     public void setDataType(SCIMSchemaDefinitions.DataType dataType){
         //Applicable only for SimpleAttribute.
     }
+
+    /**
+     * Remove a sub attribute from the complex attribute given the sub attribute name.
+     * No implementation for this in Abstract attribute. This is implemented in complex attribute.
+     *
+     * @param attributeName
+     */
+    public void removeSubAttribute(String attributeName) {
+
+    }
 }

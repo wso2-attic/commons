@@ -47,4 +47,8 @@ public interface AttributeSchema {
 
     public void setDescription(String description);
 
+    public String getSchema();
+
+    public void setSchema(String schema);
+
 }

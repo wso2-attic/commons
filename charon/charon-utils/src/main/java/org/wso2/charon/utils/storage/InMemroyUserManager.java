@@ -23,7 +23,7 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
-import org.wso2.charon.core.schema.DefaultSchemaValidator;
+import org.wso2.charon.core.schema.AbstractValidator;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
@@ -78,7 +78,7 @@ public class InMemroyUserManager implements UserManager {
         }
         //Validate the constructed SCIMObject against the schema if object not null
         if (scimUser != null) {
-            DefaultSchemaValidator.validateSCIMObject(scimUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+            AbstractValidator.validateSCIMObjectForRequiredAttributes(scimUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
         }
         return scimUser;  //To change body of implemented methods use File | Settings | File Templates.
     }

@@ -124,32 +124,6 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     }
 
     /**
-     * Once identified that constructing attribute is a simple attribute & related attribute schema is a
-     * SCIMSubAttributeSchema, perform attribute construction operations specific to Simple Attribute,
-     * which is a Sub Attribute.
-     *
-     * @param subAttributeSchema
-     * @param simpleAttribute
-     * @return
-     *//*
-    protected static SimpleAttribute createSimpleAttribute(
-            SCIMSubAttributeSchema subAttributeSchema, SimpleAttribute simpleAttribute)
-            throws CharonException {
-        if (simpleAttribute.getValue() != null) {
-            if (isAttributeDataTypeValid(simpleAttribute.getValue(), subAttributeSchema.getType())) {
-
-                simpleAttribute.dataType = subAttributeSchema.getType();
-                return simpleAttribute;
-            } else {
-                String error = "Violation in attribute shcema. DataType doesn't match that of the value.";
-                throw new CharonException(error);
-            }
-        } else {
-            return simpleAttribute;
-        }
-    }*/
-
-    /**
      * Once identified that constructing attribute as a multivalued attribute, perform specific operations
      * in creating a multi valued attribute. Such as canonicalization, and validating primary is not
      * repeated etc.
@@ -263,8 +237,8 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     public static void setSubAttribute(ComplexAttribute parentAttribute,
                                        AbstractAttribute subAttribute) throws CharonException {
         //for the moment only check is whether a read-only attribute is trying to be added.
-        if (!subAttribute.isReadOnly()) {
+        /*if (!subAttribute.isReadOnly()) {
             parentAttribute.setSubAttribute(subAttribute);
-        }
+        }*/
     }
 }

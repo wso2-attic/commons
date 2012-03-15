@@ -18,14 +18,10 @@
 package org.wso2.charon.core.objects;
 
 import org.wso2.charon.core.attributes.AbstractAttribute;
-import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.schema.DefaultSchemaValidator;
 import org.wso2.charon.core.schema.ResourceSchema;
 
-import java.util.Date;
-import java.util.UUID;
-
+//TODO:This is not used anymore.. Remove this class.
 /**
  * This resource factory class is to handle factory aspect of constructing  a resource given a
  * SCIMObject and the corresponding resource schema.
@@ -47,16 +43,9 @@ public class DefaultResourceFactory {
             throws CharonException {
         //perform and actions related to constructing the SCIMObject
         //for the moment return the SCIMObject
-        //add the attributes that the service provider adds to the resource such as id, meta - created,last modified,
-        //location,version
-        String id = UUID.randomUUID().toString();
-        abstractSCIMObject.setId(id);
-        Date date = new Date();
-        abstractSCIMObject.setCreatedDate(date);
-        //created n last modified are the same if not updated.
-        abstractSCIMObject.setLastModified(date);
+        
         //Validate the constructed SCIMObject against the schema
-        DefaultSchemaValidator.validateSCIMObject(abstractSCIMObject, resourceSchema);
+        //AbstractValidator.validateSCIMObjectForRequiredAttributes(abstractSCIMObject, resourceSchema);
         return abstractSCIMObject;
     }
 
@@ -69,15 +58,15 @@ public class DefaultResourceFactory {
      */
     public static void setAttribute(AbstractSCIMObject scimObject, AbstractAttribute attribute) {
         //add the attribute to attribute map if not already existing and if not read-only.
-        if (!scimObject.isAttributeExist(attribute.getName())) {
+       /* if (!scimObject.isAttributeExist(attribute.getName())) {
             if (!attribute.isReadOnly()) {
                 scimObject.getAttributeList().put(attribute.getName(), attribute);
             }
-        }
+        }*/
         //update the schemas list if any new schema used in the attribute, and create schemas array.
-        if (!scimObject.isSchemaExists(attribute.getSchemaName())) {
+        /*if (!scimObject.isSchemaExists(attribute.getSchemaName())) {
             scimObject.getSchemaList().add(attribute.getSchemaName());
-        }
+        }*/
 
     }
 

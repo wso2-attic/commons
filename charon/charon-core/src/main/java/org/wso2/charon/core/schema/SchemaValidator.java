@@ -17,9 +17,6 @@
 */
 package org.wso2.charon.core.schema;
 
-import org.wso2.charon.core.objects.AbstractSCIMObject;
-import org.wso2.charon.core.objects.SCIMObject;
-
 /**
  * To validate whether a SCIMObject constructed by SCIM service provider - to be returned to
  * SCIM consumer,or whether a decoded SCIMObject from a received request payload from client side,
@@ -33,5 +30,5 @@ public interface SchemaValidator {
      * @param scimObject
      * @param resourceSchema
      */
-    //public static void validateSCIMObject(AbstractSCIMObject scimObject, ResourceSchema resourceSchema);
+    //public static void validateSCIMObjectForRequiredAttributes(AbstractSCIMObject scimObject, ResourceSchema resourceSchema);
 }

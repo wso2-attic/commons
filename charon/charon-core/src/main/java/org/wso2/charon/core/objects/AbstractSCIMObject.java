@@ -75,13 +75,10 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     }
 
     /**
-     * Set the attribute in the SCIM Object. This is made private since we do not allow to set
-     * any attribute through SCIMObject API from outside - that can be done via DefaultResourceFactory,
-     * but this is needed in the member methods.
-     *
+     * Set the attribute in the SCIM Object.
      * @param newAttribute
      */
-    private void setAttribute(Attribute newAttribute) {
+    public void setAttribute(Attribute newAttribute) {
         //and update the schemas list if any new schema used in the attribute, and create schemas array.
         if (!isSchemaExists(newAttribute.getSchemaName())) {
             schemaList.add(newAttribute.getSchemaName());

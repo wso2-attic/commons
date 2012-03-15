@@ -74,30 +74,27 @@ public class JSONDecoder implements Decoder {
 
                 if (attributeValObj instanceof String) {
                     //if the corresponding json value object is String, it is a SimpleAttribute.
-                    //scimObject.setAttribute(buildSimpleAttribute(attributeSchema, attributeValObj));
-                    DefaultResourceFactory.setAttribute(scimObject, buildSimpleAttribute
-                            (attributeSchema, attributeValObj));
+                    scimObject.setAttribute(buildSimpleAttribute(attributeSchema, attributeValObj));
+                    /*DefaultResourceFactory.setAttribute(scimObject, buildSimpleAttribute
+                            (attributeSchema, attributeValObj));*/
 
                 } else if (attributeValObj instanceof JSONArray) {
                     //if the corresponding json value object is JSONArray, it is a MultiValuedAttribute.
-/*
                     scimObject.setAttribute(
                             buildMultiValuedAttribute(attributeSchema, (JSONArray) attributeValObj));
-*/
-                    DefaultResourceFactory.setAttribute(
-                            scimObject, buildMultiValuedAttribute(attributeSchema, (JSONArray) attributeValObj));
+                    /*DefaultResourceFactory.setAttribute(
+                            scimObject, buildMultiValuedAttribute(attributeSchema, (JSONArray) attributeValObj));*/
 
                 } else if (attributeValObj instanceof JSONObject) {
                     //if the corresponding json value object is JSONObject, it is a ComplexAttribute.
-/*
                     scimObject.setAttribute(buildComplexAttribute(attributeSchema,
                                                                   (JSONObject) attributeValObj));
-*/
-                    DefaultResourceFactory.setAttribute(
-                            scimObject, buildComplexAttribute(attributeSchema, (JSONObject) attributeValObj));
+                    /*DefaultResourceFactory.setAttribute(
+                            scimObject, buildComplexAttribute(attributeSchema, (JSONObject) attributeValObj));*/
                 }
             }
-            return DefaultResourceFactory.createSCIMObject(resourceSchema, scimObject);
+            //return DefaultResourceFactory.createSCIMObject(resourceSchema, scimObject);
+            return scimObject;
 
         } catch (JSONException e) {
             //log error
@@ -280,20 +277,20 @@ public class JSONDecoder implements Decoder {
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
         for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
-
-            //we assume - according to current SCIM spec, that sub attributes are always simple attributes.
             Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
             if (subAttributeValue instanceof String) {
                 SimpleAttribute simpleAttribute =
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
-                DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
+                //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
                 //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
             } else if (subAttributeValue instanceof JSONArray) {
                 //there can be sub attributes which are multivalued: such as: Meta->attributes
+/*
                 DefaultAttributeFactory.setSubAttribute(
                         complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
                                                                     (JSONArray) subAttributeValue));
+*/
             }
         }
         //complexAttribute.setSubAttributes(subAttributesMap);
