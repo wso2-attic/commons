@@ -73,7 +73,8 @@ public class URIResolverTest {
         URI baseResourceURI = getClass().getResource("/xpath20/").toURI();
         XslRuntimeUriResolver resolver = new XslRuntimeUriResolver(expr, baseResourceURI);
         // the local XSD file (in bpel-schemas module) is located using the current directory
-        Source source = resolver.resolve("file://" + new File("").getAbsolutePath() + "/../bpel-schemas/src/main/xsd/pmapi.xsd", null);
+        File file = new File("../bpel-schemas/src/main/xsd/pmapi.xsd");
+        Source source = resolver.resolve(file.toURI().toString(), null);
         Document doc = DOMUtils.sourceToDOM(source);
         
         assertThat(DOMUtils.domToString(doc), containsString("activity-info"));
