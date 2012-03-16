@@ -645,7 +645,10 @@ public class User extends AbstractSCIMObject {
         return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PASSWORD);
     }
 
-    
+    /**
+     * *************************Groups Attribute***************************************
+     */
+    //types: direct, indirect
 
 
     /**

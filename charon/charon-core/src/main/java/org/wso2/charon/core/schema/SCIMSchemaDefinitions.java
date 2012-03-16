@@ -34,8 +34,9 @@ public class SCIMSchemaDefinitions {
     * of sub attributes in Multi-Valued Attributes.*/
 
 
-    
-    /**********************Sub attributes found in common-schema**********************************/
+    /**
+     * *******************Sub attributes found in common-schema*********************************
+     */
     //TODO:add canonical values.
     public static final SCIMSubAttributeSchema TYPE =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.TYPE,
@@ -86,10 +87,9 @@ public class SCIMSchemaDefinitions {
                                                                 SCIMConstants.ATTRIBUTES_DESC, false, false, false, null);
 
 
-
-
-    
-    /****************Sub attribute schemas for the sub attributes defined in user schema***********/
+    /**
+     * *************Sub attribute schemas for the sub attributes defined in user schema**********
+     */
     public static final SCIMSubAttributeSchema FORMATTED =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema("formatted", DataType.STRING,
                                                                 SCIMConstants.FORMATTED_NAME_DESC,
@@ -121,14 +121,11 @@ public class SCIMSchemaDefinitions {
                                                                 false, false, false, null);
 
 
-
-    
     /**
      * *********SCIM defined attribute schemas***************************
      */
 
 
-    
     //attribute schemas of the attributes defined in common schema.
 
     /*Unique identifier for the SCIM Resource as defined by the Service Provider*/
@@ -156,8 +153,6 @@ public class SCIMSchemaDefinitions {
                                                           CREATED, LAST_MODIFIED, LOCATION, VERSION, ATTRIBUTES);
 
 
-
-    
     //attribute schemas of the attributes defined in user schema.
 
     /*Unique identifier for the User, typically used by the user to directly authenticate to the service provider.*/
@@ -260,13 +255,10 @@ public class SCIMSchemaDefinitions {
             SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.GROUPS,
                                                           DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.GROUP,
-                                                          SCIMConstants.GROUP_DESC,
-                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, null);
+                                                          SCIMConstants.USER_GROUP_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, true, false, null);
 
 
-
-
-    
     //attribute schemas of the attributes defined in group schema.
     public static final SCIMAttributeSchema DISPLAY_NAME =
             SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.DISPLAY_NAME,
@@ -298,7 +290,8 @@ public class SCIMSchemaDefinitions {
                                                         SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS,
                                                         DISPLAY_NAME, NAME, NICK_NAME, PROFILE_URL,
                                                         TITLE, USER_TYPE, PREFERRED_LANGUAGE, LOCALE,
-                                                        TIMEZONE, ACTIVE, PASSWORD);
+                                                        TIMEZONE, ACTIVE, PASSWORD, PHONE_NUMBERS, IMS,
+                                                        PHOTOS, GROUPS);
 
 
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =

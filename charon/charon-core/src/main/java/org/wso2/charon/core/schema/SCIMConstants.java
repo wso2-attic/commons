@@ -122,7 +122,7 @@ public class SCIMConstants {
 
         public static final String PHOTOS = "photos";
         public static final String PHOTO = "photo";
-        
+
         public static final String ADDRESSES = "addresses";
         public static final String ADDRESS = "address";
 
@@ -131,7 +131,7 @@ public class SCIMConstants {
 
         public static final String ENTITLEMENTS = "entitlements";
         public static final String ENTITLEMENT = "entitlement";
-        
+
         public static final String ROLES = "roles";
         public static final String ROLE = "role";
 
@@ -202,6 +202,7 @@ public class SCIMConstants {
     public static final String VERSION_DESC = "The version of the Resource being returned. This value must be the same as the ETag HTTP response header.";
 
 
+
     /**
      * ******Attributes descriptions of the attributes found in User Schema************
      */
@@ -227,12 +228,6 @@ public class SCIMConstants {
     public static final String META_DESC = "A complex attribute containing resource metadata.";
 
     public static final String USER_DISPLAY_NAME_DESC = "The name of the User, suitable for display to end-users.";
-    /**
-     * ****************** Attributes descriptions of the attributes found in Group Schema***********
-     */
-    public static final String DISPLAY_NAME_DESC = "A human readable name for the Group.";
-    public static final String MEMBERS_DESC = "A list of members of the Group. The value must be the \"id\" of a SCIM resource, either a User, or a Group. " +
-                                              "The intention of the Group type is to allow the Service Provider to support nested Groups.";
 
     public static final String FORMATTED_NAME_DESC = "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display";
     public static final String FAMILY_NAME_DESC = "The family name of the User, or \"Last Name\" in most Western languages";
@@ -272,6 +267,19 @@ public class SCIMConstants {
     public static final String REGION_DESC = "The state or region component";
     public static final String POSTAL_CODE_DESC = "The zipcode or postal code component.";
     public static final String COUNTRY_DESC = "The country name component.";
+
+    public static final String USER_GROUP_DESC = "A list of groups that the user belongs to, either thorough direct membership, " +
+                                                 "nested groups, or dynamically calculated. The Canonical types " +
+                                                 "\"direct\" and \"indirect\" are defined to describe how " +
+                                                 "the group membership was derived. READ-ONLY";
+
+
+    /**
+     * ****************** Attributes descriptions of the attributes found in Group Schema***********
+     */
+    public static final String DISPLAY_NAME_DESC = "A human readable name for the Group.";
+    public static final String MEMBERS_DESC = "A list of members of the Group. The value must be the \"id\" of a SCIM resource, either a User, or a Group. " +
+                                              "The intention of the Group type is to allow the Service Provider to support nested Groups.";
 
 
     /*Resource endpoints relative to the base SCIM URL*/
