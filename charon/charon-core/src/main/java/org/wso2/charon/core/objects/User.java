@@ -642,7 +642,7 @@ public class User extends AbstractSCIMObject {
     }
 
     public String getPassword() throws CharonException {
-        getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PASSWORD);
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PASSWORD);
     }
 
 
