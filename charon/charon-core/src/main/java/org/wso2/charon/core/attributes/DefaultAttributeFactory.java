@@ -174,6 +174,11 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                             attributeValues.remove(otherAttribute);
                         }
                     }
+                    //canonicalize based on case
+                    if ((value.getStringValue().toUpperCase()).equals(valueOther.getStringValue().toUpperCase())) {
+                        attributeValues.remove(otherAttribute);
+                    }
+
                     //see if primary is repeated more than once and remove repeated if so,
                     SimpleAttribute primary = null;
                     if (complexAttribute.getSubAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY) != null) {

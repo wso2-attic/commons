@@ -17,8 +17,6 @@
 */
 package org.wso2.charon.core.schema;
 
-import com.sun.org.apache.bcel.internal.generic.LoadClass;
-
 /**
  * This class contains the schema definitions in
  * http://www.simplecloud.info/specs/draft-scim-core-schema-00.html as ResourceSchemas and AttributeSchemas.
@@ -81,12 +79,12 @@ public class SCIMSchemaDefinitions {
                                                                 DataType.STRING, SCIMConstants.MIDDLE_NAME_DESC,
                                                                 false, false, false, null);
 
-    public static final SCIMSubAttributeSchema HONORIC_PREFIX =
+    public static final SCIMSubAttributeSchema HONORIFIC_PREFIX =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_PREFIX,
                                                                 DataType.STRING, SCIMConstants.HONORIFIC_PREFIX_DESC,
                                                                 false, false, false, null);
 
-    public static final SCIMSubAttributeSchema HONORIC_SUFFIX =
+    public static final SCIMSubAttributeSchema HONORIFIC_SUFFIX =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_SUFFIX,
                                                                 DataType.STRING, SCIMConstants.HONORIFIC_SUFFIX_DESC,
                                                                 false, false, false, null);
@@ -177,7 +175,7 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.NAME_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false,
                                                           FORMATTED, FAMILY_NAME, GIVEN_NAME, MIDDLE_NAME,
-                                                          HONORIC_PREFIX, HONORIC_SUFFIX);
+                                                          HONORIFIC_PREFIX, HONORIFIC_SUFFIX);
 
 
     //sub attribute schemas of the attributes defined in User Schema,
@@ -208,7 +206,8 @@ public class SCIMSchemaDefinitions {
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.USER, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.USER_DESC, SCIMConstants.USER_ENDPOINT,
-                                                        SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS);
+                                                        SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS,
+                                                        DISPLAY_NAME, NAME);
 
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.GROUP, SCIMConstants.CORE_SCHEMA_URI,

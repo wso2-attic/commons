@@ -218,13 +218,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(createdDateAttribute);
+                metaAttribute.setSubAttribute(createdDateAttribute, null);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(createdDateAttribute);
+            getMetaAttribute().setSubAttribute(createdDateAttribute, null);
 
         }
     }
@@ -263,13 +263,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(lastModifiedAttribute);
+                metaAttribute.setSubAttribute(lastModifiedAttribute, null);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(lastModifiedAttribute);
+            getMetaAttribute().setSubAttribute(lastModifiedAttribute, null);
 
         }
     }
@@ -302,14 +302,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 //log info level log that version already set and can't set again.
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
-
-                metaAttribute.setSubAttribute(versionAttribute);
+                metaAttribute.setSubAttribute(versionAttribute, null);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(versionAttribute);
+            getMetaAttribute().setSubAttribute(versionAttribute, null);
 
         }
     }
@@ -343,13 +342,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(versionAttribute);
+                metaAttribute.setSubAttribute(versionAttribute, null);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(versionAttribute);
+            getMetaAttribute().setSubAttribute(versionAttribute, null);
 
         }
     }
@@ -382,10 +381,10 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         if (getMetaAttribute() != null) {
             ComplexAttribute metaAttribute = getMetaAttribute();
             //since this is not read-only, we just replace the attribute with newly created one.
-            metaAttribute.setSubAttribute(attributes);
+            metaAttribute.setSubAttribute(attributes, null);
         } else {
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(attributes);
+            getMetaAttribute().setSubAttribute(attributes, null);
         }
     }
 

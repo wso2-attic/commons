@@ -20,6 +20,7 @@ package org.wso2.charon.core.schema;
 import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
@@ -59,7 +60,7 @@ public class ServerSideValidator extends AbstractValidator {
         scimObject.setLocation(AbstractResourceEndpoint.getResourceEndpointURL(SCIMConstants.USER_ENDPOINT));
         //add version
 
-        //validate name
+        //if user object - validate name
 
         //validate for required attributes.
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
@@ -68,12 +69,17 @@ public class ServerSideValidator extends AbstractValidator {
 
     public static void validateUpdatedSCIMObject(AbstractSCIMObject scimObject,
                                                  SCIMResourceSchema resourceSchema) {
-        //validate name
+        //if user object, validate name
     }
 
     public static void validateRetrievedSCIMObject(AbstractSCIMObject scimObject,
                                                    SCIMResourceSchema resourceSchema) {
-        //validate name - if validated in post and put, no need to validate in get.
+        //if user object, validate name - if validated in post and put, no need to validate in get.
+        if (SCIMConstants.USER.equals(resourceSchema.getName())) {
+            if (scimObject.getAttributeList().containsKey(SCIMConstants.UserSchemaConstants.PASSWORD)) {
+                scimObject.deleteAttribute(SCIMConstants.UserSchemaConstants.PASSWORD);
+            }
+        }
     }
 
     /**
@@ -127,7 +133,7 @@ public class ServerSideValidator extends AbstractValidator {
         // or they MAY return just the individual component attributes using the other sub-attributes,
         // or they MAY return both. If both variants are returned, they SHOULD be describing the same name,
         // with the formatted name indicating how the component attributes should be combined.
-        
+
     }
 
 }

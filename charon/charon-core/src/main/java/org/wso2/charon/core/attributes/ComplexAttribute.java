@@ -18,6 +18,8 @@
 package org.wso2.charon.core.attributes;
 
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.schema.AttributeSchema;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,12 +82,18 @@ public class ComplexAttribute extends AbstractAttribute {
      * Set a sub attribute on the complex attribute.
      *
      * @param subAttribute
+     * @param attributeSchema
      * @throws CharonException
      */
-    public void setSubAttribute(Attribute subAttribute) throws CharonException {
+    public void setSubAttribute(Attribute subAttribute, AttributeSchema attributeSchema)
+            throws CharonException {
         if (subAttributes.containsKey(subAttribute.getName())) {
-            String errorMessage = "Sub attribute with the same attribute name already exist in the complex attribute.";
-            throw new CharonException(errorMessage);
+            //check if sub attribute read only.
+            if (!attributeSchema.getReadOnly()) {
+                subAttributes.put(subAttribute.getName(), subAttribute);
+            }
+            //log info level log that version already set and can't set again.
+            throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
         } else {
             subAttributes.put(subAttribute.getName(), subAttribute);
         }

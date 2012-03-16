@@ -104,6 +104,15 @@ public class SCIMConstants {
         public static final String HONORIFIC_SUFFIX = "honorificSuffix";
 
         public static final String NAME = "name";
+        public static final String NICK_NAME = "nickName";
+        public static final String PROFILE_URL = "profileUrl";
+        public static final String TITLE = "title";
+        public static final String USER_TYPE = "userType";
+        public static final String PREFERRED_LANGUAGE = "preferredLanguage";
+        public static final String LOCALE = "locale";
+        public static final String TIME_ZONE = "timezone";
+        public static final String ACTIVE = "active";
+        public static final String PASSWORD = "password";
 
     }
 
@@ -203,7 +212,17 @@ public class SCIMConstants {
     public static final String HONORIFIC_SUFFIX_DESC = "The honorific suffix(es) of the User, or \"Suffix\" in most Western languages";
 
     public static final String NAME_DESC = "The components of the User's real name.";
-    
+
+    public static final String NICK_NAME_DESC = "The casual way to address the user in real life. " +
+                                                "This attribute SHOULD NOT be used to represent a User's username";
+    public static final String PROFILE_URL_DESC = "A fully qualified URL to a page representing the User's online profile.";
+    public static final String TITLE_DESC = "The user’s title, such as “Vice President.”";
+    public static final String USER_TYPE_DESC = "Used to identify the organization to user relationship.";
+    public static final String PREFERRED_LANGUAGE_DESC = "Indicates the User's preferred written or spoken language.";
+    public static final String LOCALE_DESC = "Used to indicate the User's default location.";
+    public static final String TIME_ZONE_DESC = "The User's time zone in the \"Olson\" timezone database format";
+    public static final String ACTIVE_DESC = "A Boolean value indicating the User's administrative status.";
+    public static final String PASSWORD_DESC = "The User's clear text password. This value MUST never be returned by a Service Provider in any form.";
 
 
     /*Resource endpoints relative to the base SCIM URL*/
