@@ -295,7 +295,7 @@ public class User extends AbstractSCIMObject {
      * @throws CharonException
      * @throws NotFoundException
      */
-    public String getEmailByType(String type) throws CharonException, NotFoundException {
+    public String getEmailByType(String type) throws CharonException {
         if (isAttributeExist(SCIMConstants.UserSchemaConstants.EMAILS)) {
             MultiValuedAttribute emailsAttribute = (MultiValuedAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.EMAILS);
@@ -531,6 +531,118 @@ public class User extends AbstractSCIMObject {
         } else {
             return null;
         }
+    }
+
+    /**
+     * *********************Nick Name*************************************************
+     */
+    public void setNickName(String nickName) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.NICK_NAME,
+                           SCIMSchemaDefinitions.NICK_NAME, nickName, DataType.STRING);
+    }
+
+    public String getNickName() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.NICK_NAME);
+    }
+
+    /**
+     * *********************Profile URL***********************************************
+     */
+    public void setProfileURL(String profileURL) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.PROFILE_URL,
+                           SCIMSchemaDefinitions.PROFILE_URL, profileURL, DataType.STRING);
+    }
+
+    public String getProfileURL() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PROFILE_URL);
+    }
+
+    /**
+     * ***************************Title*******************************************
+     */
+    public void setTitle(String title) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.TITLE, SCIMSchemaDefinitions.TITLE,
+                           title, DataType.STRING);
+    }
+
+    public String getTitle() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.TITLE);
+    }
+
+    /**
+     * ***************************User Type***************************************
+     */
+    public void setUserType(String userType) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.USER_TYPE,
+                           SCIMSchemaDefinitions.USER_TYPE, userType, DataType.STRING);
+    }
+
+    public String getUserType() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.USER_TYPE);
+    }
+
+    /**
+     * ***************************Preferred Language******************************
+     */
+    public void setPreferredLanguage(String preferredLanguage) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.PREFERRED_LANGUAGE,
+                           SCIMSchemaDefinitions.PREFERRED_LANGUAGE, preferredLanguage, DataType.STRING);
+    }
+
+    public String getPreferredLanguage() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PREFERRED_LANGUAGE);
+    }
+
+    /**
+     * ***************************Locale******************************************
+     */
+    public void setLocale(String locale) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.LOCALE, SCIMSchemaDefinitions.LOCALE,
+                           locale, DataType.STRING);
+    }
+
+    public String getLocale() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.LOCALE);
+    }
+
+    /**
+     * *******************************Time Zone***************************************
+     */
+    public void setTimeZone(String timeZone) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.TIME_ZONE,
+                           SCIMSchemaDefinitions.TIMEZONE, timeZone, DataType.STRING);
+    }
+
+    public String getTimeZone() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.TIME_ZONE);
+    }
+
+    /**
+     * ********************************Active****************************************
+     */
+    public void setActive(Boolean active) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.ACTIVE,
+                           SCIMSchemaDefinitions.ACTIVE, active, DataType.BOOLEAN);
+    }
+
+    public Boolean getActive() throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.ACTIVE)) {
+            return ((SimpleAttribute) attributeList.get(SCIMConstants.UserSchemaConstants.ACTIVE)).getBooleanValue();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * ********************************Password**************************************
+     */
+    public void setPassword(String password) throws CharonException {
+        setSimpleAttribute(SCIMConstants.UserSchemaConstants.PASSWORD, SCIMSchemaDefinitions.PASSWORD,
+                           password, DataType.STRING);
+    }
+
+    public String getPassword() throws CharonException {
+        getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PASSWORD);
     }
 
 

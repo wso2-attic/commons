@@ -176,7 +176,48 @@ public class SCIMSchemaDefinitions {
                                                           false, false, false,
                                                           FORMATTED, FAMILY_NAME, GIVEN_NAME, MIDDLE_NAME,
                                                           HONORIFIC_PREFIX, HONORIFIC_SUFFIX);
+    public static final SCIMAttributeSchema NICK_NAME =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.NICK_NAME,
+                                                          DataType.STRING, false, null, SCIMConstants.NICK_NAME_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+    public static final SCIMAttributeSchema PROFILE_URL =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PROFILE_URL,
+                                                          DataType.STRING, false, null, SCIMConstants.PROFILE_URL_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
+    public static final SCIMAttributeSchema TITLE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.TITLE,
+                                                          DataType.STRING, false, null, SCIMConstants.TITLE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema USER_TYPE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.USER_TYPE,
+                                                          DataType.STRING, false, null, SCIMConstants.USER_TYPE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema PREFERRED_LANGUAGE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PREFERRED_LANGUAGE,
+                                                          DataType.STRING, false, null,
+                                                          SCIMConstants.PREFERRED_LANGUAGE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+    public static final SCIMAttributeSchema LOCALE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.LOCALE,
+                                                          DataType.STRING, false, null, SCIMConstants.LOCALE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+    public static final SCIMAttributeSchema TIMEZONE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.TIME_ZONE,
+                                                          DataType.STRING, false, null, SCIMConstants.TIME_ZONE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema ACTIVE =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ACTIVE,
+                                                          DataType.BOOLEAN, false, null, SCIMConstants.ACTIVE_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema PASSWORD =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PASSWORD,
+                                                          DataType.STRING, false, null, SCIMConstants.PASSWORD_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     //sub attribute schemas of the attributes defined in User Schema,
 
@@ -207,7 +248,9 @@ public class SCIMSchemaDefinitions {
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.USER, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.USER_DESC, SCIMConstants.USER_ENDPOINT,
                                                         SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS,
-                                                        DISPLAY_NAME, NAME);
+                                                        DISPLAY_NAME, NAME, NICK_NAME, PROFILE_URL,
+                                                        TITLE, USER_TYPE, PREFERRED_LANGUAGE, LOCALE,
+                                                        TIMEZONE, ACTIVE, PASSWORD);
 
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.GROUP, SCIMConstants.CORE_SCHEMA_URI,

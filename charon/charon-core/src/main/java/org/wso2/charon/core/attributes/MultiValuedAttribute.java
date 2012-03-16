@@ -304,8 +304,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
      * @throws NotFoundException
      * @throws CharonException
      */
-    public Object getAttributeValueByType(String type)
-            throws NotFoundException, CharonException {
+    public Object getAttributeValueByType(String type) throws CharonException {
         for (Attribute attributeValue : attributeValues) {
             if (attributeValue instanceof ComplexAttribute) {
                 SimpleAttribute typeValue = (SimpleAttribute) (
@@ -320,7 +319,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
                 }
             }
         }
-        return new NotFoundException();
+        return null;
     }
 
     public void canonicalizeAttributeValue(Attribute attribute) {
