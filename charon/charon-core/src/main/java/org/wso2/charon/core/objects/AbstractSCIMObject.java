@@ -76,6 +76,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
 
     /**
      * Set the attribute in the SCIM Object.
+     *
      * @param newAttribute
      */
     public void setAttribute(Attribute newAttribute) {
@@ -412,9 +413,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
     }
 
     protected void createMetaAttribute() throws CharonException {
-        Attribute metaAttribute = new ComplexAttribute(
+        /*Attribute metaAttribute = new ComplexAttribute(
                 SCIMConstants.CommonSchemaConstants.META,
-                SCIMConstants.CORE_SCHEMA_URI, false, new HashMap<String, Attribute>(), false);
+                SCIMConstants.CORE_SCHEMA_URI, false, new HashMap<String, Attribute>(), false);*/
+        ComplexAttribute metaAttribute =
+                (ComplexAttribute) DefaultAttributeFactory.createAttribute(
+                        SCIMSchemaDefinitions.META,
+                        new ComplexAttribute(SCIMConstants.CommonSchemaConstants.META));
         if (isMetaAttributeExist()) {
             throw new CharonException(ResponseCodeConstants.ATTRIBUTE_ALREADY_EXIST);
         } else {

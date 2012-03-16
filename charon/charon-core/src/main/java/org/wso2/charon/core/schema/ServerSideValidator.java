@@ -21,6 +21,7 @@ import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
+import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 
 import java.util.Date;
@@ -58,6 +59,8 @@ public class ServerSideValidator extends AbstractValidator {
         scimObject.setLocation(AbstractResourceEndpoint.getResourceEndpointURL(SCIMConstants.USER_ENDPOINT));
         //add version
 
+        //validate name
+
         //validate for required attributes.
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
         validateSchemaList(scimObject, resourceSchema);
@@ -65,12 +68,12 @@ public class ServerSideValidator extends AbstractValidator {
 
     public static void validateUpdatedSCIMObject(AbstractSCIMObject scimObject,
                                                  SCIMResourceSchema resourceSchema) {
-
+        //validate name
     }
 
     public static void validateRetrievedSCIMObject(AbstractSCIMObject scimObject,
                                                    SCIMResourceSchema resourceSchema) {
-
+        //validate name - if validated in post and put, no need to validate in get.
     }
 
     /**
@@ -117,6 +120,14 @@ public class ServerSideValidator extends AbstractValidator {
             }
         }
 
+    }
+
+    private static void validateName(User user, SCIMAttributeSchema nameAttributeSchema) {
+        // Providers MAY return just the full name as a single string in the formatted sub-attribute,
+        // or they MAY return just the individual component attributes using the other sub-attributes,
+        // or they MAY return both. If both variants are returned, they SHOULD be describing the same name,
+        // with the formatted name indicating how the component attributes should be combined.
+        
     }
 
 }

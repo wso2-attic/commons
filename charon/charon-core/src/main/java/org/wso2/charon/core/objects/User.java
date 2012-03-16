@@ -244,7 +244,7 @@ public class User extends AbstractSCIMObject {
     }
 
     /**
-     * ************DisplayName manipulation methods.**********************
+     * ************DisplayName manipulation methods.*************************************
      */
 
     public String getDisplayName() throws CharonException {
@@ -254,6 +254,13 @@ public class User extends AbstractSCIMObject {
     public void setDisplayName(String displayName) throws CharonException {
         setSimpleAttribute(SCIMConstants.UserSchemaConstants.DISPLAY_NAME,
                            SCIMSchemaDefinitions.USER_DISPLAY_NAME, displayName, DataType.STRING);
+    }
+
+    /**
+     * ***********************Name manipulation methods**********************************
+     */
+    private void createName() {
+                
     }
 
     /**

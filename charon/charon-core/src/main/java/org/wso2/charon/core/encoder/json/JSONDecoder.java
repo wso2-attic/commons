@@ -272,7 +272,7 @@ public class JSONDecoder implements Decoder {
                                                    JSONObject jsonObject) throws CharonException {
 
         ComplexAttribute complexAttribute = new ComplexAttribute(attributeSchema.getName());
-        //Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
+        Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
         List<SCIMSubAttributeSchema> subAttributeSchemas =
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
@@ -283,17 +283,20 @@ public class JSONDecoder implements Decoder {
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
                 //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
-                //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+                subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
             } else if (subAttributeValue instanceof JSONArray) {
                 //there can be sub attributes which are multivalued: such as: Meta->attributes
+                MultiValuedAttribute multivaluedAttribute =
+                        buildMultiValuedAttribute(subAttributeSchema, (JSONArray) subAttributeValue);
 /*
                 DefaultAttributeFactory.setSubAttribute(
                         complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
                                                                     (JSONArray) subAttributeValue));
 */
+                subAttributesMap.put(subAttributeSchema.getName(), multivaluedAttribute);
             }
         }
-        //complexAttribute.setSubAttributes(subAttributesMap);
+        complexAttribute.setSubAttributes(subAttributesMap);
         return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                           complexAttribute);
     }
@@ -308,7 +311,7 @@ public class JSONDecoder implements Decoder {
     private ComplexAttribute buildComplexValue(AttributeSchema attributeSchema,
                                                JSONObject jsonObject) throws CharonException {
         ComplexAttribute complexAttribute = new ComplexAttribute();
-        //Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
+        Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
         List<SCIMSubAttributeSchema> subAttributeSchemas =
                 ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
@@ -319,16 +322,19 @@ public class JSONDecoder implements Decoder {
                 SimpleAttribute simpleAttribute =
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
-                DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
-                //subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+                //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
+                subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
             } else if (subAttributeValue instanceof JSONArray) {
                 //there can be sub attributes which are multivalued: such as: Meta->attributes
-                DefaultAttributeFactory.setSubAttribute(
+                /*DefaultAttributeFactory.setSubAttribute(
                         complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
-                                                                    (JSONArray) subAttributeValue));
+                                                                    (JSONArray) subAttributeValue));*/
+                MultiValuedAttribute multivaluedAttribute =
+                        buildMultiValuedAttribute(subAttributeSchema, (JSONArray) subAttributeValue);
+                subAttributesMap.put(subAttributeSchema.getName(), multivaluedAttribute);
             }
         }
-        //complexAttribute.setSubAttributes(subAttributesMap);
+        complexAttribute.setSubAttributes(subAttributesMap);
         return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                           complexAttribute);
     }

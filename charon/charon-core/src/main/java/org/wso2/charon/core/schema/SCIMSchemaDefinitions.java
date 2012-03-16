@@ -60,6 +60,38 @@ public class SCIMSchemaDefinitions {
                                                                 DataType.STRING, SCIMConstants.VALUE_DESC,
                                                                 false, false, false, null);
 
+    /*Sub attribute schemas for the sub attributes defined in user schema*/
+    public static final SCIMSubAttributeSchema FORMATTED =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema("formatted", DataType.STRING,
+                                                                SCIMConstants.FORMATTED_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema FAMILY_NAME =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.FAMILY_NAME,
+                                                                DataType.STRING, SCIMConstants.FAMILY_NAME_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema GIVEN_NAME =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.GIVEN_NAME,
+                                                                DataType.STRING, SCIMConstants.GIVEN_NAME_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema MIDDLE_NAME =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.MIDDLE_NAME,
+                                                                DataType.STRING, SCIMConstants.MIDDLE_NAME_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema HONORIC_PREFIX =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_PREFIX,
+                                                                DataType.STRING, SCIMConstants.HONORIFIC_PREFIX_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema HONORIC_SUFFIX =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_SUFFIX,
+                                                                DataType.STRING, SCIMConstants.HONORIFIC_SUFFIX_DESC,
+                                                                false, false, false, null);
+
+
     /**
      * *********SCIM defined attribute schemas***************************
      */
@@ -138,6 +170,16 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.USER_DISPLAY_NAME_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false,
                                                           false, false, null);
+
+    public static final SCIMAttributeSchema NAME =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.NAME,
+                                                          DataType.STRING, false, null,
+                                                          SCIMConstants.NAME_DESC, SCIMConstants.CORE_SCHEMA_URI,
+                                                          false, false, false,
+                                                          FORMATTED, FAMILY_NAME, GIVEN_NAME, MIDDLE_NAME,
+                                                          HONORIC_PREFIX, HONORIC_SUFFIX);
+
+
     //sub attribute schemas of the attributes defined in User Schema,
 
 

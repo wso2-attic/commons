@@ -95,6 +95,16 @@ public class SCIMConstants {
         public static final String WORK = "work";
 
         public static final String DISPLAY_NAME = "displayName";
+
+        public static final String FORMATTED = "formatted";
+        public static final String FAMILY_NAME = "familyName";
+        public static final String GIVEN_NAME = "givenName";
+        public static final String MIDDLE_NAME = "middleName";
+        public static final String HONORIFIC_PREFIX = "honorificPrefix";
+        public static final String HONORIFIC_SUFFIX = "honorificSuffix";
+
+        public static final String NAME = "name";
+
     }
 
     public static class GroupSchemaConstants {
@@ -184,6 +194,17 @@ public class SCIMConstants {
     public static final String DISPLAY_NAME_DESC = "A human readable name for the Group.";
     public static final String MEMBERS_DESC = "A list of members of the Group. The value must be the \"id\" of a SCIM resource, either a User, or a Group. " +
                                               "The intention of the Group type is to allow the Service Provider to support nested Groups.";
+
+    public static final String FORMATTED_DESC = "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display";
+    public static final String FAMILY_NAME_DESC = "The family name of the User, or \"Last Name\" in most Western languages";
+    public static final String GIVEN_NAME_DESC = "The given name of the User, or \"First Name\" in most Western languages";
+    public static final String MIDDLE_NAME_DESC = "The middle name(s) of the User";
+    public static final String HONORIFIC_PREFIX_DESC = "The honorific prefix(es) of the User, or \"Title\" in most Western languages";
+    public static final String HONORIFIC_SUFFIX_DESC = "The honorific suffix(es) of the User, or \"Suffix\" in most Western languages";
+
+    public static final String NAME_DESC = "The components of the User's real name.";
+    
+
 
     /*Resource endpoints relative to the base SCIM URL*/
     public static final String USER_ENDPOINT = "/Users";
