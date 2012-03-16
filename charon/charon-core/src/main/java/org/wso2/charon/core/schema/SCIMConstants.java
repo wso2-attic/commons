@@ -96,7 +96,7 @@ public class SCIMConstants {
 
         public static final String DISPLAY_NAME = "displayName";
 
-        public static final String FORMATTED = "formatted";
+        public static final String FORMATTED_NAME = "formatted";
         public static final String FAMILY_NAME = "familyName";
         public static final String GIVEN_NAME = "givenName";
         public static final String MIDDLE_NAME = "middleName";
@@ -114,6 +114,36 @@ public class SCIMConstants {
         public static final String ACTIVE = "active";
         public static final String PASSWORD = "password";
 
+        public static final String PHONE_NUMBERS = "phoneNumbers";
+        public static final String PHONE_NUMBER = "phoneNumber";
+
+        public static final String IMS = "ims";
+        public static final String IM = "im";
+
+        public static final String PHOTOS = "photos";
+        public static final String PHOTO = "photo";
+        
+        public static final String ADDRESSES = "addresses";
+        public static final String ADDRESS = "address";
+
+        public static final String GROUPS = "groups";
+        public static final String GROUP = "group";
+
+        public static final String ENTITLEMENTS = "entitlements";
+        public static final String ENTITLEMENT = "entitlement";
+        
+        public static final String ROLES = "roles";
+        public static final String ROLE = "role";
+
+        public static final String X509CERTIFICATES = "x509Certificates";
+        public static final String X509CERTIFICATE = "x509Certificate";
+
+        public static final String FORMATTED_ADDRESS = "formatted";
+        public static final String STREET_ADDRESS = "streetAddress";
+        public static final String LOCALITY = "locality";
+        public static final String REGION = "region";
+        public static final String POSTAL_CODE = "postalCode";
+        public static final String COUNTRY = "country";
     }
 
     public static class GroupSchemaConstants {
@@ -204,7 +234,7 @@ public class SCIMConstants {
     public static final String MEMBERS_DESC = "A list of members of the Group. The value must be the \"id\" of a SCIM resource, either a User, or a Group. " +
                                               "The intention of the Group type is to allow the Service Provider to support nested Groups.";
 
-    public static final String FORMATTED_DESC = "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display";
+    public static final String FORMATTED_NAME_DESC = "The full name, including all middle names, titles, and suffixes as appropriate, formatted for display";
     public static final String FAMILY_NAME_DESC = "The family name of the User, or \"Last Name\" in most Western languages";
     public static final String GIVEN_NAME_DESC = "The given name of the User, or \"First Name\" in most Western languages";
     public static final String MIDDLE_NAME_DESC = "The middle name(s) of the User";
@@ -223,6 +253,25 @@ public class SCIMConstants {
     public static final String TIME_ZONE_DESC = "The User's time zone in the \"Olson\" timezone database format";
     public static final String ACTIVE_DESC = "A Boolean value indicating the User's administrative status.";
     public static final String PASSWORD_DESC = "The User's clear text password. This value MUST never be returned by a Service Provider in any form.";
+
+    public static final String PHONE_NUMBERS_DESC = "Phone numbers for the User. Canonical Type values of work, home, mobile, fax, pager and other";
+    public static final String IMS_DESC = "Instant messaging address for the User.Canonical Values to represent currently popular IM services: " +
+                                          "aim, gtalk, icq, xmpp, msn, skype, qq, and yahoo";
+    public static final String PHOTOS_DESC = "URL of a photo of the User. " +
+                                             "Canonical Values to represent popular photo sizes: photo, thumbnail";
+
+    public static final String ADDRESSES_DESC = "A physical mailing address for this User";
+
+    public static final String FORMATTED_ADDRESS_DESC = "The full mailing address, " +
+                                                        "formatted for display or use with a mailing label";
+
+    public static final String STREET_ADDRESS_DESC = "The full street address component, " +
+                                                     "which may include house number, street name, P.O. box, " +
+                                                     "and multi-line extended street address information";
+    public static final String LOCALITY_DESC = "The city or locality component";
+    public static final String REGION_DESC = "The state or region component";
+    public static final String POSTAL_CODE_DESC = "The zipcode or postal code component.";
+    public static final String COUNTRY_DESC = "The country name component.";
 
 
     /*Resource endpoints relative to the base SCIM URL*/

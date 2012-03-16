@@ -174,9 +174,16 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                             attributeValues.remove(otherAttribute);
                         }
                     }
-                    //canonicalize based on case
-                    if ((value.getStringValue().toUpperCase()).equals(valueOther.getStringValue().toUpperCase())) {
-                        attributeValues.remove(otherAttribute);
+                    //canonicalize based on case for email, ims,
+                    if (attributeSchema.getName().equals(SCIMConstants.UserSchemaConstants.EMAILS) ||
+                        attributeSchema.getName().equals(SCIMConstants.UserSchemaConstants.IMS)) {
+                        //remove white spaces from the two
+                        value.setValue(value.getStringValue().replaceAll("\\s+", ""));
+                        valueOther.setValue(valueOther.getStringValue().replaceAll("\\s+", ""));
+                        if ((value.getStringValue().toUpperCase()).equals(valueOther.getStringValue().toUpperCase())) {
+                            attributeValues.remove(otherAttribute);
+                        }
+                        value.setValue(value.getStringValue().toLowerCase());
                     }
 
                     //see if primary is repeated more than once and remove repeated if so,

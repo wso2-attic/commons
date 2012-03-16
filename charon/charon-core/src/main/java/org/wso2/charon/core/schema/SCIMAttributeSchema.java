@@ -57,6 +57,7 @@ public class SCIMAttributeSchema implements AttributeSchema {
                                                                 SCIMSubAttributeSchema... subAttributes) {
 
         /*if this is multivalued attribute, add the common sub attributes of a multivalued attribute*/
+        //TODO:need to add the canonical values of type sub attribute.
         if (multiValued) {
             return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
                                            schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,

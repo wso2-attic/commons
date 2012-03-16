@@ -353,7 +353,7 @@ public class User extends AbstractSCIMObject {
         SimpleAttribute formattedAttribute =
                 (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.FORMATTED,
-                        new SimpleAttribute(SCIMConstants.UserSchemaConstants.FORMATTED, formattedName));
+                        new SimpleAttribute(SCIMConstants.UserSchemaConstants.FORMATTED_NAME, formattedName));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
             nameAttribute.setSubAttribute(formattedAttribute, SCIMSchemaDefinitions.FORMATTED);
@@ -367,7 +367,7 @@ public class User extends AbstractSCIMObject {
         if (getNameAttribute() != null) {
             ComplexAttribute nameAttribute = getNameAttribute();
             SimpleAttribute formattedName = (SimpleAttribute) nameAttribute.getSubAttribute(
-                    SCIMConstants.UserSchemaConstants.FORMATTED);
+                    SCIMConstants.UserSchemaConstants.FORMATTED_NAME);
             if (formattedName != null) {
                 return formattedName.getStringValue();
             } else {
@@ -644,6 +644,8 @@ public class User extends AbstractSCIMObject {
     public String getPassword() throws CharonException {
         return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.PASSWORD);
     }
+
+    
 
 
     /**

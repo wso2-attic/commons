@@ -33,6 +33,9 @@ public class SCIMSchemaDefinitions {
     /*sub attribute schemas for the sub attributes defined in SCIM Schema - including the common set
     * of sub attributes in Multi-Valued Attributes.*/
 
+
+    
+    /**********************Sub attributes found in common-schema**********************************/
     //TODO:add canonical values.
     public static final SCIMSubAttributeSchema TYPE =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.TYPE,
@@ -58,10 +61,38 @@ public class SCIMSchemaDefinitions {
                                                                 DataType.STRING, SCIMConstants.VALUE_DESC,
                                                                 false, false, false, null);
 
-    /*Sub attribute schemas for the sub attributes defined in user schema*/
+    // sub attributes of meta and then the meta attribute
+    public static final SCIMSubAttributeSchema CREATED =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.CREATED,
+                                                                SCIMSchemaDefinitions.DataType.DATE_TIME,
+                                                                SCIMConstants.CREATED_DESC, true, false, false, null);
+
+    public static final SCIMSubAttributeSchema LAST_MODIFIED =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED,
+                                                                SCIMSchemaDefinitions.DataType.DATE_TIME,
+                                                                SCIMConstants.LAST_MODIFIED_DESC, true, false, false, null);
+
+    public static final SCIMSubAttributeSchema LOCATION =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LOCATION,
+                                                                SCIMSchemaDefinitions.DataType.STRING,
+                                                                SCIMConstants.LOCATION_DESC, true, false, false, null);
+    public static final SCIMSubAttributeSchema VERSION =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.VERSION,
+                                                                SCIMSchemaDefinitions.DataType.STRING,
+                                                                SCIMConstants.VERSION_DESC, true, false, false, null);
+    public static final SCIMSubAttributeSchema ATTRIBUTES =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.ATTRIBUTES,
+                                                                SCIMSchemaDefinitions.DataType.STRING,
+                                                                SCIMConstants.ATTRIBUTES_DESC, false, false, false, null);
+
+
+
+
+    
+    /****************Sub attribute schemas for the sub attributes defined in user schema***********/
     public static final SCIMSubAttributeSchema FORMATTED =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema("formatted", DataType.STRING,
-                                                                SCIMConstants.FORMATTED_DESC,
+                                                                SCIMConstants.FORMATTED_NAME_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema FAMILY_NAME =
@@ -90,10 +121,14 @@ public class SCIMSchemaDefinitions {
                                                                 false, false, false, null);
 
 
+
+    
     /**
      * *********SCIM defined attribute schemas***************************
      */
 
+
+    
     //attribute schemas of the attributes defined in common schema.
 
     /*Unique identifier for the SCIM Resource as defined by the Service Provider*/
@@ -113,29 +148,6 @@ public class SCIMSchemaDefinitions {
 
     /*META - A complex attribute containing resource metadata. All sub-attributes are OPTIONAL*/
 
-    //first lets define the sub attributes of meta and then the meta attribute itself.
-    public static final SCIMSubAttributeSchema CREATED =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.CREATED,
-                                                                SCIMSchemaDefinitions.DataType.DATE_TIME,
-                                                                SCIMConstants.CREATED_DESC, true, false, false, null);
-
-    public static final SCIMSubAttributeSchema LAST_MODIFIED =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED,
-                                                                SCIMSchemaDefinitions.DataType.DATE_TIME,
-                                                                SCIMConstants.LAST_MODIFIED_DESC, true, false, false, null);
-
-    public static final SCIMSubAttributeSchema LOCATION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LOCATION,
-                                                                SCIMSchemaDefinitions.DataType.STRING,
-                                                                SCIMConstants.LOCATION_DESC, true, false, false, null);
-    public static final SCIMSubAttributeSchema VERSION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.VERSION,
-                                                                SCIMSchemaDefinitions.DataType.STRING,
-                                                                SCIMConstants.VERSION_DESC, true, false, false, null);
-    public static final SCIMSubAttributeSchema ATTRIBUTES =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.ATTRIBUTES,
-                                                                SCIMSchemaDefinitions.DataType.STRING,
-                                                                SCIMConstants.ATTRIBUTES_DESC, false, false, false, null);
     /*Since all sub attributes of META are optional, META attribute is also optional.*/
     public static final SCIMAttributeSchema META =
             SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.CommonSchemaConstants.META,
@@ -143,6 +155,9 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false,
                                                           CREATED, LAST_MODIFIED, LOCATION, VERSION, ATTRIBUTES);
 
+
+
+    
     //attribute schemas of the attributes defined in user schema.
 
     /*Unique identifier for the User, typically used by the user to directly authenticate to the service provider.*/
@@ -219,9 +234,39 @@ public class SCIMSchemaDefinitions {
                                                           DataType.STRING, false, null, SCIMConstants.PASSWORD_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
-    //sub attribute schemas of the attributes defined in User Schema,
+    public static final SCIMAttributeSchema PHONE_NUMBERS =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS,
+                                                          DataType.STRING, true,
+                                                          SCIMConstants.UserSchemaConstants.PHONE_NUMBER,
+                                                          SCIMConstants.PHONE_NUMBERS_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, null);
+
+    public static final SCIMAttributeSchema IMS =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.IMS, DataType.STRING,
+                                                          true, SCIMConstants.UserSchemaConstants.IM,
+                                                          SCIMConstants.IMS_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false,
+                                                          null);
+
+    public static final SCIMAttributeSchema PHOTOS =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PHOTOS,
+                                                          DataType.STRING, true,
+                                                          SCIMConstants.UserSchemaConstants.PHOTO,
+                                                          SCIMConstants.PHOTOS_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, null);
 
 
+    public static final SCIMAttributeSchema GROUPS =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.GROUPS,
+                                                          DataType.STRING, true,
+                                                          SCIMConstants.UserSchemaConstants.GROUP,
+                                                          SCIMConstants.GROUP_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, null);
+
+
+
+
+    
     //attribute schemas of the attributes defined in group schema.
     public static final SCIMAttributeSchema DISPLAY_NAME =
             SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.DISPLAY_NAME,
@@ -235,7 +280,9 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.MEMBERS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, true, false, null);
 
+
     //schemas of the resources as defined in SCIM Schema spec.
+
 
     /**
      * **********SCIM defined Resource Schemas****************************
@@ -243,6 +290,7 @@ public class SCIMSchemaDefinitions {
     public static final SCIMResourceSchema SCIM_COMMON_SCHEMA = SCIMResourceSchema.createSCIMResourceSchema(
             SCIMConstants.COMMON, SCIMConstants.CORE_SCHEMA_URI, SCIMConstants.COMMON_DESC, null,
             SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID);
+
 
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.USER, SCIMConstants.CORE_SCHEMA_URI,
@@ -252,10 +300,12 @@ public class SCIMSchemaDefinitions {
                                                         TITLE, USER_TYPE, PREFERRED_LANGUAGE, LOCALE,
                                                         TIMEZONE, ACTIVE, PASSWORD);
 
+
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.GROUP, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.GROUP_DESC, SCIMConstants.GROUP_ENDPOINT,
                                                         SCIMSchemaDefinitions.DISPLAY_NAME, SCIMSchemaDefinitions.MEMBERS);
 
-
+    //TODO: think of a way to include canonical types included in SCIM spec for multi-valued attributes.
+    //when constructing the resource schema
 }
