@@ -90,6 +90,7 @@ public class SCIMSchemaDefinitions {
     /**
      * *************Sub attribute schemas for the sub attributes defined in user schema**********
      */
+    //sub attributes of name
     public static final SCIMSubAttributeSchema FORMATTED =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema("formatted", DataType.STRING,
                                                                 SCIMConstants.FORMATTED_NAME_DESC,
@@ -120,6 +121,32 @@ public class SCIMSchemaDefinitions {
                                                                 DataType.STRING, SCIMConstants.HONORIFIC_SUFFIX_DESC,
                                                                 false, false, false, null);
 
+    //sub attributes of addresses
+    public static final SCIMSubAttributeSchema FORMATTED_ADDRESS =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.FORMATTED_ADDRESS,
+                                                                DataType.STRING, SCIMConstants.FORMATTED_ADDRESS_DESC,
+                                                                false, false, false, null);
+    public static final SCIMSubAttributeSchema STREET_ADDRESS =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.STREET_ADDRESS,
+                                                                DataType.STRING, SCIMConstants.STREET_ADDRESS_DESC,
+                                                                false, false, false, null);
+
+    public static final SCIMSubAttributeSchema LOCALITY =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.LOCALITY,
+                                                                DataType.STRING, SCIMConstants.LOCALITY_DESC,
+                                                                false, false, false, null);
+    public static final SCIMSubAttributeSchema REGION =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.REGION,
+                                                                DataType.STRING, SCIMConstants.REGION_DESC,
+                                                                false, false, false, null);
+    public static final SCIMSubAttributeSchema POSTAL_CODE =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.POSTAL_CODE,
+                                                                DataType.STRING, SCIMConstants.POSTAL_CODE_DESC,
+                                                                false, false, false, null);
+    public static final SCIMSubAttributeSchema COUNTRY =
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.COUNTRY,
+                                                                DataType.STRING, SCIMConstants.COUNTRY_DESC,
+                                                                false, false, false, null);
 
     /**
      * *********SCIM defined attribute schemas***************************
@@ -258,6 +285,29 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.USER_GROUP_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, true, false, null);
 
+    public static final SCIMAttributeSchema ADDRESSES =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ADDRESSES,
+                                                          DataType.STRING, true,
+                                                          SCIMConstants.UserSchemaConstants.ADDRESS,
+                                                          SCIMConstants.ADDRESSES_DESC, SCIMConstants.CORE_SCHEMA_URI,
+                                                          false, false, false, FORMATTED_ADDRESS, STREET_ADDRESS,
+                                                          LOCALITY, REGION, POSTAL_CODE, COUNTRY);
+    public static final SCIMAttributeSchema ENTITLEMENTS =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ENTITLEMENTS,
+                                                          DataType.STRING, true, SCIMConstants.UserSchemaConstants.ENTITLEMENT,
+                                                          SCIMConstants.ENTITLEMENTS_DESC, SCIMConstants.CORE_SCHEMA_URI,
+                                                          false, false, false, null);
+    public static final SCIMAttributeSchema ROLES =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ROLES, DataType.STRING,
+                                                          true, SCIMConstants.UserSchemaConstants.ROLE, SCIMConstants.ROLES_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+    public static final SCIMAttributeSchema X509CERTIFICATES =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.X509CERTIFICATES,
+                                                          DataType.BINARY, true,
+                                                          SCIMConstants.UserSchemaConstants.X509CERTIFICATE,
+                                                          SCIMConstants.X509CERTIFICATES_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
 
     //attribute schemas of the attributes defined in group schema.
     public static final SCIMAttributeSchema DISPLAY_NAME =
@@ -287,17 +337,18 @@ public class SCIMSchemaDefinitions {
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.USER, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.USER_DESC, SCIMConstants.USER_ENDPOINT,
-                                                        SCIMSchemaDefinitions.USER_NAME, SCIMSchemaDefinitions.EMAILS,
-                                                        DISPLAY_NAME, NAME, NICK_NAME, PROFILE_URL,
+                                                        USER_NAME, NAME, DISPLAY_NAME, NICK_NAME, PROFILE_URL,
                                                         TITLE, USER_TYPE, PREFERRED_LANGUAGE, LOCALE,
-                                                        TIMEZONE, ACTIVE, PASSWORD, PHONE_NUMBERS, IMS,
-                                                        PHOTOS, GROUPS);
+                                                        TIMEZONE, ACTIVE, PASSWORD, EMAILS, PHONE_NUMBERS, IMS,
+                                                        PHOTOS, ADDRESSES, GROUPS, ENTITLEMENTS, ROLES,
+                                                        X509CERTIFICATES);
 
 
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.GROUP, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.GROUP_DESC, SCIMConstants.GROUP_ENDPOINT,
                                                         SCIMSchemaDefinitions.DISPLAY_NAME, SCIMSchemaDefinitions.MEMBERS);
+
 
     //TODO: think of a way to include canonical types included in SCIM spec for multi-valued attributes.
     //when constructing the resource schema

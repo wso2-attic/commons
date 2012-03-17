@@ -202,7 +202,6 @@ public class SCIMConstants {
     public static final String VERSION_DESC = "The version of the Resource being returned. This value must be the same as the ETag HTTP response header.";
 
 
-
     /**
      * ******Attributes descriptions of the attributes found in User Schema************
      */
@@ -272,6 +271,9 @@ public class SCIMConstants {
                                                  "nested groups, or dynamically calculated. The Canonical types " +
                                                  "\"direct\" and \"indirect\" are defined to describe how " +
                                                  "the group membership was derived. READ-ONLY";
+    public static final String ENTITLEMENTS_DESC = "A list of entitlements for the User that represent a thing the User has.";
+    public static final String ROLES_DESC = "A list of roles for the User that collectively represent who the User is";
+    public static final String X509CERTIFICATES_DESC = "A list of certificates issued to the User. Values are Binary and DER encoded x509";
 
 
     /**

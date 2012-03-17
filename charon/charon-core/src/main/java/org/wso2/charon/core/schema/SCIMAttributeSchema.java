@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.schema;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,10 +60,21 @@ public class SCIMAttributeSchema implements AttributeSchema {
         /*if this is multivalued attribute, add the common sub attributes of a multivalued attribute*/
         //TODO:need to add the canonical values of type sub attribute.
         if (multiValued) {
-            return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
-                                           schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,
-                                           SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
-                                           SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION);
+            //check if multi valued attribute already contains sub attributes.
+            if (subAttributes != null) {
+                SCIMSubAttributeSchema[] multiValuedProperties = {SCIMSchemaDefinitions.TYPE,
+                                                                  SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
+                                                                  SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION};
+                //combine common sub attributes and specific sub attributes passed in,
+                System.arraycopy(subAttributes, 0, subAttributes, 5, subAttributes.length);
+                return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                                               schema, readOnly, required, caseExact, multiValuedProperties);
+            } else {
+                return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                                               schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,
+                                               SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
+                                               SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION);
+            }
         } else {
 
             return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
