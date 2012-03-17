@@ -122,7 +122,8 @@ public class MultiValuedAttribute extends AbstractAttribute {
     }
 
     /**
-     * Get all the values of given type
+     * Get all the values of given type. If null is set to 'type' parameter,
+     * return all values.
      *
      * @param type
      */
@@ -278,7 +279,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
      *
      * @return
      */
-    public Object getPrimaryValue() throws NotFoundException, CharonException {
+    public Object getPrimaryValue() throws CharonException {
         for (Attribute attributeValue : attributeValues) {
             if (attributeValue instanceof ComplexAttribute) {
                 SimpleAttribute primaryValue = (SimpleAttribute) (
@@ -293,7 +294,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
                 }
             }
         }
-        return new NotFoundException();
+        return null;
     }
 
     /**

@@ -136,6 +136,57 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     protected static MultiValuedAttribute createMultiValuedAttribute(
             SCIMAttributeSchema attributeSchema, MultiValuedAttribute multiValuedAttribute)
             throws CharonException {
+        return validateMultiValuedAttribute(attributeSchema, multiValuedAttribute);
+    }
+
+    /**
+     * When an attribute is created with value and data type provided, we need to validate whether
+     * they are matching.
+     *
+     * @param attributeValue
+     * @param attributeDataType
+     * @return
+     * @throws CharonException
+     */
+    protected static boolean isAttributeDataTypeValid(Object attributeValue,
+                                                      SCIMSchemaDefinitions.DataType attributeDataType)
+            throws CharonException {
+        switch (attributeDataType) {
+            case STRING:
+                return attributeValue instanceof String;
+            case BOOLEAN:
+                return attributeValue instanceof Boolean;
+            case DECIMAL:
+                return attributeValue instanceof Double;
+            case INTEGER:
+                return attributeValue instanceof Integer;
+            case DATE_TIME:
+                return attributeValue instanceof Date;
+            case BINARY:
+                return attributeValue instanceof Byte[];
+
+        }
+        throw new CharonException(ResponseCodeConstants.MISMATCH_IN_REQUESTED_DATATYPE);
+    }
+
+    /**
+     * Add a sub attribute built by decoder to a complex attribute. Factory checks whether the any
+     * schema violations happen when adding a decoded sub attribute to a complex attribute.
+     *
+     * @param parentAttribute
+     * @param subAttribute
+     */
+    public static void setSubAttribute(ComplexAttribute parentAttribute,
+                                       AbstractAttribute subAttribute) throws CharonException {
+        //for the moment only check is whether a read-only attribute is trying to be added.
+        /*if (!subAttribute.isReadOnly()) {
+            parentAttribute.setSubAttribute(subAttribute);
+        }*/
+    }
+
+    public static MultiValuedAttribute validateMultiValuedAttribute(
+            SCIMAttributeSchema attributeSchema, MultiValuedAttribute multiValuedAttribute)
+            throws CharonException {
         List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
         if (attributeValues != null && !attributeValues.isEmpty()) {
             //if value is complex attribute, compare it with other values to canonicalize and
@@ -207,50 +258,5 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
             }
         }
         return multiValuedAttribute;
-    }
-
-    /**
-     * When an attribute is created with value and data type provided, we need to validate whether
-     * they are matching.
-     *
-     * @param attributeValue
-     * @param attributeDataType
-     * @return
-     * @throws CharonException
-     */
-    protected static boolean isAttributeDataTypeValid(Object attributeValue,
-                                                      SCIMSchemaDefinitions.DataType attributeDataType)
-            throws CharonException {
-        switch (attributeDataType) {
-            case STRING:
-                return attributeValue instanceof String;
-            case BOOLEAN:
-                return attributeValue instanceof Boolean;
-            case DECIMAL:
-                return attributeValue instanceof Double;
-            case INTEGER:
-                return attributeValue instanceof Integer;
-            case DATE_TIME:
-                return attributeValue instanceof Date;
-            case BINARY:
-                return attributeValue instanceof Byte[];
-
-        }
-        throw new CharonException(ResponseCodeConstants.MISMATCH_IN_REQUESTED_DATATYPE);
-    }
-
-    /**
-     * Add a sub attribute built by decoder to a complex attribute. Factory checks whether the any
-     * schema violations happen when adding a decoded sub attribute to a complex attribute.
-     *
-     * @param parentAttribute
-     * @param subAttribute
-     */
-    public static void setSubAttribute(ComplexAttribute parentAttribute,
-                                       AbstractAttribute subAttribute) throws CharonException {
-        //for the moment only check is whether a read-only attribute is trying to be added.
-        /*if (!subAttribute.isReadOnly()) {
-            parentAttribute.setSubAttribute(subAttribute);
-        }*/
     }
 }

@@ -101,6 +101,9 @@ public class User extends AbstractSCIMObject {
             MultiValuedAttribute membersAttribute =
                     new MultiValuedAttribute(SCIMConstants.UserSchemaConstants.EMAILS);
             membersAttribute.setComplexValue(propertyValues);
+            membersAttribute =
+                    (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(
+                            SCIMSchemaDefinitions.EMAILS, membersAttribute);
             this.attributeList.put(SCIMConstants.UserSchemaConstants.EMAILS, membersAttribute);
         }
     }
@@ -646,6 +649,112 @@ public class User extends AbstractSCIMObject {
     }
 
     /**
+     * ********************************Phone Numbers**********************************
+     */
+    public void setPhoneNumber(String phoneNumber, String type, boolean isPrimary)
+            throws CharonException {
+        Map<String, Object> phoneNumberProperties = new HashMap<String, Object>();
+        phoneNumberProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, phoneNumber);
+        phoneNumberProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, type);
+        if (isPrimary) {
+            phoneNumberProperties.put(SCIMConstants.CommonSchemaConstants.PRIMARY, isPrimary);
+        }
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)) {
+            attributeList.get(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS).setComplexValue(
+                    phoneNumberProperties);
+        } else {
+            MultiValuedAttribute multiValuedAttribute =
+                    new MultiValuedAttribute(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS);
+            multiValuedAttribute.setComplexValue(phoneNumberProperties);
+            multiValuedAttribute = (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(
+                    SCIMSchemaDefinitions.PHONE_NUMBERS, multiValuedAttribute);
+            attributeList.put(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS, multiValuedAttribute);
+        }
+    }
+
+    public String getPhoneNumber(String type) throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)) {
+            return (String) ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)).getAttributeValueByType(type);
+
+        } else {
+            return null;
+        }
+    }
+
+    public List<String> getPhoneNumbers(String type) throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)) {
+            return ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)).getAttributeValuesByType(type);
+
+        } else {
+            return null;
+        }
+    }
+
+    public String getPrimaryPhoneNumber() throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)) {
+            return (String) ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.PHONE_NUMBERS)).getPrimaryValue();
+
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * *******************************IMs*******************************************
+     */
+    public void setIM(String imAddress, String type, Boolean isPrimary) throws CharonException {
+        Map<String, Object> imProperties = new HashMap<String, Object>();
+        imProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, imAddress);
+        imProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, type);
+        if (isPrimary) {
+            imProperties.put(SCIMConstants.CommonSchemaConstants.PRIMARY, isPrimary);
+        }
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.IMS)) {
+            attributeList.get(SCIMConstants.UserSchemaConstants.IMS).setComplexValue(
+                    imProperties);
+        } else {
+            MultiValuedAttribute multiValuedAttribute =
+                    new MultiValuedAttribute(SCIMConstants.UserSchemaConstants.IMS);
+            multiValuedAttribute.setComplexValue(imProperties);
+            multiValuedAttribute = (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(
+                    SCIMSchemaDefinitions.IMS, multiValuedAttribute);
+            attributeList.put(SCIMConstants.UserSchemaConstants.IMS, multiValuedAttribute);
+        }
+    }
+
+    public String getIM(String type) throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.IMS)) {
+            return (String) ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.IMS)).getAttributeValueByType(type);
+
+        } else {
+            return null;
+        }
+    }
+
+    public List<String> getIMs(String im) throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.IMS)) {
+            return ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.IMS)).getAttributeValuesByType(im);
+
+        } else {
+            return null;
+        }
+    }
+
+    public String getPrimaryIM() throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.IMS)) {
+            return (String) ((MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.IMS)).getPrimaryValue();
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * *************************Groups Attribute***************************************
      */
     //types: direct, indirect
@@ -690,12 +799,13 @@ public class User extends AbstractSCIMObject {
     private void setSimpleAttribute(String attributeName, AttributeSchema attributeSchema,
                                     Object value, DataType dataType) throws CharonException {
         if (isAttributeExist(attributeName)) {
-            if (!attributeSchema.getReadOnly()) {
-                ((SimpleAttribute) attributeList.get(attributeName)).updateValue(value, dataType);
-            } else {
+            //since we check read-only aspect in service provider side, no need to check it here.
+            //if (!attributeSchema.getReadOnly()) {
+            ((SimpleAttribute) attributeList.get(attributeName)).updateValue(value, dataType);
+            /*} else {
                 //log info level log that version already set and can't set again.
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
-            }
+            }*/
         } else {
             SimpleAttribute simpleAttribute = new SimpleAttribute(
                     attributeName, value);
