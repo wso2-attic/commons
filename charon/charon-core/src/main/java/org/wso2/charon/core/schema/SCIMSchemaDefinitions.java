@@ -322,6 +322,12 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.MEMBERS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, true, false, null);
 
+    /**
+     * *************************Attributes defined in Enterprise User Schema***********************
+     */
+    
+
+
 
     //schemas of the resources as defined in SCIM Schema spec.
 
@@ -347,7 +353,9 @@ public class SCIMSchemaDefinitions {
     public static final SCIMResourceSchema SCIM_GROUP_SCHEMA =
             SCIMResourceSchema.createSCIMResourceSchema(SCIMConstants.GROUP, SCIMConstants.CORE_SCHEMA_URI,
                                                         SCIMConstants.GROUP_DESC, SCIMConstants.GROUP_ENDPOINT,
-                                                        SCIMSchemaDefinitions.DISPLAY_NAME, SCIMSchemaDefinitions.MEMBERS);
+                                                        DISPLAY_NAME, MEMBERS);
+
+
 
 
     //TODO: think of a way to include canonical types included in SCIM spec for multi-valued attributes.

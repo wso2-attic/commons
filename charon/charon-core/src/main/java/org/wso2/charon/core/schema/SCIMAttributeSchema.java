@@ -62,13 +62,18 @@ public class SCIMAttributeSchema implements AttributeSchema {
         if (multiValued) {
             //check if multi valued attribute already contains sub attributes.
             if (subAttributes != null) {
+                SCIMSubAttributeSchema[] combinedSubAttributeSchema =
+                        new SCIMSubAttributeSchema[subAttributes.length + 5];
                 SCIMSubAttributeSchema[] multiValuedProperties = {SCIMSchemaDefinitions.TYPE,
-                                                                  SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
-                                                                  SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION};
+                                                                  SCIMSchemaDefinitions.PRIMARY,
+                                                                  SCIMSchemaDefinitions.DISPLAY,
+                                                                  SCIMSchemaDefinitions.VALUE,
+                                                                  SCIMSchemaDefinitions.OPERATION};
                 //combine common sub attributes and specific sub attributes passed in,
-                System.arraycopy(subAttributes, 0, subAttributes, 5, subAttributes.length);
+                System.arraycopy(subAttributes, 0, combinedSubAttributeSchema, 0, subAttributes.length);
+                System.arraycopy(multiValuedProperties, 0, combinedSubAttributeSchema, subAttributes.length, 5);
                 return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
-                                               schema, readOnly, required, caseExact, multiValuedProperties);
+                                               schema, readOnly, required, caseExact, combinedSubAttributeSchema);
             } else {
                 return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
                                                schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,

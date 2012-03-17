@@ -152,6 +152,10 @@ public class SCIMConstants {
         public static final String MEMBER = "member";
     }
 
+    public static class EnterpriseUserSchema {
+       // public static final String 
+    }
+
     public static class AttributeConstants {
         public static final String MULTI_VALUED_ATTRIBUTE_OPERATION = "delete";
     }
