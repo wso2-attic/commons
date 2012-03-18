@@ -115,10 +115,22 @@ public class MultiValuedAttribute extends AbstractAttribute {
                         SCIMSchemaDefinitions.OPERATION, operationAttribute);
                 attributeValue.setSubAttribute(operationAttribute, null);
             }
+            //TODO: if a multi valued attribute contains more sub attributes than the ones mentioned above,
+            //need to have a separate method to handle that.
         }
         if (attributeValue.getSubAttributes() != null && !attributeValue.getSubAttributes().isEmpty()) {
             this.attributeValues.add(attributeValue);
         }
+    }
+
+    /**
+     * To construct and set a value of a multi-valued attribute, as a complex value containing
+     * set of sub attributes.
+     */
+    public void setComplexValueWithSetOfSubAttributes(Map<String,Attribute> subAttributes){
+        ComplexAttribute complexValue = new ComplexAttribute();
+        complexValue.setSubAttributes(subAttributes);
+        this.attributeValues.add(complexValue);
     }
 
     /**

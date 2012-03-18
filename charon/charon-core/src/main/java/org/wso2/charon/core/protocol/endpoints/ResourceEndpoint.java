@@ -61,4 +61,40 @@ public interface ResourceEndpoint {
      * @return
      */
     public SCIMResponse delete(String id, Storage storage, String outputFormat);
+
+    /**
+     * Method that maps to HTTP GET with URL query parameter: "attributes=attributeName"
+     * This is to list resources with the given attribute name
+     * @param searchAttribute
+     * @return
+     */
+    public SCIMResponse listByAttribute(String searchAttribute);
+
+    /**
+     * Method that maps to HTTP GET with URL query parameter: "filter=filterString"
+     * This is to filter a sub set of resources mating the filter string 
+     * @param filterString
+     * @return
+     */
+    public SCIMResponse listByFilter(String filterString);
+
+    /**
+     * Method that maps to HTTP GET with URL query parameter: "sortBy=attributeName&sortOrder=ascending"
+     * This is to sort the resources in the given criteria
+     * @param sortBy
+     * @param sortOrder
+     * @return
+     */
+    public SCIMResponse listBySort(String sortBy, String sortOrder);
+
+    /**
+     * Method that maps to HTTP GET with URL query parameter: "startIndex=1&count=10"
+     * This is to retrieve only a set of resources without overwhelming SP or consumer. 
+     * @param startIndex
+     * @param count
+     * @return
+     */
+    public SCIMResponse listWithPagination(int startIndex, int count);
+
+    
 }

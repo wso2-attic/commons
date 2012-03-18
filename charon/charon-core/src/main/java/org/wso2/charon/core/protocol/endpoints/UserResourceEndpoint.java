@@ -231,5 +231,31 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
     }
 
+    /**
+     * Supports listBy userName and externalID 
+     * @param searchAttribute
+     * @return
+     */
+    @Override
+    public SCIMResponse listByAttribute(String searchAttribute) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SCIMResponse listByFilter(String filterString) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SCIMResponse listBySort(String sortBy, String sortOrder) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SCIMResponse listWithPagination(int startIndex, int count) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
     //TODO: set last modified date with put/patch/bulk update operations.
 }

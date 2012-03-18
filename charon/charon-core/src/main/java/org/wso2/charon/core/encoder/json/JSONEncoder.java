@@ -62,16 +62,17 @@ public class JSONEncoder implements Encoder {
                                      (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();
+            if (attributes != null && attributes.isEmpty()) {
+                for (Attribute attribute : attributes.values()) {
+                    if (attribute instanceof SimpleAttribute) {
+                        encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
 
-            for (Attribute attribute : attributes.values()) {
-                if (attribute instanceof SimpleAttribute) {
-                    encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
+                    } else if (attribute instanceof ComplexAttribute) {
+                        encodeComplexAttribute((ComplexAttribute) attribute, rootObject);
 
-                } else if (attribute instanceof ComplexAttribute) {
-                    encodeComplexAttribute((ComplexAttribute) attribute, rootObject);
-
-                } else if (attribute instanceof MultiValuedAttribute) {
-                    encodeMultiValuedAttribute((MultiValuedAttribute) attribute, rootObject);
+                    } else if (attribute instanceof MultiValuedAttribute) {
+                        encodeMultiValuedAttribute((MultiValuedAttribute) attribute, rootObject);
+                    }
                 }
             }
 

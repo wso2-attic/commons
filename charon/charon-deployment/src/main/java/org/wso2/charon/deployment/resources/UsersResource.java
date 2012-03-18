@@ -38,6 +38,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
@@ -214,5 +215,17 @@ public class UsersResource {
             return new JAXRSResponseBuilder().buildResponse(
                     AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         }
+    }
+
+    @GET
+    public Response getUser(@HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
+                            @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
+                            @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                            @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
+                            @QueryParam("attributes") String searchAttribute,
+                            @QueryParam("filter") String filter, @QueryParam("startIndex") String startIndex,
+                            @QueryParam("count") String count, @QueryParam("sortBy") String sortBy,
+                            @QueryParam("sortOrder") String sortOrder){
+        return null;
     }
 }

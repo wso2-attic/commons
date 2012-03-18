@@ -152,6 +152,13 @@ public class SCIMConstants {
         public static final String MEMBER = "member";
     }
 
+    public static class ListedResourcesConstants{
+        public static final String TOTAL_RESULTS = "totalResults";
+        public static final String RESOURCES = "Resources";
+        public static final String ITEMS_PER_PAGE = "itemsPerPage";
+        public static final String START_INDEX = "startIndex";
+    }
+
     public static class EnterpriseUserSchema {
        // public static final String 
     }
