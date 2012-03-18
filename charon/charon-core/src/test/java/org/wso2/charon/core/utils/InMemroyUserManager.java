@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.utils.storage;
+package org.wso2.charon.core.utils;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
@@ -23,9 +23,9 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
-import org.wso2.charon.core.schema.AbstractValidator;
 import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+//import org.wso2.charon.utils.storage.SampleGroup;
+//import org.wso2.charon.utils.storage.SampleUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +37,8 @@ public class InMemroyUserManager implements UserManager {
 
     private String tenantDomain = null;
     private int tenantId = 0;
-    List<SampleUser> userList = new ArrayList<SampleUser>();
-    List<SampleGroup> groupList = new ArrayList<SampleGroup>();
+   /* List<SampleUser> userList = new ArrayList<SampleUser>();
+    List<SampleGroup> groupList = new ArrayList<SampleGroup>();*/
 
     //in memory user manager stores users
     ConcurrentHashMap<String, User> inMemoryUserList = new ConcurrentHashMap<String, User>();
@@ -242,7 +242,7 @@ public class InMemroyUserManager implements UserManager {
     @Override
     public Group getGroup(String groupId) throws CharonException {
         Group group = null;
-        if (groupList != null && (!groupList.isEmpty())) {
+        /*if (groupList != null && (!groupList.isEmpty())) {
             for (SampleGroup sampleGroup : groupList) {
                 if (groupId.equals(sampleGroup.getId())) {
                     group = new Group();
@@ -292,13 +292,13 @@ public class InMemroyUserManager implements UserManager {
                     }
                 }
             }
-        }
+        }*/
         return group;
     }
 
     @Override
     public Group createGroup(Group group) throws CharonException {
-        SampleGroup customGroup = null;
+        /*SampleGroup customGroup = null;
         if (this.groupList != null && !this.groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
                 if (group.getExternalId().equals(sampleGroup.getExternalId())) {
@@ -312,7 +312,7 @@ public class InMemroyUserManager implements UserManager {
         } else {
             customGroup = createCustomGroup(group);
             groupList.add(customGroup);
-        }
+        }*/
         return group;
     }
 
@@ -331,7 +331,7 @@ public class InMemroyUserManager implements UserManager {
     @Override
     public void deleteGroup(String groupId) throws NotFoundException {
         //TODO:when removing group, remove group membership of its members - i.e: consider updating group attribute of Users.
-        if (!groupList.isEmpty()) {
+        /*if (!groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
                 if (groupId.equals(sampleGroup.getId())) {
                     groupList.remove(sampleGroup);
@@ -344,14 +344,14 @@ public class InMemroyUserManager implements UserManager {
         } else {
             //if group list is empty
             throw new NotFoundException();
-        }
+        }*/
     }
 
     /**
      * ****************private methods*************************************
      */
 
-    private SampleUser createCustomUser(User user) throws CharonException {
+    /*private SampleUser createCustomUser(User user) throws CharonException {
         SampleUser sampleUser = new SampleUser();
         //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
         //TODO:before setting an attribute value in custom user, check whether the value is null
@@ -446,18 +446,18 @@ public class InMemroyUserManager implements UserManager {
         return sampleGroup;
     }
 
-    /**
+    *//**
      * Display value of multivalued group members attribute is set by SP. This function returns which
      * to set out of available attributes.
      *
      * @param sampleUser
      * @return
-     */
+     *//*
     private String getMemberDisplayForUser(SampleUser sampleUser) {
         if (sampleUser.getDisplayName() != null) {
             return sampleUser.getDisplayName();
         } else {
             return sampleUser.getFullyQualifiedName();
         }
-    }
+    }*/
 }

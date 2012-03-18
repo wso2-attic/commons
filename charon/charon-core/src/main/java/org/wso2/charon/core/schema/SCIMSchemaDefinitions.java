@@ -356,7 +356,8 @@ public class SCIMSchemaDefinitions {
                                                         DISPLAY_NAME, MEMBERS);
 
 
-
+    /***********************Custom Defined Schemas for returning listed resources******************/
+    //public static final 
 
     //TODO: think of a way to include canonical types included in SCIM spec for multi-valued attributes.
     //when constructing the resource schema

@@ -151,7 +151,7 @@ public class JSONDecoderTest {
             User decodedUser = (User) jsonDecoder.decodeResource(fullJSONUser,
                                                                  SCIMSchemaDefinitions.SCIM_USER_SCHEMA,
                                                                  new User());
-            System.out.println(decodedUser.getFamilyName());
+            Assert.assertEquals("Jensen",decodedUser.getFamilyName());
 
         } catch (BadRequestException e) {
             Assert.fail(e.getDescription());

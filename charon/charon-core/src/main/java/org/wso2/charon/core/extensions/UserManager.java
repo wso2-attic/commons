@@ -34,12 +34,30 @@ public interface UserManager extends Storage {
 
     /***************User Manipulation operations*******************/
     /**
+     * Create user with the given user object.
+     *
+     * @param user User resource to be created in the user store of service provider.
+     * @return newly created SCIM User resource sent back to the client in the response.
+     */
+    public User createUser(User user) throws CharonException;
+
+    /**
      * Obtains the user given the id.
      *
      * @param userId
      * @return
      */
     public User getUser(String userId) throws CharonException;
+
+    public List<User> listUsers() throws CharonException;
+
+    public List<User> listUsersByAttribute(Attribute attribute);
+
+    public List<User> listUsersByFilter(String filter);
+
+    public List<User> listUsersBySort(String sortBy, String sortOrder);
+
+    public List<User> listUsersWithPagination(int startIndex, int count);
 
     /**
      * Update the user in full.
@@ -67,20 +85,12 @@ public interface UserManager extends Storage {
     public void deleteUser(String userId) throws NotFoundException;
 
     /**
-     * Create user with the given user object.
-     *
-     * @param user User resource to be created in the user store of service provider.
-     * @return newly created SCIM User resource sent back to the client in the response.
-     */
-    public User createUser(User user) throws CharonException;
-
-    /**
      * ****************Group manipulation operations*******************
      */
 
-    public Group getGroup(String groupId) throws CharonException;
-
     public Group createGroup(Group group) throws CharonException;
+
+    public Group getGroup(String groupId) throws CharonException;
 
     public Group updateGroup(Group group) throws CharonException;
 

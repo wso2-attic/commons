@@ -18,7 +18,12 @@
 package org.wso2.charon.core.objects;
 
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
+import org.wso2.charon.core.attributes.SimpleAttribute;
+import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,11 +56,46 @@ public class ListedResource implements SCIMObject {
 
     @Override
     public List<String> getSchemaList() {
-         return schemaList;        
+        return schemaList;
     }
 
     @Override
     public Map<String, Attribute> getAttributeList() {
         return attributeList;
     }
+
+    public void setTotalResults(int totalResults) throws CharonException {
+        if (!isAttributeExist(SCIMConstants.ListedResourcesConstants.TOTAL_RESULTS)) {
+            SimpleAttribute totalResultsAttribute =
+                    new SimpleAttribute(SCIMConstants.ListedResourcesConstants.TOTAL_RESULTS, null,
+                                        totalResults, SCIMSchemaDefinitions.DataType.INTEGER);
+            attributeList.put(SCIMConstants.ListedResourcesConstants.TOTAL_RESULTS, totalResultsAttribute);
+        } else {
+            ((SimpleAttribute) attributeList.get(SCIMConstants.ListedResourcesConstants.TOTAL_RESULTS))
+                    .updateValue(totalResults, SCIMSchemaDefinitions.DataType.INTEGER);
+        }
+    }
+
+    public void setResources(Map<String, Attribute> valueWithAttributes) {
+        if (!isAttributeExist(SCIMConstants.ListedResourcesConstants.RESOURCES)) {
+            MultiValuedAttribute resourcesAttribute =
+                    new MultiValuedAttribute(SCIMConstants.ListedResourcesConstants.RESOURCES);
+            resourcesAttribute.setComplexValueWithSetOfSubAttributes(valueWithAttributes);
+            for (Attribute attribute : valueWithAttributes.values()) {
+                if (!schemaList.contains(attribute.getSchemaName())) {
+                    schemaList.add(attribute.getSchemaName());
+                }
+            }
+            attributeList.put(SCIMConstants.ListedResourcesConstants.RESOURCES, resourcesAttribute);
+        } else {
+            ((MultiValuedAttribute) attributeList.get(SCIMConstants.ListedResourcesConstants.RESOURCES))
+                    .setComplexValueWithSetOfSubAttributes(valueWithAttributes);
+        }
+    }
+
+    private boolean isAttributeExist(String attributeName) {
+        return attributeList.containsKey(attributeName);
+    }
+
+
 }

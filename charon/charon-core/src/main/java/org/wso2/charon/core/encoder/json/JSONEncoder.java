@@ -62,7 +62,7 @@ public class JSONEncoder implements Encoder {
                                      (scimObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
             Map<String, Attribute> attributes = scimObject.getAttributeList();
-            if (attributes != null && attributes.isEmpty()) {
+            if (attributes != null && !attributes.isEmpty()) {
                 for (Attribute attribute : attributes.values()) {
                     if (attribute instanceof SimpleAttribute) {
                         encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);

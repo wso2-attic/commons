@@ -45,6 +45,31 @@ public class FSBasedUserManager implements UserManager {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @Override
+    public List<User> listUsers() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<User> listUsersByAttribute(Attribute attribute) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<User> listUsersByFilter(String filter) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<User> listUsersBySort(String sortBy, String sortOrder) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<User> listUsersWithPagination(int startIndex, int count) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /**
      * Update the user in full.
      *

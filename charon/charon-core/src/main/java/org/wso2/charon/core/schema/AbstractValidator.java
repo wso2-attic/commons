@@ -19,6 +19,8 @@ package org.wso2.charon.core.schema;
 
 import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.attributes.ComplexAttribute;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 
@@ -60,12 +62,29 @@ public abstract class AbstractValidator /*implements SchemaValidator*/ {
                 List<SCIMSubAttributeSchema> subAttributesSchemaList =
                         ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
-                for (SCIMSubAttributeSchema subAttributeSchema : subAttributesSchemaList) {
-                    if (subAttributeSchema.getRequired()) {
-                        if (attribute.getSubAttribute(subAttributeSchema.getName()) == null) {
-                            String error = "Required sub attribute: " + subAttributeSchema.getName()
-                                           + " is missing in the SCIM Attribute: " + attribute.getName();
-                            throw new CharonException(error);
+                if (subAttributesSchemaList != null) {
+                    for (SCIMSubAttributeSchema subAttributeSchema : subAttributesSchemaList) {
+                        if (subAttributeSchema.getRequired()) {
+
+                            if (attribute instanceof ComplexAttribute) {
+                                if (attribute.getSubAttribute(subAttributeSchema.getName()) == null) {
+                                    String error = "Required sub attribute: " + subAttributeSchema.getName()
+                                                   + " is missing in the SCIM Attribute: " + attribute.getName();
+                                    throw new CharonException(error);
+                                }
+                            } else if (attribute instanceof MultiValuedAttribute) {
+                                List<Attribute> values =
+                                        ((MultiValuedAttribute) attribute).getValuesAsSubAttributes();
+                                for (Attribute value : values) {
+                                    if (value instanceof ComplexAttribute) {
+                                        if (value.getSubAttribute(subAttributeSchema.getName()) == null) {
+                                            String error = "Required sub attribute: " + subAttributeSchema.getName()
+                                                           + " is missing in the SCIM Attribute: " + attribute.getName();
+                                            throw new CharonException(error);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

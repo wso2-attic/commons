@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.protocol.endpoints;
 
+import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
@@ -35,6 +36,7 @@ import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,10 +65,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             if (storage instanceof UserManager) {
                 //retrieve the user from the provided storage.
                 User user = ((UserManager) storage).getUser(id);
-
-                //TODO:needs a validator to see that the User returned by the custom user manager
-                // adheres to SCIM spec.
-
+                
                 //if user not found, return an error in relevant format.
                 if (user == null) {
                     String error = "User not found in the user store.";
@@ -135,6 +134,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             User user = (User) decoder.decodeResource(scimObjectString,
                                                       SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
 
+            //validate the created user
+            ServerSideValidator.validateCreatedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
             //handover the SCIM User object to the user storage provided by the SP.
             User createdUser;
             if (storage instanceof UserManager) {
@@ -149,8 +150,6 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 throw new InternalServerException(error);
             }
 
-            //validate the created user
-            ServerSideValidator.validateCreatedSCIMObject(createdUser, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
             //encode the newly created SCIM user object and add id attribute to Location header.
             String encodedUser;
             Map<String, String> httpHeaders = new HashMap<String, String>();
@@ -232,10 +231,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     }
 
     /**
-     * Supports listBy userName and externalID 
+     * Supports listBy userName and externalID
+     *
      * @param searchAttribute
      * @param userManager
-     *@param format @return
+     * @param format          @return
      */
     @Override
     public SCIMResponse listByAttribute(String searchAttribute, UserManager userManager,
@@ -256,7 +256,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         // For all attribute types, if there is no data for the specified sortBy value
         // they are sorted via the 'sortOrder' parameter;
         // i.e., they are ordered last if ascending and first if descending.
-        return null;  
+        return null;
     }
 
     @Override
@@ -274,9 +274,73 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      */
     @Override
     public SCIMResponse list(UserManager userManager, String format) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Encoder encoder = null;
+        try {
+            //obtain the correct encoder according to the format requested.
+            encoder = getEncoder(SCIMConstants.identifyFormat(format));
+
+            List<User> returnedUsers;
+            //API user should pass a UserManager storage to UserResourceEndpoint.
+            if (userManager != null) {
+                returnedUsers = userManager.listUsers();
+
+                //if user not found, return an error in relevant format.
+                if (returnedUsers == null && returnedUsers.isEmpty()) {
+                    String error = "Users not found in the user store.";
+                    //log error.
+                    //throw resource not found.
+                    throw new ResourceNotFoundException();
+                }
+                //create a listed resource object out of the returned users list.
+                ListedResource listedResource = createListedResource(returnedUsers);
+                //convert the user into specific format.
+                String encodedListedResource = encoder.encodeSCIMObject(listedResource);
+                //if there are any http headers to be added in the response header.
+                Map<String, String> httpHeaders = new HashMap<String, String>();
+                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
+                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedListedResource, httpHeaders);
+
+            } else {
+                String error = "Provided user manager handler is null.";
+                //log the error as well.
+                //throw internal server error.
+                throw new InternalServerException(error);
+            }
+
+        } catch (FormatNotSupportedException e) {
+            //if requested format not supported, encode exception and set it in the response.
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (ResourceNotFoundException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (NotFoundException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        }
     }
 
-
+    public ListedResource createListedResource(List<User> users)
+            throws CharonException, NotFoundException {
+        ListedResource listedResource = new ListedResource();
+        listedResource.setTotalResults(users.size());
+        for (User user : users) {
+            Map<String, Attribute> attributesOfUserResource = new HashMap<String, Attribute>();
+            attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.ID,
+                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+            attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
+                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
+            attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.META,
+                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.META));
+            listedResource.setResources(attributesOfUserResource);
+        }
+        return listedResource;
+    }
     //TODO: set last modified date with put/patch/bulk update operations.
 }

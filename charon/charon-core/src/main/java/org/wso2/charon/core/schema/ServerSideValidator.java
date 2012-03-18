@@ -19,6 +19,8 @@ package org.wso2.charon.core.schema;
 
 import org.wso2.charon.core.attributes.AbstractAttribute;
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.attributes.ComplexAttribute;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
@@ -49,10 +51,7 @@ public class ServerSideValidator extends AbstractValidator {
         removeAnyReadOnlyAttributes(scimObject, resourceSchema);
         //add created and last modified dates
         String id = UUID.randomUUID().toString();
-        if (scimObject.getId() != null) {
-            scimObject.deleteAttribute(SCIMConstants.CommonSchemaConstants.ID);
-            scimObject.setId(id);
-        }
+        scimObject.setId(id);
         Date date = new Date();
         scimObject.setCreatedDate(date);
         //created n last modified are the same if not updated.
@@ -73,13 +72,16 @@ public class ServerSideValidator extends AbstractValidator {
     }
 
     public static void validateRetrievedSCIMObject(AbstractSCIMObject scimObject,
-                                                   SCIMResourceSchema resourceSchema) {
+                                                   SCIMResourceSchema resourceSchema)
+            throws CharonException {
         //if user object, validate name - if validated in post and put, no need to validate in get.
         if (SCIMConstants.USER.equals(resourceSchema.getName())) {
             if (scimObject.getAttributeList().containsKey(SCIMConstants.UserSchemaConstants.PASSWORD)) {
                 scimObject.deleteAttribute(SCIMConstants.UserSchemaConstants.PASSWORD);
             }
         }
+        validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
+        validateSchemaList(scimObject,resourceSchema);
     }
 
     /**
@@ -112,13 +114,31 @@ public class ServerSideValidator extends AbstractValidator {
                 List<SCIMSubAttributeSchema> subAttributesSchemaList =
                         ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
 
-                for (SCIMSubAttributeSchema subAttributeSchema : subAttributesSchemaList) {
-                    if (subAttributeSchema.getReadOnly()) {
-                        if (attribute.getSubAttribute(subAttributeSchema.getName()) == null) {
-                            String error = "Readonly sub attribute: " + subAttributeSchema.getName()
-                                           + " is set in the SCIM Attribute: " + attribute.getName() +
-                                           ". Removing it.";
-                            attribute.removeSubAttribute(subAttributeSchema.getName());
+                if (subAttributesSchemaList != null && !subAttributesSchemaList.isEmpty()) {
+                    for (SCIMSubAttributeSchema subAttributeSchema : subAttributesSchemaList) {
+                        if (subAttributeSchema.getReadOnly()) {
+                            if (attribute instanceof ComplexAttribute) {
+                                if (attribute.getSubAttribute(subAttributeSchema.getName()) != null) {
+                                    String error = "Readonly sub attribute: " + subAttributeSchema.getName()
+                                                   + " is set in the SCIM Attribute: " + attribute.getName() +
+                                                   ". Removing it.";
+                                    attribute.removeSubAttribute(subAttributeSchema.getName());
+                                }
+                            } else if (attribute instanceof MultiValuedAttribute) {
+                                List<Attribute> values =
+                                        ((MultiValuedAttribute) attribute).getValuesAsSubAttributes();
+                                for (Attribute value : values) {
+                                    if (value instanceof ComplexAttribute) {
+                                        if (value.getSubAttribute(subAttributeSchema.getName()) != null) {
+                                            String error = "Readonly sub attribute: " + subAttributeSchema.getName()
+                                                           + " is set in the SCIM Attribute: " + attribute.getName() +
+                                                           ". Removing it.";
+                                            ((ComplexAttribute) value).removeSubAttribute(subAttributeSchema.getName());
+
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

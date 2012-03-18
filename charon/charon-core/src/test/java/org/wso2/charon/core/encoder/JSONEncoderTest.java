@@ -31,7 +31,9 @@ import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.Group;
+import org.wso2.charon.core.objects.ListedResource;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
@@ -162,7 +164,7 @@ public class JSONEncoderTest {
 
     //test encoding a complex attribute: User->Meta attribute
     @Test
-    public void testComplexAttribute() {
+    public void testEncodeComplexAttribute() {
         try {
             User testUser = new User();
             Date createdDate = new Date();
@@ -218,6 +220,45 @@ public class JSONEncoderTest {
         }
     }
 
+    @Test
+    public void testEncodeListedResource(){
+        try {
+            List<User> users = new ArrayList<User>();
+
+            User user1 = new User();
+            user1.setId(UUID.randomUUID().toString());
+            user1.setExternalId("hasini");
+            user1.setCreatedDate(new Date());
+            user1.setLastModified(new Date());
+            user1.setLocation("http://10.200.3.120:9763/charonDemoApp/scim/Users/");
+            user1.setVersion("v1");
+
+            users.add(user1);
+
+            User user2 = new User();
+            user2.setId(UUID.randomUUID().toString());
+            user2.setExternalId("umesha");
+            user2.setCreatedDate(new Date());
+            user2.setLastModified(new Date());
+            user2.setLocation("http://10.200.3.120:9763/charonDemoApp/scim/Users/");
+            user2.setVersion("v1");
+
+            users.add(user2);
+            UserResourceEndpoint userREP = new UserResourceEndpoint();
+            ListedResource listedResource = userREP.createListedResource(users);
+
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            String encodedString = jsonEncoder.encodeSCIMObject(listedResource);
+            System.out.println(encodedString);
+            
+        } catch (CharonException e) {
+            Assert.fail(e.getDescription());
+        } catch (NotFoundException e) {
+            Assert.fail(e.getDescription());
+        }
+
+
+    }
     //check how boolean is encoded :i.e it can't be represented within double quotes.
 
 }
