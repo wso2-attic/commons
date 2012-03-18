@@ -19,7 +19,7 @@ package org.wso2.charon.core.encoder;
 
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.AbstractSCIMObject;
+import org.wso2.charon.core.objects.SCIMObject;
 
 /**
  * SCIM API which is based on REST style, may support multiple formats of the resource.
@@ -30,10 +30,10 @@ public interface Encoder {
 
     /**
      * Encode the given SCIM object.
-     * @param abstractSCIMObject
+     * @param scimObject
      * @return the resulting string after encoding.
      */
-    public String encodeSCIMObject(AbstractSCIMObject abstractSCIMObject) throws CharonException;
+    public String encodeSCIMObject(SCIMObject scimObject) throws CharonException;
 
     /**
      * Encode the Exception to be sent in the SCIM - response payload.

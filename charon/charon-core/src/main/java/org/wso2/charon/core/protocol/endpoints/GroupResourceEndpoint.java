@@ -228,26 +228,42 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
     /**
      * Supports list by displayName and externalID
      * @param searchAttribute
-     * @return
+     * @param userManager
+     *@param format @return
      */
     @Override
-    public SCIMResponse listByAttribute(String searchAttribute) {
+    public SCIMResponse listByAttribute(String searchAttribute, UserManager userManager,
+                                        String format) {
         
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public SCIMResponse listByFilter(String filterString) {
+    public SCIMResponse listByFilter(String filterString, UserManager userManager, String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public SCIMResponse listBySort(String sortBy, String sortOrder) {
+    public SCIMResponse listBySort(String sortBy, String sortOrder, UserManager usermanager,
+                                   String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public SCIMResponse listWithPagination(int startIndex, int count) {
+    public SCIMResponse listWithPagination(int startIndex, int count, UserManager userManager,
+                                           String format) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * To list all the resources of resource endpoint.
+     *
+     * @param userManager
+     * @param format
+     * @return
+     */
+    @Override
+    public SCIMResponse list(UserManager userManager, String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

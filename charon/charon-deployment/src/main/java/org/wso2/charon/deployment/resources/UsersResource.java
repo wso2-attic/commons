@@ -19,6 +19,7 @@ package org.wso2.charon.deployment.resources;
 
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
+import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.UnauthorizedException;
@@ -223,9 +224,71 @@ public class UsersResource {
                             @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
                             @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
                             @QueryParam("attributes") String searchAttribute,
-                            @QueryParam("filter") String filter, @QueryParam("startIndex") String startIndex,
+                            @QueryParam("filter") String filter,
+                            @QueryParam("startIndex") String startIndex,
                             @QueryParam("count") String count, @QueryParam("sortBy") String sortBy,
-                            @QueryParam("sortOrder") String sortOrder){
-        return null;
+                            @QueryParam("sortOrder") String sortOrder) {
+        Encoder encoder = null;
+        try {
+            DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
+
+            // defaults to application/json.
+            if (format == null) {
+                format = SCIMConstants.APPLICATION_JSON;
+            }
+            //obtain the encoder at this layer in case exceptions needs to be encoded.
+            encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
+            //perform authentication
+            Map<String, String> headerMap = new HashMap<String, String>();
+            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
+            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
+            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            //authenticate the request
+            defaultCharonManager.handleAuthentication(headerMap);
+
+            //obtain the user store manager
+            UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
+                    userName);
+
+            //create charon-SCIM user endpoint and hand-over the request.
+            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+            SCIMResponse scimResponse = null;
+            if (searchAttribute != null) {
+                scimResponse = userResourceEndpoint.listByAttribute(searchAttribute, userManager, format);
+            } else if (filter != null) {
+                scimResponse = userResourceEndpoint.listByFilter(filter, userManager, format);
+            } else if (startIndex != null && count != null) {
+                scimResponse = userResourceEndpoint.listWithPagination(Integer.valueOf(startIndex),
+                                                                       Integer.valueOf(count),
+                                                                       userManager, format);
+            } else if (sortBy != null) {
+                scimResponse = userResourceEndpoint.listBySort(sortBy, sortOrder, userManager, format);
+            } else if (searchAttribute == null && filter == null && startIndex == null &&
+                       count == null && sortBy == null) {
+                scimResponse = userResourceEndpoint.list(userManager, format);
+            } else {
+                //bad request
+                throw new BadRequestException(ResponseCodeConstants.DESC_BAD_REQUEST_GET);
+            }
+
+            return new JAXRSResponseBuilder().buildResponse(scimResponse);
+
+        } catch (CharonException e) {
+            //create SCIM response with code as the same of exception and message as error message of the exception
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (UnauthorizedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (FormatNotSupportedException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        } catch (BadRequestException e) {
+            return new JAXRSResponseBuilder().buildResponse(
+                    AbstractResourceEndpoint.encodeSCIMException(encoder, e));
+        }
     }
 }

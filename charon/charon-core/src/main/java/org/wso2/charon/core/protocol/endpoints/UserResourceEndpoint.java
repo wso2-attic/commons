@@ -234,25 +234,46 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     /**
      * Supports listBy userName and externalID 
      * @param searchAttribute
+     * @param userManager
+     *@param format @return
+     */
+    @Override
+    public SCIMResponse listByAttribute(String searchAttribute, UserManager userManager,
+                                        String format) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SCIMResponse listByFilter(String filterString, UserManager userManager, String format) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public SCIMResponse listBySort(String sortBy, String sortOrder, UserManager usermanager,
+                                   String format) {
+        //If a value for sortBy is provided and no sortOrder is specified,
+        // the sortOrder SHALL default to ascending
+        // For all attribute types, if there is no data for the specified sortBy value
+        // they are sorted via the 'sortOrder' parameter;
+        // i.e., they are ordered last if ascending and first if descending.
+        return null;  
+    }
+
+    @Override
+    public SCIMResponse listWithPagination(int startIndex, int count, UserManager userManager,
+                                           String format) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * To list all the resources of resource endpoint.
+     *
+     * @param userManager
+     * @param format
      * @return
      */
     @Override
-    public SCIMResponse listByAttribute(String searchAttribute) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public SCIMResponse listByFilter(String filterString) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public SCIMResponse listBySort(String sortBy, String sortOrder) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public SCIMResponse listWithPagination(int startIndex, int count) {
+    public SCIMResponse list(UserManager userManager, String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

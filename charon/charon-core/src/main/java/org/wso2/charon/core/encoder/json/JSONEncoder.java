@@ -27,7 +27,7 @@ import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.AbstractSCIMObject;
+import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
@@ -50,18 +50,18 @@ public class JSONEncoder implements Encoder {
     /**
      * Encode the given SCIM object.
      *
-     * @param abstractSCIMObject
+     * @param scimObject
      * @return the resulting string after encoding.
      */
-    public String encodeSCIMObject(AbstractSCIMObject abstractSCIMObject) throws CharonException {
+    public String encodeSCIMObject(SCIMObject scimObject) throws CharonException {
         //root json object containing the encoded SCIM Object.
         JSONObject rootObject = new JSONObject();
         try {
             //encode schemas
             this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.SCHEMAS,
-                                     (abstractSCIMObject.getSchemaList()).toArray(), rootObject);
+                                     (scimObject.getSchemaList()).toArray(), rootObject);
             //encode attribute list
-            Map<String, Attribute> attributes = abstractSCIMObject.getAttributeList();
+            Map<String, Attribute> attributes = scimObject.getAttributeList();
             if (attributes != null && attributes.isEmpty()) {
                 for (Attribute attribute : attributes.values()) {
                     if (attribute instanceof SimpleAttribute) {

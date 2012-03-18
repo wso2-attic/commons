@@ -41,6 +41,8 @@ public class ResponseCodeConstants {
     public static final int CODE_BAD_REQUEST = 400;
     public static final String DESC_BAD_REQUEST = "Request is unparseable, syntactically " +
                                                   "incorrect, or violates schema";
+    public static final String DESC_BAD_REQUEST_GET = "GET request does not support the " +
+                                                      "requested URL query parameter combination.";
 
     public static final int CODE_OK = 200;
 
