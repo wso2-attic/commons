@@ -27,13 +27,13 @@ public class SampleConstants {
 
     public static final String CRED_TENANT_DOMAIN = "wso2.edu";
 
-    /*public static final String USER_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Users/";
+    public static final String USER_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/Users/";
     public static final String GROUP_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Groups/";
-    public static final String REG_SERVICE_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/RegistrationService";*/
-    public static final String USER_ENDPOINT = "http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Users/";
+    public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/RegistrationService";
+    /*public static final String USER_ENDPOINT = "http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Users/";
     //public static final String USER_ENDPOINT = "http://localhost:8080/t/charon.com/webapps/charonDemoApp/scim/Users/";
     public static final String GROUP_ENDPOINT = "http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Groups/";
     public static final String REG_SERVICE_ENDPOINT = "http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/RegistrationService";
     //public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/t/charon.com/webapps/charonDemoApp/scim/RegistrationService";
-    //http://appserver.stratoslive.wso2.com/t/charon.org/webapps/charonDemoApp/
+    //http://appserver.stratoslive.wso2.com/t/charon.org/webapps/charonDemoApp/*/
 }

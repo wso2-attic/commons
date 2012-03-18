@@ -34,7 +34,7 @@ public class JSONDecoderTest {
                            "Pannipitiya.";
         JSONObject encodedAddress = new JSONObject();
         encodedAddress.put("address", myAddress);
-        System.out.println(encodedAddress.toString());
+        //System.out.println(encodedAddress.toString());
     }
 
     @Test

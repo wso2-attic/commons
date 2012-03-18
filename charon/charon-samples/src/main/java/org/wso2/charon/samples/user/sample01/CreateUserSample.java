@@ -32,8 +32,8 @@ import org.wso2.charon.samples.utils.SampleConstants;
 public class CreateUserSample {
 
     //user details
-    public static final String USER_NAME = "hasini";
-    public static final String EXTERNAL_ID = "hasinig@gmail.com";
+    public static final String USER_NAME = "hasi";
+    public static final String EXTERNAL_ID = "hasig@gmail.com";
     public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
 
     public static void main(String[] args) {

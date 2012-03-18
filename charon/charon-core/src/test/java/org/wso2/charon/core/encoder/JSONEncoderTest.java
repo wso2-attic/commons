@@ -249,7 +249,7 @@ public class JSONEncoderTest {
 
             JSONEncoder jsonEncoder = new JSONEncoder();
             String encodedString = jsonEncoder.encodeSCIMObject(listedResource);
-            System.out.println(encodedString);
+            //System.out.println(encodedString);
             
         } catch (CharonException e) {
             Assert.fail(e.getDescription());
