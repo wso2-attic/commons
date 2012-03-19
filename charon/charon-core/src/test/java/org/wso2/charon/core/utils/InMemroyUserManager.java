@@ -26,6 +26,7 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -235,6 +236,7 @@ public class InMemroyUserManager implements UserManager {
      */
 
     private void validateMembersOnGroupCreate(Group group) throws CharonException {
+/*
         List<String> userIDs = group.getUserMembers();
         List<String> groupIDs = group.getGroupMembers();
         if (groupIDs != null && !groupIDs.isEmpty()) {
@@ -252,6 +254,8 @@ public class InMemroyUserManager implements UserManager {
                 //update direct membership
                 if (!user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId())) {
                     user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+                    //TODO:set display name in group members taken from members
+
                 }
             } else {
                 //throw error.
@@ -259,6 +263,17 @@ public class InMemroyUserManager implements UserManager {
                 throw new CharonException(error);
             }
         }
+*/
+        checkForValidMembers(group);
+        updateUserMembers(group);
+        updateGroupMembers(group);
+    }
+
+    private void validateMembersOnGroupUpdate(Group group) throws CharonException {
+        checkForValidMembers(group);
+        updateUserMembers(group);
+        updateGroupMembers(group);
+        removeObsoleteRecordsOnGroupUpdate(group);
     }
 
     private void validateMembersOnGroupDelete(Group group) throws CharonException {
@@ -268,11 +283,16 @@ public class InMemroyUserManager implements UserManager {
             for (String userMember : userMembers) {
                 if (inMemoryUserList.containsKey(userMember)) {
                     User user = inMemoryUserList.get(userMember);
-                    if (user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP,
-                                                 group.getId())) {
+                    if (user.isUserMemberOfGroup(null, group.getId())) {
                         user.removeFromGroup(group.getId());
                     }
                 }
+            }
+        }
+        //see whether any other groups in which this group is a member.
+        for (Group parentGroup : inMemoryGroupList.values()) {
+            if (parentGroup.getMembers().contains(group.getId())) {
+                parentGroup.removeMember(group.getId());
             }
         }
 
@@ -285,7 +305,83 @@ public class InMemroyUserManager implements UserManager {
             for (String groupId : groupIds) {
                 if (inMemoryGroupList.containsKey(groupId)) {
                     Group group = inMemoryGroupList.get(groupId);
-                    group.removeUserMember(user.getId());
+                    group.removeMember(user.getId());
+                }
+            }
+        }
+    }
+
+    //check if valid member
+
+    private void checkForValidMembers(Group group) throws CharonException {
+        List<String> members = group.getMembers();
+        if (members != null && !members.isEmpty()) {
+            for (String member : members) {
+                if (!(inMemoryUserList.containsKey(member) || inMemoryGroupList.containsKey(member))) {
+                    String error = "Member with id: " + member + " doesn't exist in the system.";
+                    throw new CharonException(error);
+                }
+            }
+        }
+    }
+
+    //update user members
+
+    private void updateUserMembers(Group group) throws CharonException {
+        List<String> members = group.getMembers();
+        for (String member : members) {
+            if (inMemoryUserList.containsKey(member)) {
+                User user = inMemoryUserList.get(member);
+                //update group with all details regarding member
+                group.removeMember(member);
+                Map<String, Object> valueProperties = new HashMap<String, Object>();
+                valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, user.getId());
+                if (user.getDisplayName() != null) {
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, user.getDisplayName());
+                }
+                valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.USER);
+                group.setMember(valueProperties);
+                //update user with details about the group it belongs to.
+                if (user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId())) {
+                    //update group details in user
+                    user.removeFromGroup(group.getId());
+                    user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+                } else {
+                    //add group details in user
+                    user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+                }
+            }
+        }
+    }
+
+    //update group members
+
+    private void updateGroupMembers(Group group) throws CharonException {
+        List<String> members = group.getMembers();
+        for (String member : members) {
+            if (inMemoryGroupList.containsKey(member)) {
+                Group memberGroup = inMemoryGroupList.get(member);
+                group.removeMember(member);
+
+                Map<String, Object> valueProperties = new HashMap<String, Object>();
+                valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, memberGroup.getId());
+                if (memberGroup.getDisplayName() != null) {
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, memberGroup.getDisplayName());
+                }
+                valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.GROUP);
+                group.setMember(valueProperties);
+            }
+        }
+
+    }
+
+    //remove obsolete records on group update
+
+    private void removeObsoleteRecordsOnGroupUpdate(Group newGroup) throws CharonException {
+        for (User user : inMemoryUserList.values()) {
+            if (user.isUserMemberOfGroup(null, newGroup.getId())) {
+                if (!(newGroup.getGroupMembers().contains(user.getId()))) {
+                    user.removeFromGroup(newGroup.getId());
                 }
             }
         }

@@ -882,6 +882,7 @@ public class User extends AbstractSCIMObject {
                     SCIMConstants.CommonSchemaConstants.VALUE);
             if (groupId.equals(valueAttribute.getStringValue())) {
                 groupsAttribute.removeAttributeValue(value);
+                break;
             }
         }
     }

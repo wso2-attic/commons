@@ -183,7 +183,6 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
         } catch (InternalServerException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
-
     }
 
     /**
