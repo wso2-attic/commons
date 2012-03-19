@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.protocol.endpoints;
 
+import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
@@ -27,7 +28,10 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.exceptions.ResourceNotFoundException;
 import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
+import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.Group;
+import org.wso2.charon.core.objects.ListedResource;
+import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -35,6 +39,7 @@ import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -267,7 +272,73 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
      */
     @Override
     public SCIMResponse list(UserManager userManager, String format) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        Encoder encoder = null;
+        try {
+            //obtain the correct encoder according to the format requested.
+            encoder = getEncoder(SCIMConstants.identifyFormat(format));
+
+            List<Group> returnedGroups;
+            //API user should pass a UserManager storage to GroupResourceEndpoint.
+            if (userManager != null) {
+                returnedGroups = userManager.listGroups();
+
+                //if Group not found, return an error in relevant format.
+                if (returnedGroups == null && returnedGroups.isEmpty()) {
+                    String error = "Groups not found in the user store.";
+                    //log error.
+                    //throw resource not found.
+                    throw new ResourceNotFoundException();
+                }
+                //create a listed resource object out of the returned users list.
+                ListedResource listedResource = createListedResource(returnedGroups);
+                //convert the listed resource into specific format.
+                String encodedListedResource = encoder.encodeSCIMObject(listedResource);
+                //if there are any http headers to be added in the response header.
+                Map<String, String> httpHeaders = new HashMap<String, String>();
+                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
+                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedListedResource, httpHeaders);
+
+            } else {
+                String error = "Provided user manager handler is null.";
+                //log the error as well.
+                //throw internal server error.
+                throw new InternalServerException(error);
+            }
+
+        } catch (FormatNotSupportedException e) {
+            //if requested format not supported, encode exception and set it in the response.
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (ResourceNotFoundException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (NotFoundException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        }
+    }
+
+    public ListedResource createListedResource(List<Group> groups)
+            throws CharonException, NotFoundException {
+        ListedResource listedResource = new ListedResource();
+        listedResource.setTotalResults(groups.size());
+        for (Group group : groups) {
+            Map<String, Attribute> attributesOfGroupResource = new HashMap<String, Attribute>();
+            attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.ID,
+                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+            attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
+                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
+            attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.META,
+                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.META));
+            listedResource.setResources(attributesOfGroupResource);
+        }
+        return listedResource;
     }
 
 }

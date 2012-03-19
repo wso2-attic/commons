@@ -74,7 +74,6 @@ public interface UserManager extends Storage {
      * @return User : For a patch request, server can respond with either 200 ok + entire resource
      *         or 204 No content+appropriate response headers. But user manager should return the updated resource.
      */
-
     public User updateUser(List<Attribute> updatedAttributes);
 
     /**
@@ -84,13 +83,22 @@ public interface UserManager extends Storage {
      */
     public void deleteUser(String userId) throws NotFoundException, CharonException;
 
-    /**
-     * ****************Group manipulation operations*******************
-     */
+
+    /* ****************Group manipulation operations********************/
 
     public Group createGroup(Group group) throws CharonException;
 
     public Group getGroup(String groupId) throws CharonException;
+
+    public List<Group> listGroups() throws CharonException;
+
+    public List<Group> listGroupsByAttribute(Attribute attribute) throws CharonException;
+
+    public List<Group> listGroupsByFilter(String filter) throws CharonException;
+
+    public List<Group> listGroupsBySort(String sortBy, String sortOrder) throws CharonException;
+
+    public List<Group> listGroupsWithPagination(int startIndex, int count);
 
     public Group updateGroup(Group group) throws CharonException;
 

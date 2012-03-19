@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.protocol.endpoints;
 
+import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
@@ -24,11 +25,17 @@ import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
+import org.wso2.charon.core.exceptions.NotFoundException;
+import org.wso2.charon.core.objects.AbstractSCIMObject;
+import org.wso2.charon.core.objects.ListedResource;
+import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -152,6 +159,23 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, SCIMConstants.identifyContentType(encoder.getFormat()));
         return new SCIMResponse(exception.getCode(), encoder.encodeSCIMException(exception), httpHeaders);
     }
+
+    /*public ListedResource createListedResource(List<AbstractSCIMObject> scimObjects)
+            throws CharonException, NotFoundException {
+        ListedResource listedResource = new ListedResource();
+        listedResource.setTotalResults(scimObjects.size());
+        for (AbstractSCIMObject scimObject : scimObjects) {
+            Map<String, Attribute> minimalAttributesOfSCIMObject = new HashMap<String, Attribute>();
+            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.ID,
+                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
+                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
+            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.META,
+                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.META));
+            listedResource.setResources(minimalAttributesOfSCIMObject);
+        }
+        return listedResource;
+    }*/
     /**
      * Build SCIM Response given the response code and response message.
      * @param responseCode

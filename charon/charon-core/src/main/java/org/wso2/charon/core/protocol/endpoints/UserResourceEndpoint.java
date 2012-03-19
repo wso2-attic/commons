@@ -293,7 +293,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 }
                 //create a listed resource object out of the returned users list.
                 ListedResource listedResource = createListedResource(returnedUsers);
-                //convert the user into specific format.
+                //convert the listed resource into specific format.
                 String encodedListedResource = encoder.encodeSCIMObject(listedResource);
                 //if there are any http headers to be added in the response header.
                 Map<String, String> httpHeaders = new HashMap<String, String>();
