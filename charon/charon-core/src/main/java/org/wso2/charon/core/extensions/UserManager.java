@@ -82,7 +82,7 @@ public interface UserManager extends Storage {
      *
      * @param userId
      */
-    public void deleteUser(String userId) throws NotFoundException;
+    public void deleteUser(String userId) throws NotFoundException, CharonException;
 
     /**
      * ****************Group manipulation operations*******************
@@ -96,6 +96,6 @@ public interface UserManager extends Storage {
 
     public Group updateGroup(List<Attribute> attributes) throws CharonException;
 
-    public void deleteGroup(String groupId) throws NotFoundException;
+    public void deleteGroup(String groupId) throws NotFoundException, CharonException;
 
 }

@@ -17,7 +17,6 @@
 */
 package org.wso2.charon.deployment.resources;
 
-import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
@@ -30,7 +29,8 @@ import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
-import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
+import org.wso2.charon.utils.jaxrs.JAXRSResponseBuilder;
+import org.wso2.charon.utils.jaxrs.PATCH;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -290,5 +290,17 @@ public class UsersResource {
             return new JAXRSResponseBuilder().buildResponse(
                     AbstractResourceEndpoint.encodeSCIMException(encoder, e));
         }
+    }
+
+    @PATCH
+    public Response patchUser(@HeaderParam(SCIMConstants.CONTENT_TYPE_HEADER) String inputFormat,
+                              @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
+                              @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
+                              @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
+                              @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
+                              String resourceString) {
+        System.out.println("patch method was called." + resourceString);
+        return null;
+
     }
 }

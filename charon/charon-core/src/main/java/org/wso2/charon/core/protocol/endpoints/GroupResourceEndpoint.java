@@ -32,6 +32,7 @@ import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+import org.wso2.charon.core.schema.ServerSideValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                     //throw resource not found.
                     throw new ResourceNotFoundException();
                 }
+                ServerSideValidator.validateRetrievedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
                 //convert the user into specific format.
                 String encodedGroup = encoder.encodeSCIMObject(group);
                 //if there are any http headers to be added in the response header.
@@ -132,7 +134,8 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             Group group = (Group) decoder.decodeResource(scimObjectString,
                                                          SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA,
                                                          new Group());
-
+            //validate decoded group
+            ServerSideValidator.validateCreatedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
             //handover the SCIM User object to the group storage provided by the SP.
             Group createdGroup;
             if (storage instanceof UserManager) {
@@ -227,14 +230,15 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
 
     /**
      * Supports list by displayName and externalID
+     *
      * @param searchAttribute
      * @param userManager
-     *@param format @return
+     * @param format          @return
      */
     @Override
     public SCIMResponse listByAttribute(String searchAttribute, UserManager userManager,
                                         String format) {
-        
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

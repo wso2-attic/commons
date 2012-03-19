@@ -25,7 +25,7 @@ import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.utils.CharonConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.storage.TenantInfo;
-import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
+import org.wso2.charon.utils.jaxrs.JAXRSResponseBuilder;
 
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;

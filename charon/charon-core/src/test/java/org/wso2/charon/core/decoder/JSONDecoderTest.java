@@ -23,8 +23,11 @@ import org.junit.Test;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+
+import java.util.List;
 
 public class JSONDecoderTest {
 
@@ -151,7 +154,7 @@ public class JSONDecoderTest {
             User decodedUser = (User) jsonDecoder.decodeResource(fullJSONUser,
                                                                  SCIMSchemaDefinitions.SCIM_USER_SCHEMA,
                                                                  new User());
-            Assert.assertEquals("Jensen",decodedUser.getFamilyName());
+            Assert.assertEquals("Jensen", decodedUser.getFamilyName());
 
         } catch (BadRequestException e) {
             Assert.fail(e.getDescription());
@@ -162,6 +165,38 @@ public class JSONDecoderTest {
 
     @Test
     public void testDecodeGroup() {
+        try {
+            String group = "{\n" +
+                           "  \"schemas\": [\"urn:scim:schemas:core:1.0\"],\n" +
+                           "  \"id\": \"e9e30dba-f08f-4109-8486-d5c6a331660a\",\n" +
+                           "  \"displayName\": \"Tour Guides\",\n" +
+                           "  \"members\": [\n" +
+                           "    {\n" +
+                           "      \"value\": \"2819c223-7f76-453a-919d-413861904646\",\n" +
+                           "      \"display\": \"Babs Jensen\"\n" +
+                           "    },\n" +
+                           "    {\n" +
+                           "      \"value\": \"902c246b-6245-4190-8e05-00816be7344a\",\n" +
+                           "      \"display\": \"Mandy Pepperidge\"\n" +
+                           "    }\n" +
+                           "  ]\n" +
+                           "}";
+            JSONDecoder jsonDecoder = new JSONDecoder();
+            Group decodedGroup = (Group) jsonDecoder.decodeResource(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA,
+                                                                    new Group());
+            Assert.assertEquals("Tour Guides", decodedGroup.getDisplayName());
+            List<String> memberIDs = decodedGroup.getMembers();
+            for (String memberID : memberIDs) {
+                if((!"2819c223-7f76-453a-919d-413861904646".equals(memberID))&&
+                   (!"902c246b-6245-4190-8e05-00816be7344a".equals(memberID))){
+                    Assert.fail("given members do not exist in the group.");    
+                }
+            }
+        } catch (BadRequestException e) {
+            Assert.fail(e.getDescription());
+        } catch (CharonException e) {
+            Assert.fail(e.getDescription());
+        }
 
     }
 

@@ -144,6 +144,9 @@ public class SCIMConstants {
         public static final String REGION = "region";
         public static final String POSTAL_CODE = "postalCode";
         public static final String COUNTRY = "country";
+
+        public static final String DIRECT_MEMBERSHIP = "direct";
+        public static final String INDIRECT_MEMBERSHIP = "indirect";
     }
 
     public static class GroupSchemaConstants {

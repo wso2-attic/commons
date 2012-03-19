@@ -766,6 +766,114 @@ public class User extends AbstractSCIMObject {
      * *************************Groups Attribute************************************
      */
     //types: direct, indirect
+    public List<String> getDirectGroups() throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
+            MultiValuedAttribute groupsAttribute = (MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.GROUPS);
+            return groupsAttribute.getAttributeValuesByType(
+                    SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP);
+        } else {
+            return null;
+        }
+    }
+
+    public void setDirectGroups(List<String> directGroupIds) throws CharonException {
+        if (directGroupIds != null && !directGroupIds.isEmpty()) {
+            for (String directGroupId : directGroupIds) {
+                Map<String, Object> groupValueProperties = new HashMap<String, Object>();
+                groupValueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE,
+                                         SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP);
+                groupValueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, directGroupId);
+                setGroup(groupValueProperties);
+            }
+        }
+    }
+
+    public List<String> getIndirectGroups() throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
+            MultiValuedAttribute groupsAttribute = (MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.GROUPS);
+            return groupsAttribute.getAttributeValuesByType(
+                    SCIMConstants.UserSchemaConstants.INDIRECT_MEMBERSHIP);
+        } else {
+            return null;
+        }
+    }
+
+    public void setIndirectGroups(List<String> inDirectGroupIds) throws CharonException {
+        if (inDirectGroupIds != null && !inDirectGroupIds.isEmpty()) {
+            for (String inDirectGroupId : inDirectGroupIds) {
+                Map<String, Object> groupValueProperties = new HashMap<String, Object>();
+                groupValueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE,
+                                         SCIMConstants.UserSchemaConstants.INDIRECT_MEMBERSHIP);
+                groupValueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, inDirectGroupId);
+                setGroup(groupValueProperties);
+            }
+        }
+    }
+
+    public void setGroup(String type, String value) throws CharonException {
+        Map<String, Object> groupValueProperties = new HashMap<String, Object>();
+        if (type != null) {
+            groupValueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, type);
+        } else {
+            throw new CharonException("Please specify a group membership type: direct/indirect.");
+        }
+        if (value != null) {
+            groupValueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, value);
+        }
+        if (!groupValueProperties.isEmpty()) {
+            setGroup(groupValueProperties);
+        }
+    }
+
+    private void setGroup(Map<String, Object> groupProperties) throws CharonException {
+        if (attributeList.containsKey(SCIMConstants.UserSchemaConstants.GROUPS)) {
+            MultiValuedAttribute groupsAttribute = (MultiValuedAttribute)
+                    attributeList.get(SCIMConstants.UserSchemaConstants.GROUPS);
+            groupsAttribute.setComplexValue(groupProperties);
+        } else {
+            MultiValuedAttribute groupsAttribute = new MultiValuedAttribute(
+                    SCIMConstants.UserSchemaConstants.GROUPS);
+            groupsAttribute.setComplexValue(groupProperties);
+            groupsAttribute = (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(
+                    SCIMSchemaDefinitions.GROUPS, groupsAttribute);
+            attributeList.put(SCIMConstants.UserSchemaConstants.GROUPS, groupsAttribute);
+        }
+    }
+
+    //isUserMemberOfGroup
+
+    public boolean isUserMemberOfGroup(String type, String groupId) throws CharonException {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
+            MultiValuedAttribute groupsAttribute = (MultiValuedAttribute)
+                    attributeList.get(SCIMConstants.UserSchemaConstants.GROUPS);
+            List<String> groups = groupsAttribute.getAttributeValuesByType(type);
+            for (String group : groups) {
+                if (groupId.equals(groupId)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
+
+    //removeUserFromGroup
+
+    public void removeFromGroup(String groupId) throws CharonException {
+        MultiValuedAttribute groupsAttribute = (MultiValuedAttribute)
+                attributeList.get(SCIMConstants.UserSchemaConstants.GROUPS);
+        List<Attribute> values = groupsAttribute.getValuesAsSubAttributes();
+        for (Attribute value : values) {
+            SimpleAttribute valueAttribute = (SimpleAttribute) ((ComplexAttribute) value).getSubAttribute(
+                    SCIMConstants.CommonSchemaConstants.VALUE);
+            if(groupId.equals(valueAttribute.getStringValue())){
+                groupsAttribute.removeAttributeValue(value);
+            }
+        }
+    }
 
     /**
      * *************************Entitlements****************************************
@@ -778,14 +886,6 @@ public class User extends AbstractSCIMObject {
     /**
      * *****************************X509Certificates********************************
      */
-
-
-
-
-
-
-
-
 
 
     /**

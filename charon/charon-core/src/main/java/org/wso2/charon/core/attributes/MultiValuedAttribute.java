@@ -365,4 +365,8 @@ public class MultiValuedAttribute extends AbstractAttribute {
         throw new CharonException("Error: getSubAttribute method not supported by MultiValuedAttribute.");
     }
 
+    public void removeAttributeValue(Attribute attributeValue){
+        attributeValues.remove(attributeValue);
+    }
+
 }

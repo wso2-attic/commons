@@ -26,10 +26,9 @@ import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.GroupResourceEndpoint;
-import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
-import org.wso2.charon.utils.builders.JAXRSResponseBuilder;
+import org.wso2.charon.utils.jaxrs.JAXRSResponseBuilder;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;

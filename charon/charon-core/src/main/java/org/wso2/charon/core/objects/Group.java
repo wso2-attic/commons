@@ -122,6 +122,24 @@ public class Group extends AbstractSCIMObject {
         setMember(propertyValues);
     }
 
+    //remove user member
+
+    public void removeUserMember(String id) throws CharonException {
+        if (isAttributeExist(SCIMConstants.GroupSchemaConstants.MEMBERS)) {
+            MultiValuedAttribute members = (MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.GroupSchemaConstants.MEMBERS);
+            List<Attribute> values = members.getValuesAsSubAttributes();
+            for (Attribute value : values) {
+                SimpleAttribute valueAttribute =
+                        (SimpleAttribute) ((ComplexAttribute) value).getSubAttribute(
+                                SCIMConstants.CommonSchemaConstants.VALUE);
+                if(id.equals(valueAttribute.getStringValue())){
+                    members.removeAttributeValue(value);
+                }
+            }
+        }
+    }
+
     //set group member - id
 
     public void setGroupMember(String id) throws CharonException {

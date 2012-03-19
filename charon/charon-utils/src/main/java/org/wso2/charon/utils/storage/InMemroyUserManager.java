@@ -23,9 +23,7 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
-import org.wso2.charon.core.schema.AbstractValidator;
 import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,7 +158,7 @@ public class InMemroyUserManager implements UserManager {
      * @param userId
      */
     @Override
-    public void deleteUser(String userId) throws NotFoundException {
+    public void deleteUser(String userId) throws NotFoundException, CharonException {
         /*if (!userList.isEmpty()) {
             for (SampleUser sampleUser : userList) {
                 if (userId.equals(sampleUser.getId())) {
@@ -178,6 +176,7 @@ public class InMemroyUserManager implements UserManager {
         if (userId != null) {
             if (!inMemoryUserList.isEmpty() && inMemoryUserList.containsKey(userId)) {
                 //TODO: remove user from any groups he belongs to.
+                validateGroupsOnUserDelete(inMemoryUserList.get(userId));
                 inMemoryUserList.remove(userId);
             } else {
                 throw new NotFoundException();
@@ -241,7 +240,7 @@ public class InMemroyUserManager implements UserManager {
      */
     @Override
     public Group getGroup(String groupId) throws CharonException {
-        Group group = null;
+        /*Group group = null;
         if (groupList != null && (!groupList.isEmpty())) {
             for (SampleGroup sampleGroup : groupList) {
                 if (groupId.equals(sampleGroup.getId())) {
@@ -293,12 +292,22 @@ public class InMemroyUserManager implements UserManager {
                 }
             }
         }
-        return group;
+        return group;*/
+        if (groupId != null) {
+            if (!inMemoryGroupList.isEmpty() && inMemoryGroupList.containsKey(groupId)) {
+                return inMemoryGroupList.get(groupId);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
     }
 
     @Override
     public Group createGroup(Group group) throws CharonException {
-        SampleGroup customGroup = null;
+        /*SampleGroup customGroup = null;
         if (this.groupList != null && !this.groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
                 if (group.getExternalId().equals(sampleGroup.getExternalId())) {
@@ -312,6 +321,23 @@ public class InMemroyUserManager implements UserManager {
         } else {
             customGroup = createCustomGroup(group);
             groupList.add(customGroup);
+        }
+        return group;*/
+        if (!inMemoryGroupList.isEmpty()) {
+            if (group.getExternalId() != null) {
+                for (Group group1 : inMemoryGroupList.values()) {
+                    if (group.getExternalId().equals(group1.getExternalId())) {
+                        String error = "Group already exist in the system.";
+                        //TODO:log error
+                        throw new CharonException(error);
+                    }
+                }
+            }
+            validateMembersOnGroupCreate(group);
+            inMemoryGroupList.put(group.getId(), group);
+        } else {
+            validateMembersOnGroupCreate(group);
+            inMemoryGroupList.put(group.getId(), group);
         }
         return group;
     }
@@ -329,8 +355,8 @@ public class InMemroyUserManager implements UserManager {
     }
 
     @Override
-    public void deleteGroup(String groupId) throws NotFoundException {
-        //TODO:when removing group, remove group membership of its members - i.e: consider updating group attribute of Users.
+    public void deleteGroup(String groupId) throws NotFoundException, CharonException {
+        /*//TODO:when removing group, remove group membership of its members - i.e: consider updating group attribute of Users.
         if (!groupList.isEmpty()) {
             for (SampleGroup sampleGroup : groupList) {
                 if (groupId.equals(sampleGroup.getId())) {
@@ -344,6 +370,16 @@ public class InMemroyUserManager implements UserManager {
         } else {
             //if group list is empty
             throw new NotFoundException();
+        }*/
+        if (groupId != null) {
+            if (!inMemoryGroupList.isEmpty() && inMemoryGroupList.containsKey(groupId)) {
+                validateMembersOnGroupDelete(inMemoryGroupList.get(groupId));
+                inMemoryGroupList.remove(groupId);
+            } else {
+                throw new NotFoundException();
+            }
+        } else {
+            throw new NotFoundException();
         }
     }
 
@@ -351,7 +387,63 @@ public class InMemroyUserManager implements UserManager {
      * ****************private methods*************************************
      */
 
-    private SampleUser createCustomUser(User user) throws CharonException {
+    private void validateMembersOnGroupCreate(Group group) throws CharonException {
+        List<String> userIDs = group.getUserMembers();
+        List<String> groupIDs = group.getGroupMembers();
+        if (groupIDs != null && !groupIDs.isEmpty()) {
+            for (String groupID : groupIDs) {
+                if (!inMemoryGroupList.containsKey(groupID)) {
+                    //throw exception
+                    String error = "Group member: " + groupID + " doesn't exist in the system.";
+                    throw new CharonException(error);
+                }
+            }
+        }
+        for (String userID : userIDs) {
+            if (inMemoryUserList.containsKey(userID)) {
+                User user = inMemoryUserList.get(userID);
+                //update direct membership
+                if (!user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId())) {
+                    user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId());
+                }
+            } else {
+                //throw error.
+                String error = "User member: " + userID + " doesn't exist in the system.";
+                throw new CharonException(error);
+            }
+        }
+    }
+
+    private void validateMembersOnGroupDelete(Group group) throws CharonException {
+        //get user members and remove direct membership from them
+        List<String> userMembers = group.getUserMembers();
+        if (userMembers != null && !userMembers.isEmpty()) {
+            for (String userMember : userMembers) {
+                if (inMemoryUserList.containsKey(userMember)) {
+                    User user = inMemoryUserList.get(userMember);
+                    if (user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP,
+                                                 group.getId())) {
+                        user.removeFromGroup(group.getId());
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void validateGroupsOnUserDelete(User user) throws CharonException {
+        //get groups in which user is a direct member
+        List<String> groupIds = user.getDirectGroups();
+        for (String groupId : groupIds) {
+            if (inMemoryGroupList.containsKey(groupId)) {
+                Group group = inMemoryGroupList.get(groupId);
+                group.removeUserMember(user.getId());
+            }
+        }
+    }
+
+
+    /*private SampleUser createCustomUser(User user) throws CharonException {
         SampleUser sampleUser = new SampleUser();
         //it is not the responsibility of the user manager to add id attribute, u should add it in DefaultResourceFactory.
         //TODO:before setting an attribute value in custom user, check whether the value is null
@@ -446,18 +538,18 @@ public class InMemroyUserManager implements UserManager {
         return sampleGroup;
     }
 
-    /**
+    *//**
      * Display value of multivalued group members attribute is set by SP. This function returns which
      * to set out of available attributes.
      *
      * @param sampleUser
      * @return
-     */
+     *//*
     private String getMemberDisplayForUser(SampleUser sampleUser) {
         if (sampleUser.getDisplayName() != null) {
             return sampleUser.getDisplayName();
         } else {
             return sampleUser.getFullyQualifiedName();
         }
-    }
+    }*/
 }
