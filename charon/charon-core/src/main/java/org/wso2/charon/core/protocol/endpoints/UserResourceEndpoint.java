@@ -342,5 +342,10 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
         return listedResource;
     }
+    
     //TODO: set last modified date with put/patch/bulk update operations.
+    //TODO:userName,externalID can not be updated.
+    //TODO:should provide a get method to refer to resource with externalID:
+    //Consumer to refer to the Resource with its own identifier, obviating the need to store a local
+    //mapping between the local identifier of the Resource and the identifier used by the Service Provider
 }

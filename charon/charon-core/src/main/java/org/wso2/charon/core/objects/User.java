@@ -80,7 +80,7 @@ public class User extends AbstractSCIMObject {
      * @throws CharonException
      */
     public String getUserName() throws CharonException {
-        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.DISPLAY_NAME);
+        return getSimpleAttributeStringVal(SCIMConstants.UserSchemaConstants.USER_NAME);
         /*if (isAttributeExist(SCIMConstants.UserSchemaConstants.USER_NAME)) {
             return ((SimpleAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.USER_NAME)).getStringValue();
@@ -766,6 +766,16 @@ public class User extends AbstractSCIMObject {
      * *************************Groups Attribute************************************
      */
     //types: direct, indirect
+    public List<String> getGroups() throws CharonException {
+       if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
+            MultiValuedAttribute groupsAttribute = (MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.GROUPS);
+            return groupsAttribute.getAttributeValuesByType(null);
+        } else {
+            return null;
+        }
+    }
+
     public List<String> getDirectGroups() throws CharonException {
         if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
             MultiValuedAttribute groupsAttribute = (MultiValuedAttribute) attributeList.get(
@@ -812,15 +822,16 @@ public class User extends AbstractSCIMObject {
         }
     }
 
-    public void setGroup(String type, String value) throws CharonException {
+    public void setGroup(String type, String value, String display) throws CharonException {
         Map<String, Object> groupValueProperties = new HashMap<String, Object>();
         if (type != null) {
             groupValueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, type);
-        } else {
-            throw new CharonException("Please specify a group membership type: direct/indirect.");
         }
         if (value != null) {
             groupValueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, value);
+        }
+        if (display != null) {
+            groupValueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY,display);
         }
         if (!groupValueProperties.isEmpty()) {
             setGroup(groupValueProperties);
@@ -869,7 +880,7 @@ public class User extends AbstractSCIMObject {
         for (Attribute value : values) {
             SimpleAttribute valueAttribute = (SimpleAttribute) ((ComplexAttribute) value).getSubAttribute(
                     SCIMConstants.CommonSchemaConstants.VALUE);
-            if(groupId.equals(valueAttribute.getStringValue())){
+            if (groupId.equals(valueAttribute.getStringValue())) {
                 groupsAttribute.removeAttributeValue(value);
             }
         }
