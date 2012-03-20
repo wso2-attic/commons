@@ -197,9 +197,15 @@ public class ThrottleFactory {
                                 callerConfiguration = CallerConfigurationFactory.
                                         createCallerConfiguration(
                                                 ThrottleConstants.DOMAIN_BASE);
+                            }
+                            else if (configuration.getType() == ThrottleConstants.ROLE_BASE) {
+                                //create a caller context for ip based throttle
+                                callerConfiguration = CallerConfigurationFactory.
+                                        createCallerConfiguration(
+                                                ThrottleConstants.ROLE_BASE);
                             } else {
                                 handleException("Invalid throttle type - Only" +
-                                        " support IP and DOMAIN as types ");
+                                        " support IP ,DOMAIN and ROLE as types ");
                             }
                             if (callerConfiguration != null) {
                                 OMElement element = id.getValue();
@@ -332,6 +338,24 @@ public class ThrottleFactory {
                                 ThrottleConstants.DOMAIN_BASE, configuration));
                 throttle.addThrottleConfiguration(
                         ThrottleConstants.DOMAIN_BASED_THROTTLE_KEY, configuration);
+            }
+            //create a caller context for domain based throttle
+
+        } else if (("ROLE".equals(type))) {
+            // create a domain based throttle context and configuration
+            configuration = throttle.getThrottleConfiguration(
+                    ThrottleConstants.ROLE_BASED_THROTTLE_KEY);
+            if (configuration == null) {
+                configuration =
+                        ThrottleConfigurationFactory.
+                                createThrottleConfiguration(
+                                        ThrottleConstants.ROLE_BASE);
+                throttle.addThrottleContext(
+                        ThrottleConstants.ROLE_BASED_THROTTLE_KEY,
+                        ThrottleContextFactory.createThrottleContext(
+                                ThrottleConstants.ROLE_BASE, configuration));
+                throttle.addThrottleConfiguration(
+                        ThrottleConstants.ROLE_BASED_THROTTLE_KEY, configuration);
             }
             //create a caller context for domain based throttle
 

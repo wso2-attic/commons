@@ -21,6 +21,7 @@ import org.wso2.throttle.ThrottleContext;
 import org.wso2.throttle.ThrottleException;
 import org.wso2.throttle.impl.domainbase.DomainBaseThrottleContext;
 import org.wso2.throttle.impl.ipbase.IPBaseThrottleContext;
+import org.wso2.throttle.impl.rolebase.RoleBaseThrottleContext;
 
 /**
  * Factory for creating a ThrottleContext - holds all callers runtime data - the current state
@@ -42,6 +43,8 @@ public class ThrottleContextFactory {
             return new IPBaseThrottleContext(configuration);
         } else if (ThrottleConstants.DOMAIN_BASE == throttletype) {
             return new DomainBaseThrottleContext(configuration);
+        } else if (ThrottleConstants.ROLE_BASE == throttletype) {
+            return new RoleBaseThrottleContext(configuration);
         } else {
             throw new ThrottleException("Unknown throttle type");
         }

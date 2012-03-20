@@ -41,6 +41,8 @@ public final class ThrottleConstants {
 
     public static final int DOMAIN_BASE = 1;
 
+    public static final int ROLE_BASE = 2;
+
     /* Throttle type according to the scope ex : service level;,operation level and module level*/
 
     public static final int GLOBAL_THROTTLE = 0;
@@ -128,6 +130,8 @@ public final class ThrottleConstants {
     public static final String IP_BASED_THROTTLE_KEY = "key_of_ip_based_throttle";
 
     public static final String DOMAIN_BASED_THROTTLE_KEY = "key_of_domain_based_throttle";
+
+    public static final String ROLE_BASED_THROTTLE_KEY = "key_of_role_based_throttle";
 
     /* The key for level throttle */
 

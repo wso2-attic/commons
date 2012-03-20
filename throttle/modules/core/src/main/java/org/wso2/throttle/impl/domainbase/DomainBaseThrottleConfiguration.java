@@ -154,4 +154,8 @@ public class DomainBaseThrottleConfiguration implements ThrottleConfiguration {
         return ThrottleConstants.DOMAIN_BASE;
     }
 
+    public static void main(String[] args) {
+        new DomainBaseThrottleConfiguration().getCallerConfiguration("www.abc.co.uk");
+    }
+
 }

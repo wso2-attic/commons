@@ -31,14 +31,10 @@ import org.apache.axis2.handlers.AbstractHandler;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.throttle.AccessRateController;
-import org.wso2.throttle.ConcurrentAccessController;
-import org.wso2.throttle.Throttle;
-import org.wso2.throttle.ThrottleConfiguration;
-import org.wso2.throttle.ThrottleConstants;
-import org.wso2.throttle.ThrottleContext;
-import org.wso2.throttle.ThrottleException;
-import org.wso2.throttle.AccessInformation;
+import org.wso2.throttle.*;
+import org.wso2.throttle.module.utils.StatCollector;
+import org.wso2.throttle.module.utils.impl.DummyAuthenticator;
+import org.wso2.throttle.module.utils.impl.DummyHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
@@ -51,11 +47,14 @@ public abstract class ThrottleHandler extends AbstractHandler {
     /* The AccessRateController - control(limit) access for a remote caller */
     private AccessRateController accessRateController;
 
+    private RoleBasedAccessRateController roleBasedAccessController;
+
     private boolean debugOn;
 
     public ThrottleHandler() {
         this.debugOn = log.isDebugEnabled();
         this.accessRateController = new AccessRateController();
+        this.roleBasedAccessController = new RoleBasedAccessRateController();
     }
 
     /**
@@ -155,7 +154,10 @@ public abstract class ThrottleHandler extends AbstractHandler {
 
         //check the env - whether clustered  or not
         boolean isClusteringEnable = false;
-        ClusteringAgent clusteringAgent = cc.getAxisConfiguration().getClusteringAgent();
+        ClusteringAgent clusteringAgent = null;
+        if (cc!=null) {
+            clusteringAgent = cc.getAxisConfiguration().getClusteringAgent();
+        }
         if (clusteringAgent != null &&
                 clusteringAgent.getStateManager() != null) {
             isClusteringEnable = true;
@@ -213,6 +215,7 @@ public abstract class ThrottleHandler extends AbstractHandler {
                                 AccessInformation infor =
                                         accessRateController.canAccess(context, callerId,
                                                 ThrottleConstants.DOMAIN_BASE);
+                                StatCollector.collect(infor,domain,ThrottleConstants.DOMAIN_BASE);
 
                                 //check for the permission for access
                                 if (!infor.isAccessAllowed()) {
@@ -282,8 +285,9 @@ public abstract class ThrottleHandler extends AbstractHandler {
                                     }
                                     AccessInformation infor =
                                             accessRateController.canAccess(context, callerId,
-                                                    ThrottleConstants.DOMAIN_BASE);
+                                                    ThrottleConstants.IP_BASE);
                                     // check for the permission for access
+                                    StatCollector.collect(infor,ip,ThrottleConstants.IP_BASE);
                                     if (!infor.isAccessAllowed()) {
 
                                         //In the case of both of concurrency throttling and
@@ -343,6 +347,8 @@ public abstract class ThrottleHandler extends AbstractHandler {
                 }
             }
 
+            //finally engage rolebased access throttling if available
+            doRoleBasedAccessThrottling(throttle, messageContext, isClusteringEnable);
         } else {
             //replicate the current state of ConcurrentAccessController
             if (isClusteringEnable) {
@@ -397,6 +403,127 @@ public abstract class ThrottleHandler extends AbstractHandler {
                             + concurrentAccessController.getLimit() + " connections");
                 }
             }
+        }
+        return canAccess;
+    }
+
+
+    /**
+     * Helper method for handling role based Access throttling
+     *
+     * @param messageContext             MessageContext - message level states
+     * @return true if access is allowed through concurrent throttling ,o.w false
+     */
+    private boolean doRoleBasedAccessThrottling(Throttle throttle, MessageContext messageContext,
+                                                boolean isClusteringEnable) throws AxisFault,
+                                                                                   ThrottleException {
+
+        boolean canAccess = true;
+        ConfigurationContext cc = messageContext.getConfigurationContext();
+        String throttleId = throttle.getId();
+
+        String key = null;
+        ConcurrentAccessController cac = null;
+        if (isClusteringEnable) {
+            // for clustered  env.,gets it from axis configuration context
+            key = ThrottleConstants.THROTTLE_PROPERTY_PREFIX + throttleId
+                    + ThrottleConstants.CAC_SUFFIX;
+            cac = (ConcurrentAccessController) cc.getProperty(key);
+        }
+
+        if (messageContext.getFLOW() == MessageContext.IN_FLOW) {
+            //gets the remote caller role name
+            String consumerKey = null;
+            boolean isAuthenticated = false;
+            String roleID = null;
+            HttpServletRequest request =
+                    (HttpServletRequest) messageContext.getPropertyNonReplicable(
+                            HTTPConstants.MC_HTTP_SERVLETREQUEST);
+            if (request != null) {
+                String oAuthHeader = request.getHeader("OAuth");
+//                consumerKey = Utils.extractCustomerKeyFromAuthHeader(oAuthHeader);
+//                roleID = Utils.extractCustomerKeyFromAuthHeader(oAuthHeader);
+                DummyAuthenticator authFuture = new DummyAuthenticator(oAuthHeader);
+                consumerKey = authFuture.getAPIKey();
+                new DummyHandler().authenticateUser(authFuture);
+                roleID = (String) authFuture.getAuthorizedRoles().get(0);
+                isAuthenticated = authFuture.isAuthenticated();
+            }
+
+            if(!isAuthenticated){
+                throw new AxisFault(" Access deny for a " +
+                        "caller with consumer Key: " + consumerKey + " " +
+                        " : Reason : Authentication failure");
+
+            }
+            // Domain name based throttling
+                //check whether a configuration has been defined for this role name or not
+                String consumerRoleID = null;
+                if (consumerKey != null && isAuthenticated) {
+                    //loads the ThrottleContext
+                    ThrottleContext context =
+                            throttle.getThrottleContext(ThrottleConstants.ROLE_BASED_THROTTLE_KEY);
+                    if (context != null) {
+                        //Loads the ThrottleConfiguration
+                        ThrottleConfiguration config = context.getThrottleConfiguration();
+                        if (config != null) {
+                            //check for configuration for this caller
+                            consumerRoleID = config.getConfigurationKeyOfCaller(roleID);
+                            if (consumerRoleID != null) {
+                                // If this is a clustered env.
+                                if (isClusteringEnable) {
+                                    context.setConfigurationContext(cc);
+                                    context.setThrottleId(throttleId);
+                                }
+                                AccessInformation infor =
+                                        roleBasedAccessController.canAccess(context, consumerKey,
+                                                                            consumerRoleID);
+                                StatCollector.collect(infor, consumerKey, ThrottleConstants.ROLE_BASE);
+                                //check for the permission for access
+                                if (!infor.isAccessAllowed()) {
+
+                                    //In the case of both of concurrency throttling and
+                                    //rate based throttling have enabled ,
+                                    //if the access rate less than maximum concurrent access ,
+                                    //then it is possible to occur death situation.To avoid that reset,
+                                    //if the access has denied by rate based throttling
+                                    if (cac != null) {
+                                        cac.incrementAndGet();
+                                        // set back if this is a clustered env
+                                        if (isClusteringEnable) {
+                                            cc.setProperty(key, cac);
+                                            //replicate the current state of ConcurrentAccessController
+                                            try {
+                                                if (debugOn) {
+                                                    log.debug("Going to replicates the " +
+                                                            "states of the ConcurrentAccessController" +
+                                                            " with key : " + key);
+                                                }
+                                                Replicator.replicate(cc, new String[]{key});
+                                            } catch (ClusteringFault clusteringFault) {
+                                                log.error("Error during replicating states ",
+                                                        clusteringFault);
+                                            }
+                                        }
+                                    }
+                                    throw new AxisFault(" Access deny for a " +
+                                            "caller with Domain " + consumerKey + " " +
+                                            " : Reason : " + infor.getFaultReason());
+                                }
+                            } else {
+                                if (debugOn) {
+                                    log.debug("Could not find the Throttle Context for role-Based " +
+                                            "Throttling for role name " + consumerKey + " Throttling for this " +
+                                            "role name may not be configured from policy");
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (debugOn) {
+                        log.debug("Could not find the role of the caller - role based throttling NOT applied");
+                    }
+                }
         }
         return canAccess;
     }

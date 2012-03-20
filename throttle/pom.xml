@@ -6,7 +6,7 @@
     <groupId>org.wso2.throttle</groupId>
     <artifactId>wso2throttle-parent</artifactId>
     <packaging>pom</packaging>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <name>WSO2 throttle module</name>
     <url>http://www.wso2.org</url>
 

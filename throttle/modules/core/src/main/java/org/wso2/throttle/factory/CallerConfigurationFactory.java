@@ -20,6 +20,8 @@ import org.wso2.throttle.ThrottleConstants;
 import org.wso2.throttle.ThrottleException;
 import org.wso2.throttle.impl.domainbase.DomainBaseCallerConfiguration;
 import org.wso2.throttle.impl.ipbase.IPBaseCallerConfiguration;
+import org.wso2.throttle.impl.rolebase.RoleBaseCallerConfiguration;
+import org.wso2.throttle.impl.rolebase.RoleBaseThrottleConfiguration;
 
 /**
  * Factory for creating a CallerConfiguration
@@ -40,6 +42,8 @@ public class CallerConfigurationFactory {
             return new IPBaseCallerConfiguration();
         } else if (ThrottleConstants.DOMAIN_BASE == throttletype) {
             return new DomainBaseCallerConfiguration();
+        } else if (ThrottleConstants.ROLE_BASE == throttletype) {
+            return new RoleBaseCallerConfiguration();
         } else {
             throw new ThrottleException("Unknown throttle type");
         }
