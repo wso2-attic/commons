@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.samples.group.sample03;
+package org.wso2.charon.samples.group.sample04;
 
 import org.apache.wink.client.ClientConfig;
 import org.apache.wink.client.ClientWebException;
@@ -27,28 +27,28 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 
-public class DeleteGroupSample {
-    public static final String GROUP_ID = "09e2bda0-4aae-4c47-ac50-a09ad74513f2";
-
+public class ListGroupSample {
     public static void main(String[] args) {
 
         try {
-            ClientConfig clientConfig = new ClientConfig();
+            //create SCIM client
+            SCIMClient scimClient = new SCIMClient();
+            //create a apache wink ClientHandler to intercept and identify response messages
             CharonResponseHandler responseHandler = new CharonResponseHandler();
-            responseHandler.setSCIMClient(new SCIMClient());
+            responseHandler.setSCIMClient(scimClient);
+            //set the handler in wink client config
+            ClientConfig clientConfig = new ClientConfig();
             clientConfig.handlers(new ClientHandler[]{responseHandler});
+            //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
 
-            //create resource endpoint
-            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
-
-            //enable, disable SSL.
-            //had to set content type for the delete request as well, coz wink client sets */* by default.
-            String response = groupResource.
+            //create resource endpoint to access a known user resource.
+            Resource userResource = restClient.resource(SampleConstants.GROUP_ENDPOINT);
+            String response = userResource.
                     header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
                     header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
-                    accept(SCIMConstants.APPLICATION_JSON).
-                    delete(String.class);
+                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
+                    .get(String.class);
 
             //decode the response
             System.out.println(response);
@@ -57,6 +57,5 @@ public class DeleteGroupSample {
             System.out.println(e.getResponse().getMessage());
             e.printStackTrace();
         }
-
     }
 }

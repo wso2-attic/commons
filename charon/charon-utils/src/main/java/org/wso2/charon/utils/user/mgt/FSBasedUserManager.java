@@ -118,6 +118,31 @@ public class FSBasedUserManager implements UserManager {
     }
 
     @Override
+    public List<Group> listGroups() throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsByAttribute(Attribute attribute) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsByFilter(String filter) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsBySort(String sortBy, String sortOrder) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsWithPagination(int startIndex, int count) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Group createGroup(Group group) throws CharonException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }

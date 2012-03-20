@@ -31,7 +31,7 @@ import org.wso2.charon.samples.utils.SampleConstants;
 
 public class DeleteUserSample {
 
-    public static final String USER_ID = "6135a5fe-13c6-4cc5-a7d0-cce9fc99605b";
+    public static final String USER_ID = "ebc3b474-9cc4-4d26-87c7-4b1fd508d259";
     
     public static void main(String[] args) {
 

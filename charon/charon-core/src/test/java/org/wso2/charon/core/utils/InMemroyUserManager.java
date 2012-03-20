@@ -184,6 +184,39 @@ public class InMemroyUserManager implements UserManager {
     }
 
     @Override
+    public List<Group> listGroups() throws CharonException {
+        if (!inMemoryGroupList.isEmpty()) {
+            List<Group> returnedGroups = new ArrayList<Group>();
+            for (Group group : inMemoryGroupList.values()) {
+                returnedGroups.add(group);
+            }
+            return returnedGroups;
+        } else {
+            throw new CharonException("User storage is empty");
+        }
+    }
+
+    @Override
+    public List<Group> listGroupsByAttribute(Attribute attribute) throws CharonException {
+        return null;
+    }
+
+    @Override
+    public List<Group> listGroupsByFilter(String filter) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsBySort(String sortBy, String sortOrder) throws CharonException {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Group> listGroupsWithPagination(int startIndex, int count) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Group createGroup(Group group) throws CharonException {
         if (!inMemoryGroupList.isEmpty()) {
             if (group.getExternalId() != null) {
@@ -386,5 +419,4 @@ public class InMemroyUserManager implements UserManager {
             }
         }
     }
-
 }

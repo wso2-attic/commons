@@ -249,22 +249,22 @@ public class GroupResource {
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
                     userName);
 
-            //create charon-SCIM user endpoint and hand-over the request.
-            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+            //create charon-SCIM group endpoint and hand-over the request.
+            GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
             SCIMResponse scimResponse = null;
             if (searchAttribute != null) {
-                scimResponse = userResourceEndpoint.listByAttribute(searchAttribute, userManager, format);
+                scimResponse = groupResourceEndpoint.listByAttribute(searchAttribute, userManager, format);
             } else if (filter != null) {
-                scimResponse = userResourceEndpoint.listByFilter(filter, userManager, format);
+                scimResponse = groupResourceEndpoint.listByFilter(filter, userManager, format);
             } else if (startIndex != null && count != null) {
-                scimResponse = userResourceEndpoint.listWithPagination(Integer.valueOf(startIndex),
+                scimResponse = groupResourceEndpoint.listWithPagination(Integer.valueOf(startIndex),
                                                                        Integer.valueOf(count),
                                                                        userManager, format);
             } else if (sortBy != null) {
-                scimResponse = userResourceEndpoint.listBySort(sortBy, sortOrder, userManager, format);
+                scimResponse = groupResourceEndpoint.listBySort(sortBy, sortOrder, userManager, format);
             } else if (searchAttribute == null && filter == null && startIndex == null &&
                        count == null && sortBy == null) {
-                scimResponse = userResourceEndpoint.list(userManager, format);
+                scimResponse = groupResourceEndpoint.list(userManager, format);
             } else {
                 //bad request
                 throw new BadRequestException(ResponseCodeConstants.DESC_BAD_REQUEST_GET);
