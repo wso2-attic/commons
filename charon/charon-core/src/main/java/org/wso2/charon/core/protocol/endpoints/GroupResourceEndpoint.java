@@ -38,6 +38,7 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,7 +162,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                 encodedGroup = encoder.encodeSCIMObject(createdGroup);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.GROUP_ENDPOINT) + createdGroup.getId());
+                        SCIMConstants.GROUP_ENDPOINT) + File.separator + createdGroup.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -331,11 +332,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
         for (Group group : groups) {
             Map<String, Attribute> attributesOfGroupResource = new HashMap<String, Attribute>();
             attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.ID,
-                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+                                          group.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
             attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
-                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
+                                          group.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
             attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.META,
-                                         group.getAttribute(SCIMConstants.CommonSchemaConstants.META));
+                                          group.getAttribute(SCIMConstants.CommonSchemaConstants.META));
             listedResource.setResources(attributesOfGroupResource);
         }
         return listedResource;

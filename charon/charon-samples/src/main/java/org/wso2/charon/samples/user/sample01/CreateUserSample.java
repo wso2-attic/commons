@@ -46,6 +46,7 @@ public class CreateUserSample {
             scimUser.setUserName(USER_NAME);
             scimUser.setExternalId(EXTERNAL_ID);
             scimUser.setEmails(EMAILS);
+            scimUser.setDisplayName("hasini");
             //encode the user in JSON format
             String encodedUser = scimClient.encodeSCIMObject(scimUser, SCIMConstants.JSON);
             //create a apache wink ClientHandler to intercept and identify response messages

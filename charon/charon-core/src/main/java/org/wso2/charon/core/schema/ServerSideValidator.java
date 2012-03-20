@@ -27,6 +27,8 @@ import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +58,16 @@ public class ServerSideValidator extends AbstractValidator {
         scimObject.setCreatedDate(date);
         //created n last modified are the same if not updated.
         scimObject.setLastModified(date);
-        scimObject.setLocation(AbstractResourceEndpoint.getResourceEndpointURL(SCIMConstants.USER_ENDPOINT));
+        //set location
+        if (SCIMConstants.USER.equals(resourceSchema.getName())) {
+            String location = createLocationHeader(AbstractResourceEndpoint.getResourceEndpointURL(
+                    SCIMConstants.USER_ENDPOINT), scimObject.getId());
+            scimObject.setLocation(location);
+        } else if (SCIMConstants.GROUP.equals(resourceSchema.getName())) {
+            String location = createLocationHeader(AbstractResourceEndpoint.getResourceEndpointURL(
+                    SCIMConstants.GROUP_ENDPOINT), scimObject.getId());
+            scimObject.setLocation(location);
+        }
         //add version
 
         //if user object - validate name
@@ -81,7 +92,7 @@ public class ServerSideValidator extends AbstractValidator {
             }
         }
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
-        validateSchemaList(scimObject,resourceSchema);
+        validateSchemaList(scimObject, resourceSchema);
     }
 
     /**
@@ -154,6 +165,11 @@ public class ServerSideValidator extends AbstractValidator {
         // or they MAY return both. If both variants are returned, they SHOULD be describing the same name,
         // with the formatted name indicating how the component attributes should be combined.
 
+    }
+
+    private static String createLocationHeader(String location, String resourceID) {
+        String locationString = location + File.separator + resourceID;
+        return locationString;
     }
 
 }

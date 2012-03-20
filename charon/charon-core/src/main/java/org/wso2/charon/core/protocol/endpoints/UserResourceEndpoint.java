@@ -35,6 +35,7 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             if (storage instanceof UserManager) {
                 //retrieve the user from the provided storage.
                 User user = ((UserManager) storage).getUser(id);
-                
+
                 //if user not found, return an error in relevant format.
                 if (user == null) {
                     String error = "User not found in the user store.";
@@ -158,7 +159,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 encodedUser = encoder.encodeSCIMObject(createdUser);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + createdUser.getId());
+                        SCIMConstants.USER_ENDPOINT) + File.separator + createdUser.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -342,7 +343,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
         return listedResource;
     }
-    
+
     //TODO: set last modified date with put/patch/bulk update operations.
     //TODO:userName,externalID can not be updated.
     //TODO:should provide a get method to refer to resource with externalID:
