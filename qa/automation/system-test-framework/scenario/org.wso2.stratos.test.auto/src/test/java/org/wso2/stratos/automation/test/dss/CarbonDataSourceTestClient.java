@@ -52,7 +52,7 @@ public class CarbonDataSourceTestClient extends TestTemplateRSS {
     @Override
     public void setServiceMetaData() {
         serviceFileLocation = RESOURCE_LOCATION + File.separator + "dbs" + File.separator + "rdbms" + File.separator + "MySql";
-        serviceFileName = "MySqlRSSDataServiceTest.dbs";
+        serviceFileName = "CarbonDSDataServiceTest.dbs";
         serviceName = "CarbonDSDataServiceTest";
         serviceGroup = "CarbonDS";
     }
