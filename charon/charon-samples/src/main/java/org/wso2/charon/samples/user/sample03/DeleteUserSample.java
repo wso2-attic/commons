@@ -28,11 +28,13 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteUserSample {
 
-    public static final String USER_ID = "ebc3b474-9cc4-4d26-87c7-4b1fd508d259";
-    
+    public static final String USER_ID = "30d8ef8c-89af-4513-b4a7-641fa1767905";
+
     public static void main(String[] args) {
 
         try {
@@ -44,12 +46,17 @@ public class DeleteUserSample {
 
             //create resource endpoint
             Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
+
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
             //enable, disable SSL.
             //had to set content type for the delete request as well, coz wink client sets */* by default.
             String response = userResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     accept(SCIMConstants.APPLICATION_JSON).
                     delete(String.class);
 

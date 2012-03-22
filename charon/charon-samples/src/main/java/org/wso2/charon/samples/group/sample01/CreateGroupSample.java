@@ -28,14 +28,16 @@ import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class CreateGroupSample {
     //user details
-    public static final String DISPLAY_NAME = "marketin";
-    public static final String EXTERNAL_ID = "marketin";
+    public static final String DISPLAY_NAME = "eng";
+    public static final String EXTERNAL_ID = "eng";
     //replace following IDs with already existing member IDs.
-    public static final String[] MEMBERS = {"392ac32c-60ba-43dc-b885-99711887874e",
-                                            /*"e2a118e1-8465-4c6f-9ae1-2e19db75a0a4"*/};
+    public static final String[] MEMBERS = {"bf0df3c4-79a9-4729-bbee-731dd9134604",
+                                            "30d8ef8c-89af-4513-b4a7-641fa1767905"};
 
     public static void main(String[] args) {
 
@@ -63,11 +65,17 @@ public class CreateGroupSample {
             //create resource endpoint to access User resource
             Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT);
 
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
+
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
+
             //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
             //send previously registered SCIM consumer credentials in http headers.
             String response = groupResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON).
                     post(String.class, encodedGroup);
 

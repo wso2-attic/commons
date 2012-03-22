@@ -28,12 +28,14 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class CreateUserSample {
 
     //user details
-    public static final String USER_NAME = "hasi";
-    public static final String EXTERNAL_ID = "hasig@gmail.com";
+    public static final String USER_NAME = "hasini";
+    public static final String EXTERNAL_ID = "hasini@gmail.com";
     public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
 
     public static void main(String[] args) {
@@ -60,11 +62,18 @@ public class CreateUserSample {
             //create resource endpoint to access User resource
             Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT);
 
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
+
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
+
+
             //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
             //send previously registered SCIM consumer credentials in http headers.
             String response = userResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON).
                     post(String.class, encodedUser);
 

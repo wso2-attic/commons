@@ -17,7 +17,6 @@
 */
 package org.wso2.charon.utils;
 
-import com.sun.servicetag.UnauthorizedAccessException;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
@@ -87,6 +86,9 @@ public class DefaultCharonManager implements CharonManager {
         endpointURLs.put(SCIMConstants.GROUP_ENDPOINT, GROUPS_URL);
         //register endpoint URLs in AbstractResourceEndpoint since they are called with in the API
         registerEndpointURLs();
+        //register a default user manager
+        UserManager userManager = new InMemroyUserManager(0, "wso2.com");
+        userManagers.put(0, userManager);
     }
 
     private DefaultCharonManager() throws CharonException {
@@ -171,8 +173,10 @@ public class DefaultCharonManager implements CharonManager {
      */
     @Override
     public UserManager getUserManager(String tenantAdminUserName) throws CharonException {
+        //return the default user manager
+        return userManagers.get(0);
         //identify tenant id and domain
-        int tenantId = tenantManager.getTenantID(tenantAdminUserName);
+        /*int tenantId = tenantManager.getTenantID(tenantAdminUserName);
         String tenantDomain = tenantManager.getTenantDomain(tenantAdminUserName);
         UserManager userManager;
         if ((userManagers != null) && (userManagers.size() != 0)) {
@@ -187,7 +191,7 @@ public class DefaultCharonManager implements CharonManager {
             userManager = new InMemroyUserManager(tenantId, tenantDomain);
             userManagers.put(tenantId, userManager);
             return userManager;
-        }
+        }*/
     }
 
     /**
@@ -213,9 +217,9 @@ public class DefaultCharonManager implements CharonManager {
      */
     @Override
     public AuthenticationInfo registerTenant(TenantDTO tenantInfo) throws CharonException {
-
+        this.getTenantManager().createTenant(tenantInfo);
         //check whether the requested authentication mechanism supported.
-        if (this.isAuthenticationSupported(tenantInfo.getAuthenticationMechanism())) {
+        /*if (this.isAuthenticationSupported(tenantInfo.getAuthenticationMechanism())) {
 
             this.getTenantManager().createTenant(tenantInfo);
             //if auth mechanism is http basic auth, we skip the step of obtaining and returning auth token.
@@ -231,7 +235,8 @@ public class DefaultCharonManager implements CharonManager {
         } else {
             String errorMessage = "Requested authentication mechanism not supported.";
             throw new CharonException(errorMessage);
-        }
+        }*/
+        return null;
     }
 
     /**
@@ -246,7 +251,7 @@ public class DefaultCharonManager implements CharonManager {
     }
 
     @Override
-    public void handleAuthentication(Map<String, String> httpAuthHeaders)
+    public AuthenticationInfo handleAuthentication(Map<String, String> httpAuthHeaders)
             throws UnauthorizedException {
         try {
             //identify authentication mechanism according to the http headers sent
@@ -254,8 +259,11 @@ public class DefaultCharonManager implements CharonManager {
             //create authentication info according to the auth mechanism
             if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_BASIC)) {
                 BasicAuthInfo authInfo = new BasicAuthInfo();
-                authInfo.setUserName(httpAuthHeaders.get(SCIMConstants.AUTH_HEADER_USERNAME));
-                authInfo.setPassword(httpAuthHeaders.get(SCIMConstants.AUTH_HEADER_PASSWORD));
+                //get authorization header from http headers.
+                //put in auth info
+                authInfo.setAuthorizationHeader(httpAuthHeaders.get(SCIMConstants.AUTHORIZATION_HEADER));
+                //authenticator.isAuthenticated
+
                 //get the authentication handler.
                 BasicAuthHandler basicAuthHandler = (BasicAuthHandler) authenticators.get(
                         SCIMConstants.AUTH_TYPE_BASIC).get(INSTANCE);
@@ -265,12 +273,16 @@ public class DefaultCharonManager implements CharonManager {
                 if (!basicAuthHandler.isAuthenticated(authInfo)) {
                     throw new UnauthorizedException();
                 }
+                //return auth info if successfully authenticated
+                return basicAuthHandler.decodeBasicAuthHeader(httpAuthHeaders.get(
+                        SCIMConstants.AUTHORIZATION_HEADER));
             } else if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_OAUTH)) {
                 //perform authentication according to oauth.
             }
         } catch (CharonException e) {
             throw new UnauthorizedException(e.getDescription());
         }
+        return null;
     }
 
     /**
@@ -281,10 +293,11 @@ public class DefaultCharonManager implements CharonManager {
      * @throws CharonException
      */
     public String identifyAuthMechanism(Map<String, String> authHeaders) throws CharonException {
-        if ((authHeaders.get(SCIMConstants.AUTH_HEADER_USERNAME)) != null &&
-            (authHeaders.get(SCIMConstants.AUTH_HEADER_PASSWORD)) != null) {
+        String authorizationHeader = authHeaders.get(SCIMConstants.AUTHORIZATION_HEADER);
+        String authenticationType = authorizationHeader.split(" ")[0];
+        if (SCIMConstants.AUTH_TYPE_BASIC.equals(authenticationType)) {
             return SCIMConstants.AUTH_TYPE_BASIC;
-        } else if (authHeaders.get(SCIMConstants.AUTH_TYPE_OAUTH) != null) {
+        } else if (SCIMConstants.AUTH_TYPE_OAUTH.equals(authenticationType)) {
             return SCIMConstants.AUTH_TYPE_OAUTH;
         } else {
             String error = "Provided authentication headers do not contain supported authentication headers.";

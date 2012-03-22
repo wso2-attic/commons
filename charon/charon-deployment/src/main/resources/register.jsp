@@ -5,7 +5,7 @@
 <link href="css/styles.css" type="text/css" rel="stylesheet" media="all"   />-->
     <script type="text/javascript" src="js/jquery-min.js"></script>
     <script type="text/javascript">
-        function popupDiv(){
+        function hidePopupDiv(){
             //var popupDiv = document.getElementById('popupDiv');
             //popupDiv.style.display = "none";
             $('#popupDiv').hide('slow');
@@ -18,10 +18,10 @@
 <body>
 <table border="0" width="100%">
     <tr>
-        <td width="20%"><img src="./../images/scim.png" alt="WSO2 Charon" height="100" width="200"/>
+        <td width="20%"><img src="images/scim.png" alt="WSO2 Charon" height="100" width="200"/>
         </td>
         <th width="60%">Register as a Tenant.</th>
-        <td width="20%"><img src="./../images/header-logo.gif" alt="WSO2" height="50" width="250"/>
+        <td width="20%"><img src="images/header-logo.gif" alt="WSO2" height="50" width="250"/>
         </td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@
                     <td><a href="./jsp/register.jsp">Register</a></td>
                 </tr>
                 <tr>
-                    <td><a href="./jsp/login.jsp">Login</a></td>
+                    <td><a href="login.jsp">Login</a></td>
                 </tr>
                 <tr>
                     <td><a href="./about.html">About Charon</a></td>
@@ -47,7 +47,7 @@
                 <input type="button" onclick="hidePopupDiv()" />
             </div>
             <table border="0" cellspacing="0" cellpadding="0" align="center">
-                <form name="registerForm" method="post" action="openid.LoginServlet">
+                <form name="registerForm" method="post" action="RegisterServlet">
                     <tr>
                         <td>
                             Domain Name :
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td>Admin password :</td>
-                        <td><input type="text" name="adminPassword"></td>
+                        <td><input type="password" name="adminPassword"></td>
                     </tr>
                     <tr>
                         <td/>
@@ -78,7 +78,7 @@
                     </tr>
                     <tr>
                         <td>Re-enter password :</td>
-                        <td><input type="text" name="reEnteredPassword"></td>
+                        <td><input type="password" name="reEnteredPassword"></td>
                     </tr>
                     <tr>
                         <td/>

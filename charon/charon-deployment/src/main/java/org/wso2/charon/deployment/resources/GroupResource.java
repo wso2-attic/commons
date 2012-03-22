@@ -22,12 +22,12 @@ import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.UnauthorizedException;
+import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.GroupResourceEndpoint;
-import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.utils.DefaultCharonManager;
 import org.wso2.charon.utils.jaxrs.JAXRSResponseBuilder;
@@ -54,10 +54,8 @@ public class GroupResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getGroup(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                            @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
+                             @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                             @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization) {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
@@ -70,15 +68,13 @@ public class GroupResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM Group endpoint and hand-over the request.
             GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
@@ -106,11 +102,9 @@ public class GroupResource {
 
     @POST
     public Response createGroup(@HeaderParam(SCIMConstants.CONTENT_TYPE_HEADER) String inputFormat,
-                               @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
-                               String resourceString) {
+                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
+                                @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization,
+                                String resourceString) {
         Encoder encoder = null;
         try {
             //obtain default charon manager
@@ -130,15 +124,13 @@ public class GroupResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
@@ -167,10 +159,8 @@ public class GroupResource {
     @DELETE
     @Path("{id}")
     public Response deleteGroup(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                               @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
+                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                                @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization) {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
@@ -183,15 +173,13 @@ public class GroupResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
@@ -218,15 +206,13 @@ public class GroupResource {
     }
 
     @GET
-    public Response getGroup(@HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                            @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
-                            @QueryParam("attributes") String searchAttribute,
-                            @QueryParam("filter") String filter,
-                            @QueryParam("startIndex") String startIndex,
-                            @QueryParam("count") String count, @QueryParam("sortBy") String sortBy,
-                            @QueryParam("sortOrder") String sortOrder) {
+    public Response getGroup(@HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                             @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization,
+                             @QueryParam("attributes") String searchAttribute,
+                             @QueryParam("filter") String filter,
+                             @QueryParam("startIndex") String startIndex,
+                             @QueryParam("count") String count, @QueryParam("sortBy") String sortBy,
+                             @QueryParam("sortOrder") String sortOrder) {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
@@ -239,15 +225,13 @@ public class GroupResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM group endpoint and hand-over the request.
             GroupResourceEndpoint groupResourceEndpoint = new GroupResourceEndpoint();
@@ -258,8 +242,8 @@ public class GroupResource {
                 scimResponse = groupResourceEndpoint.listByFilter(filter, userManager, format);
             } else if (startIndex != null && count != null) {
                 scimResponse = groupResourceEndpoint.listWithPagination(Integer.valueOf(startIndex),
-                                                                       Integer.valueOf(count),
-                                                                       userManager, format);
+                                                                        Integer.valueOf(count),
+                                                                        userManager, format);
             } else if (sortBy != null) {
                 scimResponse = groupResourceEndpoint.listBySort(sortBy, sortOrder, userManager, format);
             } else if (searchAttribute == null && filter == null && startIndex == null &&

@@ -174,14 +174,14 @@ public class SCIMConstants {
 
     //constants related to supported authentication mechanism
 
-    public static final String AUTH_TYPE_BASIC = "httpbasic";
-    public static final String AUTH_TYPE_OAUTH = "oauthbearertoken";
+    public static final String AUTH_TYPE_BASIC = "Basic";
+    public static final String AUTH_TYPE_OAUTH = "Bearer";
     public static final String AUTH_PROPERTY_PRIMARY = "primary";
 
     //authentication header names
     public static final String AUTH_HEADER_USERNAME = "userName";
     public static final String AUTH_HEADER_PASSWORD = "password";
-    public static final String AUTH_HEADER_OAUTH_KEY = "Authorization";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
 
     /*Resource names as defined in SCIM Schema spec*/

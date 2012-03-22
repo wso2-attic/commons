@@ -26,9 +26,11 @@ import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class GetGroupSample {
-    public static final String GROUP_ID = "0d6c1125-98de-49c7-95b4-4188a312c08a";
+    public static final String GROUP_ID = "9bdaba3a-e979-4dbd-9441-706f7a62915e";
 
     public static void main(String[] args) {
 
@@ -44,11 +46,17 @@ public class GetGroupSample {
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
 
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
+
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
+
             //create resource endpoint to access a known user resource.
             Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
             String response = groupResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
                     .get(String.class);
 

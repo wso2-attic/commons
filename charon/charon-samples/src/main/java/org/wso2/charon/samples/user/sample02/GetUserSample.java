@@ -28,6 +28,8 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class GetUserSample {
 
@@ -48,11 +50,17 @@ public class GetUserSample {
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
 
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
+
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
+
             //create resource endpoint to access a known user resource.
             Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
             String response = userResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
                     .get(String.class);
 

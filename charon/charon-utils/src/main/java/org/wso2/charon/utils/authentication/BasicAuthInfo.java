@@ -26,6 +26,15 @@ public class BasicAuthInfo implements AuthenticationInfo {
 
     private String userName;
     private String password;
+    private String authorizationHeader;
+
+    public String getAuthorizationHeader() {
+        return authorizationHeader;
+    }
+
+    public void setAuthorizationHeader(String authorizationHeader) {
+        this.authorizationHeader = authorizationHeader;
+    }
 
     public String getUserName() {
         return userName;

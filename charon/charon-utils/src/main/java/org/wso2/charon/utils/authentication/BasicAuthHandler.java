@@ -23,7 +23,7 @@ import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
 import org.wso2.charon.core.extensions.TenantDTO;
 import org.wso2.charon.core.extensions.TenantManager;
-import org.wso2.charon.utils.authentication.BasicAuthInfo;
+import org.apache.axiom.om.util.Base64;
 
 /**
  * AuthenticationHandler for validating API access through basic auth - authentication mechanism.
@@ -31,24 +31,67 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 public class BasicAuthHandler implements AuthenticationHandler {
 
     private static CharonManager charonManager;
+    //default credentials
+    private static final String USER_NAME = "charonAdmin";
+    private static final String PASSWORD = "charonAdmin";
+
 
     @Override
     public boolean isAuthenticated(AuthenticationInfo authInfo) throws CharonException {
-
-        TenantManager tenantManager = charonManager.getTenantManager();
-        //TODO: is it ok that the following methods called by any class?
-        int tenantID = tenantManager.getTenantID(((BasicAuthInfo) authInfo).getUserName());
-        TenantDTO tenantInfo = tenantManager.getTenantInfo(tenantID);
-        if (((BasicAuthInfo) authInfo).getPassword().equals(tenantInfo.getTenantAdminPassword())){
+        //get authorization header from auth info
+        String authorizationHeader = ((BasicAuthInfo) authInfo).getAuthorizationHeader();
+        BasicAuthInfo decodedInfo = decodeBasicAuthHeader(authorizationHeader);
+        if (USER_NAME.equals(decodedInfo.getUserName()) && (PASSWORD).equals(decodedInfo.getPassword())) {
             return true;
         } else {
             return false;
         }
+        //decode it
+        //check with tenant manager and return
+        /*TenantManager tenantManager = charonManager.getTenantManager();
+        //TODO: is it ok that the following methods called by any class?
+        int tenantID = tenantManager.getTenantID(((BasicAuthInfo) authInfo).getUserName());
+        TenantDTO tenantInfo = tenantManager.getTenantInfo(tenantID);
+        if (((BasicAuthInfo) authInfo).getPassword().equals(tenantInfo.getTenantAdminPassword())) {
+            return true;
+        } else {
+            return false;
+        }*/
     }
 
     @Override
     public AuthenticationInfo getAuthenticationToken(AuthenticationInfo authInfo) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        String userName = ((BasicAuthInfo) authInfo).getUserName();
+        String password = ((BasicAuthInfo) authInfo).getPassword();
+        ((BasicAuthInfo) authInfo).setAuthorizationHeader(getBase64EncodedBasicAuthHeader(userName, password));
+        return authInfo;
+    }
+
+    /**
+     * Get the Base64 encoded basic auth header.
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    public String getBase64EncodedBasicAuthHeader(String userName, String password) {
+        String concatenatedCredential = userName + ":" + password;
+        byte[] byteValue = concatenatedCredential.getBytes();
+        String encodedAuthHeader = Base64.encode(byteValue);
+        encodedAuthHeader = "Basic " + encodedAuthHeader;
+        return encodedAuthHeader;
+    }
+
+    public BasicAuthInfo decodeBasicAuthHeader(String authorizationHeader) {
+        byte[] decodedAuthHeader = Base64.decode(authorizationHeader.split(" ")[1]);
+        String authHeader = new String(decodedAuthHeader);
+        String userName = authHeader.split(":")[0];
+        String password = authHeader.split(":")[1];
+        BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+        basicAuthInfo.setUserName(userName);
+        basicAuthInfo.setPassword(password);
+        return basicAuthInfo;
+
     }
 
     /**

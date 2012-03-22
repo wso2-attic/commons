@@ -11,7 +11,7 @@
         <td width="20%"><img src="../../images/scim.png" alt="WSO2 Charon" height="100" width="200"/>
         </td>
         <th width="60%">Validate Credential</th>
-        <td width="20%"><img src="./../images/header-logo.gif" alt="WSO2" height="50" width="250"/>
+        <td width="20%"><img src="images/header-logo.gif" alt="WSO2" height="50" width="250"/>
         </td>
     </tr>
     <tr>

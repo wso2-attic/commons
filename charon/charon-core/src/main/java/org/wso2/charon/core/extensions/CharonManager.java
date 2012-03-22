@@ -102,7 +102,7 @@ public interface CharonManager {
      *
      * @param httpAuthHeaders
      */
-    public void handleAuthentication(Map<String, String> httpAuthHeaders)
+    public AuthenticationInfo handleAuthentication(Map<String, String> httpAuthHeaders)
             throws UnauthorizedException;
 
 }

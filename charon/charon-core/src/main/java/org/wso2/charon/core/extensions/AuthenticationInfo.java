@@ -25,5 +25,7 @@ package org.wso2.charon.core.extensions;
 public interface AuthenticationInfo {
 
     public String getAuthenticationToken();
+
+    public String getUserName();
     
 }

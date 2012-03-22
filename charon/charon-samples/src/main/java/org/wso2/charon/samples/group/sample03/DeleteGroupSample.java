@@ -26,9 +26,11 @@ import org.wso2.charon.core.client.SCIMClient;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
+import org.wso2.charon.utils.authentication.BasicAuthHandler;
+import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteGroupSample {
-    public static final String GROUP_ID = "09e2bda0-4aae-4c47-ac50-a09ad74513f2";
+    public static final String GROUP_ID = "9bdaba3a-e979-4dbd-9441-706f7a62915e";
 
     public static void main(String[] args) {
 
@@ -41,12 +43,16 @@ public class DeleteGroupSample {
 
             //create resource endpoint
             Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
+            basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
+            basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);
 
+            BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
+            BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
             //enable, disable SSL.
             //had to set content type for the delete request as well, coz wink client sets */* by default.
             String response = groupResource.
-                    header(SCIMConstants.AUTH_HEADER_USERNAME, SampleConstants.CRED_USER_NAME).
-                    header(SCIMConstants.AUTH_HEADER_PASSWORD, SampleConstants.CRED_PASSWORD).
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     accept(SCIMConstants.APPLICATION_JSON).
                     delete(String.class);
 

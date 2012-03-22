@@ -22,6 +22,7 @@ import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.UnauthorizedException;
+import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
@@ -55,10 +56,8 @@ public class UsersResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                             @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
+                            @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization) {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
@@ -71,15 +70,13 @@ public class UsersResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
@@ -108,9 +105,7 @@ public class UsersResource {
     @POST
     public Response createUser(@HeaderParam(SCIMConstants.CONTENT_TYPE_HEADER) String inputFormat,
                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
+                               @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization,
                                String resourceString) {
         Encoder encoder = null;
         try {
@@ -131,15 +126,13 @@ public class UsersResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
@@ -168,10 +161,8 @@ public class UsersResource {
     @DELETE
     @Path("{id}")
     public Response deleteUser(@PathParam(SCIMConstants.CommonSchemaConstants.ID) String id,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
                                @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                               @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization) {
+                               @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization) {
         Encoder encoder = null;
         try {
             DefaultCharonManager defaultCharonManager = DefaultCharonManager.getInstance();
@@ -184,15 +175,13 @@ public class UsersResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
@@ -219,10 +208,8 @@ public class UsersResource {
     }
 
     @GET
-    public Response getUser(@HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                            @HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
-                            @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
+    public Response getUser(@HeaderParam(SCIMConstants.ACCEPT_HEADER) String format,
+                            @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization,
                             @QueryParam("attributes") String searchAttribute,
                             @QueryParam("filter") String filter,
                             @QueryParam("startIndex") String startIndex,
@@ -240,15 +227,13 @@ public class UsersResource {
             encoder = defaultCharonManager.getEncoder(SCIMConstants.identifyFormat(format));
             //perform authentication
             Map<String, String> headerMap = new HashMap<String, String>();
-            headerMap.put(SCIMConstants.AUTH_HEADER_USERNAME, userName);
-            headerMap.put(SCIMConstants.AUTH_HEADER_PASSWORD, password);
-            headerMap.put(SCIMConstants.AUTH_HEADER_OAUTH_KEY, authorization);
+            headerMap.put(SCIMConstants.AUTHORIZATION_HEADER, authorization);
             //authenticate the request
-            defaultCharonManager.handleAuthentication(headerMap);
+            AuthenticationInfo authInfo = defaultCharonManager.handleAuthentication(headerMap);
 
             //obtain the user store manager
             UserManager userManager = DefaultCharonManager.getInstance().getUserManager(
-                    userName);
+                    authInfo.getUserName());
 
             //create charon-SCIM user endpoint and hand-over the request.
             UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
@@ -297,7 +282,7 @@ public class UsersResource {
                               @HeaderParam(SCIMConstants.ACCEPT_HEADER) String outputFormat,
                               @HeaderParam(SCIMConstants.AUTH_HEADER_USERNAME) String userName,
                               @HeaderParam(SCIMConstants.AUTH_HEADER_PASSWORD) String password,
-                              @HeaderParam(SCIMConstants.AUTH_HEADER_OAUTH_KEY) String authorization,
+                              @HeaderParam(SCIMConstants.AUTHORIZATION_HEADER) String authorization,
                               String resourceString) {
         System.out.println("patch method was called." + resourceString);
         return null;
