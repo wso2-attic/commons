@@ -116,8 +116,10 @@ public interface ResourceEndpoint {
      */
     public SCIMResponse list(UserManager userManager, String format);
     
-    public SCIMResponse updateWithPUT(String scimObjectString, String inputFormat, String outputFormat,
-                                   UserManager userManager);
+    public SCIMResponse updateWithPUT(String existingId, String scimObjectString,
+                                      String inputFormat,
+                                      String outputFormat,
+                                      UserManager userManager);
 
 
 }

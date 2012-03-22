@@ -46,7 +46,7 @@ public class SCIMResourceSchema implements ResourceSchema {
             List<AttributeSchema> commonAttributeSchemas =
                     SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList();
             for (AttributeSchema commonAttributeSchema : commonAttributeSchemas) {
-                attributeSchemas.add(commonAttributeSchema);
+                this.attributeSchemas.add(commonAttributeSchema);
             }
             //following add all gave an exception:java.lang.UnsupportedOperationException
             //this.attributeSchemas.addAll(SCIMSchemaDefinitions.SCIM_COMMON_SCHEMA.getAttributesList());
@@ -75,7 +75,7 @@ public class SCIMResourceSchema implements ResourceSchema {
         //when used below, got UnsupportedOperationException when called add/addAll on attributeSchemas
         // inside addCommonSchema method.
         //this.attributeSchemas = Arrays.asList((AttributeSchema[]) attributeSchemas);
-        addCommonSchema();
+        this.addCommonSchema();
     }
 
     public String getEndpoint() {

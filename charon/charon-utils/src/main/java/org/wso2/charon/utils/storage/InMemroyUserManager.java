@@ -107,10 +107,11 @@ public class InMemroyUserManager implements UserManager {
     public User updateUser(User user) throws CharonException {
         if (!inMemoryUserList.isEmpty()) {
             //check if user exist in the system
-            if (inMemoryUserList.contains(user.getId())) {
+            if (inMemoryUserList.containsKey(user.getId())) {
                 //check for unique user name
                 for (Map.Entry<String, User> userEntry : inMemoryUserList.entrySet()) {
-                    if (user.getUserName().equals(userEntry.getValue().getUserName())) {
+                    if ((user.getUserName().equals(userEntry.getValue().getUserName()))
+                        && !(user.getId()).equals(userEntry.getValue().getId())) {
                         String error = "Updated user name already exist in the system.";
                         //TODO:log error
                         throw new CharonException(error);

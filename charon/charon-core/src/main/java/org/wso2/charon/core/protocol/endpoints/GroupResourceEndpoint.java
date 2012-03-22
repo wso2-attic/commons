@@ -28,7 +28,6 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.exceptions.ResourceNotFoundException;
 import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
-import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.ListedResource;
 import org.wso2.charon.core.objects.User;
@@ -326,9 +325,81 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
     }
 
     @Override
-    public SCIMResponse updateWithPUT(String scimObjectString, String inputFormat,
-                                      String outputFormat, UserManager userManager) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public SCIMResponse updateWithPUT(String existingId, String scimObjectString,
+                                      String inputFormat,
+                                      String outputFormat, UserManager userManager
+    ) {
+        //needs to validate the incoming object. eg: id can not be set by the consumer.
+
+        Encoder encoder = null;
+        Decoder decoder = null;
+
+        try {
+            //obtain the encoder matching the requested output format.
+            encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
+            //obtain the decoder matching the submitted format.
+            decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
+
+            //decode the SCIM User object, encoded in the submitted payload.
+            User user = (User) decoder.decodeResource(scimObjectString,
+                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+            User updatedUser = null;
+            if (userManager != null) {
+                //retrieve the old object
+                User oldUser = userManager.getUser(user.getId());
+                if (oldUser != null) {
+                    User validatedUser = (User) ServerSideValidator.validateUpdatedSCIMObject(
+                            oldUser, user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+                    updatedUser = userManager.updateUser(validatedUser);
+
+                } else {
+                    String error = "No user exists with the given id: " + user.getId();
+                    //log the error as well.
+                    //throw internal server error.
+                    throw new InternalServerException(error);
+                }
+
+            } else {
+                String error = "Provided user manager handler is null.";
+                //log the error as well.
+                //throw internal server error.
+                throw new InternalServerException(error);
+            }
+            //encode the newly created SCIM user object and add id attribute to Location header.
+            String encodedUser;
+            Map<String, String> httpHeaders = new HashMap<String, String>();
+            if (updatedUser != null) {
+
+                encodedUser = encoder.encodeSCIMObject(updatedUser);
+                //add location header
+                httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
+                        SCIMConstants.USER_ENDPOINT) + File.separator + updatedUser.getId());
+                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
+
+            } else {
+                //TODO:log the error
+                String error = "Updated User resource is null..";
+                throw new InternalServerException(error);
+            }
+
+            //put the URI of the User object in the response header parameter.
+            return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedUser, httpHeaders);
+
+        } catch (FormatNotSupportedException e) {
+            //if the submitted format not supported, encode exception and set it in the response.
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (CharonException e) {
+            //we have charon exceptions also, instead of having only internal server error exceptions,
+            //because inside API code throws CharonException.
+            if (e.getCode() == -1) {
+                e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
+            }
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (BadRequestException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        }
     }
 
     public ListedResource createListedResource(List<Group> groups)

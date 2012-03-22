@@ -259,17 +259,17 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             ComplexAttribute metaAttribute = getMetaAttribute();
             //check created date attribute already exist
             if (metaAttribute.isSubAttributeExist(lastModifiedAttribute.getName())) {
-                //log info level log that created date already set and can't set again.
-                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+                metaAttribute.removeSubAttribute(lastModifiedAttribute.getName());
+                metaAttribute.setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
             } else {
 
-                metaAttribute.setSubAttribute(lastModifiedAttribute, null);
+                metaAttribute.setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(lastModifiedAttribute, null);
+            getMetaAttribute().setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
 
         }
     }
@@ -299,16 +299,16 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             ComplexAttribute metaAttribute = getMetaAttribute();
             //check version attribute already exist
             if (metaAttribute.isSubAttributeExist(versionAttribute.getName())) {
-                //log info level log that version already set and can't set again.
-                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+                metaAttribute.removeSubAttribute(versionAttribute.getName());
+                metaAttribute.setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
             } else {
-                metaAttribute.setSubAttribute(versionAttribute, null);
+                metaAttribute.setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(versionAttribute, null);
+            getMetaAttribute().setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
 
         }
     }

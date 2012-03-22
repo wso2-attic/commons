@@ -337,7 +337,7 @@ public class SCIMSchemaDefinitions {
      */
     public static final SCIMResourceSchema SCIM_COMMON_SCHEMA = SCIMResourceSchema.createSCIMResourceSchema(
             SCIMConstants.COMMON, SCIMConstants.CORE_SCHEMA_URI, SCIMConstants.COMMON_DESC, null,
-            SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID);
+            SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID,SCIMSchemaDefinitions.META);
 
 
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =

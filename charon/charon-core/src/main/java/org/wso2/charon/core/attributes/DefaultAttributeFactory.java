@@ -187,7 +187,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     public static MultiValuedAttribute validateMultiValuedAttribute(
             SCIMAttributeSchema attributeSchema, MultiValuedAttribute multiValuedAttribute)
             throws CharonException {
-        List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
+        /*List<Attribute> attributeValues = multiValuedAttribute.getValuesAsSubAttributes();
         if (attributeValues != null && !attributeValues.isEmpty()) {
             //if value is complex attribute, compare it with other values to canonicalize and
             //validate primary property.
@@ -256,7 +256,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
                     }
                 }
             }
-        }
+        }*/
         return multiValuedAttribute;
     }
 }

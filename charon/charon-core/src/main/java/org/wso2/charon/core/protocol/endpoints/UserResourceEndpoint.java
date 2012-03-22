@@ -328,8 +328,10 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     }
 
     @Override
-    public SCIMResponse updateWithPUT(String scimObjectString, String inputFormat,
-                                      String outputFormat, UserManager userManager) {
+    public SCIMResponse updateWithPUT(String existingId, String scimObjectString,
+                                      String inputFormat,
+                                      String outputFormat, UserManager userManager
+    ) {
         //needs to validate the incoming object. eg: id can not be set by the consumer.
 
         Encoder encoder = null;
@@ -347,7 +349,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             User updatedUser =null;
             if (userManager != null) {
                 //retrieve the old object
-                User oldUser = userManager.getUser(user.getId());
+                User oldUser = userManager.getUser(existingId);
                 if (oldUser != null) {
                     User validatedUser = (User) ServerSideValidator.validateUpdatedSCIMObject(
                             oldUser, user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
@@ -384,7 +386,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
 
             //put the URI of the User object in the response header parameter.
-            return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedUser, httpHeaders);
+            return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.
