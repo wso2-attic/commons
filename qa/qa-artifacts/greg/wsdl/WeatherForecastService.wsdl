@@ -1,0 +1,74 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:tns="http://www.restfulwebservices.net/ServiceContracts/2008/01" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" name="WeatherForecastService" targetNamespace="http://www.restfulwebservices.net/ServiceContracts/2008/01">
+<wsdl:types>
+<xsd:schema targetNamespace="http://www.restfulwebservices.net/ServiceContracts/2008/01/Imports">
+<xsd:import schemaLocation="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc?xsd=xsd0" namespace="http://www.restfulwebservices.net/ServiceContracts/2008/01"/>
+<xsd:import schemaLocation="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc?xsd=xsd3" namespace="http://GOTLServices.FaultContracts/2008/01"/>
+<xsd:import schemaLocation="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/"/>
+<xsd:import schemaLocation="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+<xsd:import schemaLocation="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc?xsd=xsd4" namespace="http://www.restfulwebservices.net/DataContracts/2008/01"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="IWeatherForecastService_GetCitiesByCountry_InputMessage">
+<wsdl:part name="parameters" element="tns:GetCitiesByCountry"/>
+</wsdl:message>
+<wsdl:message name="IWeatherForecastService_GetCitiesByCountry_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetCitiesByCountryResponse"/>
+</wsdl:message>
+<wsdl:message name="IWeatherForecastService_GetCitiesByCountry_DefaultFaultContractFault_FaultMessage">
+<wsdl:part xmlns:q1="http://GOTLServices.FaultContracts/2008/01" name="detail" element="q1:DefaultFaultContract"/>
+</wsdl:message>
+<wsdl:message name="IWeatherForecastService_GetForecastByCity_InputMessage">
+<wsdl:part name="parameters" element="tns:GetForecastByCity"/>
+</wsdl:message>
+<wsdl:message name="IWeatherForecastService_GetForecastByCity_OutputMessage">
+<wsdl:part name="parameters" element="tns:GetForecastByCityResponse"/>
+</wsdl:message>
+<wsdl:message name="IWeatherForecastService_GetForecastByCity_DefaultFaultContractFault_FaultMessage">
+<wsdl:part xmlns:q2="http://GOTLServices.FaultContracts/2008/01" name="detail" element="q2:DefaultFaultContract"/>
+</wsdl:message>
+<wsdl:portType name="IWeatherForecastService">
+<wsdl:operation name="GetCitiesByCountry">
+<wsdl:input wsaw:Action="GetCitiesByCountry" message="tns:IWeatherForecastService_GetCitiesByCountry_InputMessage"/>
+<wsdl:output wsaw:Action="http://www.restfulwebservices.net/ServiceContracts/2008/01/IWeatherForecastService/GetCitiesByCountryResponse" message="tns:IWeatherForecastService_GetCitiesByCountry_OutputMessage"/>
+<wsdl:fault wsaw:Action="http://www.restfulwebservices.net/ServiceContracts/2008/01/IWeatherForecastService/GetCitiesByCountryDefaultFaultContractFault" name="DefaultFaultContractFault" message="tns:IWeatherForecastService_GetCitiesByCountry_DefaultFaultContractFault_FaultMessage"/>
+</wsdl:operation>
+<wsdl:operation name="GetForecastByCity">
+<wsdl:input wsaw:Action="GetForecastByCity" message="tns:IWeatherForecastService_GetForecastByCity_InputMessage"/>
+<wsdl:output wsaw:Action="http://www.restfulwebservices.net/ServiceContracts/2008/01/IWeatherForecastService/GetForecastByCityResponse" message="tns:IWeatherForecastService_GetForecastByCity_OutputMessage"/>
+<wsdl:fault wsaw:Action="http://www.restfulwebservices.net/ServiceContracts/2008/01/IWeatherForecastService/GetForecastByCityDefaultFaultContractFault" name="DefaultFaultContractFault" message="tns:IWeatherForecastService_GetForecastByCity_DefaultFaultContractFault_FaultMessage"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="BasicHttpBinding_IWeatherForecastService" type="tns:IWeatherForecastService">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="GetCitiesByCountry">
+<soap:operation soapAction="GetCitiesByCountry" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="DefaultFaultContractFault">
+<soap:fault name="DefaultFaultContractFault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+<wsdl:operation name="GetForecastByCity">
+<soap:operation soapAction="GetForecastByCity" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="DefaultFaultContractFault">
+<soap:fault name="DefaultFaultContractFault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="WeatherForecastService">
+<wsdl:port name="BasicHttpBinding_IWeatherForecastService" binding="tns:BasicHttpBinding_IWeatherForecastService">
+<soap:address location="http://www.restfulwebservices.net/wcf/WeatherForecastService.svc"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
+
