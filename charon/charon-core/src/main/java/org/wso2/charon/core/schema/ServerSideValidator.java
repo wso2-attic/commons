@@ -77,8 +77,18 @@ public class ServerSideValidator extends AbstractValidator {
         validateSchemaList(scimObject, resourceSchema);
     }
 
-    public static void validateUpdatedSCIMObject(AbstractSCIMObject scimObject,
-                                                 SCIMResourceSchema resourceSchema) {
+    public static AbstractSCIMObject validateUpdatedSCIMObject(AbstractSCIMObject oldObject,
+                                                 AbstractSCIMObject newObject,
+                                                 SCIMResourceSchema resourceSchema)
+            throws CharonException {
+
+        AbstractSCIMObject validatedObject = checkIfReadOnlyAttributesModified(oldObject,newObject,resourceSchema);
+        //edit last modified date
+        Date date = new Date();
+        validatedObject.setLastModified(date);
+        //check for required attributes.
+        validateSCIMObjectForRequiredAttributes(validatedObject,resourceSchema);
+        return  validatedObject;
         //if user object, validate name
     }
 
@@ -93,6 +103,86 @@ public class ServerSideValidator extends AbstractValidator {
         }
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
         validateSchemaList(scimObject, resourceSchema);
+    }
+
+    public static AbstractSCIMObject checkIfReadOnlyAttributesModified(AbstractSCIMObject oldObject,
+                                                                       AbstractSCIMObject newObject,
+                                                                       SCIMResourceSchema resourceSchema)
+            throws CharonException {
+        //get attribute schema list
+        List<AttributeSchema> attributeSchemaList = resourceSchema.getAttributesList();
+        //get attribute list from old object
+        Map<String, Attribute> oldObjectAttributeList = oldObject.getAttributeList();
+        Map<String, Attribute> newObjectAttributeList = newObject.getAttributeList();
+
+        for (AttributeSchema attributeSchema : attributeSchemaList) {
+            if (attributeSchema.getReadOnly()) {
+                if ((!oldObjectAttributeList.containsKey(attributeSchema.getName())) &&
+                    (newObjectAttributeList.containsKey(attributeSchema.getName()))) {
+                    //log error
+                    String error = "Read only attribute: " + attributeSchema.getName() + " is set. Removing it.";
+                    newObjectAttributeList.remove(attributeSchema.getName());
+                } else if ((oldObjectAttributeList.containsKey(attributeSchema.getName())) &&
+                           (!newObjectAttributeList.containsKey(attributeSchema.getName()))) {
+                    //log error
+                    String error = "Existing read only attribute: " + attributeSchema.getName() + " is removed. Adding it.";
+                    newObjectAttributeList.put(attributeSchema.getName(),
+                                               oldObjectAttributeList.get(attributeSchema.getName()));
+                } else if ((oldObjectAttributeList.containsKey(attributeSchema.getName())) &&
+                           (newObjectAttributeList.containsKey(attributeSchema.getName()))) {
+                    //log debug level
+                    String error = "Replacing attribute: " + attributeSchema.getName() + " with the one from old attribute.";
+                    newObjectAttributeList.remove(attributeSchema.getName());
+                    newObjectAttributeList.put(attributeSchema.getName(),
+                                               oldObjectAttributeList.get(attributeSchema.getName()));
+                }
+            } else {
+                //check for sub attribute read only.
+                //if only new has the attribute, remove its read only sub attr like in earlier case.
+                if ((!oldObjectAttributeList.containsKey(attributeSchema.getName())) &&
+                    (newObjectAttributeList.containsKey(attributeSchema.getName()))) {
+
+                    AbstractAttribute attribute = (AbstractAttribute) newObjectAttributeList.get(attributeSchema.getName());
+
+                    List<SCIMSubAttributeSchema> subAttributesSchemaList =
+                            ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
+
+                    if (subAttributesSchemaList != null && !subAttributesSchemaList.isEmpty()) {
+                        for (SCIMSubAttributeSchema subAttributeSchema : subAttributesSchemaList) {
+                            if (subAttributeSchema.getReadOnly()) {
+                                if (attribute instanceof ComplexAttribute) {
+                                    if (attribute.getSubAttribute(subAttributeSchema.getName()) != null) {
+                                        String error = "Readonly sub attribute: " + subAttributeSchema.getName()
+                                                       + " is set in the SCIM Attribute: " + attribute.getName() +
+                                                       ". Removing it.";
+                                        attribute.removeSubAttribute(subAttributeSchema.getName());
+                                    }
+                                } else if (attribute instanceof MultiValuedAttribute) {
+                                    List<Attribute> values =
+                                            ((MultiValuedAttribute) attribute).getValuesAsSubAttributes();
+                                    for (Attribute value : values) {
+                                        if (value instanceof ComplexAttribute) {
+                                            if (value.getSubAttribute(subAttributeSchema.getName()) != null) {
+                                                String error = "Readonly sub attribute: " + subAttributeSchema.getName()
+                                                               + " is set in the SCIM Attribute: " + attribute.getName() +
+                                                               ". Removing it.";
+                                                ((ComplexAttribute) value).removeSubAttribute(subAttributeSchema.getName());
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+                //if old has, new doesn't has, fine
+                //if both has, check for modified.
+            }
+        }
+        return newObject;
     }
 
     /**

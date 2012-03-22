@@ -115,6 +115,9 @@ public interface ResourceEndpoint {
      * @return
      */
     public SCIMResponse list(UserManager userManager, String format);
+    
+    public SCIMResponse updateWithPUT(String scimObjectString, String inputFormat, String outputFormat,
+                                   UserManager userManager);
 
 
 }

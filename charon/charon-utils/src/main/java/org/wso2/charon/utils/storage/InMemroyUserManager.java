@@ -104,10 +104,33 @@ public class InMemroyUserManager implements UserManager {
      * @param user
      */
     @Override
-    public User updateUser(User user) {
-        //TODO:should set last modified date
-        //To change body of implemented methods use File | Settings | File Templates.
-        return null;
+    public User updateUser(User user) throws CharonException {
+        if (!inMemoryUserList.isEmpty()) {
+            //check if user exist in the system
+            if (inMemoryUserList.contains(user.getId())) {
+                //check for unique user name
+                for (Map.Entry<String, User> userEntry : inMemoryUserList.entrySet()) {
+                    if (user.getUserName().equals(userEntry.getValue().getUserName())) {
+                        String error = "Updated user name already exist in the system.";
+                        //TODO:log error
+                        throw new CharonException(error);
+                    }
+                }
+                //remove existing user.
+                inMemoryUserList.remove(user.getId());
+                //add updated user
+                inMemoryUserList.put(user.getId(), user);
+            } else {
+                String error = "Updating user with the id does not exist in the user store..";
+                //TODO:log error
+                throw new CharonException(error);
+            }
+        } else {
+            String error = "No users exist in the user store..";
+            //TODO:log error
+            throw new CharonException(error);
+        }
+        return user;
     }
 
     /**
@@ -150,13 +173,11 @@ public class InMemroyUserManager implements UserManager {
     public User createUser(User user) throws CharonException {
 
         if (!inMemoryUserList.isEmpty()) {
-            if (user.getExternalId() != null) {
-                for (Map.Entry<String, User> userEntry : inMemoryUserList.entrySet()) {
-                    if (user.getUserName().equals(userEntry.getValue().getUserName())) {
-                        String error = "User already exist in the system.";
-                        //TODO:log error
-                        throw new CharonException(error);
-                    }
+            for (Map.Entry<String, User> userEntry : inMemoryUserList.entrySet()) {
+                if (user.getUserName().equals(userEntry.getValue().getUserName())) {
+                    String error = "User already exist in the system.";
+                    //TODO:log error
+                    throw new CharonException(error);
                 }
             }
             inMemoryUserList.put(user.getId(), user);

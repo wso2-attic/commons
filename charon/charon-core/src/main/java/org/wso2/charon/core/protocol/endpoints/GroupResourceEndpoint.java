@@ -325,6 +325,12 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
         }
     }
 
+    @Override
+    public SCIMResponse updateWithPUT(String scimObjectString, String inputFormat,
+                                      String outputFormat, UserManager userManager) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public ListedResource createListedResource(List<Group> groups)
             throws CharonException, NotFoundException {
         ListedResource listedResource = new ListedResource();

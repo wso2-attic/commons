@@ -65,7 +65,7 @@ public interface UserManager extends Storage {
      * @param user SCIM User object containing the updated attributes
      * @return return the full updates user
      */
-    public User updateUser(User user);
+    public User updateUser(User user) throws CharonException;
 
     /**
      * Update the user partially only with updated attributes.
