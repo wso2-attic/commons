@@ -33,7 +33,7 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteUserSample {
 
-    public static final String USER_ID = "30d8ef8c-89af-4513-b4a7-641fa1767905";
+    public static final String USER_ID = "1acee9bf-576f-4c13-afde-ff9e2ed28768";
 
     public static void main(String[] args) {
 

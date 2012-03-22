@@ -340,40 +340,41 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             //obtain the decoder matching the submitted format.
             decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
-            //decode the SCIM User object, encoded in the submitted payload.
-            User user = (User) decoder.decodeResource(scimObjectString,
-                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
-            User updatedUser = null;
+            //decode the SCIM Group object, encoded in the submitted payload.
+            Group group = (Group) decoder.decodeResource(scimObjectString,
+                                                         SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA,
+                                                         new Group());
+            Group updatedGroup = null;
             if (userManager != null) {
                 //retrieve the old object
-                User oldUser = userManager.getUser(user.getId());
-                if (oldUser != null) {
-                    User validatedUser = (User) ServerSideValidator.validateUpdatedSCIMObject(
-                            oldUser, user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
-                    updatedUser = userManager.updateUser(validatedUser);
+                Group oldGroup = userManager.getGroup(group.getId());
+                if (oldGroup != null) {
+                    Group validatedGroup = (Group) ServerSideValidator.validateUpdatedSCIMObject(
+                            oldGroup, group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
+                    updatedGroup = userManager.updateGroup(validatedGroup);
 
                 } else {
-                    String error = "No user exists with the given id: " + user.getId();
+                    String error = "No group exists with the given id: " + group.getId();
                     //log the error as well.
                     //throw internal server error.
                     throw new InternalServerException(error);
                 }
 
             } else {
-                String error = "Provided user manager handler is null.";
+                String error = "Provided User manager handler is null.";
                 //log the error as well.
                 //throw internal server error.
                 throw new InternalServerException(error);
             }
-            //encode the newly created SCIM user object and add id attribute to Location header.
-            String encodedUser;
+            //encode the newly created SCIM group object and add id attribute to Location header.
+            String encodedGroup;
             Map<String, String> httpHeaders = new HashMap<String, String>();
-            if (updatedUser != null) {
+            if (updatedGroup != null) {
 
-                encodedUser = encoder.encodeSCIMObject(updatedUser);
+                encodedGroup = encoder.encodeSCIMObject(updatedGroup);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + File.separator + updatedUser.getId());
+                        SCIMConstants.USER_ENDPOINT) + File.separator + updatedGroup.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -383,7 +384,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
 
             //put the URI of the User object in the response header parameter.
-            return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedUser, httpHeaders);
+            return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedGroup, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
             //if the submitted format not supported, encode exception and set it in the response.

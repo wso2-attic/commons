@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.charon.samples.user.sample01;
+package org.wso2.charon.samples.group.sample05;
 
 import org.apache.wink.client.ClientConfig;
 import org.apache.wink.client.ClientWebException;
@@ -23,34 +23,26 @@ import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
+import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
 import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
-public class CreateUserSample {
-
-    //user details
-    public static final String USER_NAME = "hasinit";
-    public static final String EXTERNAL_ID = "hasini@gmail.com";
-    public static final String[] EMAILS = {"umesha@gmail.com", "umeshag@yahoo.com"};
+public class UpdateGroupSample {
+    public static final String GROUP_ID = "e3d7fda2-2619-4ace-83e1-81842c45bc0b";
+    //public static final String OLD_MEMBER = "9c9afc67-2897-4c8c-9461-5f7c7d724307";
+    public static final String NEW_MEMBER = "1acee9bf-576f-4c13-afde-ff9e2ed28768";
+    public static final String NEW_DISPLAY_NAME = "QA";
 
     public static void main(String[] args) {
 
         try {
             //create SCIM client
             SCIMClient scimClient = new SCIMClient();
-            //create a user according to SCIM User Schema
-            User scimUser = scimClient.createUser();
-            scimUser.setUserName(USER_NAME);
-            scimUser.setExternalId(EXTERNAL_ID);
-            scimUser.setEmails(EMAILS);
-            scimUser.setDisplayName("hasini");
-            //encode the user in JSON format
-            String encodedUser = scimClient.encodeSCIMObject(scimUser, SCIMConstants.JSON);
             //create a apache wink ClientHandler to intercept and identify response messages
             CharonResponseHandler responseHandler = new CharonResponseHandler();
             responseHandler.setSCIMClient(scimClient);
@@ -59,8 +51,6 @@ public class CreateUserSample {
             clientConfig.handlers(new ClientHandler[]{responseHandler});
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
-            //create resource endpoint to access User resource
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT);
 
             BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
             basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
@@ -69,22 +59,40 @@ public class CreateUserSample {
             BasicAuthHandler basicAuthHandler = new BasicAuthHandler();
             BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
-
-            //TODO:enable, disable SSL. For the demo purpose, we make the calls over http
-            //send previously registered SCIM consumer credentials in http headers.
-            String response = userResource.
+            //create resource endpoint to access a known user resource.
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            String response = groupResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
-                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON).
-                    post(String.class, encodedUser);
+                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
+                    .get(String.class);
 
+            System.out.println("Retrieved group: "+response);
+            //decode retrieved group
+            Group decodedGroup = (Group) scimClient.decodeSCIMResponse(response, SCIMConstants.JSON, 2);
+
+            decodedGroup.setDisplayName(NEW_DISPLAY_NAME);
+            //decodedGroup.removeMember(OLD_MEMBER);
+            decodedGroup.setGroupMember(NEW_MEMBER);
+
+            String updatedGroupString = scimClient.encodeSCIMObject(decodedGroup, SCIMConstants.JSON);
+
+            Resource updateGroupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            String responseUpdated = updateGroupResource.
+                    header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
+                    contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
+                    .put(String.class, updatedGroupString);
+            System.out.println("Updated group: " + responseUpdated);
             //decode the response
-            System.out.println(response);
-        } catch (CharonException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            //System.out.println(response);
         } catch (ClientWebException e) {
             System.out.println(e.getRequest().getEntity());
             System.out.println(e.getResponse().getMessage());
             e.printStackTrace();
+        } catch (BadRequestException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (CharonException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
     }
 }

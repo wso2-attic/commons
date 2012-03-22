@@ -68,10 +68,10 @@
             <role-name>scimAdmin</role-name>
         </auth-constraint>
 
-        <user-data-constraint>
+        <group-data-constraint>
             <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
             <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
+        </group-data-constraint>
     </security-constraint>
 
     <!--<security-constraint>
@@ -84,10 +84,10 @@
             <http-method>DELETE</http-method>&ndash;&gt;
         </web-resource-collection>
 
-        <user-data-constraint>
+        <group-data-constraint>
             &lt;!&ndash; transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE &ndash;&gt;
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
+        </group-data-constraint>
     </security-constraint>-->
 
     <login-config>
