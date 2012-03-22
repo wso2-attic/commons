@@ -34,10 +34,10 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class UpdateUserSample {
 
-    public static final String USER_ID = "aa8c56d8-e054-465a-8f7a-81e24542eaba";
+    public static final String USER_ID = "536413b5-4937-4d35-89fa-8b1877077da5";
 
     public static final String NEW_DISPLAY_NAME = "HasiniG";
-    public static final String NEW_WORK_EMAIL = "hasini@wso2.com";
+    public static final String NEW_WORK_EMAIL = "hasinig@wso2.com";
 
 
     public static void main(String[] args) {

@@ -33,7 +33,7 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class UpdateGroupSample {
-    public static final String GROUP_ID = "15a6c6b0-f851-44d6-97b6-473fbe3cfd9f";
+    public static final String GROUP_ID = "d1be073f-d220-4322-a0e9-51b9324521a1";
     public static final String OLD_MEMBER = "3bcad7e6-afa0-4855-908e-cd88ef104eb1";
     public static final String NEW_MEMBER = "16bb4dae-fb16-468c-831d-352eac1dd087";
     public static final String NEW_DISPLAY_NAME = "QA";
