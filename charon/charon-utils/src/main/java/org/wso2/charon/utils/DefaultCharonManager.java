@@ -63,7 +63,7 @@ public class DefaultCharonManager implements CharonManager {
 
     //TODO:should be moved to charon-config
     private static final String USERS_URL = "http://localhost:8080/charonDemoApp/scim/Users";
-    private static final String GROUPS_URL = "http://localhost:8081/charonDemoApp/scim/Groups";
+    private static final String GROUPS_URL = "http://localhost:8080/charonDemoApp/scim/Groups";
 
     /**
      * Perform initialization.
