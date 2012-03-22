@@ -37,7 +37,7 @@ public class SampleConstants {
     //public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/t/charon.com/webapps/charonDemoApp/scim/RegistrationService";
     //http://appserver.stratoslive.wso2.com/t/charon.org/webapps/charonDemoApp/*/
 
-    /*public static final String USER_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Users/";
-    public static final String GROUP_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/Groups/";
-    public static final String REG_SERVICE_ENDPOINT = "http://10.200.3.120:9763/charonDemoApp/scim/RegistrationService";*/
+    /*public static final String USER_ENDPOINT = "http://people.wso2.com:8080/charonDemoApp/scim/Users/";
+    public static final String GROUP_ENDPOINT = "http://people.wso2.com:8080/charonDemoApp/scim/Groups/";
+    public static final String REG_SERVICE_ENDPOINT = "http://people.wso2.com:8080/charonDemoApp/scim/RegistrationService";*/
 }

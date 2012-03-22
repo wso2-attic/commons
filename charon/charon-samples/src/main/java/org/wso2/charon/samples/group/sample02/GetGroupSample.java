@@ -30,7 +30,7 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class GetGroupSample {
-    public static final String GROUP_ID = "e3d7fda2-2619-4ace-83e1-81842c45bc0b";
+    public static final String GROUP_ID = "d022901f-dbbb-4875-85d1-141c9a595260";
 
     public static void main(String[] args) {
 

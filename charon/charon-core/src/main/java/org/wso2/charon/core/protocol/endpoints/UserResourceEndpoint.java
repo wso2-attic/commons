@@ -359,7 +359,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     String error = "No user exists with the given id: " + user.getId();
                     //log the error as well.
                     //throw internal server error.
-                    throw new InternalServerException(error);
+                    throw new ResourceNotFoundException();
                 }
 
             } else {
@@ -401,6 +401,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         } catch (BadRequestException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (ResourceNotFoundException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }

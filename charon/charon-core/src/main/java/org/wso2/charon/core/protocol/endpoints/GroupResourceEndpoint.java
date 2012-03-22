@@ -357,7 +357,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                     String error = "No group exists with the given id: " + group.getId();
                     //log the error as well.
                     //throw internal server error.
-                    throw new InternalServerException(error);
+                    throw new ResourceNotFoundException();
                 }
 
             } else {
@@ -399,6 +399,8 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
         } catch (BadRequestException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (ResourceNotFoundException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }

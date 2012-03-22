@@ -37,8 +37,8 @@ public class CreateGroupSample {
     public static final String EXTERNAL_ID = "eng";
     //replace following IDs with already existing member IDs.
     //hasinitg,hasini
-    public static final String[] MEMBERS = {"9c9afc67-2897-4c8c-9461-5f7c7d724307",
-                                            "b1eaefb8-2a56-4479-8a4c-2c7a4ad6ab4c"};
+    public static final String[] MEMBERS = {"3bcad7e6-afa0-4855-908e-cd88ef104eb1",
+                                            "f73d0500-7334-48c7-863b-1de15331b0bf"};
 
     public static void main(String[] args) {
 
