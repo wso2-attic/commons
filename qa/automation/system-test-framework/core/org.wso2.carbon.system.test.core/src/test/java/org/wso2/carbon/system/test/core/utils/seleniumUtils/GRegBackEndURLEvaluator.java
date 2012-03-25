@@ -19,18 +19,22 @@ package org.wso2.carbon.system.test.core.utils.seleniumUtils;
 
 import org.wso2.carbon.admin.service.utils.FrameworkSettings;
 
-import java.io.File;
-
 
 public class GRegBackEndURLEvaluator {
 
     public String getBackEndURL() {
-       String baseURL;     
-       if (FrameworkSettings.GREG_SERVER_WEB_CONTEXT_ROOT != null) {
-           baseURL = "https://" + FrameworkSettings.GREG_SERVER_HOST_NAME + ":" + FrameworkSettings.GREG_SERVER_HTTPS_PORT + File.separator + FrameworkSettings.GREG_SERVER_WEB_CONTEXT_ROOT + File.separator + "carbon" + File.separator;
-       } else {
-           baseURL = "https://" + FrameworkSettings.GREG_SERVER_HOST_NAME + ":" + FrameworkSettings.GREG_SERVER_HTTPS_PORT + File.separator + "carbon" + File.separator;
-       }
-       return baseURL;
-   }
-  }
+        String baseUrl;
+
+        if (FrameworkSettings.GREG_SERVER_WEB_CONTEXT_ROOT != null) {
+             baseUrl = "https://" + FrameworkSettings.GREG_SERVER_HOST_NAME + ":" +
+                       FrameworkSettings.GREG_SERVER_HTTPS_PORT + "/" +
+                       FrameworkSettings.GREG_SERVER_WEB_CONTEXT_ROOT + "/" + "carbon" + "/";
+
+        } else {
+             baseUrl = "https://" + FrameworkSettings.GREG_SERVER_HOST_NAME + ":" +
+                       FrameworkSettings.GREG_SERVER_HTTPS_PORT + "/" + "carbon" + "/";
+
+        }
+        return baseUrl;
+    }
+}
