@@ -74,19 +74,19 @@ public class CipherTool {
     private static Map<String, String> configFileXpathMap = new HashMap<String, String>();
     private static Map<String, String> aliasPasswordMap = new HashMap<String, String>();
     private static String carbonHome;
-    private static  Cipher cipher;
+    private static Cipher cipher;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         init(args);
         cipher = initCipher();
-        if(System.getProperty("configure")!= null && System.getProperty("configure").equals("true")){
+        if (System.getProperty("configure") != null && System.getProperty("configure").equals("true")) {
             loadXpathValuesAndPasswordDetails();
             writeSecureVaultConfigTokens();
             createEncryptedValues();
             writeEncryptedValues();
             writeConfigurations();
-        } else if(System.getProperty("change")!= null && System.getProperty("change").equals("true")){
+        } else if (System.getProperty("change") != null && System.getProperty("change").equals("true")) {
             changePassword();
         } else {
             createEncryptedValue();
@@ -95,13 +95,14 @@ public class CipherTool {
 
     /**
      * init the mode of operation of cipher tool using command line argument
-     * @param args  command line arguments
+     *
+     * @param args command line arguments
      */
-    private static void init(String[] args){
+    private static void init(String[] args) {
 
         String osName = System.getProperty("os.name");
         File file;
-        if(osName.toLowerCase().indexOf("win") == -1){
+        if (osName.toLowerCase().indexOf("win") == -1) {
             file = new File("." + File.separator + ".." + File.separator);
         } else {
             file = new File("." + File.separator);
@@ -120,26 +121,26 @@ public class CipherTool {
             } else if (arg.equals("-Dchange")) {
                 String property = arg.substring(2);
                 System.setProperty(property, "true");
-            }  else if (arg.equals("-Dconfigure")) {
+            } else if (arg.equals("-Dconfigure")) {
                 String property = arg.substring(2);
                 System.setProperty(property, "true");
-            } 
+            }
         }
 
 
         carbonHome = System.getProperty("carbon.home");
-        if(carbonHome == null || carbonHome.equals("")) {
+        if (carbonHome == null || carbonHome.equals("")) {
             System.out.println("\nCARBON_HOME is not properly set. Please Enter CARBON_HOME again : ");
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
             try {
                 carbonHome = input.readLine();
             } catch (IOException e) {
                 handleException("IOError reading command line inputs  ", e);
-            } finally{
+            } finally {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    log.error("Error while closing input stream");                    
+                    log.error("Error while closing input stream");
                 }
             }
         }
@@ -166,6 +167,7 @@ public class CipherTool {
 
     /**
      * init the Cipher for encryption using the primary key store of carbon server
+     *
      * @return cipher
      */
     private static Cipher initCipher() {
@@ -178,19 +180,19 @@ public class CipherTool {
         Cipher cipher = null;
 
         keyStoreFile = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_LOCATION);
+                                                      .PRIMARY_KEY_LOCATION);
         keyStoreFile = carbonHome + keyStoreFile.substring((keyStoreFile
-                .indexOf('}'))+1);
+                                                                    .indexOf('}')) + 1);
 
-        File keyStore = new File (keyStoreFile);
+        File keyStore = new File(keyStoreFile);
 
-        if(!keyStore.exists()) {
+        if (!keyStore.exists()) {
             handleException("Primary Key Store Can not be found at Default location");
         }
         keyType = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_TYPE);
+                                                 .PRIMARY_KEY_TYPE);
         aliasName = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_ALIAS);
+                                                   .PRIMARY_KEY_ALIAS);
         password = carbonKeyPasswordReader();
 
         try {
@@ -215,8 +217,9 @@ public class CipherTool {
 
     /**
      * encrypt the plain text password
-     * @param cipher   init cipher
-     * @param plainTextPass   plain text password
+     *
+     * @param cipher        init cipher
+     * @param plainTextPass plain text password
      * @return encrypted password
      */
     private static String doEncryption(Cipher cipher, String plainTextPass) {
@@ -230,14 +233,14 @@ public class CipherTool {
         } catch (IllegalBlockSizeException e) {
             handleException("Error encrypting password ", e);
         }
-        log.info("\nEncryption is done Successfully\n");        
+        log.info("\nEncryption is done Successfully\n");
         return encodedValue;
     }
 
     /**
      * Print encrypted value for given plain text
      */
-    private static void createEncryptedValue(){
+    private static void createEncryptedValue() {
 
         log.info("By default, CipherTool can be used for creating encrypted value for given plain text." +
                  " For more options visit help  ./ciphertool.sh -help or ./ciphertool.bat -help\n");
@@ -247,22 +250,22 @@ public class CipherTool {
         String secondPassword = null;
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                        "Enter Plain text value :")) != null) {
+                                             "Enter Plain text value :")) != null) {
             firstPassword = String.valueOf(password);
         }
 
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                        "Please Enter value Again :")) != null) {
+                                             "Please Enter value Again :")) != null) {
             secondPassword = String.valueOf(password);
         }
 
-        if(firstPassword != null && secondPassword != null && !firstPassword.equals("")
-                                                    && firstPassword.equals(secondPassword)){
+        if (firstPassword != null && secondPassword != null && !firstPassword.equals("")
+            && firstPassword.equals(secondPassword)) {
             String encryptedText = doEncryption(cipher, firstPassword);
             System.out.println("\nEncrypted value is : \n" + encryptedText + "\n");
         } else {
-            handleException("Error : Password does not match");                
+            handleException("Error : Password does not match");
         }
 
 
@@ -270,6 +273,7 @@ public class CipherTool {
 
     /**
      * get primary key store data by reading carbon.xml file
+     *
      * @param xpath Xpath value for each entry
      * @return String value of data related to Xpath
      */
@@ -277,9 +281,9 @@ public class CipherTool {
 
         String nodeValue = null;
         try {
-            String carbonConfigFile = carbonHome+ File.separator+
-                        CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.CONF_DIR
-                        + File.separator + CipherToolConstants.CARBON_CONFIG_FILE ;
+            String carbonConfigFile = carbonHome + File.separator +
+                                      CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.CONF_DIR
+                                      + File.separator + CipherToolConstants.CARBON_CONFIG_FILE;
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -289,7 +293,7 @@ public class CipherTool {
             XPath xp = xpf.newXPath();
             XPathExpression xpathEx = xp.compile(xpath);
             Node text = (Node) xpathEx.evaluate(doc.getDocumentElement(), XPathConstants.NODE);
-            if(text != null){
+            if (text != null) {
                 nodeValue = text.getTextContent();
             }
         } catch (ParserConfigurationException e) {
@@ -306,25 +310,26 @@ public class CipherTool {
 
     /**
      * get the primary key store instant
-     * @param location   location of key store
-     * @param storePassword  password of key store
-     * @param storeType   key store type
-     * @param provider    key store provider
-     * @return  KeyStore instant
+     *
+     * @param location      location of key store
+     * @param storePassword password of key store
+     * @param storeType     key store type
+     * @param provider      key store provider
+     * @return KeyStore instant
      */
     private static KeyStore getKeyStore(String location, String storePassword,
-                                   String storeType,
-                                   String provider) {
+                                        String storeType,
+                                        String provider) {
 
         File keyStoreFile = new File(location);
         if (!keyStoreFile.exists()) {
             handleException("KeyStore can not be found at ' " + keyStoreFile + " '");
         }
-        if(storePassword == null) {
-            handleException("KeyStore password can not be null" );
+        if (storePassword == null) {
+            handleException("KeyStore password can not be null");
         }
-        if(storeType == null){
-            handleException("KeyStore Type can not be null" );
+        if (storeType == null) {
+            handleException("KeyStore Type can not be null");
         }
         BufferedInputStream bufferedInputStream = null;
         try {
@@ -362,16 +367,16 @@ public class CipherTool {
     /**
      * write the XML syntax to the configuration files, to show that the password is secured.
      */
-    private static void writeSecureVaultConfigTokens(){
+    private static void writeSecureVaultConfigTokens() {
 
         for (String key : configFileXpathMap.keySet()) {
             String unprocessedXpath = configFileXpathMap.get(key);
             boolean capitalLetter = false;
             String XPath;
-            String fileName = unprocessedXpath.substring(0,unprocessedXpath.indexOf("//"));
-            if(unprocessedXpath.indexOf(",") > 0){
-                if((unprocessedXpath.substring(unprocessedXpath.indexOf(",") +1)).trim().equals("true")){
-                    capitalLetter = true;    
+            String fileName = unprocessedXpath.substring(0, unprocessedXpath.indexOf("//"));
+            if (unprocessedXpath.indexOf(",") > 0) {
+                if ((unprocessedXpath.substring(unprocessedXpath.indexOf(",") + 1)).trim().equals("true")) {
+                    capitalLetter = true;
                 }
                 XPath = unprocessedXpath.substring(unprocessedXpath.indexOf("//"), unprocessedXpath.indexOf(","));
             } else {
@@ -384,28 +389,53 @@ public class CipherTool {
 
     /**
      * write the XML syntax to the configuration file,
-     * @param fileName  file name
-     * @param xPath  Xpath value of the element that needs to be modified
-     * @param secretAlias alias name for the element value
+     *
+     * @param fileName      file name
+     * @param xPath         Xpath value of the element that needs to be modified
+     * @param secretAlias   alias name for the element value
      * @param capitalLetter element name is started with Capital letter or not
      */
     private static void writeTokenToConfigFile(String fileName, String xPath, String secretAlias,
                                                boolean capitalLetter) {
-
-        if (xPath != null && !xPath.equals("") && secretAlias != null && !secretAlias.equals("")){
+        if (xPath != null && !xPath.equals("") && secretAlias != null && !secretAlias.equals("")) {
+            File configFile;
             try {
-                String filePath = carbonHome  + File.separator + CipherToolConstants.REPOSITORY_DIR
+                String filePath = carbonHome + File.separator + CipherToolConstants.REPOSITORY_DIR
                                   + File.separator + CipherToolConstants.CONF_DIR + File.separator + fileName;
-
-                File configFile = new File(filePath);
-                
-                if(!configFile.exists()){
-                    filePath = carbonHome + fileName;
-                }
 
                 configFile = new File(filePath);
 
-                if(!configFile.exists()){
+                if (!configFile.exists()) {
+                    filePath = carbonHome + fileName;
+                    configFile = new File(filePath);
+                }
+
+
+                if (!configFile.exists()) {
+                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.SECURITY_DIR + File.separator + fileName;
+                    configFile = new File(filePath);
+                }
+
+
+                if (!configFile.exists()) {
+                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.AXIS2_DIR + File.separator + fileName;
+                    configFile = new File(filePath);
+                }
+
+
+                if (!configFile.exists()) {
+                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.TOMCAT_DIR + File.separator + fileName;
+                    configFile = new File(filePath);
+                }
+
+
+                if (!configFile.exists()) {
+                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.ETC_DIR + File.separator + fileName;
+                    configFile = new File(filePath);
+                }
+
+
+                if (!configFile.exists()) {
                     return;
                 }
 
@@ -423,43 +453,44 @@ public class CipherTool {
                 XPath xp = xpf.newXPath();
                 XPathExpression xpathEx = xp.compile(xPath);
                 Node securedNode = (Node) xpathEx.evaluate(doc.getDocumentElement(), XPathConstants.NODE);
-                if(securedNode != null){
+                if (securedNode != null) {
                     Node secretAliasNode = doc.createAttribute(CipherToolConstants.SECURE_VAULT_ALIAS);
                     secretAliasNode.setTextContent(secretAlias);
                     securedNode.setTextContent("password");
                     securedNode.getAttributes().setNamedItem(secretAliasNode);
                 } else {
                     handleException("Element for secret alias '" + secretAlias + "' can not be found in " +
-                    fileName + " file or You have entered invalid Xpath value");
+                                    fileName + " file or You have entered invalid Xpath value");
                 }
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result =  new StreamResult(new File(filePath));
+                StreamResult result = new StreamResult(new File(filePath));
                 transformer.transform(source, result);
 
             } catch (ParserConfigurationException e) {
-                handleException("Error writing protected token to " + fileName +" file ", e);
+                handleException("Error writing protected token to " + fileName + " file ", e);
             } catch (TransformerException e) {
-                handleException("Error writing protected token to " + fileName +" file ", e);
+                handleException("Error writing protected token to " + fileName + " file ", e);
             } catch (SAXException e) {
-                handleException("Error writing protected token to " + fileName +" file ", e);
+                handleException("Error writing protected token to " + fileName + " file ", e);
             } catch (IOException e) {
-                handleException("IOError writing protected token to " + fileName +" file ", e);
+                handleException("IOError writing protected token to " + fileName + " file ", e);
             } catch (XPathExpressionException e) {
                 handleException("IOError writing protected token to " + fileName +" file ", e);
             }
 
-            log.info("Protected Token is updated in "+ fileName +" successfully\n");
+            log.info("Protected Token is updated in " + fileName + " successfully\n");
         }
     }
 
     /**
      * Read password from command line inputs
+     *
      * @param key secure alias of password
-     * @return  Password
+     * @return Password
      */
-    private static String passwordReader(String key){
+    private static String passwordReader(String key) {
 
         Console console;
         char[] password;
@@ -467,18 +498,18 @@ public class CipherTool {
         String secondPassword = null;
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                        "Enter Password of Secret Alias - '" + key + "' :")) != null) {
+                                             "Enter Password of Secret Alias - '" + key + "' :")) != null) {
             firstPassword = String.valueOf(password);
         }
 
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                        "Please Enter Password Again :")) != null) {
+                                             "Please Enter Password Again :")) != null) {
             secondPassword = String.valueOf(password);
         }
 
-        if(firstPassword != null && secondPassword != null && !firstPassword.equals("")
-                                                    && firstPassword.equals(secondPassword)){
+        if (firstPassword != null && secondPassword != null && !firstPassword.equals("")
+            && firstPassword.equals(secondPassword)) {
             return firstPassword;
         } else {
             return null;
@@ -487,6 +518,7 @@ public class CipherTool {
 
     /**
      * Read primary key store password of carbon sever from command-line
+     *
      * @return password
      */
     protected static String carbonKeyPasswordReader() {
@@ -494,7 +526,7 @@ public class CipherTool {
         char[] password;
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                            "Please Enter Primary KeyStore Password of Carbon Server : ")) != null) {
+                                             "Please Enter Primary KeyStore Password of Carbon Server : ")) != null) {
             return String.valueOf(password);
         }
         return null;
@@ -502,21 +534,22 @@ public class CipherTool {
 
     /**
      * check whether the configuration file already has been secured
-     * @param firstNode Root element of configuration file
-     * @param capitalLetter  element name is started with Capital letter or not
+     *
+     * @param firstNode     Root element of configuration file
+     * @param capitalLetter element name is started with Capital letter or not
      * @return true of false
      */
     private static boolean isSecureVaultNodeExist(Node firstNode, boolean capitalLetter) {
 
-        for(int i =0 ; i < firstNode.getChildNodes().getLength(); i++){
-            if(capitalLetter){
-                if(firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
-                        SECURE_VAULT_CAPITAL)){
+        for (int i = 0; i < firstNode.getChildNodes().getLength(); i++) {
+            if (capitalLetter) {
+                if (firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
+                                                                                   SECURE_VAULT_CAPITAL)) {
                     return true;
                 }
             } else {
-                if(firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
-                        SECURE_VAULT_SIMPLE)){
+                if (firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
+                                                                                   SECURE_VAULT_SIMPLE)) {
                     return true;
                 }
             }
@@ -529,7 +562,7 @@ public class CipherTool {
      * create encrypted values for plain text password defined in cipher-text.properties file.. if not
      * read password from command-line
      */
-    private static void createEncryptedValues(){
+    private static void createEncryptedValues() {
 
         for (String key : aliasPasswordMap.keySet()) {
             String value = aliasPasswordMap.get(key);
@@ -553,8 +586,8 @@ public class CipherTool {
     /**
      * write encrypted values to the cipher-text.properties
      */
-    private static void writeEncryptedValues(){
-        
+    private static void writeEncryptedValues() {
+
         Properties properties = new Properties();
         for (String key : aliasPasswordMap.keySet()) {
             properties.setProperty(key, aliasPasswordMap.get(key));
@@ -563,25 +596,25 @@ public class CipherTool {
     }
 
     /**
-     * write default configurations (primary key store of carbon server is used) to the secret-config file  
+     * write default configurations (primary key store of carbon server is used) to the secret-config file
      */
-    private static void writeConfigurations(){
+    private static void writeConfigurations() {
 
         Properties properties = new Properties();
 
         String keyStoreFile = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_LOCATION);
-        keyStoreFile = carbonHome + keyStoreFile.substring((keyStoreFile.indexOf('}'))+1);
+                                                             .PRIMARY_KEY_LOCATION);
+        keyStoreFile = carbonHome + keyStoreFile.substring((keyStoreFile.indexOf('}')) + 1);
         String keyType = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_TYPE);
+                                                        .PRIMARY_KEY_TYPE);
         String aliasName = getPrimaryKeyStoreData(CipherToolConstants.PrimaryKeyStore
-                .PRIMARY_KEY_ALIAS);
+                                                          .PRIMARY_KEY_ALIAS);
 
-        properties.setProperty("carbon.secretProvider",CipherToolConstants.SECRET_PROVIDER);
+        properties.setProperty("carbon.secretProvider", CipherToolConstants.SECRET_PROVIDER);
         properties.setProperty("secretRepositories", "file");
         properties.setProperty("secretRepositories.file.provider",
                                "org.wso2.securevault.secret.repository.FileBaseSecretRepositoryProvider");
-        properties.setProperty("secretRepositories.file.location", "repository"+ File.separator +
+        properties.setProperty("secretRepositories.file.location", "repository" + File.separator +
                                                                    "conf" + File.separator + "cipher-text.properties");
         properties.setProperty("keystore.identity.location", keyStoreFile);
         properties.setProperty("keystore.identity.type", keyType);
@@ -599,9 +632,9 @@ public class CipherTool {
 
     /**
      * load xpath values for corresponding secret alias defined in the cipher-text.properties
-     * Some of the Xpath value has been hard coded as constants 
+     * Some of the Xpath value has been hard coded as constants
      */
-    private static void loadXpathValuesAndPasswordDetails(){
+    private static void loadXpathValuesAndPasswordDetails() {
 
         aliasXpathMap.put(CipherToolConstants.PasswordAlias.SSL_KEY,
                           CipherToolConstants.ProtectedPasswordXpath.SSL_KEY_PASSWORD);
@@ -632,7 +665,7 @@ public class CipherTool {
         aliasXpathMap.put(CipherToolConstants.PasswordAlias.USER_STORE_CONNECTION,
                           CipherToolConstants.ProtectedPasswordXpath.USER_STORE_CONNECTION_PASSWORD);
         aliasXpathMap.put(CipherToolConstants.PasswordAlias.ADMIN,
-                          CipherToolConstants.ProtectedPasswordXpath.ADMIN_PASSWORD);         
+                          CipherToolConstants.ProtectedPasswordXpath.ADMIN_PASSWORD);
 
         aliasXpathMap.put(CipherToolConstants.PasswordAlias.SENDER_EMAIL,
                           CipherToolConstants.ProtectedPasswordXpath.SENDER_EMAIL_PASSWORD);
@@ -647,14 +680,14 @@ public class CipherTool {
 
         for (Object key : cipherTextProperties.keySet()) {
             String passwordAlias = (String) key;
-            if(aliasXpathMap.containsKey(passwordAlias)){
+            if (aliasXpathMap.containsKey(passwordAlias)) {
                 String unprocessedXpath = aliasXpathMap.get(passwordAlias);
-                configFileXpathMap.put(passwordAlias,unprocessedXpath);
+                configFileXpathMap.put(passwordAlias, unprocessedXpath);
                 aliasPasswordMap.put(passwordAlias, cipherTextProperties.getProperty(passwordAlias));
-            } else if(passwordAlias.startsWith("wso2registry")){
-                String dbConfigName  = passwordAlias.substring(passwordAlias.indexOf(".") +1);
-                dbConfigName = dbConfigName.substring(0,dbConfigName.indexOf("."));
-                String registryXpath =  "//wso2registry/dbConfig[@name='"+ dbConfigName + "']/password";                    
+            } else if (passwordAlias.startsWith("wso2registry")) {
+                String dbConfigName = passwordAlias.substring(passwordAlias.indexOf(".") + 1);
+                dbConfigName = dbConfigName.substring(0, dbConfigName.indexOf("."));
+                String registryXpath = "//wso2registry/dbConfig[@name='" + dbConfigName + "']/password";
                 configFileXpathMap.put(passwordAlias, "registry.xml" + registryXpath);
                 aliasPasswordMap.put(passwordAlias, cipherTextProperties.getProperty(passwordAlias));
             } else {
@@ -669,7 +702,7 @@ public class CipherTool {
                     handleException("IOError reading command line inputs  ", e);
                 }
 
-                System.out.println("Please enter configuration file : ");                
+                System.out.println("Please enter configuration file : ");
                 BufferedReader input2 = new BufferedReader(new InputStreamReader(System.in));
                 try {
                     buffer2 = input2.readLine();
@@ -677,8 +710,8 @@ public class CipherTool {
                     handleException("IOError reading command line inputs  ", e);
                 }
 
-                if(buffer1 != null && !buffer1.trim().equals("") && buffer2 != null &&
-                                                            !buffer2.trim().equals("")){                    
+                if (buffer1 != null && !buffer1.trim().equals("") && buffer2 != null &&
+                    !buffer2.trim().equals("")) {
                     configFileXpathMap.put(passwordAlias, buffer1.trim() + buffer2.trim());
                     aliasPasswordMap.put(passwordAlias, cipherTextProperties.getProperty(passwordAlias));
                 }
@@ -689,7 +722,7 @@ public class CipherTool {
     /**
      * use to change an specific password.
      */
-    private static void changePassword(){
+    private static void changePassword() {
         Properties cipherTextProperties = loadProperties(CipherToolConstants.CIPHER_PROPERTY_FILE);
         List<String> keyValueList = new ArrayList<String>();
         int i = 1;
@@ -701,9 +734,9 @@ public class CipherTool {
             i++;
         }
 
-        while(true){
+        while (true) {
             System.out.println("\nPlease enter the Number which is corresponding to " +
-                    "the Password that is needed be changed [Press Enter to Skip] :");
+                               "the Password that is needed be changed [Press Enter to Skip] :");
 
             String buffer = null;
             BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -713,17 +746,17 @@ public class CipherTool {
                 handleException("IOError reading command line inputs  ", e);
             }
 
-            if(buffer != null && ! buffer.trim().equals("")){
-                String selectedPasswordAlias = keyValueList.get(Integer.parseInt(buffer.trim())-1);
+            if (buffer != null && !buffer.trim().equals("")) {
+                String selectedPasswordAlias = keyValueList.get(Integer.parseInt(buffer.trim()) - 1);
                 String value = passwordReader(selectedPasswordAlias);
-                if(value != null){
+                if (value != null) {
                     aliasPasswordMap.put(selectedPasswordAlias, doEncryption(cipher, value));
                 } else {
                     handleException("Error : Password does not match");
                 }
 
             } else {
-                break;                    
+                break;
             }
         }
 
@@ -733,15 +766,17 @@ public class CipherTool {
 
     /**
      * read values from property file
-     * @param fileName  file name
-     * @return   Properties
+     *
+     * @param fileName file name
+     * @return Properties
      */
     private static Properties loadProperties(String fileName) {
         Properties properties = new Properties();
         String filePath = carbonHome + File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
-                          CipherToolConstants.CONF_DIR + File.separator + fileName;
+                          CipherToolConstants.CONF_DIR + File.separator + CipherToolConstants.SECURITY_DIR +
+                          File.separator + fileName;
 
-        File dataSourceFile = new File(filePath); 
+        File dataSourceFile = new File(filePath);
         if (!dataSourceFile.exists()) {
             return properties;
         }
@@ -768,14 +803,16 @@ public class CipherTool {
 
     /**
      * writes property values to file
+     *
      * @param properties properties
-     * @param fileName FileName
+     * @param fileName   FileName
      */
-    private static void writeProperties(Properties properties, String fileName){
-       
+    private static void writeProperties(Properties properties, String fileName) {
+
         String filePath = carbonHome + File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
-                          CipherToolConstants.CONF_DIR + File.separator + fileName;
-        
+                          CipherToolConstants.CONF_DIR + File.separator + CipherToolConstants.SECURITY_DIR +
+                          File.separator + fileName;
+
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(filePath);
@@ -785,7 +822,7 @@ public class CipherTool {
             log.warn(msg, e);
         } finally {
             try {
-                if(fileOutputStream != null){
+                if (fileOutputStream != null) {
                     fileOutputStream.close();
                 }
             } catch (IOException e) {
@@ -801,7 +838,7 @@ public class CipherTool {
         throw new CipherToolException(msg, e);
     }
 
-    protected static void handleException(String msg)  {
+    protected static void handleException(String msg) {
         log.error(msg);
         throw new CipherToolException(msg);
     }

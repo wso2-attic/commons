@@ -32,6 +32,10 @@ public class CipherToolConstants {
     public static final String SECRET_PROVIDER = "org.wso2.securevault.secret.handler.SecretManagerSecretCallbackHandler";
     public static final String CARBON_DEFAULT_SECRET_PROVIDER = "org.wso2.carbon.securevault.DefaultSecretCallbackHandler";
     public static final String CONF_DIR = "conf";
+    public static final String SECURITY_DIR = "security";
+    public static final String ETC_DIR = "etc";
+    public static final String AXIS2_DIR = "axis2";
+    public static final String TOMCAT_DIR = "tomcat";
     public static final String REPOSITORY_DIR = "repository";
 
 
