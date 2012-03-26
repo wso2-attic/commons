@@ -419,6 +419,10 @@ public abstract class ThrottleHandler extends AbstractHandler {
                                                                                    ThrottleException {
 
         boolean canAccess = true;
+        if (throttle.getThrottleContext(ThrottleConstants.ROLE_BASED_THROTTLE_KEY) == null) {
+            //if no role base throttle config return immediately
+            return canAccess;
+        }
         ConfigurationContext cc = messageContext.getConfigurationContext();
         String throttleId = throttle.getId();
 
