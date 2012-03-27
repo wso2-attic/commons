@@ -36,7 +36,7 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <copy file="target/${pom.artifactId}-${wso2caching.version}.jar"
+                                <copy file="target/${project.artifactId}-${wso2caching.version}.jar"
                                       tofile="target/wso2caching-${wso2caching.version}.mar"/>
 				<!--<copy file="target/${pom.artifactId}-${wso2caching.version}.jar"-->
                                       <!--tofile="target/wso2caching.mar"/>-->
@@ -68,7 +68,7 @@
                                     <type>mar</type>
                                 </artifact>
                             </artifacts>
-                            <finalName>wso2caching-${pom.version}</finalName>                            
+                            <finalName>wso2caching-${project.version}</finalName>                            
                         </configuration>
                     </execution>
                 </executions>
