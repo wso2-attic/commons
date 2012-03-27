@@ -28,8 +28,8 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>
-                                <copy file="target/${pom.artifactId}-${pom.version}.jar"
-                                      tofile="target/wso2throttle-${pom.version}.mar"/>
+                                <copy file="target/${project.artifactId}-${project.version}.jar"
+                                      tofile="target/wso2throttle-${project.version}.mar"/>
 
                             </tasks>
                         </configuration>
@@ -54,11 +54,11 @@
                         <configuration>
                             <artifacts>
                                 <artifact>
-                                    <file>target/wso2throttle-${pom.version}.mar</file>
+                                    <file>target/wso2throttle-${project.version}.mar</file>
                                     <type>mar</type>
                                 </artifact>
                             </artifacts>
-                            <finalName>wso2throttle-${pom.version}</finalName>
+                            <finalName>wso2throttle-${project.version}</finalName>
                         </configuration>
                     </execution>
                 </executions>

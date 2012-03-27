@@ -156,11 +156,11 @@
             <id>wso2-maven2-repository-snapshot</id>
             <url>http://dist.wso2.org/snapshots/maven2</url>
         </repository>
-        <repository>
+        <!--repository>
             <id>apache-zones</id>
             <url>http://ws.zones.apache.org/repository</url>
             <layout>legacy</layout>
-        </repository>
+        </repository-->
         <!-- Others are available from http://repo1.maven.org/maven2 -->
     </repositories>
 
@@ -219,7 +219,7 @@
 
     <properties>
         <axis2.version>1.6.1-wso2v1</axis2.version>
-        <wso2throttle.version>${pom.version}</wso2throttle.version>
+        <wso2throttle.version>${project.version}</wso2throttle.version>
         <axiom.version>1.2.11</axiom.version>
         <neethi.version>2.0.4</neethi.version>
         <commons.logging.version>1.1</commons.logging.version>
