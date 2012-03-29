@@ -571,11 +571,11 @@
                 <artifactId>ant</artifactId>
                 <version>${ant.version}</version>
             </dependency>
-            <dependency>
+            <!--dependency>
                 <groupId>javax.activation</groupId>
                 <artifactId>activation</artifactId>
                 <version>${activation.version}</version>
-            </dependency>
+            </dependency-->
             <dependency>
                 <groupId>annogen</groupId>
                 <artifactId>annogen</artifactId>

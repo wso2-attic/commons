@@ -314,7 +314,7 @@ public class PartnerLinkMyRoleImpl extends PartnerLinkRoleImpl {
                     createExtensionCorrelationFilterImplementation(correlationFilter);        
 
             if (extCorFilter != null) {
-                CorrelationKey extensionKey = new CorrelationKey("-1",
+                CorrelationKey extensionKey = new CorrelationKey("-2",
                         extCorFilter.computeCorrelationValues(mex.getRequest().getMessage(),
                                                               mex.getRequest().getHeader()));
                 keySet.add(extensionKey);

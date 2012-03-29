@@ -1619,9 +1619,12 @@ public class BpelRuntimeContextImpl implements BpelRuntimeContext {
 
         ProcessDAO processDao = _dao.getProcess();
         CorrelatorDAO notificationCorrelator = processDao.getCorrelator(correlatorId);
-        CorrelationKey notificationCorrelationKey = new CorrelationKey("-1", correlationValues);
+        CorrelationKey notificationCorrelationKey = new CorrelationKey("-2", correlationValues);
+        CorrelationKey tenantKey = new CorrelationKey("tenant",
+                new String[]{_bpelProcess.getConf().getDeployer()});
         CorrelationKeySet correlationKeySet = new CorrelationKeySet();
         correlationKeySet.add(notificationCorrelationKey);
+        correlationKeySet.add(tenantKey);
         notificationCorrelator.addRoute(notificationChannelId, _dao, 0, correlationKeySet, "one");
         scheduleCorrelatorMatcher(notificationCorrelator.getCorrelatorId(), correlationKeySet);
     }
