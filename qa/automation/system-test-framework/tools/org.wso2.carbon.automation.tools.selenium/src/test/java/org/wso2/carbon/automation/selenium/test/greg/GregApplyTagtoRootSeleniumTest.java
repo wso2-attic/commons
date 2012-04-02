@@ -110,7 +110,6 @@ public class GregApplyTagtoRootSeleniumTest extends TestTemplate {
             driver.quit();
             Assert.fail("GregApplyTagtoRootSeleniumTest - Exception :" + e.getMessage());
         }
-
     }
 
     @Override

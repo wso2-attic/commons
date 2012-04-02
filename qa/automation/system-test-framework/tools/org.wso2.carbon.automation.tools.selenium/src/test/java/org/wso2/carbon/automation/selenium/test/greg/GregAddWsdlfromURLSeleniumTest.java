@@ -109,7 +109,6 @@ public class GregAddWsdlfromURLSeleniumTest extends TestTemplate {
             driver.quit();
             Assert.fail("GregAddWsdlfromURLSeleniumTest - Exception :" + e.getMessage());
         }
-
     }
 
     @Override

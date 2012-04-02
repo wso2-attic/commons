@@ -69,6 +69,9 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
 
     @Override
     public void cleanup() {
+        deleteResourceFromBrowser(3);
+        selenium.waitForPageToLoad("30000");
+        deleteResourceFromBrowser(2);
         driver.quit();
         log.info("GregAddCommenttoCollectionSeleniumTest - Passed");
     }
@@ -168,31 +171,6 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
 
     }
 
-    private void addComment(String comment, String xpathValue) {
-        try {
-            System.out.println("commend ekata awa........");
-            driver.findElement(By.id("commentsIconMinimized")).click();
-            Thread.sleep(3000L);
-            driver.findElement(By.linkText("Add Comment")).click();
-            Thread.sleep(5000L);
-            Assert.assertTrue("Add comment window pop -up failed :", selenium.isTextPresent("Add New Comment"));
-            Assert.assertEquals("Add comment window  pop -up failed :", "Add", selenium.getValue("//div[" + xpathValue + "]/div/div[3]/div[3]/form/table/tbody/tr[2]/td/input"));
-            Assert.assertEquals("Add comment window  pop -up failed :", "Cancel", selenium.getValue("//div[" + xpathValue + "]/div/div[3]/div[3]/form/table/tbody/tr[2]/td/input[2]"));
-            System.out.println("AWa da..............................");
-            Thread.sleep(3000L);
-            driver.findElement(By.id("comment")).sendKeys(comment);
-            driver.findElement(By.xpath("//div[" + xpathValue + "]/div/div[3]/div[3]/form/table/tbody/tr[2]/td/input")).click();
-            Thread.sleep(5000L);
-            Assert.assertEquals("Added comment failed :", "Comment1 \n posted on 0m ago by admin", selenium.getText("//div[4]/div/div[2]/table/tbody/tr/td/div"));
-
-        } catch (InterruptedException e) {
-            log.info("CommentSeleniumTest - addComment InterruptedException thrown:" + e.getMessage());
-            new SeleniumScreenCapture().getScreenshot(driver, "greg", "CommentSeleniumTest - addComment");
-            driver.quit();
-            Assert.fail("CommentSeleniumTest - addComment InterruptedException thrown:" + e.getMessage());
-        }
-    }
-
     private void addCommentToResource() {
         String resourcePath = "/test";
         try {
@@ -223,7 +201,7 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
             driver.findElement(By.id("uLocationBar")).sendKeys(resourcePath);
             driver.findElement(By.xpath("//input[2]")).click();
             Thread.sleep(3000L);
-           //Add Comment
+            //Add Comment
             driver.findElement(By.id("commentsIconMinimized")).click();
             Thread.sleep(2000L);
             driver.findElement(By.linkText("Add Comment")).click();
@@ -262,7 +240,7 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
         }
     }
 
-    private void addCommentToRoot(){
+    private void addCommentToRoot() {
         try {
             userLogin();
             gotoDetailViewTab();
@@ -272,9 +250,10 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
             driver.findElement(By.linkText("Add Comment")).click();
             Thread.sleep(5000L);
             Assert.assertTrue("Add comment window pop -up failed :", selenium.isTextPresent("Add New Comment"));
-            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxx");
-            Assert.assertEquals("Add comment window  pop -up failed :", "Add", selenium.getValue("//div[3]/div[3]/form/table/tbody/tr[2]/td/input"));
-            Assert.assertEquals("Add comment window  pop -up failed :", "Cancel", selenium.getValue("//div[3]/div[3]/form/table/tbody/tr[2]/td/input[2]"));
+            Assert.assertEquals("Add comment window  pop -up failed :", "Add",
+                                selenium.getValue("//div[3]/div[3]/form/table/tbody/tr[2]/td/input"));
+            Assert.assertEquals("Add comment window  pop -up failed :", "Cancel",
+                                selenium.getValue("//div[3]/div[3]/form/table/tbody/tr[2]/td/input[2]"));
             driver.findElement(By.id("comment")).sendKeys("rootComment");
             Thread.sleep(3000L);
             driver.findElement(By.xpath("//div[3]/div[3]/form/table/tbody/tr[2]/td/input")).click();
@@ -287,7 +266,7 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
             Assert.assertTrue("Comment Delete pop-up  failed :", selenium.isTextPresent("exact:Are you sure you want to delete this comment?"));
             selenium.click("//button");
             //Sign out
-            new GregUserLogout().userLogout(driver);
+//            new GregUserLogout().userLogout(driver);
         } catch (AssertionFailedError e) {
             log.info("GregAddCommenttoCollectionSeleniumTest - Assertion Failure ::" + e.getMessage());
             new SeleniumScreenCapture().getScreenshot(driver, "greg", "GregAddCommenttoCollectionSeleniumTest");
@@ -305,5 +284,19 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
             Assert.fail("GregAddCommenttoCollectionSeleniumTest - Exception :" + e.getMessage());
         }
 
+    }
+
+    private void deleteResourceFromBrowser(int ResourceRowId) {
+        driver.findElement(By.id("actionLink" + ResourceRowId)).click();
+        selenium.waitForPageToLoad("30000");
+        ResourceRowId = ((ResourceRowId - 1) * 7) + 2;
+        driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td[3]/table/tbody/tr[2]/td/div/div/" +
+                                    "table/tbody/tr/td/div[2]/div[3]/div[3]/div[9]/table/tbody/tr[" + ResourceRowId + "]" +
+                                    "/td/div/a[3]")).click();
+        selenium.waitForPageToLoad("30000");
+        Assert.assertTrue("Resource Delete pop-up  failed :", selenium.isTextPresent("WSO2 Carbon"));
+        Assert.assertTrue("Resource Delete pop-up  failed :", selenium.isTextPresent("exact:Are you sure you want to delete"));
+        selenium.click("//button");
+        selenium.waitForPageToLoad("30000");
     }
 }

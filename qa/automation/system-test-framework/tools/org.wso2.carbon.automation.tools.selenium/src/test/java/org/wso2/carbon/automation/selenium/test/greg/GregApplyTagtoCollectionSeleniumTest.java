@@ -58,7 +58,6 @@ public class GregApplyTagtoCollectionSeleniumTest extends TestTemplate {
         TenantDetails tenantDetails = TenantListCsvReader.getTenantDetails(TenantListCsvReader.getTenantId(userId));
         username = tenantDetails.getTenantName();
         password = tenantDetails.getTenantPassword();
-
     }
 
     @Override
@@ -90,10 +89,7 @@ public class GregApplyTagtoCollectionSeleniumTest extends TestTemplate {
             //click on OK button
             selenium.click("//button");
             Thread.sleep(2000L);
-            Assert.assertEquals("Collection Creation Fail :", File.separator+ "selenium_root/collection/tag/a1", selenium.getValue("//input"));
-//            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-//            new GregCreateCollectionSeleniumTest().createCollection("selenium_root/collection/tag/a1");
-//            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            Assert.assertEquals("Collection Creation Fail :", "/selenium_root/collection/tag/a1", selenium.getValue("//input"));
             //click on Apply Tag Frame
             driver.findElement(By.id("tagsIconMinimized")).click();
             Thread.sleep(2000L);
@@ -132,8 +128,6 @@ public class GregApplyTagtoCollectionSeleniumTest extends TestTemplate {
             driver.quit();
             Assert.fail("GregApplyTagtoCollectionSeleniumTest - Exception :" + e.getMessage());
         }
-
-
     }
 
     @Override
