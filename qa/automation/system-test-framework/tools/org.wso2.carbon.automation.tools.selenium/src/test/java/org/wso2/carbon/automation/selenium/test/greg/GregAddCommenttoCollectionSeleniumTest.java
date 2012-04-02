@@ -118,7 +118,7 @@ public class GregAddCommenttoCollectionSeleniumTest extends TestTemplate {
 //            Assert.assertTrue( selenium.isTextPresent("Comment1 \\n posted on 0m ago by admin"));
             //Delete Comment
             driver.findElement(By.id("closeC0")).click();
-            Thread.sleep(3000L);
+            Thread.sleep(5000L);
             Assert.assertTrue("Comment Delete pop-up  failed :", selenium.isTextPresent("WSO2 Carbon"));
             Assert.assertTrue("Comment Delete pop-up  failed :", selenium.isTextPresent("exact:Are you sure you want to delete this comment?"));
             selenium.click("//button");
