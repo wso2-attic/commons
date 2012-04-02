@@ -61,7 +61,7 @@ public class GregAddPolicyfromURLSeleniumTest extends TestTemplate {
 
     @Override
     public void runSuccessCase() {
-        String policyURL = "https://wso2.org/repos/wso2/trunk/commons/qa/qa-artifacts/greg/policies/";
+        String policyURL = "http://wso2.org/repos/wso2/trunk/commons/qa/qa-artifacts/greg/policies/";
         String policyName = "policy.xml";
         try {
             new GregUserLogin().userLogin(driver, username, password);
@@ -75,6 +75,7 @@ public class GregAddPolicyfromURLSeleniumTest extends TestTemplate {
             // Enter policy info
             new GregResourceURLUploader().uploadResource(driver, policyURL, policyName);
             Thread.sleep(6000L);
+            selenium.waitForPageToLoad("30000");
             Assert.assertTrue("Policy Dash Board fail :", selenium.isTextPresent("Service Policy List"));
             Assert.assertTrue("Uploaded policy does not appear on dashboard :", selenium.isTextPresent("policy.xml"));
             Assert.assertTrue("Policy Dash Board fail :", selenium.isTextPresent("Policy Name"));

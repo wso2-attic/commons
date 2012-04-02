@@ -81,6 +81,7 @@ public class GregAddServiceSeleniumTest extends TestTemplate {
             // click on save
             selenium.click("css=input.button.registryWriteOperation");
             Thread.sleep(5000L);
+            selenium.waitForPageToLoad("30000");
             // verify service added properly
             Assert.assertEquals("/_system/governance/trunk/services/testservice123/testservice1", selenium.getValue("id=uLocationBar"));
             Assert.assertTrue(selenium.isTextPresent("Metadata"));

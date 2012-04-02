@@ -72,6 +72,7 @@ public class GregAddSchemafromURLSeleniumTest extends TestTemplate {
             // enter Schema info
             new GregResourceURLUploader().uploadResource(driver, schemaURL, null);
             Thread.sleep(10000L);
+            selenium.waitForPageToLoad("30000");
             //  Schema added successfully
             Assert.assertTrue("Schema Dash board Fail :", selenium.isTextPresent("Schema List"));
             Assert.assertTrue("Uploaded Schema name does not display on Shema Dash board :", selenium.isTextPresent("Person.xsd"));

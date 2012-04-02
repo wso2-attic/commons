@@ -90,7 +90,7 @@ public class GregAddWsdlfromURLSeleniumTest extends TestTemplate {
             selenium.waitForPageToLoad("30000");
             Assert.assertTrue("Service Delete Popup fail :", selenium.isTextPresent("WSO2 Carbon"));
             selenium.click("css=button[type=\"button\"]");
-            selenium.waitForPageToLoad("30000");
+            selenium.waitForPageToLoad("60000");
             //logout
             new GregUserLogout().userLogout(driver);
         } catch (AssertionFailedError e) {

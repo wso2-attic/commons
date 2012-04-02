@@ -80,8 +80,11 @@ public class GregCreateCollectionSeleniumTest extends TestTemplate {
             Assert.assertTrue("Browse Detail View Page fail :", selenium.isTextPresent("Entries"));
             //create Collection
             createCollection("selenium_root/collection/a1/b1");
-            //Sign out
-            new GregUserLogout().userLogout(driver);
+            driver.findElement(By.linkText("Browse")).click();
+            Thread.sleep(5000L);
+            //Go to Detail view Tab
+            driver.findElement(By.id("stdView")).click();
+            Thread.sleep(3000L);
 
         } catch (AssertionFailedError e) {
             log.info("GregCreateCollectionSeleniumTest - Assertion Failure ::" + e.getMessage());
@@ -105,9 +108,10 @@ public class GregCreateCollectionSeleniumTest extends TestTemplate {
 
     @Override
     public void cleanup() {
+        deleteResourceFromBrowser(2);
+        selenium.waitForPageToLoad("30000");
         driver.quit();
         log.info("GregCreateCollectionSeleniumTest - Passed");
-
     }
 
     public void createCollection(String collectionName) {
@@ -143,5 +147,19 @@ public class GregCreateCollectionSeleniumTest extends TestTemplate {
             Assert.fail("GregCreateCollectionSeleniumTest - Exception :" + e.getMessage());
         }
 
+    }
+
+    private void deleteResourceFromBrowser(int ResourceRowId) {
+        driver.findElement(By.id("actionLink" + ResourceRowId)).click();
+        selenium.waitForPageToLoad("30000");
+        ResourceRowId = ((ResourceRowId - 1) * 7) + 2;
+        driver.findElement(By.xpath("/html/body/table/tbody/tr[2]/td[3]/table/tbody/tr[2]/td/div/div/" +
+                                    "table/tbody/tr/td/div[2]/div[3]/div[3]/div[9]/table/tbody/tr[" + ResourceRowId + "]" +
+                                    "/td/div/a[3]")).click();
+        selenium.waitForPageToLoad("30000");
+        Assert.assertTrue("Resource Delete pop-up  failed :", selenium.isTextPresent("WSO2 Carbon"));
+        Assert.assertTrue("Resource Delete pop-up  failed :", selenium.isTextPresent("exact:Are you sure you want to delete"));
+        selenium.click("//button");
+        selenium.waitForPageToLoad("30000");
     }
 }
