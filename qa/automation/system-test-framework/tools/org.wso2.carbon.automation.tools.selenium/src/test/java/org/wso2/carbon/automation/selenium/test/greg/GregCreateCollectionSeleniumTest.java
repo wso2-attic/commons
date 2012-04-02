@@ -79,7 +79,8 @@ public class GregCreateCollectionSeleniumTest extends TestTemplate {
             Assert.assertTrue("Browse Detail View Page fail :", selenium.isTextPresent("Metadata"));
             Assert.assertTrue("Browse Detail View Page fail :", selenium.isTextPresent("Entries"));
             //create Collection
-            createCollection("selenium_root/collection/a1/b1");
+            createCollection("/selenium_root/collection/a1/b1");
+            selenium.waitForPageToLoad("30000");
             driver.findElement(By.linkText("Browse")).click();
             Thread.sleep(5000L);
             //Go to Detail view Tab
@@ -129,7 +130,7 @@ public class GregCreateCollectionSeleniumTest extends TestTemplate {
             //click on OK button
             selenium.click("//button");
             Thread.sleep(2000L);
-            Assert.assertEquals("Collection Creation Fail :", File.separator+ collectionName, selenium.getValue("//input"));
+            Assert.assertEquals("Collection Creation Fail :", collectionName, selenium.getValue("//input"));
         } catch (AssertionFailedError e) {
             log.info("GregCreateCollectionSeleniumTest createCollection - Assertion Failure ::" + e.getMessage());
             new SeleniumScreenCapture().getScreenshot(driver, "greg", "GregCreateCollectionSeleniumTest");
