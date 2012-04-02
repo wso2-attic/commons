@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="EmailNotifierProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <log/>
+                <enrich>
+                    <source xmlns:ema="http://www.example.org/emailProxy/" clone="true" xpath="//ema:EmailProxy/id/text()"/>
+                    <target type="property" property="STATUS_ID"/>
+                </enrich>
+                <enrich>
+                    <source xmlns:ema="http://www.example.org/emailProxy/" clone="true" xpath="//ema:EmailProxy/state/text()"/>
+                    <target type="property" property="STATUS"/>
+                </enrich>
+                <property name="STATUS_MSG_ID" expression="fn:concat('STATUS_ID - ',get-property('STATUS_ID'))"/>
+                <property name="STATUS_MSG_STT" expression="fn:concat('STATUS - ',get-property('STATUS'))"/>
+                <property name="MAIL_BODY" expression="fn:concat('Verification Status :: ',get-property('STATUS_MSG_ID'), ' : ',get-property('STATUS_MSG_STT'))"/>
+                <enrich>
+                    <source type="inline" clone="true">
+                        <ns:text xmlns:ns="http://ws.apache.org/commons/ns/payload">SONAT Data : Verification.                    </ns:text>
+                    </source>
+                    <target type="body"/>
+                </enrich>
+                <enrich>
+                    <source type="property" clone="true" property="MAIL_BODY"/>
+                    <target xmlns:ns="http://ws.apache.org/commons/ns/payload" xpath="//ns:text/text()"/>
+                </enrich>
+                <property name="Subject" value="INet-Notification" scope="transport"/>
+                <property name="messageType" value="text/plain" scope="axis2"/>
+                <property name="ContentType" value="text/plain" scope="axis2"/>
+                <property name="FORCE_SC_ACCEPTED" value="true" scope="axis2"/>
+                <property name="OUT_ONLY" value="true"/>
+                <send>
+                    <endpoint>
+                        <address uri="mailto:erik.lundevall@e-man.se"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+        </target>
+    </proxy>
+</definitions>

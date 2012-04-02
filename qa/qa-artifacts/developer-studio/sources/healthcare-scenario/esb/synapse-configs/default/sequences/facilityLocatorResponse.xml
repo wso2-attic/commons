@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="facilityLocatorResponse">
+    <iterate xmlns:hcc="http://healthcare.wso2" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" preservePayload="true" attachPath="//hcc:getHCCentersResponse" expression="//hcc:getHCCentersResponse/hcc:return">
+        <target>
+            <sequence>
+                <payloadFactory>
+                    <format>
+                        <heal:getHCCenterInfo xmlns:heal="http://healthcare.wso2">
+                            <heal:hcCenterCode>$1</heal:hcCenterCode>
+                        </heal:getHCCenterInfo>
+                    </format>
+                    <args>
+                        <arg xmlns:hci="http://healthcare.wso2" expression="//hci:getHCCentersResponse/hci:return"/>
+                    </args>
+                </payloadFactory>
+                <log level="full"/>
+                <send>
+                    <endpoint key="HCI_EP"/>
+                </send>
+            </sequence>
+        </target>
+    </iterate>
+</sequence>

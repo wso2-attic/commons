@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="HealthCareService" transports="https http" startOnLoad="true" trace="disable">
+    <target>
+        <inSequence>
+            <enrich>
+                <source type="body" clone="true"/>
+                <target type="property" property="ORIG_BODY"/>
+            </enrich>
+            <enrich>
+                <source clone="true" xpath="//getHCInfo/longitude/text()"/>
+                <target type="property" property="longitude"/>
+            </enrich>
+            <enrich>
+                <source clone="true" xpath="//getHCInfo/latitude/text()"/>
+                <target type="property" property="latitude"/>
+            </enrich>
+            <enrich>
+                <source type="inline" clone="true">
+                    <geo:getZipCode xmlns:geo="http://geo.wso2">
+                        <geo:longitude>0</geo:longitude>
+                        <geo:latitude>0</geo:latitude>
+                    </geo:getZipCode>
+                </source>
+                <target type="body"/>
+            </enrich>
+            <log level="custom">
+                <property name="Longitude" expression="get-property('longitude')"/>
+                <property name="Latitude" expression="get-property('latitude')"/>
+            </log>
+            <enrich>
+                <source type="property" clone="true" property="longitude"/>
+                <target xmlns:geo="http://geo.wso2" xpath="//geo:getZipCode/geo:longitude/text()"/>
+            </enrich>
+            <enrich>
+                <source type="property" clone="true" property="latitude"/>
+                <target xmlns:geo="http://geo.wso2" xpath="//geo:getZipCode/geo:latitude/text()"/>
+            </enrich>
+            <log level="full"/>
+            <send receive="geoResponseSeq">
+                <endpoint key="GeoEP"/>
+            </send>
+        </inSequence>
+        <outSequence>
+            <log level="full"/>
+            <aggregate>
+                <completeCondition>
+                    <messageCount min="-1" max="-1"/>
+                </completeCondition>
+                <onComplete xmlns:hci="http://healthcare.wso2" expression="//hci:getHCCenterInfoResponse">
+                    <log level="custom">
+                        <property name="Payload" expression="get-property('ORIG_BODY')"/>
+                    </log>
+                    <enrich>
+                        <source type="property" clone="true" property="ORIG_BODY"/>
+                        <target type="body"/>
+                    </enrich>
+                    <send/>
+                </onComplete>
+            </aggregate>
+        </outSequence>
+    </target>
+    <policy key="conf:/repository/axis2/service-groups/HealthCareService/services/HealthCareService/policies/WSO2ServiceThrottlingPolicy"/>
+</proxy>

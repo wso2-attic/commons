@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="geoResponseSeq">
+    <log level="full"/>
+    <enrich>
+        <source xmlns:foo="http://geo.wso2" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" clone="true" xpath="//foo:getZipCodeResponse/foo:return/text()"/>
+        <target type="property" property="ZIP_CODE"/>
+    </enrich>
+    <log level="custom">
+        <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="zip_code" expression="get-property('ZIP_CODE')"/>
+    </log>
+    <payloadFactory>
+        <format>
+            <heal:getHCCenters xmlns:heal="http://healthcare.wso2">
+                <heal:postalCode>$1</heal:postalCode>
+            </heal:getHCCenters>
+        </format>
+        <args>
+            <arg xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" expression="get-property('ZIP_CODE')"/>
+        </args>
+    </payloadFactory>
+    <log level="full"/>
+    <send receive="facilityLocatorResponse">
+        <endpoint key="conf:/FacilityLocatorEP"/>
+    </send>
+</sequence>

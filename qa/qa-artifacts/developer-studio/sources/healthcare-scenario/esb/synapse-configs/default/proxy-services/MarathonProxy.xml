@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="MarathonProxy" transports="https http" startOnLoad="true" trace="disable">
+    <target>
+        <inSequence>
+            <log level="full"/>
+            <property name="messageType" value="application/xml" scope="axis2"/>
+            <property name="ContentType" value="application/xml" scope="axis2"/>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:8080/MarathonServlet/emal/xml_api"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <property name="messageType" value="text/xml" scope="axis2"/>
+            <property name="ContentType" value="text/xml" scope="axis2"/>
+            <send/>
+        </outSequence>
+    </target>
+</proxy>

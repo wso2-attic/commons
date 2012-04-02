@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="GetProxy" transports="https http" startOnLoad="true" trace="disable">
+    <target>
+        <inSequence>
+            <log level="full"/>
+            <property name="HTTP_METHOD" value="GET" scope="axis2"/>
+            <property name="REST_URL_POSTFIX" value="/4776766.xml?key=OQJFyv38jHqbrpammjHwWg" scope="axis2"/>
+            <send>
+                <endpoint>
+                    <address uri="http://www.goodreads.com/author/list"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </target>
+</proxy>
