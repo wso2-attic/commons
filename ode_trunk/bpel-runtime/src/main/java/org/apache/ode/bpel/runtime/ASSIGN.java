@@ -539,28 +539,46 @@ class ASSIGN extends ACTIVITY {
         }
 
         Element replacement = doc.createElementNS(ptr.getNamespaceURI(), ptr.getTagName());
+
+        addExistingAttributes(doc, ptr, replacement);
+
         NodeList nl = src.getChildNodes();
         for (int i = 0; i < nl.getLength(); ++i)
             replacement.appendChild(doc.importNode(nl.item(i), true));
-        NamedNodeMap attrs = src.getAttributes();
-        for (int i = 0; i < attrs.getLength(); ++i) {
-            Attr attr = (Attr)attrs.item(i);
+
+        addExistingAttributes(doc, src, replacement);
+
+        parent.replaceChild(replacement, ptr);
+        DOMUtils.copyNSContext(ptr, replacement);
+
+        return (lval == ptr) ? replacement :  lval;
+    }
+
+    /**
+     * This method is used when creating a replacement element which is to be replaced with the
+     * original element.
+     * Add if any existing attributes from original element to replacement element.
+     *
+     * @param document owner document reference of <code>original</code>
+     * @param original Original element
+     * @param replacement element to be replaced with <code>original</code>
+     */
+    private void addExistingAttributes(Document document, Element original, Element replacement) {
+        NamedNodeMap attributes = original.getAttributes();
+        for (int i = 0; i < attributes.getLength(); ++i) {
+            Attr attr = (Attr)attributes.item(i);
             if (!attr.getName().startsWith("xmlns")) {
-                replacement.setAttributeNodeNS((Attr)doc.importNode(attrs.item(i), true));
+                replacement.setAttributeNodeNS((Attr) document.importNode(attributes.item(i), true));
                 // Case of qualified attribute values, we're forced to add corresponding namespace declaration manually
                 int colonIdx = attr.getValue().indexOf(":");
                 if (colonIdx > 0) {
                     String prefix = attr.getValue().substring(0, colonIdx);
-                    String attrValNs = src.lookupPrefix(prefix);
+                    String attrValNs = original.lookupPrefix(prefix);
                     if (attrValNs != null)
                        replacement.setAttributeNS(DOMUtils.NS_URI_XMLNS, "xmlns:"+ prefix, attrValNs);
                 }
             }
         }
-        parent.replaceChild(replacement, ptr);
-        DOMUtils.copyNSContext(ptr, replacement);
-
-        return (lval == ptr) ? replacement :  lval;
     }
 
     private Element copyInto(Element lval, Element ptr, Element src) {
