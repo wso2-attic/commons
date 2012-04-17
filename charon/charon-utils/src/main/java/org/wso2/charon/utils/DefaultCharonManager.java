@@ -257,7 +257,7 @@ public class DefaultCharonManager implements CharonManager {
             //identify authentication mechanism according to the http headers sent
             String authenticationMechanism = identifyAuthMechanism(httpAuthHeaders);
             //create authentication info according to the auth mechanism
-            if (authenticationMechanism.equals(SCIMConstants.AUTH_TYPE_BASIC)) {
+            if (SCIMConstants.AUTH_TYPE_BASIC.equals(authenticationMechanism)) {
                 BasicAuthInfo authInfo = new BasicAuthInfo();
                 //get authorization header from http headers.
                 //put in auth info
