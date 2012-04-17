@@ -242,8 +242,8 @@ public class User extends AbstractSCIMObject {
             //check if the values are stored just as a list of Strings.
             if (emailsAttribute.getValuesAsStrings() != null &&
                 emailsAttribute.getValuesAsStrings().size() != 0) {
-
-                return (String[]) emailsAttribute.getValuesAsStrings().toArray();
+                List<String> emails = emailsAttribute.getValuesAsStrings();
+                return emails.toArray(new String[emails.size()]);
             } else {
                 //check is the values are stored as simple of complex attributes
                 List<Attribute> subAttributes = emailsAttribute.getValuesAsSubAttributes();
@@ -768,7 +768,7 @@ public class User extends AbstractSCIMObject {
      */
     //types: direct, indirect
     public List<String> getGroups() throws CharonException {
-       if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
+        if (isAttributeExist(SCIMConstants.UserSchemaConstants.GROUPS)) {
             MultiValuedAttribute groupsAttribute = (MultiValuedAttribute) attributeList.get(
                     SCIMConstants.UserSchemaConstants.GROUPS);
             return groupsAttribute.getAttributeValuesByType(null);
@@ -832,7 +832,7 @@ public class User extends AbstractSCIMObject {
             groupValueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, value);
         }
         if (display != null) {
-            groupValueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY,display);
+            groupValueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, display);
         }
         if (!groupValueProperties.isEmpty()) {
             setGroup(groupValueProperties);

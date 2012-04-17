@@ -51,8 +51,8 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
     /**
      * Retrieves a group resource given an unique group id. Mapped to HTTP GET request.
      *
-     * @param id      - unique resource id
-     * @param format  - requested format of the response.
+     * @param id          - unique resource id
+     * @param format      - requested format of the response.
      * @param userManager
      * @return SCIM response to be returned.
      */
@@ -64,34 +64,27 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
             //API user should pass a UserManager storage to UserResourceEndpoint.
-            if (userManager instanceof UserManager) {
-                //retrieve the user from the provided storage.
-                Group group = ((UserManager) userManager).getGroup(id);
+            //retrieve the user from the provided storage.
+            Group group = ((UserManager) userManager).getGroup(id);
 
-                //TODO:needs a validator to see that the User returned by the custom user manager
-                // adheres to SCIM spec.
+            //TODO:needs a validator to see that the User returned by the custom user manager
+            // adheres to SCIM spec.
 
-                //if user not found, return an error in relevant format.
-                if (group == null) {
-                    String error = "Group not found in the user store.";
-                    //log error.
-                    //throw resource not found.
-                    throw new ResourceNotFoundException();
-                }
-                ServerSideValidator.validateRetrievedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
-                //convert the user into specific format.
-                String encodedGroup = encoder.encodeSCIMObject(group);
-                //if there are any http headers to be added in the response header.
-                Map<String, String> httpHeaders = new HashMap<String, String>();
-                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
-                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedGroup, httpHeaders);
-
-            } else {
-                String error = "Provided storage handler is not an implementation of UserManager";
-                //log the error as well.
-                //throw internal server error.
-                throw new InternalServerException(error);
+            //if user not found, return an error in relevant format.
+            if (group == null) {
+                String error = "Group not found in the user store.";
+                //log error.
+                //throw resource not found.
+                throw new ResourceNotFoundException();
             }
+            ServerSideValidator.validateRetrievedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
+            //convert the user into specific format.
+            String encodedGroup = encoder.encodeSCIMObject(group);
+            //if there are any http headers to be added in the response header.
+            Map<String, String> httpHeaders = new HashMap<String, String>();
+            httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
+            return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedGroup, httpHeaders);
+
 
         } catch (FormatNotSupportedException e) {
             //if requested format not supported, encode exception and set it in the response.
@@ -102,8 +95,6 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             if (e.getCode() == -1) {
                 e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
             }
-            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
-        } catch (InternalServerException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
@@ -142,16 +133,9 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             ServerSideValidator.validateCreatedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
             //handover the SCIM User object to the group storage provided by the SP.
             Group createdGroup;
-            if (userManager instanceof UserManager) {
-                //need to send back the newly created group in the response payload
-                createdGroup = ((UserManager) userManager).createGroup(group);
+            //need to send back the newly created group in the response payload
+            createdGroup = ((UserManager) userManager).createGroup(group);
 
-            } else {
-                String error = "Provided storage handler is not an implementation of UserManager";
-                //log the error as well.
-                //throw internal server error.
-                throw new InternalServerException(error);
-            }
             //encode the newly created SCIM group object and add id attribute to Location header.
             String encodedGroup;
             Map<String, String> httpHeaders = new HashMap<String, String>();
@@ -276,7 +260,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             //obtain the correct encoder according to the format requested.
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
-            List<Group> returnedGroups = null;
+            List<Group> returnedGroups;
             //API user should pass a UserManager storage to GroupResourceEndpoint.
             if (userManager != null) {
                 returnedGroups = userManager.listGroups();
@@ -356,7 +340,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                     String error = "No group exists with the given id: " + group.getId();
                     //log the error as well.
                     //throw internal server error.
-                    throw new ResourceNotFoundException();
+                    throw new ResourceNotFoundException(error);
                 }
 
             } else {

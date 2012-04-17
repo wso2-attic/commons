@@ -128,7 +128,6 @@ public class JSONDecoder implements Decoder {
         try {
             JSONObject decodedJsonObj = new JSONObject(new JSONTokener(scimExceptionString));
             Object jsonError = decodedJsonObj.opt(ResponseCodeConstants.ERRORS);
-            List<JSONObject> jsonErrorValues = new ArrayList<JSONObject>();
             //according to the SCIM spec, Error details returned as multivalued attribute.
             //so we assume the same
             if (jsonError instanceof JSONArray) {

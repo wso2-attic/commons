@@ -35,7 +35,7 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 /**
- * SCIM Client API
+ * SCIM Client API. Use of this SCIMClient API can be found in charon-samples.
  */
 public class SCIMClient {
 
@@ -45,8 +45,9 @@ public class SCIMClient {
     private Encoder jsonEncoder;
     private Decoder jsonDecoder;
 
-    private Encoder xmlEncoder;
-    private Decoder xmlDecoder;
+    //not implemented at the moment
+    /*private Encoder xmlEncoder;
+    private Decoder xmlDecoder;*/
 
     public static final int USER = 1;
     public static final int GROUP = 2;
@@ -89,9 +90,9 @@ public class SCIMClient {
             throws CharonException {
         if ((format.equals(SCIMConstants.JSON)) && (jsonEncoder != null)) {
             return jsonEncoder.encodeSCIMObject(scimObject);
-        } else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
+        } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlEncoder.encodeSCIMObject(scimObject);
-        } else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }
@@ -111,10 +112,10 @@ public class SCIMClient {
         if ((format.equals(SCIMConstants.JSON)) && (jsonDecoder != null)) {
             return decodeSCIMResponse(scimResponse, jsonDecoder, resourceType);
 
-        } else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
+        }/* else if ((format.equals(SCIMConstants.XML)) && (xmlDecoder != null)) {
             return decodeSCIMResponse(scimResponse, xmlDecoder, resourceType);
 
-        } else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }
@@ -159,10 +160,10 @@ public class SCIMClient {
         if ((format.equals(SCIMConstants.JSON)) && (jsonDecoder != null)) {
             return jsonDecoder.decodeResource(scimResponse, resourceSchema, scimObject);
 
-        } else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
+        } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlDecoder.decodeResource(scimResponse, resourceSchema, scimObject);
 
-        } else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
 
@@ -181,10 +182,10 @@ public class SCIMClient {
         if ((format.equals(SCIMConstants.JSON)) && (jsonDecoder != null)) {
             return jsonDecoder.decodeException(scimResponse);
 
-        } else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
+        } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlDecoder.decodeException(scimResponse);
 
-        } else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }
