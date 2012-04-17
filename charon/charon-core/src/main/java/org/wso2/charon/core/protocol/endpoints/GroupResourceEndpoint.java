@@ -266,11 +266,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                 returnedGroups = userManager.listGroups();
 
                 //if Group not found, return an error in relevant format.
-                if ((returnedGroups == null) && (returnedGroups.isEmpty())) {
+                if ((returnedGroups == null) || (returnedGroups.isEmpty())) {
                     String error = "Groups not found in the user store.";
                     //log error.
                     //throw resource not found.
-                    throw new ResourceNotFoundException();
+                    throw new ResourceNotFoundException(error);
                 }
                 //create a listed resource object out of the returned users list.
                 ListedResource listedResource = createListedResource(returnedGroups);

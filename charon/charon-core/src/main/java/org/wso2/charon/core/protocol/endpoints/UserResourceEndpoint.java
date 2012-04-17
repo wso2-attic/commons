@@ -266,7 +266,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 returnedUsers = userManager.listUsers();
 
                 //if user not found, return an error in relevant format.
-                if (returnedUsers == null && returnedUsers.isEmpty()) {
+                if (returnedUsers == null || returnedUsers.isEmpty()) {
                     String error = "Users not found in the user store.";
                     //log error.
                     //throw resource not found.
