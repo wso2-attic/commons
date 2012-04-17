@@ -78,17 +78,17 @@ public class ServerSideValidator extends AbstractValidator {
     }
 
     public static AbstractSCIMObject validateUpdatedSCIMObject(AbstractSCIMObject oldObject,
-                                                 AbstractSCIMObject newObject,
-                                                 SCIMResourceSchema resourceSchema)
+                                                               AbstractSCIMObject newObject,
+                                                               SCIMResourceSchema resourceSchema)
             throws CharonException {
 
-        AbstractSCIMObject validatedObject = checkIfReadOnlyAttributesModified(oldObject,newObject,resourceSchema);
+        AbstractSCIMObject validatedObject = checkIfReadOnlyAttributesModified(oldObject, newObject, resourceSchema);
         //edit last modified date
         Date date = new Date();
         validatedObject.setLastModified(date);
         //check for required attributes.
-        validateSCIMObjectForRequiredAttributes(validatedObject,resourceSchema);
-        return  validatedObject;
+        validateSCIMObjectForRequiredAttributes(validatedObject, resourceSchema);
+        return validatedObject;
         //if user object, validate name
     }
 
@@ -260,6 +260,12 @@ public class ServerSideValidator extends AbstractValidator {
     private static String createLocationHeader(String location, String resourceID) {
         String locationString = location + File.separator + resourceID;
         return locationString;
+    }
+
+    public static void removePasswordOnReturn(User scimUser) {
+        if (scimUser.getAttributeList().containsKey(SCIMSchemaDefinitions.PASSWORD.getName())) {
+            scimUser.deleteAttribute(SCIMSchemaDefinitions.PASSWORD.getName());
+        }
     }
 
 }

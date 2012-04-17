@@ -93,7 +93,7 @@ public class ComplexAttribute extends AbstractAttribute {
                 subAttributes.put(subAttribute.getName(), subAttribute);
             }
             //log info level log that version already set and can't set again.
-            throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+            //throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
         } else {
             subAttributes.put(subAttribute.getName(), subAttribute);
         }

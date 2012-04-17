@@ -277,13 +277,13 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             //obtain the correct encoder according to the format requested.
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
-            List<Group> returnedGroups;
+            List<Group> returnedGroups = null;
             //API user should pass a UserManager storage to GroupResourceEndpoint.
             if (userManager != null) {
                 returnedGroups = userManager.listGroups();
 
                 //if Group not found, return an error in relevant format.
-                if (returnedGroups == null && returnedGroups.isEmpty()) {
+                if ((returnedGroups == null) && (returnedGroups.isEmpty())) {
                     String error = "Groups not found in the user store.";
                     //log error.
                     //throw resource not found.

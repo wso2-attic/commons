@@ -155,7 +155,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             String encodedUser;
             Map<String, String> httpHeaders = new HashMap<String, String>();
             if (createdUser != null) {
-
+                //need to remove password before returning
+                ServerSideValidator.removePasswordOnReturn(createdUser);
                 encodedUser = encoder.encodeSCIMObject(createdUser);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
@@ -280,13 +281,13 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //obtain the correct encoder according to the format requested.
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
-            List<User> returnedUsers;
+            List<User> returnedUsers = null;
             //API user should pass a UserManager storage to UserResourceEndpoint.
             if (userManager != null) {
                 returnedUsers = userManager.listUsers();
 
                 //if user not found, return an error in relevant format.
-                if (returnedUsers == null && returnedUsers.isEmpty()) {
+                if ((returnedUsers == null) && (returnedUsers.isEmpty())) {
                     String error = "Users not found in the user store.";
                     //log error.
                     //throw resource not found.
@@ -372,7 +373,8 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             String encodedUser;
             Map<String, String> httpHeaders = new HashMap<String, String>();
             if (updatedUser != null) {
-
+                //need to remove password before returning
+                ServerSideValidator.removePasswordOnReturn(updatedUser);
                 encodedUser = encoder.encodeSCIMObject(updatedUser);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
