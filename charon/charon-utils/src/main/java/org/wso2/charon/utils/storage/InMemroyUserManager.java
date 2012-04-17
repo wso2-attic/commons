@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemroyUserManager implements UserManager {
-
+    //following will be used when MT implemented properly.
     private String tenantDomain = null;
     private int tenantId = 0;
 

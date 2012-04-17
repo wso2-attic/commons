@@ -51,8 +51,8 @@ public class DefaultCharonManager implements CharonManager {
 
     /*private static AuthenticationHandler authenticationHandler;
     private static AuthenticationInfo authenticationInfo;*/
-    private static TenantManager tenantManager;
-    private static DefaultCharonManager defaultCharonManager;
+    private TenantManager tenantManager;
+    private static volatile DefaultCharonManager defaultCharonManager;
     private static Map<String, Encoder> encoderMap = new HashMap<String, Encoder>();
     private static Map<String, Decoder> decoderMap = new HashMap<String, Decoder>();
     private static Map<String, Map> authenticators = new HashMap<String, Map>();
