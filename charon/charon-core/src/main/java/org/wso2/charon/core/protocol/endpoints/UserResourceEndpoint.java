@@ -50,45 +50,36 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
     /**
      * Retrieves a user resource given an unique user id. Mapped to HTTP GET request.
      *
-     * @param id      - unique resource id
-     * @param format  - requested format of the response.
-     * @param storage - handler to UserManager implementation that should be passed by the API user.
+     * @param id          - unique resource id
+     * @param format      - requested format of the response.
+     * @param userManager
      * @return SCIM response to be returned.
      */
-    public SCIMResponse get(String id, String format, Storage storage) {
+    public SCIMResponse get(String id, String format, UserManager userManager) {
 
         Encoder encoder = null;
         try {
             //obtain the correct encoder according to the format requested.
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
-            //API user should pass a UserManager storage to UserResourceEndpoint.
-            if (storage instanceof UserManager) {
-                //retrieve the user from the provided storage.
-                User user = ((UserManager) storage).getUser(id);
+            /*API user should pass a UserManager impl to UserResourceEndpoint.
+            retrieve the user from the provided UM handler.*/
+            User user = ((UserManager) userManager).getUser(id);
 
-                //if user not found, return an error in relevant format.
-                if (user == null) {
-                    String error = "User not found in the user store.";
-                    //log error.
-                    //throw resource not found.
-                    throw new ResourceNotFoundException();
-                }
-                //perform service provider side validation. 
-                ServerSideValidator.validateRetrievedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
-                //convert the user into specific format.
-                String encodedUser = encoder.encodeSCIMObject(user);
-                //if there are any http headers to be added in the response header.
-                Map<String, String> httpHeaders = new HashMap<String, String>();
-                httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
-                return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
-
-            } else {
-                String error = "Provided storage handler is not an implementation of UserManager";
-                //log the error as well.
-                //throw internal server error.
-                throw new InternalServerException(error);
+            //if user not found, return an error in relevant format.
+            if (user == null) {
+                String error = "User not found in the user store.";
+                //TODO:log the error.
+                throw new ResourceNotFoundException();
             }
+            //perform service provider side validation.
+            ServerSideValidator.validateRetrievedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+            //convert the user into specific format.
+            String encodedUser = encoder.encodeSCIMObject(user);
+            //if there are any http headers to be added in the response header.
+            Map<String, String> httpHeaders = new HashMap<String, String>();
+            httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, format);
+            return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
             //if requested format not supported, encode exception and set it in the response.
@@ -99,8 +90,6 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             if (e.getCode() == -1) {
                 e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
             }
-            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
-        } catch (InternalServerException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
@@ -347,7 +336,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //decode the SCIM User object, encoded in the submitted payload.
             User user = (User) decoder.decodeResource(scimObjectString,
                                                       SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
-            User updatedUser =null;
+            User updatedUser = null;
             if (userManager != null) {
                 //retrieve the old object
                 User oldUser = userManager.getUser(existingId);

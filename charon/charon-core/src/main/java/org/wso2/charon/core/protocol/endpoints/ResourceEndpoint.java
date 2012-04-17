@@ -19,7 +19,6 @@ package org.wso2.charon.core.protocol.endpoints;
 
 import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
-import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.protocol.SCIMResponse;
 
 /**
@@ -32,10 +31,10 @@ public interface ResourceEndpoint {
      *
      * @param id      - unique resource id
      * @param format  - format mentioned in HTTP Content-Type header.
-     * @param storage - handler to storage that should be passed by the API user.
+     * @param userManager
      * @return SCIMResponse
      */
-    public SCIMResponse get(String id, String format, Storage storage);
+    public SCIMResponse get(String id, String format, UserManager userManager);
 
     /**
      * Method of resource endpoint which is mapped to HTTP POST request.

@@ -35,13 +35,13 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This is to perform SCIM service provider side validation and additions according to SCIM spec.
+ * This is to perform SCIM service provider side validation and additions according to SCIM schema spec.
  */
 public class ServerSideValidator extends AbstractValidator {
 
     /**
-     * Add read-only attributes that only the service provider adds and validate SCIM object
-     * and attributes.
+     * Add read-only attributes that only the service provider adds and validate the SCIM object
+     * and attributes created by the client.
      *
      * @param scimObject
      * @param resourceSchema
@@ -68,15 +68,21 @@ public class ServerSideValidator extends AbstractValidator {
                     SCIMConstants.GROUP_ENDPOINT), scimObject.getId());
             scimObject.setLocation(location);
         }
-        //add version
-
-        //if user object - validate name
+        //TODO: add version, if user object - validate name
 
         //validate for required attributes.
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
         validateSchemaList(scimObject, resourceSchema);
     }
 
+    /**
+     * Perform validation on SCIM Object update on service provider side.
+     * @param oldObject
+     * @param newObject
+     * @param resourceSchema
+     * @return
+     * @throws CharonException
+     */
     public static AbstractSCIMObject validateUpdatedSCIMObject(AbstractSCIMObject oldObject,
                                                                AbstractSCIMObject newObject,
                                                                SCIMResourceSchema resourceSchema)
@@ -89,13 +95,21 @@ public class ServerSideValidator extends AbstractValidator {
         //check for required attributes.
         validateSCIMObjectForRequiredAttributes(validatedObject, resourceSchema);
         return validatedObject;
-        //if user object, validate name
+        //TODO: if user object, validate name
     }
 
+    /**
+     * Perform validation on the SCIM Object retrieved from service provider's UserManager before
+     * returning it to client.
+     * @param scimObject
+     * @param resourceSchema
+     * @throws CharonException
+     */
     public static void validateRetrievedSCIMObject(AbstractSCIMObject scimObject,
                                                    SCIMResourceSchema resourceSchema)
             throws CharonException {
-        //if user object, validate name - if validated in post and put, no need to validate in get.
+
+        //if user object, remove password before returning.
         if (SCIMConstants.USER.equals(resourceSchema.getName())) {
             if (scimObject.getAttributeList().containsKey(SCIMConstants.UserSchemaConstants.PASSWORD)) {
                 scimObject.deleteAttribute(SCIMConstants.UserSchemaConstants.PASSWORD);
@@ -103,8 +117,17 @@ public class ServerSideValidator extends AbstractValidator {
         }
         validateSCIMObjectForRequiredAttributes(scimObject, resourceSchema);
         validateSchemaList(scimObject, resourceSchema);
+        //TODO:if user object, validate name - if validated in post and put, no need to validate in get.
     }
 
+    /**
+     * Log and ignore if any read only attributes are modified in the SCIM - update request.
+     * @param oldObject
+     * @param newObject
+     * @param resourceSchema
+     * @return
+     * @throws CharonException
+     */
     public static AbstractSCIMObject checkIfReadOnlyAttributesModified(AbstractSCIMObject oldObject,
                                                                        AbstractSCIMObject newObject,
                                                                        SCIMResourceSchema resourceSchema)

@@ -30,7 +30,6 @@ import org.wso2.charon.core.extensions.Storage;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.ListedResource;
-import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -54,10 +53,10 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
      *
      * @param id      - unique resource id
      * @param format  - requested format of the response.
-     * @param storage - handler to UserManager implementation that should be passed by the API user.
+     * @param userManager
      * @return SCIM response to be returned.
      */
-    public SCIMResponse get(String id, String format, Storage storage) {
+    public SCIMResponse get(String id, String format, UserManager userManager) {
 
         Encoder encoder = null;
         try {
@@ -65,9 +64,9 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
             //API user should pass a UserManager storage to UserResourceEndpoint.
-            if (storage instanceof UserManager) {
+            if (userManager instanceof UserManager) {
                 //retrieve the user from the provided storage.
-                Group group = ((UserManager) storage).getGroup(id);
+                Group group = ((UserManager) userManager).getGroup(id);
 
                 //TODO:needs a validator to see that the User returned by the custom user manager
                 // adheres to SCIM spec.
