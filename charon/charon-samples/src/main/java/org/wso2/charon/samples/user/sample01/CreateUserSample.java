@@ -37,6 +37,10 @@ public class CreateUserSample {
     private static String userName = "hasini";
     private static String externalID = "hasini@gmail.com";
     private static String[] emails = {"umesha@gmail.com", "umeshag@yahoo.com"};
+    private static String displayName = "Umesha Gunasinghe";
+    private static String password = "dummyPW1";
+    private static String language = "Sinhala";
+    private static String phone_number = "0945672938";
 
     public static void main(String[] args) {
 
@@ -48,10 +52,10 @@ public class CreateUserSample {
             scimUser.setUserName(userName);
             scimUser.setExternalId(externalID);
             scimUser.setEmails(emails);
-            scimUser.setDisplayName(DISPLAY_NAME);
-            scimUser.setPassword(PASSWORD);
-            scimUser.setPreferredLanguage(LANGUAGE);
-            scimUser.setPhoneNumber(PHONE_NUMBER, null, false);
+            scimUser.setDisplayName(displayName);
+            scimUser.setPassword(password);
+            scimUser.setPreferredLanguage(language);
+            scimUser.setPhoneNumber(phone_number, null, false);
             //encode the user in JSON format
             String encodedUser = scimClient.encodeSCIMObject(scimUser, SCIMConstants.JSON);
             //create a apache wink ClientHandler to intercept and identify response messages
