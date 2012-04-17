@@ -70,11 +70,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             if (user == null) {
                 String error = "User not found in the user store.";
                 //TODO:log the error.
-                throw new ResourceNotFoundException();
+                throw new ResourceNotFoundException(error);
             }
             //perform service provider side validation.
-            ServerSideValidator.validateRetrievedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
-            //convert the user into specific format.
+            ServerSideValidator.validateRetrievedSCIMObject(user,
+                                                            SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+            //convert the user into requested format.
             String encodedUser = encoder.encodeSCIMObject(user);
             //if there are any http headers to be added in the response header.
             Map<String, String> httpHeaders = new HashMap<String, String>();
@@ -85,8 +86,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //if requested format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
-            //we have charon exceptions also, instead of having only internal server error exceptions,
-            //because inside API code throws CharonException.
+            //Inside API code throws CharonException.
             if (e.getCode() == -1) {
                 e.setCode(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR);
             }
@@ -103,11 +103,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      * @param scimObjectString - Payload of HTTP request, which contains the SCIM object.
      * @param inputFormat      - format of the submitted content
      * @param outputFormat     - format mentioned in HTTP Accept header.
-     * @param storage          - handler to storage that should be passed by the API user.
+     * @param userManager
      * @return
      */
     public SCIMResponse create(String scimObjectString, String inputFormat, String outputFormat,
-                               Storage storage) {
+                               UserManager userManager) {
 
         //needs to validate the incoming object. eg: id can not be set by the consumer.
 
@@ -126,19 +126,9 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
 
             //validate the created user
             ServerSideValidator.validateCreatedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
-            //handover the SCIM User object to the user storage provided by the SP.
-            User createdUser;
-            if (storage instanceof UserManager) {
-                //need to send back the newly created user in the response payload
-                createdUser = ((UserManager) storage).createUser(user);
-                //validate User
-
-            } else {
-                String error = "Provided storage handler is not an implementation of UserManager";
-                //log the error as well.
-                //throw internal server error.
-                throw new InternalServerException(error);
-            }
+            /*handover the SCIM User object to the user storage provided by the SP.
+            need to send back the newly created user in the response payload*/
+            User createdUser = ((UserManager) userManager).createUser(user);
 
             //encode the newly created SCIM user object and add id attribute to Location header.
             String encodedUser;
@@ -270,17 +260,17 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //obtain the correct encoder according to the format requested.
             encoder = getEncoder(SCIMConstants.identifyFormat(format));
 
-            List<User> returnedUsers = null;
+            List<User> returnedUsers;
             //API user should pass a UserManager storage to UserResourceEndpoint.
             if (userManager != null) {
                 returnedUsers = userManager.listUsers();
 
                 //if user not found, return an error in relevant format.
-                if ((returnedUsers == null) && (returnedUsers.isEmpty())) {
+                if (returnedUsers == null && returnedUsers.isEmpty()) {
                     String error = "Users not found in the user store.";
                     //log error.
                     //throw resource not found.
-                    throw new ResourceNotFoundException();
+                    throw new ResourceNotFoundException(error);
                 }
                 //create a listed resource object out of the returned users list.
                 ListedResource listedResource = createListedResource(returnedUsers);
@@ -349,7 +339,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                     String error = "No user exists with the given id: " + user.getId();
                     //log the error as well.
                     //throw internal server error.
-                    throw new ResourceNotFoundException();
+                    throw new ResourceNotFoundException(error);
                 }
 
             } else {

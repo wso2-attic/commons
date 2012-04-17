@@ -630,9 +630,10 @@ public class User extends AbstractSCIMObject {
 
     public Boolean getActive() throws CharonException {
         if (isAttributeExist(SCIMConstants.UserSchemaConstants.ACTIVE)) {
-            return ((SimpleAttribute) attributeList.get(SCIMConstants.UserSchemaConstants.ACTIVE)).getBooleanValue();
+            return ((SimpleAttribute) attributeList.get(
+                    SCIMConstants.UserSchemaConstants.ACTIVE)).getBooleanValue();
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -861,7 +862,7 @@ public class User extends AbstractSCIMObject {
                     attributeList.get(SCIMConstants.UserSchemaConstants.GROUPS);
             List<String> groups = groupsAttribute.getAttributeValuesByType(type);
             for (String group : groups) {
-                if (groupId.equals(groupId)) {
+                if (groupId.equals(group)) {
                     return true;
                 }
             }

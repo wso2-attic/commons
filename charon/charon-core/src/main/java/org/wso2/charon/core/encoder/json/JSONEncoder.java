@@ -37,10 +37,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Encoder that encodes a given SCIM Object in JSON format.
+ */
 public class JSONEncoder implements Encoder {
-
-    //TODO:remove instance of and do it in polymorphic way
-
+    
     private String format;
 
     public JSONEncoder() {
@@ -64,6 +65,7 @@ public class JSONEncoder implements Encoder {
             Map<String, Attribute> attributes = scimObject.getAttributeList();
             if (attributes != null && !attributes.isEmpty()) {
                 for (Attribute attribute : attributes.values()) {
+                    //using instanceof instead of polymorphic way, in order to make encoder pluggable.
                     if (attribute instanceof SimpleAttribute) {
                         encodeSimpleAttribute((SimpleAttribute) attribute, rootObject);
 
@@ -78,7 +80,7 @@ public class JSONEncoder implements Encoder {
 
         } catch (JSONException e) {
             String errorMessage = "Error in encoding resource..";
-            //log the error
+            //TODO:log the error
             throw new CharonException(errorMessage);
         }
         return rootObject.toString();
@@ -111,9 +113,7 @@ public class JSONEncoder implements Encoder {
             //usually errors occur rarely when encoding exceptions. and no need to pass them to clients.
             //sufficient to log them in server side back end.
             //TODO:log the error
-            e.printStackTrace();
         }
-        //return json string
         return rootErrorObject.toString();
 
     }
@@ -125,7 +125,7 @@ public class JSONEncoder implements Encoder {
      */
     @Override
     public String getFormat() {
-        return format;  //To change body of implemented methods use File | Settings | File Templates.
+        return format;  
     }
 
     protected void encodeArrayOfValues(String arrayName, Object[] arrayValues,
@@ -157,7 +157,8 @@ public class JSONEncoder implements Encoder {
     }
 
     /**
-     * When an attribute value becomes a simple attribute itself, encode it and put it in json array.
+     * When an attribute value (of a complex or multivalued attribute) becomes a simple attribute itself,
+     * encode it and put it in json array.
      *
      * @param attributeValue
      * @param jsonArray
@@ -191,6 +192,7 @@ public class JSONEncoder implements Encoder {
         JSONObject subObject = new JSONObject();
         Map<String, Attribute> subAttributes = attribute.getSubAttributes();
         for (Attribute attributeValue : subAttributes.values()) {
+            //using instanceof instead of polymorphic way, in order to make encoder pluggable.
             if (attributeValue instanceof SimpleAttribute) {
                 //most of the time, this if condition is hit according to current SCIM spec.
                 encodeSimpleAttribute((SimpleAttribute) attributeValue, subObject);
@@ -207,7 +209,8 @@ public class JSONEncoder implements Encoder {
     }
 
     /**
-     * When an attribute value becomes a complex attribute, use this method to encode it.
+     * When an attribute value (of a multivalued attribute) becomes a complex attribute,
+     * use this method to encode it.
      *
      * @param attributeValue
      * @param jsonArray
@@ -217,6 +220,7 @@ public class JSONEncoder implements Encoder {
         JSONObject subObject = new JSONObject();
         Map<String, Attribute> subAttributes = attributeValue.getSubAttributes();
         for (Attribute value : subAttributes.values()) {
+            //using instanceof instead of polymorphic way, in order to make encoder pluggable.
             if (value instanceof SimpleAttribute) {
                 encodeSimpleAttribute((SimpleAttribute) value, subObject);
 

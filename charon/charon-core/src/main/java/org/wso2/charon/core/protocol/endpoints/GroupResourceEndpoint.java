@@ -117,11 +117,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
      * @param scimObjectString - Payload of HTTP request, which contains the SCIM object.
      * @param inputFormat      - format of the submitted content
      * @param outputFormat     - format mentioned in HTTP Accept header.
-     * @param storage          - handler to storage that should be passed by the API user.
+     * @param userManager
      * @return
      */
     public SCIMResponse create(String scimObjectString, String inputFormat, String outputFormat,
-                               Storage storage) {
+                               UserManager userManager) {
 
         //needs to validate the incoming object. eg: id can not be set by the consumer.
 
@@ -142,9 +142,9 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             ServerSideValidator.validateCreatedSCIMObject(group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);
             //handover the SCIM User object to the group storage provided by the SP.
             Group createdGroup;
-            if (storage instanceof UserManager) {
+            if (userManager instanceof UserManager) {
                 //need to send back the newly created group in the response payload
-                createdGroup = ((UserManager) storage).createGroup(group);
+                createdGroup = ((UserManager) userManager).createGroup(group);
 
             } else {
                 String error = "Provided storage handler is not an implementation of UserManager";

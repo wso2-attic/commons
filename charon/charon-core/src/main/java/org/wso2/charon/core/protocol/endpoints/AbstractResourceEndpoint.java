@@ -159,45 +159,4 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, SCIMConstants.identifyContentType(encoder.getFormat()));
         return new SCIMResponse(exception.getCode(), encoder.encodeSCIMException(exception), httpHeaders);
     }
-
-    /*public ListedResource createListedResource(List<AbstractSCIMObject> scimObjects)
-            throws CharonException, NotFoundException {
-        ListedResource listedResource = new ListedResource();
-        listedResource.setTotalResults(scimObjects.size());
-        for (AbstractSCIMObject scimObject : scimObjects) {
-            Map<String, Attribute> minimalAttributesOfSCIMObject = new HashMap<String, Attribute>();
-            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.ID,
-                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
-            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
-                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
-            minimalAttributesOfSCIMObject.put(SCIMConstants.CommonSchemaConstants.META,
-                                         scimObject.getAttribute(SCIMConstants.CommonSchemaConstants.META));
-            listedResource.setResources(minimalAttributesOfSCIMObject);
-        }
-        return listedResource;
-    }*/
-    /**
-     * Build SCIM Response given the response code and response message.
-     * @param responseCode
-     * @param responseMessage
-     * @return
-     */
-    /*protected SCIMResponse buildResponse(String responseCode, String responseMessage) {
-        return new SCIMResponse(responseCode, responseMessage);
-    }*/
-
-    /**
-     * Obtain the AttributeFactory to be used in current deployment. If a custom implementation is
-     * not registered, use the DefaultAttributeFactory.
-     *
-     * @return
-     */
-    /*public static AttributeFactory getAttributeFactory() {
-        if (attributeFactory != null) {
-            return attributeFactory;
-        } else {
-            attributeFactory = new DefaultAttributeFactory();
-            return attributeFactory;
-        }
-    }*/
 }

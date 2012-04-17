@@ -42,7 +42,7 @@ public interface ResourceEndpoint {
      * @param scimObjectString - Payload of HTTP request, which contains the SCIM object.
      * @param inputFormat      - format mentioned in HTTP Content-Type header.
      * @param outputFormat     - format mentioned in HTTP Accept header.
-     * @param storage          - handler to storage that should be passed by the API user.
+     * @param userManager
      * @return SCIMResponse -
      *         From Spec: {Since the server is free to alter and/or ignore POSTed content,
      *         returning the full representation can be useful to the client, enabling it to correlate the
@@ -50,7 +50,7 @@ public interface ResourceEndpoint {
      *         in the response Location header.}
      */
     public SCIMResponse create(String scimObjectString, String inputFormat, String outputFormat,
-                               Storage storage);
+                               UserManager userManager);
 
     /**
      * Method of the ResourceEndpoint that is mapped to HTTP Delete method..

@@ -26,6 +26,11 @@ public class ResourceNotFoundException extends AbstractCharonException {
         this.description = ResponseCodeConstants.DESC_RESOURCE_NOT_FOUND;
     }
 
+    public ResourceNotFoundException(String description) {
+        this.code = ResponseCodeConstants.CODE_RESOURCE_NOT_FOUND;
+        this.description = description;
+    }
+
     public ResourceNotFoundException(int code, String message) {
         this.code = code;
         this.description = message;
