@@ -30,7 +30,7 @@
                     <td><a href="login.jsp">Login</a></td>
                 </tr>
                 <tr>
-                    <td><a href="about.html">About Charon</a></td>
+                    <td><a href="about2.html">About Charon</a></td>
                 </tr>
             </table>
         </td>
