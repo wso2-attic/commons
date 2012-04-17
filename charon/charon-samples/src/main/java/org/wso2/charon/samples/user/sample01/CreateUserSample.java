@@ -34,13 +34,9 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 public class CreateUserSample {
 
     //user details
-    public static final String USER_NAME = "hasinig";
-    public static final String EXTERNAL_ID = "hasini@gmail.com";
-    public static final String[] EMAILS = {"hasini@gmail.com", "hasini@wso2.com"};
-    public static final String DISPLAY_NAME = "Hasini Gunasinghe";
-    public static final String PASSWORD = "dummyPW";
-    public static final String LANGUAGE = "Sinhala";
-    public static final String PHONE_NUMBER = "9077657623";
+    private static String userName = "hasini";
+    private static String externalID = "hasini@gmail.com";
+    private static String[] emails = {"umesha@gmail.com", "umeshag@yahoo.com"};
 
     public static void main(String[] args) {
 
@@ -49,9 +45,9 @@ public class CreateUserSample {
             SCIMClient scimClient = new SCIMClient();
             //create a user according to SCIM User Schema
             User scimUser = scimClient.createUser();
-            scimUser.setUserName(USER_NAME);
-            scimUser.setExternalId(EXTERNAL_ID);
-            scimUser.setEmails(EMAILS);
+            scimUser.setUserName(userName);
+            scimUser.setExternalId(externalID);
+            scimUser.setEmails(emails);
             scimUser.setDisplayName(DISPLAY_NAME);
             scimUser.setPassword(PASSWORD);
             scimUser.setPreferredLanguage(LANGUAGE);

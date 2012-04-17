@@ -23,8 +23,6 @@ import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
-import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
@@ -33,7 +31,7 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class GetUserSample {
 
-    public static final String USER_ID = "ece82b9d-a603-4358-ae0d-0dc2823f03cc";
+    private static String userID = "ece82b9d-a603-4358-ae0d-0dc2823f03cc";
     public static final String USER_ID1 = "38d3a090-365a-4bb5-a976-f67cc03eff29";
 
     public static void main(String[] args) {
@@ -58,7 +56,7 @@ public class GetUserSample {
             BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
             //create resource endpoint to access a known user resource.
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
+            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + userID);
             String response = userResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)

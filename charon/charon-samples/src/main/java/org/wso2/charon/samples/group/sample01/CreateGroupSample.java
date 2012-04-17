@@ -33,11 +33,10 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class CreateGroupSample {
     //user details
-    public static final String DISPLAY_NAME = "eng";
-    public static final String EXTERNAL_ID = "eng";
-    //replace following IDs with already existing member IDs.
-    public static final String[] MEMBERS = {"aa78c501-59d3-4264-93af-6a2a0c278245",
-                                            "79c35990-3a0c-4eff-8b39-dbd3f552ee6f"};
+    private static String displayName = "eng";
+    private static final String externalID = "eng";
+    private static final String[] members = {"3bcad7e6-afa0-4855-908e-cd88ef104eb1",
+                                            "f73d0500-7334-48c7-863b-1de15331b0bf"};
 
     public static void main(String[] args) {
 
@@ -46,10 +45,10 @@ public class CreateGroupSample {
             SCIMClient scimClient = new SCIMClient();
             //create a group according to SCIM Group Schema
             Group scimGroup = scimClient.createGroup();
-            scimGroup.setExternalId(EXTERNAL_ID);
-            scimGroup.setDisplayName(DISPLAY_NAME);
+            scimGroup.setExternalId(externalID);
+            scimGroup.setDisplayName(displayName);
             //set group members
-            for (String member : MEMBERS) {
+            for (String member : members) {
                 scimGroup.setMember(member);
             }
             //encode the group in JSON format

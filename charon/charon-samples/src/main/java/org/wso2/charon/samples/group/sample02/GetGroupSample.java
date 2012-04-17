@@ -30,7 +30,7 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class GetGroupSample {
-    public static final String GROUP_ID = "d022901f-dbbb-4875-85d1-141c9a595260";
+    private static String groupID = "d022901f-dbbb-4875-85d1-141c9a595260";
 
     public static void main(String[] args) {
 
@@ -54,7 +54,7 @@ public class GetGroupSample {
             BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
             //create resource endpoint to access a known user resource.
-            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + groupID);
             String response = groupResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)

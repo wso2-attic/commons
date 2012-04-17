@@ -23,8 +23,6 @@ import org.apache.wink.client.Resource;
 import org.apache.wink.client.RestClient;
 import org.apache.wink.client.handlers.ClientHandler;
 import org.wso2.charon.core.client.SCIMClient;
-import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.samples.utils.CharonResponseHandler;
 import org.wso2.charon.samples.utils.SampleConstants;
@@ -33,7 +31,7 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteUserSample {
 
-    public static final String USER_ID = "1acee9bf-576f-4c13-afde-ff9e2ed28768";
+    private static String userID = "1acee9bf-576f-4c13-afde-ff9e2ed28768";
 
     public static void main(String[] args) {
 
@@ -45,7 +43,7 @@ public class DeleteUserSample {
             RestClient restClient = new RestClient(clientConfig);
 
             //create resource endpoint
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
+            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + userID);
             BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
             basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
             basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);

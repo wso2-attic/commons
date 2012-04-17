@@ -30,7 +30,7 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteGroupSample {
-    public static final String GROUP_ID = "9bdaba3a-e979-4dbd-9441-706f7a62915e";
+    private static String groupID = "9bdaba3a-e979-4dbd-9441-706f7a62915e";
 
     public static void main(String[] args) {
 
@@ -42,7 +42,7 @@ public class DeleteGroupSample {
             RestClient restClient = new RestClient(clientConfig);
 
             //create resource endpoint
-            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + groupID);
             BasicAuthInfo basicAuthInfo = new BasicAuthInfo();
             basicAuthInfo.setUserName(SampleConstants.CRED_USER_NAME);
             basicAuthInfo.setPassword(SampleConstants.CRED_PASSWORD);

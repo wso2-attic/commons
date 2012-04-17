@@ -33,10 +33,10 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class UpdateGroupSample {
-    public static final String GROUP_ID = "d1be073f-d220-4322-a0e9-51b9324521a1";
-    public static final String OLD_MEMBER = "3bcad7e6-afa0-4855-908e-cd88ef104eb1";
-    public static final String NEW_MEMBER = "16bb4dae-fb16-468c-831d-352eac1dd087";
-    public static final String NEW_DISPLAY_NAME = "QA";
+    private static String groupID = "15a6c6b0-f851-44d6-97b6-473fbe3cfd9f";
+    private static String oldMember = "3bcad7e6-afa0-4855-908e-cd88ef104eb1";
+    private static String newMember = "16bb4dae-fb16-468c-831d-352eac1dd087";
+    private static String newDisplayName = "QA";
 
     public static void main(String[] args) {
 
@@ -60,7 +60,7 @@ public class UpdateGroupSample {
             BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
             //create resource endpoint to access a known user resource.
-            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            Resource groupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + groupID);
             String response = groupResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
@@ -70,13 +70,13 @@ public class UpdateGroupSample {
             //decode retrieved group
             Group decodedGroup = (Group) scimClient.decodeSCIMResponse(response, SCIMConstants.JSON, 2);
 
-            decodedGroup.setDisplayName(NEW_DISPLAY_NAME);
-            decodedGroup.removeMember(OLD_MEMBER);
-            decodedGroup.setGroupMember(NEW_MEMBER);
+            decodedGroup.setDisplayName(newDisplayName);
+            decodedGroup.removeMember(oldMember);
+            decodedGroup.setGroupMember(newMember);
 
             String updatedGroupString = scimClient.encodeSCIMObject(decodedGroup, SCIMConstants.JSON);
 
-            Resource updateGroupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + GROUP_ID);
+            Resource updateGroupResource = restClient.resource(SampleConstants.GROUP_ENDPOINT + groupID);
             String responseUpdated = updateGroupResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)

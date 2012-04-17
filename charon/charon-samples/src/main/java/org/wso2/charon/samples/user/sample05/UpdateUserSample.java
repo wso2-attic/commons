@@ -34,10 +34,10 @@ import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class UpdateUserSample {
 
-    public static final String USER_ID = "536413b5-4937-4d35-89fa-8b1877077da5";
+    private static String userID = "aa8c56d8-e054-465a-8f7a-81e24542eaba";
 
-    public static final String NEW_DISPLAY_NAME = "HasiniG";
-    public static final String NEW_WORK_EMAIL = "hasinig@wso2.com";
+    private static String newDisplayName = "HasiniG";
+    private static String newWorkEmail = "hasini@wso2.com";
 
 
     public static void main(String[] args) {
@@ -62,7 +62,7 @@ public class UpdateUserSample {
             BasicAuthInfo encodedBasicAuthInfo = (BasicAuthInfo) basicAuthHandler.getAuthenticationToken(basicAuthInfo);
 
             //create resource endpoint to access a known user resource.
-            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
+            Resource userResource = restClient.resource(SampleConstants.USER_ENDPOINT + userID);
             String response = userResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)
@@ -72,13 +72,13 @@ public class UpdateUserSample {
             //decode User
             User decodedUser = (User) scimClient.decodeSCIMResponse(response, SCIMConstants.JSON, 1);
             //do changes
-            decodedUser.setDisplayName(NEW_DISPLAY_NAME);
-            decodedUser.setWorkEmail(NEW_WORK_EMAIL, true);
+            decodedUser.setDisplayName(newDisplayName);
+            decodedUser.setWorkEmail(newWorkEmail, true);
 
             //encode updated user
             String updatedUserString = scimClient.encodeSCIMObject(decodedUser, SCIMConstants.JSON);
             //update user
-            Resource updateUserResource = restClient.resource(SampleConstants.USER_ENDPOINT + USER_ID);
+            Resource updateUserResource = restClient.resource(SampleConstants.USER_ENDPOINT + userID);
             String responseUpdated = updateUserResource.
                     header(SCIMConstants.AUTHORIZATION_HEADER, encodedBasicAuthInfo.getAuthorizationHeader()).
                     contentType(SCIMConstants.APPLICATION_JSON).accept(SCIMConstants.APPLICATION_JSON)

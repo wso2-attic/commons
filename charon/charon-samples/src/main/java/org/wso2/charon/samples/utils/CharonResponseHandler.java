@@ -43,8 +43,9 @@ public class CharonResponseHandler implements ClientHandler {
         //obtain client response
         ClientResponse cr = handlerContext.doChain(clientRequest);
         if (scimClient != null) {
-            //see whether the response indicates a failure or success according to the 
+            //see whether the response indicates a failure or success according to the status code
             if (!(scimClient.evaluateResponseStatus(cr.getStatusCode()))) {
+                //if it is a failure,
                 AbstractCharonException charonException = null;
                 try {
                     if (cr.getHeaders().getFirst(SCIMConstants.CONTENT_TYPE_HEADER) != null) {
@@ -59,12 +60,15 @@ public class CharonResponseHandler implements ClientHandler {
                         charonException = new CharonException(cr.getEntity(String.class));
                     }
                 } catch (CharonException e) {
+                    //TODO: remove sout and log any exception occurred in extracting the exception.
                     System.out.println(e.getDescription());
                 }
-                //log and throw the actual exception return in the response.
-                System.out.println(charonException.getDescription());
-                throw charonException;
+                //TODO:log and throw the actual exception returned in the response.
+                if (charonException != null) {
+                    throw charonException;
+                }
             } else {
+                //if it is a success, just return the response.
                 return cr;
             }
         }
