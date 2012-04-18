@@ -22,12 +22,10 @@ import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
