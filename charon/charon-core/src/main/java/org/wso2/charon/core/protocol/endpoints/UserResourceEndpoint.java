@@ -112,13 +112,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         //needs to validate the incoming object. eg: id can not be set by the consumer.
 
         Encoder encoder = null;
-        Decoder decoder = null;
 
         try {
             //obtain the encoder matching the requested output format.
             encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //obtain the decoder matching the submitted format.
-            decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
+            Decoder decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
             //decode the SCIM User object, encoded in the submitted payload.
             User user = (User) decoder.decodeResource(scimObjectString,
@@ -177,7 +176,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      * @param outputFormat
      * @return
      */
-    @Override
+
     public SCIMResponse delete(String id, Storage storage, String outputFormat) {
         Encoder encoder = null;
         try {
@@ -218,18 +217,18 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      * @param userManager
      * @param format          @return
      */
-    @Override
+
     public SCIMResponse listByAttribute(String searchAttribute, UserManager userManager,
                                         String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
+
     public SCIMResponse listByFilter(String filterString, UserManager userManager, String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
+
     public SCIMResponse listBySort(String sortBy, String sortOrder, UserManager usermanager,
                                    String format) {
         //If a value for sortBy is provided and no sortOrder is specified,
@@ -240,7 +239,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         return null;
     }
 
-    @Override
+
     public SCIMResponse listWithPagination(int startIndex, int count, UserManager userManager,
                                            String format) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
@@ -253,7 +252,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
      * @param format
      * @return
      */
-    @Override
+
     public SCIMResponse list(UserManager userManager, String format) {
         Encoder encoder = null;
         try {
@@ -307,7 +306,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
     }
 
-    @Override
+    
     public SCIMResponse updateWithPUT(String existingId, String scimObjectString,
                                       String inputFormat,
                                       String outputFormat, UserManager userManager
