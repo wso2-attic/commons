@@ -128,7 +128,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             ServerSideValidator.validateCreatedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
             /*handover the SCIM User object to the user storage provided by the SP.
             need to send back the newly created user in the response payload*/
-            User createdUser = ((UserManager) userManager).createUser(user);
+            User createdUser = userManager.createUser(user);
 
             //encode the newly created SCIM user object and add id attribute to Location header.
             String encodedUser;

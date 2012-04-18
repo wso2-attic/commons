@@ -87,7 +87,7 @@ public class CreateUserSample {
             //decode the response
             System.out.println(response);
         } catch (CharonException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();  
         } catch (ClientWebException e) {
             System.out.println(e.getRequest().getEntity());
             System.out.println(e.getResponse().getMessage());

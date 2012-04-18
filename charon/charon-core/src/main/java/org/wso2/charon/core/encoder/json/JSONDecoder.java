@@ -75,22 +75,19 @@ public class JSONDecoder implements Decoder {
                 if (attributeValObj instanceof String) {
                     //if the corresponding json value object is String, it is a SimpleAttribute.
                     scimObject.setAttribute(buildSimpleAttribute(attributeSchema, attributeValObj));
-                    /*DefaultResourceFactory.setAttribute(scimObject, buildSimpleAttribute
-                            (attributeSchema, attributeValObj));*/
+
 
                 } else if (attributeValObj instanceof JSONArray) {
                     //if the corresponding json value object is JSONArray, it is a MultiValuedAttribute.
                     scimObject.setAttribute(
                             buildMultiValuedAttribute(attributeSchema, (JSONArray) attributeValObj));
-                    /*DefaultResourceFactory.setAttribute(
-                            scimObject, buildMultiValuedAttribute(attributeSchema, (JSONArray) attributeValObj));*/
+
 
                 } else if (attributeValObj instanceof JSONObject) {
                     //if the corresponding json value object is JSONObject, it is a ComplexAttribute.
                     scimObject.setAttribute(buildComplexAttribute(attributeSchema,
                                                                   (JSONObject) attributeValObj));
-                    /*DefaultResourceFactory.setAttribute(
-                            scimObject, buildComplexAttribute(attributeSchema, (JSONObject) attributeValObj));*/
+                    
                 }
             }
             //return DefaultResourceFactory.createSCIMObject(resourceSchema, scimObject);

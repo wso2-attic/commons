@@ -71,8 +71,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
         //if the requested format not supported, return an error.
         if (!encoderMap.containsKey(format)) {
             //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+            throw new FormatNotSupportedException();
         }
         return encoderMap.get(format);
     }
