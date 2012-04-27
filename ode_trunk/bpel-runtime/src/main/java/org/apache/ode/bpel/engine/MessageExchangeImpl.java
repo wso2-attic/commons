@@ -35,7 +35,7 @@ import javax.wsdl.PortType;
 import javax.xml.namespace.QName;
 import java.util.Set;
 
-abstract class MessageExchangeImpl implements MessageExchange {
+public abstract class MessageExchangeImpl implements MessageExchange {
 
     private static final Log __log = LogFactory.getLog(MessageExchangeImpl.class);
     protected static final Messages __msgs = MessageBundle.getMessages(Messages.class);

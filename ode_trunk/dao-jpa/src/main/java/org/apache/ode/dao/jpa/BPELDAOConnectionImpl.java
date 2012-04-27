@@ -410,4 +410,13 @@ public class BPELDAOConnectionImpl implements BpelDAOConnection, FilteredInstanc
     public ProcessManagementDAO getProcessManagement() {
         return new ProcessManagementDAOImpl(_em);
     }
+
+    @Override
+    public AttachmentDAO getAttachmentDAO(Long attachmentID, MessageExchangeDAO mex) {
+        AttachmentDAO dao = new AttachmentDAOImpl();
+        dao.setId(attachmentID);
+        dao.setMexDAO(mex);
+
+        return dao;
+    }
 }

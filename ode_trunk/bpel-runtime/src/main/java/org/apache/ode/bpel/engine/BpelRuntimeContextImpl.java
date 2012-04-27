@@ -95,6 +95,17 @@ public class BpelRuntimeContextImpl implements BpelRuntimeContext {
     /** Five second maximum for continous execution. */
     private long _maxReductionTimeMs = 2000000;
 
+    public Collection<MessageExchange> getMessageExchangeDAOs() {
+        __log.warn("This expose a dao to public. So we need to fix it properly.");
+        Collection<MessageExchange> mexList = new ArrayList<MessageExchange>();
+        for(String mexID : _dao.getMessageExchangeIds()) {
+            MessageExchange mex = _bpelProcess._engine.getMessageExchange(mexID);
+            mexList.add(mex);
+        }
+
+        return mexList;
+    }
+
     public BpelRuntimeContextImpl(BpelProcess bpelProcess, ProcessInstanceDAO dao, PROCESS PROCESS,
                                   MyRoleMessageExchangeImpl instantiatingMessageExchange) {
         _bpelProcess = bpelProcess;
@@ -689,6 +700,7 @@ public class BpelRuntimeContextImpl implements BpelRuntimeContext {
         mexDao.setPartnerLink(plinkDAO);
         mexDao.setProcess(_dao.getProcess());
         mexDao.setInstance(_dao);
+        _dao.addMessageExchange(mexDao);
         mexDao.setPattern((operation.getOutput() != null ? MessageExchangePattern.REQUEST_RESPONSE
                 : MessageExchangePattern.REQUEST_ONLY).toString());
         mexDao.setChannel(channel == null ? null : channel.export());

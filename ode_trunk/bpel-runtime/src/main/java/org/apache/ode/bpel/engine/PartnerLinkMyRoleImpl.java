@@ -198,6 +198,7 @@ public class PartnerLinkMyRoleImpl extends PartnerLinkRoleImpl {
         _process._debugger.onEvent(evt);
         _process.saveEvent(evt, newInstance);
         mex.setCorrelationStatus(MyRoleMessageExchange.CorrelationStatus.CREATE_INSTANCE);
+        newInstance.addMessageExchange(mex.getDAO());
         mex.getDAO().setInstance(newInstance);
         if (mex.getDAO().getCreateTime() == null)
             mex.getDAO().setCreateTime(instance.getCurrentEventDateTime());
@@ -236,7 +237,11 @@ public class PartnerLinkMyRoleImpl extends PartnerLinkRoleImpl {
         process2.saveEvent(evt, instanceDao);
 
         mex.setCorrelationStatus(MyRoleMessageExchange.CorrelationStatus.MATCHED);
-        mex.getDAO().setInstance(routing.messageRoute.getTargetInstance());
+
+        ProcessInstanceDAO processInstanceDAO = routing.messageRoute.getTargetInstance();
+        processInstanceDAO.addMessageExchange(mex.getDAO());
+        mex.getDAO().setInstance(processInstanceDAO);
+
         if (mex.getDAO().getCreateTime() == null)
             mex.getDAO().setCreateTime(instance.getCurrentEventDateTime());
 

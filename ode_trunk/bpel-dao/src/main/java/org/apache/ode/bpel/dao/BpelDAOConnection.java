@@ -120,4 +120,12 @@ public interface BpelDAOConnection {
      * @return a ProcessManagement DAO
      */
     ProcessManagementDAO getProcessManagement();
+
+    /**
+     * Returns an attachment DAO for a given input parameters
+     * @param attachmentID unique attachment id
+     * @param mex message exchange in-cooperated with the attachment
+     * @return resultant attachment DAO
+     */
+    AttachmentDAO getAttachmentDAO(Long attachmentID, MessageExchangeDAO mex);
 }

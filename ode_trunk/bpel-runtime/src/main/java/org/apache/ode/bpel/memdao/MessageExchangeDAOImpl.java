@@ -19,19 +19,14 @@
 
 package org.apache.ode.bpel.memdao;
 
-import org.apache.ode.bpel.dao.MessageDAO;
-import org.apache.ode.bpel.dao.MessageExchangeDAO;
-import org.apache.ode.bpel.dao.PartnerLinkDAO;
-import org.apache.ode.bpel.dao.ProcessDAO;
-import org.apache.ode.bpel.dao.ProcessInstanceDAO;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.ode.bpel.dao.*;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
 
 public class MessageExchangeDAOImpl extends DaoBaseImpl implements MessageExchangeDAO {
 
@@ -308,4 +303,20 @@ public class MessageExchangeDAOImpl extends DaoBaseImpl implements MessageExchan
 	public boolean lockPremieMessages() {
 		return true;
 	}
+
+    private static final Log log = LogFactory.getLog(MessageExchangeDAOImpl.class);
+
+    public Collection<AttachmentDAO> getAttachments() {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        log.warn(message, ex);
+        throw ex;
+    }
+
+    public void setAttachments(Collection<AttachmentDAO> attachments) {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        log.warn(message, ex);
+        throw ex;
+    }
 }

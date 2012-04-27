@@ -570,4 +570,12 @@ public class ProcessInstanceDaoImpl extends HibernateDao implements ProcessInsta
         return c;
     }
 
+    @Override
+    public void addMessageExchange(MessageExchangeDAO dao) {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        __log.warn(message, ex);
+        //throw ex;
+    }
+
 }

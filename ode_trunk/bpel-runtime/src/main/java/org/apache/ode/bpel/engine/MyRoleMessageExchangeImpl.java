@@ -33,6 +33,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ode.bpel.dao.AttachmentDAO;
 import org.apache.ode.bpel.dao.MessageExchangeDAO;
 import org.apache.ode.bpel.engine.replayer.Replayer;
 import org.apache.ode.bpel.iapi.Message;
@@ -105,6 +106,29 @@ public class MyRoleMessageExchangeImpl extends MessageExchangeImpl implements My
             return false;
         }
         return true;
+    }
+
+    public Future invoke(Message request, List<String> attachmentIDs) {
+        if (attachmentIDs != null && !attachmentIDs.isEmpty()) {
+            List<AttachmentDAO> attachmentDAOs = new ArrayList<AttachmentDAO>();
+            for (String attachmentID : attachmentIDs) {
+                AttachmentDAO dao = _engine._contexts.dao.getConnection().getAttachmentDAO(Long.valueOf(attachmentID), this.getDAO());
+                dao.setId(Long.parseLong(attachmentID));
+                dao.setMexDAO(this.getDAO());
+                attachmentDAOs.add(dao);
+                if (__log.isDebugEnabled()) {
+                    __log.debug("Attachment with id:" + attachmentID + "was in-cooperated with mexID : " + getDAO().getMessageExchangeId());
+                }
+            }
+
+            _dao.setAttachments(attachmentDAOs);
+        } else {
+            if (__log.isDebugEnabled()) {
+                __log.debug("Attachments were not found for for mexID : " + getDAO().getMessageExchangeId());
+            }
+        }
+
+        return invoke(request);
     }
 
     @SuppressWarnings("unchecked")

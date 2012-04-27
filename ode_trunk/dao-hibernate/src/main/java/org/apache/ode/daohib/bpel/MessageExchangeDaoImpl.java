@@ -29,11 +29,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ode.bpel.dao.MessageDAO;
-import org.apache.ode.bpel.dao.MessageExchangeDAO;
-import org.apache.ode.bpel.dao.PartnerLinkDAO;
-import org.apache.ode.bpel.dao.ProcessDAO;
-import org.apache.ode.bpel.dao.ProcessInstanceDAO;
+import org.apache.ode.bpel.dao.*;
 import org.apache.ode.bpel.iapi.Scheduler;
 import org.apache.ode.daohib.SessionManager;
 import org.apache.ode.daohib.bpel.hobj.HCorrelatorMessage;
@@ -375,6 +371,20 @@ public class MessageExchangeDaoImpl extends HibernateDao implements
         } catch (LockAcquisitionException e) {
             throw new Scheduler.JobProcessorException(e, true);
         }
+    }
+
+    public Collection<AttachmentDAO> getAttachments() {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        __log.warn(message, ex);
+        throw ex;
+    }
+
+    public void setAttachments(Collection<AttachmentDAO> attachments) {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        __log.warn(message, ex);
+        throw ex;
     }
 
     public void incrementSubscriberCount() {

@@ -423,4 +423,19 @@ public class ProcessInstanceDAOImpl extends OpenJPADAO implements ProcessInstanc
         }
         return c;
     }
+
+    public void addMessageExchange(MessageExchangeDAO dao) {
+        if (!_messageExchanges.contains(dao)) {
+            _messageExchanges.add(dao);
+            if (__log.isDebugEnabled()) {
+                __log.debug("MessageExchangeDAO with id:" + dao.getMessageExchangeId() + " is in-cooperated with " +
+                            this.getInstanceId());
+            }
+        } else {
+            if (__log.isDebugEnabled()) {
+                __log.debug("MessageExchangeDAO with id:" + dao.getMessageExchangeId() + " is already in-cooperated " +
+                            "with " + this.getInstanceId());
+            }
+        }
+    }
 }

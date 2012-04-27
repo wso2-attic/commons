@@ -18,6 +18,7 @@
  */
 package org.apache.ode.bpel.engine.replayer;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.Callable;
 
@@ -39,6 +40,7 @@ import org.apache.ode.bpel.engine.MyRoleMessageExchangeImpl;
 import org.apache.ode.bpel.engine.PartnerLinkMyRoleImpl;
 import org.apache.ode.bpel.engine.PartnerLinkMyRoleImpl.RoutingInfo;
 import org.apache.ode.bpel.engine.replayer.ReplayerContext.AnswerResult;
+import org.apache.ode.bpel.iapi.MessageExchange;
 import org.apache.ode.bpel.iapi.MessageExchange.MessageExchangePattern;
 import org.apache.ode.bpel.iapi.MessageExchange.Status;
 import org.apache.ode.bpel.pmapi.CommunicationType.Exchange;
@@ -84,6 +86,10 @@ public class ReplayerBpelRuntimeContextImpl extends BpelRuntimeContextImpl {
         super.cancel(timerResponseChannel);
     }
 
+    @Override
+    public Collection<MessageExchange> getMessageExchangeDAOs() {
+        return super.getMessageExchangeDAOs();
+    }
 
 
     @Override
@@ -110,6 +116,7 @@ public class ReplayerBpelRuntimeContextImpl extends BpelRuntimeContextImpl {
             mexDao.setPartnerLink(plinkDAO);
             mexDao.setPattern((operation.getOutput() != null ? MessageExchangePattern.REQUEST_RESPONSE : MessageExchangePattern.REQUEST_ONLY).toString());
             mexDao.setProcess(_dao.getProcess());
+            _dao.addMessageExchange(mexDao);
             mexDao.setInstance(_dao);
             {
                 MessageDAO request = mexDao.createMessage(new QName("replayer", "replayer"));
@@ -269,6 +276,7 @@ public class ReplayerBpelRuntimeContextImpl extends BpelRuntimeContextImpl {
 
     public void updateMyRoleMex(MyRoleMessageExchangeImpl m) {
         m.getDAO().setProcess(_dao.getProcess());
+        _dao.addMessageExchange(m.getDAO());
         m.getDAO().setInstance(_dao);
     }
 

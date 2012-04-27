@@ -29,6 +29,7 @@ import org.apache.ode.bpel.common.CorrelationKey;
 import org.apache.ode.bpel.common.FaultException;
 import org.apache.ode.bpel.evt.ProcessInstanceEvent;
 import org.apache.ode.bpel.evt.ScopeEvent;
+import org.apache.ode.bpel.iapi.MessageExchange;
 import org.apache.ode.bpel.o.OPartnerLink;
 import org.apache.ode.bpel.o.OProcess;
 import org.apache.ode.bpel.o.OScope;
@@ -342,4 +343,11 @@ public interface BpelRuntimeContext {
     public OProcess getProcessModel();
 
     public void registerForExtensionNotification(String notificationChannelId, String[] correlationValues, String correlatorId);
+
+    /**
+     * Returns the <code>MessageExchange</code>s related to the current <code>BpelRuntimeContext</code>
+     *
+     * @return collection of <code>MessageExchange</code>
+     */
+    Collection<MessageExchange> getMessageExchangeDAOs();
 }

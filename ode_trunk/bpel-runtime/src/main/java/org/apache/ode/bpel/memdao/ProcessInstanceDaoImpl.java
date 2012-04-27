@@ -18,6 +18,8 @@
  */
 package org.apache.ode.bpel.memdao;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ode.bpel.common.ProcessState;
 import org.apache.ode.bpel.dao.ActivityRecoveryDAO;
 import org.apache.ode.bpel.dao.BpelDAOConnection;
@@ -51,6 +53,7 @@ import java.util.Set;
  * interface.
  */
 public class ProcessInstanceDaoImpl extends DaoBaseImpl implements ProcessInstanceDAO {
+    private static final Log __log = LogFactory.getLog(ProcessInstanceDaoImpl.class);
     private static final Collection<ScopeDAO> EMPTY_SCOPE_DAOS = Collections.emptyList();
 
     private short _previousState;
@@ -414,5 +417,12 @@ public class ProcessInstanceDaoImpl extends DaoBaseImpl implements ProcessInstan
 
     public Collection<String> getMessageExchangeIds() {
         return _messageExchanges.keySet();
+    }
+
+    public void addMessageExchange(MessageExchangeDAO dao) {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        __log.warn(message, ex);
+        //throw ex;
     }
 }

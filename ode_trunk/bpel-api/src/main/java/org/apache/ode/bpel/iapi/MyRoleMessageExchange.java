@@ -21,6 +21,7 @@ package org.apache.ode.bpel.iapi;
 
 import javax.xml.namespace.QName;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 /**
@@ -71,6 +72,15 @@ public interface MyRoleMessageExchange extends MessageExchange {
      */
     @SuppressWarnings("unchecked")
     Future invoke(Message request);
+
+    /**
+     * Overridden method of <code>Future invoke(Message request)</code> in-order to manage
+     * attachments related to the message exchanges
+     * @param request incoming message
+     * @param attachmentIDs list of attachment ids
+     * @return response future reference
+     */
+    Future invoke (Message request, List<String> attachmentIDs);
 
     /**
      * Complete the message, exchange: indicates that the client has receive the

@@ -34,6 +34,7 @@ import org.apache.ode.bpel.common.CorrelationKey;
 import org.apache.ode.bpel.common.FaultException;
 import org.apache.ode.bpel.evt.ProcessInstanceEvent;
 import org.apache.ode.bpel.evt.ScopeEvent;
+import org.apache.ode.bpel.iapi.MessageExchange;
 import org.apache.ode.bpel.o.OCatch;
 import org.apache.ode.bpel.o.OEmpty;
 import org.apache.ode.bpel.o.OFailureHandling;
@@ -86,6 +87,12 @@ public class CoreBpelTest extends TestCase implements BpelRuntimeContext {
         _vpu = new JacobVPU(_soup);
         _vpu.registerExtension(BpelRuntimeContext.class, this);
         _pid = new Long(19355);
+    }
+
+    public Collection<MessageExchange> getMessageExchangeDAOs() {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        throw ex;
     }
 
     public Long getPid() {

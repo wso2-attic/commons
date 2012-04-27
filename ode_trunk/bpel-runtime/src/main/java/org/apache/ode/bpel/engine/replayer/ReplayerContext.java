@@ -258,6 +258,7 @@ public class ReplayerContext {
                                 public boolean invoke(PartnerLinkMyRoleImpl target, RoutingInfo routing, boolean createInstance) {
                                     if (routing.messageRoute == null && createInstance) {
                                         ProcessInstanceDAO newInstance = processDAO.createInstance(routing.correlator);
+                                        newInstance.addMessageExchange(mex.getDAO());
 
                                         runtimeContext = new ReplayerBpelRuntimeContextImpl(p, newInstance, new PROCESS(p.getOProcess()), mex,
                                         // time,

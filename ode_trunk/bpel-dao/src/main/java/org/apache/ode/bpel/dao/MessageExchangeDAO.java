@@ -21,6 +21,7 @@ package org.apache.ode.bpel.dao;
 import org.w3c.dom.Element;
 
 import javax.xml.namespace.QName;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -254,4 +255,17 @@ public interface MessageExchangeDAO {
     void releasePremieMessages();
 
     boolean lockPremieMessages();
+
+    /**
+     * Returns the collection of attachments in-cooperated with the message exchange DAO
+     * @return the collection of attachment DAOs
+     */
+    public Collection<AttachmentDAO> getAttachments();
+
+    /**
+     * assign a collection of attachment DAOs to the message exchange
+     * @param attachments the collection of attachment DAOs
+     */
+    public void setAttachments(Collection<AttachmentDAO> attachments);
+
 }

@@ -25,10 +25,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +38,6 @@ import org.apache.ode.bpel.engine.BpelProcess;
 import org.apache.ode.bpel.engine.MyRoleMessageExchangeImpl;
 import org.apache.ode.bpel.engine.PartnerLinkMyRoleImpl;
 import org.apache.ode.bpel.engine.PartnerLinkMyRoleImpl.RoutingInfo;
-import org.apache.ode.bpel.evt.CorrelationMatchEvent;
 import org.apache.ode.bpel.iapi.BpelEngine;
 import org.apache.ode.bpel.iapi.MyRoleMessageExchange;
 import org.apache.ode.bpel.iapi.MessageExchange.Status;
@@ -265,7 +261,11 @@ public class Replayer {
                                 routing.correlator.removeRoutes(routing.messageRoute.getGroupId(), ctx.runtimeContext.getDAO());
 
                                 mex.setCorrelationStatus(MyRoleMessageExchange.CorrelationStatus.MATCHED);
-                                mex.getDAO().setInstance(routing.messageRoute.getTargetInstance());
+
+                                ProcessInstanceDAO instanceDAO = routing.messageRoute.getTargetInstance();
+                                instanceDAO.addMessageExchange(mex.getDAO());
+                                mex.getDAO().setInstance(instanceDAO);
+
                                 ctx.runtimeContext.execute();
                             }
                             return false;

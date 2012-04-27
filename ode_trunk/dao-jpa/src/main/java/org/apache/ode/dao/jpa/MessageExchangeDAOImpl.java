@@ -103,6 +103,9 @@ public class MessageExchangeDAOImpl extends OpenJPADAO implements MessageExchang
     @ManyToOne(fetch= FetchType.LAZY,cascade={CascadeType.PERSIST}) @Column(name="CORR_ID")
     private CorrelatorDAOImpl _correlator;
 
+    @OneToMany(targetEntity=AttachmentDAOImpl.class,mappedBy="mexDAO",fetch=FetchType.LAZY,cascade={CascadeType.ALL})
+    private Collection<AttachmentDAO> attachments = new ArrayList<AttachmentDAO>();
+
     public MessageExchangeDAOImpl() {
     }
 
@@ -371,4 +374,12 @@ public class MessageExchangeDAOImpl extends OpenJPADAO implements MessageExchang
 	public boolean lockPremieMessages() {
 		return true;
 	}
+
+    public Collection<AttachmentDAO> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Collection<AttachmentDAO> attachments) {
+        this.attachments = attachments;
+    }
 }

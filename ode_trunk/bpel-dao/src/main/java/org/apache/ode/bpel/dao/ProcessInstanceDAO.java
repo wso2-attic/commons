@@ -263,4 +263,10 @@ public interface ProcessInstanceDAO {
     }
 
     Collection<String> getMessageExchangeIds();
+
+    /**
+     * In-cooperates a message exchange with an process instance if it's not already in-cooperated.
+     * @param dao message exchange DAO reference
+     */
+    void addMessageExchange(MessageExchangeDAO dao);
 }

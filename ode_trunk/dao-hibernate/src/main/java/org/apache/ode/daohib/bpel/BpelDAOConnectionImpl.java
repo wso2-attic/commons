@@ -330,4 +330,12 @@ public class BpelDAOConnectionImpl implements BpelDAOConnection, FilteredInstanc
     public ProcessManagementDAO getProcessManagement() {
         return new ProcessManagementDaoImpl(_sm);
     }
+
+    @Override
+    public AttachmentDAO getAttachmentDAO(Long attachmentID, MessageExchangeDAO mex) {
+        String message = "Method is not implemented.";
+        UnsupportedOperationException ex = new UnsupportedOperationException(message);
+        __log.warn(message, ex);
+        throw ex;
+    }
 }
