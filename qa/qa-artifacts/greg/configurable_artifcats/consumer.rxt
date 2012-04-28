@@ -1,0 +1,126 @@
+<artifactType type="application/vnd.wso2-consumer+xml" shortName="consumers" singularLabel="Consumer" pluralLabel="Consumers" hasNamespace="false" iconSet="1">
+    <storagePath>/consumers/@{name}</storagePath>
+    <ui>
+        <list>
+            <column name="Name">
+                <data type="path" value="overview_name" href="@{storagePath}"/>
+            </column>
+        </list>
+    </ui>
+    <relationships>
+        <association type="isConsumedBy" source="@{consumptions_entry:value}"/>
+    </relationships>
+    <content>
+        <table name="Overview">
+            <field type="text" required="true">
+                <name>Name</name>
+            </field>
+            <field type="text" url="true">
+                <name>Website</name>
+            </field>
+            <field type="text-area">
+                <name>Description</name>
+            </field>
+        </table>
+        <table name="Consumptions">
+            <subheading>
+                <heading>Type</heading>
+                <heading>Path</heading>
+            </subheading>
+            <field type="option-text" maxoccurs="unbounded" path="true" url="true">
+                <name>Consumption</name>
+                <values>
+                    <value>Service</value>
+                    <value>Process</value>
+                    <value>Application</value>
+                </values>
+            </field>
+        </table>
+        <table name="Contract Details">
+            <field type="text">
+                <name>Principal Contact</name>
+            </field>
+            <field type="text">
+                <name>Account Manager</name>
+            </field>
+            <field type="text">
+                <name>Account Type</name>
+            </field>
+            <field type="text">
+                <name>Start Date</name>
+            </field>
+            <field type="text">
+                <name>End Date</name>
+            </field>
+            <field type="text" url="true" template="https://wso2.org/jira/browse/@{value}">
+                <name>Issue Tracker</name>
+            </field>
+        </table>
+        
+        <table name="Contact Details">
+            <field type="text">
+                <name>Address 1</name>
+            </field>
+            <field type="text">
+                <name>Address 2</name>
+            </field>
+            <field type="text">
+                <name>City</name>
+            </field>
+            <field type="text">
+                <name>State</name>
+            </field>
+            <field type="text">
+                <name>Zip</name>
+            </field>
+            <field type="text">
+                <name>Country</name>
+            </field>
+            <field type="text">
+                <name>Phone</name>
+            </field>
+            <field type="text">
+                <name>Fax</name>
+            </field>
+            <field type="text">
+                <name>Email</name>
+            </field>
+        </table>
+        
+        <table name="SLA" columns="3">
+            <subheading>
+                <heading>SLA</heading>
+            </subheading>
+            <field type="text" path="true" url="true">
+                <name>SLA</name>
+            </field>
+            <field type="text" path="true" url="true">
+                <name>SLA1</name>
+            </field>
+            <field type="text" path="true" url="true">
+                <name>SLA2</name>
+            </field>
+        </table>
+        
+        <table name="External Links" columns="3">
+            <subheading>
+                <heading>URL</heading>
+            </subheading>
+            <field type="text" url="true">
+                <name>URL</name>
+            </field>
+            <field type="text" url="true">
+                <name>URL1</name>
+            </field>
+            <field type="text" url="true">
+                <name>URL2</name>
+            </field>
+        </table>
+        
+        <table name="Comments">
+            <field type="text-area">
+                <name>Comments</name>
+            </field>
+        </table>
+    </content>
+</artifactType>
