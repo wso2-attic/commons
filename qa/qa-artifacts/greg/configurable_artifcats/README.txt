@@ -1,3 +1,7 @@
+How this works
+=============
+All you need to do is, upload the .rxt file to anywhere in the registry, logout from the Management Console and login again.
+
 Employee.rxt
 ============
 Once this is uploaded, a new artifact type should appear in the left menu pane under 'Metadata'. Click on it and you will see a custom UI with fields to be filled. Fill them in and save the artifact. It should create a new employee artifact and list under 'Employee List' page. In the list, of each employee artifact, the below valums should be listed.
