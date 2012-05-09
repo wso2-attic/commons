@@ -71,8 +71,11 @@ public class DefaultCharonManager implements CharonManager {
     private void init() throws CharonException {
         //TODO:read config and init stuff, if nothing in config, make sure to initialize default stuff. 
         tenantManager = new InMemoryTenantManager();
+
+        //if no encoder/decoders provided by the configuration, register defaults.
         encoderMap.put(SCIMConstants.JSON, new JSONEncoder());
         decoderMap.put(SCIMConstants.JSON, new JSONDecoder());
+
         //create basic auth - authenticator property
         Map<String, Object> basicAuthAuthenticator = new HashMap<String, Object>();
         basicAuthAuthenticator.put(INSTANCE, new BasicAuthHandler());

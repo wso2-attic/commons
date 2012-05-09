@@ -330,7 +330,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             Group updatedGroup = null;
             if (userManager != null) {
                 //retrieve the old object
-                Group oldGroup = userManager.getGroup(group.getId());
+                Group oldGroup = userManager.getGroup(existingId);
                 if (oldGroup != null) {
                     Group validatedGroup = (Group) ServerSideValidator.validateUpdatedSCIMObject(
                             oldGroup, group, SCIMSchemaDefinitions.SCIM_GROUP_SCHEMA);

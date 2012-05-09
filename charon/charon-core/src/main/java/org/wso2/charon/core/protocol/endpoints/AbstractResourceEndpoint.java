@@ -64,10 +64,6 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      */
     public Encoder getEncoder(String format)
             throws FormatNotSupportedException, CharonException {
-        //if the encoder map is empty, register default json encoder
-        if (encoderMap.isEmpty()) {
-            encoderMap.put(SCIMConstants.JSON, new JSONEncoder());
-        }
         //if the requested format not supported, return an error.
         if (!encoderMap.containsKey(format)) {
             //Error is logged by the caller.
@@ -79,15 +75,10 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
     public Decoder getDecoder(String format)
             throws FormatNotSupportedException, CharonException {
 
-        //if the decoder map is empty, register default json encoder
-        if (decoderMap.isEmpty()) {
-            decoderMap.put(SCIMConstants.JSON, new JSONDecoder());
-        }
         //if the requested format not supported, return an error.
         if (!decoderMap.containsKey(format)) {
             //Error is logged by the caller.
-            throw new FormatNotSupportedException(ResponseCodeConstants.CODE_FORMAT_NOT_SUPPORTED,
-                                                  ResponseCodeConstants.DESC_FORMAT_NOT_SUPPORTED);
+            throw new FormatNotSupportedException();
         }
         return decoderMap.get(format);
 
