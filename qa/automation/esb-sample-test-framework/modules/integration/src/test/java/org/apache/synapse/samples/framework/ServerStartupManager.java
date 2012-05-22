@@ -46,13 +46,16 @@ public class ServerStartupManager {
 
     public synchronized void start(int sampleNumber) throws Exception {
         int sampleNo = sampleNumber;
+        System.out.println("/n");
+        System.out.println("STARTING SAMPLE NUMBER : " + sampleNumber);
+        System.out.println("/n");
 
         //ToDO comment it
-        if(sampleNo == 12){
-          sampleNo = 0;
+        if (sampleNo == 12) {
+            sampleNo = 0;
         }
-        if(sampleNo == 13){
-          sampleNo = 0;
+        if (sampleNo == 13) {
+            sampleNo = 0;
         }
         String CARBON_HOME = PropertyLoader.CARBON_HOME;
         if (process != null) { // An instance of the server is running
@@ -75,12 +78,12 @@ public class ServerStartupManager {
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 
                 tempProcess = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/C", "bin\\wso2server.bat", "-Dsetup"},
-                                                        null, new File(carbonHome));
+                        null, new File(carbonHome));
             } else {
                 //when starting wso2greg it crate all tables in registry
 
                 tempProcess = Runtime.getRuntime().exec(new String[]{"sh", "bin/wso2esb-samples.sh", "-sn " + sampleNo + " -Dsetup"},
-                                                        null, new File(carbonHome));
+                        null, new File(carbonHome));
             }
 //            Runtime.getRuntime().addShutdownHook(new Thread() {
 //                public void run() {
