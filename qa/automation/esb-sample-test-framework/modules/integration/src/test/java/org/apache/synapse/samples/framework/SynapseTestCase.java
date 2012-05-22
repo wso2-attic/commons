@@ -119,6 +119,12 @@ public abstract class SynapseTestCase extends TestCase {
             log.info("Stopping Synapse");
             System.out.println("Stopping Synapse Server");
             pc.stopProcess();
+            try {
+                Thread.sleep(60000);
+                System.out.println("Stopping ESB +++++++++++++++++++++++++++++++++++++++++++++");
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
 
         ArrayList<BackEndServerController> clonedControllers = (ArrayList<BackEndServerController>)
