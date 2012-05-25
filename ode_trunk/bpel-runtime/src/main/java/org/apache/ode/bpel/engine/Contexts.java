@@ -74,4 +74,8 @@ public class Contexts {
     /** Global correlation filter registry **/
     final Map<String, ExtensionCorrelationFilter> correlationFilterRegistry = new ConcurrentHashMap<String, ExtensionCorrelationFilter>();
 
+    public BpelDAOConnectionFactory getInMemDao(){
+        return inMemDao;
+    }
+
 }

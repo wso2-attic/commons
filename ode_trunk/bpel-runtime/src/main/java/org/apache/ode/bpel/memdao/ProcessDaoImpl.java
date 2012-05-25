@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -89,6 +90,11 @@ class ProcessDaoImpl extends DaoBaseImpl implements ProcessDAO {
         }
         return ret;
     }
+
+    public Set<String> getCorrelatorsSet() {
+            return _correlators.keySet();
+       }
+
 
     public Collection<CorrelatorDAO> getCorrelators() {
         // Note: _correlators.values() is a Collection<CorrealatorDaoImpl>. We can't just return this object

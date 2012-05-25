@@ -34,7 +34,10 @@ import javax.xml.namespace.QName;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Matthieu Riou <mriou at apache dot org>
@@ -44,7 +47,8 @@ import java.util.List;
 @NamedQueries({
     @NamedQuery(name="ActiveInstances", query="select i from ProcessInstanceDAOImpl as i where i._process = :process and i._state = :state"),
     @NamedQuery(name="InstanceByCKey", query="select cs._scope._processInstance from CorrelationSetDAOImpl as cs where cs._correlationKey = :ckey"),
-    @NamedQuery(name="CorrelatorByKey", query="select c from CorrelatorDAOImpl as c where c._correlatorKey = :ckey and c._process = :process")
+    @NamedQuery(name="CorrelatorByKey", query="select c from CorrelatorDAOImpl as c where c._correlatorKey = :ckey and c._process = :process"),
+    @NamedQuery(name="AllCorrelators", query="select c from CorrelatorDAOImpl as c where c._process = :process")
 })
 public class ProcessDAOImpl extends OpenJPADAO implements ProcessDAO {
     private static final Log __log = LogFactory.getLog(ProcessDAOImpl.class);
@@ -95,6 +99,19 @@ public class ProcessDAOImpl extends OpenJPADAO implements ProcessDAO {
         List res = qry.getResultList();
         if (res.size() == 0) return null;
         return (CorrelatorDAO) res.get(0);
+    }
+
+    public Set<String> getCorrelatorsSet() {
+        Set<String> correlatorsSet = new HashSet<String>();
+
+        Query qry = getEM().createNamedQuery("AllCorrelators");
+        qry.setParameter("process", this);
+        List res = qry.getResultList();
+        for(Object result:res)
+        {
+          correlatorsSet.add(((CorrelatorDAO) result).getCorrelatorId() );
+        }
+        return correlatorsSet;
     }
 
     public ProcessInstanceDAO createInstance(CorrelatorDAO instantiatingCorrelator) {

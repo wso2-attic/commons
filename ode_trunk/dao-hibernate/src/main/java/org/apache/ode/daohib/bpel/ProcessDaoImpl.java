@@ -113,6 +113,11 @@ public class ProcessDaoImpl extends HibernateDao implements ProcessDAO, Deferred
         }
     }
 
+    public Set<String> getCorrelatorsSet() {
+        return null;
+    }
+
+
     public void removeRoutes(String routeId, ProcessInstanceDAO target) {
         entering("ProcessDaoImpl.removeRoutes");
         for (HCorrelator hCorrelator : _process.getCorrelators()) {

@@ -23,6 +23,7 @@ import org.apache.ode.bpel.common.CorrelationKey;
 import javax.xml.namespace.QName;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * BPEL process data access objects. Contains references to active process instances ({@link ProcessInstanceDAO} and messages bound
@@ -58,6 +59,13 @@ public interface ProcessDAO {
      * @return correlator corresponding to the given identifier
      */
     CorrelatorDAO getCorrelator(String correlatorId);
+
+    /**
+     * Returns a list of correlators for the process
+     *
+     * @return correlatorset for the process
+     */
+    Set<String> getCorrelatorsSet();
 
     /**
      * Create a new process instance object.
