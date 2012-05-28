@@ -21,6 +21,7 @@ package org.apache.ode.daohib.bpel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -114,7 +115,13 @@ public class ProcessDaoImpl extends HibernateDao implements ProcessDAO, Deferred
     }
 
     public Set<String> getCorrelatorsSet() {
-        return null;
+        Set<HCorrelator> correlators = _process.getCorrelators();
+        Set<String> correlatorIDs = new HashSet<String>();
+        for (HCorrelator correlator:correlators)
+        {
+            correlatorIDs.add(correlator.getCorrelatorId());
+        }
+        return correlatorIDs;
     }
 
 
