@@ -63,11 +63,11 @@ public class PersistenceProviderImpl
     implements PersistenceProvider, ProviderUtil {
 
     static final String CLASS_TRANSFORMER_OPTIONS = "ClassTransformerOptions";
-    private static final String EMF_POOL = "EntityManagerFactoryPool";
+    protected static final String EMF_POOL = "EntityManagerFactoryPool";
 
-    private static final Localizer _loc = Localizer.forPackage(PersistenceProviderImpl.class);
+    protected static final Localizer _loc = Localizer.forPackage(PersistenceProviderImpl.class);
 
-    private Log _log;
+    protected Log _log;
     /**
      * Loads the entity manager specified by <code>name</code>, applying
      * the properties in <code>m</code> as overrides to the properties defined
@@ -130,7 +130,7 @@ public class PersistenceProviderImpl
         }
     }
 
-    private BrokerFactory getBrokerFactory(ConfigurationProvider cp,
+    protected BrokerFactory getBrokerFactory(ConfigurationProvider cp,
         Object poolValue, ClassLoader loader) {
         // handle "true" and "false"
         if (poolValue instanceof String
@@ -294,7 +294,7 @@ public class PersistenceProviderImpl
     /**
      * This private worker method will attempt load the PCEnhancerAgent.
      */
-    private void loadAgent(BrokerFactory factory) {
+    protected void loadAgent(BrokerFactory factory) {
         OpenJPAConfiguration conf = factory.getConfiguration();
         Log log = conf.getLog(OpenJPAConfiguration.LOG_RUNTIME);
 
@@ -314,7 +314,7 @@ public class PersistenceProviderImpl
      * @param conf
      * @throws if validation setup failed and was required by the config
      */
-    private void loadValidator(BrokerFactory factory) {
+    protected void loadValidator(BrokerFactory factory) {
         OpenJPAConfiguration conf = factory.getConfiguration();
         Log log = conf.getLog(OpenJPAConfiguration.LOG_RUNTIME);
 

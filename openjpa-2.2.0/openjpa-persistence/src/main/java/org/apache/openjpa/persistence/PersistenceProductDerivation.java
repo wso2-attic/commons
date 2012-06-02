@@ -18,44 +18,12 @@
  */
 package org.apache.openjpa.persistence;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.Set;
-
-import javax.persistence.SharedCacheMode;
-import javax.persistence.ValidationMode;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.persistence.spi.PersistenceUnitTransactionType;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.openjpa.conf.Compatibility;
-import org.apache.openjpa.conf.OpenJPAConfiguration;
-import org.apache.openjpa.conf.OpenJPAConfigurationImpl;
-import org.apache.openjpa.conf.OpenJPAProductDerivation;
-import org.apache.openjpa.conf.Specification;
+import org.apache.openjpa.conf.*;
 import org.apache.openjpa.datacache.DataCacheMode;
 import org.apache.openjpa.kernel.MixedLockLevels;
 import org.apache.openjpa.kernel.QueryHints;
-import org.apache.openjpa.lib.conf.AbstractProductDerivation;
-import org.apache.openjpa.lib.conf.Configuration;
-import org.apache.openjpa.lib.conf.ConfigurationProvider;
-import org.apache.openjpa.lib.conf.Configurations;
-import org.apache.openjpa.lib.conf.MapConfigurationProvider;
-import org.apache.openjpa.lib.conf.ProductDerivations;
+import org.apache.openjpa.lib.conf.*;
 import org.apache.openjpa.lib.log.Log;
 import org.apache.openjpa.lib.meta.XMLMetaDataParser;
 import org.apache.openjpa.lib.meta.XMLVersionParser;
@@ -63,6 +31,19 @@ import org.apache.openjpa.lib.util.J2DoPrivHelper;
 import org.apache.openjpa.lib.util.Localizer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import javax.persistence.SharedCacheMode;
+import javax.persistence.ValidationMode;
+import javax.persistence.spi.PersistenceUnitInfo;
+import javax.persistence.spi.PersistenceUnitTransactionType;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.util.*;
 
 
 /**
@@ -508,7 +489,7 @@ public class PersistenceProductDerivation
      * @return {@link Boolean#TRUE} if the resource was loaded, null if it
      * does not exist, or {@link Boolean#FALSE} if it is not for OpenJPA
      */
-    private Boolean load(ConfigurationProviderImpl cp, String rsrc, 
+    protected Boolean load(ConfigurationProviderImpl cp, String rsrc,
         String name, Map m, ClassLoader loader, boolean explicit)
         throws IOException {
         if (loader == null)
@@ -602,7 +583,7 @@ public class PersistenceProductDerivation
     /**
      * Return whether the given persistence unit uses an OpenJPA provider.
      */
-    private static boolean isOpenJPAPersistenceProvider(PersistenceUnitInfo pinfo, ClassLoader loader) {
+    protected static boolean isOpenJPAPersistenceProvider(PersistenceUnitInfo pinfo, ClassLoader loader) {
         String provider = pinfo.getPersistenceProviderClassName();
         if (StringUtils.isEmpty(provider) || PersistenceProviderImpl.class.getName().equals(provider))
             return true;
@@ -623,7 +604,7 @@ public class PersistenceProductDerivation
      * Warn the user that we could only find an unrecognized persistence 
      * provider.
      */
-    private static void warnUnknownProvider(PersistenceUnitInfo pinfo) {
+    protected static void warnUnknownProvider(PersistenceUnitInfo pinfo) {
         log(_loc.get("unrecognized-provider", pinfo.getPersistenceProviderClassName()).getMessage());
     }
     
