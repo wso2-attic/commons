@@ -1,0 +1,20 @@
+<!--This proxy was created to test remove action attribute in header mediator-->
+<!--Request should be send with a secure java client (request should contain security headers)-->
+<proxy name="TestHeaderMediator" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <log level="full"/>
+                <header xmlns:wssee="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wssee:test" action="remove"/>
+                <log level="full"/>
+                <send>
+                    <endpoint>
+                        <address uri="http://localhost:8280/services/echo"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <drop/>
+            </outSequence>
+        </target>
+    </proxy>
