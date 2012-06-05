@@ -1,0 +1,35 @@
+<!--Use the usual StockQuote request and verify whether the log message is printed -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <filter xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" xpath="//m0:getQuote/m0:request/m0:symbol1">
+                <then>
+                    <send>
+                        <endpoint>
+                            <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                        </endpoint>
+                    </send>
+                    <drop/>
+                </then>
+                <else>
+                    <log>
+                        <property name="message" value="****Filter condition Not Satisfied******"/>
+                    </log>
+                </else>
+            </filter>
+            <send/>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
