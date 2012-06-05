@@ -1,0 +1,25 @@
+<!--use the usual StockQuote request -->
+
+<syn:sequence name="main">
+<syn:in>
+   <syn:filter xmlns:m0="http://services.samples" source="//m0:getQuote/m0:request/m0:symbol" regex="IBM">
+       <syn:then>
+           <syn:send>
+               <syn:endpoint>
+                   <syn:address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+               </syn:endpoint>
+           </syn:send>
+       </syn:then>
+       <syn:else>
+           <syn:send>
+               <syn:endpoint>
+                   <syn:address uri="http://localhost:9001/services/SimpleStockQuoteService"/>
+               </syn:endpoint>
+           </syn:send>
+       </syn:else>
+   </syn:filter>
+</syn:in>
+<syn:out>
+   <syn:send/>
+</syn:out>
+</syn:sequence>
