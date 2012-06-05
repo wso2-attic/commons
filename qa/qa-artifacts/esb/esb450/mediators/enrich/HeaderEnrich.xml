@@ -1,0 +1,32 @@
+
+
+<soapenv:Header>
+      <urn:AuthenticationInfo>
+         <urn:userName>temp</urn:userName>
+         <urn:password>temp123</urn:password>
+      </urn:AuthenticationInfo>
+   </soapenv:Header>
+
+
+
+
+
+<proxy name="HeaderEnrichProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <log level="full"/>
+                <header xmlns:urn="urn:FOOBAR_WS" name="urn:AuthInf" value="foo"/>
+                <enrich>
+                    <source type="inline">
+                        <urn:AuthInf xmlns:urn="urn:FOOBAR_WS">
+                            <urn:userName>foo</urn:userName>
+                            <urn:password>bar</urn:password>
+                        </urn:AuthInf>
+                    </source>
+                    <target xmlns:urn="urn:FOOBAR_WS" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xpath="/soapenv:Envelope/soapenv:Header/urn:AuthInf"/>
+                </enrich>
+                <log level="full"/>
+                <drop/>
+            </inSequence>
+        </target>
+    </proxy>
