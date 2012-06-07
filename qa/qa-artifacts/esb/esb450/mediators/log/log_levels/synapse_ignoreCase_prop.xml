@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="logLevelTestSequence">
+        <in>
+            <log level="custom">
+                <property name="PRIORITY" expression="$trp:PRIORITY"/>
+                <property name="NEW_HeaDER" expression="$trp:NEW_HeaDER"/>
+                <property name="old_HEADER" expression="$trp:old_HEADER"/>
+            </log>
+            <property name="old_header" expression="$trp:NEW_header" scope="transport"/>
+            <property name="priority" scope="transport" action="remove"/>
+            <log level="custom">
+                <property name="old_header" expression="$trp:old_HEADER"/>
+                <property name="new_HEADER" expression="$trp:new_HEADER"/>
+                <property name="PrIoRiTy" expression="$trp:PrIoRiTy"/>
+            </log>
+            <property name="new_header" expression="$trp:new_header" scope="transport"/>
+            <log level="custom">
+                <property name="new_header" expression="$trp:new_header"/>
+                <property name="PrIoRiTy" expression="$trp:PrIoRiTy"/>
+                <property name="OLD_header" expression="$trp:OLD_header"/>
+            </log>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <log level="custom">
+                <property name="encoding" expression="$trp:transfer-encoding"/>
+            </log>
+            <property name="priority_2" value="abvaa" scope="transport"/>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="logLevelTestSequence"/>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
