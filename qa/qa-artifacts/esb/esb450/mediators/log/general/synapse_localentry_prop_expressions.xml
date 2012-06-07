@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <localEntry key="esbXmlEntry">
+        <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsd="http://services.samples/xsd" xmlns:ser="http://services.samples">
+            <soap:Header/>
+            <soap:Body>
+                <ser:getQuote>
+                    <ser:request>
+                        <xsd:symbol>IBM</xsd:symbol>
+                    </ser:request>
+                </ser:getQuote>
+            </soap:Body>
+        </soap:Envelope>
+    </localEntry>
+    <localEntry key="esbInlineText">Log Mediator
+============
+With the log mediator, you can log messages being mediated.
+You can select the log category to be one of following values.
+
+* TRACE
+* DEBUG
+* INFO
+* WARN
+* ERROR
+* FATAL</localEntry>
+    <localEntry key="esbFileURL" src="file:repository/samples/resources/transform/transform.xslt"/>
+    <localEntry key="esbWsdlURL" src="http://people.wso2.com/~evanthika/wsdls/Axis2ImportedWsdl.wsdl"/>
+    <sequence name="logTestSequence">
+        <in>
+            <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="inlineXml" expression="get-property('esbXmlEntry')" scope="default" type="OM"/>
+            <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="sourceURLEntry" expression="get-property('esbWsdlURL')" scope="default" type="OM"/>
+            <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="fileURLEntry" expression="get-property('esbFileURL')" scope="default" type="OM"/>
+            <log level="custom">
+                <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="esbInlineText" expression="get-property('esbInlineText')"/>
+                <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="esbInlineXml" expression="get-property('inlineXml')"/>
+                <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="esbWsdlURL" expression="get-property('sourceURLEntry')"/>
+                <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="esbFileURL" expression="get-property('fileURLEntry')"/>
+            </log>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="logTestSequence"/>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
