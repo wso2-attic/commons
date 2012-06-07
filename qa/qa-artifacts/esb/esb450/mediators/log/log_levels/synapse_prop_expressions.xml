@@ -5,7 +5,11 @@
     <sequence name="logLevelTestSequence">
         <in>
             <log level="custom" category="DEBUG">
-                <property xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" name="debug_custom_inseq1" expression="//m0:getQuote/m0:request/m0:symbol"/>
+                <property xmlns:m0="http://services.samples" name="debug_custom_inseq1" expression="//m0:getQuote/m0:request/m0:symbol"/>
+                <property name="to_header" expression="get-property('To')"/>
+                <property name="replyto_header" expression="get-property('ReplyTo')"/>
+                <property name="from_header" expression="get-property('From')"/>
+                <property name="messageId_header" expression="get-property('MessageID')"/>
             </log>
             <send>
                 <endpoint>
