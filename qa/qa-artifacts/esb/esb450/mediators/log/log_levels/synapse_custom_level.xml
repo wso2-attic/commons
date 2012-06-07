@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="logLevelTestSequence">
+        <in>
+            <log level="custom" category="DEBUG">
+                <property name="debug_custom_inseq1"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 1- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq2"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 2- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq3"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 3- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq4"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 4- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq5"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 5- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq6"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 6- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq7"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 7- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq8"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 8- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq9"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 9- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq10"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 10- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq11"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 11- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq12"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 12- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq13"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 13- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq14"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 14- INCOMING MESSAGE*******"/>
+                <property name="debug_custom_inseq15"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 15- INCOMING MESSAGE*******"/>
+            </log>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <log level="custom" category="DEBUG">
+                <property name="debug_custom_outseq1"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 1- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq2"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 2- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq3"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 3- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq4"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 4- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq5"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 5- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq6"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 6- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq7"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 7- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq8"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 8- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq9"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 9- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq10"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 10- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq11"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 11- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq12"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 12- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq13"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 13- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq14"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 14- OUTGOING MESSAGE*******"/>
+                <property name="debug_custom_outseq15"a value="******THIS IS A DEBUG LEVEL - CUSTOM LOG 15- OUTGOING MESSAGE*******"/>
+             </log>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="logLevelTestSequence"/>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
