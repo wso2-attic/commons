@@ -1,0 +1,1 @@
+Use the given configuration and invoke the client. If continueParent is set to true, the log message "*****PARENT MESSAGE******" should be printed. If continueParent is false, this message will not be printed
