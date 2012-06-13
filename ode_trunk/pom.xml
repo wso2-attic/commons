@@ -103,7 +103,7 @@
         <jencks.version>2.1</jencks.version>
         <jasper.version>4.2.20RC0</jasper.version>
         <log4j.version>1.2.15</log4j.version>
-        <saxon.version>9.1.0.8</saxon.version>
+        <saxon.version>9.x</saxon.version>
         <servicemix.version>3.3</servicemix.version>
         <slf4j.version>1.4.3</slf4j.version>
         <stax-api.version>1.0</stax-api.version>
@@ -116,7 +116,8 @@
         <persistence-api.version>1.0</persistence-api.version>
         <xalan.version>2.7.1</xalan.version>
         <ant.version>1.6.5</ant.version>
-        <openjpa.version>1.2.1</openjpa.version>
+        <!--openjpa.version>1.2.1</openjpa.version-->
+        <openjpa.version>2.2.0-wso2v1</openjpa.version>
         <serp.version>1.13.1</serp.version>
         <dom4j.version>1.6.1</dom4j.version>
         <derby.version>10.5.3.0_1</derby.version>
