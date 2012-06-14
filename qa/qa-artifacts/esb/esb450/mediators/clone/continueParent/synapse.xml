@@ -42,6 +42,11 @@
         <log>
             <property name="parent" value="*****PARENT MESSAGE******"/>
         </log>
+                    <send>
+                        <endpoint>
+                            <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                        </endpoint>
+                    </send>
     </sequence>
     <sequence name="fault">
         <log level="full">
