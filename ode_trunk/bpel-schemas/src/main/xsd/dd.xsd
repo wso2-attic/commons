@@ -92,7 +92,7 @@
                         </xs:element>
                         <xs:element name="type" minOccurs="0" maxOccurs="1"  type="xs:QName">
                             <xs:annotation>
-                                <xs:documentation> Process type -- indicates which process defintion should be used
+                                <xs:documentation> Process type -- indicates which process definition should be used
                                     for the process.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
@@ -100,6 +100,7 @@
                         <xs:element name="cleanup" minOccurs="0" maxOccurs="3" type="dd:tCleanup" />
                         <xs:element name="schedule" minOccurs="0" maxOccurs="unbounded" type="dd:tSchedule">
                         </xs:element>
+                        <xs:element name="BamStreamDefinitions" type="dd:tBamStreamDefinitions" maxOccurs="1" minOccurs="0"/>
                     </xs:sequence>
 
                     <xs:attribute name="name" type="xs:QName" use="required"/>
@@ -232,5 +233,16 @@
             </xs:element>
         </xs:sequence>
         <xs:attribute name="when" type="xs:string" use="required"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="tBamStreamDefinitions">
+        <xs:sequence>
+            <xs:element name="stream" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="streamName" type="xs:string" use="required"/>
+                    <xs:attribute name="streamVersion" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
     </xs:complexType>
 </xs:schema>
