@@ -19,3 +19,13 @@ Scenario - setSoapActionTest
 java -jar benchmark.jar -p StockQuoteRequest_add.xml -n 1 -c 1 -k -H "" -T "text/xml; charset=UTF-8" "http://localhost:8281/"
 
 3. You can find the StockQuoteRequest_add.xml at resources collection
+
+
+
+Scenario - refSequence_InlineEndpoint
+=====================================
+1. Use the configuration available in refSequence_InlineEndpoint_synapse.xml
+2. Using the command mentioned above, send a request
+
+
+
