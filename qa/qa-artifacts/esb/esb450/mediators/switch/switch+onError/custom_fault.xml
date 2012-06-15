@@ -1,0 +1,4 @@
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="custom_fault">
+   <log />
+   <property name="error_prop" value="Error Occured" scope="default" />
+</sequence>

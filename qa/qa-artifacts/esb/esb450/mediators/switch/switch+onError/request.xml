@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sam="http://samples.esb.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <sam:credit>
+         <!--Optional:-->
+         <sam:id>99990000</sam:id>
+         <!--Optional:-->
+         <sam:amount>1000</sam:amount>
+      </sam:credit>
+   </soapenv:Body>
+</soapenv:Envelope>

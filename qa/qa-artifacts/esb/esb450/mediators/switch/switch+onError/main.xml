@@ -1,0 +1,50 @@
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="main" onError="custom_fault">
+   <in>
+      <log level="full">
+         <property name="sequence" value="inSequence - request for CreditProxy" />
+      </log>
+      <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:sam="http://samples.esb.wso2.org" name="ORG_ID" expression="//sam:credit/sam:id" scope="default" />
+      <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:sam="http://samples.esb.wso2.org" name="ORG_AMOUNT" expression="//sam:credit/sam:amount" scope="default" />
+      <enrich>
+         <source clone="true" type="inline" xpath="" property="" key="conf:/source.xml" />
+         <target action="replace" type="body" xpath="" property="" />
+      </enrich>
+      <enrich>
+         <source clone="true" type="property" xpath="" property="ORG_ID" />
+         <target xmlns:ns="http://org.apache.synapse/xsd" xmlns:sam="http://samples.esb.wso2.org" action="replace" type="custom" xpath="//sam:get/sam:id" property="" />
+      </enrich>
+      <log level="full">
+         <property name="sequence" value="inSequence - request for PersonInfoService" />
+      </log>
+      <property name="STATE" value="PERSON_INFO_REQUEST" scope="default" />
+      <send>
+         <endpoint key="PersonInfoEpr" />
+      </send>
+   </in>
+   <out>
+      <switch xmlns:ns="http://org.apache.synapse/xsd" source="get-property('STATE')">
+         <case regex="PERSON_INFO_REQUEST">
+            <property name="sequence" value="outSequence - STATE 01 - response from PersonInfoService" scope="default" />
+            <xslt key="xslt">
+               <property name="amount" expression="get-property('ORG_AMOUNT')" />
+            </xslt>
+            <log level="full">
+               <property name="sequence" value="outSequence - STATE 01 - request for CreditService" />
+            </log>
+            <property name="STATE" value="CREDIT_REQUEST" scope="default" />
+            <send>
+               <endpoint key="CreditEpr" />
+            </send>
+         </case>
+         <case regex="CREDIT_REQUEST">
+            <log level="full">
+               <property name="sequence" value="outSequence - STATE 02 - response from CreditService" />
+            </log>
+            <send />
+         </case>
+      </switch>
+   </out>
+   <description>The main sequence for the message mediation</description>
+</sequence>
+
+
