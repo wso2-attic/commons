@@ -1,0 +1,66 @@
+<!--Invoke this using Soap UI-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="switchSample4" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <switch xmlns:p="http://echo.services.core.carbon.wso2.org" source="get-property('Action')">
+            <case regex="urn:echoInt">
+               <log level="full">
+                  <property name="print_prop" value="Echo Int Service invoked" />
+               </log>
+               <send>
+                  <endpoint>
+                     <address uri="http://localhost:8280/services/echo" />
+                  </endpoint>
+               </send>
+            </case>
+            <case regex="urn:echoString">
+               <log level="full">
+                  <property name="print_prop" value="Echo Stirng service invoked" />
+               </log>
+               <send>
+                  <endpoint>
+                     <address uri="http://localhost:8280/services/echo" />
+                  </endpoint>
+               </send>
+            </case>
+            <default>
+               <log level="full">
+                  <property name="print_service" value="No service invoked" />
+               </log>
+               <drop />
+            </default>
+         </switch>
+      </inSequence>
+      <outSequence>
+         <send />
+      </outSequence>
+   </target>
+   <publishWSDL uri="http://pavithra-thinkpad-t410:8280/services/echo?wsdl" />
+   <description></description>
+</proxy>
+                      
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
