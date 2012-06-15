@@ -1,0 +1,13 @@
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="switchOutSequence" onError="custom_fault">
+   <property name="sequence" value="outSequence - STATE 01 - response from PersonInfoService" scope="default" />
+   <xslt key="xslt">
+      <property xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="amount" expression="get-property('ORG_AMOUNT')" />
+   </xslt>
+   <log level="full">
+      <property name="sequence" value="outSequence - STATE 01 - request for CreditService" />
+   </log>
+   <property name="STATE" value="CREDIT_REQUEST" scope="default" />
+   <send>
+      <endpoint key="CreditEpr" />
+   </send>
+</sequence>
