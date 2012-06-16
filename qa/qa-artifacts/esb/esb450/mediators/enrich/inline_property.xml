@@ -1,0 +1,55 @@
+<!--Use following command to send a requst using a client-->
+<!--ant stockquote -Daddurl=http://localhost:9000/services/SimpleStockQuoteService -Dtrpurl=http://localhost:8280/services/enrichSample2  -Dmode=customquote-->
+
+<!--Use xslt configuration files shipped by WSO2 ESB-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="enrichSample2" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full" />
+         <property xmlns:m0="http://services.samples" name="body" expression="//m0:CheckPriceRequest" scope="default" />
+         <enrich>
+            <source type="inline">
+               <m:getQuote xmlns:m="http://services.samples">                        
+                  <m:request>                            
+                     <m:symbol>IBM</m:symbol>                        
+                  </m:request>                    
+               </m:getQuote>
+            </source>
+            <target type="property" property="body" />
+         </enrich>
+         <log level="full" />
+         <send />
+      </inSequence>
+      <outSequence>
+         <xslt key="gov:/transform_back.xslt" />
+         <send />
+      </outSequence>
+   </target>
+   <description></description>
+</proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
