@@ -1,0 +1,83 @@
+<!--Use Soap UI to send request-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="switchSample6" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <switch source="get-property('Action')">
+            <case regex="urn:echoInt">
+               <log level="full">
+                  <property name="int" value="This is ecoInt service" />
+               </log>
+            </case>
+            <case regex="urn:echoString">
+               <log level="full">
+                  <property name="string" value="This is echo String service" />
+               </log>
+               <switch xmlns:echo="http://echo.services.core.carbon.wso2.org" source="//echo:echoString/in">
+                  <case regex="a">
+                     <log level="full">
+                        <property name="prop_a" value="Value a sent" />
+                     </log>
+                  </case>
+                  <case regex="b">
+                     <log level="full">
+                        <property name="prop_b" value="value b sent" />
+                     </log>
+                  </case>
+                  <default>
+                     <log level="full">
+                        <property name="prop_default" value="Characters other than a and b sent" />
+                     </log>
+                  </default>
+               </switch>
+            </case>
+            <case regex="urn:echoStringArrays">
+               <log level="full">
+                  <property name="echoStringArrays" value="This is echo string arrya service" />
+               </log>
+            </case>
+            <default>
+               <log level="full">
+                  <property name="property_default" value="No service selected" />
+               </log>
+            </default>
+         </switch>
+         <send>
+            <endpoint>
+               <address uri="http://localhost:8280/services/echo" />
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send />
+      </outSequence>
+   </target>
+   <publishWSDL uri="http://localhost:8280/services/echo?wsdl" />
+   <description></description>
+</proxy>
+                                
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
