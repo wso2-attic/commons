@@ -1,0 +1,73 @@
+<!--Use Soap UI to send a request-->
+
+<!--Other required resources can be found from following blog
+    http://wso2.org/library/articles/2011/01/wso2-esb-by-example-service-chaining
+    -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="CreditProxy" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full">
+            <property name="sequence" value="inSequence - request for CreditProxy" />
+         </log>
+         <property xmlns:sam="http://samples.esb.wso2.org" name="ORG_ID" expression="//sam:credit/sam:id" scope="default" />
+         <property xmlns:sam="http://samples.esb.wso2.org" name="ORG_AMOUNT" expression="//sam:credit/sam:amount" scope="default" />
+         <enrich>
+            <source type="inline" clone="true" key="conf:/source.xml" />
+            <target type="body" />
+         </enrich>
+         <enrich>
+            <source type="property" clone="true" property="ORG_ID" />
+            <target xmlns:sam="http://samples.esb.wso2.org" xpath="//sam:get/sam:id" />
+         </enrich>
+         <log level="full">
+            <property name="sequence" value="inSequence - request for PersonInfoService" />
+         </log>
+         <property name="STATE" value="PERSON_INFO_REQUEST" scope="default" />
+         <send>
+            <endpoint key="PersonInfoEpr" />
+         </send>
+      </inSequence>
+      <outSequence>
+         <switch source="get-property('STATE')">
+            <case regex="PERSON_INFO_REQUEST">
+               <sequence key="switchOutSequence" />
+            </case>
+            <case regex="CREDIT_REQUEST">
+               <log level="full">
+                  <property name="sequence" value="outSequence - STATE 02 - response from CreditService" />
+               </log>
+               <send />
+            </case>
+         </switch>
+      </outSequence>
+   </target>
+   <publishWSDL key="wsdl" />
+   <description></description>
+</proxy>
+                                
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
