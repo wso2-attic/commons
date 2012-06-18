@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="mydy">
+        <log level="custom">
+            <property name="text" value="++++++++++++++++++++++++++++++++++++++++++++++"/>
+        </log>
+        <send>
+            <endpoint>
+                <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+            </endpoint>
+        </send>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main" trace="disable">
+        <in>
+            <cache id="" scope="per-host" collector="false" hashGenerator="org.wso2.caching.digest.DOMHASHGenerator" timeout="20">
+                <onCacheHit sequence="mydy"/>
+                <implementation type="memory" maxSize="100"/>
+            </cache>
+            <send>
+                <endpoint name="inlined">
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <cache id="id1" scope="per-host" collector="false" hashGenerator="org.wso2.caching.digest.DOMHASHGenerator" timeout="5000">
+                <implementation type="memory" maxSize="1000"/>
+            </cache>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
+
+<!-- README -->
+<!-- 
+1. Copy above synapse configuration and replace your source.
+2. Start sample axis2Server with SimpleStockQuote service.
+3. Send client 2 or more messages.
+ant stockquote -Dtrpurl=http://localhost:8280/
+
+Expected results.
+Should give an error when response is passing through cache mediator as it needs a collector cache to handle the response message. 
+
+-->

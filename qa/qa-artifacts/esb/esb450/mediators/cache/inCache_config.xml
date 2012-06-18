@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main" trace="disable">
+        <in>
+            <cache id="" scope="per-host" collector="true"/>
+            <send>
+                <endpoint name="inlined">
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <cache id="id1" scope="per-host" collector="true"/>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
+<!-- README -->
+<!-- 
+1. Copy above synapse configuration and replace your source.
+2. Start sample axis2Server with SimpleStockQuote service.
+3. Send client 2 or more messages.
+ant stockquote -Dtrpurl=http://localhost:8280/
+
+Expected results.
+Should give an error when request is passing through cache mediator as it needs a non-collector cache to handle the response message. 
+
+[2012-06-18 22:54:22,869] ERROR - CacheMediator Request messages cannot be handled in a collector cache
+[2012-06-18 22:54:22,870]  WARN - SynapseMessageReceiver Executing fault handler due to exception encountered
+[2012-06-18 22:54:22,871]  WARN - FaultHandler ERROR_CODE : 0
+[2012-06-18 22:54:22,872]  WARN - FaultHandler ERROR_MESSAGE : Request messages cannot be handled in a collector cache
+[2012-06-18 22:54:22,872]  WARN - FaultHandler ERROR_DETAIL : org.apache.synapse.SynapseException: Request messages cannot be handled in a collector cache
+	at org.apache.synapse.mediators.AbstractMediator.handleException(AbstractMediator.java:253)
+	at org.apache.synapse.mediators.builtin.CacheMediator.processRequestMessage(CacheMediator.java:265)
+	at org.apache.synapse.mediators.builtin.CacheMediator.mediate(CacheMediator.java:164)
+	at org.apache.synapse.mediators.AbstractListMediator.mediate(AbstractListMediator.java:60)
+	at org.apache.synapse.mediators.filters.InMediator.mediate(InMediator.java:55)
+	at org.apache.synapse.mediators.AbstractListMediator.mediate(AbstractListMediator.java:60)
+	at org.apache.synapse.mediators.base.SequenceMediator.mediate(SequenceMediator.java:114)
+	at org.apache.synapse.core.axis2.Axis2SynapseEnvironment.injectMessage(Axis2SynapseEnvironment.java:188)
+	at org.apache.synapse.core.axis2.SynapseMessageReceiver.receive(SynapseMessageReceiver.java:83)
+	at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:181)
+	at org.apache.axis2.transport.http.HTTPTransportUtils.processHTTPPostRequest(HTTPTransportUtils.java:172)
+	at org.apache.synapse.transport.nhttp.ServerWorker.processEntityEnclosingMethod(ServerWorker.java:409)
+	at org.apache.synapse.transport.nhttp.ServerWorker.run(ServerWorker.java:261)
+	at org.apache.axis2.transport.base.threads.NativeWorkerPool$1.run(NativeWorkerPool.java:172)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:722)
+
+
+-->
