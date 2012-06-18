@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <sequence name="mydy">
+        <log level="custom">
+            <property name="text" value="++++++++++++++++++++++++++++++++++++++++++++++"/>
+        </log>
+        <send>
+            <endpoint>
+                <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+            </endpoint>
+        </send>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &quot;fault&quot; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main" trace="disable">
+        <in>
+            <cache id="" scope="per-host" collector="false" hashGenerator="org.wso2.caching.digest.DOMHASHGenerator" timeout="20">
+                <onCacheHit sequence="mydy"/>
+                <implementation type="memory" maxSize="100"/>
+            </cache>
+            <send>
+                <endpoint name="inlined">
+                    <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <cache id="id1" scope="per-host" collector="true"/>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
+
+<!--README 
+
+1. Copy the above configuration to source view of esb. 
+2. Start sample axis2Server with SimpleStockQuote Service. 
+3. Send client request as below
+ant stockquote -Dtrpurl=http://localhost:8280
+
+The first message is sent to the endpoint specified as cache is not hit. The response will come to the Cache Mediator inside the out mediator, which caches the response. The second similar message will match the cache and onCacheHit sequence will be executed.
+
+
+-->
+
+
