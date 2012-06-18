@@ -35,6 +35,9 @@
 
 package org.wso2.balana;
 
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
 import org.wso2.balana.xacml3.advice.Advice;
 import org.wso2.balana.xacml3.advice.AdviceExpression;
 import org.wso2.balana.attr.BooleanAttribute;
@@ -44,7 +47,6 @@ import org.wso2.balana.cond.Condition;
 import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.cond.VariableManager;
 
-import org.wso2.balana.ctx.Result;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -58,9 +60,6 @@ import java.util.*;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.xacml3.Obligation;
-import org.wso2.balana.xacml3.ObligationExpression;
-import org.wso2.balana.xacml3.Target;
 
 /**
  * Represents the RuleType XACML type. This has a target for matching, and encapsulates the
@@ -75,7 +74,7 @@ public class Rule implements PolicyTreeElement {
     private URI idAttr;
     private int effectAttr;
     // any obligations held by this Rule
-    private Set<ObligationExpression> obligationExpressions;
+    private Set<AbstractObligation> obligationExpressions;
 
     // any obligations held by this Rule
     private Set<AdviceExpression> adviceExpressions;
@@ -96,7 +95,7 @@ public class Rule implements PolicyTreeElement {
      * @param condition the rule's condition, or null if there is none
      */
     public Rule(URI id, int effect, String description, AbstractTarget target, Condition condition,
-                Set<ObligationExpression> obligationExpressions, Set<AdviceExpression> adviceExpressions) {
+                Set<AbstractObligation> obligationExpressions, Set<AdviceExpression> adviceExpressions) {
         idAttr = id;
         effectAttr = effect;
         this.description = description;
@@ -165,7 +164,7 @@ public class Rule implements PolicyTreeElement {
      * @throws ParsingException if the RuleType is invalid
      */
     public static Rule getInstance(Node root, String xpathVersion) throws ParsingException {
-        return getInstance(root, new PolicyMetaData(PolicyMetaData.XACML_1_0_IDENTIFIER,
+        return getInstance(root, new PolicyMetaData(XACMLConstants.XACML_1_0_IDENTIFIER,
                 xpathVersion), null);
     }
 
@@ -189,7 +188,7 @@ public class Rule implements PolicyTreeElement {
         String description = null;
         AbstractTarget target = null;
         Condition condition = null;
-        Set<ObligationExpression> obligationExpressions = new HashSet<ObligationExpression>();
+        Set<AbstractObligation> obligationExpressions = new HashSet<AbstractObligation>();
         Set<AdviceExpression> adviceExpressions = new HashSet<AdviceExpression>();
 
         // first, get the attributes
@@ -220,11 +219,7 @@ public class Rule implements PolicyTreeElement {
             if (cname.equals("Description")) {
                 description = child.getFirstChild().getNodeValue();
             } else if (cname.equals("Target")) {
-                if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
-                    target = Target.getInstance(child, metaData);
-                } else {
-                    target = org.wso2.balana.xacml2.Target.getInstance(child, metaData);
-                }
+                target = TargetFactory.getFactory().getTarget(child, metaData);
             } else if (cname.equals("Condition")) {
                 condition = Condition.getInstance(child, metaData, manager);
             } else if("ObligationExpressions".equals(cname)){
@@ -232,7 +227,8 @@ public class Rule implements PolicyTreeElement {
                 for (int j = 0; j < nodes.getLength(); j++) {
                     Node node = nodes.item(j);
                     if ("ObligationExpression".equals(node.getNodeName())){
-                        obligationExpressions.add(ObligationExpression.getInstance(node, metaData));
+                        obligationExpressions.add(ObligationFactory.getFactory().
+                                getObligation(node, metaData));
                     }
                 }
             } else if("AdviceExpressions".equals(cname)){
@@ -340,93 +336,96 @@ public class Rule implements PolicyTreeElement {
      * 
      * @return the result of the evaluation
      */
-    public Result evaluate(EvaluationCtx context) {
+    public AbstractResult evaluate(EvaluationCtx context) {
+
         // If the Target is null then it's supposed to inherit from the
         // parent policy, so we skip the matching step assuming we wouldn't
         // be here unless the parent matched
-        
         MatchResult match = null;
         
         if (target != null) {
+
             match = target.match(context);
             int result = match.getResult();
 
             // if the target didn't match, then this Rule doesn't apply
-            if (result == MatchResult.NO_MATCH)
-                return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+            if (result == MatchResult.NO_MATCH){
+                return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
+            }
 
             // if the target was indeterminate, we can't go on
-            if (result == MatchResult.INDETERMINATE)
-                return new Result(Result.DECISION_INDETERMINATE, match.getStatus(), context
-                        .getResourceId().encode());
-        }
-
-        // if there's no condition, then we just return the effect...
-        if (condition == null){
-            if(obligationExpressions != null || adviceExpressions != null){
-                return new Result(effectAttr, context.getResourceId().encode(),
-                        evaluateObligationExpressions(context), evaluateAdviceExpressions(context));
-            } else {
-                return new Result(effectAttr, context.getResourceId().encode());                
+            if (result == MatchResult.INDETERMINATE){
+                return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE,
+                        match.getStatus(), context);
             }
         }
-        // ...otherwise we evaluate the condition
+
+        // if there's no condition, then we just return the effect
+        if (condition == null){
+            // if any obligations or advices are defined, evaluates them and return
+            return  ResultFactory.getFactory().getResult(effectAttr, processObligations(context),
+                                                        processAdvices(context), context);
+        }
+
+        // otherwise we evaluate the condition
         EvaluationResult result = condition.evaluate(context);
 
         if (result.indeterminate()) {
             // if it was INDETERMINATE, then that's what we return
-            return new Result(Result.DECISION_INDETERMINATE, result.getStatus(), context
-                    .getResourceId().encode());
+            return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE,
+                                                                       result.getStatus(), context);
         } else {
-            // otherwise we return the effect on tue, and NA on false
+            // otherwise we return the effect on true, and NA on false
             BooleanAttribute bool = (BooleanAttribute) (result.getAttributeValue());
 
             if (bool.getValue()) {
-                Result tmpResult;
-                if(obligationExpressions != null || adviceExpressions != null){
-                    tmpResult = new Result(effectAttr, context.getResourceId().encode(),
-                            evaluateObligationExpressions(context), evaluateAdviceExpressions(context));
-                } else {
-                    tmpResult = new Result(effectAttr, context.getResourceId().encode());                    
-                }
-
-                result.setMatchResult(match);
-                tmpResult.setEvalResult(result);
-                return tmpResult;
+                // if any obligations or advices are defined, evaluates them and return
+                return  ResultFactory.getFactory().getResult(effectAttr, processObligations(context),
+                                                            processAdvices(context), context);
             } else {
-                return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+                return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
             }
         }
     }
 
     /**
+     * helper method to evaluate the obligations expressions
      *
-     * @param context
-     * @return
+     * @param evaluationCtx context of a single policy evaluation
+     * @return set of <code>ObligationResult</code> or null
      */
-    private Set<Obligation> evaluateObligationExpressions(EvaluationCtx context){
-        Set<Obligation> obligations  = new HashSet<Obligation>();
-        for(ObligationExpression obligationExpression : obligationExpressions){
-            if(obligationExpression.getFulfillOn() == effectAttr) {
-                obligations.add((Obligation)obligationExpression.evaluate(context));
+    private Set<ObligationResult> processObligations(EvaluationCtx evaluationCtx){
+
+        if(obligationExpressions != null && obligationExpressions.size() > 0){
+            Set<ObligationResult>  results = new HashSet<ObligationResult>();
+            for(AbstractObligation obligationExpression : obligationExpressions){
+                if(obligationExpression.getFulfillOn() == effectAttr) {
+                    results.add(obligationExpression.evaluate(evaluationCtx));
+
+                }
             }
+            return results;
         }
-        return obligations;
+        return null;
     }
 
     /**
+     * helper method to evaluate the  advice expressions
      *
-     * @param context
-     * @return
+     * @param evaluationCtx context of a single policy evaluation
+     * @return set of <code>Advice</code> or null
      */
-    private Set<Advice> evaluateAdviceExpressions(EvaluationCtx context){
-        Set<Advice> advices = new HashSet<Advice>();
-        for(AdviceExpression adviceExpression : adviceExpressions){
-            if(adviceExpression.getAppliesTo() == effectAttr) {
-                advices.add(adviceExpression.evaluate(context));
+    private Set<Advice> processAdvices(EvaluationCtx evaluationCtx){
+        if(adviceExpressions != null && adviceExpressions.size() > 0){
+            Set<Advice>  advices = new HashSet<Advice>();
+            for(AdviceExpression adviceExpression : adviceExpressions){
+                if(adviceExpression.getAppliesTo() == effectAttr) {
+                    advices.add(adviceExpression.evaluate(evaluationCtx));
+                }
             }
+            return advices;
         }
-        return advices;
+        return null;
     }
 
 

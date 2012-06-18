@@ -9,12 +9,9 @@
 
 package org.wso2.balana.cond;
 
-import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.*;
 
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.UnknownIdentifierException;
-
-import org.wso2.balana.attr.AttributeDesignator;
+import org.wso2.balana.attr.AttributeDesignatorFactory;
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeSelector;
 
@@ -43,6 +40,7 @@ public class ExpressionHandler {
      * 
      * @return an <code>Expression</code> or null if the root node cannot be parsed as a valid
      *         Expression
+     * @throws org.wso2.balana.ParsingException
      */
     public static Expression parseExpression(Node root, PolicyMetaData metaData,
             VariableManager manager) throws ParsingException {
@@ -56,25 +54,16 @@ public class ExpressionHandler {
             } catch (UnknownIdentifierException uie) {
                 throw new ParsingException("Unknown DataType", uie);
             }
-        } else if("AttributeDesignator".equals(name) &&
-                PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
-            return AttributeDesignator.getInstance(root, 0, metaData);
-        } else if (name.equals("SubjectAttributeDesignator") &&
-                !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
-            return AttributeDesignator.getInstance(root, AttributeDesignator.SUBJECT_TARGET,
-                    metaData);
-        } else if (name.equals("ResourceAttributeDesignator") &&
-                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
-            return AttributeDesignator.getInstance(root, AttributeDesignator.RESOURCE_TARGET,
-                    metaData);
-        } else if (name.equals("ActionAttributeDesignator") &&
-                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
-            return AttributeDesignator.getInstance(root, AttributeDesignator.ACTION_TARGET,
-                    metaData);
-        } else if (name.equals("EnvironmentAttributeDesignator") &&
-                 !(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())) {
-            return AttributeDesignator.getInstance(root, AttributeDesignator.ENVIRONMENT_TARGET,
-                    metaData);
+        } else if("AttributeDesignator".equals(name)){
+            return AttributeDesignatorFactory.getFactory().getAbstractDesignator(root, metaData);
+        } else if (name.equals("SubjectAttributeDesignator")) {
+            return AttributeDesignatorFactory.getFactory().getAbstractDesignator(root, metaData);
+        } else if (name.equals("ResourceAttributeDesignator")) {
+            return AttributeDesignatorFactory.getFactory().getAbstractDesignator(root, metaData);
+        } else if (name.equals("ActionAttributeDesignator")) {
+            return AttributeDesignatorFactory.getFactory().getAbstractDesignator(root, metaData);
+        } else if (name.equals("EnvironmentAttributeDesignator")) {
+            return AttributeDesignatorFactory.getFactory().getAbstractDesignator(root, metaData);
         } else if (name.equals("AttributeSelector")) {
             return AttributeSelector.getInstance(root, metaData);
         } else if (name.equals("Function")) {

@@ -35,7 +35,7 @@
 
 package org.wso2.balana.cond;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BooleanAttribute;

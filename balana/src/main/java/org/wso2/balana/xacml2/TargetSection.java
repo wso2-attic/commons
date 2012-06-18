@@ -37,6 +37,7 @@
 package org.wso2.balana.xacml2;
 
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -225,7 +226,7 @@ public class TargetSection
             // what version of XACML we're using...in 2.0, we encode an Any
             // by simply omitting the element, so we'll only actually include
             // something if this is a 1.x policy
-            if (xacmlVersion == PolicyMetaData.XACML_VERSION_1_0) {
+            if (xacmlVersion == XACMLConstants.XACML_VERSION_1_0) {
                 out.println(indent + "<" + name + "s>");
                 indenter.in();
                 out.println(indenter.makeString() + "<Any" + name + "/>");

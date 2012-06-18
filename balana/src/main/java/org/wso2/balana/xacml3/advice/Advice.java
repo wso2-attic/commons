@@ -18,8 +18,76 @@
 
 package org.wso2.balana.xacml3.advice;
 
+import org.wso2.balana.Indenter;
+import org.wso2.balana.xacml3.AttributeAssignment;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.net.URI;
+import java.util.List;
+
 /**
- *  //TODO
+ * Represents the AdviceType XML type in XACML. Advice are introduced with XACML 3
  */
 public class Advice {
+
+    /**
+     * The value of the advice identifier may be interpreted by the PEP.
+     */
+    private URI adviceId;
+
+    /**
+     *  Advice arguments as a <code>List</code> of <code>AttributeAssignment</code>
+     *  The values of the advice arguments may be interpreted by the PEP
+     */
+    private List<AttributeAssignment> assignments;
+
+    /**
+     * Constructor that creates a new <code>Advice</code> based on
+     * the given elements.
+     *
+     * @param adviceId  Identifier that uniquely identify the Advice
+     * @param assignments  <code>List</code> of <code>AttributeAssignment</code>
+     */
+    public Advice(URI adviceId, List<AttributeAssignment> assignments) {
+        this.adviceId = adviceId;
+        this.assignments = assignments;
+    }
+
+
+    /**
+     * Encodes this <code>Advice</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with no indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     */
+    public void encode(OutputStream output){
+        encode(output, new Indenter(0));
+    }
+
+    /**
+     * Encodes this <code>Advice</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
+     */
+    public void encode(OutputStream output, Indenter indenter){
+
+        PrintStream out = new PrintStream(output);
+        String indent = indenter.makeString();
+
+        out.println(indent + "<Advice AdviceId=" + adviceId + " >");
+
+        indenter.in();
+
+        if(assignments != null && assignments.size() > 0){
+            for(AttributeAssignment assignment : assignments){
+                assignment.encode(output, indenter);
+            }
+        }
+        
+        indenter.out();        
+        out.println(indent + "</Advice>");
+    }
 }

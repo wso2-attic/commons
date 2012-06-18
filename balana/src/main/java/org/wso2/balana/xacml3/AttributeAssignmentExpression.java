@@ -21,7 +21,8 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.Indenter;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.attr.AttributeValue;
@@ -31,6 +32,7 @@ import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.cond.Expression;
 import org.wso2.balana.cond.ExpressionHandler;
 
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
@@ -149,20 +151,32 @@ public class AttributeAssignmentExpression {
         
         Set<AttributeAssignment> values = new HashSet<AttributeAssignment>();
         EvaluationResult result = ((Evaluatable)expression).evaluate(ctx);
-        AttributeValue attributeValue = result.getAttributeValue();
-        if(attributeValue.isBag()) {
-            Iterator iterator = ((BagAttribute)attributeValue).iterator();
-            while(iterator.hasNext()){
-                AttributeValue bagValue = (AttributeValue) iterator.next();
-                AttributeAssignment assignment =
-                        new AttributeAssignment(attributeId, bagValue, category, issuer);
 
+        if(result == null || result.indeterminate()){
+            return null;
+        }
+        // TODO when indetermine  policy also must be indetermine
+        AttributeValue attributeValue = result.getAttributeValue();
+
+        if(attributeValue != null){
+            if(attributeValue.isBag()) {
+                if(((BagAttribute)attributeValue).size() > 0 ){
+                    Iterator iterator = ((BagAttribute)attributeValue).iterator();
+                    while(iterator.hasNext()){
+                        AttributeValue bagValue = (AttributeValue) iterator.next();
+                        AttributeAssignment assignment =
+                                new AttributeAssignment(attributeId, bagValue, category, issuer);
+
+                        values.add(assignment);
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                AttributeAssignment assignment =
+                        new AttributeAssignment(attributeId, attributeValue, category, issuer);
                 values.add(assignment);
             }
-        } else {
-            AttributeAssignment assignment =
-                    new AttributeAssignment(attributeId, attributeValue, category, issuer);
-            values.add(assignment);
         }
 
         return values;
@@ -171,7 +185,7 @@ public class AttributeAssignmentExpression {
     /**
      *
      */
-    public void encode(){
+    public void encode(OutputStream output, Indenter indenter){
 
 
     }

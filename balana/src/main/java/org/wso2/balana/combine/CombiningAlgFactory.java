@@ -37,6 +37,7 @@ package org.wso2.balana.combine;
 
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
+import org.wso2.balana.XACMLConstants;
 
 import java.net.URI;
 
@@ -69,8 +70,8 @@ public abstract class CombiningAlgFactory {
         };
 
         registeredFactories = new HashMap();
-        registeredFactories.put(PolicyMetaData.XACML_1_0_IDENTIFIER, proxy);
-        registeredFactories.put(PolicyMetaData.XACML_2_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_1_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_2_0_IDENTIFIER, proxy);
 
         defaultFactoryProxy = proxy;
     };

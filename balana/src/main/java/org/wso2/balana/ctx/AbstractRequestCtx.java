@@ -19,7 +19,10 @@
 package org.wso2.balana.ctx;
 
 import org.w3c.dom.Node;
+import org.wso2.balana.Indenter;
+import org.wso2.balana.xacml3.Attributes;
 
+import java.io.OutputStream;
 import java.util.Set;
 
 /**
@@ -29,59 +32,18 @@ import java.util.Set;
  */
 public abstract class AbstractRequestCtx {
 
-    // There must be at least one subject
-    protected Set<Subject> subjects = null;
-
-    // There must be exactly one resource
-    protected Set<Attribute> resource = null;
-
-    // There must be exactly one action
-    protected Set<Attribute> action = null;
-
-    // There may be any number of environment attributes
-    protected Set<Attribute> environment = null;
+    //XACML version of the request
+    protected int xacmlVersion;
 
     // Hold onto the root of the document for XPath searches
     protected Node documentRoot = null;
 
+    /**
+     * XACML3 attributes as <code>Attributes</code> objects
+     */
+    protected Set<Attributes> attributesSet = null;
+
     protected boolean isSearch;
-
-    /**
-     * Returns a <code>Set</code> containing <code>Subject</code> objects.
-     *
-     * @return the request' s subject attributes
-     */
-    public Set getSubjects() {
-        return subjects;
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     *
-     * @return the request' s resource attributes
-     */
-    public Set getResource() {
-        return resource;
-    }
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     *
-     * @return the request' s action attributes
-     */
-    public Set getAction() {
-        return action;
-    }
-
-
-    /**
-     * Returns a <code>Set</code> containing <code>Attribute</code> objects.
-     *
-     * @return the request' s environment attributes
-     */
-    public Set getEnvironmentAttributes() {
-        return environment;
-    }
 
     /**
      * Returns the root DOM node of the document used to create this object, or null if this object
@@ -101,4 +63,39 @@ public abstract class AbstractRequestCtx {
     public boolean isSearch() {
         return isSearch;
     }
+
+    public int getXacmlVersion() {
+        return xacmlVersion;
+    }
+
+    public void setXacmlVersion(int xacmlVersion) {
+        this.xacmlVersion = xacmlVersion;
+    }
+
+    /**
+     *  Returns a <code>Set</code> containing <code>Attribute</code> objects.
+     *
+     * @return  the request' s all attributes as <code>Set</code>
+     */
+    public Set<Attributes> getAttributesSet() {
+        return attributesSet;
+    }
+
+    /**
+     * Encodes this <code>AbstractRequestCtx</code> into its XML representation and writes this encoding to the given
+     * <code>OutputStream</code> with indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
+     */
+    public abstract void encode(OutputStream output, Indenter indenter);
+
+    /**
+     * Encodes this <code>AbstractRequestCtx</code>  into its XML representation and writes this encoding to the given
+     * <code>OutputStream</code>. No indentation is used.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     */
+    public abstract void encode(OutputStream output);    
+
 }

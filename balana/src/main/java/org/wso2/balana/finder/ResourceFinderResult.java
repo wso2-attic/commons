@@ -35,6 +35,8 @@
 
 package org.wso2.balana.finder;
 
+import org.wso2.balana.attr.AttributeValue;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +55,7 @@ import java.util.Set;
 public class ResourceFinderResult {
 
     // the set of resource identifiers
-    private Set resources;
+    private Set<AttributeValue> resources;
 
     // the map of failed identifiers to their failure status data
     private Map failures;
@@ -126,7 +128,7 @@ public class ResourceFinderResult {
      * 
      * @return a <code>Set</code> of <code>AttributeValue</code>s
      */
-    public Set getResources() {
+    public Set<AttributeValue> getResources() {
         return resources;
     }
 

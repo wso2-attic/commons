@@ -35,7 +35,7 @@
 
 package org.wso2.balana.finder;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.attr.BagAttribute;
 
@@ -90,15 +90,15 @@ public abstract class AttributeFinderModule {
     }
 
     /**
-     * Returns a <code>Set</code> of <code>Integer</code>s that represent which AttributeDesignator
-     * types are supported (eg, Subject, Resource, etc.), or null meaning that no particular types
+     * Returns a <code>Set</code> of <code>String</code>s that represent which AttributeDesignator
+     * categories are supported (eg, Subject, Resource, etc.), or null meaning that no particular types
      * are supported. A return value of null can mean that this module doesn't support designator
      * retrieval, or that it supports designators of all types. If the set is non-null, it should
-     * contain the values specified in the <code>AttributeDesignator</code> *_TARGET fields.
+     * contain the values specified in the <code>AttributeDesignator</code>
      * 
      * @return a <code>Set</code> of <code>Integer</code>s, or null
      */
-    public Set getSupportedDesignatorTypes() {
+    public Set<String> getSupportedCategories() {
         return null;
     }
 
@@ -142,16 +142,13 @@ public abstract class AttributeFinderModule {
      * @param attributeType the datatype of the attributes to find
      * @param attributeId the identifier of the attributes to find
      * @param issuer the issuer of the attributes, or null if unspecified
-     * @param subjectCategory the category of the attribute if the designatorType is SUBJECT_TARGET,
-     *            otherwise null
+     * @param category the category of the attribute whether it is Subject, Resource or any thing
      * @param context the representation of the request data
-     * @param designatorType the type of designator as named by the *_TARGET fields in
-     *            <code>AttributeDesignator</code>
      * 
      * @return the result of attribute retrieval, which will be a bag of attributes or an error
      */
-    public EvaluationResult findAttribute(URI attributeType, URI attributeId, URI issuer,
-            URI subjectCategory, EvaluationCtx context, int designatorType) {
+    public EvaluationResult findAttribute(URI attributeType, URI attributeId, String issuer,
+            URI category, EvaluationCtx context) {
         return new EvaluationResult(BagAttribute.createEmptyBag(attributeType));
     }
 

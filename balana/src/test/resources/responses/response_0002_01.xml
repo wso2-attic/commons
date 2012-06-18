@@ -1,0 +1,15 @@
+<Response>
+<Result>
+<Decision>Permit</Decision>
+<Status>
+<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+</Status>
+<Obligations>
+<Obligation ObligationId="permitObligation">
+<AttributeAssignment  AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text">
+<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">My Obligation Id is permitObligation. Policy result is Permit.</AttributeValue>
+</AttributeAssignment>
+<Obligation>
+</Obligations>
+</Result>
+</Response>

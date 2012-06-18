@@ -22,6 +22,7 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 import org.wso2.balana.TargetMatch;
 

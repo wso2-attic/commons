@@ -320,7 +320,7 @@ class Base64 {
             }
         }
 
-        // Test valid terminal states
+        // BalanaTest valid terminal states
         if (state != NO_CHARS_DECODED && state != PAD_FOUR_READ)
             throw new IOException("Invalid sequence of input characters");
 

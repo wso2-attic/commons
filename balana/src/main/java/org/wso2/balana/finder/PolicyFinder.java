@@ -37,7 +37,7 @@ package org.wso2.balana.finder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.PolicyReference;
 import org.wso2.balana.VersionConstraints;

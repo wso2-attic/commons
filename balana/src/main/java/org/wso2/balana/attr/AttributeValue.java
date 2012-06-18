@@ -35,7 +35,7 @@
 
 package org.wso2.balana.attr;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.Indenter;
 
 import org.wso2.balana.cond.Evaluatable;
@@ -192,11 +192,13 @@ public abstract class AttributeValue implements Evaluatable {
      * @return a <code>String</code> encoding including the XML tags
      */
     public String encodeWithTags(boolean includeType) {
-        if (includeType)
+        
+        if (includeType && type != null) {
             return "<AttributeValue DataType=\"" + type.toString() + "\">" + encode()
                     + "</AttributeValue>";
-        else
+        } else {
             return "<AttributeValue>" + encode() + "</AttributeValue>";
+        }
     }
 
 }

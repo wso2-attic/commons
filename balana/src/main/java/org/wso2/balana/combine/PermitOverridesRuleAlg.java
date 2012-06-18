@@ -35,10 +35,14 @@
 
 package org.wso2.balana.combine;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ObligationResult;
+import org.wso2.balana.ResultFactory;
 import org.wso2.balana.Rule;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.xacml3.advice.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -108,24 +112,25 @@ public class PermitOverridesRuleAlg extends RuleCombiningAlgorithm {
      *
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List ruleElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List ruleElements) {
         boolean atLeastOneError = false;
         boolean potentialPermit = false;
         boolean atLeastOneDeny = false;
-        Result firstIndeterminateResult = null;
-        Set denyObligations = new HashSet();
+        AbstractResult firstIndeterminateResult = null;
+        Set<ObligationResult> denyObligations = new HashSet<ObligationResult>();
+        Set<Advice> denyAdvices = new HashSet<Advice>();
         Iterator it = ruleElements.iterator();
 
         while (it.hasNext()) {
             Rule rule = ((RuleCombinerElement) (it.next())).getRule();
-            Result result = rule.evaluate(context);
+            AbstractResult result = rule.evaluate(context);
             int value = result.getDecision();
 
             // if there was a value of PERMIT, then regardless of what
             // else we've seen, we always return PERMIT
-            if (value == Result.DECISION_PERMIT)
+            if (value == Result.DECISION_PERMIT){
                 return result;
-
+            }
             // if it was INDETERMINATE, then we couldn't figure something
             // out, so we keep track of these cases...
             if (value == Result.DECISION_INDETERMINATE) {
@@ -133,41 +138,44 @@ public class PermitOverridesRuleAlg extends RuleCombiningAlgorithm {
 
                 // there are no rules about what to do if multiple cases
                 // cause errors, so we'll just return the first one
-                if (firstIndeterminateResult == null)
+                if (firstIndeterminateResult == null){
                     firstIndeterminateResult = result;
-
+                }
                 // if the Rule's effect is PERMIT, then we can't let this
                 // alg return DENY, since this Rule might have permitted
                 // if it could do its stuff
-                if (rule.getEffect() == Result.DECISION_PERMIT)
+                if (rule.getEffect() == Result.DECISION_PERMIT){
                     potentialPermit = true;
+                }
             } else {
                 // keep track of whether we had at least one rule that
                 // actually pertained to the request
                 if (value == Result.DECISION_DENY)
                     atLeastOneDeny = true;
+                    denyAdvices.addAll(result.getAdvices());
                     denyObligations.addAll(result.getObligations());
             }
         }
 
         // we didn't explicitly PERMIT, but we might have had some Rule
         // been evaluated, so we have to return INDETERMINATE
-        if (potentialPermit)
+        if (potentialPermit){
             return firstIndeterminateResult;
-
+        }
         // some Rule said DENY, so since nothing could have permitted,
         // we return DENY
-        if (atLeastOneDeny)
-            return new Result(Result.DECISION_DENY, context.getResourceId().encode(), denyObligations);
-
+        if (atLeastOneDeny){
+            return ResultFactory.getFactory().getResult(Result.DECISION_DENY, denyObligations,
+                                                                            denyAdvices, context);
+        }
         // we didn't find anything that said DENY, but if we had a
         // problem with one of the Rules, then we're INDETERMINATE
-        if (atLeastOneError)
+        if (atLeastOneError){
             return firstIndeterminateResult;
-
+        }
         // if we hit this point, then none of the rules actually applied
         // to us, so we return NOT_APPLICABLE
-        return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
     }
 
 }

@@ -35,16 +35,16 @@
 
 package org.wso2.balana.combine;
 
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.MatchResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ResultFactory;
 import org.wso2.balana.Rule;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.xacml2.Result;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,39 +97,23 @@ public class FirstApplicableRuleAlg extends RuleCombiningAlgorithm {
      * 
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List ruleElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List ruleElements) {
         Iterator it = ruleElements.iterator();
-        List<MatchResult> matches = new ArrayList<MatchResult>();
-
         while (it.hasNext()) {
             Rule rule = ((RuleCombinerElement) (it.next())).getRule();
-            Result result = rule.evaluate(context);
+            AbstractResult result = rule.evaluate(context);
             int value = result.getDecision();
 
             // in the case of PERMIT, DENY, or INDETERMINATE, we always
             // just return that result, so only on a rule that doesn't
             // apply do we keep going...
             if (value != Result.DECISION_NOT_APPLICABLE) {
-                if (value == Result.DECISION_PERMIT && context.isSearching()) {
-                    matches.add(result.getEvalResult().getMatchResult());
-                } else {
-                    if (context.isSearching()){
-                        result.setDecision(Result.SEARCH);
-                        result.setMatches(matches);
-                    }
-                    return result;
-                }
+                return result;
             }
         }
 
-        if (context.isSearching()) {
-            Result result = new Result(Result.SEARCH, context.getResourceId().encode());
-            result.setMatches(matches);
-            return result;
-        }
-
         // if we got here, then none of the rules applied
-        return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
     }
 
 }

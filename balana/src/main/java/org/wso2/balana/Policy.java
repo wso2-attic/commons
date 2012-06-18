@@ -57,7 +57,6 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.xacml2.Target;
 
 /**
  * Represents one of the two top-level constructs in XACML, the PolicyType. This optionally contains
@@ -76,9 +75,9 @@ public class Policy extends AbstractPolicy {
      * 
      * @param id the policy identifier
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      */
-    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, Target target) {
+    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, AbstractTarget target) {
         this(id, null, combiningAlg, null, target, null, null, null);
     }
 
@@ -87,13 +86,13 @@ public class Policy extends AbstractPolicy {
      * 
      * @param id the policy identifier
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param rules a list of <code>Rule</code> objects
      * 
      * @throws IllegalArgumentException if the <code>List</code> of rules contains an object that is
      *             not a <code>Rule</code>
      */
-    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, Target target, List rules) {
+    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, AbstractTarget target, List rules) {
         this(id, null, combiningAlg, null, target, null, rules, null);
     }
 
@@ -106,14 +105,14 @@ public class Policy extends AbstractPolicy {
      *            1.x policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param rules a list of <code>Rule</code> objects
      * 
      * @throws IllegalArgumentException if the <code>List</code> of rules contains an object that is
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            Target target, List rules) {
+            AbstractTarget target, List rules) {
         this(id, version, combiningAlg, description, target, null, rules, null);
     }
 
@@ -126,7 +125,7 @@ public class Policy extends AbstractPolicy {
      *            1.x policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param defaultVersion the XPath version to use
      * @param rules a list of <code>Rule</code> objects
      * 
@@ -134,7 +133,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            Target target, String defaultVersion, List rules) {
+            AbstractTarget target, String defaultVersion, List rules) {
         this(id, version, combiningAlg, description, target, defaultVersion, rules, null);
     }
 
@@ -147,7 +146,7 @@ public class Policy extends AbstractPolicy {
      *            1.x policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param defaultVersion the XPath version to use
      * @param rules a list of <code>Rule</code> objects
      * @param obligations a set of <code>Obligations</code> objects
@@ -156,7 +155,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            Target target, String defaultVersion, List rules, Set obligations) {
+            AbstractTarget target, String defaultVersion, List rules, Set obligations) {
         this(id, version, combiningAlg, description, target, defaultVersion, rules, obligations,
                 null);
     }
@@ -171,7 +170,7 @@ public class Policy extends AbstractPolicy {
      *            1.x policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param defaultVersion the XPath version to use
      * @param rules a list of <code>Rule</code> objects
      * @param obligations a set of <code>Obligations</code> objects
@@ -182,7 +181,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            Target target, String defaultVersion, List rules, Set obligations, Set definitions) {
+            AbstractTarget target, String defaultVersion, List rules, Set obligations, Set definitions) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
         List list = null;
@@ -220,7 +219,7 @@ public class Policy extends AbstractPolicy {
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy or null if there is no
      *            description
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param defaultVersion the XPath version to use or null if there is no default version
      * @param ruleElements a list of <code>RuleCombinerElement</code> objects or null if there are
      *            no rules
@@ -235,7 +234,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>RuleCombinerElement</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            Target target, String defaultVersion, List ruleElements, Set obligations,
+            AbstractTarget target, String defaultVersion, List ruleElements, Set obligations,
             Set definitions, List parameters) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null,
                 parameters);

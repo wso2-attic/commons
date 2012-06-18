@@ -1,0 +1,105 @@
+/*
+*  Copyright (c) WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+*  WSO2 Inc. licenses this file to you under the Apache License,
+*  Version 2.0 (the "License"); you may not use this file except
+*  in compliance with the License.
+*  You may obtain a copy of the License at
+*
+*    http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
+
+package org.wso2.balana.ctx;
+
+import org.w3c.dom.Node;
+import org.wso2.balana.ParsingException;
+import org.wso2.balana.XACMLConstants;
+
+import java.io.InputStream;
+
+/**
+ * Factory that creates the AbstractRequestCtx
+ */
+public class RequestCtxFactory {
+
+    private static RequestCtxFactory factoryInstance;
+
+    /**
+     *  Returns instance of <code>AbstractRequestCtx</code> based one the XACML version. 
+     *
+     * @param root  the node to parse for the <code>AbstractRequestCtx</code>
+     * @return <code>AbstractRequestCtx</code> object
+     * @throws org.wso2.balana.ParsingException  if the DOM node is invalid
+     */
+    public AbstractRequestCtx getRequestCtx(Node root) throws ParsingException {
+
+        String requestCtxNs = root.getNamespaceURI();
+
+        if(requestCtxNs != null){
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
+                return org.wso2.balana.xacml3.ctx.RequestCtx.getInstance(root);
+            } else {
+                return org.wso2.balana.xacml2.ctx.RequestCtx.getInstance(root);
+            }
+        } else {
+            throw new ParsingException("Namespace of Request cannot be null"); //TODO correct error message
+        }
+    }
+
+    /**
+     *  Returns instance of <code>AbstractRequestCtx</code> based one the XACML version.
+     *
+     * Creates a new <code>RequestCtx</code> by parsing XML from an input stream. Note that this a
+     * convenience method, and it will not do schema validation by default. You should be parsing
+     * the data yourself, and then providing the root node to the other <code>getInstance</code>
+     * method. If you use this convenience method, you probably want to turn on validation by
+     * setting the context schema file (see the programmer guide for more information on this).
+     * 
+     * @param input input a stream providing the XML data
+     * @return <code>AbstractRequestCtx</code> object
+     * @throws ParsingException  if the DOM node is invalid
+     */
+    public AbstractRequestCtx getRequestCtx(InputStream input) throws ParsingException {
+
+        Node root  = InputParser.parseInput(input, "Request");
+        String requestCtxNs = root.getNamespaceURI();
+
+        if(requestCtxNs != null){
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
+                return org.wso2.balana.xacml3.ctx.RequestCtx.getInstance(root);
+            } else {
+                return org.wso2.balana.xacml2.ctx.RequestCtx.getInstance(root);
+            }
+        } else {
+            throw new ParsingException("Namespace of Request cannot be null"); //TODO correct error message
+        }
+    }
+
+
+    /**
+     * Returns an instance of this factory. This method enforces a singleton model, meaning that
+     * this always returns the same instance, creating the factory if it hasn't been requested
+     * before.
+    *
+     * @return the factory instance
+     */
+    public static RequestCtxFactory getFactory() {
+        if (factoryInstance == null) {
+            synchronized (RequestCtxFactory.class) {
+                if (factoryInstance == null) {
+                    factoryInstance = new RequestCtxFactory();
+                }
+            }
+        }
+
+        return factoryInstance;
+    }
+
+}

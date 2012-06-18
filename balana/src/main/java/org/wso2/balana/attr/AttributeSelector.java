@@ -37,14 +37,12 @@ package org.wso2.balana.attr;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.*;
 
 import org.wso2.balana.cond.Evaluatable;
 import org.wso2.balana.cond.EvaluationResult;
 
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -140,7 +138,7 @@ public class AttributeSelector implements Evaluatable {
      */
     public static AttributeSelector getInstance(Node root, String xpathVersion)
             throws ParsingException {
-        return getInstance(root, new PolicyMetaData(PolicyMetaData.XACML_1_0_IDENTIFIER,
+        return getInstance(root, new PolicyMetaData(XACMLConstants.XACML_1_0_IDENTIFIER,
                 xpathVersion));
     }
 

@@ -24,8 +24,8 @@ import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
-import org.wso2.balana.ctx.Attribute;
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.Attribute;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -77,6 +77,7 @@ public class Obligation extends AbstractObligation implements ObligationResult {
         
         URI id;
         int fulfillOn;
+        String effect;
         List<Attribute> assignments = new ArrayList<Attribute>();
         
         AttributeFactory attrFactory = AttributeFactory.getInstance();
@@ -85,15 +86,13 @@ public class Obligation extends AbstractObligation implements ObligationResult {
         try {
             id = new URI(attrs.getNamedItem("ObligationId").getNodeValue());
         } catch (Exception e) {
-            throw new ParsingException("Error parsing required attribute " + "ObligationId", e);
+            throw new ParsingException("Error parsing required attribute ObligationId", e);
         }
-
-        String effect;
 
         try {
             effect = attrs.getNamedItem("FulfillOn").getNodeValue();
         } catch (Exception e) {
-            throw new ParsingException("Error parsing required attribute " + "FulfillOn", e);
+            throw new ParsingException("Error parsing required attribute FulfillOn", e);
         }
 
         if (effect.equals("Permit")) {

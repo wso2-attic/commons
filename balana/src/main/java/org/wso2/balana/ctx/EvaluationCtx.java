@@ -33,9 +33,9 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana;
+package org.wso2.balana.ctx;
 
-import org.wso2.balana.attr.AttributeValue;
+import org.wso2.balana.MultipleCtxResult;
 import org.wso2.balana.attr.DateAttribute;
 import org.wso2.balana.attr.DateTimeAttribute;
 import org.wso2.balana.attr.TimeAttribute;
@@ -43,46 +43,20 @@ import org.wso2.balana.attr.TimeAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 
 import java.net.URI;
-import java.util.Set;
 
 import org.w3c.dom.Node;
-import org.wso2.balana.xacml3.Attributes;
 
 /**
  * Manages the context of a single policy evaluation. Typically, an instance is instantiated
- * whenever the PDP gets a request and needs to perform an evaluation as a result. The
- * <code>BasicEvaluationCtx</code> class provides a basic implementation that is used by default.
- * 
+ * whenever the PDP gets a request and needs to perform an evaluation as a result.
+ * There are two implementations of <code>XACML3EvaluationCtx</code> class for XACML3 and
+ *  <code>XACML3EvaluationCtx</code> for XACML2
  * @since 1.0
  * @author Seth Proctor
  */
+
 public interface EvaluationCtx {
 
-    /**
-     * The standard URI for listing a resource's id
-     */
-    public static final String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
-
-    /**
-     * The standard URI for listing a resource's scope
-     */
-    public static final String RESOURCE_SCOPE = "urn:oasis:names:tc:xacml:1.0:resource:scope";
-
-    /**
-     * Resource scope of Immediate (only the given resource)
-     */
-    public static final int SCOPE_IMMEDIATE = 0;
-
-    /**
-     * Resource scope of Children (the given resource and its direct children)
-     */
-    public static final int SCOPE_CHILDREN = 1;
-
-    /**
-     * Resource scope of Descendants (the given resource and all descendants at any depth or
-     * distance)
-     */
-    public static final int SCOPE_DESCENDANTS = 2;
 
     /**
      * Returns the DOM root of the original RequestType XML document, if this context is backed by
@@ -94,32 +68,12 @@ public interface EvaluationCtx {
      * @throws UnsupportedOperationException if the context is not backed by an XML representation
      */
     public Node getRequestRoot();
-    
+
+    /**
+     * TODO what is this ?
+     * @return
+     */
     public boolean isSearching();
-
-    /**
-     * Returns the resource scope, which will be one of the three fields denoting Immediate,
-     * Children, or Descendants.
-     * 
-     * @return the scope of the resource
-     */
-    public int getScope();
-
-    /**
-     * Returns the identifier for the resource being requested.
-     * 
-     * @return the resource
-     */
-    public AttributeValue getResourceId();
-
-    /**
-     * Changes the value of the resource-id attribute in this context. This is useful when you have
-     * multiple resources (ie, a scope other than IMMEDIATE), and you need to keep changing only the
-     * resource-id to evaluate the different effective requests.
-     * 
-     * @param resourceId the new resource-id value
-     */
-    public void setResourceId(AttributeValue resourceId);
 
     /**
      * Returns the value for the current time as known by the PDP (if this value was also supplied
@@ -149,18 +103,6 @@ public interface EvaluationCtx {
     public DateTimeAttribute getCurrentDateTime();
 
     /**
-     * Returns available subject attribute value(s) ignoring the issuer.
-     * 
-     * @param type the type of the attribute value(s) to find
-     * @param id the id of the attribute value(s) to find
-     * @param category the category the attribute value(s) must be in
-     * 
-     * @return a result containing a bag either empty because no values were found or containing at
-     *         least one value, or status associated with an Indeterminate result
-     */
-    public EvaluationResult getSubjectAttribute(URI type, URI id, URI category);
-
-    /**
      * Returns available subject attribute value(s).
      * 
      * @param type the type of the attribute value(s) to find
@@ -171,81 +113,45 @@ public interface EvaluationCtx {
      * @return a result containing a bag either empty because no values were found or containing at
      *         least one value, or status associated with an Indeterminate result
      */
-    public EvaluationResult getSubjectAttribute(URI type, URI id, URI issuer, URI category);
-
-    /**
-     * Returns available resource attribute value(s).
-     * 
-     * @param type the type of the attribute value(s) to find
-     * @param id the id of the attribute value(s) to find
-     * @param issuer the issuer of the attribute value(s) to find or null
-     * 
-     * @return a result containing a bag either empty because no values were found or containing at
-     *         least one value, or status associated with an Indeterminate result
-     */
-    public EvaluationResult getResourceAttribute(URI type, URI id, URI issuer);
-
-    /**
-     * Returns available action attribute value(s).
-     * 
-     * @param type the type of the attribute value(s) to find
-     * @param id the id of the attribute value(s) to find
-     * @param issuer the issuer of the attribute value(s) to find or null
-     * 
-     * @return a result containing a bag either empty because no values were found or containing at
-     *         least one value, or status associated with an Indeterminate result
-     */
-    public EvaluationResult getActionAttribute(URI type, URI id, URI issuer);
-
-    /**
-     * Returns available environment attribute value(s).
-     * <p>
-     * Note that if you want to resolve the correct current date, time, or dateTime as seen from an
-     * evaluation point of view, you should use this method and supply the corresponding identifier.
-     * 
-     * @param type the type of the attribute value(s) to find
-     * @param id the id of the attribute value(s) to find
-     * @param issuer the issuer of the attribute value(s) to find or null
-     * 
-     * @return a result containing a bag either empty because no values were found or containing at
-     *         least one value, or status associated with an Indeterminate result
-     */
-    public EvaluationResult getEnvironmentAttribute(URI type, URI id, URI issuer);
+    public EvaluationResult getAttribute(URI type, URI id, String issuer, URI category);
 
     /**
      * Returns the attribute value(s) retrieved using the given XPath expression.
-     * 
+     *
      * @param contextPath the XPath expression to search
      * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
      *            come from the context root
      * @param type the type of the attribute value(s) to find
      * @param xpathVersion the version of XPath to use
-     * 
+     *
      * @return a result containing a bag either empty because no values were found or containing at
      *         least one value, or status associated with an Indeterminate result
      */
+
     public EvaluationResult getAttribute(String contextPath, Node namespaceNode, URI type,
-            String xpathVersion);
+                                         String xpathVersion);
+
 
     /**
-     * Returns all attribute values 
+     * Returns XACML version of the context
      *
-     * @return  <code>Set</code> of <code>Attributes</code>
+     * @return  version
      */
-    public Set<Attributes> getAllAttributes();
+    public int getXacmlVersion();
+
 
     /**
-     * Return whether child <code>EvaluationCtx</code> is supported or not
+     * Returns XACML request
      *
-     * @return <code>boolean</code> true of false
+     * @return  <code>AbstractRequestCtx</code>
      */
-    public boolean isSupportChildren();
+    public AbstractRequestCtx getRequestCtx();
 
     /**
-     * Return set of children with <code>EvaluationCtx</code>
+     * Returns multiple context results
      *
-     * @return a <code>Set</code> of <code>EvaluationCtx</code>
+     * @return <code>MultipleCtxResult</code>
      */
-    public Set<EvaluationCtx> getChildren();
+    public MultipleCtxResult getMultipleEvaluationCtx();
 
 }

@@ -35,7 +35,8 @@
 
 package org.wso2.balana;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import java.io.OutputStream;
 
@@ -103,7 +104,7 @@ public interface PolicyTreeElement {
      * 
      * @return the result of the evaluation
      */
-    public Result evaluate(EvaluationCtx context);
+    public AbstractResult evaluate(EvaluationCtx context);
 
     /**
      * Encodes this element into its XML representation and writes this encoding to the given

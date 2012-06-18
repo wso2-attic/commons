@@ -24,7 +24,6 @@ import org.w3c.dom.NodeList;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ParsingException;
-import org.wso2.balana.ctx.Result;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -103,53 +102,40 @@ public class Obligation implements ObligationResult{
     }
 
     /**
+     * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with indentation.
      *
-     * @param output
-     * @param indenter
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
      */
     public void encode(OutputStream output, Indenter indenter){
         // setup the formatting & outstream stuff
         String indent = indenter.makeString();
         PrintStream out = new PrintStream(output);
 
-        // write out the encoded form
-        out.println(indent + encode());
+        out.println(indent + "<Obligation ObligationId=\"" + obligationId + "\">");
+
+        indenter.in();
+
+        if(assignments != null && assignments.size() > 0){
+            for(AttributeAssignment assignment : assignments){
+                assignment.encode(output, indenter);
+            }
+        }
+
+        indenter.out();
+
+        out.println(indent + "</Obligation>");
     }
 
     /**
+     * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with no indentation.
      *
-     * @param output
-     * @return
+     * @param output a stream into which the XML-encoded data is written
      */
     public void encode(OutputStream output){
         encode(output, new Indenter(0));
     }
 
-    /**
-     *
-     * @return
-     */
-    public String encode(){
-
-        String encoded = "<Obligation ObligationId=";
-
-        if(obligationId != null){
-            encoded += obligationId ;
-        } else {
-
-        }
-
-        if(fulfillOn != -1){
-            encoded += " FulfillOn=" + Result.DECISIONS[fulfillOn] + ">";    
-        }
-
-        for(AttributeAssignment assignment : assignments){
-            encoded += assignment.encode();
-        }
-
-        encoded += "</Obligation>";
-
-        return encoded;
-        
-    }
 }

@@ -35,7 +35,7 @@
 
 package org.wso2.balana.ctx;
 
-import org.wso2.balana.attr.AttributeDesignator;
+import org.wso2.balana.xacml2.attr.AttributeDesignator;
 
 import java.net.URI;
 

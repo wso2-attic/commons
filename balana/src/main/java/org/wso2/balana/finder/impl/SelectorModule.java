@@ -35,7 +35,7 @@
 
 package org.wso2.balana.finder.impl;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
@@ -121,7 +121,7 @@ public class SelectorModule extends AttributeFinderModule {
             return new EvaluationResult(BagAttribute.createEmptyBag(type));
 
         // get the DOM root of the request document
-        Node root = context.getRequestRoot();
+        Node root = context.getRequestRoot();       // TODO
 
         // if we were provided with a non-null namespace node, then use it
         // to resolve namespaces, otherwise use the context root node

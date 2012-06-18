@@ -20,14 +20,20 @@ package org.wso2.balana.xacml3;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
+import org.wso2.balana.xacml2.*;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URI;
+import java.util.Iterator;
 
 /**
  * Represents AttributeAssignmentType in the XACML 3.0 policy schema
+ * This is used for including arguments in obligations and advices 
  */
 public class AttributeAssignment {
 
@@ -68,7 +74,7 @@ public class AttributeAssignment {
 
     /**
      * TODO   remove this method if possible
-     *  creates a <code>AttributeAssignment</code> based on its DOM node.
+     * creates a <code>AttributeAssignment</code> based on its DOM node.
      *
      * @param root root the node to parse for the AttributeAssignment
      * @return a new <code>AttributeAssignment</code> constructed by parsing
@@ -123,39 +129,48 @@ public class AttributeAssignment {
         return new AttributeAssignment(attributeId, value, category, issuer);
     }
 
+
     /**
-     * Encodes this <code>AttributeAssignment</code> into its XML representation
+     * Encodes this <code>AttributeAssignment</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with indentation.
      *
-     * @return  <code>String</code>  XML-encoded data is written
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
      */
-    public String encode() {
+    public void encode(OutputStream output, Indenter indenter) {
 
-        String encoded = "<AttributeAssignment  AttributeId=";
+        PrintStream out = new PrintStream(output);
+        String indent = indenter.makeString();
 
-        if(attributeId != null){
-            encoded += attributeId;
-        } else {
-
-        }
+        out.print("<AttributeAssignment  AttributeId=\"" + attributeId + "\"");
 
         if(category != null){
-            encoded += " Category=" + category.toString();     
+            out.print(" Category=\"" + category + "\"");
         }
 
         if(issuer != null){
-            encoded += " Issuer=" + issuer;
+            out.print("\" Issuer=\"" + issuer + "\"");
         }
 
-        if( value != null){
-            encoded  += " DataType=" + value.getType().toString() + ">" + value.encode();
-        } else {
+        out.println(">");
 
-        }
+        indenter.in();
 
-        encoded += "</AttributeAssignment>";
+        out.println(value.encodeWithTags(true));
+        
+        indenter.out();
 
-        return encoded;
+        out.println(indent + "</AttributeAssignment>");
+    }
 
+    /**
+     * Encodes this <code>AttributeAssignment</code> into its XML form and writes this out to the provided
+     * <code>OutputStream<code> with no indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     */
+    public void encode(OutputStream output){
+        encode(output, new Indenter(0));
     }
 
 }

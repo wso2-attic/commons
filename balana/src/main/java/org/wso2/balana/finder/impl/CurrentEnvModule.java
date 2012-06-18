@@ -35,9 +35,10 @@
 
 package org.wso2.balana.finder.impl;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
-import org.wso2.balana.attr.AttributeDesignator;
+import org.wso2.balana.XACMLConstants;
+import org.wso2.balana.xacml2.attr.AttributeDesignator;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.attr.DateAttribute;
@@ -96,14 +97,14 @@ public class CurrentEnvModule extends AttributeFinderModule {
     }
 
     /**
-     * Returns a <code>Set</code> with a single <code>Integer</code> specifying that environment
+     * Returns a <code>Set</code> with a single <code>String</code> specifying that environment
      * attributes are supported by this module.
      * 
-     * @return a <code>Set</code> with <code>AttributeDesignator.ENVIRONMENT_TARGET</code> included
+     * @return a <code>Set</code> with <code>AttributeDesignator</code> included
      */
-    public Set getSupportedDesignatorTypes() {
-        HashSet set = new HashSet();
-        set.add(Integer.valueOf(AttributeDesignator.ENVIRONMENT_TARGET));
+    public Set<String> getSupportedCategories() {
+        HashSet<String> set = new HashSet<String>();
+        set.add(XACMLConstants.ENT_CATEGORY);
         return set;
     }
 

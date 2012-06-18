@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.w3c.dom.Node;
+import org.wso2.balana.XACMLConstants;
 
 /**
  * This is an abstract factory class for creating XACML attribute values. There may be any number of
@@ -75,8 +76,8 @@ public abstract class AttributeFactory {
         };
 
         registeredFactories = new HashMap();
-        registeredFactories.put(PolicyMetaData.XACML_1_0_IDENTIFIER, proxy);
-        registeredFactories.put(PolicyMetaData.XACML_2_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_1_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_2_0_IDENTIFIER, proxy);
 
         defaultFactoryProxy = proxy;
     };

@@ -22,11 +22,13 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents ObligationExpressionType in the XACML 3.0 policy schema
@@ -120,7 +122,10 @@ public class ObligationExpression extends AbstractObligation {
     public ObligationResult evaluate(EvaluationCtx ctx) {
         List<AttributeAssignment> assignments = new ArrayList<AttributeAssignment>();
         for(AttributeAssignmentExpression expression : expressions){
-            assignments.addAll(expression.evaluate(ctx));
+            Set<AttributeAssignment> assignmentSet = expression.evaluate(ctx);
+            if(assignmentSet != null && assignmentSet.size() > 0){
+                assignments.addAll(assignmentSet);    
+            }
         }
         return new Obligation(assignments, obligationId);
     }

@@ -18,11 +18,8 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
-import org.wso2.balana.XACMLConstants;
-import org.wso2.balana.ctx.Attribute;
+import org.wso2.balana.*;
+import org.wso2.balana.Attribute;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -44,7 +41,7 @@ public class Attributes {
     /**
      *  content of the Attributes element that can be a XML data
      */
-    private Object content;
+    private Node content;
 
     /**
      *  a <code>Set</code> of <code>Attribute</code> that contains in <code>Attributes</code> 
@@ -66,7 +63,7 @@ public class Attributes {
      * that contains in <code>Attributes</code> 
      * @param id   id of the Attribute element
      */
-    public Attributes(URI category, Object content, Set<Attribute> attributes, String id) {
+    public Attributes(URI category, Node content, Set<Attribute> attributes, String id) {
         this.category = category;
         this.content = content;
         this.attributes = attributes;
@@ -81,7 +78,7 @@ public class Attributes {
      */
     public static Attributes getInstance(Node root) throws ParsingException {
         URI category ;
-        Object content = null;
+        Node content = null;
         String id = null;
         Set<Attribute> attributes = new HashSet<Attribute>();
 
@@ -122,7 +119,7 @@ public class Attributes {
                 content = node;
             } else if(node.getNodeName().equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
                 attributes.add(Attribute.
-                        getInstance(node, new PolicyMetaData(PolicyMetaData.XACML_VERSION_3_0,
+                        getInstance(node, new PolicyMetaData(XACMLConstants.XACML_VERSION_3_0,
                                                                 PolicyMetaData.XPATH_VERSION_1_0)));
             }
         }
@@ -184,35 +181,28 @@ public class Attributes {
      * @param indenter an object that creates indentation strings
      */
     public void encode(OutputStream output, Indenter indenter) {
-        // setup the formatting & outstream stuff
+
         String indent = indenter.makeString();
         PrintStream out = new PrintStream(output);
 
-        // write out the encoded form
-        out.println(indent + encode());
-    }
+        out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
 
-    /**
-     * Simple encoding method that returns the text-encoded version of this attributes with no
-     * formatting.
-     *
-     * @return the text-encoded XML
-     */
-    public String encode() {
-        
-        String encoded = "<Attributes Category=\"" + category.toString() + ">";
+        indenter.in();
 
         for(Attribute attribute : attributes){
-            encoded += attribute.encode();
+            if(attribute.isIncludeInResult()){
+                attribute.encode(output, indenter);
+            }
         }
 
+        indenter.out();
+
+        indenter.in();
         if (content != null) {
-            encoded += content.toString();
+        // TODO
         }
 
-        encoded += "</Attributes>";
-
-        return encoded;
+        out.println(indent + "</Attributes>");
     }
 
 
@@ -228,32 +218,24 @@ public class Attributes {
         String indent = indenter.makeString();
         PrintStream out = new PrintStream(output);
 
-        // write out the encoded form
-        out.println(indent + encodeWithIncludedAttributes());
-    }
+        out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
 
-    /**
-     * Encodes this attribute those isIncludeInResult is true, into its XML representation
-     *
-     * @return   XML-encoded data
-     */
-    public String encodeWithIncludedAttributes(){
-
-        String encoded = "<Attributes Category=\"" + category.toString() + ">";
+        indenter.in();
 
         for(Attribute attribute : attributes){
             if(attribute.isIncludeInResult()){
-                encoded += attribute.encode();               
+                attribute.encode(output, indenter);
             }
         }
 
+        indenter.out();
+
+        indenter.in();
         if (content != null) {
-            encoded += content.toString();
+        // TODO
         }
 
-        encoded += "</Attributes>";
-
-        return encoded;
+        out.println(indent + "</Attributes>");
     }
 
 }

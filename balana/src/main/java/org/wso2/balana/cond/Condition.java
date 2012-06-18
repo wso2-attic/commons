@@ -35,10 +35,7 @@
 
 package org.wso2.balana.cond;
 
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.*;
 
 import org.wso2.balana.attr.BooleanAttribute;
 
@@ -54,6 +51,7 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 /**
  * Represents the XACML ConditionType type. It contains exactly one child expression that is boolean
@@ -95,7 +93,7 @@ public class Condition implements Evaluatable {
      * Constructs a <code>Condition</code> as used in XACML 1.x.
      * 
      * @param function the <code>Function</code> to use in evaluating the elements in the Condition
-     * @param xprs the contents of the Condition which will be the parameters to the function, each
+     * @param expressions the contents of the Condition which will be the parameters to the function, each
      *            of which is an <code>Expression</code>
      * 
      * @throws IllegalArgumentException if the input expressions don't match the signature of the
@@ -167,7 +165,7 @@ public class Condition implements Evaluatable {
      */
     public static Condition getInstance(Node root, PolicyMetaData metaData, VariableManager manager)
             throws ParsingException {
-        if (metaData.getXACMLVersion() < PolicyMetaData.XACML_VERSION_2_0) {
+        if (metaData.getXACMLVersion() < XACMLConstants.XACML_VERSION_2_0) {
             Apply cond = Apply.getConditionInstance(root, metaData.getXPathIdentifier(), manager);
             return new Condition(cond.getFunction(), cond.getChildren());
         } else {

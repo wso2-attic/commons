@@ -36,15 +36,16 @@
 package org.wso2.balana.combine;
 
 import org.wso2.balana.AbstractPolicy;
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.MatchResult;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.xacml2.Result;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,10 +98,8 @@ public class FirstApplicablePolicyAlg extends PolicyCombiningAlgorithm {
      * 
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List policyElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         Iterator it = policyElements.iterator();
-        List<MatchResult> matches = new ArrayList<MatchResult>();
-
         while (it.hasNext()) {
             AbstractPolicy policy = ((PolicyCombinerElement) (it.next())).getPolicy();
 
@@ -108,12 +107,11 @@ public class FirstApplicablePolicyAlg extends PolicyCombiningAlgorithm {
             MatchResult match = policy.match(context);
 
             if (match.getResult() == MatchResult.INDETERMINATE)
-                return new Result(Result.DECISION_INDETERMINATE, match.getStatus(), context
-                        .getResourceId().encode());
-
+                return ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                        match.getStatus(), context);
             if (match.getResult() == MatchResult.MATCH) {
                 // evaluate the policy
-                Result result = policy.evaluate(context);
+                AbstractResult result = policy.evaluate(context);
                 int effect = result.getDecision();
 
                 // in the case of PERMIT, DENY, or INDETERMINATE, we always
@@ -122,28 +120,10 @@ public class FirstApplicablePolicyAlg extends PolicyCombiningAlgorithm {
                 if (effect != Result.DECISION_NOT_APPLICABLE && !context.isSearching()) {
                     return result;
                 }
-
-                if (context.isSearching()) {
-                    if (effect == Result.SEARCH) {
-                        matches.addAll(result.getMatches());
-                    } else if (effect == Result.DECISION_DENY) {
-                        Result searchResults = new Result(Result.SEARCH, context.getResourceId()
-                                .encode());
-                        searchResults.setMatches(matches);
-                        return searchResults;
-                    }
-                }
             }
         }
-        
-        if (context.isSearching()) {
-            Result result = new Result(Result.SEARCH, context.getResourceId().encode());
-            result.setMatches(matches);
-            return result;
-        }
-
         // if we got here, then none of the rules applied
-        return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context);         
     }
 
 }

@@ -22,7 +22,10 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.xacml3.AttributeAssignment;
 import org.wso2.balana.xacml3.AttributeAssignmentExpression;
 
 import java.io.OutputStream;
@@ -31,47 +34,77 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Represents the AdviceExpressionType XML type in XACML.   // TODO
+ * Represents the AdviceExpressionType XML type in XACML. Advice are introduced with XACML 3   
  */
 public class AdviceExpression {
 
+    /**
+     * The value of the advice identifier may be interpreted by the PEP.
+     */
     private URI adviceId;
 
+    /**
+     * The effect for which this advice must be provided to the PEP.
+     */
     private int appliesTo;
 
-    private List attributeAssignmentExpressions;
+    /**
+     * Advice arguments in the form of expressions; <code>AttributeAssignmentExpression</code>
+     */
+    private List<AttributeAssignmentExpression> attributeAssignmentExpressions;
 
-    public AdviceExpression(URI adviceId, int appliesTo, List attributeAssignmentExpressions) {
+
+    /**
+     * Constructor that takes all the data associated with an AdviceExpression
+     * .
+     * @param adviceId the advice's id
+     * @param appliesTo the effect for which this advice must be provided
+     * @param attributeAssignmentExpressions a <code>List</code> of <code>AttributeAssignmentExpression</code>s
+     */
+    public AdviceExpression(URI adviceId, int appliesTo,
+                            List<AttributeAssignmentExpression> attributeAssignmentExpressions) {
         this.adviceId = adviceId;
         this.appliesTo = appliesTo;
         this.attributeAssignmentExpressions = attributeAssignmentExpressions;
     }
 
+    /**
+     *  Creates an instance of <code>AdviceExpression</code> based on the DOM root node.
+     *
+     * @param root  the DOM root of the AdviceExpressionType XML type
+     * @param metaData policy meta data
+     * @return an instance of an <code>AdviceExpression</code>
+     * @throws ParsingException  if the structure isn't valid
+     */
     public static AdviceExpression getInstance(Node root, PolicyMetaData metaData) throws ParsingException {
+
         URI adviceId;
         int appliesTo;
-        List expressions = new ArrayList();
-        String effect = null;
+        String effect;
+        List<AttributeAssignmentExpression> expressions = new ArrayList<AttributeAssignmentExpression>();
         NamedNodeMap attrs = root.getAttributes();
 
         try {
             adviceId = new URI(attrs.getNamedItem("AdviceId").getNodeValue());
         } catch (Exception e) {
-            throw new ParsingException("Error parsing required attribute AdviceId", e);
+            throw new ParsingException("Error parsing required attribute AdviceId " +
+                    "in AdviceExpressionType", e);
         }
 
         try {
             effect = attrs.getNamedItem("AppliesTo").getNodeValue();
         } catch (Exception e) {
-            throw new ParsingException("Error parsing required attribute AppliesTo", e);
+            throw new ParsingException("Error parsing required attribute AppliesTo " +
+                    "in AdviceExpressionType", e);
         }
 
         if (effect.equals("Permit")) {
-            appliesTo = Result.DECISION_PERMIT;
+            appliesTo = AbstractResult.DECISION_PERMIT;
         } else if (effect.equals("Deny")) {
-            appliesTo = Result.DECISION_DENY;
+            appliesTo = AbstractResult.DECISION_DENY;
         } else {
             throw new ParsingException("Invalid Effect type: " + effect);
         }
@@ -85,7 +118,8 @@ public class AdviceExpression {
                             getInstance(node, metaData);
                     expressions.add(expression);
                 } catch (Exception e) {
-                    throw new ParsingException("Error parsing attribute " + "assignments", e);
+                    throw new ParsingException("Error parsing attribute assignments " +
+                            "in AdviceExpressionType", e);
                 }
             }
         }
@@ -93,21 +127,39 @@ public class AdviceExpression {
         return new AdviceExpression(adviceId, appliesTo, expressions);
     }
 
+    /**
+     * returns whether this is applied for permit or deny
+     *
+     * @return permit/deny
+     */
     public int getAppliesTo() {
         return appliesTo;
     }
 
+    /**
+     * returns advice id
+     *
+     * @return advice id
+     */
     public URI getAdviceId() {
         return adviceId;
     }
 
-
     /**
+     * return  evaluation result of the advice expression
      *
-     * @return
+     * @param ctx  <code>EvaluationCtx</code>
+     * @return  result as <code>Advice</code> Object
      */
     public Advice evaluate(EvaluationCtx ctx) {
-        return new Advice();
+        List<AttributeAssignment> assignments = new ArrayList<AttributeAssignment>();
+        for(AttributeAssignmentExpression expression : attributeAssignmentExpressions){
+            Set<AttributeAssignment> assignmentSet = expression.evaluate(ctx);
+            if(assignmentSet != null && assignmentSet.size() > 0){
+                assignments.addAll(assignmentSet);
+            }
+        }
+        return new Advice(adviceId, assignments);
     }
 
     /**
@@ -136,13 +188,10 @@ public class AdviceExpression {
 
         indenter.in();
 
-        Iterator it = attributeAssignmentExpressions.iterator();
-
-        while (it.hasNext()) {
-//            Attribute attr = (Attribute) (it.next());
-//            out.println(indenter.makeString() + "<AttributeAssignment AttributeId=\""
-//                    + attr.getId().toString() + "\" DataType=\"" + attr.getType().toString()
-//                    + "\">" + attr.getValue().encode() + "</AttributeAssignment>");
+        if(attributeAssignmentExpressions != null && attributeAssignmentExpressions.size() > 0){
+            for(AttributeAssignmentExpression assignment : attributeAssignmentExpressions){
+                assignment.encode(output, indenter);
+            }
         }
 
         indenter.out();

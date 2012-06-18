@@ -23,9 +23,9 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 import org.wso2.balana.TargetMatch;
-import org.wso2.balana.xacml2.TargetMatchGroup;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -43,7 +43,7 @@ public class AnyOfSelection {
      */
     private List<AllOfSelection> allOfSelections;
 
-    private static Log logger = LogFactory.getLog(TargetMatchGroup.class);
+    private static Log logger = LogFactory.getLog(AnyOfSelection.class);
 
 
     /**

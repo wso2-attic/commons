@@ -37,28 +37,19 @@ package org.wso2.balana;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.attr.AttributeValue;
 
-import org.wso2.balana.xacml2.ctx.RequestCtx;
-import org.wso2.balana.ctx.ResponseCtx;
-import org.wso2.balana.ctx.Result;
-import org.wso2.balana.ctx.Status;
+import org.wso2.balana.ctx.*;
 
-import org.wso2.balana.finder.AttributeFinder;
 import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderResult;
-import org.wso2.balana.finder.ResourceFinder;
-import org.wso2.balana.finder.ResourceFinderResult;
+import org.wso2.balana.xacml3.ctx.XACML3EvaluationCtx;
+import org.wso2.balana.xacml3.ctx.RequestCtx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.*;
 
 /**
  * This is the core class for the XACML engine, providing the starting point for request evaluation.
@@ -69,35 +60,37 @@ import java.util.Map.Entry;
  */
 public class PDP {
 
-	// the single attribute finder that can be used to find external values
-	private AttributeFinder attributeFinder;
+    /**
+     * the encapsulate the <code>PDP</code> related configurations
+     */
+    private PDPConfig pdpConfig;
 
-	// the single policy finder that will be used to resolve policies
+    /**
+     * the single policy finder that will be used to resolve policies
+     */
 	private PolicyFinder policyFinder;
 
-	// the single resource finder that will be used to resolve resources
-	private ResourceFinder resourceFinder;
-
-	// the logger we'll use for all messages
+    /**
+     * the logger we'll use for all messages
+     */
 	private static Log logger = LogFactory.getLog(PDP.class);
 
 	/**
 	 * Constructs a new <code>PDP</code> object with the given configuration information.
 	 * 
-	 * @param config user configuration data defining how to find policies, resolve external
+	 * @param pdpConfig user configuration data defining how to find policies, resolve external
 	 *            attributes, etc.
 	 */
-	public PDP(PDPConfig config) {
+	public PDP(PDPConfig pdpConfig) {
+
 		if (logger.isDebugEnabled()) {
 			logger.debug("creating a PDP");
 		}
 
-		attributeFinder = config.getAttributeFinder();
-
-		policyFinder = config.getPolicyFinder();
+        this.pdpConfig = pdpConfig;
+        
+		policyFinder = pdpConfig.getPolicyFinder();
 		policyFinder.init();
-
-		resourceFinder = config.getResourceFinder();
 	}
 
 	/**
@@ -113,121 +106,121 @@ public class PDP {
 	 * 
 	 * @return a response paired to the request
 	 */
-	public ResponseCtx evaluate(RequestCtx request) {
-		// try to create the EvaluationCtx out of the request
+	public ResponseCtx evaluate(AbstractRequestCtx request) {
+
+        EvaluationCtx evalContext = null;
 		try {
-			BasicEvaluationCtx evalContext = null;
-			evalContext = new BasicEvaluationCtx(request, attributeFinder);
-			if (request.isSearch()) {
-				evalContext.setSearching(true);
-			}
+            evalContext = EvaluationCtxFactory.getFactory().getEvaluationCtx(request, pdpConfig);
 			return evaluate(evalContext);
 		} catch (ParsingException pe) {
 			logger.error("the PDP received an invalid request", pe);
-
 			// there was something wrong with the request, so we return
 			// Indeterminate with a status of syntax error...though this
 			// may change if a more appropriate status type exists
-			ArrayList code = new ArrayList();
+			ArrayList<String> code = new ArrayList<String>();
 			code.add(Status.STATUS_SYNTAX_ERROR);
 			Status status = new Status(code, pe.getMessage());
+			return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                    status, evalContext));
 
-			return new ResponseCtx(new Result(Result.DECISION_INDETERMINATE, status));
 		}
-	}
+    }
 
 	/**
 	 * Uses the given <code>EvaluationCtx</code> against the available policies to determine a
 	 * response. If you are starting with a standard XACML Request, then you should use the version
 	 * of this method that takes a <code>RequestCtx</code>. This method should be used only if you
 	 * have a real need to directly construct an evaluation context (or if you need to use an
-	 * <code>EvaluationCtx</code> implementation other than <code>BasicEvaluationCtx</code>).
+	 * <code>EvaluationCtx</code> implementation other than <code>XACML3EvaluationCtx</code> and
+     * <code>XACML2EvaluationCtx</code>).
 	 * 
 	 * @param context representation of the request and the context used for evaluation
 	 * 
 	 * @return a response based on the contents of the context
 	 */
 	public ResponseCtx evaluate(EvaluationCtx context) {
-		// see if we need to call the resource finder
-		if (context.getScope() != EvaluationCtx.SCOPE_IMMEDIATE) {
-			AttributeValue parent = context.getResourceId();
-			ResourceFinderResult resourceResult = null;
 
-			if (context.getScope() == EvaluationCtx.SCOPE_CHILDREN)
-				resourceResult = resourceFinder.findChildResources(parent, context);
-			else
-				resourceResult = resourceFinder.findDescendantResources(parent, context);
+        // check whether this PDP configure to support multiple decision profile
+        if(pdpConfig.isMultipleRequestHandle()){
 
-			// see if we actually found anything
-			if (resourceResult.isEmpty()) {
-				// this is a problem, since we couldn't find any resources
-				// to work on...the spec is not explicit about what kind of
-				// error this is, so we're treating it as a processing error
-				ArrayList code = new ArrayList();
-				code.add(Status.STATUS_PROCESSING_ERROR);
-				String msg = "Couldn't find any resources to work on.";
+            Set<EvaluationCtx> evaluationCtxSet;
+            MultipleCtxResult multipleCtxResult = context.getMultipleEvaluationCtx();
+            if(multipleCtxResult.isIndeterminate()){
+                return new ResponseCtx(ResultFactory.getFactory().
+                        getResult(AbstractResult.DECISION_INDETERMINATE,multipleCtxResult.getStatus(), context));
+            } else {
+                evaluationCtxSet = multipleCtxResult.getEvaluationCtxSet();                
+                HashSet<AbstractResult> results = new HashSet<AbstractResult>();
+                for(EvaluationCtx ctx : evaluationCtxSet){
+                    // do the evaluation, for all evaluate context
+                    AbstractResult result = evaluateContext(ctx);
+                    // add the result
+                    results.add(result);
+                }
+                return new ResponseCtx(results);
+            }
+        } else {
+            // this is special case that specific to XACML3 request
 
-				return new ResponseCtx(new Result(Result.DECISION_INDETERMINATE, new Status(code,
-						msg), context.getResourceId().encode()));
-			}
+            if(context instanceof XACML3EvaluationCtx && ((XACML3EvaluationCtx)context).
+                                                                            isMultipleAttributes()){
+                ArrayList<String> code = new ArrayList<String>();
+                code.add(Status.STATUS_SYNTAX_ERROR);
+                Status status = new Status(code, "PDP does not supports multiple decision profile. " +
+                        "Multiple <Attributes> elements with the same Category can be existed");
+                return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                        status, context));
+            } else if(context instanceof XACML3EvaluationCtx && ((RequestCtx)context.
+                    getRequestCtx()).isCombinedDecision()){
+                List<String> code = new ArrayList<String>();
+                code.add(Status.STATUS_PROCESSING_ERROR);
+                Status status = new Status(code, "PDP does not supports multiple decision profile. " +
+                        "Multiple decision is not existed to combine them");
+                return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                        status, context));
+            } else {
+                return new ResponseCtx(evaluateContext(context));
+            }
+        }
 
-			// setup a set to keep track of the results
-			HashSet results = new HashSet();
-
-			// at this point, we need to go through all the resources we
-			// successfully found and start collecting results
-			Iterator it = resourceResult.getResources().iterator();
-			while (it.hasNext()) {
-				// get the next resource, and set it in the EvaluationCtx
-				AttributeValue resource = (AttributeValue) (it.next());
-				context.setResourceId(resource);
-
-				// do the evaluation, and set the resource in the result
-				Result result = evaluateContext(context);
-				result.setResource(resource.encode());
-
-				// add the result
-				results.add(result);
-			}
-
-			// now that we've done all the successes, we add all the failures
-			// from the finder result
-			Map failureMap = resourceResult.getFailures();
-			it = failureMap.entrySet().iterator();
-			while (it.hasNext()) {
-				// get the next resource, and use it to get its Status data
-				AttributeValue resource = (AttributeValue) (((Entry) it.next()).getKey());
-				Status status = (Status) (failureMap.get(resource));
-
-				// add a new result
-				results.add(new Result(Result.DECISION_INDETERMINATE, status, resource.encode()));
-			}
-
-			// return the set of results
-			return new ResponseCtx(results);
-		} else {
-			// the scope was IMMEDIATE (or missing), so we can just evaluate
-			// the request and return whatever we get back
-			return new ResponseCtx(evaluateContext(context));
-		}
 	}
 
 	/**
 	 * A private helper routine that resolves a policy for the given context, and then tries to
 	 * evaluate based on the policy
-	 */
-	private Result evaluateContext(EvaluationCtx context) {
+     *
+     * @param context  context
+     * @return a response
+     */
+	private AbstractResult evaluateContext(EvaluationCtx context) {
 		// first off, try to find a policy
 		PolicyFinderResult finderResult = policyFinder.findPolicy(context);
 
 		// see if there weren't any applicable policies
-		if (finderResult.notApplicable())
-			return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
-
+		if (finderResult.notApplicable()){
+			//return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+            return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context);
+        }
 		// see if there were any errors in trying to get a policy
-		if (finderResult.indeterminate())
-			return new Result(Result.DECISION_INDETERMINATE, finderResult.getStatus(), context
-					.getResourceId().encode());
+		if (finderResult.indeterminate()){
+//			return new Result(Result.DECISION_INDETERMINATE, finderResult.getStatus(), context
+//					.getResourceId().encode());
+            return ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                    finderResult.getStatus(),context);
+        }
+
+        Set<String> policyIds = new HashSet<String>();
+
+        AbstractPolicy policy = finderResult.getPolicy();
+        if(policy instanceof Policy){
+            policyIds.add(policy.getId().toString());
+        } else if(policy instanceof PolicySet){
+            Iterator iterator = policy.getChildElements().iterator();
+            while(iterator.hasNext()){
+                AbstractPolicy child = (AbstractPolicy) iterator.next();
+                policyIds.add(child.getId().toString());
+            }
+        }
 
 		// we found a valid policy, so we can do the evaluation
 		return finderResult.getPolicy().evaluate(context);
@@ -249,18 +242,19 @@ public class PDP {
 	 * @return a stream that contains an XML ResponseType
 	 */
 	public OutputStream evaluate(InputStream input) {
-		RequestCtx request = null;
+		AbstractRequestCtx request = null;
 		ResponseCtx response = null;
 
 		try {
-			request = RequestCtx.getInstance(input);
+			request = RequestCtxFactory.getFactory().getRequestCtx(input);
 		} catch (Exception pe) {
 			// the request wasn't formed correctly
-			ArrayList code = new ArrayList();
+			ArrayList<String> code = new ArrayList<String>();
 			code.add(Status.STATUS_SYNTAX_ERROR);
 			Status status = new Status(code, "invalid request: " + pe.getMessage());
-
-			response = new ResponseCtx(new Result(Result.DECISION_INDETERMINATE, status));
+            // can not determine XACML version at here. therefore return assume as XACML 3
+            response = new ResponseCtx(ResultFactory.getFactory().
+                getResult(AbstractResult.DECISION_INDETERMINATE, status, XACMLConstants.XACML_VERSION_3_0));
 		}
 
 		// if we didn't have a problem above, then we should go ahead

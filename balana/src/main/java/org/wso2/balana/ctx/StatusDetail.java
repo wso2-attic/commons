@@ -35,6 +35,7 @@
 
 package org.wso2.balana.ctx;
 
+import org.wso2.balana.Attribute;
 import org.wso2.balana.ParsingException;
 
 import java.io.ByteArrayInputStream;

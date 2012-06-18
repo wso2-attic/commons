@@ -33,15 +33,17 @@
  * the design, construction, operation or maintenance of any nuclear facility.
  */
 
-package org.wso2.balana.attr;
+package org.wso2.balana.xacml2.attr;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.*;
 
-import org.wso2.balana.cond.Evaluatable;
+import org.wso2.balana.attr.AbstractDesignator;
+import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -58,11 +60,11 @@ import org.w3c.dom.Node;
 
 /**
  * Represents all four kinds of Designators in XACML.
- * 
- * @since 1.0
+ *
  * @author Seth Proctor
+ * @since 1.0
  */
-public class AttributeDesignator implements Evaluatable {
+public class AttributeDesignator extends AbstractDesignator {
 
     /**
      * Tells designator to search in the subject section of the request
@@ -90,7 +92,7 @@ public class AttributeDesignator implements Evaluatable {
     public static final String SUBJECT_CATEGORY_DEFAULT = "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject";
 
     // helper array of strings
-    static final private String[] targetTypes = { "Subject", "Resource", "Action", "Environment" };
+    static final private String[] targetTypes = {"Subject", "Resource", "Action", "Environment"};
 
     // the type of designator we are
     private int target;
@@ -100,17 +102,14 @@ public class AttributeDesignator implements Evaluatable {
     private URI id;
 
     // optional attribute
-    private URI issuer;
+    private String issuer;
 
     // must resolution find something
     private boolean mustBePresent;
 
-    // if we're a subject this is the category
-    private URI subjectCategory;
-
-    /**
-     * XACML 3 
-     */
+    // here we are defined a category
+    // This is used only for Subject in XACML2.
+    // but adding it for all designators
     private URI category;
 
     // the logger we'll use for all messages
@@ -118,28 +117,43 @@ public class AttributeDesignator implements Evaluatable {
 
     /**
      * Creates a new <code>AttributeDesignator</code> without the optional issuer.
-     * 
-     * @param target the type of designator as specified by the 4 member *_TARGET fields
-     * @param type the data type resolved by this designator
-     * @param id the attribute id looked for by this designator
+     *
+     * @param target        the type of designator as specified by the 4 member *_TARGET fields
+     * @param type          the data type resolved by this designator
+     * @param id            the attribute id looked for by this designator
      * @param mustBePresent whether resolution must find a value
      */
-    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, URI category) {
-        this(target, type, id, mustBePresent, null, category);
+    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent) {
+        this(target, type, id, mustBePresent, null, null);
     }
 
     /**
      * Creates a new <code>AttributeDesignator</code> with the optional issuer.
-     * 
-     * @param target the type of designator as specified by the 4 member *_TARGET fields
-     * @param type the data type resolved by this designator
-     * @param id the attribute id looked for by this designator
+     *
+     * @param target        the type of designator as specified by the 4 member *_TARGET fields
+     * @param type          the data type resolved by this designator
+     * @param id            the attribute id looked for by this designator
      * @param mustBePresent whether resolution must find a value
-     * @param issuer the issuer of the values to search for or null if no issuer is specified
-     * 
+     * @param issuer        the issuer of the values to search for or null if no issuer is specified
      * @throws IllegalArgumentException if the input target isn't a valid value
      */
-    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, URI issuer,
+    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, String issuer)
+                                    throws IllegalArgumentException {
+        this(target, type, id, mustBePresent, null, null);
+
+    }
+
+    /**
+     * Creates a new <code>AttributeDesignator</code> with the optional issuer.
+     *
+     * @param target        the type of designator as specified by the 4 member *_TARGET fields
+     * @param type          the data type resolved by this designator
+     * @param id            the attribute id looked for by this designator
+     * @param mustBePresent whether resolution must find a value
+     * @param issuer        the issuer of the values to search for or null if no issuer is specified
+     * @throws IllegalArgumentException if the input target isn't a valid value
+     */
+    public AttributeDesignator(int target, URI type, URI id, boolean mustBePresent, String issuer,
                                URI category) throws IllegalArgumentException {
 
         // check if input target is a valid value
@@ -155,54 +169,35 @@ public class AttributeDesignator implements Evaluatable {
     }
 
     /**
-     * Sets the category if this is a SubjectAttributeDesignatorType
-     * 
-     * @param category the subject category
-     */
-    public void setSubjectCategory(URI category) {
-        if (target == SUBJECT_TARGET)
-            subjectCategory = category;
-    }
-
-    /**
      * Creates a new <code>AttributeDesignator</code> based on the DOM root of the XML data.
-     * 
-     * @deprecated As of 2.0 you should avoid using this method and should instead use the version
-     *             that takes a <code>PolicyMetaData</code> instance. This method will only work for
-     *             XACML 1.x policies.
-     * 
-     * @param root the DOM root of the AttributeDesignatorType XML type
-     * @param target the type of designator to create as specified in the four member *_TARGET
-     *            fields
-     * 
+     *
+     * @param root     the DOM root of the AttributeDesignatorType XML type
      * @return the designator
-     * 
      * @throws ParsingException if the AttributeDesignatorType was invalid
      */
-    public static AttributeDesignator getInstance(Node root, int target) throws ParsingException {
-        return getInstance(root, target, new PolicyMetaData());
-    }
+    public static AttributeDesignator getInstance(Node root) throws ParsingException {
 
-    /**
-     * Creates a new <code>AttributeDesignator</code> based on the DOM root of the XML data.
-     * 
-     * @param root the DOM root of the AttributeDesignatorType XML type
-     * @param target the type of designator to create as specified in the four member *_TARGET
-     *            fields
-     * @param metaData the meta-data associated with the containing policy
-     * 
-     * @return the designator
-     * 
-     * @throws ParsingException if the AttributeDesignatorType was invalid
-     */
-    public static AttributeDesignator getInstance(Node root, int target, PolicyMetaData metaData)
-            throws ParsingException {
         URI type = null;
         URI id = null;
-        URI issuer = null;
-        URI category = null;
+        String issuer = null;
         boolean mustBePresent = false;
-        URI subjectCategory = null;
+        URI category = null;
+        int target;
+
+        String tagName = root.getNodeName();
+
+        if (tagName.equals("SubjectAttributeDesignator")) {
+            target = SUBJECT_TARGET;
+        } else if (tagName.equals("ResourceAttributeDesignator")) {
+            target = RESOURCE_TARGET;
+        } else if (tagName.equals("ActionAttributeDesignator")) {
+            target = ACTION_TARGET;
+        } else if (tagName.equals("EnvironmentAttributeDesignator")) {
+            target = ENVIRONMENT_TARGET;
+        } else {
+            throw new ParsingException("AttributeDesignator cannot be constructed using " + "type: "
+                    + root.getNodeName());
+        }
 
         NamedNodeMap attrs = root.getAttributes();
 
@@ -212,36 +207,6 @@ public class AttributeDesignator implements Evaluatable {
         } catch (Exception e) {
             throw new ParsingException("Required AttributeId missing in " + "AttributeDesignator",
                     e);
-        }
-
-        if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
-            try {
-                // there's always an Id
-                category = new URI(attrs.getNamedItem("Category").getNodeValue());
-
-                if(XACMLConstants.SUBJECT_CATEGORY.equals(category.toString())){
-                    target = SUBJECT_TARGET;
-                } else if(XACMLConstants.RESOURCE_CATEGORY.equals(category.toString())){
-                    target = RESOURCE_TARGET;
-                } else if(XACMLConstants.ACTION_CATEGORY.equals(category.toString())){
-                    target = ACTION_TARGET;
-                } else if(XACMLConstants.ENT_CATEGORY.equals(category.toString())){
-                    target = ENVIRONMENT_TARGET;   
-                }
-
-            } catch (Exception e) {
-                throw new ParsingException("Required Category missing in " + "AttributeDesignator", e);
-            }
-
-            try {
-                // there's always a data type
-                String nodeValue = attrs.getNamedItem("MustBePresent").getNodeValue();
-                if("true".equals(nodeValue)){
-                    mustBePresent = true;
-                }
-            } catch (Exception e) {
-                throw new ParsingException("Required DataType missing in " + "AttributeDesignator", e);
-            }            
         }
 
         try {
@@ -255,24 +220,29 @@ public class AttributeDesignator implements Evaluatable {
             // there might be an issuer
             Node node = attrs.getNamedItem("Issuer");
             if (node != null)
-                issuer = new URI(node.getNodeValue());
+                issuer = node.getNodeValue();
 
             // if it's for the Subject section, there's another attr
             if (target == SUBJECT_TARGET) {
                 Node scnode = attrs.getNamedItem("SubjectCategory");
-                if (scnode != null)
-                    subjectCategory = new URI(scnode.getNodeValue());
-                else
-                    subjectCategory = new URI(SUBJECT_CATEGORY_DEFAULT);
+                if (scnode != null){
+                    category = new URI(scnode.getNodeValue());
+                } else {
+                    category = new URI(SUBJECT_CATEGORY_DEFAULT);
+                }
+            } else if (target == RESOURCE_TARGET){
+                category = new URI(XACMLConstants.RESOURCE_CATEGORY);
+            } else if (target == ACTION_TARGET){
+                category = new URI(XACMLConstants.ACTION_CATEGORY);
+            } else if (target == ENVIRONMENT_TARGET) {
+                category = new URI(XACMLConstants.ENT_CATEGORY);
             }
 
             // there might be a mustBePresent flag
-            if(!(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())){
-                node = attrs.getNamedItem("MustBePresent");
-                if (node != null)
-                    if (node.getNodeValue().equals("true"))
-                        mustBePresent = true;
-            }
+            node = attrs.getNamedItem("MustBePresent");
+            if (node != null)
+                if (node.getNodeValue().equals("true"))
+                    mustBePresent = true;
         } catch (Exception e) {
             // this shouldn't ever happen, but in theory something could go
             // wrong in the code in this try block
@@ -280,15 +250,12 @@ public class AttributeDesignator implements Evaluatable {
                     "Error parsing AttributeDesignator " + "optional attributes", e);
         }
 
-        AttributeDesignator ad = new AttributeDesignator(target, type, id, mustBePresent, issuer, category);
-        ad.setSubjectCategory(subjectCategory);
-
-        return ad;
+        return new AttributeDesignator(target, type, id, mustBePresent, issuer, category);
     }
 
     /**
      * Returns the type of this designator as specified by the *_TARGET fields.
-     * 
+     *
      * @return the designator type
      */
     public int getDesignatorType() {
@@ -298,7 +265,7 @@ public class AttributeDesignator implements Evaluatable {
     /**
      * Returns the type of attribute that is resolved by this designator. While an AD will always
      * return a bag, this method will always return the type that is stored in the bag.
-     * 
+     *
      * @return the attribute type
      */
     public URI getType() {
@@ -307,7 +274,7 @@ public class AttributeDesignator implements Evaluatable {
 
     /**
      * Returns the AttributeId of the values resolved by this designator.
-     * 
+     *
      * @return identifier for the values to resolve
      */
     public URI getId() {
@@ -317,25 +284,25 @@ public class AttributeDesignator implements Evaluatable {
     /**
      * Returns the subject category for this designator. If this is not a SubjectAttributeDesignator
      * then this will always return null.
-     * 
+     *
      * @return the subject category or null if this isn't a SubjectAttributeDesignator
      */
     public URI getCategory() {
-        return subjectCategory;
+        return category;
     }
 
     /**
      * Returns the issuer of the values resolved by this designator if specified.
-     * 
+     *
      * @return the attribute issuer or null if unspecified
      */
-    public URI getIssuer() {
+    public String getIssuer() {
         return issuer;
     }
 
     /**
      * Returns whether or not a value is required to be resolved by this designator.
-     * 
+     *
      * @return true if a value is required, false otherwise
      */
     public boolean mustBePresent() {
@@ -344,7 +311,7 @@ public class AttributeDesignator implements Evaluatable {
 
     /**
      * Always returns true, since a designator always returns a bag of attribute values.
-     * 
+     *
      * @return true
      */
     public boolean returnsBag() {
@@ -353,11 +320,10 @@ public class AttributeDesignator implements Evaluatable {
 
     /**
      * Always returns true, since a designator always returns a bag of attribute values.
-     * 
+     *
+     * @return true
      * @deprecated As of 2.0, you should use the <code>returnsBag</code> method from the
      *             super-interface <code>Expression</code>.
-     * 
-     * @return true
      */
     public boolean evaluatesToBag() {
         return true;
@@ -365,7 +331,7 @@ public class AttributeDesignator implements Evaluatable {
 
     /**
      * Always returns an empty list since designators never have children.
-     * 
+     *
      * @return an empty <code>List</code>
      */
     public List getChildren() {
@@ -375,66 +341,74 @@ public class AttributeDesignator implements Evaluatable {
     /**
      * Evaluates the pre-assigned meta-data against the given context, trying to find some matching
      * values.
-     * 
-     * @param context the representation of the request
-     * 
+     *
+     * @param evaluationCtx the representation of the request
      * @return a result containing a bag either empty because no values were found or containing at
      *         least one value, or status associated with an Indeterminate result
      */
-    public EvaluationResult evaluate(EvaluationCtx context) {
+    public EvaluationResult evaluate(EvaluationCtx evaluationCtx) {
+
         EvaluationResult result = null;
 
         // look in the right section for some attribute values
         switch (target) {
-        case SUBJECT_TARGET:
-            result = context.getSubjectAttribute(type, id, issuer, subjectCategory);
-            break;
-        case RESOURCE_TARGET:
-            result = context.getResourceAttribute(type, id, issuer);
-            break;
-        case ACTION_TARGET:
-            result = context.getActionAttribute(type, id, issuer);
-            break;
-        case ENVIRONMENT_TARGET:
-            result = context.getEnvironmentAttribute(type, id, issuer);
-            break;
+            case SUBJECT_TARGET:
+                result = evaluationCtx.getAttribute(type, id, issuer, category);
+                break;
+            case RESOURCE_TARGET:
+                result = evaluationCtx.getAttribute(type, id, issuer, category);
+                break;
+            case ACTION_TARGET:
+                result = evaluationCtx.getAttribute(type, id, issuer, category);
+                break;
+            case ENVIRONMENT_TARGET:
+                result = evaluationCtx.getAttribute(type, id, issuer, category);
+                break;
         }
 
         // if the lookup was indeterminate, then we return immediately
-        if (result.indeterminate())
-            return result;
+        if(result != null){
+            if (result.indeterminate())
+                return result;
 
-        BagAttribute bag = (BagAttribute) (result.getAttributeValue());
+            BagAttribute bag = (BagAttribute) (result.getAttributeValue());
 
-        if (bag.isEmpty()) {
-            // if it's empty, this may be an error
-            if (mustBePresent) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("AttributeDesignator failed to resolve a "
-                            + "value for a required attribute: " + id.toString());
+            if (bag.isEmpty()) {
+                // if it's empty, this may be an error
+                if (mustBePresent) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("AttributeDesignator failed to resolve a "
+                                + "value for a required attribute: " + id.toString());
+                    }
+
+                    ArrayList<String> code = new ArrayList<String>();
+                    code.add(Status.STATUS_MISSING_ATTRIBUTE);
+
+                    String message = "Couldn't find " + targetTypes[target]
+                            + "AttributeDesignator attribute";
+
+                    // Note that there is a bug in the XACML spec. You can't  //TODO
+                    // specify an identifier without specifying acceptable
+                    // values. Until this is fixed, this code will only
+                    // return the status code, and not any hints about what
+                    // was missing
+
+                    /*
+                     * List attrs = new ArrayList(); attrs.add(new Attribute(id, ((issuer == null) ?
+                     * null : issuer.toString()), null, null)); StatusDetail detail = new
+                     * StatusDetail(attrs);
+                     */
+
+                    return new EvaluationResult(new Status(code, message));
                 }
-
-                ArrayList code = new ArrayList();
-                code.add(Status.STATUS_MISSING_ATTRIBUTE);
-
-                String message = "Couldn't find " + targetTypes[target]
-                        + "AttributeDesignator attribute";
-
-                // Note that there is a bug in the XACML spec. You can't
-                // specify an identifier without specifying acceptable
-                // values. Until this is fixed, this code will only
-                // return the status code, and not any hints about what
-                // was missing
-
-                /*
-                 * List attrs = new ArrayList(); attrs.add(new Attribute(id, ((issuer == null) ?
-                 * null : issuer.toString()), null, null)); StatusDetail detail = new
-                 * StatusDetail(attrs);
-                 */
-
-                return new EvaluationResult(new Status(code, message));
             }
-        }
+        } else {
+            ArrayList<String> code = new ArrayList<String>();
+            code.add(Status.STATUS_MISSING_ATTRIBUTE);
+            String message = "Couldn't find " + targetTypes[target]
+                    + "AttributeDesignator attribute";
+            return new EvaluationResult(new Status(code, message));  //TODO
+    }
 
         // if we got here the bag wasn't empty, or mustBePresent was false,
         // so we just return the result
@@ -444,7 +418,7 @@ public class AttributeDesignator implements Evaluatable {
     /**
      * Encodes this designator into its XML representation and writes this encoding to the given
      * <code>OutputStream</code> with no indentation.
-     * 
+     *
      * @param output a stream into which the XML-encoded data is written
      */
     public void encode(OutputStream output) {
@@ -454,8 +428,8 @@ public class AttributeDesignator implements Evaluatable {
     /**
      * Encodes this designator into its XML representation and writes this encoding to the given
      * <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     *
+     * @param output   a stream into which the XML-encoded data is written
      * @param indenter an object that creates indentation strings
      */
     public void encode(OutputStream output, Indenter indenter) {
@@ -464,8 +438,8 @@ public class AttributeDesignator implements Evaluatable {
 
         String tag = "<" + targetTypes[target] + "AttributeDesignator";
 
-        if ((target == SUBJECT_TARGET) && (subjectCategory != null))
-            tag += " SubjectCategory=\"" + subjectCategory.toString() + "\"";
+        if ((target == SUBJECT_TARGET) && (category != null))
+            tag += " SubjectCategory=\"" + category.toString() + "\"";
 
         tag += " AttributeId=\"" + id.toString() + "\"";
         tag += " DataType=\"" + type.toString() + "\"";

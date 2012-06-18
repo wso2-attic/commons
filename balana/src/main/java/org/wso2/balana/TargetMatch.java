@@ -35,13 +35,7 @@
 
 package org.wso2.balana;
 
-import org.wso2.balana.attr.AttributeDesignator;
-import org.wso2.balana.attr.AttributeFactory;
-import org.wso2.balana.attr.AttributeSelector;
-import org.wso2.balana.attr.AttributeValue;
-import org.wso2.balana.attr.BagAttribute;
-import org.wso2.balana.attr.BooleanAttribute;
-import org.wso2.balana.attr.StringAttribute;
+import org.wso2.balana.attr.*;
 
 import org.wso2.balana.cond.Evaluatable;
 import org.wso2.balana.cond.EvaluationResult;
@@ -49,6 +43,7 @@ import org.wso2.balana.cond.Function;
 import org.wso2.balana.cond.FunctionFactory;
 import org.wso2.balana.cond.FunctionTypeException;
 
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -165,7 +160,7 @@ public class TargetMatch {
         if (i == NAMES.length)
             throw new IllegalArgumentException("Unknown TargetMatch type");
 
-        return getInstance(root, i, new PolicyMetaData(PolicyMetaData.XACML_1_0_IDENTIFIER,
+        return getInstance(root, i, new PolicyMetaData(XACMLConstants.XACML_1_0_IDENTIFIER,
                 xpathVersion));
     }
 
@@ -224,12 +219,12 @@ public class TargetMatch {
             Node node = nodes.item(i);
             String name = node.getNodeName();
 
-            if (PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()
+            if (XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion()
                     && "AttributeDesignator".equals(name)){
-                eval = AttributeDesignator.getInstance(node, matchType, metaData);
-            } else if(!(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion())
+                eval = AttributeDesignatorFactory.getFactory().getAbstractDesignator(node, metaData);
+            } else if(!(XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion())
                     && (NAMES[matchType] + "AttributeDesignator").equals(name)){
-                eval = AttributeDesignator.getInstance(node, matchType, metaData);                    
+                eval = AttributeDesignatorFactory.getFactory().getAbstractDesignator(node, metaData);
             } else if (name.equals("AttributeSelector")) {
                 eval = AttributeSelector.getInstance(node, metaData);
             } else if (name.equals("AttributeValue")) {
@@ -242,7 +237,7 @@ public class TargetMatch {
         }
 
         // finally, check that the inputs are valid for this function
-        List inputs = new ArrayList();
+        List<Evaluatable> inputs = new ArrayList<Evaluatable>();
         inputs.add(attrValue);
         inputs.add(eval);
         function.checkInputsNoBag(inputs);
@@ -317,10 +312,10 @@ public class TargetMatch {
             Status firstIndeterminateStatus = null;
 
             while (it.hasNext()) {
-                ArrayList inputs = new ArrayList();
+                ArrayList<Evaluatable> inputs = new ArrayList<Evaluatable>();
 
                 inputs.add(attrValue);
-                inputs.add(it.next());
+                inputs.add((Evaluatable)it.next());
 
                 // do the evaluation
                 MatchResult match = evaluateMatch(inputs, context);
@@ -363,6 +358,10 @@ public class TargetMatch {
 
     /**
      * Private helper that evaluates an individual match.
+     *
+     * @param inputs  <code>List</code> of <code>Evaluatable</code>
+     * @param context  <code>EvaluationCtx</code>
+     * @return  match result as <code>MatchResult</code>
      */
     private MatchResult evaluateMatch(List inputs, EvaluationCtx context) {
         // first off, evaluate the function

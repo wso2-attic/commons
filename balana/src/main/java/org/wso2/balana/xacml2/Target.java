@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 /**
  * Represents the TargetType XML type in XACML. This also stores several other XML types: Subjects,
@@ -90,8 +91,8 @@ public class Target extends AbstractTarget {
         this.resourcesSection = resourcesSection;
         this.actionsSection = actionsSection;
         this.environmentsSection = new TargetSection(null, TargetMatch.ENVIRONMENT,
-                PolicyMetaData.XACML_VERSION_1_0);
-        this.xacmlVersion = PolicyMetaData.XACML_VERSION_1_0;
+                XACMLConstants.XACML_VERSION_1_0);
+        this.xacmlVersion = XACMLConstants.XACML_VERSION_1_0;
     }
 
     /**
@@ -117,7 +118,7 @@ public class Target extends AbstractTarget {
         this.resourcesSection = resourcesSection;
         this.actionsSection = actionsSection;
         this.environmentsSection = environmentsSection;
-        this.xacmlVersion = PolicyMetaData.XACML_VERSION_2_0;
+        this.xacmlVersion = XACMLConstants.XACML_VERSION_2_0;
     }
 
     /**
@@ -136,7 +137,7 @@ public class Target extends AbstractTarget {
      * @throws ParsingException if the DOM node is invalid
      */
     public static Target getInstance(Node root, String xpathVersion) throws ParsingException {
-        return getInstance(root, new PolicyMetaData(PolicyMetaData.XACML_1_0_IDENTIFIER,
+        return getInstance(root, new PolicyMetaData(XACMLConstants.XACML_1_0_IDENTIFIER,
                 xpathVersion));
     }
 
@@ -185,7 +186,7 @@ public class Target extends AbstractTarget {
         if (actions == null)
             actions = new TargetSection(null, TargetMatch.ACTION, version);
 
-        if (version == PolicyMetaData.XACML_VERSION_2_0) {
+        if (version == XACMLConstants.XACML_VERSION_2_0) {
             if (environments == null)
                 environments = new TargetSection(null, TargetMatch.ENVIRONMENT, version);
             return new Target(subjects, resources, actions, environments);
@@ -340,7 +341,7 @@ public class Target extends AbstractTarget {
         boolean matchesAny = (subjectsSection.matchesAny() && resourcesSection.matchesAny()
                 && actionsSection.matchesAny() && environmentsSection.matchesAny());
 
-        if (matchesAny && (xacmlVersion == PolicyMetaData.XACML_VERSION_2_0)) {
+        if (matchesAny && (xacmlVersion == XACMLConstants.XACML_VERSION_2_0)) {
             // in 2.0, if all the sections match any request, then the Target
             // element is empty and should be encoded simply as en empty tag
             out.println("<Target/>");
@@ -353,7 +354,7 @@ public class Target extends AbstractTarget {
             actionsSection.encode(output, indenter);
 
             // we should only do this if we're a 2.0 policy
-            if (xacmlVersion == PolicyMetaData.XACML_VERSION_2_0)
+            if (xacmlVersion == XACMLConstants.XACML_VERSION_2_0)
                 environmentsSection.encode(output, indenter);
 
             indenter.out();

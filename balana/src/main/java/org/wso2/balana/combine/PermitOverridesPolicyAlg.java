@@ -35,12 +35,13 @@
 
 package org.wso2.balana.combine;
 
-import org.wso2.balana.AbstractPolicy;
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.MatchResult;
+import org.wso2.balana.*;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
 import org.wso2.balana.ctx.Status;
+import org.wso2.balana.xacml3.advice.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -107,13 +108,14 @@ public class PermitOverridesPolicyAlg extends PolicyCombiningAlgorithm {
      * @param parameters a (possibly empty) non-null <code>List</code> of
      *            <code>CombinerParameter<code>s
      * @param policyElements the policies to combine
-     * 
+     *
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List policyElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         boolean atLeastOneError = false;
         boolean atLeastOneDeny = false;
-        Set denyObligations = new HashSet();
+        Set<ObligationResult> denyObligations = new HashSet<ObligationResult>();
+        Set<Advice> denyAdvices = new HashSet<Advice>();
         Status firstIndeterminateStatus = null;
         Iterator it = policyElements.iterator();
 
@@ -127,11 +129,12 @@ public class PermitOverridesPolicyAlg extends PolicyCombiningAlgorithm {
                 atLeastOneError = true;
 
                 // keep track of the first error, regardless of cause
-                if (firstIndeterminateStatus == null)
+                if (firstIndeterminateStatus == null){
                     firstIndeterminateStatus = match.getStatus();
+                }
             } else if (match.getResult() == MatchResult.MATCH) {
                 // now we evaluate the policy
-                Result result = policy.evaluate(context);
+                AbstractResult result = policy.evaluate(context);
                 int effect = result.getDecision();
 
                 // this is a little different from DenyOverrides...
@@ -141,10 +144,10 @@ public class PermitOverridesPolicyAlg extends PolicyCombiningAlgorithm {
 
                 if (effect == Result.DECISION_DENY) {
                     atLeastOneDeny = true;
+                    denyAdvices.addAll(result.getAdvices());
                     denyObligations.addAll(result.getObligations());
                 } else if (effect == Result.DECISION_INDETERMINATE) {
                     atLeastOneError = true;
-
                     // keep track of the first error, regardless of cause
                     if (firstIndeterminateStatus == null)
                         firstIndeterminateStatus = result.getStatus();
@@ -153,17 +156,19 @@ public class PermitOverridesPolicyAlg extends PolicyCombiningAlgorithm {
         }
 
         // if we got a DENY, return it
-        if (atLeastOneDeny)
-            return new Result(Result.DECISION_DENY, context.getResourceId().encode(),
-                    denyObligations);
-
+        if (atLeastOneDeny){
+            return ResultFactory.getFactory().getResult(Result.DECISION_DENY, denyObligations,
+                                                                            denyAdvices, context);
+        }
         // if we got an INDETERMINATE, return it
-        if (atLeastOneError)
-            return new Result(Result.DECISION_INDETERMINATE, firstIndeterminateStatus, context
-                    .getResourceId().encode());
+        if (atLeastOneError){
+            return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE,
+                    firstIndeterminateStatus, context);
+        }
 
         // if we got here, then nothing applied to us
-        return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        //return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
     }
 
 }

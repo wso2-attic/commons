@@ -298,7 +298,7 @@ public class ConfigurationStore {
         if (node != null)
             return node.getNodeValue();
         else
-            return PolicyMetaData.XACML_1_0_IDENTIFIER;
+            return XACMLConstants.XACML_1_0_IDENTIFIER;
     }
 
     /**

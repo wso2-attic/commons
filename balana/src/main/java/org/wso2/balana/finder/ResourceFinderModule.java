@@ -35,7 +35,7 @@
 
 package org.wso2.balana.finder;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.attr.AttributeValue;
 

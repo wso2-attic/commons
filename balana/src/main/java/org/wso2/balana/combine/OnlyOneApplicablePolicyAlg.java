@@ -36,10 +36,11 @@
 package org.wso2.balana.combine;
 
 import org.wso2.balana.AbstractPolicy;
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.MatchResult;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.Status;
 
 import java.net.URI;
@@ -98,7 +99,7 @@ public class OnlyOneApplicablePolicyAlg extends PolicyCombiningAlgorithm {
      * 
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List policyElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         boolean atLeastOne = false;
         AbstractPolicy selectedPolicy = null;
         Iterator it = policyElements.iterator();
@@ -112,18 +113,19 @@ public class OnlyOneApplicablePolicyAlg extends PolicyCombiningAlgorithm {
 
             // if there is an error in trying to match any of the targets,
             // we always return INDETERMINATE immediately
-            if (result == MatchResult.INDETERMINATE)
-                return new Result(Result.DECISION_INDETERMINATE, match.getStatus(), context
-                        .getResourceId().encode());
-
+            if (result == MatchResult.INDETERMINATE){
+                return ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                        match.getStatus(),context);
+            }
             if (result == MatchResult.MATCH) {
                 // if this isn't the first match, then this is an error
                 if (atLeastOne) {
                     List code = new ArrayList();
                     code.add(Status.STATUS_PROCESSING_ERROR);
                     String message = "Too many applicable policies";
-                    return new Result(Result.DECISION_INDETERMINATE, new Status(code, message),
-                            context.getResourceId().encode());
+                        return ResultFactory.getFactory().
+                                getResult(AbstractResult.DECISION_INDETERMINATE,
+                                        new Status(code, message), context);                     
                 }
 
                 // if this was the first applicable policy in the set, then
@@ -135,11 +137,11 @@ public class OnlyOneApplicablePolicyAlg extends PolicyCombiningAlgorithm {
 
         // if we got through the loop and found exactly one match, then
         // we return the evaluation result of that policy
-        if (atLeastOne)
+        if (atLeastOne){
             return selectedPolicy.evaluate(context);
-
+        }
         // if we didn't find a matching policy, then we don't apply
-        return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context);
     }
 
 }

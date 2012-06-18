@@ -37,6 +37,10 @@ package org.wso2.balana;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.xacml3.advice.Advice;
 import org.wso2.balana.xacml3.advice.AdviceExpression;
 import org.wso2.balana.combine.CombinerElement;
 import org.wso2.balana.combine.CombinerParameter;
@@ -44,8 +48,6 @@ import org.wso2.balana.combine.CombiningAlgorithm;
 import org.wso2.balana.combine.CombiningAlgFactory;
 import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
-
-import org.wso2.balana.ctx.Result;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -62,9 +64,6 @@ import java.util.Set;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.xacml2.Obligation;
-import org.wso2.balana.xacml3.ObligationExpression;
-import org.wso2.balana.xacml3.Target;
 
 /**
  * Represents an instance of an XACML policy.
@@ -97,10 +96,10 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
     private List childElements;
 
     // any obligations held by this policy
-    private Set obligationExpressions;
+    private Set<AbstractObligation> obligationExpressions;
 
     // any advice expressions held by this policy
-    private Set adviceExpressions;
+    private Set<AdviceExpression> adviceExpressions;
 
     // the list of combiner parameters
     private List parameters;
@@ -264,7 +263,7 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
         metaData = new PolicyMetaData(root.getNamespaceURI(), defaultVersion);
 
         // now read the remaining policy elements
-        obligationExpressions = new HashSet();
+        obligationExpressions = new HashSet<AbstractObligation>();
         adviceExpressions = new HashSet();
         parameters = new ArrayList();
         children = root.getChildNodes();
@@ -277,11 +276,7 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
                 if (child.hasChildNodes())
                     description = child.getFirstChild().getNodeValue();
             } else if (cname.equals("Target")) {
-                if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
-                    target = Target.getInstance(child, metaData);
-                } else {
-                    target = org.wso2.balana.xacml2.Target.getInstance(child, metaData);
-                }
+                target = TargetFactory.getFactory().getTarget(child, metaData);
             } else if (cname.equals("ObligationExpressions") || cname.equals("Obligations")) {
                 parseObligationExpressions(child);
             } else if (cname.equals("CombinerParameters")) {
@@ -329,18 +324,18 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
 
     /**
      * Helper routine to parse the obligation data
+     * @param root
+     * @throws ParsingException
      */
     private void parseObligationExpressions(Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("ObligationExpression") &&
-                    metaData.getXACMLVersion() == PolicyMetaData.XACML_VERSION_3_0){
-                obligationExpressions.add(ObligationExpression.getInstance(node, metaData));
-            } else if(node.getNodeName().equals("ObligationExpression") &&
-                    !(metaData.getXACMLVersion() == PolicyMetaData.XACML_VERSION_3_0)){
-                obligationExpressions.add(Obligation.getInstance(node));
+            if (node.getNodeName().equals("ObligationExpression")){
+                AbstractObligation obligation = ObligationFactory.getFactory().
+                                                                getObligation(node, metaData);
+                obligationExpressions.add(obligation);
             }
         }
     }
@@ -552,31 +547,13 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
      *
      * @return the result of evaluation
      */
-    public Result evaluate(EvaluationCtx context) {
+    public AbstractResult evaluate(EvaluationCtx context) {
+        
         // evaluate
-        Result result = combiningAlg.combine(context, parameters, childElements);
-
-        List<MatchResult> matches = result.getMatches();
-
-        if (matches != null) {
-            for (MatchResult matchResult : matches) {
-                if (matchResult.getActionPolicyValue() == null) {
-                    matchResult.setActionPolicyValue(this.actionPolicyValue);
-                }
-                if (matchResult.getEnvPolicyValue() == null) {
-                    matchResult.setEnvPolicyValue(this.envPolicyValue);
-                }
-                if (matchResult.getResourcePolicyValue() == null) {
-                    matchResult.setResourcePolicyValue(this.resourcePolicyValue);
-                }
-                if (matchResult.getSubjectPolicyValue() == null) {
-                    matchResult.setSubjectPolicyValue(this.subjectPolicyValue);
-                }
-            }
-        }
+        AbstractResult result = combiningAlg.combine(context, parameters, childElements);
 
         // if we have no obligation expressions or advice expressions, we're done
-        if (obligationExpressions.size() == 0 && adviceExpressions.size() == 0){
+        if (obligationExpressions.size() < 1 && adviceExpressions.size() < 1){
             return result;
         }
 
@@ -588,27 +565,44 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
             // we didn't permit/deny, so we never return obligations
             return result;
         }
-
-        Iterator iteratorOb = obligationExpressions.iterator();
-        while (iteratorOb.hasNext()) {
-            AbstractObligation obligationExpression = (AbstractObligation) (iteratorOb.next());
-            if (obligationExpression.getFulfillOn() == effect){
-                result.addObligation(obligationExpression.evaluate(context));
-            }
-        }
-
-        // if we have advice expressions,
-
-        Iterator iteratorAd = adviceExpressions.iterator();
-        while (iteratorAd.hasNext()) {
-            AdviceExpression adviceExpression = (AdviceExpression) (iteratorAd.next());
-            if (adviceExpression.getAppliesTo() == effect)
-                result.addAdvice(adviceExpression.evaluate(context));
-        }
-
-        // finally, return the result
+        
+        // if any obligations or advices are defined, evaluates them and return
+        processObligationAndAdvices(context, effect, result);
         return result;
+
     }
+
+    /**
+     * helper method to evaluate the obligations and advice expressions
+     *
+     * @param evaluationCtx context of a single policy evaluation
+     * @param effect policy effect
+     * @param result result of combining algorithm
+     */
+    private void processObligationAndAdvices(EvaluationCtx evaluationCtx, int effect, AbstractResult result){
+
+        if(obligationExpressions != null && obligationExpressions.size() > 0){
+            Set<ObligationResult>  results = new HashSet<ObligationResult>();
+            for(AbstractObligation obligationExpression : obligationExpressions){
+                if(obligationExpression.getFulfillOn() == effect) {
+                    results.add(obligationExpression.evaluate(evaluationCtx));
+
+                }
+            }
+            result.getObligations().addAll(results);
+        }
+
+        if(adviceExpressions != null && adviceExpressions.size() > 0){
+            Set<Advice>  advices = new HashSet<Advice>();
+            for(AdviceExpression adviceExpression : adviceExpressions){
+                if(adviceExpression.getAppliesTo() == effect) {
+                    advices.add(adviceExpression.evaluate(evaluationCtx));
+                }
+            }
+            result.getAdvices().addAll(advices);
+        }
+    }
+
 
     /**
      * Routine used by <code>Policy</code> and <code>PolicySet</code> to encode some common

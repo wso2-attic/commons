@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
 
+import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.proxy.AnyURIAttributeProxy;
 import org.wso2.balana.attr.proxy.Base64BinaryAttributeProxy;
 import org.wso2.balana.attr.proxy.BooleanAttributeProxy;
@@ -188,9 +189,9 @@ public class StandardAttributeFactory extends BaseAttributeFactory {
      * @throws UnknownIdentifierException if the version string is unknown
      */
     public static Set getStandardDatatypes(String xacmlVersion) throws UnknownIdentifierException {
-        if (xacmlVersion.equals(PolicyMetaData.XACML_1_0_IDENTIFIER)) {
+        if (xacmlVersion.equals(XACMLConstants.XACML_1_0_IDENTIFIER)) {
             return supportedV1Identifiers;
-        } else if (xacmlVersion.equals(PolicyMetaData.XACML_2_0_IDENTIFIER)) {
+        } else if (xacmlVersion.equals(XACMLConstants.XACML_2_0_IDENTIFIER)) {
             return supportedV2Identifiers;
         }
 

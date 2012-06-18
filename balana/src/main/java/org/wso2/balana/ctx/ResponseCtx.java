@@ -35,11 +35,13 @@
 
 package org.wso2.balana.ctx;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.MatchResult;
 import org.wso2.balana.ParsingException;
+import org.wso2.balana.xacml3.Result;
 
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -48,9 +50,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Represents the response to a request made to the XACML PDP.
@@ -62,7 +61,7 @@ import org.w3c.dom.NodeList;
 public class ResponseCtx {
 
     // The set of Result objects returned by the PDP
-    private Set results = null;
+    private Set<AbstractResult> results = null;
     private List<MatchResult> matches = null;
     
     
@@ -76,10 +75,9 @@ public class ResponseCtx {
      * 
      * @param result the single result in the response
      */
-    public ResponseCtx(Result result) {
-        results = new HashSet();
+    public ResponseCtx(AbstractResult result) {
+        results = new HashSet<AbstractResult>();
         results.add(result);
-        matches = result.getMatches();
     }
 
     /**
@@ -89,18 +87,18 @@ public class ResponseCtx {
      * @param results a <code>Set</code> of <code>Result</code> objects
      */
     public ResponseCtx(Set results) {
-        this.results = Collections.unmodifiableSet(new HashSet(results));
+        this.results = Collections.unmodifiableSet(new HashSet<AbstractResult>(results));
     }
 
     /**
-     * Creates a new instance of <code>ResponseCtx</code> based on the given DOM root node. A
-     * <code>ParsingException</code> is thrown if the DOM root doesn't represent a valid
-     * ResponseType.
-     * 
+     * Creates a new instance of <code>ResponseCtx</code> based on the given
+     * DOM root node. A <code>ParsingException</code> is thrown if the DOM
+     * root doesn't represent a valid ResponseType.
+     *
      * @param root the DOM root of a ResponseType
-     * 
+     *
      * @return a new <code>ResponseCtx</code>
-     * 
+     *
      * @throws ParsingException if the node is invalid
      */
     public static ResponseCtx getInstance(Node root) throws ParsingException {
@@ -110,7 +108,7 @@ public class ResponseCtx {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("Result")) {
-                results.add(Result.getInstance(node));
+                results.add(Result.getInstance(node));  // TODO
             }
         }
 
@@ -118,24 +116,7 @@ public class ResponseCtx {
             throw new ParsingException("must have at least one Result");
 
         return new ResponseCtx(results);
-    }
-
-    /**
-     * Creates a new <code>ResponseCtx</code> by parsing XML from an input stream. Note that this is
-     * a convenience method, and it will not do schema validation by default. You should be parsing
-     * the data yourself, and then providing the root node to the other <code>getInstance</code>
-     * method. If you use this convenience method, you probably want to turn on validation by
-     * setting the context schema file (see the programmer guide for more information on this).
-     * 
-     * @param input a stream providing the XML data
-     * 
-     * @return a new <code>ResponseCtx</code>
-     * 
-     * @throws ParserException if there is an error parsing the input
-     */
-    public static ResponseCtx getInstance(InputStream input) throws ParsingException {
-        return getInstance(InputParser.parseInput(input, "Response"));
-    }
+    }    
 
     /**
      * Get the set of <code>Result</code>s from this response.
@@ -180,7 +161,7 @@ public class ResponseCtx {
         indenter.in();
 
         while (it.hasNext()) {
-            Result result = (Result) (it.next());
+            AbstractResult result = (AbstractResult) (it.next());
             result.encode(out, indenter);
         }
 

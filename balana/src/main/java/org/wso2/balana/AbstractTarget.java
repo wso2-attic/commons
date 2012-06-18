@@ -18,6 +18,8 @@
 
 package org.wso2.balana;
 
+import org.wso2.balana.ctx.EvaluationCtx;
+
 /**
  * Represents the TargetType XML type in XACML. This defined as abstract, because there can be
  * more than one implementation of TargetType. As an example, TargetType is considerably defer in

@@ -23,30 +23,27 @@ import org.w3c.dom.Node;
 import java.util.HashMap;
 
 /**
- * Factory that creates the AbstractTarget  //TODO
+ * Factory that creates the AbstractTarget
  */
 public class TargetFactory {
 
-    private HashMap<String, AbstractTarget> targetMap = new HashMap<String, AbstractTarget>();
-
     private static TargetFactory factoryInstance;
 
-    private static void init(){
-        // TODO
-    }
+    /**
+     * Returns AbstractTarget based one the XACML version
+     *
+     * @param node  DOM node
+     * @param metaData policy meta data
+     * @return  <code>AbstractTarget</code>
+     * @throws ParsingException
+     */
+    public AbstractTarget getTarget(Node node, PolicyMetaData metaData) throws ParsingException {
 
-    public void registerTarget(){
-        // TODO
-    }
-
-    public AbstractTarget getTarget(PolicyMetaData metaData, Node node) throws ParsingException {
-
-        if(PolicyMetaData.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
+        if(XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
             return org.wso2.balana.xacml3.Target.getInstance(node, metaData);
         } else {
             return org.wso2.balana.xacml2.Target.getInstance(node, metaData);
         }
-
     }
 
     /**

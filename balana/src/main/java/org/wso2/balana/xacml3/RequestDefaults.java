@@ -20,6 +20,11 @@ package org.wso2.balana.xacml3;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.Attribute;
+import org.wso2.balana.Indenter;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  *  Represents RequestDefaultsType XML type found in the context schema in XACML 3.0. 
@@ -29,16 +34,16 @@ public class RequestDefaults {
     /**
      * XPath Version
      */
-    private String XPathVersion;
+    private String xPathVersion;
 
     /**
      * Constructor that creates a new <code>RequestDefaults</code> based on
      * the given elements.
      *
-     * @param XPathVersion  XPath version as <code>String</code>
+     * @param xPathVersion  XPath version as <code>String</code>
      */
-    public RequestDefaults(String XPathVersion) {
-        this.XPathVersion = XPathVersion;
+    public RequestDefaults(String xPathVersion) {
+        this.xPathVersion = xPathVersion;
     }
 
     /**
@@ -70,6 +75,41 @@ public class RequestDefaults {
      * @return XPath version as <code>String</code>
      */
     public String getXPathVersion() {
-        return XPathVersion;
+        return xPathVersion;
+    }
+
+
+
+    /**
+     * Encodes this <code>RequestDefaults</code> into its XML representation and writes this encoding to the given
+     * <code>OutputStream</code> with no indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     */
+    public void encode(OutputStream output) {
+        encode(output, new Indenter(0));
+    }
+
+    /**
+     * Encodes this <code>RequestDefaults</code> into its XML representation and writes this encoding to the given
+     * <code>OutputStream</code> with indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
+     */
+    public void encode(OutputStream output, Indenter indenter) {
+
+        String indent = indenter.makeString();
+        PrintStream out = new PrintStream(output);
+
+        out.println(indent + "<RequestDefaults>");
+
+        if(xPathVersion != null){
+            indenter.in();
+            out.println(indent + "<XPathVersion>"  + xPathVersion + "</XPathVersion>");
+            indenter.out();
+        }
+        
+        out.println(indent + "</RequestDefaults>");
     }
 }

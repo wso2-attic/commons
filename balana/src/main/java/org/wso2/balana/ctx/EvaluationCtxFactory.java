@@ -16,21 +16,33 @@
 * under the License.
 */
 
-package org.wso2.balana;
+package org.wso2.balana.ctx;
 
-import org.wso2.balana.xacml2.ctx.RequestCtx;
+import org.wso2.balana.PDPConfig;
+import org.wso2.balana.ParsingException;
+import org.wso2.balana.xacml2.ctx.XACML2EvaluationCtx;
+import org.wso2.balana.xacml3.ctx.XACML3EvaluationCtx;
+import org.wso2.balana.XACMLConstants;
 
 /**
- * Factory that creates the EvaluationCtx   //TODO
+ * Factory that creates the EvaluationCtx
  */
 public class EvaluationCtxFactory {
 
+    /**
+     * factory instance
+     */
     private static EvaluationCtxFactory factoryInstance;
 
-    public EvaluationCtx getEvaluationCtx(RequestCtx requestCtx, PDPConfig config) throws ParsingException {
+    
+    public EvaluationCtx getEvaluationCtx(AbstractRequestCtx requestCtx, PDPConfig pdpConfig)
+                                    throws ParsingException {
 
-        return new BasicEvaluationCtx(requestCtx);
-
+        if(XACMLConstants.XACML_VERSION_3_0 == requestCtx.getXacmlVersion()){
+            return new XACML3EvaluationCtx((org.wso2.balana.xacml3.ctx.RequestCtx)requestCtx, pdpConfig);
+        } else {
+            return new XACML2EvaluationCtx((org.wso2.balana.xacml2.ctx.RequestCtx) requestCtx, pdpConfig);
+        }
     }
 
     /**

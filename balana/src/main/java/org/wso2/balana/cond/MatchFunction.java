@@ -35,7 +35,7 @@
 
 package org.wso2.balana.cond;
 
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.AnyURIAttribute;
@@ -46,7 +46,6 @@ import org.wso2.balana.attr.IPAddressAttribute;
 import org.wso2.balana.attr.RFC822NameAttribute;
 import org.wso2.balana.attr.StringAttribute;
 import org.wso2.balana.attr.X500NameAttribute;
-import org.wso2.balana.xacml2.ctx.RequestCtx;
 
 import java.util.HashSet;
 import java.util.List;

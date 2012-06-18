@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.w3c.dom.Node;
+import org.wso2.balana.XACMLConstants;
 
 /**
  * Factory used to create all functions. There are three kinds of factories: general, condition, and
@@ -88,8 +89,8 @@ public abstract class FunctionFactory {
         };
 
         registeredFactories = new HashMap();
-        registeredFactories.put(PolicyMetaData.XACML_1_0_IDENTIFIER, proxy);
-        registeredFactories.put(PolicyMetaData.XACML_2_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_1_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_2_0_IDENTIFIER, proxy);
 
         defaultFactoryProxy = proxy;
     };

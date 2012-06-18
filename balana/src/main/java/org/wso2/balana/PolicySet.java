@@ -54,7 +54,6 @@ import java.util.Set;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.xacml2.Target;
 
 /**
  * Represents one of the two top-level constructs in XACML, the PolicySetType. This can contain
@@ -70,9 +69,9 @@ public class PolicySet extends AbstractPolicy {
      * 
      * @param id the policy set identifier
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the policies in this set
-     * @param target the <code>Target</code> for this set
+     * @param target the <code>AbstractTarget</code> for this set
      */
-    public PolicySet(URI id, PolicyCombiningAlgorithm combiningAlg, Target target) {
+    public PolicySet(URI id, PolicyCombiningAlgorithm combiningAlg, AbstractTarget target) {
         this(id, null, combiningAlg, null, target, null, null, null);
     }
 
@@ -81,13 +80,13 @@ public class PolicySet extends AbstractPolicy {
      * 
      * @param id the policy set identifier
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the policies in this set
-     * @param target the <code>Target</code> for this set
+     * @param target the <code>AbstractTarget</code> for this set
      * @param policies a list of <code>AbstractPolicy</code> objects
      * 
      * @throws IllegalArgumentException if the <code>List</code> of policies contains an object that
      *             is not an <code>AbstractPolicy</code>
      */
-    public PolicySet(URI id, PolicyCombiningAlgorithm combiningAlg, Target target, List policies) {
+    public PolicySet(URI id, PolicyCombiningAlgorithm combiningAlg, AbstractTarget target, List policies) {
         this(id, null, combiningAlg, null, target, policies, null, null);
     }
 
@@ -100,14 +99,14 @@ public class PolicySet extends AbstractPolicy {
      *            policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the policies in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this set
+     * @param target the <code>AbstractTarget</code> for this set
      * @param policies a list of <code>AbstractPolicy</code> objects
      * 
      * @throws IllegalArgumentException if the <code>List</code> of policies contains an object that
      *             is not an <code>AbstractPolicy</code>
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
-            String description, Target target, List policies) {
+            String description, AbstractTarget target, List policies) {
         this(id, version, combiningAlg, description, target, policies, null, null);
     }
 
@@ -120,7 +119,7 @@ public class PolicySet extends AbstractPolicy {
      *            policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the policies in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this set
+     * @param target the <code>AbstractTarget</code> for this set
      * @param policies a list of <code>AbstractPolicy</code> objects
      * @param defaultVersion the XPath version to use
      * 
@@ -128,7 +127,7 @@ public class PolicySet extends AbstractPolicy {
      *             is not an <code>AbstractPolicy</code>
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
-            String description, Target target, List policies, String defaultVersion) {
+            String description, AbstractTarget target, List policies, String defaultVersion) {
         this(id, version, combiningAlg, description, target, policies, defaultVersion, null);
     }
 
@@ -141,7 +140,7 @@ public class PolicySet extends AbstractPolicy {
      *            policies)
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the policies in this set
      * @param description a <code>String</code> describing the policy
-     * @param target the <code>Target</code> for this set
+     * @param target the <code>AbstractTarget</code> for this set
      * @param policies a list of <code>AbstractPolicy</code> objects
      * @param defaultVersion the XPath version to use
      * @param obligations a set of <code>Obligation</code> objects
@@ -150,7 +149,8 @@ public class PolicySet extends AbstractPolicy {
      *             is not an <code>AbstractPolicy</code>
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
-            String description, Target target, List policies, String defaultVersion, Set obligations) {
+            String description, AbstractTarget target, List policies, String defaultVersion,
+            Set obligations) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
         List list = null;
@@ -183,7 +183,7 @@ public class PolicySet extends AbstractPolicy {
      * @param combiningAlg the <code>CombiningAlgorithm</code> used on the rules in this set
      * @param description a <code>String</code> describing the policy or null if there is no
      *            description
-     * @param target the <code>Target</code> for this policy
+     * @param target the <code>AbstractTarget</code> for this policy
      * @param policyElements a list of <code>CombinerElement</code> objects or null if there are no
      *            policies
      * @param defaultVersion the XPath version to use or null if there is no default version
@@ -196,7 +196,7 @@ public class PolicySet extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
-            String description, Target target, List policyElements, String defaultVersion,
+            String description, AbstractTarget target, List policyElements, String defaultVersion,
             Set obligations, List parameters) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null,
                 parameters);

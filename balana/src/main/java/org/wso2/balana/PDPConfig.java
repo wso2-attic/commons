@@ -59,9 +59,12 @@ public class PDPConfig {
     //
     private ResourceFinder resourceFinder;
 
+    //
+    private boolean multipleRequestHandle;
+
     /**
      * Constructor that creates a <code>PDPConfig</code> from components.
-     * 
+     *
      * @param attributeFinder the <code>AttributeFinder</code> that the PDP should use, or null if
      *            it shouldn't use any
      * @param policyFinder the <code>PolicyFinder</code> that the PDP should use, or null if it
@@ -71,6 +74,22 @@ public class PDPConfig {
      */
     public PDPConfig(AttributeFinder attributeFinder, PolicyFinder policyFinder,
             ResourceFinder resourceFinder) {
+        this(attributeFinder, policyFinder, resourceFinder, true);
+    }
+
+    /**
+     * Constructor that creates a <code>PDPConfig</code> from components.
+     * 
+     * @param attributeFinder the <code>AttributeFinder</code> that the PDP should use, or null if
+     *            it shouldn't use any
+     * @param policyFinder the <code>PolicyFinder</code> that the PDP should use, or null if it
+     *            shouldn't use any
+     * @param resourceFinder the <code>ResourceFinder</code> that the PDP should use, or null if it
+     *            shouldn't use any
+     * @param multipleRequestHandle whether PDP capable of handling multiple requests or not
+     */
+    public PDPConfig(AttributeFinder attributeFinder, PolicyFinder policyFinder,
+            ResourceFinder resourceFinder, boolean multipleRequestHandle) {
         if (attributeFinder != null)
             this.attributeFinder = attributeFinder;
         else
@@ -85,6 +104,8 @@ public class PDPConfig {
             this.resourceFinder = resourceFinder;
         else
             this.resourceFinder = new ResourceFinder();
+
+        this.multipleRequestHandle = multipleRequestHandle;
     }
 
     /**
@@ -114,4 +135,12 @@ public class PDPConfig {
         return resourceFinder;
     }
 
+    /**
+     * Returns the boolean that whether PDP capable of handling multiple requests or not
+     *
+     * @return true or false
+     */
+    public boolean isMultipleRequestHandle() {
+        return multipleRequestHandle;
+    }
 }

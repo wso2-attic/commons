@@ -39,7 +39,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.combine.CombiningAlgorithm;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
 import org.wso2.balana.ctx.Status;
 
 import org.wso2.balana.finder.PolicyFinder;
@@ -429,23 +431,27 @@ public class PolicyReference extends AbstractPolicy {
      * 
      * @return the result of evaluation
      */
-    public Result evaluate(EvaluationCtx context) {
+    public AbstractResult evaluate(EvaluationCtx context) {
         // if there is no finder, then we return NotApplicable
-        if (finder == null)
-            return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+        if (finder == null){
+            //return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+            return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
+        }
 
         PolicyFinderResult pfr = finder.findPolicy(reference, policyType, constraints,
                 parentMetaData);
 
         // if we found nothing, then we return NotApplicable
-        if (pfr.notApplicable())
-            return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
-
+        if (pfr.notApplicable()){
+            //return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+            return ResultFactory.getFactory().getResult(Result.DECISION_NOT_APPLICABLE, context);
+        }
         // if there was an error, we return that status data
-        if (pfr.indeterminate())
-            return new Result(Result.DECISION_INDETERMINATE, pfr.getStatus(), context
-                    .getResourceId().encode());
-
+        if (pfr.indeterminate()){
+//            return new Result(Result.DECISION_INDETERMINATE, pfr.getStatus(), context
+//                    .getResourceId().encode());
+            return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE, pfr.getStatus(), context);
+        }
         // we must have found a policy
         return pfr.getPolicy().evaluate(context);
     }

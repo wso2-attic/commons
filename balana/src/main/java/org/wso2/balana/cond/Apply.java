@@ -35,10 +35,7 @@
 
 package org.wso2.balana.cond;
 
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -52,6 +49,7 @@ import java.util.List;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 /**
  * Represents the XACML ApplyType and ConditionType XML types.
@@ -148,7 +146,7 @@ public class Apply implements Evaluatable {
     public static Apply getConditionInstance(Node root, String xpathVersion, VariableManager manager)
             throws ParsingException {
         return getInstance(root, FunctionFactory.getConditionInstance(), new PolicyMetaData(
-                PolicyMetaData.XACML_1_0_IDENTIFIER, xpathVersion), manager);
+                XACMLConstants.XACML_1_0_IDENTIFIER, xpathVersion), manager);
     }
 
     /**
@@ -172,7 +170,7 @@ public class Apply implements Evaluatable {
     public static Apply getConditionInstance(Node root, String xpathVersion)
             throws ParsingException {
         return getInstance(root, FunctionFactory.getConditionInstance(), new PolicyMetaData(
-                PolicyMetaData.XACML_1_0_IDENTIFIER, xpathVersion), null);
+                XACMLConstants.XACML_1_0_IDENTIFIER, xpathVersion), null);
     }
 
     /**
@@ -206,7 +204,7 @@ public class Apply implements Evaluatable {
      */
     public static Apply getInstance(Node root, String xpathVersion) throws ParsingException {
         return getInstance(root, FunctionFactory.getGeneralInstance(), new PolicyMetaData(
-                PolicyMetaData.XACML_1_0_IDENTIFIER, xpathVersion), null);
+                XACMLConstants.XACML_1_0_IDENTIFIER, xpathVersion), null);
     }
 
     /**

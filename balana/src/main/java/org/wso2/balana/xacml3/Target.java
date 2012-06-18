@@ -21,6 +21,8 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.Status;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,7 +66,7 @@ public class Target extends AbstractTarget {
      * @throws org.wso2.balana.ParsingException if the DOM node is invalid
      */
     public static Target getInstance(Node root, PolicyMetaData metaData)
-                                                                        throws ParsingException {
+                                                                throws ParsingException {
 
         List<AnyOfSelection> anyOfSelections = new ArrayList<AnyOfSelection>();
         NodeList children = root.getChildNodes();
@@ -90,15 +92,25 @@ public class Target extends AbstractTarget {
     public MatchResult match(EvaluationCtx context) {
 
         Iterator it = anyOfSelections.iterator();
-        MatchResult result =  new MatchResult(MatchResult.MATCH);
+        Status firstIndeterminateStatus = null;
 
-        while (it.hasNext()) {        /// TODO indeterminate case, Please check spec 3.0
+        while (it.hasNext()) {
             AnyOfSelection anyOfSelection = (AnyOfSelection) (it.next());
-            result = anyOfSelection.match(context);
+            MatchResult result = anyOfSelection.match(context);
             if (result.getResult() == MatchResult.NO_MATCH){
-                break;
+                return result;
+            } else if(result.getResult() == MatchResult.INDETERMINATE){
+                if(firstIndeterminateStatus == null){
+                    firstIndeterminateStatus = result.getStatus();    
+                }
             }
         }
-        return result;
+
+        if(firstIndeterminateStatus == null){
+            return new MatchResult(MatchResult.MATCH);
+        } else {
+            return new MatchResult(MatchResult.INDETERMINATE,
+                                   firstIndeterminateStatus);
+        }
     }
 }

@@ -37,7 +37,7 @@ package org.wso2.balana.finder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.EvaluationCtx;
+import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.attr.BagAttribute;
 
@@ -48,7 +48,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.w3c.dom.Node;
 
@@ -133,16 +132,14 @@ public class AttributeFinder {
      * @param attributeType the datatype of the attributes to find
      * @param attributeId the identifier of the attributes to find
      * @param issuer the issuer of the attributes, or null if unspecified
-     * @param subjectCategory the category of the attribute if the designatorType is SUBJECT_TARGET,
+     * @param category the category of the attribute if the designatorType is SUBJECT_TARGET,
      *            otherwise null
      * @param context the representation of the request data
-     * @param designatorType the type of designator as named by the *_TARGET fields in
-     *            <code>AttributeDesignator</code>
      * 
      * @return the result of attribute retrieval, which will be a bag of attributes or an error
      */
-    public EvaluationResult findAttribute(URI attributeType, URI attributeId, URI issuer,
-            URI subjectCategory, EvaluationCtx context, int designatorType) {
+    public EvaluationResult findAttribute(URI attributeType, URI attributeId, String issuer,
+            URI category, EvaluationCtx context) {
         Iterator it = designatorModules.iterator();
 
         // go through each module in order
@@ -150,24 +147,23 @@ public class AttributeFinder {
             AttributeFinderModule module = (AttributeFinderModule) (it.next());
 
             // see if the module supports this type
-            Set types = module.getSupportedDesignatorTypes();
-            if ((types == null) || (types.contains(Integer.valueOf(designatorType)))) {
-                // see if the module can find an attribute value
-                EvaluationResult result = module.findAttribute(attributeType, attributeId, issuer,
-                        subjectCategory, context, designatorType);
 
-                // if there was an error, we stop right away
-                if (result.indeterminate()) {
-                    logger.info("Error while trying to resolve values: "
-                            + result.getStatus().getMessage());
-                    return result;
-                }
+            // see if the module can find an attribute value
+            EvaluationResult result = module.findAttribute(attributeType, attributeId, issuer,
+                    category, context);
 
-                // if the result wasn't empty, then return the result
-                BagAttribute bag = (BagAttribute) (result.getAttributeValue());
-                if (!bag.isEmpty())
-                    return result;
+            // if there was an error, we stop right away
+            if (result.indeterminate()) {
+                logger.info("Error while trying to resolve values: "
+                        + result.getStatus().getMessage());
+                return result;
             }
+
+            // if the result wasn't empty, then return the result
+            BagAttribute bag = (BagAttribute) (result.getAttributeValue());
+            if (!bag.isEmpty())
+                return result;
+
         }
 
         // if we got here then there were no errors but there were also no

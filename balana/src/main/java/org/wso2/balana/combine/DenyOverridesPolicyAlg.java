@@ -35,11 +35,12 @@
 
 package org.wso2.balana.combine;
 
-import org.wso2.balana.AbstractPolicy;
-import org.wso2.balana.EvaluationCtx;
-import org.wso2.balana.MatchResult;
+import org.wso2.balana.*;
 
-import org.wso2.balana.ctx.Result;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.xacml3.advice.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -110,57 +111,48 @@ public class DenyOverridesPolicyAlg extends PolicyCombiningAlgorithm {
      * 
      * @return the result of running the combining algorithm
      */
-    public Result combine(EvaluationCtx context, List parameters, List policyElements) {
+    public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         boolean atLeastOnePermit = false;
-        Set permitObligations = new HashSet();
+        Set<ObligationResult> permitObligations = new HashSet<ObligationResult>();
+        Set<Advice> permitAdvices= new HashSet<Advice>();
         Iterator it = policyElements.iterator();
         List<MatchResult> matches = new ArrayList<MatchResult>();
 
         while (it.hasNext()) {
             AbstractPolicy policy = ((PolicyCombinerElement) (it.next())).getPolicy();
-
             // make sure that the policy matches the context
             MatchResult match = policy.match(context);
 
-            if (match.getResult() == MatchResult.INDETERMINATE)
-                return new Result(Result.DECISION_DENY, context.getResourceId().encode());
+            if (match.getResult() == MatchResult.INDETERMINATE){ //TODO  do we really want this?
+                return ResultFactory.getFactory().getResult(AbstractResult.DECISION_DENY, context);
+            }
 
             if (match.getResult() == MatchResult.MATCH) {
                 // evaluate the policy
-                Result result = policy.evaluate(context);
+                AbstractResult result = policy.evaluate(context);
                 int effect = result.getDecision();
 
                 // unlike in the RuleCombining version of this alg, we always
                 // return DENY if any Policy returns DENY or INDETERMINATE
-                if ((effect == Result.DECISION_DENY) || (effect == Result.DECISION_INDETERMINATE))
-                    return new Result(Result.DECISION_DENY, context.getResourceId().encode(),
-                            result.getObligations());
-
+                if ((effect == AbstractResult.DECISION_DENY) ||
+                                                (effect == AbstractResult.DECISION_INDETERMINATE)){
+                    return ResultFactory.getFactory().getResult(Result.DECISION_DENY, context);
+                }
                 // remember if at least one Policy said PERMIT
                 if (effect == Result.DECISION_PERMIT) {
                     atLeastOnePermit = true;
+                    permitAdvices.addAll(result.getAdvices());
                     permitObligations.addAll(result.getObligations());
-                }
-
-                if (effect == Result.SEARCH && context.isSearching()) {
-                    matches.addAll(result.getMatches());
-                    atLeastOnePermit = true;
                 }
             }
         }
 
         // if we got a PERMIT, return it, otherwise it's NOT_APPLICABLE
         if (atLeastOnePermit) {
-            if (context.isSearching()) {
-                Result serchResults = new Result(Result.SEARCH, context.getResourceId().encode(),
-                        permitObligations);
-                serchResults.setMatches(matches);
-                return serchResults;
-            }
-            return new Result(Result.DECISION_PERMIT, context.getResourceId().encode(),
-                    permitObligations);
+            return ResultFactory.getFactory().getResult(AbstractResult.DECISION_PERMIT,
+                                                        permitObligations, permitAdvices, context);
         } else {
-            return new Result(Result.DECISION_NOT_APPLICABLE, context.getResourceId().encode());
+            return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context); 
         }
     }
 

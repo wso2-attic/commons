@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
+import org.wso2.balana.XACMLConstants;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -175,8 +176,8 @@ public class StandardCombiningAlgFactory extends BaseCombiningAlgFactory {
      * @throws UnknownIdentifierException if the version string is unknown
      */
     public static Set getStandardAlgorithms(String xacmlVersion) throws UnknownIdentifierException {
-        if ((xacmlVersion.equals(PolicyMetaData.XACML_1_0_IDENTIFIER))
-                || (xacmlVersion.equals(PolicyMetaData.XACML_2_0_IDENTIFIER)))
+        if ((xacmlVersion.equals(XACMLConstants.XACML_1_0_IDENTIFIER))
+                || (xacmlVersion.equals(XACMLConstants.XACML_2_0_IDENTIFIER)))
             return supportedAlgIds;
 
         throw new UnknownIdentifierException("Unknown XACML version: " + xacmlVersion);
