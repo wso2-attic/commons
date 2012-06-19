@@ -44,20 +44,22 @@
                 </iterate>
             </inSequence>
             <outSequence>
-                <property name="CompMaxMsgs" value="5" scope="default" type="INTEGER"/>
-                <property name="CompMinMsgs" value="-1" scope="default" type="INTEGER"/>
+                <property name="iterate2CompMaxMsgs" value="10" scope="default" type="INTEGER"/>
+                <property name="iterate2CompMinMsgs" value="5" scope="default" type="INTEGER"/>
                 <aggregate id="iterate2">
                     <completeCondition>
-                        <messageCount min="{get-property('CompMinMsgs')}" max="{get-property('CompMaxMsgs')}"/>
+                        <messageCount min="{get-property('iterate2CompMinMsgs')}" max="{get-property('iterate2CompMaxMsgs')}"/>
                     </completeCondition>
                     <onComplete xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" expression="//m0:getQuoteResponse">
                         <log level="custom">
                             <property name="messageLog" value="*****Aggregating*****"/>
                             <property name="maxTime" expression="get-property('maxTime')"/>
                         </log>
+                        <property name="iterate1CompMaxMsgs" value="2" scope="default" type="INTEGER"/>
+                        <property name="iterate1CompMinMsgs" value="-1" scope="default" type="INTEGER"/>
                         <aggregate id="iterate1">
                             <completeCondition>
-                                <messageCount min="4" max="100"/>
+                                <messageCount min="{get-property('iterate1CompMinMsgs')}" max="{get-property('iterate1CompMaxMsgs')}"/>
                             </completeCondition>
                             <onComplete expression="//m0:getQuoteResponse">
                                 <send/>
@@ -68,7 +70,7 @@
             </outSequence>
         </target>
     </proxy>
-    <sequence name="fault">
+   <sequence name="fault">
         <log level="full">
             <property name="MESSAGE" value="Executing default 'fault' sequence"/>
             <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
