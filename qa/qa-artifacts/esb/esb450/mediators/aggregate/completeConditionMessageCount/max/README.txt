@@ -1,4 +1,8 @@
-Use the given configuration.
-Send 10 messages from javabench/any tool. I used the command - java -jar benchmark.jar -p requests/StockQuoteRequestIBM.xml -n 10 -c 1 -k -H "urn:getQuote" -T "text/xml; charset=UTF-8" "http://evan-ThinkPad:8280/"
+Steps to test
+=============
 
-Since the aggregate mediator saying <messageCount min="-1" max="5" />, it would first aggregate 5 request messages. Then only it would aggregate the next 5 messages and create a new aggregated response.
+1. Use the given configuration. Note that I have set <messageCount min="-1" max="2" /> for the first aggregator (which aggregates the messages iterated from the 2nd Iterator). For the second aggregator I have set               <messageCount min="-1" max="2" />. 
+2. When sending the message with ../resources/StockQuoteRequestIterateLarge.xml, you should see a response message with, two IBM messages, two MSFT messages and 0 SUN messages.
+
+
+Similarly, using the same configuration, you can reduce,increment the number of min & max messages and do your tests accordingly.
