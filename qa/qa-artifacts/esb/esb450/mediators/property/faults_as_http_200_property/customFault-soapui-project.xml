@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="customFault" resourceRoot="" soapui-version="3.0.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CustomFaultServiceSoap11Binding" type="wsdl" bindingName="{http://axis2.ws.apache.org}CustomFaultServiceSoap11Binding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9765/services/CustomFaultService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsSoap11Endpoint/</con:endpoint><con:endpoint>http://10.200.3.200:9764/services/CustomFaultService.CustomFaultServiceHttpSoap11Endpoint/</con:endpoint><con:endpoint>http://localhost:8280/services/CustomProxy</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:throwFaultMethod" name="throwFaultMethod" bindingOperationName="throwFaultMethod" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8280/services/CustomProxy</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:axis="http://axis2.ws.apache.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <axis:throwFaultMethod>
+         <!--Optional:-->
+         <axis:s>fault</axis:s>
+      </axis:throwFaultMethod>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:throwFaultMethod"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CustomFaultServiceSoap12Binding" type="wsdl" bindingName="{http://axis2.ws.apache.org}CustomFaultServiceSoap12Binding" soapVersion="1_2" anonymous="optional" definition="http://localhost:9765/services/CustomFaultService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9765/services/CustomFaultService?wsdl"><con:part><con:url>http://localhost:9765/services/CustomFaultService?wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://axis2.ws.apache.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://axis2.ws.apache.org" xmlns:ax2356="http://axis2.ws.apache.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsdl:documentation>Service to test custom faults</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://axis2.ws.apache.org/xsd">
+      <xs:complexType name="CharithaException">
+        <xs:sequence/>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://axis2.ws.apache.org" xmlns:ax2357="http://axis2.ws.apache.org/xsd">
+      <xs:import namespace="http://axis2.ws.apache.org/xsd"/>
+      <xs:element name="CustomFaultServiceCharithaException">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CharithaException" nillable="true" type="ax2357:CharithaException"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="throwFaultMethod">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="s" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="throwFaultMethodResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="throwFaultMethodRequest">
+    <wsdl:part name="parameters" element="ns:throwFaultMethod"/>
+  </wsdl:message>
+  <wsdl:message name="throwFaultMethodResponse">
+    <wsdl:part name="parameters" element="ns:throwFaultMethodResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CustomFaultServiceCharithaException">
+    <wsdl:part name="parameters" element="ns:CustomFaultServiceCharithaException"/>
+  </wsdl:message>
+  <wsdl:portType name="CustomFaultServicePortType">
+    <wsdl:operation name="throwFaultMethod">
+      <wsdl:input message="ns:throwFaultMethodRequest" wsaw:Action="urn:throwFaultMethod"/>
+      <wsdl:output message="ns:throwFaultMethodResponse" wsaw:Action="urn:throwFaultMethodResponse"/>
+      <wsdl:fault message="ns:CustomFaultServiceCharithaException" name="CustomFaultServiceCharithaException" wsaw:Action="urn:throwFaultMethodCustomFaultServiceCharithaException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomFaultServiceSoap11Binding" type="ns:CustomFaultServicePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="throwFaultMethod">
+      <soap:operation soapAction="urn:throwFaultMethod" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CustomFaultServiceCharithaException">
+        <soap:fault use="literal" name="CustomFaultServiceCharithaException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomFaultServiceSoap12Binding" type="ns:CustomFaultServicePortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="throwFaultMethod">
+      <soap12:operation soapAction="urn:throwFaultMethod" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="CustomFaultServiceCharithaException">
+        <soap12:fault use="literal" name="CustomFaultServiceCharithaException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomFaultServiceHttpBinding" type="ns:CustomFaultServicePortType">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="throwFaultMethod">
+      <http:operation location="throwFaultMethod"/>
+      <wsdl:input>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustomFaultService">
+    <wsdl:port name="CustomFaultServiceHttpSoap11Endpoint" binding="ns:CustomFaultServiceSoap11Binding">
+      <soap:address location="http://10.200.3.200:9764/services/CustomFaultService.CustomFaultServiceHttpSoap11Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="CustomFaultServiceHttpsSoap11Endpoint" binding="ns:CustomFaultServiceSoap11Binding">
+      <soap:address location="https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsSoap11Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="CustomFaultServiceHttpsSoap12Endpoint" binding="ns:CustomFaultServiceSoap12Binding">
+      <soap12:address location="https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsSoap12Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="CustomFaultServiceHttpSoap12Endpoint" binding="ns:CustomFaultServiceSoap12Binding">
+      <soap12:address location="http://10.200.3.200:9764/services/CustomFaultService.CustomFaultServiceHttpSoap12Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="CustomFaultServiceHttpEndpoint" binding="ns:CustomFaultServiceHttpBinding">
+      <http:address location="http://10.200.3.200:9764/services/CustomFaultService.CustomFaultServiceHttpEndpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="CustomFaultServiceHttpsEndpoint" binding="ns:CustomFaultServiceHttpBinding">
+      <http:address location="https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsEndpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsSoap12Endpoint/</con:endpoint><con:endpoint>http://10.200.3.200:9764/services/CustomFaultService.CustomFaultServiceHttpSoap12Endpoint/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:throwFaultMethod" name="throwFaultMethod" bindingOperationName="throwFaultMethod" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://10.200.3.200:9444/services/CustomFaultService.CustomFaultServiceHttpsSoap12Endpoint/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:axis="http://axis2.ws.apache.org">
+   <soap:Header/>
+   <soap:Body>
+      <axis:throwFaultMethod>
+         <!--Optional:-->
+         <axis:s>?</axis:s>
+      </axis:throwFaultMethod>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:throwFaultMethod"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

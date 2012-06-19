@@ -1,0 +1,24 @@
+<!-- Send a echoString request and check ESB logs to see whether the given SERVER_IP (hostname) value is printed -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <property name="SERVER_IP" value="superQA" scope="default"/>
+                <log>
+                    <property name="server-name" expression="get-property('SERVER_IP')"/>
+                </log>
+                <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="http://10.200.3.200:9764/services/Axis2Service" statistics="enable"/>
+    </endpoint>
+    </definitions>

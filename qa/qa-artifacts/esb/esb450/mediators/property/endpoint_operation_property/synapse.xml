@@ -1,0 +1,31 @@
+<!-- Send echoString request and check whether the endpoint statistics are updated -->
+<!--<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoString>
+        
+         <ser:s>test</ser:s>
+      </ser:echoString>
+   </soapenv:Body>
+</soapenv:Envelope> -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <property name="endpoint.operation" value="echoInt" scope="default"/>
+                <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="http://10.200.3.200:9764/services/Axis2Service" statistics="enable"/>
+    </endpoint>
+      
+</definitions>

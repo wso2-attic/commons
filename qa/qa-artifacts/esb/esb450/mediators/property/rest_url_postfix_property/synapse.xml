@@ -1,0 +1,31 @@
+<!-- Use the following proxy service. 
+1. Send the following GET request
+GET http://localhost:8280/services/Axis2RestService/echoString?s=wso2
+2. Check the following log message in ESB log.
+rest-url-value = /echoString?s=wso2
+3. Also, check whether the response is similar to the following.
+<ns:echoStringResponse xmlns:ns="http://service.carbon.wso2.org">
+   <ns:return>charitha</ns:return>
+</ns:echoStringResponse> -->
+
+
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="Axis2RestService" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log>
+            <property name="rest-url-value" expression="get-property('axis2','REST_URL_POSTFIX')" />
+         </log>
+         <property name="REST_URL_POSTFIX" value="/echoString?s=charitha" scope="axis2" />
+         <send>
+            <endpoint>
+               <address uri="http://localhost:9765/services/Axis2Service" />
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send />
+      </outSequence>
+   </target>
+   <description></description>
+</proxy>
+                                

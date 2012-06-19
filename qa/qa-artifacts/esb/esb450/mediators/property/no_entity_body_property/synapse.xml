@@ -1,0 +1,21 @@
+<!--Send echoString GET request to this proxy service. Check the response message. You will see the body of the message is dropped --> 
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                 <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <property name="NO_ENTITY_BODY" value="true" scope="axis2" type="BOOLEAN"/>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="http://localhost:9765/services/Axis2Service"/>
+    </endpoint>
+      
+</definitions>

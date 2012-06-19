@@ -1,0 +1,22 @@
+<!-- Send echoString request with UT. Make sure to enable UT in the backend webservice as well (Axis2Service) for the same admin user -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <property name="preserveProcessedHeaders" value="true" scope="default"/>
+                 <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="https://localhost:9444/services/Axis2Service"/>
+    </endpoint>
+      
+</definitions>

@@ -1,0 +1,23 @@
+<!-- First, follow the blog post - http://charithaka.blogspot.com/2010/07/how-to-configure-wso2-esb-to-route.html and configure ESB to route messages through a proxy server
+Then, start ESB with the following configuration and send a echoString request -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <property name="POST_TO_URI" value="false" scope="axis2"/>
+                 <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="http://localhost:9764/services/Axis2Service"/>
+    </endpoint>
+    
+</definitions>

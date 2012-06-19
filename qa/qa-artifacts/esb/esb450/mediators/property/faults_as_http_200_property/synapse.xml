@@ -1,0 +1,19 @@
+<!-- Use the following proxy service. As the client, use the associated soapUI project. The backend service is also included herewith -->
+
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="CustomProxy" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <send>
+            <endpoint>
+               <address uri="http://10.200.3.200:9764/services/CustomFaultService" />
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <property name="FAULTS_AS_HTTP_200" value="true" scope="axis2" />
+         <send />
+      </outSequence>
+   </target>
+   <description></description>
+</proxy>
+                                
