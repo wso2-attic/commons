@@ -27,7 +27,6 @@ import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.Serializable;
 import java.util.List;
@@ -42,6 +41,7 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
     LongRunningActivity longRunningActivity;
 
     // private static final long serialVersionUID = -823722741332011L;
+
     /**
      * Initial stuff and calling an external service which causes to send back a response in an indefinite time.
      * Corelation values should be set within this method.
@@ -50,7 +50,8 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
      * @param cid     cid
      * @param element ExtensionActivity
      */
-    public void runAsync(ExtensionContext context, String cid, Element element) {
+    public void runAsync(ExtensionContext context, String cid, Element element)
+            throws FaultException {
         extensionContext = context;
         this.cid = cid;
 
@@ -82,16 +83,10 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
             corId = getCorrelationValue(response);
             if (corId == null) {
                 log.error("Correlation value is null");
-                context.completeWithFault(cid, new FaultException(new QName(LongRunningExtensionBundle.NS, "Correlation value is null")));
-                return;
+                throw new FaultException(new QName(LongRunningExtensionBundle.NS, "Correlation value is null"));
             }
-
-        } catch (FaultException e) {
-            context.completeWithFault(cid, e);
-        } catch (XMLStreamException e) {
-            context.completeWithFault(cid, e);
-        } catch (AxisFault axisFault) {
-            context.completeWithFault(cid, axisFault);
+        } catch (Exception e) {
+            throw new FaultException(new QName(LongRunningExtensionBundle.NS, "LongRunningExtension"), e);
         } finally {
             if (sender != null) {
                 try {
@@ -99,7 +94,8 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
                     sender.cleanupTransport();
                 } catch (AxisFault axisFault) {
                     axisFault.printStackTrace();
-                    context.completeWithFault(cid, axisFault);
+                    log.warn("Unable to release http connections");
+//                    context.completeWithFault(cid, axisFault);
                 }
             }
         }
@@ -108,8 +104,7 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
         context.setCorrelationValues(correlationValues);
         String correlatorId = genCorrelatorId();
         if (correlatorId == null) {
-            context.completeWithFault(cid, new FaultException(new QName(LongRunningExtensionBundle.NS, "Null correlatorId")));
-            return;
+            throw new FaultException(new QName(LongRunningExtensionBundle.NS, "Null correlatorId"));
         }
 
         context.setCorrelatorId(correlatorId);
@@ -156,38 +151,27 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
         return taskIDele.getText();
     }
 
-    private String genCorrelatorId() {
-        PartnerLinkInstance plink = null;
+    private String genCorrelatorId() throws FaultException {
+        PartnerLinkInstance plink;
         String operation = longRunningActivity.getResponseOperation();
-        try {
-            plink = extensionContext.getPartnerLinkInstance(longRunningActivity.getPartnerLink());
-            return plink.partnerLink.getName() + "." + operation;
-        } catch (FaultException e) {
-            e.printStackTrace();
-            extensionContext.completeWithFault(cid, new FaultException(new QName(LongRunningExtensionBundle.NS, "Error reading partnerlink to get correlation values")));
-        }
-        return null;
+        plink = extensionContext.getPartnerLinkInstance(longRunningActivity.getPartnerLink());
+        return plink.partnerLink.getName() + "." + operation;
     }
 
-   /**
+    /**
      * Called when the response for the above service received
      *
      * @param mexId MessageExchange id
      */
-    public void onRequestReceived(String mexId) {
+    public void onRequestReceived(String mexId) throws FaultException {
         _log.info("Response received");
         //((ExtensionContextImpl)extensionContext).setBpelRuntimeContext(context);
         Element notificationMessageEle = extensionContext.getInternalInstance().getMyRequest(mexId);
         Node part = extensionContext.getPartData(notificationMessageEle, longRunningActivity.getOutputVariable());
         _log.info("RESPONSE: " + DOMUtils.domToString(notificationMessageEle));
         _log.info("PART: " + DOMUtils.domToString(part));
-        try {
-            extensionContext.writeVariable(longRunningActivity.getOutputVariable(), part);
-        } catch (FaultException e) {
-            e.printStackTrace();
-            extensionContext.completeWithFault(cid, e);
-            return;
-        }
+        extensionContext.writeVariable(longRunningActivity.getOutputVariable(), part);
+
         extensionContext.complete(cid);
     }
 
@@ -203,7 +187,7 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
         private String callbackServicePort;
         private String serviceURI;
 
-        LongRunningActivity (Element content) {
+        LongRunningActivity(Element content) {
             this.content = content;
             du = new DeploymentUnitDir(new File(extensionContext.getDUDir()));
         }
@@ -217,7 +201,7 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
         }
 
         public String getOutputVariable() {
-            return content.getAttribute("outputVariable");                        
+            return content.getAttribute("outputVariable");
         }
 
         public String getPartnerLink() {
@@ -232,7 +216,7 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
             return content.getAttribute("responseOperation");
         }
 
-        public String getServiceEPR () throws FaultException {
+        public String getServiceEPR() throws FaultException {
             if (du == null) {
                 du = new DeploymentUnitDir(new File(extensionContext.getDUDir()));
             }
@@ -287,11 +271,11 @@ public class LongRunningExtensionOperation extends AbstractLongRunningExtensionO
             Port port = service.getPort(servicePort);
             List extList = port.getExtensibilityElements();
             for (Object extEle : extList) {
-                 if (extEle instanceof SOAPAddressImpl) {
-                     SOAPAddressImpl soapAddress = (SOAPAddressImpl)extEle;
-                     serviceURI = soapAddress.getLocationURI();
-                     break;
-                 }
+                if (extEle instanceof SOAPAddressImpl) {
+                    SOAPAddressImpl soapAddress = (SOAPAddressImpl) extEle;
+                    serviceURI = soapAddress.getLocationURI();
+                    break;
+                }
             }
 
             if (serviceURI == null) {

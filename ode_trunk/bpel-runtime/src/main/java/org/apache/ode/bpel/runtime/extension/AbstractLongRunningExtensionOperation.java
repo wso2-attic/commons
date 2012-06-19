@@ -55,17 +55,22 @@ public abstract class AbstractLongRunningExtensionOperation extends BpelJacobRun
      * Implementation of the extension.
      * i.e: Calling an external service which causes to send back a response in an indefinite time.
      * Corelation values should be set within this method.
+     *
      * @param context ExtensionContext
-     * @param cid cid
+     * @param cid     cid
      * @param element ExtensionActivity
+     * @throws org.apache.ode.bpel.common.FaultException
+     *          If an error occurs
      */
-    public abstract void runAsync(ExtensionContext context, String cid, Element element);
+    public abstract void runAsync(ExtensionContext context, String cid, Element element)
+            throws FaultException;
 
     /**
      * Extension should be registered with correlation values, notification id in order to find
      * a route for the response message
      * TODO we may remove this method by introducing another method to set correlatorID. so this
      * can be done by this class itself by calling _extensionContext.getInternalInstance().registerForExtensionNotification();
+     *
      * @param notificationChannelId Channel id
      */
     public void registerForNotification(String notificationChannelId) {
@@ -75,17 +80,24 @@ public abstract class AbstractLongRunningExtensionOperation extends BpelJacobRun
 
     /**
      * Called when the response for the above service is received
+     *
      * @param mexId MessageExchange id
      */
-    public abstract void onRequestReceived(String mexId);
+    public abstract void onRequestReceived(String mexId) throws FaultException;
 
     public void updateExtensionContext(BpelRuntimeContext context) {
-        ((ExtensionContextImpl)_extensionContext).setBpelRuntimeContext(context);
+        ((ExtensionContextImpl) _extensionContext).setBpelRuntimeContext(context);
     }
 
     public void run() {
-        PickResponseChannel pickResponseChannel = (PickResponseChannel)JacobVPU.activeJacobThread().newChannel(PickResponseChannel.class, getClass().getSimpleName(), null);
-	    runAsync(_extensionContext, _cid, _element);
+        PickResponseChannel pickResponseChannel = (PickResponseChannel) JacobVPU.activeJacobThread().newChannel(PickResponseChannel.class, getClass().getSimpleName(), null);
+        try {
+            runAsync(_extensionContext, _cid, _element);
+        } catch (FaultException fe) {
+            _log.error("Error occurred in the BPEL extension activity ", fe);
+            _extensionContext.completeWithFault(_cid, fe);
+            return;
+        }
         JacobVPU.activeJacobThread().instance(new WAITING(pickResponseChannel, _extensionContext.getCorrelationValues()));
     }
 
@@ -104,12 +116,18 @@ public abstract class AbstractLongRunningExtensionOperation extends BpelJacobRun
         }
 
         public void run() {
-             object(false, new PickResponseChannelListener(_pickResponseChannel) {
+            object(false, new PickResponseChannelListener(_pickResponseChannel) {
                 private static final long serialVersionUID = -8237296827418738011L;
 
                 public void onRequestRcvd(int selectorIdx, String mexId) {
                     updateExtensionContext(getBpelRuntimeContext());
-                    onRequestReceived(mexId);
+                    try {
+                        onRequestReceived(mexId);
+                    } catch (FaultException fe) {
+                        _log.error("Error occurred in the BPEL extension activity, " +
+                                "while receiving the response from the external party", fe);
+                        _extensionContext.completeWithFault(_cid, fe);
+                    }
                 }
 
                 public void onTimeout() {
@@ -121,21 +139,21 @@ public abstract class AbstractLongRunningExtensionOperation extends BpelJacobRun
                 }
 
             }.or(new TerminationChannelListener(_extensionContext.getTerminationChannel()) {
-                        private static final long serialVersionUID = 4399496341785922396L;
+                private static final long serialVersionUID = 4399496341785922396L;
 
-                        public void terminate() {
-                            getBpelRuntimeContext().cancel(_pickResponseChannel);
-                            instance(WAITING.this);
-                        }
-                    }
-                )
+                public void terminate() {
+                    getBpelRuntimeContext().cancel(_pickResponseChannel);
+                    instance(WAITING.this);
+                }
+            }
+            )
             );
         }
     }
 
-     /*
-    This method is not invoked anymore, since we invoke jacob's run method
-     */
+    /*
+   This method is not invoked anymore, since we invoke jacob's run method
+    */
     public void run(Object context, String cid, Element element) throws FaultException {
     }
 }
