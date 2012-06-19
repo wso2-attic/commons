@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="incomingAggregate">
+        <log level="full"/>
+        <property name="OUT_ONLY" value="true" scope="default"/>
+        <aggregate>
+            <correlateOn xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" expression="//m0:getQuote/m0:request"/>
+            <completeCondition>
+                <messageCount min="-1" max="5"/>
+            </completeCondition>
+            <onComplete xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" expression="//m0:getQuote">
+                <log level="full"/>
+                <drop/>
+            </onComplete>
+        </aggregate>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="incomingAggregate"/>
+    </sequence>
+</definitions>
