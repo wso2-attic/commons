@@ -1,0 +1,68 @@
+<!--Use Soap UI to send request-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="enrichSample4" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full" />
+         <enrich>
+            <source type="inline" clone="true">
+               <soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">                     
+                  <soapenv:Header>                           
+                     <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="true">                                 
+                        <wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="Timestamp-22">            
+                           <wsu:Created>2012-06-19T07:11:26.127Z</wsu:Created>            
+                           <wsu:Expires>2012-06-19T07:16:26.127Z</wsu:Expires>         
+                        </wsu:Timestamp>                                
+                        <wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="UsernameToken-2">                                       
+                           <wsse:Username>admin</wsse:Username>                                       
+                           <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">admin</wsse:Password>                                 
+                        </wsse:UsernameToken>                           
+                     </wsse:Security>                     
+                  </soapenv:Header>                     
+               </soapenv:Envelope>
+            </source>
+            <target type="envelope" action="child" />
+         </enrich>
+         <log level="full" />
+         <send>
+            <endpoint>
+               <address uri="https://localhost:9443/services/echo" />
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove" />
+         <log level="full" />
+         <send />
+      </outSequence>
+   </target>
+   <publishWSDL uri="http://localhost:8280/services/echo?wsdl" />
+   <description></description>
+</proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
+
+
