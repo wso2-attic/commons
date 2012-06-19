@@ -1,0 +1,25 @@
+<!-- Send echoString request and look at the message which will be transmitted to backend Axis2Service. You will see the Content-Length HTTP header -->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="Axis2ProxyService" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+                <log>
+                    <property name="server-name" expression="get-property('SERVER_IP')"/>
+                </log>
+                <send>
+                    <endpoint key="Axis2EP"/>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+    </proxy>
+    <endpoint name="Axis2EP">
+        <address uri="http://localhost:9765/services/Axis2Service"/>
+    </endpoint>
+       
+</definitions>
