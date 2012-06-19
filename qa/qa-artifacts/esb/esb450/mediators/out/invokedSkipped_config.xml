@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
+
+
+
+<!--README -->
+<!--
+1. Copy above synapse configuration and replace your source.
+2. Enable DUBUG logging
+3. Start sample axis2Server with SimpleStockQuote service.
+4. Send a request from client -
+ant stockquote -Daddurl=http://localhost:9000/services/SimpleStockQuoteService -Dtrpurl=http://localhost:8280/ 
+
+Expected result;
+After the request is sent, observe the ESB logs for following: When the request is passing through ESB main sequence the 'out' mediator and all its child mediators will be skipped. When response is passing through ESB the 'out' mediator and all its child mediators will be invoked.
+
+2012-06-19 10:36:22,482] DEBUG - SynapseMessageReceiver Synapse received a new message for message mediation...
+[2012-06-19 10:36:22,483] DEBUG - SynapseMessageReceiver Received To: http://localhost:9000/services/SimpleStockQuoteService
+[2012-06-19 10:36:22,483] DEBUG - SynapseMessageReceiver SOAPAction: urn:getQuote
+[2012-06-19 10:36:22,483] DEBUG - SynapseMessageReceiver WSA-Action: urn:getQuote
+[2012-06-19 10:36:22,484] DEBUG - Axis2SynapseEnvironment Injecting MessageContext
+[2012-06-19 10:36:22,484] DEBUG - Axis2SynapseEnvironment Using Main Sequence for injected message
+[2012-06-19 10:36:22,484] DEBUG - SequenceMediator Start : Sequence <main>
+[2012-06-19 10:36:22,484] DEBUG - SequenceMediator Sequence <SequenceMediator> :: mediate()
+[2012-06-19 10:36:22,484] DEBUG - InMediator Start : In mediator
+[2012-06-19 10:36:22,485] DEBUG - InMediator Current message is incoming - executing child mediators
+[2012-06-19 10:36:22,485] DEBUG - InMediator Sequence <InMediator> :: mediate()
+[2012-06-19 10:36:22,485] DEBUG - LogMediator Start : Log mediator
+[2012-06-19 10:36:22,486]  INFO - LogMediator To: http://localhost:9000/services/SimpleStockQuoteService, WSAction: urn:getQuote, SOAPAction: urn:getQuote, ReplyTo: http://www.w3.org/2005/08/addressing/anonymous, MessageID: urn:uuid:ac9ccb31-f344-4798-a589-ac332b80e28e, Direction: request, Envelope: <?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:To>http://localhost:9000/services/SimpleStockQuoteService</wsa:To><wsa:MessageID>urn:uuid:ac9ccb31-f344-4798-a589-ac332b80e28e</wsa:MessageID><wsa:Action>urn:getQuote</wsa:Action></soapenv:Header><soapenv:Body><m0:getQuote xmlns:m0="http://services.samples"><m0:request><m0:symbol>IBM</m0:symbol></m0:request></m0:getQuote></soapenv:Body></soapenv:Envelope>
+[2012-06-19 10:36:22,487] DEBUG - LogMediator End : Log mediator
+[2012-06-19 10:36:22,487] DEBUG - FilterMediator Start : Filter mediator
+[2012-06-19 10:36:22,488] DEBUG - FilterMediator Source : get-property('To') against : http://localhost:9000.* matches - executing child mediators
+[2012-06-19 10:36:22,488] DEBUG - FilterMediator Sequence <FilterMediator> :: mediate()
+[2012-06-19 10:36:22,488] DEBUG - SendMediator Start : Send mediator
+[2012-06-19 10:36:22,488] DEBUG - SendMediator Sending request message using implicit message properties..
+Sending To: http://localhost:9000/services/SimpleStockQuoteService
+SOAPAction: urn:getQuote
+[2012-06-19 10:36:22,493] DEBUG - Axis2FlexibleMEPClient Sending [add = false] [sec = false] [rm = false] [to=Address: http://localhost:9000/services/SimpleStockQuoteService]
+[2012-06-19 10:36:22,497] DEBUG - Axis2FlexibleMEPClient Message [Original Request Message ID : urn:uuid:ac9ccb31-f344-4798-a589-ac332b80e28e] [New Cloned Request Message ID : urn:uuid:a7708115-6a61-4cad-a117-988999b0493c]
+[2012-06-19 10:36:22,503] DEBUG - SynapsePropertiesLoader Retrieving synapse properties from the cache
+[2012-06-19 10:36:22,504] DEBUG - MiscellaneousUtil The name with 'synapse.global_timeout_interval' cannot be found. Using default value : 86400000
+[2012-06-19 10:36:22,504]  INFO - TimeoutHandler This engine will expire all callbacks after : 86400 seconds, irrespective of the timeout action, after the specified or optional timeout
+[2012-06-19 10:36:22,504] DEBUG - SynapsePropertiesLoader Retrieving synapse properties from the cache
+[2012-06-19 10:36:22,504] DEBUG - MiscellaneousUtil The name with 'synapse.timeout_handler_interval' cannot be found. Using default value : 15000
+[2012-06-19 10:36:22,506] DEBUG - SynapseCallbackReceiver Callback added. Total callbacks waiting for : 1
+[2012-06-19 10:36:22,527] DEBUG - SendMediator End : Send mediator
+[2012-06-19 10:36:22,528] DEBUG - FilterMediator End : Filter mediator 
+[2012-06-19 10:36:22,528] DEBUG - InMediator End : In mediator
+[2012-06-19 10:36:22,528] DEBUG - OutMediator Start : Out mediator
+[2012-06-19 10:36:22,528] DEBUG - OutMediator Current message is a request - skipping child mediators
+[2012-06-19 10:36:22,528] DEBUG - OutMediator End : Out mediator
+[2012-06-19 10:36:22,528] DEBUG - SequenceMediator End : Sequence <main>
+[2012-06-19 10:36:22,688] DEBUG - SynapseCallbackReceiver Callback removed for request message id : urn:uuid:a7708115-6a61-4cad-a117-988999b0493c. Pending callbacks count : 0
+[2012-06-19 10:36:22,691] DEBUG - SynapseCallbackReceiver Synapse received an asynchronous response message
+[2012-06-19 10:36:22,691] DEBUG - SynapseCallbackReceiver Received To: null
+[2012-06-19 10:36:22,691] DEBUG - SynapseCallbackReceiver SOAPAction: 
+[2012-06-19 10:36:22,691] DEBUG - SynapseCallbackReceiver WSA-Action: 
+[2012-06-19 10:36:22,693] DEBUG - SynapseCallbackReceiver Body : 
+<?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><soapenv:Body><ns:getQuoteResponse xmlns:ns="http://services.samples"><ns:return xmlns:ax21="http://services.samples/xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ax21:GetQuoteResponse"><ax21:change>-2.298371525795949</ax21:change><ax21:earnings>13.817985841919082</ax21:earnings><ax21:high>-94.83915413345228</ax21:high><ax21:last>96.08585636970732</ax21:last><ax21:lastTradeTimestamp>Tue Jun 19 10:36:22 IST 2012</ax21:lastTradeTimestamp><ax21:low>98.53062951644604</ax21:low><ax21:marketCap>4.8646866099679194E7</ax21:marketCap><ax21:name>IBM Company</ax21:name><ax21:open>-95.08702730521277</ax21:open><ax21:peRatio>-19.286198665327657</ax21:peRatio><ax21:percentageChange>2.4684946652066926</ax21:percentageChange><ax21:prevClose>-93.10822333105999</ax21:prevClose><ax21:symbol>IBM</ax21:symbol><ax21:volume>8815</ax21:volume></ns:return></ns:getQuoteResponse></soapenv:Body></soapenv:Envelope>
+[2012-06-19 10:36:22,695] DEBUG - Axis2SynapseEnvironment Injecting MessageContext
+[2012-06-19 10:36:22,695] DEBUG - Axis2SynapseEnvironment Using Main Sequence for injected message
+[2012-06-19 10:36:22,695] DEBUG - SequenceMediator Start : Sequence <main>
+[2012-06-19 10:36:22,695] DEBUG - SequenceMediator Sequence <SequenceMediator> :: mediate()
+[2012-06-19 10:36:22,696] DEBUG - InMediator Start : In mediator
+[2012-06-19 10:36:22,696] DEBUG - InMediator Current message is a response - skipping child mediators
+[2012-06-19 10:36:22,696] DEBUG - InMediator End : In mediator
+[2012-06-19 10:36:22,696] DEBUG - OutMediator Start : Out mediator
+[2012-06-19 10:36:22,696] DEBUG - OutMediator Current message is outgoing - executing child mediators
+[2012-06-19 10:36:22,697] DEBUG - OutMediator Sequence <OutMediator> :: mediate()
+[2012-06-19 10:36:22,697] DEBUG - SendMediator Start : Send mediator
+[2012-06-19 10:36:22,697] DEBUG - SendMediator Sending response message using implicit message properties..
+Sending To: http://www.w3.org/2005/08/addressing/anonymous
+SOAPAction: 
+[2012-06-19 10:36:22,714] DEBUG - SendMediator End : Send mediator
+[2012-06-19 10:36:22,714] DEBUG - OutMediator End : Out mediator
+[2012-06-19 10:36:22,714] DEBUG - SequenceMediator End : Sequence <main>
+
+
+
+-->
