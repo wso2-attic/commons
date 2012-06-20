@@ -6,7 +6,9 @@
 ~ To verify the same with XSLT keys defined under configuration & governance registies, 
 ~ take the XSLT configs of echo_transformback.xslt & echo_transform.xslt files, save them in 
 ~ config/gov registries and refer them withing XSLT mediator
-~
+~  
+~ This file contains multiple configurations for xsltMediatorSequence. You can use the correct configuration, depending on
+~ your requirement
 ~ #############################################################################################################################
 -->
 
