@@ -74,6 +74,23 @@
       <send />
    </out>
 </sequence-->
+
+<!--This configuration can be used to verify dynamic keys of XSLT mediator
+Just comment the above sequence configuration with name xsltMediatorSequence and uncomment this sequence configuration and invoke it as before-->
+<!--    <sequence name="xsltMediatorSequence" onError="fault">
+        <in>
+            <log level="full"/>
+            <xslt xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" key="{get-property('registry','conf:localEntries/echo_transform.xslt/@resourceName')}"/>
+            <send>
+                <endpoint key="xsltEchoEpr"/>
+            </send>
+        </in>
+        <out>
+            <log level="full"/>
+            <xslt xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns3="http://org.apache.synapse/xsd" key="{get-property('registry','gov:localEntries/echo_transformback.xslt/@resourceName')}"/>
+            <send/>
+        </out>
+    </sequence>-->
     <localEntry key="source_echo_transform.xslt" src="https://svn.wso2.org/repos/wso2/trunk/commons/qa/qa-artifacts/esb/esb450/mediators/xslt/localRegistryEntryKeyRef/resources/echo_transform.xslt"/>
     <localEntry key="source_echo_transformback.xslt" src="https://svn.wso2.org/repos/wso2/trunk/commons/qa/qa-artifacts/esb/esb450/mediators/xslt/localRegistryEntryKeyRef/resources/echo_transformback.xslt"/>
     <sequence name="fault">
