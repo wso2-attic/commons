@@ -1,0 +1,56 @@
+<!--Use Soap UI to send requeset-->
+<!--When sending the request remove "<xs:args1 xmlns:xs="http://ws.apache.org/axis2">2</xs:args1>" from the message-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy xmlns="http://ws.apache.org/ns/synapse" name="enrichSample6" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full" />
+         <property xmlns:xs="http://ws.apache.org/axis2" xmlns:p="http://ws.apache.org/axis2" name="test" expression="//p:add" scope="default" />
+         <enrich>
+            <source type="inline" clone="true">
+               <xs:args1 xmlns:xs="http://ws.apache.org/axis2">100</xs:args1>
+            </source>
+            <target xmlns:xs="http://ws.apache.org/axis2" xmlns:p="http://ws.apache.org/axis2" action="sibling" xpath="//p:add/xs:args0" />
+         </enrich>
+         <log level="full" />
+         <send>
+            <endpoint>
+               <address uri="http://localhost:8280/services/AdderService" />
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send />
+      </outSequence>
+   </target>
+   <publishWSDL uri="http://localhost:8280/services/AdderService?wsdl" />
+   <description></description>
+</proxy>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+    </sequence>
+</definitions>
+
+
+
+
