@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+     <soapenv:Body>   
+  	 <p:echoString xmlns:p="http://service.carbon.wso2.org">
+            <p:s>Hellooo gorgeous!!!!!</p:s>
+  	 </p:echoString>
+     </soapenv:Body>   
+   </soapenv:Envelope>
