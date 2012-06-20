@@ -1,0 +1,45 @@
+<!-- Use this to test requests with empty body in Xquery transformation. 
+1. Send the following message to the proxy service
+   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+     <soapenv:Header/>
+      <soapenv:Body/>        
+   </soapenv:Envelope>
+2. Look at the log after transformation 
+e.g:- 
+after-xquery = <soapenv:Body xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"><msg><param>/services/XQueryProxy</param></msg></soapenv:Body>
+
+-->
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.apache.synapse.registry.url.SimpleURLRegistry">
+        <parameter name="root">file:repository/samples/resources/</parameter>
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+ <proxy name="XQueryProxy" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <log>
+                    <property name="before-xquery" expression="$ctx:body"/>
+                </log>
+                <xquery key="xq">
+                    <variable name="param" expression="get-property('To')" type="STRING"/>
+                </xquery>
+                <log>
+                    <property name="after-xquery" expression="$ctx:body"/>
+                </log>
+            </inSequence>
+        </target>
+    </proxy>
+    <localEntry key="xq">
+        <x xmlns="">
+
+declare variable $param as xs:string external;
+&lt;msg&gt;
+&lt;param&gt;{$param}&lt;/param&gt;
+&lt;/msg&gt;
+
+</x>
+    </localEntry>
+    
+</definitions>
