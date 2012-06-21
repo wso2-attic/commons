@@ -1,0 +1,73 @@
+<!--################################################################### HOW TO TEST #########################################################################
+~  Use the below configuration to verify the usage of XSLT properties .
+~  From the below configuration, both value & expression type XSLT properties are verified
+-->
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">1200</parameter>
+    </registry>
+    <localEntry key="echo_transformback.xslt">
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ax21="http://services.samples/xsd" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:m0="http://service.carbon.wso2.org" version="2.0" exclude-result-prefixes="fn">
+            <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+            <xsl:param name="RESPONSE_VAL"/>
+            <xsl:template match="/">
+                <xsl:apply-templates select="//m0:echoStringResponse"/>
+            </xsl:template>
+            <xsl:template match="m0:echoStringResponse">
+                <m0:echoStringResponse xmlns:m="http://www.wso2.org/types">
+                    <m0:return>
+                        <xsl:value-of select="$RESPONSE_VAL"/>
+                    </m0:return>
+                </m0:echoStringResponse>
+            </xsl:template>
+        </xsl:stylesheet>
+    </localEntry>
+        <localEntry key="echo_transform.xslt">
+        <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fn="http://www.w3.org/2005/02/xpath-functions" xmlns:m0="http://service.carbon.wso2.org" version="2.0" exclude-result-prefixes="m0 fn">
+            <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+            <xsl:param name="REQUEST_VAL"/>
+            <xsl:template match="/">
+                <xsl:apply-templates select="//m0:echoString"/>
+            </xsl:template>
+            <xsl:template match="m0:echoString">
+                <m:echoString xmlns:m="http://service.carbon.wso2.org">
+                    <m:s>
+                        <xsl:value-of select="$REQUEST_VAL"/>
+                    </m:s>
+                </m:echoString>
+            </xsl:template>
+        </xsl:stylesheet>
+    </localEntry>
+    <endpoint name="xsltEchoEpr">
+        <address uri="http://localhost:9771/services/Echo"/>
+    </endpoint>
+    <sequence name="xsltMediatorSequence" onError="fault">
+        <in>
+            <log level="full"/>
+            <property name="REQUEST_VAL" value="Good Morning!!!!!!" scope="default"/>
+            <xslt key="echo_transform.xslt">
+                <property xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" name="REQUEST_VAL" expression="get-property('REQUEST_VAL')"/>
+            </xslt>
+            <send>
+                <endpoint key="xsltEchoEpr"/>
+            </send>
+        </in>
+        <out>
+            <log level="full"/>
+            <xslt key="echo_transformback.xslt">
+                <property name="RESPONSE_VAL" value="Good Evening!!!!!!!"/>
+            </xslt>
+            <send/>
+        </out>
+    </sequence>
+    <sequence name="fault">
+        <makefault>
+            <code xmlns:tns="http://www.w3.org/2003/05/soap-envelope" value="tns:Receiver"/>
+            <reason xmlns:ns3="http://org.apache.synapse/xsd" expression="get-property('ERROR_MESSAGE')"/>
+        </makefault>
+        <send/>
+    </sequence>
+    <sequence name="main">
+        <sequence key="xsltMediatorSequence"/>
+    </sequence>
+</definitions>
