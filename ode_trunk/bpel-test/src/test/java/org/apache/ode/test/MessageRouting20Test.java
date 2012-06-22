@@ -18,7 +18,6 @@
  */
 package org.apache.ode.test;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class MessageRouting20Test extends BPELTestAbstract {
@@ -71,11 +70,6 @@ public class MessageRouting20Test extends BPELTestAbstract {
         go("/bpel/2.0/TestCorrelationMultiComplex");
     }
 
-    @Test public void testCorrelationOpaque() throws Throwable {
-        //TODO Fix me, we need to capture the session id to send it in the second test message
-        go("/bpel/2.0/TestCorrelationOpaque");
-    }
-
     @Test public void testDynamicPick() throws Throwable {
         go("/bpel/2.0/TestDynamicPick");
     }
@@ -92,7 +86,16 @@ public class MessageRouting20Test extends BPELTestAbstract {
         go("/bpel/2.0/TestStaticPick");
     }
 
-    @Test public void testNegativeCorrelation() throws Throwable {
+    @Test public void testConcurrentSyncMex() throws Throwable {
+        go("/bpel/2.0/TestConcurrentSyncMex");
+    }
+
+    @Test public void testIMA() throws Throwable {
+        go("/bpel/2.0/TestIMA");
+    }
+
+
+    public void testNegativeCorrelation() throws Throwable {
         /**
          * This test contains invalid BPEL. There is an instantiating
          * <receive> and a subsequent <pick> that does not define a correlation
@@ -124,11 +127,8 @@ public class MessageRouting20Test extends BPELTestAbstract {
         negative("target/test-classes/bpel/2.0/NegativeInitializationTest");
     }
 
-    /*@Test public void testConcurrentSyncMex() throws Throwable {
-        go("/bpel/2.0/TestConcurrentSyncMex");
+    public void testCorrelationOpaque() throws Throwable {
+        //TODO Fix me, we need to capture the session id to send it in the second test message
+        go("/bpel/2.0/TestCorrelationOpaque");
     }
-
-    @Test public void testIMA() throws Throwable {
-        go("/bpel/2.0/TestIMA");
-    }*/
 }

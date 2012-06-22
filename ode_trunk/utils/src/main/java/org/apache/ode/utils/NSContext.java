@@ -19,28 +19,17 @@
 
 package org.apache.ode.utils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.ode.utils.stl.*;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ode.utils.stl.CollectionsX;
-import org.apache.ode.utils.stl.CompositeUnaryFunction;
-import org.apache.ode.utils.stl.EqualsUnaryFunction;
-import org.apache.ode.utils.stl.FilterIterator;
-import org.apache.ode.utils.stl.TransformIterator;
+import java.util.*;
 
 /**
  * A simple in-memory implementation of the {@link NamespaceContext} interface
@@ -77,13 +66,16 @@ public class NSContext implements NamespaceContext, Externalizable {
      * @see NamespaceContext#getNamespaceURI(java.lang.String)
      */
     public String getNamespaceURI(String prefix) throws NSContextException {
-        String nsURI = _prefixToUriMap.get(prefix == null ? "" : prefix);
-        if (nsURI != null) {
-            return nsURI;
+        if (prefix == null) {
+            return _prefixToUriMap.get("");
         } else {
-            String errorMsg = "Namespace not found for prefix \"" + prefix + "\"";
-            NSContextException ex = new NSContextException(errorMsg);
-            throw ex;
+            String nsURI = _prefixToUriMap.get(prefix);
+            if (nsURI != null) {
+                return nsURI;
+            } else {
+                String errorMsg = "Namespace not found for prefix \"" + prefix + "\"";
+                throw new NSContextException(errorMsg);
+            }
         }
     }
 

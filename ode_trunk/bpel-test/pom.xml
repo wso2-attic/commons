@@ -174,7 +174,11 @@
              <artifactId>maven-surefire-plugin</artifactId>
              <version>2.4.2</version>
              <configuration>
-                 <skipTests>true</skipTests>
+                 <!--<skipTests>true</skipTests>-->
+                 <!--<includes>-->
+                     <!--<include>**/MessageRouting20Test.java</include>-->
+                 <!--</includes>-->
+                 <!--<argLine>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</argLine>-->
              </configuration>
          </plugin>
      </plugins>
