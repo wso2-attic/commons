@@ -144,7 +144,7 @@ public class BpelServerImpl implements BpelServer, Scheduler.JobProcessor {
 
             // Eventually running some migrations before starting
             if (!(new MigrationHandler(_contexts).migrate(_registeredProcesses, _migrationTransactionTimeout))) {
-                throw new RuntimeException("An error occurred while migrating your database to a newer version of the server. Please make sure that the required migration scripts have been executed before starting the server.");
+                throw new BpelEngineException("An error occurred while migrating your database to a newer version of the server. Please make sure that the required migration scripts have been executed before starting the server.");
             }
 
             _state = State.RUNNING;
@@ -325,7 +325,7 @@ public class BpelServerImpl implements BpelServer, Scheduler.JobProcessor {
 
         } catch (Exception ex) {
             __log.error(ex);
-            throw new RuntimeException(ex);
+            throw new BpelEngineException(ex);
         } finally {
             _mngmtLock.writeLock().unlock();
         }
@@ -416,10 +416,10 @@ public class BpelServerImpl implements BpelServer, Scheduler.JobProcessor {
                     }
                 });
             }
-        } catch (RuntimeException re) {
+        } catch (BpelEngineException re) {
             throw re;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BpelEngineException(e);
         }
     }
 
@@ -540,10 +540,10 @@ public class BpelServerImpl implements BpelServer, Scheduler.JobProcessor {
                     return conn.getNumInstances(pid) > 0;
                 }
             });
-        } catch (RuntimeException re) {
+        } catch (BpelEngineException re) {
             throw re;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BpelEngineException(e);
         }
     }
 
