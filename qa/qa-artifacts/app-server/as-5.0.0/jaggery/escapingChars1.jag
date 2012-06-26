@@ -1,0 +1,10 @@
+    
+<html>
+<body>
+<%
+    var total = 1 + 1;
+    print(total);
+%>
+
+</body>
+</html>

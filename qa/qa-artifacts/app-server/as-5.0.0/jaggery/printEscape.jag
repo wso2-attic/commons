@@ -1,0 +1,15 @@
+<html>
+<h2>Demostrating jaggery print escape</h2>
+<i>Here we are using the escaping characters to print out server-side data.</i>
+</br>
+</br>
+<body>
+<%
+var total = 1 + 1;
+%>
+<b>Below is a Jaggery print for 1+1</b>
+</br>
+</br>
+<%=total%>
+</body>
+</html>
