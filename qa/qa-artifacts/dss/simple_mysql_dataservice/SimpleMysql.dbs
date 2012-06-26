@@ -1,0 +1,21 @@
+<data name="SimpleMysql" serviceGroup="Group1">
+   <config id="dsource">
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/Company</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+   </config>
+   <query id="employee_details" useConfig="dsource">
+      <sql>SELECT * FROM Company.Employee</sql>
+      <result element="Employees" rowName="Employee">
+         <element name="id" column="ID" xsdType="xs:string" />
+         <element name="first_name" column="FName" xsdType="xs:string" />
+         <element name="last_name" column="LName" xsdType="xs:string" />
+         <element name="address" column="Address" xsdType="xs:string" />
+         <element name="department_id" column="Dep_id" xsdType="xs:string" />
+      </result>
+   </query>
+   <operation name="getEmployeeDetails">
+      <call-query href="employee_details" />
+   </operation>
+</data>
