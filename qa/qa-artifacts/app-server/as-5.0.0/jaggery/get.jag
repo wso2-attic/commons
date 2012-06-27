@@ -1,0 +1,6 @@
+<%
+ var twitterJson = get("https://api.twitter.com/1/statuses/public_timeline.json", { count : "3", include_entities : "true" },"json");
+ print(twitterJson);
+ %>
+
+

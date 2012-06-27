@@ -1,0 +1,4 @@
+<%
+var version = post("http://stratoslive.wso2.com/services/Version");
+print(version);
+%>
