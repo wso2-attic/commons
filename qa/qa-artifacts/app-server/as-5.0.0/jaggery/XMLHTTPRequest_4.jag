@@ -1,0 +1,12 @@
+<%
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://www.google.lk");
+	print(xhr.readyState);    
+	xhr.send();
+	print(xhr.status);
+	print(xhr.responseText);
+	print(xhr.getResponseHeader("Content-Type"));
+
+	var log = new Log();
+	log.info(xhr.responseXML);
+%>

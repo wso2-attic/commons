@@ -1,0 +1,7 @@
+<%
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://www.google.lk");
+	print(xhr.readyState);    
+	xhr.send();
+	print(xhr.responseText);
+%>
