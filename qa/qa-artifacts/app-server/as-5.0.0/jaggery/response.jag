@@ -1,0 +1,15 @@
+<html>
+<h3>Demostrating the response object.</h3>
+<i>Response object provide properties and functions of HTTP Response.</i>
+</br>
+<body>
+<%
+    response.addHeader("custom-header", "jaggery_response");
+    response.contentType='application/x-www-form-urlencoded';
+    response.content = "My response content";
+    response.content = { products : ["Jaggery", "ESB"] };
+    //response.sendRedirect(url)
+    //response.sendError(errCode)
+%>
+</body>
+</html>

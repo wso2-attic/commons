@@ -1,0 +1,25 @@
+<html>
+<h3>Demostrating the request object.</h3>
+<i>Request object provides properties and functions of HTTP Request</i>
+</br></br>
+<body>
+<%
+	print("1. HTTP Method of the request : " + request.getMethod() + "<br/></br>");
+	print("2. Protocol of the request    : " + request.getProtocol() + "<br/></br>");
+	print("3. QueryString of the request : " + request.queryString + "<br/></br>");
+	print("4. User-Agent                 : " + request.getHeader("User-Agent") + "<br/></br>");
+    	print("5. Content of the request     : " + request.getContent() + "<br/></br>");
+    	print("6. Content-type of the request: " + request.getContentType() + "<br/></br>");
+    	print("7. Content length of the request: " + request.getContentLength() + "<br/></br>");
+    	print("8. Request's URL from the protocol name up to the query string in the first line of the HTTP request: " + request.getRequestURI() + "<br/></br>");
+    	print("9. Request's URL (reconstructed): " + request.getRequestURL() + "<br/></br>");
+	print("10. Was request made using a secure channel?: " + request.isSecure() + "<br/></br>");
+	print("11. IP address of the client that sent the request. : " + request.getRemoteAddr() + "<br/></br>");
+	print("12. Extra path information associated with the URL the client sent when it made this request : " + request.getPathInfo() + "<br/></br>");
+	print("13. Portion of the request URI that indicates the context of the request  : " + request.getContextPath() + "<br/></br>");
+	print("14. Request's local port number : " + request.getLocalPort() + "<br/></br>");
+	print("15. Request parameter  : " + request.getParameter("action") + "<br/></br>");
+
+%>  
+</body>
+</html>

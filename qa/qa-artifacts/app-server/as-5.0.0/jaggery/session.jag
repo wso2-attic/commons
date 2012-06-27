@@ -1,0 +1,28 @@
+<%
+    var obj = {
+    	name : "wso2",
+    	cat : "software",
+    	address : {
+    		number : "59",
+    		address : "Flower Rd.",
+    		city : "Colombo 7"
+    	}
+    };
+    session.put("wso2", obj);
+    print(session.created + "<br/>");
+    print(session.lastAccessed + "<br/>");
+    print(session.maxInactive + "<br/>");
+    print(session.isNew);
+ 
+    var o = session.get("wso2");
+    print("<html><body>");
+    print("<br/>");
+    print(o);
+    print("<br/>");
+    print("<br/>");
+    session.remove("wso2");
+    print(o);
+    session.invalidate()
+    print(o);
+    print("</body></html>");
+%>
