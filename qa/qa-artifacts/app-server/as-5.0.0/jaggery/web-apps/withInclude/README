@@ -1,0 +1,4 @@
+1. Deploy requestDemo.zip in AS, as a jaggery app.
+2. Access http://10.100.3.154:9763/withInclude/
+
+Notice the header "Test on XML manupulation using jaggery run time" which is coming from an include.
