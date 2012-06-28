@@ -1,0 +1,6 @@
+1. Deploy requestDemo.zip in AS, as a jaggery app.
+2. Setup tcpmon listning to port 9762 and tageting 9763
+3. Send following message via java-bench
+java -jar benchmark.jar -n 1 -c 1 -k -H "" -T "text/xml; charset=UTF-8" http://10.100.3.154:9762/requestDemo/
+
+Check in tcpmon and notice a custom-header in the response.
