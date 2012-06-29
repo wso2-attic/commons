@@ -1,0 +1,46 @@
+
+<%
+ var employees=
+<employees>
+<person>
+<name>Tove</name>
+<age>32</age>
+</person>
+<person>
+<name>methuki</name>
+<age>26</age>
+</person>
+	 <person>
+<name>yumani</name>
+<age>32</age>
+</person>
+<person>
+<name>waruna</name>
+<age>26</age>
+</person>
+	 <person>
+<name>ashadi</name>
+<age>32</age>
+</person>
+<person>
+<name>sanuthi</name>
+<age>26</age>
+</person>
+</employees>;
+
+print("Toves age is - " + employees.person.(name == "Tove").age + "</br>");
+print("Sanuthi's age is - " + employees.person.(name == "sanuthi").age + "</br>");
+print("Who's 26 year old -" +employees.person.(age=="26").name);
+
+%>
+
+
+</br></br>
+Method 2 -
+</br>
+<%
+var employeess= new XML("<employees><person><name>Tove</name><age>32</age></person><person><name>Jani</name><age>26</age></person></employees>");
+ 
+print("Toves age is - " + employeess.person.(name == "Tove").age);
+%>
+
