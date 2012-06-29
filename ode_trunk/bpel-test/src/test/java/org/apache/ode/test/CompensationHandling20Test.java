@@ -18,17 +18,16 @@
  */
 package org.apache.ode.test;
 
-import java.util.regex.Pattern;
-
-import javax.xml.namespace.QName;
-
 import org.apache.ode.bpel.iapi.MessageExchange;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.xml.namespace.QName;
+import java.util.regex.Pattern;
+
 public class CompensationHandling20Test extends BPELTestAbstract {
 
-    @Test
+    @Ignore("fix test bed for handling ASYNC mex") @Test
     public void testCompensationHandlers() throws Throwable {
         go("/bpel/2.0/TestCompensationHandlers");
     }
