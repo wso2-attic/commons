@@ -349,7 +349,7 @@ public class Attribute {
         } else {
             out.println(" DataType=\"" + type.toString()  + "\"" );
             if (issueInstant != null){
-                out.println(" IssueInstant=" + issueInstant.encode() + "\"");
+                out.println(" IssueInstant=\"" + issueInstant.encode() + "\"");
             }
         }
 
