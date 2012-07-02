@@ -1,0 +1,93 @@
+<data name="Strings_DataService" serviceNamespace="http://ws.wso2.org/dataservice">
+   <config id="default">
+      <property name="carbon_datasource_name">DataTypesTestDB</property>
+   </config>
+   <config id="ds">
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/DataTypesTest</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+   </config>
+   <query id="delete_Strings_query" useConfig="ds">
+      <sql>DELETE FROM Strings WHERE rowid=?</sql>
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />
+   </query>
+   <query id="select_all_Strings_query" useConfig="ds">
+      <sql>SELECT rowid, varchars, texts, tinytexts, mediumtexts, longtexts, enums  FROM Strings</sql>
+      <result element="StringsCollection" rowName="Strings">
+         <element name="rowid" column="rowid" xsdType="xs:integer" />
+         <element name="varchars" column="varchars" xsdType="xs:string" />
+         <element name="texts" column="texts" xsdType="xs:string" />
+         <element name="tinytexts" column="tinytexts" xsdType="xs:string" />
+         <element name="mediumtexts" column="mediumtexts" xsdType="xs:string" />
+         <element name="longtexts" column="longtexts" xsdType="xs:string" />
+         <element name="enums" column="enums" xsdType="xs:string" />
+      </result>
+   </query>
+   <query id="update_Strings_query" useConfig="ds">
+      <sql>UPDATE Strings SET varchars=?,texts=?,tinytexts=?,mediumtexts=?,longtexts=?,enums=? WHERE rowid=?</sql>
+      <param name="varchars" sqlType="STRING" ordinal="1" />
+      <param name="texts" sqlType="STRING" ordinal="2" />
+      <param name="tinytexts" sqlType="STRING" ordinal="3" />
+      <param name="mediumtexts" sqlType="STRING" ordinal="4" />
+      <param name="longtexts" sqlType="STRING" ordinal="5" />
+      <param name="enums" sqlType="STRING" ordinal="6" />
+      <param name="rowid" sqlType="INTEGER" ordinal="7" />
+   </query>
+   <query id="insert_Strings_query" useConfig="ds">
+      <sql>INSERT INTO Strings(varchars,texts,tinytexts,mediumtexts,longtexts,enums) VALUES(?,?,?,?,?,?)</sql>
+      <param name="varchars" sqlType="STRING" ordinal="1" />
+      <param name="texts" sqlType="STRING" ordinal="2" />
+      <param name="tinytexts" sqlType="STRING" ordinal="3" />
+      <param name="mediumtexts" sqlType="STRING" ordinal="4" />
+      <param name="longtexts" sqlType="STRING" ordinal="5" />
+      <param name="enums" sqlType="STRING" ordinal="6" />
+   </query>
+   <query id="select_with_key_Strings_query" useConfig="ds">
+      <sql>SELECT  rowid, varchars, texts, tinytexts, mediumtexts, longtexts, enums FROM Strings WHERE rowid=?</sql>
+      <result element="StringsCollection" rowName="Strings">
+         <element name="rowid" column="rowid" xsdType="xs:integer" />
+         <element name="varchars" column="varchars" xsdType="xs:string" />
+         <element name="texts" column="texts" xsdType="xs:string" />
+         <element name="tinytexts" column="tinytexts" xsdType="xs:string" />
+         <element name="mediumtexts" column="mediumtexts" xsdType="xs:string" />
+         <element name="longtexts" column="longtexts" xsdType="xs:string" />
+         <element name="enums" column="enums" xsdType="xs:string" />
+      </result>
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />
+   </query>
+   <operation name="delete_Strings_operation">
+      <call-query href="delete_Strings_query">
+         <with-param name="rowid" query-param="rowid" />
+      </call-query>
+   </operation>
+   <operation name="update_Strings_operation">
+      <call-query href="update_Strings_query">
+         <with-param name="texts" query-param="texts" />
+         <with-param name="tinytexts" query-param="tinytexts" />
+         <with-param name="longtexts" query-param="longtexts" />
+         <with-param name="varchars" query-param="varchars" />
+         <with-param name="mediumtexts" query-param="mediumtexts" />
+         <with-param name="rowid" query-param="rowid" />
+         <with-param name="enums" query-param="enums" />
+      </call-query>
+   </operation>
+   <operation name="select_with_key_Strings_operation">
+      <call-query href="select_with_key_Strings_query">
+         <with-param name="rowid" query-param="rowid" />
+      </call-query>
+   </operation>
+   <operation name="insert_Strings_operation" returnRequestStatus="true">
+      <call-query href="insert_Strings_query">
+         <with-param name="texts" query-param="texts" />
+         <with-param name="tinytexts" query-param="tinytexts" />
+         <with-param name="longtexts" query-param="longtexts" />
+         <with-param name="varchars" query-param="varchars" />
+         <with-param name="mediumtexts" query-param="mediumtexts" />
+         <with-param name="enums" query-param="enums" />
+      </call-query>
+   </operation>
+   <operation name="select_all_Strings_operation">
+      <call-query href="select_all_Strings_query" />
+   </operation>
+</data>
