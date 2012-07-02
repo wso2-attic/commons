@@ -1,0 +1,97 @@
+<data name="Ints_DataService" serviceNamespace="http://ws.wso2.org/dataservice">
+   <config id="default">
+      <property name="carbon_datasource_name">DataTypesTestDB</property>
+   </config>
+   <config id="ds">
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/DataTypesTest</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+   </config>
+   <query id="delete_Ints_query" useConfig="ds">
+      <sql>DELETE FROM Ints WHERE rowid=?</sql>
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />
+   </query>
+   <query id="select_with_key_Ints_query" useConfig="ds">
+      <sql>SELECT  rowid, smallints, tinyints, mediumints, ints, bigints FROM Ints WHERE rowid=?</sql>
+      <result element="IntsCollection" rowName="Ints">
+         <element name="rowid" column="rowid" xsdType="xs:integer" />
+         <element name="smallints" column="smallints" xsdType="xs:integer" />
+         <element name="tinyints" column="tinyints" xsdType="xs:integer" />
+         <element name="mediumints" column="mediumints" xsdType="xs:integer" />
+         <element name="ints" column="ints" xsdType="xs:integer" />
+         <element name="bigints" column="bigints" xsdType="xs:long" />
+      </result>
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />
+   </query>
+   <query id="select_all_Ints_query" useConfig="ds">
+      <sql>SELECT rowid, smallints, tinyints, mediumints, ints, bigints  FROM Ints</sql>
+      <result element="IntsCollection" rowName="Ints">
+         <element name="rowid" column="rowid" xsdType="xs:integer" />
+         <element name="smallints" column="smallints" xsdType="xs:integer" />
+         <element name="tinyints" column="tinyints" xsdType="xs:integer" />
+         <element name="mediumints" column="mediumints" xsdType="xs:integer" />
+         <element name="ints" column="ints" xsdType="xs:integer" />
+         <element name="bigints" column="bigints" xsdType="xs:long" />
+      </result>
+   </query>
+   <query id="update_Ints_query" useConfig="ds">
+      <sql>UPDATE Ints SET smallints=?,tinyints=?,mediumints=?,ints=?,bigints=? WHERE rowid=?</sql>
+      <param name="smallints" sqlType="SMALLINT" ordinal="1" />
+      <param name="tinyints" sqlType="TINYINT" ordinal="2" />
+      <param name="mediumints" sqlType="INTEGER" ordinal="3" />
+      <param name="ints" sqlType="INTEGER" ordinal="4" />
+      <param name="bigints" sqlType="BIGINT" ordinal="5" />
+      <param name="rowid" sqlType="INTEGER" ordinal="6" />
+   </query>
+   <query id="insert_Ints_query" useConfig="ds">
+      <sql>INSERT INTO Ints(smallints,tinyints,mediumints,ints,bigints) VALUES(?,?,?,?,?)</sql>
+      <param name="smallints" sqlType="SMALLINT" ordinal="1">
+         <validateLongRange minimum="-32768" maximum="32767" />
+      </param>
+      <param name="tinyints" sqlType="TINYINT" ordinal="2">
+         <validateLongRange minimum="-128" maximum="127" />
+      </param>
+      <param name="mediumints" sqlType="INTEGER" ordinal="3">
+         <validateLongRange minimum="-8388608" maximum="8388607" />
+      </param>
+      <param name="ints" sqlType="INTEGER" ordinal="4">
+         <validateLongRange minimum="-2147483648" maximum="2147483647" />
+      </param>
+      <param name="bigints" sqlType="BIGINT" ordinal="5">
+         <validateLongRange minimum="-9223372036854775808" maximum="9223372036854775807" />
+      </param>
+   </query>
+   <operation name="select_with_key_Ints_operation">
+      <call-query href="select_with_key_Ints_query">
+         <with-param name="rowid" query-param="rowid" />
+      </call-query>
+   </operation>
+   <operation name="select_all_Ints_operation">
+      <call-query href="select_all_Ints_query" />
+   </operation>
+   <operation name="insert_Ints_operation" returnRequestStatus="true">
+      <call-query href="insert_Ints_query">
+         <with-param name="tinyints" query-param="tinyints" />
+         <with-param name="smallints" query-param="smallints" />
+         <with-param name="mediumints" query-param="mediumints" />
+         <with-param name="ints" query-param="ints" />
+         <with-param name="bigints" query-param="bigints" />
+      </call-query>
+   </operation>
+   <operation name="delete_Ints_operation">
+      <call-query href="delete_Ints_query">
+         <with-param name="rowid" query-param="rowid" />
+      </call-query>
+   </operation>
+   <operation name="update_Ints_operation">
+      <call-query href="update_Ints_query">
+         <with-param name="tinyints" query-param="tinyints" />
+         <with-param name="smallints" query-param="smallints" />
+         <with-param name="mediumints" query-param="mediumints" />
+         <with-param name="ints" query-param="ints" />
+         <with-param name="rowid" query-param="rowid" />
+         <with-param name="bigints" query-param="bigints" />
+      </call-query>
+   </operation>
+</data>
