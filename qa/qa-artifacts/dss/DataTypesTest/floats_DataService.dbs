@@ -1,0 +1,81 @@
+<data name="floats_DataService" serviceNamespace="http://ws.wso2.org/dataservice">         
+   <config id="default">                  
+      <property name="carbon_datasource_name">DataTypesTestDB</property>         
+   </config>         
+   <config id="ds">                  
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>                  
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/DataTypesTest</property>                  
+      <property name="org.wso2.ws.dataservice.user">root</property>                  
+      <property name="org.wso2.ws.dataservice.password">root</property>         
+   </config>         
+   <query id="update_floats_query" useConfig="ds">                  
+      <sql>UPDATE floats SET floats=?,doubles=?,decimals=?,decimals2=? WHERE rowid=?</sql>                  
+      <param name="floats" sqlType="REAL" ordinal="1" />                  
+      <param name="doubles" sqlType="DOUBLE" ordinal="2" />                  
+      <param name="decimals" sqlType="DOUBLE" ordinal="3" />                  
+      <param name="decimals2" sqlType="DOUBLE" ordinal="4" />                  
+      <param name="rowid" sqlType="INTEGER" ordinal="5" />         
+   </query>         
+   <query id="select_all_floats_query" useConfig="ds">                  
+      <sql>SELECT rowid, floats, doubles, decimals, decimals2  FROM floats</sql>                  
+      <result element="floatsCollection" rowName="floats">                           
+         <element name="rowid" column="rowid" xsdType="xs:integer" />                           
+         <element name="floats" column="floats" xsdType="xs:double" />                           
+         <element name="doubles" column="doubles" xsdType="xs:double" />                           
+         <element name="decimals" column="decimals" xsdType="xs:decimal" />                           
+         <element name="decimals2" column="decimals2" xsdType="xs:decimal" />                  
+      </result>         
+   </query>         
+   <query id="insert_floats_query" useConfig="ds">                  
+      <sql>INSERT INTO floats(floats,doubles,decimals,decimals2) VALUES(?,?,?,?)</sql>                  
+      <param name="floats" sqlType="REAL" ordinal="1" />                  
+      <param name="doubles" sqlType="DOUBLE" ordinal="2" />                  
+      <param name="decimals" sqlType="DOUBLE" ordinal="3" />                  
+      <param name="decimals2" sqlType="DOUBLE" ordinal="4" />         
+   </query>         
+   <query id="select_with_key_floats_query" useConfig="ds">                  
+      <sql>SELECT  rowid, floats, doubles, decimals, decimals2 FROM floats WHERE rowid=?</sql>                  
+      <result element="floatsCollection" rowName="floats">                           
+         <element name="rowid" column="rowid" xsdType="xs:integer" />                           
+         <element name="floats" column="floats" xsdType="xs:double" />                           
+         <element name="doubles" column="doubles" xsdType="xs:double" />                           
+         <element name="decimals" column="decimals" xsdType="xs:decimal" />                           
+         <element name="decimals2" column="decimals2" xsdType="xs:decimal" />                  
+      </result>                  
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />         
+   </query>         
+   <query id="delete_floats_query" useConfig="default">                  
+      <sql>DELETE FROM floats WHERE rowid=?</sql>                  
+      <param name="rowid" sqlType="INTEGER" ordinal="1" />         
+   </query>         
+   <operation name="insert_floats_operation" returnRequestStatus="true">                  
+      <call-query href="insert_floats_query">                           
+         <with-param name="decimals" query-param="decimals" />                           
+         <with-param name="decimals2" query-param="decimals2" />                           
+         <with-param name="doubles" query-param="doubles" />                           
+         <with-param name="floats" query-param="floats" />                  
+      </call-query>         
+   </operation>         
+   <operation name="delete_floats_operation">                  
+      <call-query href="delete_floats_query">                           
+         <with-param name="rowid" query-param="rowid" />                  
+      </call-query>         
+   </operation>         
+   <operation name="update_floats_operation">                  
+      <call-query href="update_floats_query">                           
+         <with-param name="decimals" query-param="decimals" />                           
+         <with-param name="decimals2" query-param="decimals2" />                           
+         <with-param name="doubles" query-param="doubles" />                           
+         <with-param name="floats" query-param="floats" />                           
+         <with-param name="rowid" query-param="rowid" />                  
+      </call-query>         
+   </operation>         
+   <operation name="select_all_floats_operation">                  
+      <call-query href="select_all_floats_query" />         
+   </operation>         
+   <operation name="select_with_key_floats_operation">                  
+      <call-query href="select_with_key_floats_query">                           
+         <with-param name="rowid" query-param="rowid" />                  
+      </call-query>         
+   </operation>
+</data>
