@@ -61,7 +61,6 @@
             <staticText>
                 <reportElement x="0" y="0" width="100" height="15" forecolor="#736343"/>
                 <textElement/>
-                <text><![CDATA[Label]]></text>
             </staticText>
             <line>
                 <reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1"/>
@@ -103,11 +102,7 @@
         <band height="30" splitType="Stretch">
             <frame>
                 <reportElement mode="Opaque" x="0" y="0" width="802" height="30"/>
-                <textField isStretchWithOverflow="true">
-                    <reportElement x="1" y="0" width="100" height="15"/>
-                    <textElement/>
-                    <textFieldExpression><![CDATA["Field"]]></textFieldExpression>
-                </textField>
+
                 <textField>
                     <reportElement x="20" y="10" width="199" height="20"/>
                     <textElement textAlignment="Left" verticalAlignment="Middle"/>
@@ -201,3 +196,4 @@
         <band splitType="Stretch"/>
     </summary>
 </jasperReport>
+
