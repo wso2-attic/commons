@@ -18,6 +18,7 @@
  */
 package org.apache.ode.store;
 
+import org.apache.axis2.addressing.AddressingConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ode.bpel.compiler.BpelC;
@@ -42,7 +43,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.w3c.dom.Node;
 
 import javax.wsdl.Definition;
+import javax.wsdl.Input;
+import javax.wsdl.Output;
 import javax.wsdl.WSDLException;
+import javax.wsdl.extensions.AttributeExtensible;
+import javax.wsdl.extensions.ExtensionRegistry;
+import javax.wsdl.factory.WSDLFactory;
 import javax.wsdl.xml.WSDLReader;
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -294,6 +300,20 @@ public class DeploymentUnitDir {
 
             WSDLFactory4BPEL wsdlFactory = (WSDLFactory4BPEL) WSDLFactoryBPEL20.newInstance();
             WSDLReader r = wsdlFactory.newWSDLReader();
+            ExtensionRegistry extReg = null;
+            try {
+                extReg = WSDLFactory.newInstance().newPopulatedExtensionRegistry();
+            } catch (WSDLException e) {
+                throw new ContextException("Could not create ExtensionRegistry.", e);
+            }
+            extReg.registerExtensionAttributeType(Input.class,
+                new QName(AddressingConstants.Final.WSAW_NAMESPACE, AddressingConstants.WSA_ACTION),
+                AttributeExtensible.STRING_TYPE);
+            extReg.registerExtensionAttributeType(Output.class,
+                new QName(AddressingConstants.Final.WSAW_NAMESPACE, AddressingConstants.WSA_ACTION),
+                AttributeExtensible.STRING_TYPE);
+            r.setExtensionRegistry(extReg);
+
             DefaultResourceFinder rf = new DefaultResourceFinder(_duDirectory, _duDirectory);
             URI basedir = _duDirectory.toURI();
             List<File> wsdls = FileUtils.directoryEntriesInPath(_duDirectory, DeploymentUnitDir._wsdlFilter);
