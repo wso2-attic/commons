@@ -154,7 +154,7 @@
                                         <include name="**/README.txt"/>
                                     </fileset>
                                 </copy>
-                                <zip destfile="target/Siddhi-${project.version}.zip">
+                                <zip destfile="target/siddhi-${project.version}.zip">
                                     <zipfileset dir="target/temp"/>
                                 </zip>
                                 <delete dir="target/temp"/>
@@ -171,8 +171,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Bundle-SymbolicName>Siddhi</Bundle-SymbolicName>
-                        <Bundle-Name>Siddhi</Bundle-Name>
+                        <Bundle-SymbolicName>siddhi</Bundle-SymbolicName>
+                        <Bundle-Name>siddhi</Bundle-Name>
                         <Export-Package>
                             org.wso2.siddhi.*;-split-package:=merge-first
                         </Export-Package>
