@@ -8,6 +8,8 @@ Date : 9th July 2012
 
 This milestone is available at : http://people.wso2.com/~suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip
 
+This source code is available at : http://svn.wso2.org/repos/wso2/trunk/commons/siddhi2
+
 
 Siddhi CEP is a lightweight, easy-to-use Open Source Complex Event Processing
 Engine (CEP) under  Apache Software License v2.0. Siddhi CEP processes
