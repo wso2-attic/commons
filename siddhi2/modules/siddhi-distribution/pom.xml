@@ -150,9 +150,8 @@
                                 </copy>
                                 <copy todir="target/temp/" overwrite="false"
                                       includeemptydirs="false">
-                                    <fileset dir=".">
-                                        <include name="**/*.txt"/>
-                                        <exclude name="**/temp/**"/>
+                                    <fileset dir="../../">
+                                        <include name="**/README.txt"/>
                                     </fileset>
                                 </copy>
                                 <zip destfile="target/Siddhi-${project.version}.zip">
