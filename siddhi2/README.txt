@@ -6,26 +6,27 @@ Siddhi CEP 1.0.0 - Milestone 1 Release Notes
 
 Date : 9th July 2012
 
-Siddhi CEP is a lightweight and easy-to-use Open Source Complex Event Processing
-Engine (CEP) under the Apache Software License v2.0. Siddhi CEP processes
-events which are triggered by various event sources and notify appropriate complex events
-according to user specified queries.
+This milestone is available at : http://people.wso2.com/~suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip
+
+
+Siddhi CEP is a lightweight, easy-to-use Open Source Complex Event Processing
+Engine (CEP) under  Apache Software License v2.0. Siddhi CEP processes
+events which are triggered by various event sources and notifies appropriate complex events
+according to the user specified queries.
 
 This project was started as a research project initiated at University of Moratuwa, Sri Lanka,
-and now improved by WSO2 Inc.
-
-This milestone is available at - http://people.wso2.com/~suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip
+and now being improved by WSO2 Inc.
 
 Note: This release is NOT compatible with older versions, and its a complete revamp.
- This release can be tested end-end.
+ This release can be tested end to end.
  Please check out the samples located in the $SIDDHI_HOME/samples directory to try out its basic features.
 
 Main highlights of this release
 ===============================
 
 Rewriting Siddhi
-- This to support a fully set of CEP fictionalises
-- to make its architecture extensible
+- This is to support the full set of CEP fictionalises
+- Making its architecture extensible
 
 Defining new Siddhi CEP Language
 - Improved logical language to support CEP functions
@@ -33,41 +34,40 @@ Defining new Siddhi CEP Language
 Features Supported
 ==================
  - Filter
-     of type window and filter
+    - Uses stream handles to filter events
  - Join
-    - Only upto two streams at a time
-    - Matching stream treating can be configured (making left or right or both to trigger matting operation)
+    - Supports only upto two streams at a time
+    - Match operation triggering can be configured (making "left" or "right" or both streams to trigger)
  - Aggregation
     - By default shipped with Avg, Sum , Min, Max
-    - Supports Custom Aggregations via the pliable architecture
+    - Supports Custom Aggregations via the plugable architecture
  - Group by
-    - Supports Group by basted on more than one attribute
+    - Supports Group by based on more than one attribute
     - Supported for all type if queries
  - Having
     - Supported for all type if queries
  - Stream handlers
-    - Supports multiple filter handlers in a row
+    - Supports multiple handlers in a row per stream
     - By default shipped with  Filter and Window
-    - Default implementations to windows are Time window, Time Batch window, Length window
-    - Supports Custom Stream handlers via the pliable architecture
+    - Default implementations to windows are: Time window, Time Batch window, Length window
+    - Supports Custom Stream handlers via the plugable architecture
  - Conditions and Expressions
     - Implemented from scratch
     - Mvel2 support removed
-    - Conditions supported and,or,not,true/false, ==,!=, >=, >, <=, <
-    - Expressions supported boolean,string,int,long,float,double
- - Query Language
-    - Impended on Antlr
-    - Supports Query, Stream Definition and Query Plan compilation
+    - Conditions supported are: and, or, not, true/false, ==,!=, >=, >, <=, <
+    - Expressions supported are: boolean, string, int, long, float, double
  - Pattern processing
-    - Identifies pattern occurrences with in steams
+    - Identifies pattern occurrences within streams
     - Supports "every" conditions
-    - Can two stream at a time via "and" and "or" conditions, currently only supports two stream competition
-    - Can collect events with min and max limit using collect condition
+    - Can process two stream at a time via "and" and "or" conditions (currently only works on two simple streams)
+    - Can collect events, with min and max limit, using "collect" condition (currently only works on a simple stream)
  - Sequence processing
-    - Identifies continuous sequence with in steams
-    - Supports "or" conditions on streams, currently only supports two stream competition
-    - Supports zero to many, one to many, and zero to one
-
+    - Identifies continuous sequences with in streams
+    - Supports "or" conditions on streams (currently only works on two simple streams)
+    - Supports zero to many, one to many, and zero to one  (currently only works on a simple stream)
+ - Query Language
+    - Implemented on Antlr
+    - Supports Query, Stream Definition and Query Plan compilation
 
 System Requirements
 ===================
@@ -82,8 +82,7 @@ System Requirements
 Support
 =======
 
-Support is provided via WSO2 Inc.
-dev@wso2.org
+Support is provided by WSO2 Inc. dev@wso2.org
 
 
 --------------------------------

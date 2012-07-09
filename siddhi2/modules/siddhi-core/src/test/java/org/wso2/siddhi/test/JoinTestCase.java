@@ -55,10 +55,10 @@ public class JoinTestCase {
         query.from(
                 QueryFactory.joinStream(
                         QueryFactory.inputStream("cseEventStream").
-                                handler(Handler.Type.WIN, "time", 500),
+                                handler(Handler.Type.WIN, "time", 1000),
                         JoinStream.Type.INNER_JOIN,
                         QueryFactory.inputStream("twitterStream").
-                                handler(Handler.Type.WIN, "time", 500),
+                                handler(Handler.Type.WIN, "time", 1000),
                         Condition.compare(Expression.variable("cseEventStream", "symbol"),
                                           Condition.Operator.EQUAL,
                                           Expression.variable("twitterStream", "symbol"))
@@ -97,7 +97,7 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"IBM", 75.6f, 100});
         Thread.sleep(500);
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         Assert.assertTrue("Number of success events", 2 <= eventCount && eventCount <= 3);
         Assert.assertEquals("Event arrived", true, eventArrived);
