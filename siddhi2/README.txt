@@ -36,7 +36,7 @@ Defining new Siddhi CEP Language
 Features Supported
 ==================
  - Filter
-    - Uses stream handles to filter events
+    - Uses stream handlers to filter events
  - Join
     - Supports only upto two streams at a time
     - Match operation triggering can be configured (making "left" or "right" or both streams to trigger)
