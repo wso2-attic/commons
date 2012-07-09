@@ -195,7 +195,7 @@ public class FilterTestCase {
         Query query = QueryFactory.createQuery();
         query.from(
                 QueryFactory.inputStream("cseEventStream").
-                        handler(Handler.Type.WIN, "time", 5000L)//.
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
         query.insertInto("StockQuote");
         query.project(
@@ -243,7 +243,7 @@ public class FilterTestCase {
         Query query = QueryFactory.createQuery();
         query.from(
                 QueryFactory.inputStream("cseEventStream").
-                        handler(Handler.Type.WIN, "time", 5000L)//.
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
         query.insertInto("StockQuote");
         query.project(
@@ -376,7 +376,7 @@ public class FilterTestCase {
         Query query = QueryFactory.createQuery();
         query.from(
                 QueryFactory.inputStream("cseEventStream").
-                        handler(Handler.Type.WIN, "time", 5000L)//.
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
         query.insertInto("StockQuote");
         query.project(
@@ -427,7 +427,7 @@ public class FilterTestCase {
         Query query = QueryFactory.createQuery();
         query.from(
                 QueryFactory.inputStream("cseEventStream").
-                        handler(Handler.Type.WIN, "time", 5000L)//.
+                        handler(Handler.Type.WIN, "time",Expression.value(5000))//.
         );
         query.insertInto("StockQuote");
         query.project(
