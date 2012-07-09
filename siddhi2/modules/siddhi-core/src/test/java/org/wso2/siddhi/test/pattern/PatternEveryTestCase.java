@@ -23,11 +23,11 @@ import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
-import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
-import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.stream.pattern.Pattern;
 
 public class PatternEveryTestCase {

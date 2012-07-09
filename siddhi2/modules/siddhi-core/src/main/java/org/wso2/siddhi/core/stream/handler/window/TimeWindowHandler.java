@@ -24,19 +24,20 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
+import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
 import java.util.concurrent.TimeUnit;
 
 public class TimeWindowHandler extends WindowHandler implements Runnable {
 
-    long timeToKeep;
+    int timeToKeep;
 
     @Override
     public void setParameters(Object[] parameters) {
         if (parameters[0] instanceof Integer) {
             timeToKeep = (Integer) parameters[0];
         } else {
-            timeToKeep = (Long) parameters[0];
+            timeToKeep = ((IntConstant) parameters[0]).getValue();
         }
     }
 
