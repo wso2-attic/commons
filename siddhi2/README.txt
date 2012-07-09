@@ -6,7 +6,7 @@ Siddhi CEP 1.0.0 - Milestone 1 Release Notes
 
 Date : 9th July 2012
 
-This milestone is available at : http://people.wso2.com/~suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip
+This milestone is available at : http://svn.wso2.org/repos/wso2/people/suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip
 
 This source code is available at : http://svn.wso2.org/repos/wso2/trunk/commons/siddhi2
 

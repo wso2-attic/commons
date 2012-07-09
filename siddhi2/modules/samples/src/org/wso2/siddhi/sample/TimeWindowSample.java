@@ -52,7 +52,8 @@ public class TimeWindowSample {
         Thread.sleep(1500);
         inputHandler.send(new Object[]{"IBM", 61.0f});
         inputHandler.send(new Object[]{"IBM", 63.0f});
-        Thread.sleep(500);
+        Thread.sleep(1500);
 
+        System.exit(0);
     }
 }

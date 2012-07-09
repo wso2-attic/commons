@@ -131,31 +131,31 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <copy todir="target/temp/jar-with-dependencies"
+                                <copy todir="${dest.dir}/jar-with-dependencies"
                                       includeemptydirs="false">
                                     <fileset dir="target">
                                         <include name="**/*.jar"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="target/temp/samples" overwrite="false"
+                                <copy todir="${dest.dir}/samples" overwrite="false"
                                       includeemptydirs="false">
                                     <fileset dir="../samples">
                                         <exclude name="**/build/**"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="target/temp/jars" includeemptydirs="false">
-                                    <fileset dir="target/temp/samples/lib">
+                                <copy todir="${dest.dir}/jars" includeemptydirs="false">
+                                    <fileset dir="${dest.dir}/samples/lib">
                                         <include name="**/siddhi*.jar"/>
                                     </fileset>
                                 </copy>
-                                <copy todir="target/temp/" overwrite="false"
+                                <copy todir="${dest.dir}/" overwrite="false"
                                       includeemptydirs="false">
                                     <fileset dir="../../">
                                         <include name="**/README.txt"/>
                                     </fileset>
                                 </copy>
                                 <zip destfile="target/siddhi-${project.version}.zip">
-                                    <zipfileset dir="target/temp"/>
+                                    <zipfileset dir="target/temp" />
                                 </zip>
                                 <delete dir="target/temp"/>
                             </tasks>
@@ -187,4 +187,8 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <dest.dir>target/temp/siddhi-${project.version}</dest.dir>
+    </properties>
 </project>

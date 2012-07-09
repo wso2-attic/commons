@@ -20,6 +20,8 @@ import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
+import java.lang.System;
+
 /**
  * Sample demonstrating a pattern processing
  */
@@ -68,5 +70,6 @@ public class PatternProcessorSample {
         cseStream.send(new Object[]{"WSO2", 110});
         Thread.sleep(500);
 
+        System.exit(0);
     }
 }

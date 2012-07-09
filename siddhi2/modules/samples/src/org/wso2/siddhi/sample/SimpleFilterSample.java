@@ -47,5 +47,6 @@ public class SimpleFilterSample {
         inputHandler.send(new Object[]{"WSO2", 45.6f, 100});
         Thread.sleep(500);
 
+        System.exit(0);
     }
 }
