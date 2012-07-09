@@ -1,0 +1,27 @@
+<data name="ComplexElementsTest">
+   <config id="mysql">
+      <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/ComplexElemTest</property>
+      <property name="org.wso2.ws.dataservice.user">root</property>
+      <property name="org.wso2.ws.dataservice.password">root</property>
+   </config>
+   <query id="SelectAllQuery" useConfig="mysql">
+      <sql>SELECT Name, Age, Telephone, Street, StreetLine2, City, PostalCode FROM Employee</sql>
+      <result element="Employees" rowName="Employee">
+         <element name="Name" column="Name" xsdType="xs:string" namespace="http://wso2.org" />
+         <element name="Age" column="Age" xsdType="xs:integer" namespace="http://wso2.org" />
+         <element name="Contacts" namespace="http://data.wso2.org">
+            <element name="Telephone" column="Telephone" xsdType="xs:string" namespace="http://wso2.org" />
+            <element name="Address" namespace="http://wso2.org">
+               <element name="Street1" column="Street" xsdType="xs:string" namespace="http://wso2.org" />
+               <element name="Street2" column="StreetLine2" xsdType="xs:string" namespace="http://wso2.org" />
+               <element name="City" column="City" xsdType="xs:string" namespace="http://wso2.org" />
+               <element name="PostalCode" column="PostalCode" xsdType="xs:string" namespace="http://wso2.org" />
+            </element>
+         </element>
+      </result>
+   </query>
+   <operation name="Select_Employees">
+      <call-query href="SelectAllQuery" />
+   </operation>
+</data>
