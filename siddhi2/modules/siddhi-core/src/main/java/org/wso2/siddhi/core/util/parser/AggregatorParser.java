@@ -19,6 +19,9 @@ package org.wso2.siddhi.core.util.parser;
 
 import org.wso2.siddhi.core.exception.OperationNotSupportedException;
 import org.wso2.siddhi.core.projector.attibute.aggregator.Aggregator;
+import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorFloat;
+import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorInt;
+import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorLong;
 import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorDouble;
 import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorFloat;
 import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorInt;
@@ -32,7 +35,6 @@ import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorFloat
 import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorInt;
 import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorLong;
 import org.wso2.siddhi.core.projector.attibute.generator.AbstractAggregateAttributeGenerator;
-import org.wso2.siddhi.core.util.*;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 public class AggregatorParser {
@@ -65,13 +67,13 @@ public class AggregatorParser {
             case STRING:
                 throw new OperationNotSupportedException("Avg not supported for string");
             case INT:
-                return new SumAggregatorInt();
+                return new AvgAggregatorInt();
             case LONG:
-                return new SumAggregatorLong();
+                return new AvgAggregatorLong();
             case FLOAT:
-                return new SumAggregatorFloat();
+                return new AvgAggregatorFloat();
             case DOUBLE:
-                return new SumAggregatorDouble();
+                return new AvgAggregatorInt();
             case BOOL:
                 throw new OperationNotSupportedException("Avg not supported for bool");
         }
