@@ -316,9 +316,9 @@ public class SmartGridSampleTestCase {
 
 
     @Test
-    //This is only a partial solution here we are not taking time into commiseration !!
+    //This is only a partial solution here we are not taking time into consideration !!
     public void testQuery5() throws InterruptedException {
-        System.out.println("Window join query with event consumption");
+        System.out.println("Window join query with event consumption with only match once");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
