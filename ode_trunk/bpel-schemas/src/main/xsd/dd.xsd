@@ -100,7 +100,7 @@
                         <xs:element name="cleanup" minOccurs="0" maxOccurs="3" type="dd:tCleanup" />
                         <xs:element name="schedule" minOccurs="0" maxOccurs="unbounded" type="dd:tSchedule">
                         </xs:element>
-                        <xs:element name="BamStreamDefinitions" type="dd:tBamStreamDefinitions" maxOccurs="1" minOccurs="0"/>
+                        <xs:element name="bamServerProfiles" type="dd:tBAMServerProfiles" maxOccurs="1" minOccurs="0"/>
                     </xs:sequence>
 
                     <xs:attribute name="name" type="xs:QName" use="required"/>
@@ -235,12 +235,12 @@
         <xs:attribute name="when" type="xs:string" use="required"></xs:attribute>
     </xs:complexType>
 
-    <xs:complexType name="tBamStreamDefinitions">
+    <xs:complexType name="tBAMServerProfiles">
         <xs:sequence>
-            <xs:element name="stream" minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="profile" minOccurs="1" maxOccurs="unbounded">
                 <xs:complexType>
-                    <xs:attribute name="streamName" type="xs:string" use="required"/>
-                    <xs:attribute name="streamVersion" type="xs:string" use="required"/>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="location" type="xs:string" use="required"/>
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
