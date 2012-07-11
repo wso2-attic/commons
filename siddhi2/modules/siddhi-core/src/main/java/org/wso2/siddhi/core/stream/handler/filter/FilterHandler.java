@@ -69,16 +69,6 @@ public class FilterHandler implements StreamHandler {
     }
 
     @Override
-    public void setPrevious(StreamElement streamElement) {
-        this.prevStreamElement = streamElement;
-    }
-
-    @Override
-    public String getStreamId() {
-        return prevStreamElement.getStreamId();
-    }
-
-    @Override
     public SchedulerQueue<StreamEvent> getWindow() {
         return prevStreamElement.getWindow();
     }
