@@ -20,11 +20,11 @@ package org.wso2.siddhi.core.executor.expression;
 import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.query.QueryEventStream;
 import org.wso2.siddhi.query.api.utils.SiddhiConstants;
 
 import java.util.List;

@@ -18,8 +18,8 @@
 package org.wso2.siddhi.core.stream.packer.pattern;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.event.ComplexEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.statemachine.pattern.LogicPatternState;
 import org.wso2.siddhi.core.statemachine.pattern.PatternState;
 import org.wso2.siddhi.core.stream.packer.SingleStreamPacker;

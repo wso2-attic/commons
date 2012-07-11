@@ -19,7 +19,7 @@ package org.wso2.siddhi.core.stream.packer.pattern;
 
 import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.ListEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.statemachine.pattern.CountPatternState;
 import org.wso2.siddhi.core.statemachine.pattern.LogicPatternState;
 import org.wso2.siddhi.core.stream.recevier.pattern.CountPatternSingleStreamReceiver;

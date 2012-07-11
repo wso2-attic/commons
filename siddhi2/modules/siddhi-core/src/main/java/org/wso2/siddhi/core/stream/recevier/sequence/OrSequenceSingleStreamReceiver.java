@@ -17,8 +17,8 @@
 */
 package org.wso2.siddhi.core.stream.recevier.sequence;
 
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
 import org.wso2.siddhi.core.stream.StreamProcessor;
 

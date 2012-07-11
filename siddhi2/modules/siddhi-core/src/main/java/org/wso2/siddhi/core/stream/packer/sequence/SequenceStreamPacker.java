@@ -19,7 +19,7 @@ package org.wso2.siddhi.core.stream.packer.sequence;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.event.ComplexEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
 import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.core.stream.packer.SingleStreamPacker;

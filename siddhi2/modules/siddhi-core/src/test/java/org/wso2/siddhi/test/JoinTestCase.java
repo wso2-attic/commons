@@ -83,6 +83,9 @@ public class JoinTestCase {
                 if (newEventData != null) {
                     junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
+                } else {
+                    junit.framework.Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    eventCount--;
                 }
                 eventArrived = true;
 
@@ -97,9 +100,9 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"IBM", 75.6f, 100});
         Thread.sleep(500);
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
-        Assert.assertEquals("Number of success events", 2 , eventCount);
+        Assert.assertEquals("Number of success events", 0 , eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
 
@@ -145,6 +148,9 @@ public class JoinTestCase {
                 if (newEventData != null) {
                     junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
+                } else {
+                    junit.framework.Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    eventCount--;
                 }
                 eventArrived = true;
             }
@@ -153,9 +159,9 @@ public class JoinTestCase {
         InputHandler cseEventStreamHandler = siddhiManager.getInputHandler("cseEventStream");
         cseEventStreamHandler.send(new Object[]{"IBM", 75.6f, 100});
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
-        Assert.assertEquals("Number of success events", 2 , eventCount);
+        Assert.assertEquals("Number of success events", 0 , eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
     }

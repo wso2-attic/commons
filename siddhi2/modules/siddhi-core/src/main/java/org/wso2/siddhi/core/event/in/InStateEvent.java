@@ -15,26 +15,27 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.core.stream.packer.pattern;
+package org.wso2.siddhi.core.event.in;
 
 import org.wso2.siddhi.core.event.StateEvent;
-import org.wso2.siddhi.core.statemachine.pattern.OrPatternState;
+import org.wso2.siddhi.core.event.StreamEvent;
 
-public class OrPatternStreamPacker extends PatternStreamPacker {
+/**
+ * Event with state
+ */
+public class InStateEvent extends StateEvent implements InStream {
 
-    private int higherState;
 
-    public OrPatternStreamPacker(OrPatternState state) {
-        super(state);
-        if (state.getStateNumber() < state.getPartnerState().getStateNumber()) {
-            higherState = state.getPartnerState().getStateNumber();
-        } else {
-            higherState = state.getStateNumber();
-        }
+    public InStateEvent(StreamEvent[] newEventStream) {
+        super(newEventStream);
     }
 
-    protected void setEventState(StateEvent eventBundle) {
-        eventBundle.setEventState(higherState);
+    private InStateEvent(StreamEvent[] newEventStream, int eventState) {
+        super(eventState,newEventStream);
     }
 
+    @Override
+    protected StateEvent createCloneEvent(StreamEvent[] newEventStream, int eventState) {
+        return new InStateEvent(newEventStream,eventState);
+    }
 }

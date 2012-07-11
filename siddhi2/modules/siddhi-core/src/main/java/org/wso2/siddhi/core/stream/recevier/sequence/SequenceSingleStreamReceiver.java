@@ -17,13 +17,14 @@
 */
 package org.wso2.siddhi.core.stream.recevier.sequence;
 
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
-import org.wso2.siddhi.core.util.SchedulerQueue;
+import org.wso2.siddhi.core.event.in.InStateEvent;
 import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.core.stream.StreamElement;
 import org.wso2.siddhi.core.stream.StreamProcessor;
 import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
+import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
     public void init() {
         if (state.isFirst()) {
             //first event
-            addToNextEvents(new StateEvent(new StreamEvent[complexEventSize]));
+            addToNextEvents(new InStateEvent(new StreamEvent[complexEventSize]));
         }
     }
 

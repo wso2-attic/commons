@@ -32,8 +32,10 @@ import org.wso2.siddhi.core.stream.handler.filter.FilterHandler;
 import org.wso2.siddhi.core.stream.handler.window.WindowHandler;
 import org.wso2.siddhi.core.stream.packer.SingleStreamPacker;
 import org.wso2.siddhi.core.stream.packer.join.JoinStreamPacker;
-import org.wso2.siddhi.core.stream.packer.join.LeftJoinStreamPacker;
-import org.wso2.siddhi.core.stream.packer.join.RightJoinStreamPacker;
+import org.wso2.siddhi.core.stream.packer.join.LeftJoinInStreamPacker;
+import org.wso2.siddhi.core.stream.packer.join.LeftJoinRemoveStreamPacker;
+import org.wso2.siddhi.core.stream.packer.join.RightJoinInStreamPacker;
+import org.wso2.siddhi.core.stream.packer.join.RightJoinRemoveStreamPacker;
 import org.wso2.siddhi.core.stream.packer.pattern.AndPatternStreamPacker;
 import org.wso2.siddhi.core.stream.packer.pattern.CountPatternStreamPacker;
 import org.wso2.siddhi.core.stream.packer.pattern.OrPatternStreamPacker;
@@ -96,21 +98,29 @@ public class StreamParser {
             } else {
                 onConditionExecutor = ExecutorParser.parseCondition(Condition.bool(Expression.value(true)), queryEventStreamList, null);
             }
-            JoinStreamPacker leftJoinStreamPacker;
-            JoinStreamPacker rightJoinStreamPacker;
+            JoinStreamPacker leftJoinInStreamPacker;
+            JoinStreamPacker rightJoinInStreamPacker;
+            JoinStreamPacker leftJoinRemoveStreamPacker;
+            JoinStreamPacker rightJoinRemoveStreamPacker;
             ReentrantLock lock = new ReentrantLock();
             switch (((JoinStream) queryStream).getTrigger()) {
                 case LEFT:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true, lock);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, false, lock);
+                    leftJoinInStreamPacker = new LeftJoinInStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinInStreamPacker = new RightJoinInStreamPacker(onConditionExecutor, false, lock);
+                    leftJoinRemoveStreamPacker = new LeftJoinRemoveStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinRemoveStreamPacker = new RightJoinRemoveStreamPacker(onConditionExecutor, false, lock);
                     break;
                 case RIGHT:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, false, lock);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true, lock);
+                    leftJoinInStreamPacker = new LeftJoinInStreamPacker(onConditionExecutor, false, lock);
+                    rightJoinInStreamPacker = new RightJoinInStreamPacker(onConditionExecutor, true, lock);
+                    leftJoinRemoveStreamPacker = new LeftJoinRemoveStreamPacker(onConditionExecutor, false, lock);
+                    rightJoinRemoveStreamPacker = new RightJoinRemoveStreamPacker(onConditionExecutor, true, lock);
                     break;
                 default:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true, lock);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true, lock);
+                    leftJoinInStreamPacker = new LeftJoinInStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinInStreamPacker = new RightJoinInStreamPacker(onConditionExecutor, true, lock);
+                    leftJoinRemoveStreamPacker = new LeftJoinRemoveStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinRemoveStreamPacker = new RightJoinRemoveStreamPacker(onConditionExecutor, true, lock);
                     break;
             }
 
@@ -118,29 +128,34 @@ public class StreamParser {
             SingleStream rightStream = (SingleStream) ((JoinStream) queryStream).getRightStream();
             WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream));
             WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream));
-            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinStreamPacker);
-            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinStreamPacker);
+            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinInStreamPacker);
+            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinInStreamPacker);
 
             SingleStreamReceiver leftReceiver = new SingleStreamReceiver(leftStream, leftSimpleStreamProcessorList.get(0), threadPoolExecutor);
             SingleStreamReceiver rightReceiver = new SingleStreamReceiver(rightStream, rightSimpleStreamProcessorList.get(0), threadPoolExecutor);
 
             //joinStreamPacker next
-            leftJoinStreamPacker.setNext(queryProjector);
-            rightJoinStreamPacker.setNext(queryProjector);
+            leftJoinInStreamPacker.setNext(queryProjector);
+            rightJoinInStreamPacker.setNext(queryProjector);
+            leftJoinRemoveStreamPacker.setNext(queryProjector);
+            rightJoinRemoveStreamPacker.setNext(queryProjector);
 
             //WindowHandler joinStreamPacker relation settings
-            leftJoinStreamPacker.setWindowHandler(leftWindowHandler);
-//            leftWindowHandler.setNext(leftJoinStreamPacker);
+            leftJoinInStreamPacker.setWindowHandler(leftWindowHandler);
+            leftWindowHandler.setNext(leftJoinRemoveStreamPacker);
 
-            rightJoinStreamPacker.setWindowHandler(rightWindowHandler);
-//            rightWindowHandler.setNext(rightJoinStreamPacker);
+            rightJoinInStreamPacker.setWindowHandler(rightWindowHandler);
+            rightWindowHandler.setNext(rightJoinRemoveStreamPacker);
 
 
             //joinStreamPacker prev
             JoinStreamPacker leftSingleStreamPacker = (JoinStreamPacker) leftSimpleStreamProcessorList.get(leftSimpleStreamProcessorList.size() - 1);
             JoinStreamPacker rightSingleStreamPacker = (JoinStreamPacker) rightSimpleStreamProcessorList.get(rightSimpleStreamProcessorList.size() - 1);
-            rightJoinStreamPacker.setOppositeWindow(leftSingleStreamPacker.getWindow());
-            leftJoinStreamPacker.setOppositeWindow(rightSingleStreamPacker.getWindow());
+            rightJoinInStreamPacker.setOppositeWindow(leftSingleStreamPacker.getWindow());
+            leftJoinInStreamPacker.setOppositeWindow(rightSingleStreamPacker.getWindow());
+
+            rightJoinRemoveStreamPacker.setOppositeWindow(leftSingleStreamPacker.getWindow());
+            leftJoinRemoveStreamPacker.setOppositeWindow(rightSingleStreamPacker.getWindow());
 
             streamReceiverList.add(leftReceiver);
             streamReceiverList.add(rightReceiver);

@@ -15,24 +15,24 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.core.event.in;
-
-import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.event.ComplexEvent;
-import org.wso2.siddhi.core.event.ListEvent;
-import org.wso2.siddhi.core.event.StreamEvent;
+package org.wso2.siddhi.core.event;
 
 import java.util.Arrays;
 
 /**
  * Event with state
  */
-public class StateEvent implements ComplexEvent, InStream, AtomicEvent {
+public abstract class StateEvent implements ComplexEvent, AtomicEvent {
 
     private int eventState = -1;
     protected StreamEvent[] streamEvents;
 
     public StateEvent(StreamEvent[] streamEvents) {
+        this.streamEvents = streamEvents;
+    }
+
+    protected StateEvent(int eventState, StreamEvent[] streamEvents) {
+        this.eventState = eventState;
         this.streamEvents = streamEvents;
     }
 
@@ -68,12 +68,8 @@ public class StateEvent implements ComplexEvent, InStream, AtomicEvent {
         this.streamEvents[i] = streamEvent;
     }
 
-    protected StateEvent createCloneEvent(StreamEvent[] newEventStream,
-                                          int eventState) {
-        StateEvent stateEvent = new StateEvent(newEventStream);
-        stateEvent.setEventState(eventState);
-        return stateEvent;
-    }
+    protected abstract StateEvent createCloneEvent(StreamEvent[] newEventStream,
+                                          int eventState);
 
     public StateEvent cloneEvent(int stateNumber) {
         int length = streamEvents.length;

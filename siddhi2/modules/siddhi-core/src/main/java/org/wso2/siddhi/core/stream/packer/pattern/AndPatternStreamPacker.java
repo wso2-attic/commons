@@ -18,7 +18,7 @@
 package org.wso2.siddhi.core.stream.packer.pattern;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
 
 public class AndPatternStreamPacker extends PatternStreamPacker {

@@ -18,12 +18,12 @@
 package org.wso2.siddhi.core;
 
 import org.wso2.siddhi.core.config.SiddhiConfiguration;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.exception.EventStreamAlreadyExistException;
 import org.wso2.siddhi.core.projector.QueryProjector;
 import org.wso2.siddhi.core.stream.StreamJunction;
-import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
 import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.parser.StreamParser;

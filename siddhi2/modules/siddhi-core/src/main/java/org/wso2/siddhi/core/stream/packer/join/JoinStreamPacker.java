@@ -21,9 +21,9 @@ import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStream;
-import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 import org.wso2.siddhi.core.projector.QueryProjector;
 import org.wso2.siddhi.core.stream.handler.window.WindowHandler;
@@ -70,7 +70,8 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
     public void process(ComplexEvent complexEvent) {
 //        //System.out.println("Arrived");
 
-        if (complexEvent instanceof InStream) {
+//        if (complexEvent instanceof InStream) {
+        if (triggerEventTypeCheck(complexEvent)) {
             lock.lock();
             try {
                 if (triggerEvent) {
@@ -128,12 +129,16 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
                         sendEventList(list);
                     }
                 }
-                windowHandler.process(complexEvent);
+                if (complexEvent instanceof InStream) {
+                    windowHandler.process(complexEvent);
+                }
             } finally {
                 lock.unlock();
             }
         }
     }
+
+    protected abstract boolean triggerEventTypeCheck(ComplexEvent complexEvent);
 
     protected abstract StateEvent createNewEvent(ComplexEvent complexEvent,
                                                  ComplexEvent complexEvent1);

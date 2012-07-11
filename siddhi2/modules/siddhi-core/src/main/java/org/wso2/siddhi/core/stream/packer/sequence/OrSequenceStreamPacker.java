@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.core.stream.packer.sequence;
 
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
 
 public class OrSequenceStreamPacker extends SequenceStreamPacker {

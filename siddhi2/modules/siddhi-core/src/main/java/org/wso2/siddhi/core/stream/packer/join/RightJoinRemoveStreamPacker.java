@@ -19,20 +19,28 @@ package org.wso2.siddhi.core.stream.packer.join;
 
 import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.core.event.in.StateEvent;
+import org.wso2.siddhi.core.event.StateEvent;
+import org.wso2.siddhi.core.event.remove.RemoveStateEvent;
+import org.wso2.siddhi.core.event.remove.RemoveStream;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-public class RightJoinStreamPacker extends JoinStreamPacker {
+public class RightJoinRemoveStreamPacker extends JoinStreamPacker {
 
-    public RightJoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,ReentrantLock lock) {
+    public RightJoinRemoveStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,
+                                       ReentrantLock lock) {
         super(onConditionExecutor,triggerEvent,lock);
+    }
+
+    @Override
+    protected boolean triggerEventTypeCheck(ComplexEvent complexEvent) {
+        return complexEvent instanceof RemoveStream;
     }
 
     //parameters are applied in reverse order since they are originally sent for the oder of LEFT
     protected StateEvent createNewEvent(ComplexEvent complexEvent, ComplexEvent complexEvent1) {
-        return new StateEvent(new Event[]{((Event) complexEvent1), ((Event) complexEvent)});
+        return new RemoveStateEvent(new Event[]{((Event) complexEvent1), ((Event) complexEvent)},System.currentTimeMillis());
     }
 
 
