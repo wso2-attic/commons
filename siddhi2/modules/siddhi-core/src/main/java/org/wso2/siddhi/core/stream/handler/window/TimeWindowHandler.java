@@ -57,7 +57,7 @@ public class TimeWindowHandler extends WindowHandler implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            getNextPreStreamFlowProcessor().process(complexEvent);
+            passToNextStreamProcessor(complexEvent);
         }
     }
 
@@ -76,7 +76,7 @@ public class TimeWindowHandler extends WindowHandler implements Runnable {
                     break;
                 } else {
                     streamEvent = getWindow().poll();
-                    getNextPreStreamFlowProcessor().process(streamEvent);
+                    passToNextStreamProcessor(streamEvent);
                 }
             } catch (Throwable e) {
                 e.printStackTrace();

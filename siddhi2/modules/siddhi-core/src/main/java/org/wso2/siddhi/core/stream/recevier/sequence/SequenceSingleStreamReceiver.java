@@ -47,7 +47,6 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
         this.currentState = state.getStateNumber();
         this.complexEventSize = complexEventSize;
         this.firstSimpleStreamProcessor = firstSimpleStreamProcessor;
-        this.firstSimpleStreamProcessor.setPrevious(this);
 //        init(state, complexEventSize);
     }
 

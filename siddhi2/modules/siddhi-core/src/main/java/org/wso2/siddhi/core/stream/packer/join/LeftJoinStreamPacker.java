@@ -22,10 +22,12 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class LeftJoinStreamPacker extends JoinStreamPacker {
 
-    public LeftJoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent) {
-        super(onConditionExecutor,triggerEvent);
+    public LeftJoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,ReentrantLock lock) {
+        super(onConditionExecutor,triggerEvent,lock);
     }
 
     protected StateEvent createNewEvent(ComplexEvent complexEvent, ComplexEvent complexEvent1) {

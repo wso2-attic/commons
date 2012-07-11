@@ -34,7 +34,7 @@ public class SchedulerQueue<T> {
     public synchronized boolean put(T t) throws InterruptedException {
         putLock.lock();
         try {
-            queue.add(t);
+            queue.put(t);
             if (!isScheduledForDispatching) {
                 isScheduledForDispatching = true;
                 return false;

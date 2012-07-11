@@ -22,6 +22,5 @@ import org.wso2.siddhi.core.util.SchedulerQueue;
 
 public interface StreamElement {
 
-    String getStreamId();
     SchedulerQueue<StreamEvent> getWindow();
 }

@@ -117,10 +117,10 @@ public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
     private void sendInEvents(List<Event> eventList) {
         int size = eventList.size();
         if (size > 1) {
-            getNextPreStreamFlowProcessor().process(new InListEvent((eventList.toArray(new Event[size]))));
+            passToNextStreamProcessor(new InListEvent((eventList.toArray(new Event[size]))));
         } else if (size == 1) {
             Event aEvent = eventList.get(0);
-            getNextPreStreamFlowProcessor().process(new InEvent(aEvent));
+            passToNextStreamProcessor(new InEvent(aEvent));
         }
     }
 
@@ -128,10 +128,10 @@ public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
     private void sendRemoveEvents(List<Event> eventList) {
         int size = eventList.size();
         if (size > 1) {
-            getNextPreStreamFlowProcessor().process(new RemoveListEvent((eventList.toArray(new Event[size])), System.currentTimeMillis()));
+            passToNextStreamProcessor(new RemoveListEvent((eventList.toArray(new Event[size])), System.currentTimeMillis()));
         } else if (size == 1) {
             Event aEvent = eventList.get(0);
-            getNextPreStreamFlowProcessor().process(new RemoveEvent(aEvent, System.currentTimeMillis()));
+            passToNextStreamProcessor(new RemoveEvent(aEvent, System.currentTimeMillis()));
         }
     }
 

@@ -380,7 +380,7 @@ type returns [Attribute.Type type]
 handlerType returns [Handler.Type type]
 	: 'win'		{$type=Handler.Type.WIN;}
 	|'filter'	{$type=Handler.Type.FILTER;}
-	|'stream'	{$type=Handler.Type.STREAM;}
+	|'expire'	{$type=Handler.Type.EXPIRE;}
 	|'std'		{$type=Handler.Type.STD;}
 	|'timer'	{$type=Handler.Type.TIMER;}
 	;

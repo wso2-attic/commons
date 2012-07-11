@@ -63,8 +63,10 @@ import org.wso2.siddhi.query.api.stream.pattern.PatternStream;
 import org.wso2.siddhi.query.api.stream.sequence.SequenceStream;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class StreamParser {
 
@@ -96,30 +98,42 @@ public class StreamParser {
             }
             JoinStreamPacker leftJoinStreamPacker;
             JoinStreamPacker rightJoinStreamPacker;
+            ReentrantLock lock = new ReentrantLock();
             switch (((JoinStream) queryStream).getTrigger()) {
                 case LEFT:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, false);
+                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, false, lock);
                     break;
                 case RIGHT:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, false);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true);
+                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, false, lock);
+                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true, lock);
                     break;
                 default:
-                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true);
-                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true);
+                    leftJoinStreamPacker = new LeftJoinStreamPacker(onConditionExecutor, true, lock);
+                    rightJoinStreamPacker = new RightJoinStreamPacker(onConditionExecutor, true, lock);
                     break;
             }
 
-            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler((SingleStream) ((JoinStream) queryStream).getLeftStream(), queryEventStreamList, leftJoinStreamPacker);
-            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler((SingleStream) ((JoinStream) queryStream).getRightStream(), queryEventStreamList, rightJoinStreamPacker);
+            SingleStream leftStream = (SingleStream) ((JoinStream) queryStream).getLeftStream();
+            SingleStream rightStream = (SingleStream) ((JoinStream) queryStream).getRightStream();
+            WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream));
+            WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream));
+            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinStreamPacker);
+            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinStreamPacker);
 
-            SingleStreamReceiver leftReceiver = new SingleStreamReceiver((SingleStream) ((JoinStream) queryStream).getLeftStream(), leftSimpleStreamProcessorList.get(0), threadPoolExecutor);
-            SingleStreamReceiver rightReceiver = new SingleStreamReceiver((SingleStream) ((JoinStream) queryStream).getRightStream(), rightSimpleStreamProcessorList.get(0), threadPoolExecutor);
+            SingleStreamReceiver leftReceiver = new SingleStreamReceiver(leftStream, leftSimpleStreamProcessorList.get(0), threadPoolExecutor);
+            SingleStreamReceiver rightReceiver = new SingleStreamReceiver(rightStream, rightSimpleStreamProcessorList.get(0), threadPoolExecutor);
 
             //joinStreamPacker next
             leftJoinStreamPacker.setNext(queryProjector);
             rightJoinStreamPacker.setNext(queryProjector);
+
+            //WindowHandler joinStreamPacker relation settings
+            leftJoinStreamPacker.setWindowHandler(leftWindowHandler);
+//            leftWindowHandler.setNext(leftJoinStreamPacker);
+
+            rightJoinStreamPacker.setWindowHandler(rightWindowHandler);
+//            rightWindowHandler.setNext(rightJoinStreamPacker);
 
 
             //joinStreamPacker prev
@@ -271,6 +285,19 @@ public class StreamParser {
 
     }
 
+    private static Handler detachWindow(SingleStream singleStream) {
+        Handler windowHandler = new Handler("lenth", Handler.Type.WIN, new Object[]{Integer.MAX_VALUE});
+        for (Iterator<Handler> iterator = singleStream.getHandlerList().iterator(); iterator.hasNext(); ) {
+            Handler handler = iterator.next();
+            if (handler.getType() == Handler.Type.WIN) {
+                windowHandler = handler;
+                iterator.remove();
+            }
+        }
+        return windowHandler;
+
+    }
+
     private static List<StreamProcessor> parseStreamHandler(SingleStream inputStream,
                                                             List<QueryEventStream> queryEventStreamList,
                                                             SingleStreamPacker singleStreamPacker) {
@@ -286,16 +313,12 @@ public class StreamParser {
 
                 }
             } else if (handler.getType() == Handler.Type.WIN) {
-                WindowHandler windowHandler = (WindowHandler) org.wso2.siddhi.core.util.ClassLoader.loadClass("org.wso2.siddhi.core.stream.handler.window." + handler.getName().substring(0, 1).toUpperCase() + handler.getName().substring(1) + "WindowHandler");
-//                    WindowHandler windowHandler = new TimeWindowHandler();
-                windowHandler.setParameters(handler.getParameters());
-                streamHandler = windowHandler;
+                streamHandler = generateWindowHandler(handler);
             }
 
             if (streamProcessorList.size() > 0) {
                 StreamHandler prevStreamHandler = (StreamHandler) streamProcessorList.get(i - 1);
                 prevStreamHandler.setNext(streamHandler);
-                streamHandler.setPrevious(prevStreamHandler);
             }
             streamProcessorList.add(streamHandler);
 
@@ -303,11 +326,17 @@ public class StreamParser {
         if (streamProcessorList.size() > 0) {
             StreamHandler lastStreamHandler = (StreamHandler) streamProcessorList.get(streamProcessorList.size() - 1);
             lastStreamHandler.setNext(singleStreamPacker);
-            singleStreamPacker.setPrevious(lastStreamHandler);
 
         }
         streamProcessorList.add(singleStreamPacker);
         return streamProcessorList;
+    }
+
+    private static WindowHandler generateWindowHandler(Handler handler) {
+        WindowHandler windowHandler = (WindowHandler) org.wso2.siddhi.core.util.ClassLoader.loadClass("org.wso2.siddhi.core.stream.handler.window." + handler.getName().substring(0, 1).toUpperCase() + handler.getName().substring(1) + "WindowHandler");
+//                    WindowHandler windowHandler = new TimeWindowHandler();
+        windowHandler.setParameters(handler.getParameters());
+        return windowHandler;
     }
 
 }

@@ -21,12 +21,10 @@ import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
 import org.wso2.siddhi.core.projector.QueryProjector;
-import org.wso2.siddhi.core.stream.StreamElement;
 import org.wso2.siddhi.core.stream.StreamProcessor;
 
 public class SingleStreamPacker implements StreamPacker, StreamProcessor {
     protected QueryProjector queryProjector;
-    protected StreamElement prevStreamElement;
 
     @Override
     public void process(ComplexEvent complexEvent) {
@@ -35,11 +33,6 @@ public class SingleStreamPacker implements StreamPacker, StreamProcessor {
         } else if (complexEvent instanceof ListEvent) {
             queryProjector.process((ListEvent)complexEvent);
         }
-    }
-
-    @Override
-    public void setPrevious(StreamElement streamElement) {
-        this.prevStreamElement = streamElement;
     }
 
 //    @Override

@@ -39,7 +39,6 @@ public class SingleStreamReceiver implements RunnableStreamReceiver,
                                 ThreadPoolExecutor threadPoolExecutor) {
         this.inputStream = inputStream;
         this.firstStreamProcessor = firstStreamProcessor;
-        this.firstStreamProcessor.setPrevious(this);
         this.threadPoolExecutor = threadPoolExecutor;
     }
 

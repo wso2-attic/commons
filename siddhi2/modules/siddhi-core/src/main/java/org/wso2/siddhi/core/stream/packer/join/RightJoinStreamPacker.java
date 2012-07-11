@@ -22,10 +22,12 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class RightJoinStreamPacker extends JoinStreamPacker {
 
-    public RightJoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent) {
-        super(onConditionExecutor, triggerEvent);
+    public RightJoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,ReentrantLock lock) {
+        super(onConditionExecutor,triggerEvent,lock);
     }
 
     //parameters are applied in reverse order since they are originally sent for the oder of LEFT

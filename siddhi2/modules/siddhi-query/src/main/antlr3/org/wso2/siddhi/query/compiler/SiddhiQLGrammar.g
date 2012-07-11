@@ -328,7 +328,7 @@ stringVal: STRING_VAL;
 
 type: 'string' |'int' |'long' |'float' |'double' |'bool'; 
 
-handlerType: 'win'|'filter'|'stream'|'std'|'timer'; 
+handlerType: 'win'|'filter'|'expire'|'std'|'timer';
 
 POSITIVE_INT:  NUM('I'|'i')?;
 

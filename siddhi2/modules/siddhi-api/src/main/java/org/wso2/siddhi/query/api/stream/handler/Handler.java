@@ -23,7 +23,7 @@ public class Handler {
     Type type;
     Object[] parameters;
 
-    public enum Type {WIN, STD, STREAM, FILTER, TIMER}
+    public enum Type {WIN, STD, FILTER, TIMER, EXPIRE}
 
     public Handler(String name, Type type, Object[] parameters) {
         this.name = name;

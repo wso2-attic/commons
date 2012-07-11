@@ -22,5 +22,4 @@ import org.wso2.siddhi.core.event.ComplexEvent;
 public interface StreamProcessor  {
 
     void process(ComplexEvent complexEvent);
-    void setPrevious(StreamElement streamElement);
 }

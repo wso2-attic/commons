@@ -99,7 +99,7 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
         Thread.sleep(1000);
 
-        Assert.assertTrue("Number of success events", 2 <= eventCount && eventCount <= 3);
+        Assert.assertEquals("Number of success events", 2 , eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
 
@@ -155,7 +155,7 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
         Thread.sleep(500);
 
-        Assert.assertTrue("Number of success events", 2 <= eventCount && eventCount <= 4);
+        Assert.assertEquals("Number of success events", 2 , eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
     }

@@ -17,11 +17,11 @@
 */
 package org.wso2.siddhi.core.stream.handler.window;
 
+import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.util.SchedulerQueue;
-import org.wso2.siddhi.core.stream.StreamElement;
 import org.wso2.siddhi.core.stream.StreamProcessor;
 import org.wso2.siddhi.core.stream.handler.StreamHandler;
+import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.List;
@@ -29,15 +29,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public abstract class WindowHandler implements StreamHandler{
+//    private String streamId;
     private List<QueryEventStream> queryEventStreamList;
-    private StreamProcessor nextPreStreamFlowProcessor;
+    private StreamProcessor nextStreamProcessor;
     private ScheduledExecutorService eventRemoverScheduler = Executors.newScheduledThreadPool(1);
     private SchedulerQueue<StreamEvent> window = new SchedulerQueue<StreamEvent>();
-    private StreamElement prevStreamElement;
+   // private StreamElement prevStreamElement;
 
     @Override
-    public void setNext(StreamProcessor nextPreStreamFlowProcessor) {
-        this.nextPreStreamFlowProcessor = nextPreStreamFlowProcessor;
+    public void setNext(StreamProcessor nextStreamProcessor) {
+        this.nextStreamProcessor = nextStreamProcessor;
     }
 
 
@@ -50,8 +51,14 @@ public abstract class WindowHandler implements StreamHandler{
 //    }
 
 
-    protected StreamProcessor getNextPreStreamFlowProcessor() {
-        return nextPreStreamFlowProcessor;
+    protected StreamProcessor getNextStreamProcessor() {
+        return nextStreamProcessor;
+    }
+
+    protected void passToNextStreamProcessor(ComplexEvent complexEvent) {
+        if( nextStreamProcessor!=null){
+            nextStreamProcessor.process(complexEvent);
+        }
     }
 
     protected ScheduledExecutorService getEventRemoverScheduler() {
@@ -62,15 +69,13 @@ public abstract class WindowHandler implements StreamHandler{
         return window;
     }
 
-    @Override
-    public void setPrevious(StreamElement streamElement) {
-        this.prevStreamElement = streamElement;
-    }
-
-    @Override
-    public String getStreamId() {
-        return prevStreamElement.getStreamId();
-    }
+//    public void setStreamId(String streamId) {
+//        this.streamId = streamId;
+//    }
+//
+//    public String getStreamId() {
+//        return streamId;
+//    }
 
     public abstract void setParameters(Object[] parameters);
 }

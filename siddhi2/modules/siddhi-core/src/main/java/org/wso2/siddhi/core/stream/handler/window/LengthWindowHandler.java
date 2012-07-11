@@ -41,10 +41,10 @@ public class LengthWindowHandler extends WindowHandler {
             if (complexEvent instanceof Event) {
                 SchedulerQueue<StreamEvent> queue = getWindow();
                 queue.put((StreamEvent) complexEvent);
-                getNextPreStreamFlowProcessor().process(complexEvent);
+                passToNextStreamProcessor(complexEvent);
                 if (currentLength == lengthToKeep) {
-                    getNextPreStreamFlowProcessor().process(new RemoveEvent((Event) queue.poll(),System.currentTimeMillis()));
-                }else {
+                    passToNextStreamProcessor(new RemoveEvent((Event) queue.poll(), System.currentTimeMillis()));
+                } else {
                     currentLength++;
                 }
             } else if (complexEvent instanceof ListEvent) {
@@ -56,19 +56,19 @@ public class LengthWindowHandler extends WindowHandler {
                     int oldEventIndex = 0;
                     for (Event event : newEvents) {
                         queue.put(event);
-                        getNextPreStreamFlowProcessor().process(event);
+                        passToNextStreamProcessor(complexEvent);
                         if (currentLength == lengthToKeep) {
-                            oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.poll(),System.currentTimeMillis());
+                            oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.poll(), System.currentTimeMillis());
                             oldEventIndex++;
                         } else {
                             currentLength++;
                         }
                     }
-                    getNextPreStreamFlowProcessor().process(new RemoveListEvent(oldEvents,System.currentTimeMillis()));
+                    passToNextStreamProcessor(new RemoveListEvent(oldEvents, System.currentTimeMillis()));
                 } else {
                     for (Event event : newEvents) {
                         queue.put(event);
-                        getNextPreStreamFlowProcessor().process(event);
+                        passToNextStreamProcessor(complexEvent);
                         currentLength++;
                     }
                 }

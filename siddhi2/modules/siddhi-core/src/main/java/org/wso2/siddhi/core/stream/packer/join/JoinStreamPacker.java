@@ -25,29 +25,37 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStream;
 import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
-import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.core.projector.QueryProjector;
+import org.wso2.siddhi.core.stream.handler.window.WindowHandler;
 import org.wso2.siddhi.core.stream.packer.SingleStreamPacker;
+import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class JoinStreamPacker extends SingleStreamPacker {
 
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return prevStreamElement.getWindow();
-    }
+    protected SchedulerQueue<StreamEvent> oppositeWindow;
+    protected WindowHandler windowHandler;
+    protected final ReentrantLock lock;
+    protected Class eventType;
 
-    protected SchedulerQueue<StreamEvent> window;
     protected ConditionExecutor onConditionExecutor;
     protected boolean triggerEvent;
     //    private int nextState;
 
 
-    public JoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent) {
+    public SchedulerQueue<StreamEvent> getWindow() {
+        return windowHandler.getWindow();
+    }
+
+    public JoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,
+                            ReentrantLock lock) {
+        this.lock = lock;
         this.onConditionExecutor = onConditionExecutor;
-        this.triggerEvent=triggerEvent;
+        this.triggerEvent = triggerEvent;
     }
 
     @Override
@@ -62,67 +70,76 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
     public void process(ComplexEvent complexEvent) {
 //        //System.out.println("Arrived");
 
-        if (triggerEvent && complexEvent instanceof InStream) {
-            if (complexEvent instanceof Event) {
-                Iterator<StreamEvent> iterator = window.iterator();
-                while (iterator.hasNext()) {
-                    ComplexEvent windowComplexEvent = iterator.next();
-                    if (windowComplexEvent instanceof Event) {
+        if (complexEvent instanceof InStream) {
+            lock.lock();
+            try {
+                if (triggerEvent) {
+                    if (complexEvent instanceof Event) {
+
+                        Iterator<StreamEvent> iterator = oppositeWindow.iterator();
+                        while (iterator.hasNext()) {
+                            ComplexEvent windowComplexEvent = iterator.next();
+                            if (windowComplexEvent instanceof Event) {
 //                        Event newEvent = (new InComplexEvent(new Event[]{((Event) complexEvent), ((Event) windowComplexEvent)}));
-                        StateEvent newEvent = createNewEvent(complexEvent, windowComplexEvent);
-                        if (onConditionExecutor.execute(newEvent)) {
-                            queryProjector.process(newEvent);
-                        }
-                    } else if (windowComplexEvent instanceof ListEvent) {
-                        List<AtomicEvent> list = new ArrayList<AtomicEvent>();
-                        Event[] events = ((ListEvent) windowComplexEvent).getEvents();
-                        for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
+                                StateEvent newEvent = createNewEvent(complexEvent, windowComplexEvent);
+                                if (onConditionExecutor.execute(newEvent)) {
+                                    queryProjector.process(newEvent);
+                                }
+                            } else if (windowComplexEvent instanceof ListEvent) {
+                                List<AtomicEvent> list = new ArrayList<AtomicEvent>();
+                                Event[] events = ((ListEvent) windowComplexEvent).getEvents();
+                                for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
 //                            Event newEvent = (new InComplexEvent(new Event[]{((Event) complexEvent), ((Event) events[i])}));
-                            StateEvent newEvent = createNewEvent(complexEvent, events[i]);
-                            if (onConditionExecutor.execute(newEvent)) {
-                                list.add(newEvent);
+                                    StateEvent newEvent = createNewEvent(complexEvent, events[i]);
+                                    if (onConditionExecutor.execute(newEvent)) {
+                                        list.add(newEvent);
+                                    }
+                                }
+                                sendEventList(list);
+                            } else {
+                                //todo error Complex event not supported
+                            }
+                        }
+                    } else if (complexEvent instanceof ListEvent) {
+                        List<AtomicEvent> list = new ArrayList<AtomicEvent>();
+                        Iterator<StreamEvent> iterator = oppositeWindow.iterator();
+                        for (Event event : ((ListEvent) complexEvent).getEvents()) {
+                            while (iterator.hasNext()) {
+                                ComplexEvent windowComplexEvent = iterator.next();
+                                if (windowComplexEvent instanceof Event) {
+//                            Event newEvent = (new InComplexEvent(new Event[]{((Event) event), ((Event) windowComplexEvent)}));
+                                    StateEvent newEvent = createNewEvent(event, windowComplexEvent);
+                                    if (onConditionExecutor.execute(newEvent)) {
+                                        list.add(newEvent);
+                                    }
+                                } else if (windowComplexEvent instanceof ListEvent) {
+                                    Event[] events = ((ListEvent) windowComplexEvent).getEvents();
+                                    for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
+                                        StateEvent newEvent = createNewEvent(event, events[i]);
+                                        if (onConditionExecutor.execute(newEvent)) {
+                                            list.add(newEvent);
+                                        }
+                                    }
+                                } else {
+                                    //todo error Complex event not supported
+                                }
                             }
                         }
                         sendEventList(list);
-                    } else {
-                        //todo error Complex event not supported
                     }
                 }
-            } else if (complexEvent instanceof ListEvent) {
-                List<AtomicEvent> list = new ArrayList<AtomicEvent>();
-                Iterator<StreamEvent> iterator = window.iterator();
-                for (Event event : ((ListEvent) complexEvent).getEvents()) {
-                    while (iterator.hasNext()) {
-                        ComplexEvent windowComplexEvent = iterator.next();
-                        if (windowComplexEvent instanceof Event) {
-//                            Event newEvent = (new InComplexEvent(new Event[]{((Event) event), ((Event) windowComplexEvent)}));
-                            StateEvent newEvent = createNewEvent(event, windowComplexEvent);
-                            if (onConditionExecutor.execute(newEvent)) {
-                                list.add(newEvent);
-                            }
-                        } else if (windowComplexEvent instanceof ListEvent) {
-                            Event[] events = ((ListEvent) windowComplexEvent).getEvents();
-                            for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
-                                StateEvent newEvent = createNewEvent(event, events[i]);
-                                if (onConditionExecutor.execute(newEvent)) {
-                                    list.add(newEvent);
-                                }
-                            }
-                        } else {
-                            //todo error Complex event not supported
-                        }
-                    }
-                }
-                sendEventList(list);
+                windowHandler.process(complexEvent);
+            } finally {
+                lock.unlock();
             }
         }
-
     }
 
     protected abstract StateEvent createNewEvent(ComplexEvent complexEvent,
                                                  ComplexEvent complexEvent1);
 
     protected void sendEventList(List<AtomicEvent> list) {
+        System.out.println(list);
         int size = list.size();
 //        if (size > 1) {
 //            queryProjector.process((list.toArray(new AtomicEvent[list.size()])));
@@ -137,7 +154,11 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
     }
 
     public void setOppositeWindow(SchedulerQueue<StreamEvent> window) {
-        this.window = window;
+        this.oppositeWindow = window;
+    }
+
+    public void setWindowHandler(WindowHandler windowHandler) {
+        this.windowHandler = windowHandler;
     }
 
 }
