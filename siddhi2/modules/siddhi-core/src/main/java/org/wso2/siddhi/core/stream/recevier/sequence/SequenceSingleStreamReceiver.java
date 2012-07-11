@@ -26,16 +26,16 @@ import org.wso2.siddhi.core.stream.StreamProcessor;
 import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class SequenceSingleStreamReceiver implements StreamReceiver, StreamElement {
     protected int complexEventSize;
     protected SequenceState state;
     protected SequenceState nextState;
     protected StreamProcessor firstSimpleStreamProcessor;
-    protected List<StateEvent> currentEvents = new LinkedList<StateEvent>();
-    protected List<StateEvent> nextEvents = new LinkedList<StateEvent>();
+    protected BlockingQueue<StateEvent> currentEvents = new LinkedBlockingQueue<StateEvent>();
+    protected BlockingQueue<StateEvent> nextEvents = new LinkedBlockingQueue<StateEvent>();
     //    private final boolean first;
     protected final int currentState;
 
@@ -96,7 +96,11 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 
     public synchronized void addToNextEvents(StateEvent stateEvent) {
 //        //System.out.println("add to next ss");
-        nextEvents.add(stateEvent);
+        try {
+            nextEvents.put(stateEvent);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public synchronized void moveNextEventsToCurrentEvents() {
@@ -108,7 +112,7 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 
 //        // 2
         currentEvents = nextEvents;
-        nextEvents = new LinkedList<StateEvent>();
+        nextEvents = new LinkedBlockingQueue<StateEvent>();
     }
 
 }

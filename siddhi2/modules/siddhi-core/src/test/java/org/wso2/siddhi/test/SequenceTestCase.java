@@ -30,6 +30,7 @@ import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.stream.sequence.Sequence;
 import org.wso2.siddhi.query.api.utils.SiddhiConstants;
+import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
 public class SequenceTestCase {
 
@@ -601,6 +602,48 @@ public class SequenceTestCase {
         Assert.assertEquals("Number of success events", 1, eventCount);
 
     }
+
+    @Test
+    public void testQuery10() throws InterruptedException, SiddhiPraserException {
+        System.out.println("test10  - OUT 1");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.defineStream("define stream cseEventStream ( symbol string, price float, volume int )");
+        siddhiManager.defineStream("define stream twiterStream ( symbol string, count int )");
+        siddhiManager.addQuery("from e1 = cseEventStream [ price >= 50 and volume > 100 ] , e2 = twiterStream [count > 10 ] " +
+                               "insert into StockQuote e1.price as price, e1.symbol as symbol, e2.count as count ;");
+        siddhiManager.addCallback("StockQuote", new Callback() {
+            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
+                                Object[] faultEventData) {
+                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+                if (eventCount == 0) {
+                    Assert.assertArrayEquals(new Object[]{new Object[]{76.6f, "IBM", 20}}, newEventData);
+                } else {
+                    Assert.fail();
+                }
+                eventCount++;
+            }
+        });
+        InputHandler cseStreamHandler = siddhiManager.getInputHandler("cseEventStream");
+        InputHandler twitterStreamHandler = siddhiManager.getInputHandler("twiterStream");
+
+        cseStreamHandler.send(new Object[]{"IBM", 75.6f, 105});
+        cseStreamHandler.send(new Object[]{"GOOG", 51f, 101});
+        cseStreamHandler.send(new Object[]{"IBM", 76.6f, 111});
+
+//        Thread.sleep(500);
+        twitterStreamHandler.send(new Object[]{"IBM", 20});
+        cseStreamHandler.send(new Object[]{"WSO2", 45.6f, 100});
+
+        Thread.sleep(1000);
+
+        twitterStreamHandler.send(new Object[]{"GOOG", 20});
+
+        Thread.sleep(500);
+        Assert.assertEquals("Number of success events", 1, eventCount);
+
+    }
+
 
 //    @Test
 //    public void testQuery1() throws InterruptedException {

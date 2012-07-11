@@ -58,7 +58,11 @@ public class AndPatternSingleStreamReceiver extends PatternSingleStreamReceiver 
 
             if (currentEvent.getEventState()!=higherState&&currentEvent.getEventState()!=lowerState) {
                 currentEvent.setStreamEvent(currentState, null);
-                nextEvents.add(currentEvent);
+                try {
+                    nextEvents.put(currentEvent);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 //        currentEvents.clear();

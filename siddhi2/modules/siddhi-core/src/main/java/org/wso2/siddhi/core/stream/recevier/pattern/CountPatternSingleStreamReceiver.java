@@ -61,7 +61,11 @@ public class CountPatternSingleStreamReceiver extends PatternSingleStreamReceive
 
                 if (!isPassed()) {
                     listEvent.removeLast();  //to stop aggregation of not passed events
-                    nextEvents.add(currentEvent);   //only to add to itself
+                    try {
+                        nextEvents.put(currentEvent);  //only to add to itself
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -95,7 +99,11 @@ public class CountPatternSingleStreamReceiver extends PatternSingleStreamReceive
 //                }
 //            }
         } else {
-            nextEvents.add(stateEvent);
+            try {
+                nextEvents.put(stateEvent);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -109,6 +117,10 @@ public class CountPatternSingleStreamReceiver extends PatternSingleStreamReceive
     }
 
     public void addOnlyToNextEvents(StateEvent stateEvent) {
-        nextEvents.add(stateEvent);
+        try {
+            nextEvents.put(stateEvent);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

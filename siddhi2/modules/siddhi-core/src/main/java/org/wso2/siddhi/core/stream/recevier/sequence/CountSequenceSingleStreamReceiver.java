@@ -114,7 +114,11 @@ public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamRecei
 //                }
 //            }
         } else {
-            nextEvents.add(stateEvent);
+            try {
+                nextEvents.put(stateEvent);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -127,6 +131,10 @@ public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamRecei
     }
 
     public void addOnlyToNextEvents(StateEvent stateEvent) {
-        nextEvents.add(stateEvent);
+        try {
+            nextEvents.put(stateEvent);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
