@@ -43,7 +43,7 @@ public class LengthWindowHandler extends WindowHandler {
                 queue.put((StreamEvent) complexEvent);
                 getNextPreStreamFlowProcessor().process(complexEvent);
                 if (currentLength == lengthToKeep) {
-                    getNextPreStreamFlowProcessor().process(new RemoveEvent((Event) queue.take(),System.currentTimeMillis()));
+                    getNextPreStreamFlowProcessor().process(new RemoveEvent((Event) queue.poll(),System.currentTimeMillis()));
                 }else {
                     currentLength++;
                 }
@@ -58,7 +58,7 @@ public class LengthWindowHandler extends WindowHandler {
                         queue.put(event);
                         getNextPreStreamFlowProcessor().process(event);
                         if (currentLength == lengthToKeep) {
-                            oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.take(),System.currentTimeMillis());
+                            oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.poll(),System.currentTimeMillis());
                             oldEventIndex++;
                         } else {
                             currentLength++;

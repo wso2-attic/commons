@@ -19,44 +19,69 @@ package org.wso2.siddhi.core.util;
 
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SchedulerQueue<T> {
     private volatile boolean isScheduledForDispatching = false;
-    private LinkedBlockingQueue<T> linkedBlockingQueue = new LinkedBlockingQueue<T>();
 
-    public boolean put(T t) throws InterruptedException {
-        linkedBlockingQueue.put(t);
-        if (!isScheduledForDispatching) {
-            isScheduledForDispatching = true;
-            return false;
+    private final ReentrantLock takeLock = new ReentrantLock();
+
+    private final ReentrantLock putLock = new ReentrantLock();
+
+
+    private LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<T>();
+
+    public synchronized boolean put(T t) throws InterruptedException {
+        putLock.lock();
+        try {
+            queue.add(t);
+            if (!isScheduledForDispatching) {
+                isScheduledForDispatching = true;
+                return false;
+            }
+            return true;
+        } finally {
+            putLock.unlock();
         }
-        return true;
+
     }
 
 
-    public T poll() {
-        T t = linkedBlockingQueue.poll();
-        if (t == null) {
-            isScheduledForDispatching = false;
+    public synchronized T poll() {
+        takeLock.lock();
+        try {
+            T t = queue.poll();
+            if (t == null) {
+                isScheduledForDispatching = false;
+            }
+            return t;
+        } finally {
+            takeLock.unlock();
         }
-        return t;
+
+
     }
 
 
-    public T take() throws InterruptedException {
-        return linkedBlockingQueue.take();
-    }
+//    public synchronized T take() throws InterruptedException {
+//        return linkedBlockingQueue.take();
+//    }
 
-    public T peek() {
-        T t = linkedBlockingQueue.peek();
-        if (t == null) {
-            isScheduledForDispatching = false;
+    public synchronized T peek() {
+        takeLock.lock();
+        try {
+            T t = queue.peek();
+            if (t == null) {
+                isScheduledForDispatching = false;
+            }
+            return t;
+        } finally {
+            takeLock.unlock();
         }
-        return t;
     }
 
     public Iterator<T> iterator() {
-        return linkedBlockingQueue.iterator();
+        return queue.iterator();
     }
 
 }

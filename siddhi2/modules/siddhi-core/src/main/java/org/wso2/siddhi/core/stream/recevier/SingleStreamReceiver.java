@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.stream.recevier;
 
+import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.core.stream.StreamElement;
@@ -25,12 +26,13 @@ import org.wso2.siddhi.query.api.stream.SingleStream;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class SingleStreamReceiver implements Runnable, StreamReceiver,
+public class SingleStreamReceiver implements RunnableStreamReceiver,
                                              StreamElement {
     private SingleStream inputStream;
     private ThreadPoolExecutor threadPoolExecutor;
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private StreamProcessor firstStreamProcessor;
+    private SiddhiConfiguration configuration;
 
     public SingleStreamReceiver(SingleStream inputStream,
                                 StreamProcessor firstStreamProcessor,
@@ -44,9 +46,18 @@ public class SingleStreamReceiver implements Runnable, StreamReceiver,
     @Override
     public void receive(StreamEvent streamEvent) throws InterruptedException {
 //        //System.out.println(event);
-        if (!inputQueue.put(streamEvent)) {
-            threadPoolExecutor.submit(this);
+        if (configuration.isSingleThreading()) {
+            firstStreamProcessor.process(streamEvent);
+        } else {
+            if (!inputQueue.put(streamEvent)) {
+                threadPoolExecutor.execute(this);
+            }
         }
+    }
+
+    @Override
+    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -56,8 +67,8 @@ public class SingleStreamReceiver implements Runnable, StreamReceiver,
             StreamEvent streamEvent = inputQueue.poll();
             if (streamEvent == null) {
                 break;
-            } else if (eventCounter > 10) {
-                threadPoolExecutor.submit(this);
+            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+                threadPoolExecutor.execute(this);
                 break;
             }
             eventCounter++;

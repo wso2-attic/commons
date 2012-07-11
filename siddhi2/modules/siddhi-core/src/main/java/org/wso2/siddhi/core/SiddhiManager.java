@@ -17,12 +17,14 @@
 */
 package org.wso2.siddhi.core;
 
+import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.event.in.StateEvent;
 import org.wso2.siddhi.core.exception.EventStreamAlreadyExistException;
 import org.wso2.siddhi.core.projector.QueryProjector;
 import org.wso2.siddhi.core.stream.StreamJunction;
 import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
 import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.parser.StreamParser;
 import org.wso2.siddhi.query.api.ExecutionPlan;
@@ -46,15 +48,26 @@ import java.util.concurrent.TimeUnit;
 
 public class SiddhiManager {
 
-    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
-                                                                           Integer.MAX_VALUE,
-                                                                           50,
-                                                                           TimeUnit.MICROSECONDS,
-                                                                           new LinkedBlockingQueue<Runnable>());
+    private SiddhiConfiguration siddhiConfiguration;
+    private ThreadPoolExecutor threadPoolExecutor;
     Map<String, StreamJunction> streamJunctionMap = new HashMap<String, StreamJunction>(); //contains definition
     Map<String, StreamDefinition> streamDefinitionMap = new HashMap<String, StreamDefinition>(); //contains definition
     List<Query> queryList = new ArrayList<Query>();
     LinkedBlockingQueue<StateEvent> inputQueue = new LinkedBlockingQueue<StateEvent>();
+
+    public SiddhiManager() {
+        this(new SiddhiConfiguration());
+    }
+
+    public SiddhiManager(SiddhiConfiguration configuration) {
+        this.siddhiConfiguration = configuration;
+        threadPoolExecutor = new ThreadPoolExecutor(configuration.getThreads(),
+                                                    Integer.MAX_VALUE,
+                                                    50,
+                                                    TimeUnit.MICROSECONDS,
+                                                    new LinkedBlockingQueue<Runnable>());
+    }
+
 
     public void defineStream(StreamDefinition streamDefinition) {
         checkEventStream(streamDefinition);
@@ -91,6 +104,7 @@ public class SiddhiManager {
     }
 
     public void addQuery(Query query) {
+        queryList.add(query);
 
         List<QueryEventStream> queryEventStreamList = query.getInputStream().constructQueryEventStreamList(streamDefinitionMap, new ArrayList<QueryEventStream>());
         initQuery(query, queryEventStreamList);
@@ -102,6 +116,9 @@ public class SiddhiManager {
         List<StreamReceiver> streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor);
         queryProjector.setStreamJunction(streamJunctionMap.get(outputStreamDefinition.getStreamId()));
         for (StreamReceiver streamReceiver : streamReceiverList) {
+            if (streamReceiver instanceof RunnableStreamReceiver) {
+                ((RunnableStreamReceiver) streamReceiver).setSiddhiConfiguration(siddhiConfiguration);
+            }
             StreamJunction streamJunction = streamJunctionMap.get(streamReceiver.getStreamId());
             streamJunction.addEventFlow(streamReceiver);
         }
@@ -143,7 +160,13 @@ public class SiddhiManager {
 
     public void addCallback(String streamId, Callback callback) {
         callback.setStreamId(streamId);
+        callback.setSiddhiConfiguration(siddhiConfiguration);
         callback.setThreadPoolExecutor(threadPoolExecutor);
         streamJunctionMap.get(streamId).addEventFlow(callback);
+    }
+
+
+    public void shutdown() {
+        threadPoolExecutor.shutdown();
     }
 }

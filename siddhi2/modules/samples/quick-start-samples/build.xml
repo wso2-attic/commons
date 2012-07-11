@@ -24,8 +24,8 @@
     <!--<property name="api.dir" value="../../modules/siddhi-api/target"/>-->
     <!--<property name="query.dir" value="../../modules/siddhi-query/target"/>-->
     <!--<property name="core.dir" value="../../modules/siddhi-core/target"/>-->
-    <property name="lib.dir" value="lib"/>
-    <property name="resources.dir" value="resources"/>
+    <property name="lib.dir" value="../lib"/>
+    <property name="resources.dir" value="../resources"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -34,7 +34,7 @@
 
     <path id="classpath">
         <pathelement path="${classes.dir}"/>
-        <fileset dir="lib" includes="**/*.jar"/>
+        <fileset dir="../lib" includes="**/*.jar"/>
         <!--<fileset dir="${api.dir}" includes="**/*.jar"/>-->
         <!--<fileset dir="${query.dir}" includes="**/*.jar"/>-->
         <!--<fileset dir="${core.dir}" includes="**/*.jar"/>-->

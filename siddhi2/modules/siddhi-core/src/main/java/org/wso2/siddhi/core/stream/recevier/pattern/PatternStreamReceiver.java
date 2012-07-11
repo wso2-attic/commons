@@ -17,15 +17,16 @@
 */
 package org.wso2.siddhi.core.stream.recevier.pattern;
 
+import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.core.stream.StreamElement;
-import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
+import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
+import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class PatternStreamReceiver implements StreamReceiver, StreamElement, Runnable {
+public class PatternStreamReceiver implements RunnableStreamReceiver, StreamElement {
 
     //  private List<SingleStream> inputStreamList;
     private String streamId;
@@ -33,6 +34,7 @@ public class PatternStreamReceiver implements StreamReceiver, StreamElement, Run
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private List<PatternSingleStreamReceiver> patternSingleStreamReceiverList;
     private int patternSingleStreamReceiverListSize;
+    private SiddhiConfiguration configuration;
 
     public PatternStreamReceiver(String streamId,
                                  List<PatternSingleStreamReceiver> patternSingleStreamReceiverList,
@@ -46,9 +48,18 @@ public class PatternStreamReceiver implements StreamReceiver, StreamElement, Run
     @Override
     public void receive(StreamEvent streamEvent) throws InterruptedException {
 //        //System.out.println(event);
-        if (!inputQueue.put(streamEvent)) {
-            threadPoolExecutor.submit(this);
+        if (configuration.isSingleThreading()) {
+            precess(streamEvent);
+        } else {
+            if (!inputQueue.put(streamEvent)) {
+                threadPoolExecutor.execute(this);
+            }
         }
+    }
+
+    @Override
+    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
+        this.configuration=configuration;
     }
 
     @Override
@@ -58,23 +69,27 @@ public class PatternStreamReceiver implements StreamReceiver, StreamElement, Run
             StreamEvent streamEvent = inputQueue.poll();
             if (streamEvent == null) {
                 break;
-            } else if (eventCounter > 10) {
-                threadPoolExecutor.submit(this);
+            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+                threadPoolExecutor.execute(this);
                 break;
             }
             eventCounter++;
-            try {
-                //in reverse order to execute the later states first to overcome to dependencies of count states
-                for (int i = patternSingleStreamReceiverListSize - 1; i >= 0; i--) {
-                    patternSingleStreamReceiverList.get(i).moveNextEventsToCurrentEvents();
-                }
-                for (int i = patternSingleStreamReceiverListSize - 1; i >= 0; i--) {
-                    patternSingleStreamReceiverList.get(i).receive(streamEvent);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+            precess(streamEvent);
 
+        }
+    }
+
+    private void precess(StreamEvent streamEvent) {
+        try {
+            //in reverse order to execute the later states first to overcome to dependencies of count states
+            for (int i = patternSingleStreamReceiverListSize - 1; i >= 0; i--) {
+                patternSingleStreamReceiverList.get(i).moveNextEventsToCurrentEvents();
+            }
+            for (int i = patternSingleStreamReceiverListSize - 1; i >= 0; i--) {
+                patternSingleStreamReceiverList.get(i).receive(streamEvent);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

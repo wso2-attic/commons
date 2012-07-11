@@ -17,24 +17,30 @@
 */
 package org.wso2.siddhi.core.stream.output;
 
+import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStream;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
-import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
+import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public abstract class Callback implements Runnable, StreamReceiver {
+public abstract class Callback implements RunnableStreamReceiver {
 
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private ThreadPoolExecutor threadPoolExecutor;
     private String streamId;
+    private SiddhiConfiguration configuration;
 
     public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
         this.threadPoolExecutor = threadPoolExecutor;
+    }
+
+    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
+        this.configuration=configuration;
     }
 
     public String toString(long timeStamp, Object[] newEventData, Object[] removeEventData,
@@ -74,8 +80,12 @@ public abstract class Callback implements Runnable, StreamReceiver {
     }
 
     public void receive(StreamEvent event) throws InterruptedException {
-        if (!inputQueue.put(event)) {
-            threadPoolExecutor.submit(this);
+        if (configuration.isSingleThreading()) {
+            process(event);
+        } else {
+            if (!inputQueue.put(event)) {
+                threadPoolExecutor.execute(this);
+            }
         }
     }
 
@@ -86,20 +96,24 @@ public abstract class Callback implements Runnable, StreamReceiver {
             StreamEvent event = inputQueue.poll();
             if (event == null) {
                 break;
-            } else if (eventCounter > 10) {
-                threadPoolExecutor.submit(this);
+            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+                threadPoolExecutor.execute(this);
                 break;
             }
-            if (event instanceof Event) {
-                try {
-                    if (event instanceof InStream) {
-                        receive(event.getTimeStamp(), new Object[]{((Event) event).getData()}, null, null);
-                    } else if (event instanceof RemoveStream) {
-                        receive(event.getTimeStamp(), null, new Object[]{((Event) event).getData()}, null);
-                    }
-                } catch (Throwable e) {
-                    e.printStackTrace();
+            process(event);
+        }
+    }
+
+    private void process(StreamEvent event) {
+        if (event instanceof Event) {
+            try {
+                if (event instanceof InStream) {
+                    receive(event.getTimeStamp(), new Object[]{((Event) event).getData()}, null, null);
+                } else if (event instanceof RemoveStream) {
+                    receive(event.getTimeStamp(), null, new Object[]{((Event) event).getData()}, null);
                 }
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
         }
     }
