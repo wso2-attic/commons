@@ -159,7 +159,7 @@ public class JoinTestCase {
         InputHandler cseEventStreamHandler = siddhiManager.getInputHandler("cseEventStream");
         cseEventStreamHandler.send(new Object[]{"IBM", 75.6f, 100});
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
-        Thread.sleep(1000);
+        Thread.sleep(2000);
 
         Assert.assertEquals("Number of success events", 0 , eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
