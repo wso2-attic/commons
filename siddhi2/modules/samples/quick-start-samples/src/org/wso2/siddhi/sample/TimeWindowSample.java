@@ -54,6 +54,6 @@ public class TimeWindowSample {
         inputHandler.send(new Object[]{"IBM", 63.0f});
         Thread.sleep(1500);
 
-        System.exit(0);
+        siddhiManager.shutdown();
     }
 }

@@ -70,6 +70,6 @@ public class PatternProcessorSample {
         cseStream.send(new Object[]{"WSO2", 110});
         Thread.sleep(500);
 
-        System.exit(0);
+        siddhiManager.shutdown();
     }
 }
