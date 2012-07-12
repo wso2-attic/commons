@@ -27,22 +27,22 @@ public class RemoveStateEvent extends StateEvent implements RemoveStream {
 
     long expiryTime = 0L;
 
-    public RemoveStateEvent(StreamEvent[] newEventStream, long expiryTime) {
-        super(newEventStream);
+    public RemoveStateEvent(StreamEvent[] inEventstream, long expiryTime) {
+        super(inEventstream);
         this.expiryTime = expiryTime;
     }
 
-    private RemoveStateEvent(int eventState, StreamEvent[] newEventStream,
+    private RemoveStateEvent(int eventState, StreamEvent[] inEventstream,
                              long expiryTime) {
-        super(eventState, newEventStream);
+        super(eventState, inEventstream);
         this.expiryTime = expiryTime;
     }
 
 
     @Override
-    protected StateEvent createCloneEvent(StreamEvent[] newEventStream, int eventState) {
+    protected StateEvent createCloneEvent(StreamEvent[] inEventstream, int eventState) {
 
-        return new RemoveStateEvent(eventState, newEventStream, expiryTime);
+        return new RemoveStateEvent(eventState, inEventstream, expiryTime);
 
     }
 

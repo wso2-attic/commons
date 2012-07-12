@@ -21,8 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -87,13 +89,14 @@ public class PatternComplexTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, 55.7f, null, 57.7f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.6f, 55.7f, null, 57.7f},inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{54.0f, null, 57.7f, 59.7f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{54.0f, null, 57.7f, 59.7f}, inEvents[0].getData());
                 } else {
                     Assert.fail("Count value exceeded!");
                 }
@@ -160,18 +163,17 @@ public class PatternComplexTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, 54.0f, 53.6f, 57.0f}}, newEventData);
-                }  else {
+                    Assert.assertArrayEquals(new Object[]{55.6f, 54.0f, 53.6f, 57.0f},inEvents[0].getData());
+                } else {
                     Assert.fail("Count value exceeded!");
                 }
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");

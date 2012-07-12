@@ -21,8 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -81,15 +83,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", "GOOG"}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", "GOOG"}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -148,15 +149,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", null}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", null}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -216,15 +216,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2",null, 72.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", null, 72.7f}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -286,15 +285,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", 72.7f,4.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", 72.7f, 4.7f}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -354,15 +352,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", 72.7f,72.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", 72.7f, 72.7f}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -424,15 +421,14 @@ public class PatternLogicTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", 72.7f,75.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{"WSO2", 72.7f, 75.7f}, inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");

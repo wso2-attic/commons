@@ -21,8 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -74,14 +76,14 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", "IBM"}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertEquals("WSO2", inEvents[0].getData(0));
+                Assert.assertEquals("IBM", inEvents[0].getData(1));
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -128,10 +130,13 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{"GOOG", "IBM"}}, newEventData);
+
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertEquals("GOOG", inEvents[0].getData(0));
+                Assert.assertEquals("IBM", inEvents[0].getData(1));
                 eventCount++;
             }
 
@@ -182,19 +187,19 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{"WSO2", null, null}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{"WSO2", null, null}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{"IBM", null, null}}, newEventData);
+                    Assert.assertArrayEquals(new  Object[]{"IBM", null, null}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -242,19 +247,19 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, 55.7f, 57.6f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.6f, 55.7f, 57.6f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.7f, null, 57.6f}}, newEventData);
+                    Assert.assertArrayEquals(new  Object[]{55.7f, null, 57.6f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -306,17 +311,17 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.7f, 57.6f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.7f, 57.6f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -372,13 +377,14 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, null, 55.7f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.6f, null, 55.7f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.7f, 57.6f, null}}, newEventData);
+                    Assert.assertArrayEquals(new  Object[]{55.7f, 57.6f, null}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -440,13 +446,14 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, 57.6f, null}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.6f, 57.6f, null}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{57.6f, null, 55.7f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{57.6f, null, 55.7f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -505,11 +512,12 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{55.6f, null, 57.6f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{55.6f, null, 57.6f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -574,11 +582,13 @@ public class SequenceTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{29.6f, 35.6f, 57.6f, 47.6f}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{29.6f, 35.6f, 57.6f, 47.6f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -613,11 +623,13 @@ public class SequenceTestCase {
         siddhiManager.addQuery("from e1 = cseEventStream [ price >= 50 and volume > 100 ] , e2 = twiterStream [count > 10 ] " +
                                "insert into StockQuote e1.price as price, e1.symbol as symbol, e2.count as count ;");
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 if (eventCount == 0) {
-                    Assert.assertArrayEquals(new Object[]{new Object[]{76.6f, "IBM", 20}}, newEventData);
+                    Assert.assertArrayEquals(new Object[]{76.6f, "IBM", 20}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }

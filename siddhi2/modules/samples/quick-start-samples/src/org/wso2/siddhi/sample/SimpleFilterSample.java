@@ -35,9 +35,10 @@ public class SimpleFilterSample {
                                "insert into StockQuote symbol, price ;" );
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
             }
         });
         InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");

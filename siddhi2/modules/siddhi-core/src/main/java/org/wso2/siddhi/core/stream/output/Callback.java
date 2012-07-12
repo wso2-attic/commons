@@ -25,7 +25,6 @@ import org.wso2.siddhi.core.event.remove.RemoveStream;
 import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
-import java.util.Arrays;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public abstract class Callback implements RunnableStreamReceiver {
@@ -43,41 +42,41 @@ public abstract class Callback implements RunnableStreamReceiver {
         this.configuration=configuration;
     }
 
-    public String toString(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                           Object[] faultEventData) {
-        String value = "Events{" +
-                       " @timeStamp=" + timeStamp +
-                       ", newEventData=";
-        if (newEventData == null) {
-            value += null;
-        } else {
-            for (Object data : newEventData) {
-                value += Arrays.asList((Object[]) data).toString();
-            }
-        }
-        value += ", removeEventData=";
-        if (removeEventData == null) {
-            value += null;
-        } else {
-            for (Object data : removeEventData) {
-                value += Arrays.asList((Object[]) data).toString();
-            }
-        }
-        value += ", faultEventData=";
-        if (faultEventData == null) {
-            value += null;
-        } else {
-            for (Object data : faultEventData) {
-                value += Arrays.asList((Object[]) data).toString();
-            }
-        }
-        value += '}';
-        return value;
-    }
+//    public String toString(long timeStamp, Object[] newEventData, Object[] removeEventData,
+//                           Object[] faultEventData) {
+//        String value = "Events{" +
+//                       " @timeStamp=" + timeStamp +
+//                       ", newEventData=";
+//        if (newEventData == null) {
+//            value += null;
+//        } else {
+//            for (Object data : newEventData) {
+//                value += Arrays.asList((Object[]) data).toString();
+//            }
+//        }
+//        value += ", removeEventData=";
+//        if (removeEventData == null) {
+//            value += null;
+//        } else {
+//            for (Object data : removeEventData) {
+//                value += Arrays.asList((Object[]) data).toString();
+//            }
+//        }
+//        value += ", faultEventData=";
+//        if (faultEventData == null) {
+//            value += null;
+//        } else {
+//            for (Object data : faultEventData) {
+//                value += Arrays.asList((Object[]) data).toString();
+//            }
+//        }
+//        value += '}';
+//        return value;
+//    }
 
-    public Object getData(Object[] eventData, int eventPosition, int dataPosition) {
-        return ((Object[]) eventData[eventPosition])[dataPosition];
-    }
+//    public Object getData(Object[] eventData, int eventPosition, int dataPosition) {
+//        return ((Object[]) eventData[eventPosition])[dataPosition];
+//    }
 
     public void receive(StreamEvent event) throws InterruptedException {
         if (configuration.isSingleThreading()) {
@@ -108,9 +107,9 @@ public abstract class Callback implements RunnableStreamReceiver {
         if (event instanceof Event) {
             try {
                 if (event instanceof InStream) {
-                    receive(event.getTimeStamp(), new Object[]{((Event) event).getData()}, null, null);
+                    receive(event.getTimeStamp(), new Event[]{((Event) event)}, null, null);
                 } else if (event instanceof RemoveStream) {
-                    receive(event.getTimeStamp(), null, new Object[]{((Event) event).getData()}, null);
+                    receive(event.getTimeStamp(), null, new Event[]{((Event) event)}, null);
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -118,8 +117,8 @@ public abstract class Callback implements RunnableStreamReceiver {
         }
     }
 
-    public abstract void receive(long timeStamp, Object[] newEventData,
-                                 Object[] removeEventData, Object[] faultEventData);
+    public abstract void receive(long timeStamp, Event[] inEvents,
+                                 Event[] removeEvents, Event[] faultEvents);
 
     public void setStreamId(String streamId) {
         this.streamId = streamId;

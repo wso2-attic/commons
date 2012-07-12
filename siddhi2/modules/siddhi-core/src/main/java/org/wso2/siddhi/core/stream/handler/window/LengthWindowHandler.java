@@ -49,12 +49,12 @@ public class LengthWindowHandler extends WindowHandler {
                 }
             } else if (complexEvent instanceof ListEvent) {
                 SchedulerQueue<StreamEvent> queue = getWindow();
-                Event[] newEvents = ((ListEvent) complexEvent).getEvents();
-                int oldEventLength = newEvents.length - (lengthToKeep - currentLength);
+                Event[] inEvents = ((ListEvent) complexEvent).getEvents();
+                int oldEventLength = inEvents.length - (lengthToKeep - currentLength);
                 if (oldEventLength > 0) {
-                    Event[] oldEvents = new Event[newEvents.length - (lengthToKeep - currentLength)];
+                    Event[] oldEvents = new Event[inEvents.length - (lengthToKeep - currentLength)];
                     int oldEventIndex = 0;
-                    for (Event event : newEvents) {
+                    for (Event event : inEvents) {
                         queue.put(event);
                         passToNextStreamProcessor(complexEvent);
                         if (currentLength == lengthToKeep) {
@@ -66,7 +66,7 @@ public class LengthWindowHandler extends WindowHandler {
                     }
                     passToNextStreamProcessor(new RemoveListEvent(oldEvents, System.currentTimeMillis()));
                 } else {
-                    for (Event event : newEvents) {
+                    for (Event event : inEvents) {
                         queue.put(event);
                         passToNextStreamProcessor(complexEvent);
                         currentLength++;

@@ -21,8 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -77,18 +79,18 @@ public class JoinTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     eventCount++;
                 } else {
-                    junit.framework.Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
                     eventCount--;
                 }
                 eventArrived = true;
-
             }
 
         });
@@ -102,7 +104,7 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
         Thread.sleep(2000);
 
-        Assert.assertEquals("Number of success events", 0 , eventCount);
+        Assert.assertEquals("Number of success events", 0, eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
 
@@ -142,14 +144,15 @@ public class JoinTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     eventCount++;
                 } else {
-                    junit.framework.Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
                     eventCount--;
                 }
                 eventArrived = true;
@@ -161,7 +164,7 @@ public class JoinTestCase {
         cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
         Thread.sleep(2000);
 
-        Assert.assertEquals("Number of success events", 0 , eventCount);
+        Assert.assertEquals("Number of success events", 0, eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
     }

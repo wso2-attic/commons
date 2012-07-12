@@ -21,8 +21,10 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -62,10 +64,11 @@ public class FilterTestCase {
         siddhiManager.addQuery(query);
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                 count++;
             }
         });
@@ -91,10 +94,11 @@ public class FilterTestCase {
         siddhiManager.addQuery(query);
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                 count++;
             }
 
@@ -126,10 +130,11 @@ public class FilterTestCase {
         siddhiManager.addQuery(query);
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                 count++;
             }
 
@@ -167,10 +172,11 @@ public class FilterTestCase {
         siddhiManager.addQuery(query);
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertTrue("WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertTrue("WSO2".equals(inEvents[0].getData(0)));
                 count++;
             }
 
@@ -207,19 +213,19 @@ public class FilterTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     count++;
                 } else {
-                    Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
                     count--;
                 }
                 eventArrived = true;
             }
-
         });
         InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
         inputHandler.send(new Object[]{"WSO2", 55.6f, 100});
@@ -255,14 +261,15 @@ public class FilterTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     count++;
                 } else {
-                    Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
                     count--;
                 }
                 eventArrived = true;
@@ -303,14 +310,15 @@ public class FilterTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     count++;
                 } else {
-                    Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
                     count--;
                 }
                 eventArrived = true;
@@ -349,11 +357,13 @@ public class FilterTestCase {
         siddhiManager.addQuery(query);
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                 count++;
+                eventArrived = true;
             }
         });
         InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
@@ -361,6 +371,8 @@ public class FilterTestCase {
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
         Thread.sleep(500);
         Assert.assertEquals(2, count);
+        Assert.assertEquals("Event arrived", true, eventArrived);
+
 
     }
 
@@ -389,16 +401,17 @@ public class FilterTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     count++;
                 } else {
-                    Assert.assertTrue("IBM".equals(getData(removeEventData, 0, 0)) || "WSO2".equals(getData(removeEventData, 0, 0)));
-                    if((new  Double(0)).equals(getData(removeEventData, 0, 1))){
-                        count --;
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
+                    if ((new Double(0)).equals(removeEvents[0].getData(1))) {
+                        count--;
                     }
                 }
                 eventArrived = true;
@@ -411,7 +424,7 @@ public class FilterTestCase {
         Thread.sleep(500);
         inputHandler.send(new Object[]{"WSO2", 57.6f, 100});
         Thread.sleep(7000);
-        Assert.assertEquals("Remove events has two 0.0s out of three total Remove events", 3-2, count);
+        Assert.assertEquals("Remove events has two 0.0s out of three total Remove events", 3 - 2, count);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
     }
@@ -427,7 +440,7 @@ public class FilterTestCase {
         Query query = QueryFactory.createQuery();
         query.from(
                 QueryFactory.inputStream("cseEventStream").
-                        handler(Handler.Type.WIN, "time",Expression.value(5000))//.
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
         query.insertInto("StockQuote");
         query.project(
@@ -443,11 +456,12 @@ public class FilterTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                if (newEventData != null) {
-                    Assert.assertTrue("WSO2".equals(getData(newEventData, 0, 0)));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("WSO2".equals(inEvents[0].getData(0)));
                     count++;
                 } else {
                     Assert.fail("No remove events expected");

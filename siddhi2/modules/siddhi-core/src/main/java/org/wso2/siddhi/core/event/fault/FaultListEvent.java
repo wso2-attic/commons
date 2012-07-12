@@ -32,7 +32,7 @@ public class FaultListEvent extends ListEvent implements FaultStream {
     }
 
     @Override
-    protected ListEvent createEventClone(Event[] newEvents, int activeEvents, boolean unlimited) {
-        return new FaultListEvent(newEvents, activeEvents, unlimited);
+    protected ListEvent createEventClone(Event[] inEvents, int activeEvents, boolean unlimited) {
+        return new FaultListEvent(inEvents, activeEvents, unlimited);
     }
 }

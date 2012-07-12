@@ -36,7 +36,7 @@ public  class InListEvent extends ListEvent implements InStream {
     }
 
     @Override
-    protected ListEvent createEventClone(Event[] newEvents, int activeEvents, boolean unlimited) {
-        return new InListEvent(newEvents, activeEvents, unlimited);
+    protected ListEvent createEventClone(Event[] inEvents, int activeEvents, boolean unlimited) {
+        return new InListEvent(inEvents, activeEvents, unlimited);
     }
 }

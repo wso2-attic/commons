@@ -21,8 +21,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -76,14 +78,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, 47.6f, 47.8f, null, 45.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                    Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 47.8f, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -141,13 +142,12 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, 47.6f, null, null, 45.7f}}, newEventData);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -206,13 +206,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, 47.8f, null, null, 55.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{25.6f, 47.8f, null, null, 55.7f},inEvents[0].getData());
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -266,13 +266,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
                 Assert.fail();
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -322,14 +322,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, 47.6f, 23.7f, 24.7f, 45.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 23.7f, 24.7f, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -391,14 +390,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, 47.6f, 55.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 55.7f},inEvents[0].getData());
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");
@@ -450,13 +448,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{null, null, 45.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{null, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
-
 
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
@@ -503,14 +501,13 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
-                Assert.assertArrayEquals(new Object[]{new Object[]{25.6f, null, 45.7f}}, newEventData);
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+                Assert.assertArrayEquals(new Object[]{25.6f, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
-
-
         });
         InputHandler stream1 = siddhiManager.getInputHandler("Stream1");
         InputHandler stream2 = siddhiManager.getInputHandler("Stream2");

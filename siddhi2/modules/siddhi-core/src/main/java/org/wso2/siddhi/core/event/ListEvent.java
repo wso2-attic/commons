@@ -74,10 +74,10 @@ public abstract class ListEvent implements StreamEvent {
     public boolean addEvent(Event event) {
         if (currentMaxSize == activeEvents) {
             if (unlimited) {
-                Event[] newEvents = new Event[activeEvents + 10];
+                Event[] inEvents = new Event[activeEvents + 10];
                 currentMaxSize+=10;
-                System.arraycopy(events, 0, newEvents, 0, events.length);
-                events = newEvents;
+                System.arraycopy(events, 0, inEvents, 0, events.length);
+                events = inEvents;
             } else {
                 return false;
             }
@@ -99,14 +99,14 @@ public abstract class ListEvent implements StreamEvent {
 
     public StreamEvent cloneEvent() {
         int length = events.length;
-        Event[] newEvents = new Event[length];
-        System.arraycopy(newEvents, 0, newEvents, 0, activeEvents);
-        return createEventClone(newEvents,activeEvents,unlimited);
+        Event[] inEvents = new Event[length];
+        System.arraycopy(inEvents, 0, inEvents, 0, activeEvents);
+        return createEventClone(inEvents,activeEvents,unlimited);
 
 
     }
 
-    protected abstract ListEvent createEventClone(Event[] newEvents, int activeEvents,
+    protected abstract ListEvent createEventClone(Event[] inEvents, int activeEvents,
                                                   boolean unlimited) ;
 
     public void setEvents(Event[] events) {

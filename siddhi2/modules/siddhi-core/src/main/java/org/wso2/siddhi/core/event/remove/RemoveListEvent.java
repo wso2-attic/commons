@@ -36,8 +36,8 @@ public class RemoveListEvent extends ListEvent implements RemoveStream {
     }
 
     @Override
-    protected ListEvent createEventClone(Event[] newEvents, int activeEvents, boolean unlimited) {
-        return new RemoveListEvent(newEvents, activeEvents, unlimited, expiryTime);
+    protected ListEvent createEventClone(Event[] inEvents, int activeEvents, boolean unlimited) {
+        return new RemoveListEvent(inEvents, activeEvents, unlimited, expiryTime);
     }
 
     @Override

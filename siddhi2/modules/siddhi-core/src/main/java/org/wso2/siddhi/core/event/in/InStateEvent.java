@@ -26,16 +26,16 @@ import org.wso2.siddhi.core.event.StreamEvent;
 public class InStateEvent extends StateEvent implements InStream {
 
 
-    public InStateEvent(StreamEvent[] newEventStream) {
-        super(newEventStream);
+    public InStateEvent(StreamEvent[] inEventstream) {
+        super(inEventstream);
     }
 
-    private InStateEvent(StreamEvent[] newEventStream, int eventState) {
-        super(eventState,newEventStream);
+    private InStateEvent(StreamEvent[] inEventstream, int eventState) {
+        super(eventState,inEventstream);
     }
 
     @Override
-    protected StateEvent createCloneEvent(StreamEvent[] newEventStream, int eventState) {
-        return new InStateEvent(newEventStream,eventState);
+    protected StateEvent createCloneEvent(StreamEvent[] inEventstream, int eventState) {
+        return new InStateEvent(inEventstream,eventState);
     }
 }

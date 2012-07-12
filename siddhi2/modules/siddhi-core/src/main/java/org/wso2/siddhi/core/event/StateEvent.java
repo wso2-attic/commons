@@ -68,24 +68,24 @@ public abstract class StateEvent implements ComplexEvent, AtomicEvent {
         this.streamEvents[i] = streamEvent;
     }
 
-    protected abstract StateEvent createCloneEvent(StreamEvent[] newEventStream,
+    protected abstract StateEvent createCloneEvent(StreamEvent[] inEventstream,
                                           int eventState);
 
     public StateEvent cloneEvent(int stateNumber) {
         int length = streamEvents.length;
-        StreamEvent[] newEventStream = new StreamEvent[length];
+        StreamEvent[] inEventstream = new StreamEvent[length];
         for (int i = 0; i < stateNumber; i++) {
             StreamEvent streamEvent = streamEvents[i];
             if (streamEvent != null) {
                 if (streamEvent instanceof ListEvent) {
                     ((ListEvent) streamEvent).cloneEvent();
                 } else {
-                    newEventStream[i] = streamEvent;
+                    inEventstream[i] = streamEvent;
                 }
             }
         }
-        System.arraycopy(streamEvents, 0, newEventStream, 0, stateNumber);
-        return createCloneEvent(newEventStream, eventState);
+        System.arraycopy(streamEvents, 0, inEventstream, 0, stateNumber);
+        return createCloneEvent(inEventstream, eventState);
     }
 
     public int getEventState() {

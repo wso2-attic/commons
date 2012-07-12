@@ -42,10 +42,12 @@ public class PatternProcessorSample {
                                "insert into StockQuote e1.symbol as symbol, e2.price as price1, e3.price as price2;");
 
         siddhiManager.addCallback("StockQuote", new Callback() {
-            public void receive(long timeStamp, Object[] newEventData, Object[] removeEventData,
-                                Object[] faultEventData) {
-                System.out.println(toString(timeStamp, newEventData, removeEventData, faultEventData));
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
+                                Event[] faultEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
             }
+
         });
         InputHandler cseStream = siddhiManager.getInputHandler("CSEStream");
         InputHandler infoStock = siddhiManager.getInputHandler("InfoStock");
