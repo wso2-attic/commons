@@ -121,7 +121,7 @@ public class QueryProjector {
     public void process(AtomicEvent atomicEvent) {
 //        System.out.println("Arrived ");
         Object[] data = new Object[outputSize];
-        for (int i = 0, outputAttributeGeneratorListSize = outputAttributeGeneratorList.size(); i < outputAttributeGeneratorListSize; i++) {
+        for (int i = 0; i < outputSize; i++) {
             OutputAttributeGenerator outputAttributeGenerator = outputAttributeGeneratorList.get(i);
             data[i] = outputAttributeGenerator.process(atomicEvent);
         }

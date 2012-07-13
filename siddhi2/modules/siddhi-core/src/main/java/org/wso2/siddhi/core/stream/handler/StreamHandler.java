@@ -24,4 +24,6 @@ public interface StreamHandler extends StreamProcessor,StreamElement {
 
     void setNext(StreamProcessor nextPreStreamFlowProcessor);
 
+
+
 }

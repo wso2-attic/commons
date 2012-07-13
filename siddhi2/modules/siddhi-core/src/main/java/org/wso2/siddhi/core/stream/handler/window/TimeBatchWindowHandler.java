@@ -27,14 +27,18 @@ import org.wso2.siddhi.core.event.in.InStream;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
+import org.wso2.siddhi.core.stream.handler.RunnableHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
+public class TimeBatchWindowHandler extends WindowHandler implements RunnableHandler {
 
+    private ScheduledExecutorService eventRemoverScheduler = Executors.newScheduledThreadPool(1);
     long timeToKeep;
     List<Event> newEventList = new ArrayList<Event>();
     List<Event> oldEventList;
@@ -46,7 +50,7 @@ public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
         } else {
             timeToKeep = (Long) parameters[0];
         }
-        getEventRemoverScheduler().schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
+        eventRemoverScheduler.schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -76,7 +80,7 @@ public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
         while (true) {
             StreamEvent event = getWindow().poll();
             if (event == null) {
-                getEventRemoverScheduler().schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
+                eventRemoverScheduler.schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
 
                 sendRemoveEvents(oldEventList);
 
@@ -135,5 +139,8 @@ public class TimeBatchWindowHandler extends WindowHandler implements Runnable {
         }
     }
 
-
+    @Override
+    public void shutdown() {
+        eventRemoverScheduler.shutdown();
+    }
 }

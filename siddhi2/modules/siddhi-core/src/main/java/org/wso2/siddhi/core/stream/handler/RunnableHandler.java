@@ -15,11 +15,9 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.core.stream.recevier;
+package org.wso2.siddhi.core.stream.handler;
 
-import org.wso2.siddhi.core.config.SiddhiConfiguration;
+public interface RunnableHandler extends StreamHandler, Runnable {
 
-public interface RunnableStreamReceiver extends StreamReceiver, Runnable{
-
-    void setSiddhiConfiguration(SiddhiConfiguration configuration);
+    void shutdown();
 }

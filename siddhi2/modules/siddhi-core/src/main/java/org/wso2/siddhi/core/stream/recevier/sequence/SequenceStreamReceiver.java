@@ -17,17 +17,16 @@
 */
 package org.wso2.siddhi.core.stream.recevier.sequence;
 
-import org.wso2.siddhi.core.config.SiddhiConfiguration;
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.stream.StreamElement;
-import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
+import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class SequenceStreamReceiver implements StreamElement,
-                                               RunnableStreamReceiver {
+public class SequenceStreamReceiver implements StreamElement, StreamReceiver, Runnable {
 
     //  private List<SingleStream> inputStreamList;
     private String streamId;
@@ -37,32 +36,27 @@ public class SequenceStreamReceiver implements StreamElement,
     private int sequenceSingleStreamReceiverListSize;
     private List<SequenceSingleStreamReceiver> otherStreamReceiverList;
     private int otherStreamReceiverListSize;
-    private SiddhiConfiguration configuration;
+    private SiddhiContext context;
 
     public SequenceStreamReceiver(String streamId,
                                   List<SequenceSingleStreamReceiver> sequenceSingleStreamReceiverList,
-                                  ThreadPoolExecutor threadPoolExecutor) {
+                                  ThreadPoolExecutor threadPoolExecutor, SiddhiContext context) {
         this.streamId = streamId;
         this.sequenceSingleStreamReceiverList = sequenceSingleStreamReceiverList;
         this.threadPoolExecutor = threadPoolExecutor;
         this.sequenceSingleStreamReceiverListSize = sequenceSingleStreamReceiverList.size();
+        this.context = context;
     }
 
     @Override
     public void receive(StreamEvent streamEvent) throws InterruptedException {
-        if (configuration.isSingleThreading()) {
-                process(streamEvent);
+        if (context.isSingleThreading()) {
+            process(streamEvent);
         } else {
             if (!inputQueue.put(streamEvent)) {
                 threadPoolExecutor.execute(this);
             }
         }
-    }
-
-    @Override
-    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
-        this.configuration=configuration;
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -74,7 +68,7 @@ public class SequenceStreamReceiver implements StreamElement,
             //System.out.println("thread "+Thread.currentThread().getName()+" "+streamEvent);
             if (streamEvent == null) {
                 break;
-            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+            } else if (context.getEventBatchSize() > 0 && eventCounter > context.getEventBatchSize()) {
                 threadPoolExecutor.execute(this);
                 break;
             }
@@ -85,22 +79,22 @@ public class SequenceStreamReceiver implements StreamElement,
     }
 
     private void process(StreamEvent streamEvent) {
-        try{
-        //in reverse order to execute the later states first to overcome to dependencies of count states
-        for (int i = sequenceSingleStreamReceiverListSize - 1; i >= 0; i--) {
-            sequenceSingleStreamReceiverList.get(i).moveNextEventsToCurrentEvents();
-        }
-        if (otherStreamReceiverListSize > 0) {
-            StreamEvent resetEvent = new SequenceResetEvent(System.currentTimeMillis());
-            for (int i = 0, otherStreamReceiverListSize = otherStreamReceiverList.size(); i < otherStreamReceiverListSize; i++) {
-                otherStreamReceiverList.get(i).receive(resetEvent);
+        try {
+            //in reverse order to execute the later states first to overcome to dependencies of count states
+            for (int i = sequenceSingleStreamReceiverListSize - 1; i >= 0; i--) {
+                sequenceSingleStreamReceiverList.get(i).moveNextEventsToCurrentEvents();
             }
-        }
-        for (int i = sequenceSingleStreamReceiverListSize - 1; i >= 0; i--) {
-            sequenceSingleStreamReceiverList.get(i).receive(streamEvent);
-        }
-        }catch (Throwable t){
-               t.printStackTrace();
+            if (otherStreamReceiverListSize > 0) {
+                StreamEvent resetEvent = new SequenceResetEvent(System.currentTimeMillis());
+                for (int i = 0, otherStreamReceiverListSize = otherStreamReceiverList.size(); i < otherStreamReceiverListSize; i++) {
+                    otherStreamReceiverList.get(i).receive(resetEvent);
+                }
+            }
+            for (int i = sequenceSingleStreamReceiverListSize - 1; i >= 0; i--) {
+                sequenceSingleStreamReceiverList.get(i).receive(streamEvent);
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 

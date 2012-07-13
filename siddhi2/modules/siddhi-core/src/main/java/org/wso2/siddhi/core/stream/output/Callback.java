@@ -17,29 +17,29 @@
 */
 package org.wso2.siddhi.core.stream.output;
 
-import org.wso2.siddhi.core.config.SiddhiConfiguration;
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStream;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
-import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
+import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-public abstract class Callback implements RunnableStreamReceiver {
+public abstract class Callback implements Runnable,StreamReceiver {
 
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private ThreadPoolExecutor threadPoolExecutor;
     private String streamId;
-    private SiddhiConfiguration configuration;
+    private SiddhiContext context;
 
     public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
         this.threadPoolExecutor = threadPoolExecutor;
     }
 
-    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
-        this.configuration=configuration;
+    public void setSiddhiContext(SiddhiContext context) {
+        this.context =context;
     }
 
 //    public String toString(long timeStamp, Object[] newEventData, Object[] removeEventData,
@@ -79,7 +79,7 @@ public abstract class Callback implements RunnableStreamReceiver {
 //    }
 
     public void receive(StreamEvent event) throws InterruptedException {
-        if (configuration.isSingleThreading()) {
+        if (context.isSingleThreading()) {
             process(event);
         } else {
             if (!inputQueue.put(event)) {
@@ -95,7 +95,7 @@ public abstract class Callback implements RunnableStreamReceiver {
             StreamEvent event = inputQueue.poll();
             if (event == null) {
                 break;
-            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+            } else if (context.getEventBatchSize() > 0 && eventCounter > context.getEventBatchSize()) {
                 threadPoolExecutor.execute(this);
                 break;
             }

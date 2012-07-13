@@ -24,13 +24,18 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
+import org.wso2.siddhi.core.stream.handler.RunnableHandler;
 import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class TimeWindowHandler extends WindowHandler implements Runnable {
+public class TimeWindowHandler extends WindowHandler implements RunnableHandler {
 
+    private ScheduledExecutorService eventRemoverScheduler = Executors.newScheduledThreadPool(1);
     int timeToKeep;
+
 
     @Override
     public void setParameters(Object[] parameters) {
@@ -52,7 +57,7 @@ public class TimeWindowHandler extends WindowHandler implements Runnable {
                     streamEvent = new RemoveListEvent(((ListEvent) complexEvent).getEvents(), System.currentTimeMillis() + timeToKeep);
                 }
                 if (!getWindow().put(streamEvent)) {
-                    getEventRemoverScheduler().schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
+                    eventRemoverScheduler.schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -72,7 +77,7 @@ public class TimeWindowHandler extends WindowHandler implements Runnable {
                 }
                 long timeDiff = ((RemoveStream) streamEvent).getExpiryTime() - System.currentTimeMillis();
                 if (timeDiff > 0) {
-                    getEventRemoverScheduler().schedule(this, timeDiff, TimeUnit.MILLISECONDS);
+                    eventRemoverScheduler.schedule(this, timeDiff, TimeUnit.MILLISECONDS);
                     break;
                 } else {
                     streamEvent = getWindow().poll();
@@ -82,6 +87,11 @@ public class TimeWindowHandler extends WindowHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void shutdown() {
+        eventRemoverScheduler.shutdown();
     }
 }
 

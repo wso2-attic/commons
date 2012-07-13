@@ -25,14 +25,11 @@ import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public abstract class WindowHandler implements StreamHandler{
 //    private String streamId;
     private List<QueryEventStream> queryEventStreamList;
     private StreamProcessor nextStreamProcessor;
-    private ScheduledExecutorService eventRemoverScheduler = Executors.newScheduledThreadPool(1);
     private SchedulerQueue<StreamEvent> window = new SchedulerQueue<StreamEvent>();
    // private StreamElement prevStreamElement;
 
@@ -59,10 +56,6 @@ public abstract class WindowHandler implements StreamHandler{
         if( nextStreamProcessor!=null){
             nextStreamProcessor.process(complexEvent);
         }
-    }
-
-    protected ScheduledExecutorService getEventRemoverScheduler() {
-        return eventRemoverScheduler;
     }
 
     public SchedulerQueue<StreamEvent> getWindow() {

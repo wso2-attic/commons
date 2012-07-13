@@ -17,16 +17,16 @@
 */
 package org.wso2.siddhi.core.stream.recevier.pattern;
 
-import org.wso2.siddhi.core.config.SiddhiConfiguration;
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.stream.StreamElement;
-import org.wso2.siddhi.core.stream.recevier.RunnableStreamReceiver;
+import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-public class PatternStreamReceiver implements RunnableStreamReceiver, StreamElement {
+public class PatternStreamReceiver implements StreamElement, StreamReceiver, Runnable {
 
     //  private List<SingleStream> inputStreamList;
     private String streamId;
@@ -34,21 +34,22 @@ public class PatternStreamReceiver implements RunnableStreamReceiver, StreamElem
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private List<PatternSingleStreamReceiver> patternSingleStreamReceiverList;
     private int patternSingleStreamReceiverListSize;
-    private SiddhiConfiguration configuration;
+    private SiddhiContext context;
 
     public PatternStreamReceiver(String streamId,
                                  List<PatternSingleStreamReceiver> patternSingleStreamReceiverList,
-                                 ThreadPoolExecutor threadPoolExecutor) {
+                                 ThreadPoolExecutor threadPoolExecutor, SiddhiContext siddhiContext) {
         this.streamId = streamId;
         this.patternSingleStreamReceiverList = patternSingleStreamReceiverList;
         this.threadPoolExecutor = threadPoolExecutor;
         this.patternSingleStreamReceiverListSize = patternSingleStreamReceiverList.size();
+        this.context=siddhiContext;
     }
 
     @Override
     public void receive(StreamEvent streamEvent) throws InterruptedException {
 //        //System.out.println(event);
-        if (configuration.isSingleThreading()) {
+        if (context.isSingleThreading()) {
             precess(streamEvent);
         } else {
             if (!inputQueue.put(streamEvent)) {
@@ -58,18 +59,13 @@ public class PatternStreamReceiver implements RunnableStreamReceiver, StreamElem
     }
 
     @Override
-    public void setSiddhiConfiguration(SiddhiConfiguration configuration) {
-        this.configuration=configuration;
-    }
-
-    @Override
     public void run() {
         int eventCounter = 0;
         while (true) {
             StreamEvent streamEvent = inputQueue.poll();
             if (streamEvent == null) {
                 break;
-            } else if (configuration.getEventBatchSize() > 0 && eventCounter > configuration.getEventBatchSize()) {
+            } else if (context.getEventBatchSize() > 0 && eventCounter > context.getEventBatchSize()) {
                 threadPoolExecutor.execute(this);
                 break;
             }

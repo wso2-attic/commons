@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.util.parser;
 
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 import org.wso2.siddhi.core.projector.QueryProjector;
 import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
@@ -27,6 +28,7 @@ import org.wso2.siddhi.core.statemachine.sequence.CountSequenceState;
 import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
 import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.core.stream.StreamProcessor;
+import org.wso2.siddhi.core.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.stream.handler.StreamHandler;
 import org.wso2.siddhi.core.stream.handler.filter.FilterHandler;
 import org.wso2.siddhi.core.stream.handler.window.WindowHandler;
@@ -76,12 +78,13 @@ public class StreamParser {
     public static List<StreamReceiver> parseStream(Stream queryStream,
                                                    List<QueryEventStream> queryEventStreamList,
                                                    QueryProjector queryProjector,
-                                                   ThreadPoolExecutor threadPoolExecutor) {
+                                                   ThreadPoolExecutor threadPoolExecutor,
+                                                   SiddhiContext siddhiContext) {
         List<StreamReceiver> streamReceiverList = new ArrayList<StreamReceiver>();
         if (queryStream instanceof SingleStream) {
-            List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) queryStream, queryEventStreamList, new SingleStreamPacker());
+            List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) queryStream, queryEventStreamList, new SingleStreamPacker(),siddhiContext);
 
-            SingleStreamReceiver receiver = new SingleStreamReceiver((SingleStream) queryStream, simpleStreamProcessorList.get(0), threadPoolExecutor);
+            SingleStreamReceiver receiver = new SingleStreamReceiver((SingleStream) queryStream, simpleStreamProcessorList.get(0), threadPoolExecutor,siddhiContext);
 
             SingleStreamPacker singleStreamPacker = (SingleStreamPacker) simpleStreamProcessorList.get(simpleStreamProcessorList.size() - 1);
 
@@ -127,12 +130,18 @@ public class StreamParser {
             SingleStream leftStream = (SingleStream) ((JoinStream) queryStream).getLeftStream();
             SingleStream rightStream = (SingleStream) ((JoinStream) queryStream).getRightStream();
             WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream));
+            if(leftWindowHandler instanceof RunnableHandler){
+                siddhiContext.addRunnableHandler((RunnableHandler)leftWindowHandler);
+            }
             WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream));
-            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinInStreamPacker);
-            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinInStreamPacker);
+            if(rightWindowHandler instanceof RunnableHandler){
+                siddhiContext.addRunnableHandler((RunnableHandler)rightWindowHandler);
+            }
+            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinInStreamPacker,siddhiContext);
+            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinInStreamPacker,siddhiContext);
 
-            SingleStreamReceiver leftReceiver = new SingleStreamReceiver(leftStream, leftSimpleStreamProcessorList.get(0), threadPoolExecutor);
-            SingleStreamReceiver rightReceiver = new SingleStreamReceiver(rightStream, rightSimpleStreamProcessorList.get(0), threadPoolExecutor);
+            SingleStreamReceiver leftReceiver = new SingleStreamReceiver(leftStream, leftSimpleStreamProcessorList.get(0), threadPoolExecutor, siddhiContext);
+            SingleStreamReceiver rightReceiver = new SingleStreamReceiver(rightStream, rightSimpleStreamProcessorList.get(0), threadPoolExecutor, siddhiContext);
 
             //joinStreamPacker next
             leftJoinInStreamPacker.setNext(queryProjector);
@@ -184,7 +193,7 @@ public class StreamParser {
                         } else {
                             patternStreamPacker = new PatternStreamPacker(state);
                         }
-                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, patternStreamPacker);
+                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, patternStreamPacker,siddhiContext);
 
                         PatternSingleStreamReceiver patternSingleStreamReceiver;
 
@@ -212,7 +221,7 @@ public class StreamParser {
                     }
                 }
 
-                PatternStreamReceiver receiver = new PatternStreamReceiver(streamId, patternSingleStreamReceiverList, threadPoolExecutor);
+                PatternStreamReceiver receiver = new PatternStreamReceiver(streamId, patternSingleStreamReceiverList, threadPoolExecutor,siddhiContext);
                 streamReceiverList.add(receiver);
             }
 
@@ -247,7 +256,7 @@ public class StreamParser {
                         } else {
                             sequenceStreamPacker = new SequenceStreamPacker(state);
                         }
-                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, sequenceStreamPacker);
+                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, sequenceStreamPacker,siddhiContext);
 
                         SequenceSingleStreamReceiver sequenceSingleStreamReceiver;
 
@@ -273,7 +282,7 @@ public class StreamParser {
                     }
                 }
 
-                SequenceStreamReceiver receiver = new SequenceStreamReceiver(streamId, sequenceSingleStreamReceiverList, threadPoolExecutor);
+                SequenceStreamReceiver receiver = new SequenceStreamReceiver(streamId, sequenceSingleStreamReceiverList, threadPoolExecutor,siddhiContext);
                 streamReceiverList.add(receiver);
             }
 
@@ -315,7 +324,7 @@ public class StreamParser {
 
     private static List<StreamProcessor> parseStreamHandler(SingleStream inputStream,
                                                             List<QueryEventStream> queryEventStreamList,
-                                                            SingleStreamPacker singleStreamPacker) {
+                                                            SingleStreamPacker singleStreamPacker,SiddhiContext context) {
         List<StreamProcessor> streamProcessorList = new ArrayList<StreamProcessor>();
         List<Handler> handlerList = inputStream.getHandlerList();
         for (int i = 0; i < handlerList.size(); i++) {
@@ -330,7 +339,9 @@ public class StreamParser {
             } else if (handler.getType() == Handler.Type.WIN) {
                 streamHandler = generateWindowHandler(handler);
             }
-
+            if(streamHandler instanceof RunnableHandler){
+                context.addRunnableHandler((RunnableHandler)streamHandler);
+            }
             if (streamProcessorList.size() > 0) {
                 StreamHandler prevStreamHandler = (StreamHandler) streamProcessorList.get(i - 1);
                 prevStreamHandler.setNext(streamHandler);
