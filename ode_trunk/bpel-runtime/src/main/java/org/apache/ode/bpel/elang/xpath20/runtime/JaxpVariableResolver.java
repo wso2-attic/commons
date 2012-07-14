@@ -23,9 +23,11 @@ import javax.xml.namespace.QName;
 import javax.xml.xpath.XPathVariableResolver;
 
 import net.sf.saxon.Configuration;
+import net.sf.saxon.lib.ConversionRules;
 import net.sf.saxon.type.AtomicType;
 import net.sf.saxon.type.BuiltInAtomicType;
 import net.sf.saxon.type.SchemaType;
+import net.sf.saxon.type.StringConverter;
 import net.sf.saxon.type.ValidationException;
 import net.sf.saxon.value.AtomicValue;
 import net.sf.saxon.value.EmptySequence;
@@ -141,7 +143,10 @@ public class JaxpVariableResolver implements XPathVariableResolver {
                     }
                 }
 
-                AtomicValue value2 = StringValue.convertStringToAtomicType(value, (AtomicType) type2, null).asAtomic();
+                AtomicValue tmpVal = StringConverter.STRING_TO_STRING.convertString(value).asAtomic();
+                AtomicValue value2 = StringConverter.convert(tmpVal,(AtomicType) type2, new ConversionRules());
+
+
                 if (__log.isDebugEnabled()) {
                     __log.debug("converting " + type + " value " + value + " result: " + value2);
                 }

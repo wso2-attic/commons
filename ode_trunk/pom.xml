@@ -103,7 +103,7 @@
         <jencks.version>2.1</jencks.version>
         <jasper.version>4.2.20RC0</jasper.version>
         <log4j.version>1.2.15</log4j.version>
-        <saxon.version>9.x</saxon.version>
+        <saxon.version>9.4</saxon.version>
         <servicemix.version>3.3</servicemix.version>
         <slf4j.version>1.4.3</slf4j.version>
         <stax-api.version>1.0</stax-api.version>
@@ -880,22 +880,7 @@
 
             <dependency>
                 <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon</artifactId>
-                <version>${saxon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-dom</artifactId>
-                <version>${saxon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-xpath</artifactId>
-                <version>${saxon.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.sf.saxon</groupId>
-                <artifactId>saxon-xqj</artifactId>
+                <artifactId>Saxon-HE</artifactId>
                 <version>${saxon.version}</version>
             </dependency>
             <dependency>

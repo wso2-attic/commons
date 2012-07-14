@@ -98,19 +98,7 @@
       </dependency>
     <dependency>
         <groupId>net.sf.saxon</groupId>
-        <artifactId>saxon</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>net.sf.saxon</groupId>
-        <artifactId>saxon-dom</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>net.sf.saxon</groupId>
-        <artifactId>saxon-xqj</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>net.sf.saxon</groupId>
-        <artifactId>saxon-xpath</artifactId>
+        <artifactId>Saxon-HE</artifactId>
     </dependency>
     <dependency>
         <groupId>commons-lang</groupId>

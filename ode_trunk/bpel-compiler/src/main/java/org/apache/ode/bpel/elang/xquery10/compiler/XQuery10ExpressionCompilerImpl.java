@@ -41,7 +41,6 @@ import javax.xml.xquery.XQSequence;
 import javax.xml.xquery.XQStaticContext;
 
 import net.sf.saxon.Configuration;
-import net.sf.saxon.om.Validation;
 import net.sf.saxon.xqj.SaxonXQConnection;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
@@ -167,7 +166,7 @@ public class XQuery10ExpressionCompilerImpl implements ExpressionCompiler {
 
             __log.debug("Compiling expression " + xqueryStr);
             Configuration configuration = ((SaxonXQConnection) xqconn).getConfiguration();
-            configuration.setAllNodesUntyped(true);
+            //configuration.setAllNodesUntyped(true);
             configuration.setHostLanguage(Configuration.XQUERY);
 
             XQStaticContext staticContext = xqconn.getStaticContext();
@@ -202,7 +201,7 @@ public class XQuery10ExpressionCompilerImpl implements ExpressionCompiler {
 //            	// Don't add schema sources, since our Saxon library is not schema-aware.
 //            	// configuration.addSchemaSource(schemaSource);
 //            }
-            configuration.setSchemaValidationMode(Validation.SKIP);
+            //configuration.setSchemaValidationMode(Validation.SKIP);
             List<OScope.Variable> variables = _compilerContext.getAccessibleVariables();
             Map<QName, QName> variableTypes = new HashMap<QName, QName>();
             for (String variableName : getVariableNames(xqueryStr)) {

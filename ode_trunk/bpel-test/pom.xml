@@ -127,19 +127,7 @@
         </dependency>
         <dependency>
           <groupId>net.sf.saxon</groupId>
-          <artifactId>saxon</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.saxon</groupId>
-          <artifactId>saxon-xpath</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.saxon</groupId>
-          <artifactId>saxon-dom</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.saxon</groupId>
-          <artifactId>saxon-xqj</artifactId>
+          <artifactId>Saxon-HE</artifactId>
         </dependency>
         <dependency>
           <groupId>xerces</groupId>
@@ -176,7 +164,7 @@
              <configuration>
                  <!--<skipTests>true</skipTests>-->
                  <!--<includes>-->
-                     <!--<include>**/MessageRouting20Test.java</include>-->
+                     <!--<include>**/DataHandling20Test.java</include>-->
                  <!--</includes>-->
                  <!--<argLine>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005</argLine>-->
              </configuration>

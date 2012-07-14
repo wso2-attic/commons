@@ -20,7 +20,7 @@ package org.apache.ode.bpel.elang.xpath20.compiler;
 
 import net.sf.saxon.expr.Expression;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.trans.StaticError;
+//import net.sf.saxon.trans.StaticError;
 import net.sf.saxon.xpath.XPathFunctionCall;
 
 import javax.xml.namespace.QName;
@@ -62,7 +62,7 @@ public class OdeXPathFunctionLibrary extends net.sf.saxon.xpath.XPathFunctionLib
         try {
             function.evaluate(args);
         } catch (XPathFunctionException e) {
-            throw new StaticError(e);
+            throw new XPathException(e);
         }
         XPathFunctionCall fc = new XPathFunctionCall(function);
         fc.setArguments(staticArgs);

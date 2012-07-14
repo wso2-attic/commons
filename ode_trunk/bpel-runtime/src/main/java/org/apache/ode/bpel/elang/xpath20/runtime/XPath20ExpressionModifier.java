@@ -19,32 +19,22 @@
 
 package org.apache.ode.bpel.elang.xpath20.runtime;
 
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpression;
-
-import net.sf.saxon.expr.AxisExpression;
-import net.sf.saxon.expr.Expression;
-import net.sf.saxon.expr.ItemChecker;
-import net.sf.saxon.expr.PathExpression;
-import net.sf.saxon.expr.VariableReference;
+import net.sf.saxon.expr.*;
+import net.sf.saxon.expr.sort.DocumentSorter;
 import net.sf.saxon.om.Axis;
 import net.sf.saxon.om.NamePool;
 import net.sf.saxon.pattern.NameTest;
 import net.sf.saxon.pattern.NodeKindTest;
 import net.sf.saxon.pattern.NodeTest;
 import net.sf.saxon.xpath.XPathExpressionImpl;
-
 import org.apache.ode.utils.DOMUtils;
 import org.apache.ode.utils.NSContext;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
+
+import javax.xml.namespace.QName;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpression;
+import java.util.Iterator;
 
 
 /**
@@ -76,34 +66,38 @@ public class XPath20ExpressionModifier {
      * e) and all preceding steps are element name tests.
      *
      * @param xpathExpr
-     * @param namePool
+     * @param contextNode
      *
      * @throws DOMException
      * @throws TransformerException
      */
     @SuppressWarnings("unchecked")
     public void insertMissingData(XPathExpression xpathExpr, Node contextNode)
-        throws DOMException, TransformerException {
+        throws TransformerException {
         if ((contextNode == null) || !(contextNode instanceof Element) ||
                 !(xpathExpr instanceof XPathExpressionImpl)) {
             return;
         }
 
         Expression expression = ((XPathExpressionImpl) xpathExpr).getInternalExpression();
-        Iterator<Expression> subExpressions = (Iterator<Expression>) expression.iterateSubExpressions();
+        Iterator<Expression> subExpressions = expression.iterateSubExpressions();
 
         if (!subExpressions.hasNext()) {
             return;
         }
 
-        Expression subExpr = (Expression) subExpressions.next();
+        Expression subExpr = subExpressions.next();
 
-        if (!(subExpr instanceof PathExpression)) {
+        if (!(subExpr instanceof SlashExpression)) {
             return;
         }
 
+        operation(subExpr, contextNode);
+    }
+
+    private Node operation(Expression subExpr, Node contextNode) throws TransformerException {
         Document document = DOMUtils.toDOMDocument(contextNode);
-        PathExpression pathExpr = (PathExpression) subExpr;
+        SlashExpression pathExpr = (SlashExpression) subExpr;
         Expression step = pathExpr.getFirstStep();
 
         while (step != null) {
@@ -155,14 +149,17 @@ public class XPath20ExpressionModifier {
                 } else {
                     break;
                 }
-
-
             } else if (step instanceof ItemChecker) {
                 ItemChecker itemChecker = (ItemChecker) step;
                 Expression baseExpr = itemChecker.getBaseExpression();
 
                 if (!(baseExpr instanceof VariableReference)) {
                     break;
+                }
+            } else if (step instanceof DocumentSorter) {
+                Iterator<Expression> itr =  step.iterateSubExpressions();
+                while (itr.hasNext()) {
+                    contextNode = operation(itr.next(), contextNode);
                 }
             } else {
                 break;
@@ -171,17 +168,19 @@ public class XPath20ExpressionModifier {
             if (pathExpr != null) {
                 Expression remainingSteps = pathExpr.getRemainingSteps();
 
-                if (remainingSteps instanceof PathExpression) {
-                    pathExpr = (PathExpression) remainingSteps;
+                if (remainingSteps instanceof SlashExpression) {
+                    pathExpr = (SlashExpression) remainingSteps;
                     step = pathExpr.getFirstStep();
                 } else if (remainingSteps instanceof AxisExpression) {
                     pathExpr = null;
-                    step = (AxisExpression) remainingSteps;
+                    step = remainingSteps;
                 }
             } else {
                 break;
             }
         }
+
+        return contextNode;
     }
 
     /**

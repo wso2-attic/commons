@@ -20,7 +20,6 @@
 package org.apache.ode.bpel.elang.xpath20.compiler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +32,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import net.sf.saxon.om.Name11Checker;
-import net.sf.saxon.om.NamespaceConstant;
-import net.sf.saxon.xpath.XPathEvaluator;
 import net.sf.saxon.xpath.XPathFactoryImpl;
 
 import org.apache.commons.logging.Log;

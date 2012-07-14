@@ -24,6 +24,9 @@
     xmlns:types1="http://ode/bpel/unit-test/TestXPathNamespace1.wsdl.types1"
     xmlns:prb="http://ode/bpel/unit-test/ProbeService.wsdl"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:td="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     name="TestXPathNamespace1"
     queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
     expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
@@ -32,10 +35,6 @@
     <import location="TestXPathNamespace1.wsdl"
         namespace="http://ode/bpel/unit-test/TestXPathNamespace1.wsdl"
         importType="http://schemas.xmlsoap.org/wsdl/" />
-    <import location="../ProbeService/probeService.wsdl"
-        namespace="http://ode/bpel/unit-test/ProbeService.wsdl"
-        importType="http://schemas.xmlsoap.org/wsdl/"/>
-
 
     <!-- test namespace syntax within XPATH expression -->
     <partnerLinks>
@@ -43,6 +42,7 @@
     </partnerLinks>
     <variables>
         <variable name="request" messageType="wns:requestMessage1"/>
+        <variable name="tmp" type="xsd:string"/>
         <variable name="reply" messageType="wns:replyMessage1"/>
     </variables>
     <sequence>
@@ -51,6 +51,13 @@
         <assign name="assign1">
             <copy>
                 <from>$request.requestMessageData/requestID</from>
+                <!--<from>bpws:getVariableData("request", "requestMessageData")/requestID</from>-->
+                <to>$tmp</to>
+            </copy>
+            <copy>
+                <from>$tmp</from>
+                <!--<from>bpws:getVariableData("tmp")</from>-->
+                <!--<from>bpws:getVariableData("request", "requestMessageData")/requestID</from>-->
                 <to variable="reply" part="replyID"/>
             </copy>
             <copy>
