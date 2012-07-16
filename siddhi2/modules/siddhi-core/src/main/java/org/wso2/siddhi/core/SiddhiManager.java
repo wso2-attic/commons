@@ -74,15 +74,17 @@ public class SiddhiManager {
     }
 
 
-    public void defineStream(StreamDefinition streamDefinition) {
+    public InputHandler defineStream(StreamDefinition streamDefinition) {
         checkEventStream(streamDefinition);
         StreamJunction streamJunction = new StreamJunction(streamDefinition);
         streamJunctionMap.put(streamDefinition.getStreamId(), streamJunction);
         streamDefinitionMap.put(streamDefinition.getStreamId(), streamDefinition);
+        return new InputHandler(streamDefinition.getStreamId(), streamJunction);
     }
 
-    public void defineStream(String streamDefinition) throws SiddhiPraserException {
-        defineStream(SiddhiCompiler.parseStreamDefinition(streamDefinition));
+    public InputHandler defineStream(String streamDefinition) throws SiddhiPraserException {
+        return defineStream(SiddhiCompiler.parseStreamDefinition(streamDefinition));
+
     }
 
     private void checkEventStream(StreamDefinition newStreamDefinition) {
@@ -118,7 +120,7 @@ public class SiddhiManager {
         StreamDefinition outputStreamDefinition = queryProjector.getOutputStreamDefinition();
         defineStream(outputStreamDefinition);
 
-        List<StreamReceiver> streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor,siddhiContext);
+        List<StreamReceiver> streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor, siddhiContext);
         queryProjector.setStreamJunction(streamJunctionMap.get(outputStreamDefinition.getStreamId()));
         for (StreamReceiver streamReceiver : streamReceiverList) {
             StreamJunction streamJunction = streamJunctionMap.get(streamReceiver.getStreamId());
@@ -170,7 +172,7 @@ public class SiddhiManager {
 
     public void shutdown() {
         threadPoolExecutor.shutdown();
-        for(RunnableHandler handler:siddhiContext.getRunnableHandlerList()){
+        for (RunnableHandler handler : siddhiContext.getRunnableHandlerList()) {
             handler.shutdown();
         }
     }
