@@ -37,7 +37,7 @@ public class LengthWindowHandler extends WindowHandler {
 
     @Override
     public void process(ComplexEvent complexEvent) {
-        try {
+//        try {
             if (complexEvent instanceof Event) {
                 SchedulerQueue<StreamEvent> queue = getWindow();
                 queue.put((StreamEvent) complexEvent);
@@ -73,9 +73,9 @@ public class LengthWindowHandler extends WindowHandler {
                     }
                 }
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

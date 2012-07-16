@@ -26,20 +26,11 @@ public class EventPrinter {
 //    public static String convertToString(ComplexEvent complexEvent) {
 //        return "";
 //    }
-
-    public static String convertToString(Event[] events) {
-        if (events != null) {
-            return Arrays.asList(events).toString();
-        } else {
-            return "null";
-        }
-    }
-
     //    public static void print(ComplexEvent complexEvent) {
 //        System.out.println(convertToString(complexEvent));
 //    }
     public static void print(Event[] events) {
-        System.out.println(convertToString(events));
+        System.out.println(Arrays.deepToString(events));
     }
 
 
@@ -47,9 +38,9 @@ public class EventPrinter {
                              Event[] faultEvents) {
         StringBuilder sb = new StringBuilder();
         sb.append("Events{ @timeStamp = ").append(timeStamp).
-                append(", inEvents = ").append(convertToString(inEvents)).
-                append(", RemoveEvents = ").append(convertToString(removeEvents)).
-                append(", FaultEvents = ").append(convertToString(faultEvents)).append(" }");
+                append(", inEvents = ").append( Arrays.deepToString(inEvents)).
+                append(", RemoveEvents = ").append(Arrays.deepToString(removeEvents)).
+                append(", FaultEvents = ").append(Arrays.deepToString(faultEvents)).append(" }");
         System.out.println(sb.toString());
     }
 

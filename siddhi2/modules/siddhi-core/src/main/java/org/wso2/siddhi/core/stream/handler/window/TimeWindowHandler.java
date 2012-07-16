@@ -49,19 +49,19 @@ public class TimeWindowHandler extends WindowHandler implements RunnableHandler 
     @Override
     public void process(ComplexEvent complexEvent) {
         if (complexEvent instanceof StreamEvent) {
-            try {
+//            try {
                 StreamEvent streamEvent;
                 if (complexEvent instanceof Event) {
                     streamEvent = new RemoveEvent(((Event) complexEvent), System.currentTimeMillis() + timeToKeep);
                 } else {
                     streamEvent = new RemoveListEvent(((ListEvent) complexEvent).getEvents(), System.currentTimeMillis() + timeToKeep);
                 }
-                if (!getWindow().put(streamEvent)) {
+                if (getWindow().put(streamEvent)) {
                     eventRemoverScheduler.schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             passToNextStreamProcessor(complexEvent);
         }
     }

@@ -82,7 +82,7 @@ public abstract class Callback implements Runnable,StreamReceiver {
         if (context.isSingleThreading()) {
             process(event);
         } else {
-            if (!inputQueue.put(event)) {
+            if (inputQueue.put(event)) {
                 threadPoolExecutor.execute(this);
             }
         }

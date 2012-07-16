@@ -52,7 +52,7 @@ public class PatternStreamReceiver implements StreamElement, StreamReceiver, Run
         if (context.isSingleThreading()) {
             precess(streamEvent);
         } else {
-            if (!inputQueue.put(streamEvent)) {
+            if (inputQueue.put(streamEvent)) {
                 threadPoolExecutor.execute(this);
             }
         }

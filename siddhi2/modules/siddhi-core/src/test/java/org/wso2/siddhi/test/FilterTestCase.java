@@ -281,7 +281,7 @@ public class FilterTestCase {
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         Thread.sleep(500);
         inputHandler.send(new Object[]{"WSO2", 57.6f, 100});
-        Thread.sleep(7000);
+        Thread.sleep(15000);
         Assert.assertEquals("In and Remove events has to be equal", 0, count);
         Assert.assertEquals("Event arrived", true, eventArrived);
 

@@ -49,7 +49,7 @@ public class SingleStreamReceiver implements  StreamElement, StreamReceiver, Run
         if (context.isSingleThreading()) {
             firstStreamProcessor.process(streamEvent);
         } else {
-            if (!inputQueue.put(streamEvent)) {
+            if (inputQueue.put(streamEvent)) {
                 threadPoolExecutor.execute(this);
             }
         }

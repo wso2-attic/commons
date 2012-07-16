@@ -18,46 +18,45 @@
 package org.wso2.siddhi.core.util;
 
 import java.util.Iterator;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SchedulerQueue<T> {
-    private volatile boolean isScheduledForDispatching = false;
+    private volatile AtomicBoolean isScheduledForDispatching = new AtomicBoolean(false);
 
     private final ReentrantLock takeLock = new ReentrantLock();
 
     private final ReentrantLock putLock = new ReentrantLock();
 
 
-    private LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<T>();
+    private ConcurrentLinkedQueue<T> queue = new ConcurrentLinkedQueue<T>();
 
-    public synchronized boolean put(T t) throws InterruptedException {
-        putLock.lock();
-        try {
-            queue.put(t);
-            if (!isScheduledForDispatching) {
-                isScheduledForDispatching = true;
-                return false;
-            }
-            return true;
-        } finally {
-            putLock.unlock();
-        }
-
+    public synchronized boolean put(T t) {
+        queue.add(t);
+        return isScheduledForDispatching.compareAndSet(false, true);
     }
 
 
     public synchronized T poll() {
-        takeLock.lock();
-        try {
-            T t = queue.poll();
+//        takeLock.lock();
+//        try {
+        T t = queue.poll();
+        if (t == null) {
+            isScheduledForDispatching.set(false);
+            t = queue.poll();
             if (t == null) {
-                isScheduledForDispatching = false;
+                return null;
+            } else {
+                isScheduledForDispatching.set(true);
+                return t;
             }
-            return t;
-        } finally {
-            takeLock.unlock();
+
         }
+        return t;
+//        } finally {
+//            takeLock.unlock();
+//        }
 
 
     }
@@ -68,16 +67,25 @@ public class SchedulerQueue<T> {
 //    }
 
     public synchronized T peek() {
-        takeLock.lock();
-        try {
+//        takeLock.lock();
+//        try {
             T t = queue.peek();
             if (t == null) {
-                isScheduledForDispatching = false;
+                isScheduledForDispatching.set(false);
+                t = queue.peek();
+                if (t == null) {
+                    return null;
+                } else {
+                    isScheduledForDispatching.set(true);
+                    return t;
+                }
             }
             return t;
-        } finally {
-            takeLock.unlock();
-        }
+//        } finally {
+//            takeLock.unlock();
+//        }
+
+
     }
 
     public Iterator<T> iterator() {

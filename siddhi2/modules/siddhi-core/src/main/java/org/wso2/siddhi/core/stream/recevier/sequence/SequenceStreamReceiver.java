@@ -53,7 +53,7 @@ public class SequenceStreamReceiver implements StreamElement, StreamReceiver, Ru
         if (context.isSingleThreading()) {
             process(streamEvent);
         } else {
-            if (!inputQueue.put(streamEvent)) {
+            if (inputQueue.put(streamEvent)) {
                 threadPoolExecutor.execute(this);
             }
         }

@@ -90,11 +90,11 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
                 sendInEvents(oldEventList);
 
                 for (Event aEvent : oldEventList) {
-                    try {
+//                    try {
                         getWindow().put(aEvent);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 oldEventList = null;
 
