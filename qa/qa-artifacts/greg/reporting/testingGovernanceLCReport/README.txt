@@ -2,7 +2,7 @@
 
 2. Upload TestGovernanceCycle.rxt to any location you want
 
-3. Do required changes to the TestingLCReportGenerator.java as required and create a jar out of it (already created jar available -  TestingLCReportGenerator.jar). Then upload this jar through Extensions menu of Management Console.
+3. Do required changes to the TestingLCReportGenerator.java as required and create a jar out of it (already created jars [compatible with jdk6 & jdk7] are available under jar folder -  TestingLCReportGenerator.jar). Then upload this jar through Extensions menu of Management Console.
 
 4. Logout from Management Console and login again
 
