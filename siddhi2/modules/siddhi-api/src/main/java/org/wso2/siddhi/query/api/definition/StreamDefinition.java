@@ -81,4 +81,13 @@ public class StreamDefinition implements ExecutionPlan {
                ", attributeList=" + attributeList +
                '}';
     }
+
+    public String[] getAttributeNameArray(){
+        int attributeListSize = attributeList.size();
+       String[] attributeNameArray= new String[attributeListSize];
+        for (int i = 0; i < attributeListSize; i++) {
+            attributeNameArray[i]= attributeList.get(i).getName();
+        }
+        return attributeNameArray;
+    }
 }

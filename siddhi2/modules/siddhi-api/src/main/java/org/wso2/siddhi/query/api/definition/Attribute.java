@@ -18,8 +18,8 @@
 package org.wso2.siddhi.query.api.definition;
 
 public class Attribute {
-    String name;
-    Type type;
+    private String name;
+    private Type type;
 
     public enum Type {
         STRING, INT, LONG, FLOAT, DOUBLE, BOOL

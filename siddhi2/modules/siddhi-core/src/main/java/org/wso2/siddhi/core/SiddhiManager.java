@@ -96,8 +96,8 @@ public class SiddhiManager {
         }
     }
 
-    public void addQuery(String query) throws SiddhiPraserException {
-        addQuery(SiddhiCompiler.parseQuery(query));
+    public String addQuery(String query) throws SiddhiPraserException {
+       return addQuery(SiddhiCompiler.parseQuery(query));
     }
 
     public void addExecutionPlan(String addExecutionPlan) throws SiddhiPraserException {
@@ -110,7 +110,8 @@ public class SiddhiManager {
         }
     }
 
-    public void addQuery(Query query) {
+    //todo need to send proper reference
+    public String addQuery(Query query) {
         queryList.add(query);
 
         List<QueryEventStream> queryEventStreamList = query.getInputStream().constructQueryEventStreamList(streamDefinitionMap, new ArrayList<QueryEventStream>());
@@ -126,6 +127,7 @@ public class SiddhiManager {
             StreamJunction streamJunction = streamJunctionMap.get(streamReceiver.getStreamId());
             streamJunction.addEventFlow(streamReceiver);
         }
+        return query.getOutputStreamId();
 
     }
 
@@ -175,5 +177,9 @@ public class SiddhiManager {
         for (RunnableHandler handler : siddhiContext.getRunnableHandlerList()) {
             handler.shutdown();
         }
+    }
+
+    public StreamDefinition getStreamDefinition(String streamId){
+        return streamDefinitionMap.get(streamId);
     }
 }

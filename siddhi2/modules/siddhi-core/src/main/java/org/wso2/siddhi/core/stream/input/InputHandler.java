@@ -32,4 +32,8 @@ public class InputHandler {
     public void send( Object[] data) throws InterruptedException {
         streamJunction.send(new InEvent(streamId, System.currentTimeMillis(), data));
     }
+
+    public void send(long timeStamp, Object[] data) throws InterruptedException {
+        streamJunction.send(new InEvent(streamId, timeStamp, data));
+    }
 }

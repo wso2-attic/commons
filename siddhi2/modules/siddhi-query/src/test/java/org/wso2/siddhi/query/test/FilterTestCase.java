@@ -28,7 +28,7 @@ public class FilterTestCase {
         Assert.assertNotNull(query);
     }
 
-    //    from cseEventStream[win.lenghtBatch(50)][price >= 20]
+//        from cseEventStream[win.lenghtBatch(50)][price >= 20]
 //            insert into StockQuote symbol, avg(price) as avgPrice
 //            group by symbol
 //            having avgPrice>50;

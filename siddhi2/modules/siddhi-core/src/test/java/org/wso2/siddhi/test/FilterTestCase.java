@@ -49,7 +49,7 @@ public class FilterTestCase {
         System.out.println("Filter test1");
         SiddhiManager siddhiManager = new SiddhiManager();
 
-        siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
+        InputHandler inputHandler = siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
 
         Query query = QueryFactory.createQuery();
         query.from(QueryFactory.inputStream("cseEventStream"));
@@ -72,7 +72,7 @@ public class FilterTestCase {
                 count++;
             }
         });
-        InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
+//        InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
         Thread.sleep(500);
