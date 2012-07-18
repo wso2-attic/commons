@@ -1,0 +1,47 @@
+<!--How to test
+- Use the below synapse.xml. Make sure that you have enabled security scenario 1 for the Proxy Service.
+- Then, from Try-It, specify username/password and invoke through HTTPS and verify whether you get the response as expected
+-->
+
+
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="StockQuoteProxy" transports="https" startOnLoad="true" trace="disable">
+        <description/>
+        <target endpoint="axis2JMS">
+            <inSequence>
+                <log level="full"/>
+                <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+                <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+            </inSequence>
+        </target>
+        <publishWSDL uri="http://localhost:9770/oracle/as/services/Axis2Service?wsdl"/>
+        <policy key="conf:/repository/axis2/service-groups/StockQuoteProxy/services/StockQuoteProxy/policies/UTOverTransport"/>
+        <enableSec/>
+    </proxy>
+    <endpoint name="axis2JMS">
+        <address uri="jms:/Axis2Service?transport.jms.DestinationType=queue&amp;transport.jms.ContentTypeProperty=Content-Type&amp;java.naming.provider.url=tcp://localhost:61616&amp;java.naming.factory.initial=org.apache.activemq.jndi.ActiveMQInitialContextFactory&amp;transport.jms.ConnectionFactoryJNDIName=QueueConnectionFactory"/>
+    </endpoint>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
