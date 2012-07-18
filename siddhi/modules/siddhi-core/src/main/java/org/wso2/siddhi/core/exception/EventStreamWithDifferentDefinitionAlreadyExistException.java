@@ -17,20 +17,22 @@
 */
 package org.wso2.siddhi.core.exception;
 
-public class EventStreamNotDefinedException extends RuntimeException {
-    public EventStreamNotDefinedException() {
+public class EventStreamWithDifferentDefinitionAlreadyExistException extends RuntimeException {
+
+    public EventStreamWithDifferentDefinitionAlreadyExistException() {
         super();
     }
 
-    public EventStreamNotDefinedException(String message) {
+    public EventStreamWithDifferentDefinitionAlreadyExistException(String message) {
         super(message);
     }
 
-    public EventStreamNotDefinedException(String message, Throwable throwable) {
+    public EventStreamWithDifferentDefinitionAlreadyExistException(String message,
+                                                                   Throwable throwable) {
         super(message, throwable);
     }
 
-    public EventStreamNotDefinedException(Throwable throwable) {
+    public EventStreamWithDifferentDefinitionAlreadyExistException(Throwable throwable) {
         super(throwable);
     }
 }

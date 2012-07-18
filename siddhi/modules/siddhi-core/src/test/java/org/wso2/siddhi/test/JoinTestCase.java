@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.test;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.stream.handler.Handler;
 
 public class JoinTestCase {
-
+    static final Logger log = Logger.getLogger(JoinTestCase.class);
     private int eventCount;
     private boolean eventArrived;
 
@@ -46,7 +47,7 @@ public class JoinTestCase {
 
     @Test
     public void testQuery1() throws InterruptedException {
-        System.out.println("test1");
+        log.info("test1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -112,7 +113,7 @@ public class JoinTestCase {
 
     @Test
     public void testQuery2() throws InterruptedException {
-        System.out.println("test2");
+        log.info("test2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -172,7 +173,7 @@ public class JoinTestCase {
 
 //    @Test
 //    public void testQuery1() throws InterruptedException {
-//        System.out.println("test1");
+//        log.info("test1");
 //
 //        SiddhiManager siddhiManager = new SiddhiManager();
 //

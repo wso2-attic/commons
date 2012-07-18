@@ -18,6 +18,7 @@
 package org.wso2.siddhi.test;
 
 import junit.framework.Assert;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,8 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SmartGridSampleTestCase {
-
-
+    static final Logger log = Logger.getLogger(SmartGridSampleTestCase.class);
     private int eventCount;
     private boolean eventArrived;
     protected static List<Object[]> STSDataSet = new ArrayList<Object[]>();
@@ -86,7 +86,7 @@ public class SmartGridSampleTestCase {
 
     @Test
     public void testQuery1() throws InterruptedException {
-        System.out.println("Matching every occurrence of STS event with a STM following event");
+        log.info("Matching every occurrence of STS event with a STM following event");
 
 
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -144,7 +144,7 @@ public class SmartGridSampleTestCase {
 
     @Test
     public void testQuery2() throws InterruptedException {
-        System.out.println("Matching every occurrence of STS event with every of their STM following events");
+        log.info("Matching every occurrence of STS event with every of their STM following events");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -200,7 +200,7 @@ public class SmartGridSampleTestCase {
 
     @Test
     public void testQuery3() throws InterruptedException {
-        System.out.println("Long window join query covering all events");
+        log.info("Long window join query covering all events");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -260,7 +260,7 @@ public class SmartGridSampleTestCase {
     @Test
     //The last event in the testQuery3 wont occur as A5 expires before the arrival of B6
     public void testQuery4() throws InterruptedException {
-        System.out.println("Limited window join query ");
+        log.info("Limited window join query ");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -320,7 +320,7 @@ public class SmartGridSampleTestCase {
     @Test
     //This is only a partial solution here we are not taking time into consideration !!
     public void testQuery5() throws InterruptedException {
-        System.out.println("Window join query with event consumption with only match once");
+        log.info("Window join query with event consumption with only match once");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 

@@ -19,30 +19,20 @@ package org.wso2.siddhi.core;
 
 import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.config.SiddhiContext;
-import org.wso2.siddhi.core.event.StateEvent;
-import org.wso2.siddhi.core.exception.EventStreamAlreadyExistException;
-import org.wso2.siddhi.core.projector.QueryProjector;
+import org.wso2.siddhi.core.exception.EventStreamWithDifferentDefinitionAlreadyExistException;
+import org.wso2.siddhi.core.query.QueryProcessor;
+import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.stream.StreamJunction;
-import org.wso2.siddhi.core.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
-import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
-import org.wso2.siddhi.core.util.parser.StreamParser;
 import org.wso2.siddhi.query.api.ExecutionPlan;
-import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.query.projection.attribute.OutputAttribute;
-import org.wso2.siddhi.query.api.query.projection.attribute.SimpleAttribute;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -51,10 +41,11 @@ public class SiddhiManager {
 
     private SiddhiContext siddhiContext;
     private ThreadPoolExecutor threadPoolExecutor;
-    Map<String, StreamJunction> streamJunctionMap = new HashMap<String, StreamJunction>(); //contains definition
-    Map<String, StreamDefinition> streamDefinitionMap = new HashMap<String, StreamDefinition>(); //contains definition
-    List<Query> queryList = new ArrayList<Query>();
-    LinkedBlockingQueue<StateEvent> inputQueue = new LinkedBlockingQueue<StateEvent>();
+    ConcurrentMap<String, StreamJunction> streamJunctionMap = new ConcurrentHashMap<String, StreamJunction>(); //contains definition
+    ConcurrentMap<String, StreamDefinition> streamDefinitionMap = new ConcurrentHashMap<String, StreamDefinition>(); //contains definition
+    ConcurrentMap<String, QueryProcessor> queryProcessorMap = new ConcurrentHashMap<String, QueryProcessor>();
+    ConcurrentMap<String, InputHandler> inputHandlerMap = new ConcurrentHashMap<String, InputHandler>();
+//    LinkedBlockingQueue<StateEvent> inputQueue = new LinkedBlockingQueue<StateEvent>();
 
     public SiddhiManager() {
         this(new SiddhiConfiguration());
@@ -75,29 +66,72 @@ public class SiddhiManager {
 
 
     public InputHandler defineStream(StreamDefinition streamDefinition) {
-        checkEventStream(streamDefinition);
-        StreamJunction streamJunction = new StreamJunction(streamDefinition);
-        streamJunctionMap.put(streamDefinition.getStreamId(), streamJunction);
-        streamDefinitionMap.put(streamDefinition.getStreamId(), streamDefinition);
-        return new InputHandler(streamDefinition.getStreamId(), streamJunction);
+        if (!checkEventStreamExist(streamDefinition)) {
+            streamDefinitionMap.putIfAbsent(streamDefinition.getStreamId(), streamDefinition);
+            StreamJunction streamJunction = streamJunctionMap.get(streamDefinition.getStreamId());
+            if(streamJunction==null){
+                streamJunction = new StreamJunction(streamDefinition.getStreamId());
+                streamJunctionMap.putIfAbsent(streamDefinition.getStreamId(), streamJunction);
+            }
+            InputHandler inputHandler = new InputHandler(streamDefinition.getStreamId(), streamJunction);
+            inputHandlerMap.putIfAbsent(streamDefinition.getStreamId(), inputHandler);
+            return inputHandler;
+        } else {
+            return inputHandlerMap.get(streamDefinition.getStreamId());
+        }
+
     }
+
+//    public InputHandler updateStream(StreamDefinition streamDefinition) {
+//        try {
+//            if (checkEventStreamExist(streamDefinition)) {
+//                return inputHandlerMap.get(streamDefinition.getStreamId());
+//            }
+//        } catch (EventStreamWithDifferentDefinitionAlreadyExistException e) {
+//            StreamJunction streamJunction = streamJunctionMap.get(streamDefinition.getStreamId());
+//            streamDefinitionMap.replace(streamDefinition.getStreamId(), streamDefinition);
+//            streamJunction.setStreamDefinition(streamDefinition);
+//            return inputHandlerMap.get(streamDefinition.getStreamId());
+//        }
+//        throw new EventStreamNotExistException("Stream with name " + streamDefinition.getStreamId() + " does not exist! Hence update aborted!");
+//    }
+//
+//    public void dropStream(String streamId) {
+//        StreamDefinition streamDefinition = streamDefinitionMap.remove(streamId);
+//        if (streamDefinition != null) {
+//            streamJunctionMap.remove(streamId);
+//            InputHandler inputHandler = inputHandlerMap.remove(streamId);
+//            if (inputHandler != null) {
+//                inputHandler.setStreamJunction(null);
+//            }
+//            for (QueryProcessor processor : queryProcessorMap.values()) {
+//                if (processor.getQueryProjector().getOutputStreamDefinition().getStreamId().equals(streamId)) {
+//                    processor.getQueryProjector().setStreamJunction(null);
+//                }
+//            }
+//        }
+//    }
+
 
     public InputHandler defineStream(String streamDefinition) throws SiddhiPraserException {
         return defineStream(SiddhiCompiler.parseStreamDefinition(streamDefinition));
 
     }
 
-    private void checkEventStream(StreamDefinition newStreamDefinition) {
+    private boolean checkEventStreamExist(StreamDefinition newStreamDefinition) {
         StreamDefinition streamDefinition = streamDefinitionMap.get(newStreamDefinition.getStreamId());
         if (streamDefinition != null) {
             if (!streamDefinition.getAttributeList().equals(newStreamDefinition.getAttributeList())) {
-                throw new EventStreamAlreadyExistException(newStreamDefinition.getStreamId() + " is already defined as " + streamDefinition);
+                throw new EventStreamWithDifferentDefinitionAlreadyExistException(newStreamDefinition.getStreamId() + " is already defined as " + streamDefinition);
+            } else {
+                return true;
             }
         }
+        return false;
     }
 
     public String addQuery(String query) throws SiddhiPraserException {
-       return addQuery(SiddhiCompiler.parseQuery(query));
+        return addQuery(SiddhiCompiler.parseQuery(query));
     }
 
     public void addExecutionPlan(String addExecutionPlan) throws SiddhiPraserException {
@@ -110,65 +144,50 @@ public class SiddhiManager {
         }
     }
 
-    //todo need to send proper reference
     public String addQuery(Query query) {
-        queryList.add(query);
-
-        List<QueryEventStream> queryEventStreamList = query.getInputStream().constructQueryEventStreamList(streamDefinitionMap, new ArrayList<QueryEventStream>());
-        initQuery(query, queryEventStreamList);
-
-        QueryProjector queryProjector = new QueryProjector(query.getOutputStreamId(), query.getProjector(), queryEventStreamList);
-        StreamDefinition outputStreamDefinition = queryProjector.getOutputStreamDefinition();
-        defineStream(outputStreamDefinition);
-
-        List<StreamReceiver> streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor, siddhiContext);
-        queryProjector.setStreamJunction(streamJunctionMap.get(outputStreamDefinition.getStreamId()));
-        for (StreamReceiver streamReceiver : streamReceiverList) {
-            StreamJunction streamJunction = streamJunctionMap.get(streamReceiver.getStreamId());
-            streamJunction.addEventFlow(streamReceiver);
-        }
-        return query.getOutputStreamId();
+        QueryProcessor queryProcessor = new QueryProcessor(query, streamDefinitionMap, streamJunctionMap, threadPoolExecutor, siddhiContext);
+        defineStream(queryProcessor.getOutputStreamDefinition());
+        queryProcessorMap.putIfAbsent(queryProcessor.getQueryId(), queryProcessor);
+        return queryProcessor.getQueryId();
 
     }
 
-    private void initQuery(Query query, List<QueryEventStream> queryEventStreamList) {
-
-        //   Map<String, StreamDefinition> queryStreamDefinitionMap = getQueryStreamDefinitionMap(query.getInputStream().getStreamIds());
-        //populate projection for * case
-        List<OutputAttribute> attributeList = query.getProjector().getProjectionList();
-        if (attributeList.size() == 0) {
-            for (QueryEventStream queryEventStream : queryEventStreamList) {
-                for (Attribute attribute : queryEventStream.getStreamDefinition().getAttributeList()) {
-                    attributeList.add(new SimpleAttribute(queryEventStream.getReferenceStreamId() + "_" + attribute.getName(), Expression.variable(queryEventStream.getReferenceStreamId(), attribute.getName())));
-                }
-            }
+    public void removeQuery(String queryId) {
+        QueryProcessor queryProcessor = queryProcessorMap.remove(queryId);
+        if (queryProcessor != null) {
+            queryProcessor.removeQuery(streamJunctionMap,streamDefinitionMap);
         }
-
     }
 
-    private Map<String, StreamDefinition> getQueryStreamDefinitionMap(List<String> streamIds) {
-        Map<String, StreamDefinition> map = new HashMap<String, StreamDefinition>();
-        for (String streamId : streamIds) {
-            map.put(streamId, streamDefinitionMap.get(streamId));
-        }
-        return map;
-    }
+
+//    private Map<String, StreamDefinition> getQueryStreamDefinitionMap(List<String> streamIds) {
+//        Map<String, StreamDefinition> map = new HashMap<String, StreamDefinition>();
+//        for (String streamId : streamIds) {
+//            map.put(streamId, streamDefinitionMap.get(streamId));
+//        }
+//        return map;
+//    }
 
 
 //    private void checkQuery(Query query) {
 //        List<String> streamIds = query.getInputStream().getStreamIds();
-//        ////System.out.println(streamIds);
+//        System.out.println(streamIds);
 //    }
 
     public InputHandler getInputHandler(String streamId) {
-        return new InputHandler(streamId, streamJunctionMap.get(streamId));
+        return inputHandlerMap.get(streamId);
     }
 
     public void addCallback(String streamId, Callback callback) {
         callback.setStreamId(streamId);
         callback.setSiddhiContext(siddhiContext);
         callback.setThreadPoolExecutor(threadPoolExecutor);
-        streamJunctionMap.get(streamId).addEventFlow(callback);
+        StreamJunction streamJunction = streamJunctionMap.get(streamId);
+        if(streamJunction==null){
+            streamJunction = new StreamJunction(streamId);
+            streamJunctionMap.putIfAbsent(streamId, streamJunction);
+        }
+        streamJunction.addEventFlow(callback);
     }
 
 
@@ -179,7 +198,7 @@ public class SiddhiManager {
         }
     }
 
-    public StreamDefinition getStreamDefinition(String streamId){
+    public StreamDefinition getStreamDefinition(String streamId) {
         return streamDefinitionMap.get(streamId);
     }
 }

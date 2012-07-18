@@ -18,6 +18,7 @@
 package org.wso2.siddhi.test;
 
 import junit.framework.Assert;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
@@ -33,6 +34,8 @@ import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.stream.handler.Handler;
 
 public class FilterTestCase {
+    static final Logger log = Logger.getLogger(FilterTestCase.class);
+
     private int count;
     private boolean eventArrived;
 
@@ -45,8 +48,7 @@ public class FilterTestCase {
     @Test
     public void testFilterQuery1() throws InterruptedException {
 
-
-        System.out.println("Filter test1");
+        log.info("Filter test1");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         InputHandler inputHandler = siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
@@ -82,7 +84,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery2() throws InterruptedException {
-        System.out.println("Filter test2");
+        log.info("Filter test2");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
@@ -113,7 +115,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery3() throws InterruptedException {
-        System.out.println("Filter test3");
+        log.info("Filter test3");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -149,7 +151,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery4() throws InterruptedException {
-        System.out.println("Filter test4");
+        log.info("Filter test4");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -192,7 +194,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery5() throws InterruptedException {
-        System.out.println("Filter test5");
+        log.info("Filter test5");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -240,7 +242,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery6() throws InterruptedException {
-        System.out.println("Filer test6");
+        log.info("Filer test6");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -289,7 +291,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery7() throws InterruptedException {
-        System.out.println("Filer test7");
+        log.info("Filer test7");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -339,7 +341,7 @@ public class FilterTestCase {
     public void testFilterQuery8() throws InterruptedException {
 
 
-        System.out.println("Filter test8");
+        log.info("Filter test8");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
@@ -379,7 +381,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery9() throws InterruptedException {
-        System.out.println("Filer test9");
+        log.info("Filer test9");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -431,7 +433,7 @@ public class FilterTestCase {
 
     @Test
     public void testFilterQuery10() throws InterruptedException {
-        System.out.println("Filer test10");
+        log.info("Filer test10");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 

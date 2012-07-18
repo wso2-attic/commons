@@ -18,30 +18,30 @@
 package org.wso2.siddhi.core.util.parser;
 
 import org.wso2.siddhi.core.exception.OperationNotSupportedException;
-import org.wso2.siddhi.core.projector.attibute.aggregator.Aggregator;
-import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorFloat;
-import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorInt;
-import org.wso2.siddhi.core.projector.attibute.aggregator.avg.AvgAggregatorLong;
-import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorDouble;
-import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorFloat;
-import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorInt;
-import org.wso2.siddhi.core.projector.attibute.aggregator.max.MaxAggregatorLong;
-import org.wso2.siddhi.core.projector.attibute.aggregator.min.MinAggregatorDouble;
-import org.wso2.siddhi.core.projector.attibute.aggregator.min.MinAggregatorFloat;
-import org.wso2.siddhi.core.projector.attibute.aggregator.min.MinAggregatorInt;
-import org.wso2.siddhi.core.projector.attibute.aggregator.min.MinAggregatorLong;
-import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorDouble;
-import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorFloat;
-import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorInt;
-import org.wso2.siddhi.core.projector.attibute.aggregator.sum.SumAggregatorLong;
-import org.wso2.siddhi.core.projector.attibute.generator.AbstractAggregateAttributeGenerator;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.Aggregator;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorFloat;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorInt;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorLong;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorDouble;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorFloat;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorInt;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorLong;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.min.MinAggregatorDouble;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.min.MinAggregatorFloat;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.min.MinAggregatorInt;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.min.MinAggregatorLong;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.sum.SumAggregatorDouble;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.sum.SumAggregatorFloat;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.sum.SumAggregatorInt;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.sum.SumAggregatorLong;
+import org.wso2.siddhi.core.query.projector.attibute.generator.AbstractAggregateAttributeGenerator;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
 public class AggregatorParser {
 
 
     public static AbstractAggregateAttributeGenerator loadAggregatorClass(String aggregationName) {
-        return (AbstractAggregateAttributeGenerator) org.wso2.siddhi.core.util.ClassLoader.loadClass("org.wso2.siddhi.core.projector.attibute.generator." + aggregationName.substring(0, 1).toUpperCase() + aggregationName.substring(1) + "AggregateAttributeGenerator");
+        return (AbstractAggregateAttributeGenerator) org.wso2.siddhi.core.util.ClassLoader.loadClass(AbstractAggregateAttributeGenerator.class.getPackage().getName() + "." + aggregationName.substring(0, 1).toUpperCase() + aggregationName.substring(1) + "AggregateAttributeGenerator");
     }
 
     public static Aggregator createSumAggregator(Attribute.Type type) {

@@ -111,10 +111,10 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:http://svn.wso2.org/repos/wso2/trunk/commons/siddhi2</connection>
-        <developerConnection>scm:svn:https://svn.wso2.org/repos/wso2/trunk/commons/siddhi2
+        <connection>scm:svn:http://svn.wso2.org/repos/wso2/trunk/commons/siddhi</connection>
+        <developerConnection>scm:svn:https://svn.wso2.org/repos/wso2/trunk/commons/siddhi
         </developerConnection>
-        <url>http://svn.wso2.org/repos/wso2/trunk/commons/siddhi2</url>
+        <url>http://svn.wso2.org/repos/wso2/trunk/commons/siddhi</url>
     </scm>
 
     <mailingLists>

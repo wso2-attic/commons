@@ -17,21 +17,20 @@
 */
 package org.wso2.siddhi.core.exception;
 
-public class EventStreamAlreadyExistException extends RuntimeException {
-
-    public EventStreamAlreadyExistException() {
+public class EventStreamNotExistException extends RuntimeException {
+    public EventStreamNotExistException() {
         super();
     }
 
-    public EventStreamAlreadyExistException(String message) {
+    public EventStreamNotExistException(String message) {
         super(message);
     }
 
-    public EventStreamAlreadyExistException(String message, Throwable throwable) {
+    public EventStreamNotExistException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public EventStreamAlreadyExistException(Throwable throwable) {
+    public EventStreamNotExistException(Throwable throwable) {
         super(throwable);
     }
 }

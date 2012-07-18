@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.test.pattern;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,8 @@ import org.wso2.siddhi.query.api.stream.pattern.Pattern;
 import org.wso2.siddhi.query.api.stream.pattern.element.LogicalElement;
 
 public class PatternComplexTestCase {
-    int eventCount;
+    static final Logger log = Logger.getLogger(PatternComplexTestCase.class);
+    private int eventCount;
 
     @Before
     public void inti() {
@@ -43,7 +45,7 @@ public class PatternComplexTestCase {
 
     @Test
     public void testQuery1() throws InterruptedException {
-        System.out.println("test1 - OUT 2");
+        log.info("test1 - OUT 2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -123,7 +125,7 @@ public class PatternComplexTestCase {
 
     @Test
     public void testQuery2() throws InterruptedException {
-        System.out.println("test2 - OUT 1");
+        log.info("test2 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 

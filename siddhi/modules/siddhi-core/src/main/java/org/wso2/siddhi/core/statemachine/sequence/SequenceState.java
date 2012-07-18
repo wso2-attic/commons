@@ -17,8 +17,8 @@
 */
 package org.wso2.siddhi.core.statemachine.sequence;
 
-import org.wso2.siddhi.core.stream.packer.sequence.SequenceStreamPacker;
-import org.wso2.siddhi.core.stream.recevier.sequence.SequenceSingleStreamReceiver;
+import org.wso2.siddhi.core.query.stream.packer.sequence.SequenceStreamPacker;
+import org.wso2.siddhi.core.query.stream.recevier.sequence.SequenceSingleStreamReceiver;
 import org.wso2.siddhi.query.api.stream.SingleStream;
 
 public class SequenceState {

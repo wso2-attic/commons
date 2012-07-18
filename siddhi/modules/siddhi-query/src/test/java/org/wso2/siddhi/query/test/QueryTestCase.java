@@ -19,9 +19,9 @@ public class QueryTestCase {
         SiddhiQLGrammarParser parser = new SiddhiQLGrammarParser(tokens);
 
         parser.executionPlan();
-        System.out.println("OK");
-        double float1 = 2d;
-        System.out.println(float1);
+//        System.out.println("OK");
+//        double float1 = 2d;
+//        System.out.println(float1);
         // CommonTree t = (CommonTree) r.getTree();
         //
         // CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);

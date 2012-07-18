@@ -19,7 +19,7 @@ package org.wso2.siddhi.test;
 
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
-import org.wso2.siddhi.core.exception.EventStreamAlreadyExistException;
+import org.wso2.siddhi.core.exception.EventStreamWithDifferentDefinitionAlreadyExistException;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
@@ -34,7 +34,7 @@ public class DefineStreamTestCase {
         siddhiManager.defineStream(streamDefinition);
     }
 
-    @Test(expected = EventStreamAlreadyExistException.class)
+    @Test(expected = EventStreamWithDifferentDefinitionAlreadyExistException.class)
     public void testAddingTwoSameDefinition() {
         SiddhiManager siddhiManager = new SiddhiManager();
         siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.INT).attribute("volume", Attribute.Type.FLOAT));

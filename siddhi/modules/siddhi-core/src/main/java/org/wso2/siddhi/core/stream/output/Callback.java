@@ -22,7 +22,7 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStream;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
-import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
+import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -78,7 +78,7 @@ public abstract class Callback implements Runnable,StreamReceiver {
 //        return ((Object[]) eventData[eventPosition])[dataPosition];
 //    }
 
-    public void receive(StreamEvent event) throws InterruptedException {
+    public void receive(StreamEvent event)  {
         if (context.isSingleThreading()) {
             process(event);
         } else {

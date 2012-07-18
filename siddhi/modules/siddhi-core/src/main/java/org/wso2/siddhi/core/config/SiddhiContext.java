@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.core.config;
 
-import org.wso2.siddhi.core.stream.handler.RunnableHandler;
+import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 
 import java.util.ArrayList;
 import java.util.List;

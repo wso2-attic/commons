@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.test;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ import org.wso2.siddhi.query.api.utils.SiddhiConstants;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
 public class SequenceTestCase {
-
+    static final Logger log = Logger.getLogger(SequenceTestCase.class);
     int eventCount;
 
     @Before
@@ -45,7 +46,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery1() throws InterruptedException {
-        System.out.println("test1 - OUT 1");
+        log.info("test1 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -99,7 +100,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery2() throws InterruptedException {
-        System.out.println("test2 - OUT 1");
+        log.info("test2 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -155,7 +156,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery3() throws InterruptedException {
-        System.out.println("test3  - OUT 2");
+        log.info("test3  - OUT 2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -214,7 +215,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery4() throws InterruptedException {
-        System.out.println("test4  - OUT 2");
+        log.info("test4  - OUT 2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -278,7 +279,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery5() throws InterruptedException {
-        System.out.println("test5  - OUT 1");
+        log.info("test5  - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -340,7 +341,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery6() throws InterruptedException {
-        System.out.println("test6  - OUT 2");
+        log.info("test6  - OUT 2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -409,7 +410,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery7() throws InterruptedException {
-        System.out.println("test7  - OUT 2");
+        log.info("test7  - OUT 2");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -479,7 +480,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery8() throws InterruptedException {
-        System.out.println("test8  - OUT 1");
+        log.info("test8  - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -542,7 +543,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery9() throws InterruptedException {
-        System.out.println("test9  - OUT 1");
+        log.info("test9  - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -615,7 +616,7 @@ public class SequenceTestCase {
 
     @Test
     public void testQuery10() throws InterruptedException, SiddhiPraserException {
-        System.out.println("test10  - OUT 1");
+        log.info("test10  - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
         siddhiManager.defineStream("define stream cseEventStream ( symbol string, price float, volume int )");
@@ -659,7 +660,7 @@ public class SequenceTestCase {
 
 //    @Test
 //    public void testQuery1() throws InterruptedException {
-//        System.out.println("test1");
+//        log.info("test1");
 //
 //        SiddhiManager siddhiManager = new SiddhiManager();
 //

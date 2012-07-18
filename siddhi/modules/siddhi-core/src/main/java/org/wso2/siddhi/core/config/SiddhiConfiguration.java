@@ -19,16 +19,21 @@ package org.wso2.siddhi.core.config;
 
 public class SiddhiConfiguration {
 
+    private int threads;
+
+    private boolean singleThreading;
+
+    private int eventBatchSize;
+
+
     public SiddhiConfiguration() {
-        //To change body of created methods use File | Settings | File Templates.
+
+        threads = Runtime.getRuntime().availableProcessors();
+
+        singleThreading = true;
+
+        eventBatchSize = 50;
     }
-
-    private int threads=Runtime.getRuntime().availableProcessors();
-
-    private boolean singleThreading=true;
-
-    private int eventBatchSize=50;
-
 
     public int getThreads() {
         return threads;

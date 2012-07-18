@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.util.parser;
 
+import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
 import org.wso2.siddhi.core.statemachine.pattern.CountPatternState;
 import org.wso2.siddhi.core.statemachine.pattern.LogicPatternState;
@@ -46,8 +47,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StateParser {
+    static final Logger log = Logger.getLogger(StateParser.class);
 
-     //Pattern
+    //Pattern
 
     public static List<PatternState> convertToPatternStateList(List<State> stateList) {
         List<PatternState> patternStateList = new ArrayList<PatternState>(stateList.size());
@@ -146,7 +148,7 @@ public class StateParser {
         } else if (patternElement instanceof PatternStream) {
             int firstEveryStateNumber = stateNumber.getNumber();
             if (!topLevel) {
-                System.err.println("Every inside Every is not allowed !!");
+                log.error("Every inside Every is not allowed !!");
             }
             identifyStates(((PatternStream) patternElement).getPatternElement(), stateList, stateNumber, perv, false);
 
@@ -169,7 +171,7 @@ public class StateParser {
                 }
             }
         } else {
-            System.err.println("Error! " + patternElement);
+            log.error("Error! " + patternElement);
         }
 
         return stateList;
@@ -260,7 +262,7 @@ public class StateParser {
             identifyStates(((NextElement) sequenceElement).getSequenceElement(), stateList, stateNumber, perv);
             identifyStates(((NextElement) sequenceElement).getNextSequenceElement(), stateList, stateNumber, perv);
         } else {
-            System.err.println("Error! " + sequenceElement);
+            log.error("Error! " + sequenceElement);
         }
 
         return stateList;

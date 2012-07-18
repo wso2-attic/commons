@@ -18,31 +18,35 @@
 package org.wso2.siddhi.core.stream;
 
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.stream.recevier.StreamReceiver;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StreamJunction {
-    List<StreamReceiver> streamReceivers =new CopyOnWriteArrayList<StreamReceiver>();
-    private StreamDefinition streamDefinition;
-    private  int streamReceiversSize;
+    private List<StreamReceiver> streamReceivers = new CopyOnWriteArrayList<StreamReceiver>();
+    private String streamId;
 
-    public void send(StreamEvent streamEvent) throws InterruptedException {
-        //in reverse order to execute the later states first to overcome to dependencies of count states
-        for (int i = streamReceiversSize-1; i>=0; i--) {
-            StreamReceiver streamReceiver = streamReceivers.get(i);
-            streamReceiver.receive(streamEvent);
+    public StreamJunction(String streamId) {
+        this.streamId = streamId;
+    }
+
+    public void send(StreamEvent streamEvent) {
+        for (StreamReceiver receiver : streamReceivers) {
+            receiver.receive(streamEvent);
         }
     }
 
-    public StreamJunction(StreamDefinition streamDefinition) {
-        this.streamDefinition = streamDefinition;
+    public synchronized void addEventFlow(StreamReceiver streamReceiver) {
+        //in reverse order to execute the later states first to overcome to dependencies of count states
+        streamReceivers.add(0, streamReceiver);
     }
 
-    public void addEventFlow(StreamReceiver streamReceiver) {
-        streamReceivers.add(streamReceiver);
-        streamReceiversSize  = streamReceivers.size();
+    public synchronized void removeEventFlow(StreamReceiver streamReceiver) {
+        streamReceivers.remove(streamReceiver);
+    }
+
+    public String getStreamId() {
+        return streamId;
     }
 }

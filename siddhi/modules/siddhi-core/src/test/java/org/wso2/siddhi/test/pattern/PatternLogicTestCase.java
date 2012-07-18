@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.test.pattern;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ import org.wso2.siddhi.query.api.stream.pattern.Pattern;
 import org.wso2.siddhi.query.api.stream.pattern.element.LogicalElement;
 
 public class PatternLogicTestCase {
-
+    static final Logger log = Logger.getLogger(PatternLogicTestCase.class);
     private int eventCount;
     private boolean eventArrived;
 
@@ -46,7 +47,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery1() throws InterruptedException {
-        System.out.println("test1 - OUT 1");
+        log.info("test1 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -107,7 +108,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery2() throws InterruptedException {
-        System.out.println("test2 - OUT 1");
+        log.info("test2 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -173,7 +174,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery3() throws InterruptedException {
-        System.out.println("test3 - OUT 1");
+        log.info("test3 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -242,7 +243,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery4() throws InterruptedException {
-        System.out.println("test4 - OUT 1");
+        log.info("test4 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -309,7 +310,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery5() throws InterruptedException {
-        System.out.println("test5 - OUT 1");
+        log.info("test5 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
@@ -378,7 +379,7 @@ public class PatternLogicTestCase {
 
     @Test
     public void testQuery6() throws InterruptedException {
-        System.out.println("test6 - OUT 1");
+        log.info("test6 - OUT 1");
 
         SiddhiManager siddhiManager = new SiddhiManager();
 
