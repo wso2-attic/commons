@@ -1,0 +1,58 @@
+<data name="UDTSample">   
+   <config id="default">      
+      <property name="org.wso2.ws.dataservice.driver">oracle.jdbc.driver.OracleDriver</property>      
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:oracle:thin:@localhost:1521:XE</property>      
+      <property name="org.wso2.ws.dataservice.user">tester</property>      
+      <property name="org.wso2.ws.dataservice.password">tester</property>   
+   </config>   
+   <query id="q1" useConfig="default">      
+      <sql>SELECT customer_id, customer_name, customer_address FROM UDTtest_tbl</sql>      
+      <result element="Entries" rowName="Entry">         
+         <element name="ID" column="customer_id" xsdType="xs:integer" />         
+         <element name="Name" column="customer_name" xsdType="xs:string" />         
+         <element name="Number" column="customer_address[0]" xsdType="xs:integer" />         
+         <element name="Street" column="customer_address[1]" xsdType="xs:string" />         
+         <element name="City" column="customer_address[2]" xsdType="xs:string" />         
+         <element name="State" column="customer_address[3]" xsdType="xs:string" />         
+         <element name="Country" column="customer_address[4]" xsdType="xs:string" />      
+      </result>   
+   </query>   
+   <query id="q2" useConfig="default">      
+      <sql>INSERT INTO UDTtest_tbl VALUES(?,?,address_t(?,?,?,?,?))</sql>      
+      <param name="ID" sqlType="INTEGER" />      
+      <param name="Name" sqlType="STRING" />      
+      <param name="Number" sqlType="INTEGER" />      
+      <param name="Street" sqlType="STRING" />      
+      <param name="City" sqlType="STRING" />      
+      <param name="State" sqlType="STRING" structType="null" />      
+      <param name="Country" sqlType="STRING" />   
+   </query>   
+   <query id="q3" useConfig="default">      
+      <sql>call test_proc(?,?)</sql>      
+      <result element="customers" rowName="customer">         
+         <element name="id" column="cust[0]" xsdType="xs:integer" />         
+         <element name="name" column="cust[1]" xsdType="xs:string" />      
+      </result>      
+      <param name="id" sqlType="INTEGER" ordinal="1" />      
+      <param name="cust" sqlType="STRUCT" type="OUT" ordinal="2" structType="CUSTOMER" />   
+   </query>   
+   <operation name="op1">      
+      <call-query href="q1" />   
+   </operation>   
+   <operation name="op2">      
+      <call-query href="q2">         
+         <with-param name="ID" query-param="ID" />         
+         <with-param name="Name" query-param="Name" />         
+         <with-param name="Number" query-param="Number" />         
+         <with-param name="Street" query-param="Street" />         
+         <with-param name="City" query-param="City" />         
+         <with-param name="State" query-param="State" />         
+         <with-param name="Country" query-param="Country" />      
+      </call-query>   
+   </operation>   
+   <operation name="op3">      
+      <call-query href="q3">         
+         <with-param name="id" query-param="id" />      
+      </call-query>   
+   </operation>
+</data>

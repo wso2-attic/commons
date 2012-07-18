@@ -1,9 +1,9 @@
 <data name="CompanySampleDS">                           
    <config id="CompanyDataSource">                                                      
       <property name="org.wso2.ws.dataservice.driver">com.mysql.jdbc.Driver</property>                                                      
-      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://wso2-rnd-db1.cd3cwezibdu8.us-east-1.rds.amazonaws.com/Company</property>                                                      
-      <property name="org.wso2.ws.dataservice.user">wso2admin</property>                                                      
-      <property name="org.wso2.ws.dataservice.password">dss261temp</property>                           
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:mysql://localhost:3306/Company</property>                                                      
+      <property name="org.wso2.ws.dataservice.user">root</property>                                                      
+      <property name="org.wso2.ws.dataservice.password">root</property>                           
    </config>                           
    <query id="ProjectDetails" useConfig="CompanyDataSource">                                                      
       <sql>SELECT Project.P_Name, Project.Client_Name, Project.Description, Employee.FName, Employee.LName&#xd;FROM Project LEFT JOIN Employee ON Project.Manager=Employee.ID&#xd;ORDER BY Project.P_ID</sql>                                                      
