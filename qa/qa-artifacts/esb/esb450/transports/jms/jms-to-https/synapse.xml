@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="JMSToHTTP" transports="jms" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <endpoint>
+                <address uri="http://10.200.3.64:9770/oracle/as/services/Axis2Service">
+                    <enableSec policy="sec_policy"/>
+                </address>
+            </endpoint>
+            <inSequence>
+                <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+            </inSequence>
+            <outSequence>
+                <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="http://localhost:9770/oracle/as/services/Axis2Service?wsdl"/>
+        <parameter name="transport.jms.ContentType">
+            <rules xmlns="">
+                <jmsProperty>contentType</jmsProperty>
+                <default>application/xml</default>
+            </rules>
+        </parameter>
+    </proxy>
+       <localEntry key="sec_policy" src="file:repository/samples/resources/policy/policy_2.xml"/>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <send>
+                <endpoint>
+                    <address uri="http://localhost:9000/services/SecureStockQuoteService">
+                        <enableAddressing/>
+                        <enableSec policy="sec_policy2"/>
+                    </address>
+                </endpoint>
+            </send>
+        </in>
+        <out>
+            <header xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" name="wsse:Security" action="remove"/>
+            <send/>
+        </out>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
