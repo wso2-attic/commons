@@ -92,9 +92,8 @@ public class PatternComplexTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 55.7f, null, 57.7f},inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -166,9 +165,8 @@ public class PatternComplexTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 54.0f, 53.6f, 57.0f},inEvents[0].getData());
                 } else {

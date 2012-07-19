@@ -80,9 +80,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                     Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 47.8f, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -143,9 +142,8 @@ public class PatternCountTestCase {
 
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -208,9 +206,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{25.6f, 47.8f, null, null, 55.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -268,9 +265,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.fail();
                 eventCount++;
             }
@@ -324,9 +320,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 23.7f, 24.7f, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -392,9 +387,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, 55.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -450,9 +444,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{null, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }
@@ -503,9 +496,8 @@ public class PatternCountTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{25.6f, null, 45.7f},inEvents[0].getData());
                 eventCount++;
             }

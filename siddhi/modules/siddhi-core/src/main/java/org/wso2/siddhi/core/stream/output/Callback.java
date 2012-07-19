@@ -107,9 +107,9 @@ public abstract class Callback implements Runnable,StreamReceiver {
         if (event instanceof Event) {
             try {
                 if (event instanceof InStream) {
-                    receive(event.getTimeStamp(), new Event[]{((Event) event)}, null, null);
+                    receive(event.getTimeStamp(), new Event[]{((Event) event)}, null);
                 } else if (event instanceof RemoveStream) {
-                    receive(event.getTimeStamp(), null, new Event[]{((Event) event)}, null);
+                    receive(event.getTimeStamp(), null, new Event[]{((Event) event)});
                 }
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -118,7 +118,7 @@ public abstract class Callback implements Runnable,StreamReceiver {
     }
 
     public abstract void receive(long timeStamp, Event[] inEvents,
-                                 Event[] removeEvents, Event[] faultEvents);
+                                 Event[] removeEvents);
 
     public void setStreamId(String streamId) {
         this.streamId = streamId;

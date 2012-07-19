@@ -78,9 +78,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{"WSO2", "IBM"},inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
@@ -140,9 +139,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{"WSO2", "IBM"},inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -206,9 +204,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertArrayEquals(new Object[]{55.6f, 54f, 57.7f},inEvents[0].getData());
                 eventCount++;
                 eventArrived = true;
@@ -268,9 +265,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 54f, 57.7f},inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -342,9 +338,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 54f, 57.7f},inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -410,9 +405,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 57.6f},inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -470,9 +464,8 @@ public class PatternEveryTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f},inEvents[0].getData());
                 } else if (eventCount == 1) {

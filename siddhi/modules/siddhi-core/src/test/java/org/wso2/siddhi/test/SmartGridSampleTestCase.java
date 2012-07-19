@@ -121,9 +121,8 @@ public class SmartGridSampleTestCase {
         siddhiManager.addCallback("OutStream", new Callback() {
 
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
 //                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
@@ -176,9 +175,8 @@ public class SmartGridSampleTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
 //                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
@@ -234,9 +232,8 @@ public class SmartGridSampleTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
 //                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
@@ -294,9 +291,8 @@ public class SmartGridSampleTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
 //                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;
@@ -357,9 +353,8 @@ public class SmartGridSampleTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
 //                    junit.framework.Assert.assertTrue("IBM".equals(getData(newEventData, 0, 0)) || "WSO2".equals(getData(newEventData, 0, 0)));
                     eventCount++;

@@ -134,7 +134,7 @@ public class SiddhiManager {
     }
 
 //    public void addExecutionPlan(String addExecutionPlan) throws SiddhiPraserException {
-//        for (ExecutionPlan executionPlan : SiddhiCompiler.parse(addExecutionPlan)) {
+//        for (IQuery executionPlan : SiddhiCompiler.parse(addExecutionPlan)) {
 //            if (executionPlan instanceof StreamDefinition) {
 //                defineStream((StreamDefinition) executionPlan);
 //            } else {

@@ -81,9 +81,8 @@ public class JoinTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
                     Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     eventCount++;
@@ -146,9 +145,8 @@ public class JoinTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("StockQuote", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (inEvents != null) {
                     Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
                     eventCount++;

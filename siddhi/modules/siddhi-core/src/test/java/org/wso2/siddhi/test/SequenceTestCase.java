@@ -78,9 +78,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertEquals("WSO2", inEvents[0].getData(0));
                 Assert.assertEquals("IBM", inEvents[0].getData(1));
                 eventCount++;
@@ -133,9 +132,8 @@ public class SequenceTestCase {
         siddhiManager.addCallback("OutStream", new Callback() {
 
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertEquals("GOOG", inEvents[0].getData(0));
                 Assert.assertEquals("IBM", inEvents[0].getData(1));
                 eventCount++;
@@ -189,9 +187,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{"WSO2", null, null}, inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -249,9 +246,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 55.7f, 57.6f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -313,9 +309,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.7f, 57.6f}, inEvents[0].getData());
                 } else {
@@ -379,9 +374,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, null, 55.7f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -448,9 +442,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 57.6f, null}, inEvents[0].getData());
                 } else if (eventCount == 1) {
@@ -514,9 +507,8 @@ public class SequenceTestCase {
         siddhiManager.addQuery(query);
         siddhiManager.addCallback("OutStream", new Callback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, null, 57.6f}, inEvents[0].getData());
                 } else {
@@ -585,9 +577,8 @@ public class SequenceTestCase {
         siddhiManager.addCallback("OutStream", new Callback() {
 
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{29.6f, 35.6f, 57.6f, 47.6f}, inEvents[0].getData());
                 } else {
@@ -626,9 +617,8 @@ public class SequenceTestCase {
         siddhiManager.addCallback("StockQuote", new Callback() {
 
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{76.6f, "IBM", 20}, inEvents[0].getData());
                 } else {
