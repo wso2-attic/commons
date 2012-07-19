@@ -333,7 +333,7 @@ public class StreamParser {
             if (handler.getType() == Handler.Type.FILTER) {
                 if (handler.getName() == null) {   //default filter
                     Condition condition = (Condition) handler.getParameters()[0];
-                    streamHandler = new FilterHandler(ExecutorParser.parseCondition(condition, queryEventStreamList, inputStream.getStreamReferenceId()), queryEventStreamList);
+                    streamHandler = new FilterHandler(ExecutorParser.parseCondition(condition, queryEventStreamList, inputStream.getStreamReferenceId()));
 
                 }
             } else if (handler.getType() == Handler.Type.WIN) {

@@ -19,6 +19,7 @@ package org.wso2.siddhi.core.util.parser;
 
 import org.wso2.siddhi.core.exception.OperationNotSupportedException;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.Aggregator;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorDouble;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorFloat;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorInt;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorLong;
@@ -73,7 +74,7 @@ public class AggregatorParser {
             case FLOAT:
                 return new AvgAggregatorFloat();
             case DOUBLE:
-                return new AvgAggregatorInt();
+                return new AvgAggregatorDouble();
             case BOOL:
                 throw new OperationNotSupportedException("Avg not supported for bool");
         }

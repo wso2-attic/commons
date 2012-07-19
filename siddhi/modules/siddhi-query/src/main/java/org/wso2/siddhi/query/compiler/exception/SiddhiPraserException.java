@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.query.compiler.exception;
 
-public class SiddhiPraserException extends Throwable {
+public class SiddhiPraserException extends RuntimeException {
     public SiddhiPraserException() {
         super();
     }

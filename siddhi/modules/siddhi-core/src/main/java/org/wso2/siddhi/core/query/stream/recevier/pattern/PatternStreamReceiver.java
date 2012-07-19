@@ -93,10 +93,4 @@ public class PatternStreamReceiver implements StreamElement, StreamReceiver, Run
         return streamId;
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return null;
-    }
-
-
 }

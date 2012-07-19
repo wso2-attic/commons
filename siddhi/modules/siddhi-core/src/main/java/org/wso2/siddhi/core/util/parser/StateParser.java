@@ -157,19 +157,19 @@ public class StateParser {
             if (lastState instanceof LogicState) {
                 lastStatePartner = stateList.get(((LogicState) lastState).getPartnerNumber());
             }
-            if (stateList.get(firstEveryStateNumber) instanceof LogicState) {
-                lastState.setNextEvery(firstEveryStateNumber);
-//                lastState.addNextEvery(firstEveryStateNumber + 1);
-                if (lastStatePartner != null) {
-                    lastStatePartner.setNextEvery(firstEveryStateNumber);
-//                    lastStatePartner.addNext(firstEveryStateNumber + 1);
-                }
-            } else {
-                lastState.setNextEvery(firstEveryStateNumber);
-                if (lastStatePartner != null) {
-                    lastStatePartner.setNextEvery(firstEveryStateNumber);
-                }
+//            if (stateList.get(firstEveryStateNumber) instanceof LogicState) {
+//                lastState.setNextEvery(firstEveryStateNumber);
+////                lastState.addNextEvery(firstEveryStateNumber + 1);
+//                if (lastStatePartner != null) {
+//                    lastStatePartner.setNextEvery(firstEveryStateNumber);
+////                    lastStatePartner.addNext(firstEveryStateNumber + 1);
+//                }
+//            } else {
+            lastState.setNextEvery(firstEveryStateNumber);
+            if (lastStatePartner != null) {
+                lastStatePartner.setNextEvery(firstEveryStateNumber);
             }
+//            }
         } else {
             log.error("Error! " + patternElement);
         }

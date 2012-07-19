@@ -28,6 +28,7 @@ import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
 import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
+import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +49,7 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
         if (parameters[0] instanceof Integer) {
             timeToKeep = (Integer) parameters[0];
         } else {
-            timeToKeep = (Long) parameters[0];
+            timeToKeep = ((IntConstant) parameters[0]).getValue();
         }
         eventRemoverScheduler.schedule(this, timeToKeep, TimeUnit.MILLISECONDS);
     }

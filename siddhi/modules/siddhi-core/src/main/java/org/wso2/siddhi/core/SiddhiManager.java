@@ -25,7 +25,6 @@ import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.stream.StreamJunction;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.stream.output.Callback;
-import org.wso2.siddhi.query.api.ExecutionPlan;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.compiler.SiddhiCompiler;
@@ -67,14 +66,14 @@ public class SiddhiManager {
 
     public InputHandler defineStream(StreamDefinition streamDefinition) {
         if (!checkEventStreamExist(streamDefinition)) {
-            streamDefinitionMap.putIfAbsent(streamDefinition.getStreamId(), streamDefinition);
+            streamDefinitionMap.put(streamDefinition.getStreamId(), streamDefinition);
             StreamJunction streamJunction = streamJunctionMap.get(streamDefinition.getStreamId());
-            if(streamJunction==null){
+            if (streamJunction == null) {
                 streamJunction = new StreamJunction(streamDefinition.getStreamId());
-                streamJunctionMap.putIfAbsent(streamDefinition.getStreamId(), streamJunction);
+                streamJunctionMap.put(streamDefinition.getStreamId(), streamJunction);
             }
             InputHandler inputHandler = new InputHandler(streamDefinition.getStreamId(), streamJunction);
-            inputHandlerMap.putIfAbsent(streamDefinition.getStreamId(), inputHandler);
+            inputHandlerMap.put(streamDefinition.getStreamId(), inputHandler);
             return inputHandler;
         } else {
             return inputHandlerMap.get(streamDefinition.getStreamId());
@@ -134,20 +133,20 @@ public class SiddhiManager {
         return addQuery(SiddhiCompiler.parseQuery(query));
     }
 
-    public void addExecutionPlan(String addExecutionPlan) throws SiddhiPraserException {
-        for (ExecutionPlan executionPlan : SiddhiCompiler.parse(addExecutionPlan)) {
-            if (executionPlan instanceof StreamDefinition) {
-                defineStream((StreamDefinition) executionPlan);
-            } else {
-                addQuery((Query) executionPlan);
-            }
-        }
-    }
+//    public void addExecutionPlan(String addExecutionPlan) throws SiddhiPraserException {
+//        for (ExecutionPlan executionPlan : SiddhiCompiler.parse(addExecutionPlan)) {
+//            if (executionPlan instanceof StreamDefinition) {
+//                defineStream((StreamDefinition) executionPlan);
+//            } else {
+//                addQuery((Query) executionPlan);
+//            }
+//        }
+//    }
 
     public String addQuery(Query query) {
         QueryProcessor queryProcessor = new QueryProcessor(query, streamDefinitionMap, streamJunctionMap, threadPoolExecutor, siddhiContext);
         defineStream(queryProcessor.getOutputStreamDefinition());
-        queryProcessorMap.putIfAbsent(queryProcessor.getQueryId(), queryProcessor);
+        queryProcessorMap.put(queryProcessor.getQueryId(), queryProcessor);
         return queryProcessor.getQueryId();
 
     }
@@ -155,7 +154,7 @@ public class SiddhiManager {
     public void removeQuery(String queryId) {
         QueryProcessor queryProcessor = queryProcessorMap.remove(queryId);
         if (queryProcessor != null) {
-            queryProcessor.removeQuery(streamJunctionMap,streamDefinitionMap);
+            queryProcessor.removeQuery(streamJunctionMap, streamDefinitionMap);
         }
     }
 
@@ -174,6 +173,10 @@ public class SiddhiManager {
 //        System.out.println(streamIds);
 //    }
 
+    public Query getQuery(String queryReference){
+        return queryProcessorMap.get(queryReference).getQuery();
+    }
+
     public InputHandler getInputHandler(String streamId) {
         return inputHandlerMap.get(streamId);
     }
@@ -183,9 +186,9 @@ public class SiddhiManager {
         callback.setSiddhiContext(siddhiContext);
         callback.setThreadPoolExecutor(threadPoolExecutor);
         StreamJunction streamJunction = streamJunctionMap.get(streamId);
-        if(streamJunction==null){
+        if (streamJunction == null) {
             streamJunction = new StreamJunction(streamId);
-            streamJunctionMap.putIfAbsent(streamId, streamJunction);
+            streamJunctionMap.put(streamId, streamJunction);
         }
         streamJunction.addEventFlow(callback);
     }

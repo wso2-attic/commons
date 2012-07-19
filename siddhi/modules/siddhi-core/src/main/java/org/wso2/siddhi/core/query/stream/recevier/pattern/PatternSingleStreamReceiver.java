@@ -21,11 +21,10 @@ import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStateEvent;
-import org.wso2.siddhi.core.statemachine.pattern.PatternState;
 import org.wso2.siddhi.core.query.stream.StreamElement;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
-import org.wso2.siddhi.core.util.SchedulerQueue;
+import org.wso2.siddhi.core.statemachine.pattern.PatternState;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -84,12 +83,7 @@ public class PatternSingleStreamReceiver implements StreamReceiver, StreamElemen
         return state.getSingleStream().getStreamId();
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return null;
-    }
-
-    public synchronized void addToNextEvents(StateEvent stateEvent) {
+    public void addToNextEvents(StateEvent stateEvent) {
 //        System.out.println("add to next ss");
         try {
             nextEvents.put(stateEvent);
@@ -98,7 +92,7 @@ public class PatternSingleStreamReceiver implements StreamReceiver, StreamElemen
         }
     }
 
-    public synchronized void moveNextEventsToCurrentEvents() {
+    public void moveNextEventsToCurrentEvents() {
         //todo need to check which is faster
         // 1
 //        currentEvents.clear();

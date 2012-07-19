@@ -26,6 +26,26 @@ import org.wso2.siddhi.core.executor.conditon.OrConditionExecutor;
 import org.wso2.siddhi.core.executor.expression.ConstantExpressionExecutor;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
 import org.wso2.siddhi.core.executor.expression.VariableExpressionExecutor;
+import org.wso2.siddhi.core.executor.expression.add.AddExpressionExecutorDouble;
+import org.wso2.siddhi.core.executor.expression.add.AddExpressionExecutorFloat;
+import org.wso2.siddhi.core.executor.expression.add.AddExpressionExecutorInt;
+import org.wso2.siddhi.core.executor.expression.add.AddExpressionExecutorLong;
+import org.wso2.siddhi.core.executor.expression.divide.DivideExpressionExecutorDouble;
+import org.wso2.siddhi.core.executor.expression.divide.DivideExpressionExecutorFloat;
+import org.wso2.siddhi.core.executor.expression.divide.DivideExpressionExecutorInt;
+import org.wso2.siddhi.core.executor.expression.divide.DivideExpressionExecutorLong;
+import org.wso2.siddhi.core.executor.expression.minus.MinusExpressionExecutorDouble;
+import org.wso2.siddhi.core.executor.expression.minus.MinusExpressionExecutorFloat;
+import org.wso2.siddhi.core.executor.expression.minus.MinusExpressionExecutorInt;
+import org.wso2.siddhi.core.executor.expression.minus.MinusExpressionExecutorLong;
+import org.wso2.siddhi.core.executor.expression.mod.ModExpressionExecutorDouble;
+import org.wso2.siddhi.core.executor.expression.mod.ModExpressionExecutorFloat;
+import org.wso2.siddhi.core.executor.expression.mod.ModExpressionExecutorInt;
+import org.wso2.siddhi.core.executor.expression.mod.ModExpressionExecutorLong;
+import org.wso2.siddhi.core.executor.expression.multiply.MultiplyExpressionExecutorDouble;
+import org.wso2.siddhi.core.executor.expression.multiply.MultiplyExpressionExecutorFloat;
+import org.wso2.siddhi.core.executor.expression.multiply.MultiplyExpressionExecutorInt;
+import org.wso2.siddhi.core.executor.expression.multiply.MultiplyExpressionExecutorLong;
 import org.wso2.siddhi.query.api.condition.AndCondition;
 import org.wso2.siddhi.query.api.condition.BooleanCondition;
 import org.wso2.siddhi.query.api.condition.Compare;
@@ -33,7 +53,12 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.condition.NotCondition;
 import org.wso2.siddhi.query.api.condition.OrCondition;
 import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.query.api.expression.Add;
+import org.wso2.siddhi.query.api.expression.Divide;
 import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.expression.Minus;
+import org.wso2.siddhi.query.api.expression.Mod;
+import org.wso2.siddhi.query.api.expression.Multiply;
 import org.wso2.siddhi.query.api.expression.Variable;
 import org.wso2.siddhi.query.api.expression.constant.BoolConstant;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
@@ -107,9 +132,95 @@ public class ExecutorParser {
         } else if (expression instanceof Variable) {
             return new VariableExpressionExecutor(((Variable) expression).getStreamId(), ((Variable) expression).getAttributeName(), ((Variable) expression).getPosition(), queryEventStreamList, currentStreamReference);
 
+        } else if (expression instanceof Multiply) {
+            ExpressionExecutor left = parseExpression(((Multiply) expression).getLeftValue(), queryEventStreamList, currentStreamReference);
+            ExpressionExecutor right = parseExpression(((Multiply) expression).getRightValue(), queryEventStreamList, currentStreamReference);
+            Attribute.Type type = parseArithmeticOperationResultType(left, right);
+            switch (type) {
+                case INT:
+                    return new MultiplyExpressionExecutorInt(left, right);
+                case LONG:
+                    return new MultiplyExpressionExecutorLong(left, right);
+                case FLOAT:
+                    return new MultiplyExpressionExecutorFloat(left, right);
+                case DOUBLE:
+                    return new MultiplyExpressionExecutorDouble(left, right);
+            }
+        } else if (expression instanceof Add) {
+            ExpressionExecutor left = parseExpression(((Add) expression).getLeftValue(), queryEventStreamList, currentStreamReference);
+            ExpressionExecutor right = parseExpression(((Add) expression).getRightValue(), queryEventStreamList, currentStreamReference);
+            Attribute.Type type = parseArithmeticOperationResultType(left, right);
+            switch (type) {
+                case INT:
+                    return new AddExpressionExecutorInt(left, right);
+                case LONG:
+                    return new AddExpressionExecutorLong(left, right);
+                case FLOAT:
+                    return new AddExpressionExecutorFloat(left, right);
+                case DOUBLE:
+                    return new AddExpressionExecutorDouble(left, right);
+            }
+        } else if (expression instanceof Minus) {
+            ExpressionExecutor left = parseExpression(((Minus) expression).getLeftValue(), queryEventStreamList, currentStreamReference);
+            ExpressionExecutor right = parseExpression(((Minus) expression).getRightValue(), queryEventStreamList, currentStreamReference);
+            Attribute.Type type = parseArithmeticOperationResultType(left, right);
+            switch (type) {
+                case INT:
+                    return new MinusExpressionExecutorInt(left, right);
+                case LONG:
+                    return new MinusExpressionExecutorLong(left, right);
+                case FLOAT:
+                    return new MinusExpressionExecutorFloat(left, right);
+                case DOUBLE:
+                    return new MinusExpressionExecutorDouble(left, right);
+            }
+        } else if (expression instanceof Mod) {
+            ExpressionExecutor left = parseExpression(((Mod) expression).getLeftValue(), queryEventStreamList, currentStreamReference);
+            ExpressionExecutor right = parseExpression(((Mod) expression).getRightValue(), queryEventStreamList, currentStreamReference);
+            Attribute.Type type = parseArithmeticOperationResultType(left, right);
+            switch (type) {
+                case INT:
+                    return new ModExpressionExecutorInt(left, right);
+                case LONG:
+                    return new ModExpressionExecutorLong(left, right);
+                case FLOAT:
+                    return new ModExpressionExecutorFloat(left, right);
+                case DOUBLE:
+                    return new ModExpressionExecutorDouble(left, right);
+            }
+        } else if (expression instanceof Divide) {
+            ExpressionExecutor left = parseExpression(((Divide) expression).getLeftValue(), queryEventStreamList, currentStreamReference);
+            ExpressionExecutor right = parseExpression(((Divide) expression).getRightValue(), queryEventStreamList, currentStreamReference);
+            Attribute.Type type = parseArithmeticOperationResultType(left, right);
+            switch (type) {
+                case INT:
+                    return new DivideExpressionExecutorInt(left, right);
+                case LONG:
+                    return new DivideExpressionExecutorLong(left, right);
+                case FLOAT:
+                    return new DivideExpressionExecutorFloat(left, right);
+                case DOUBLE:
+                    return new DivideExpressionExecutorDouble(left, right);
+            }
         }
+
 
         throw new UnsupportedOperationException(expression.toString() + " not supported!");
 
+    }
+
+    private static Attribute.Type parseArithmeticOperationResultType(
+            ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
+        if (leftExpressionExecutor.getType() == Attribute.Type.DOUBLE || rightExpressionExecutor.getType() == Attribute.Type.DOUBLE) {
+            return Attribute.Type.DOUBLE;
+        } else if (leftExpressionExecutor.getType() == Attribute.Type.FLOAT || rightExpressionExecutor.getType() == Attribute.Type.FLOAT) {
+            return Attribute.Type.FLOAT;
+        } else if (leftExpressionExecutor.getType() == Attribute.Type.LONG || rightExpressionExecutor.getType() == Attribute.Type.LONG) {
+            return Attribute.Type.LONG;
+        } else if (leftExpressionExecutor.getType() == Attribute.Type.INT || rightExpressionExecutor.getType() == Attribute.Type.INT) {
+            return Attribute.Type.INT;
+        } else {
+            throw new ArithmeticException(leftExpressionExecutor.getType() + " or " + rightExpressionExecutor.getType() + " cannot be multiplied");
+        }
     }
 }

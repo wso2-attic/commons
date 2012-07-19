@@ -21,11 +21,10 @@ import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStateEvent;
-import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.core.query.stream.StreamElement;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
-import org.wso2.siddhi.core.util.SchedulerQueue;
+import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -64,14 +63,14 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
     public void receive(StreamEvent streamEvent) {
         if (streamEvent instanceof SequenceResetEvent) {
             if (log.isDebugEnabled()) {
-                log.debug("Before Sequence Reset || currentEvents=" +currentEvents.size()+" nextEvents="+nextEvents.size());
+                log.debug("Before Sequence Reset || currentEvents=" + currentEvents.size() + " nextEvents=" + nextEvents.size());
             }
             currentEvents.clear();
             nextEvents.clear();
             if (log.isDebugEnabled()) {
-                log.debug("After  Sequence Reset || currentEvents=" +currentEvents.size()+" nextEvents="+nextEvents.size());
+                log.debug("After  Sequence Reset || currentEvents=" + currentEvents.size() + " nextEvents=" + nextEvents.size());
             }
-        }else {
+        } else {
             sendForProcess(streamEvent);
         }
         init();
@@ -82,12 +81,12 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 
     protected void sendForProcess(StreamEvent event) {
         if (log.isDebugEnabled()) {
-            log.debug("sr state=" +currentState+" event="+ event+" ||currentEvents="+currentEvents);
+            log.debug("sr state=" + currentState + " event=" + event + " ||currentEvents=" + currentEvents);
         }
         for (StateEvent currentEvent : currentEvents) {
             currentEvent.setStreamEvent(currentState, event);
             firstSimpleStreamProcessor.process(currentEvent);
-            if ( currentEvent.getEventState()<currentState) {
+            if (currentEvent.getEventState() < currentState) {
                 currentEvent.setStreamEvent(currentState, null);
             }
         }
@@ -97,12 +96,7 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
         return state.getSingleStream().getStreamId();
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return null;
-    }
-
-    public synchronized void addToNextEvents(StateEvent stateEvent) {
+    public void addToNextEvents(StateEvent stateEvent) {
 //        System.out.println("add to next ss");
         try {
             nextEvents.put(stateEvent);
@@ -111,7 +105,7 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
         }
     }
 
-    public synchronized void moveNextEventsToCurrentEvents() {
+    public void moveNextEventsToCurrentEvents() {
         //todo need to check which is faster
         // 1
 //        currentEvents.clear();
@@ -119,8 +113,8 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 //        nextEvents.clear();
 
 //        // 2
-        currentEvents = nextEvents;
-        nextEvents = new LinkedBlockingQueue<StateEvent>();
+            currentEvents = nextEvents;
+            nextEvents = new LinkedBlockingQueue<StateEvent>();
     }
 
 }

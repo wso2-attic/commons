@@ -104,12 +104,6 @@ public class SequenceStreamReceiver implements StreamElement, StreamReceiver, Ru
         return streamId;
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return null;
-    }
-
-
     public void setOtherStreamReceivers(
             List<SequenceSingleStreamReceiver> otherStreamReceiverList) {
         this.otherStreamReceiverList = otherStreamReceiverList;

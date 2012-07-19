@@ -17,10 +17,7 @@
 */
 package org.wso2.siddhi.core.query.stream;
 
-import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.util.SchedulerQueue;
-
 public interface StreamElement {
 
-    SchedulerQueue<StreamEvent> getWindow();
+//    SchedulerQueue<StreamEvent> getWindow();
 }

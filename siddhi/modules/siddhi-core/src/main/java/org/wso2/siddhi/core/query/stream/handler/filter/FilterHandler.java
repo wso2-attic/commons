@@ -18,30 +18,22 @@
 package org.wso2.siddhi.core.query.stream.handler.filter;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ComplexEvent;
+import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
-import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
-import org.wso2.siddhi.core.util.SchedulerQueue;
-import org.wso2.siddhi.core.query.stream.StreamElement;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.query.stream.handler.StreamHandler;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FilterHandler implements StreamHandler {
     private ConditionExecutor conditionExecutor;
-    private List<QueryEventStream> queryEventStreamList;
     private StreamProcessor nextPreStreamFlowProcessor;
-    private StreamElement prevStreamElement;
 
-    public FilterHandler(ConditionExecutor conditionExecutor,
-                         List<QueryEventStream> queryEventStreamList) {
+    public FilterHandler(ConditionExecutor conditionExecutor ) {
         this.conditionExecutor = conditionExecutor;
-        this.queryEventStreamList = queryEventStreamList;
     }
 
     @Override
@@ -68,8 +60,4 @@ public class FilterHandler implements StreamHandler {
         this.nextPreStreamFlowProcessor = nextPreStreamFlowProcessor;
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return prevStreamElement.getWindow();
-    }
 }

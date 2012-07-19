@@ -59,7 +59,8 @@ public class AddRemoveTestCase {
         });
 
         String queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                       "insert into outStream symbol, price, volume ;");
+                                                       "insert into outStream symbol, price, volume " +
+                                                       " having price*12 >100;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});

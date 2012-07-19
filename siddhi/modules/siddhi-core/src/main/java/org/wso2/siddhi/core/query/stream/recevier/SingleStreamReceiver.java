@@ -80,9 +80,5 @@ public class SingleStreamReceiver implements  StreamElement, StreamReceiver, Run
         return inputStream.getStreamId();
     }
 
-    @Override
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return null;
-    }
 
 }

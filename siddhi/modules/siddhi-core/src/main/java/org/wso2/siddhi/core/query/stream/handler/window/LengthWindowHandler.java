@@ -24,6 +24,7 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.util.SchedulerQueue;
+import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
 public class LengthWindowHandler extends WindowHandler {
 
@@ -32,7 +33,11 @@ public class LengthWindowHandler extends WindowHandler {
 
     @Override
     public void setParameters(Object[] parameters) {
-        lengthToKeep = (Integer) parameters[0];
+        if (parameters[0] instanceof Integer) {
+            lengthToKeep = (Integer) parameters[0];
+        } else {
+            lengthToKeep = ((IntConstant) parameters[0]).getValue();
+        }
     }
 
     @Override
