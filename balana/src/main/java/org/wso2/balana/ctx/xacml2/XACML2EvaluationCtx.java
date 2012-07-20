@@ -155,7 +155,7 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
             Iterator attrIterator = subject.getAttributes().iterator();
 
             while (attrIterator.hasNext()) {
-                org.wso2.balana.Attribute attr = (org.wso2.balana.Attribute) (attrIterator.next());
+                Attribute attr = (Attribute) (attrIterator.next());
                 String id = attr.getId().toString();
 
                 if (categoryMap.containsKey(id)) {
@@ -193,7 +193,7 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
                 throw new ParsingException("too many resource-id attrs");
             } else {
                 // keep track of the resource-id attribute
-                resourceId = ((org.wso2.balana.Attribute) (set.iterator().next())).getValue();
+                resourceId = ((Attribute) (set.iterator().next())).getValue();
             }
         }
 
@@ -207,7 +207,7 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
                 throw new ParsingException("too many resource-scope attrs");
             }
 
-            org.wso2.balana.Attribute attr = (org.wso2.balana.Attribute) (set.iterator().next());
+            Attribute attr = (Attribute) (set.iterator().next());
             AttributeValue attrValue = attr.getValue();
 
             // scope must be a string, so throw an exception otherwise
@@ -242,7 +242,7 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
     private void mapAttributes(Set input, Map output) {
         Iterator it = input.iterator();
         while (it.hasNext()) {
-            org.wso2.balana.Attribute attr = (org.wso2.balana.Attribute) (it.next());
+            Attribute attr = (Attribute) (it.next());
             String id = attr.getId().toString();
 
             if (output.containsKey(id)) {
@@ -287,14 +287,14 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
 
         // there will always be exactly one value for this attribute
         Set attrSet = (Set) (resourceMap.get(XACMLConstants.RESOURCE_ID));
-        org.wso2.balana.Attribute attr = (org.wso2.balana.Attribute) (attrSet.iterator().next());
+        Attribute attr = (Attribute) (attrSet.iterator().next());
 
         // remove the old value...
         attrSet.remove(attr);
 
         // ...and insert the new value
-        attrSet.add(new org.wso2.balana.Attribute(attr.getId(), attr.getIssuer(), attr.getIssueInstant(),
-                resourceId));
+        attrSet.add(new Attribute(attr.getId(), attr.getIssuer(), attr.getIssueInstant(),
+                resourceId,XACMLConstants.XACML_VERSION_2_0));
     }
 
     public EvaluationResult getAttribute(URI type, URI id, String issuer, URI category) {
@@ -400,7 +400,7 @@ public class XACML2EvaluationCtx extends BasicEvaluationCtx {
         Iterator it = attrSet.iterator();
 
         while (it.hasNext()) {
-            org.wso2.balana.Attribute attr = (org.wso2.balana.Attribute) (it.next());
+            Attribute attr = (Attribute) (it.next());
 
             // make sure the type and issuer are correct
             if ((attr.getType().equals(type))

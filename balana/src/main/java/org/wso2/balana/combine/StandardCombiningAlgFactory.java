@@ -40,7 +40,10 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.UnknownIdentifierException;
 import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.combine.xacml2.*;
+import org.wso2.balana.combine.xacml3.DenyUnlessPermitPolicyAlg;
 import org.wso2.balana.combine.xacml3.DenyUnlessPermitRuleAlg;
+import org.wso2.balana.combine.xacml3.PermitUnlessDenyPolicyAlg;
+import org.wso2.balana.combine.xacml3.PermitUnlessDenyRuleAlg;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -119,12 +122,40 @@ public class StandardCombiningAlgFactory extends BaseCombiningAlgFactory {
         supportedAlgorithms.add(new FirstApplicablePolicyAlg());
         supportedAlgIds.add(FirstApplicablePolicyAlg.algId);
 
-        supportedAlgorithms.add(new DenyUnlessPermitRuleAlg());
-        supportedAlgIds.add(DenyUnlessPermitRuleAlg.algId);
-
-
         supportedAlgorithms.add(new OnlyOneApplicablePolicyAlg());
         supportedAlgIds.add(OnlyOneApplicablePolicyAlg.algId);
+
+        // XACML 3.0
+
+        supportedAlgorithms.add(new DenyUnlessPermitRuleAlg());
+        supportedAlgIds.add(DenyUnlessPermitRuleAlg.algId);
+        supportedAlgorithms.add(new DenyUnlessPermitPolicyAlg());
+        supportedAlgIds.add(DenyUnlessPermitPolicyAlg.algId);
+
+        supportedAlgorithms.add(new PermitUnlessDenyRuleAlg());
+        supportedAlgIds.add(PermitUnlessDenyRuleAlg.algId);
+        supportedAlgorithms.add(new PermitUnlessDenyPolicyAlg());
+        supportedAlgIds.add(PermitUnlessDenyPolicyAlg.algId);
+
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.DenyOverridesRuleAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.DenyOverridesRuleAlg.algId);
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.DenyOverridesPolicyAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.DenyOverridesPolicyAlg.algId);
+
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.OrderedDenyOverridesRuleAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.OrderedDenyOverridesRuleAlg.algId);
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.OrderedDenyOverridesPolicyAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.OrderedDenyOverridesPolicyAlg.algId);
+
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.PermitOverridesRuleAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.PermitOverridesRuleAlg.algId);
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.PermitOverridesPolicyAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.PermitOverridesPolicyAlg.algId);
+
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.OrderedPermitOverridesRuleAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.OrderedPermitOverridesRuleAlg.algId);
+        supportedAlgorithms.add(new org.wso2.balana.combine.xacml3.OrderedPermitOverridesPolicyAlg());
+        supportedAlgIds.add(org.wso2.balana.combine.xacml3.OrderedPermitOverridesPolicyAlg.algId);
 
         supportedAlgIds = Collections.unmodifiableSet(supportedAlgIds);
     }
@@ -181,9 +212,11 @@ public class StandardCombiningAlgFactory extends BaseCombiningAlgFactory {
      * @throws UnknownIdentifierException if the version string is unknown
      */
     public static Set getStandardAlgorithms(String xacmlVersion) throws UnknownIdentifierException {
-        if ((xacmlVersion.equals(XACMLConstants.XACML_1_0_IDENTIFIER))
-                || (xacmlVersion.equals(XACMLConstants.XACML_2_0_IDENTIFIER)))
+        if (xacmlVersion.equals(XACMLConstants.XACML_1_0_IDENTIFIER)
+                || xacmlVersion.equals(XACMLConstants.XACML_2_0_IDENTIFIER) ||
+                xacmlVersion.equals(XACMLConstants.XACML_3_0_IDENTIFIER)){
             return supportedAlgIds;
+        }
 
         throw new UnknownIdentifierException("Unknown XACML version: " + xacmlVersion);
     }

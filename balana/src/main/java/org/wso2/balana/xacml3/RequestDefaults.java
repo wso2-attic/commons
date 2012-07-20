@@ -20,7 +20,6 @@ package org.wso2.balana.xacml3;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.Attribute;
 import org.wso2.balana.Indenter;
 
 import java.io.OutputStream;

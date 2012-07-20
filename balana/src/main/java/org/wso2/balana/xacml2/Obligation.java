@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
-import org.wso2.balana.Attribute;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.xacml2.Result;
 
@@ -111,7 +111,8 @@ public class Obligation extends AbstractObligation implements ObligationResult {
                     URI attrId = new URI(node.getAttributes().getNamedItem("AttributeId")
                             .getNodeValue());
                     AttributeValue attrValue = attrFactory.createValue(node);
-                    assignments.add(new Attribute(attrId, null, null, attrValue));
+                    assignments.add(new Attribute(attrId, null, null, attrValue,
+                                                                XACMLConstants.XACML_VERSION_2_0));
                 } catch (URISyntaxException use) {
                     throw new ParsingException("Error parsing URI", use);
                 } catch (UnknownIdentifierException uie) {

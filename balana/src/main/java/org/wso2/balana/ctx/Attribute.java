@@ -36,7 +36,6 @@
 package org.wso2.balana.ctx;
 
 import org.wso2.balana.*;
-
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.DateTimeAttribute;
@@ -45,6 +44,9 @@ import java.io.PrintStream;
 import java.io.OutputStream;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -58,91 +60,123 @@ import org.w3c.dom.NodeList;
  */
 public class Attribute {
 
-    // required meta-data attributes
+    /**
+     * attribute identifier
+     */
     private URI id;
+
+    /**
+     * attribute data type,  this is not used in XACML3
+     */
     private URI type;
 
     /**
-     * option attribute in XACML 3 to define to 
+     * whether to include this attribute in the result. This is useful to correlate requests
+     * with their responses in case of multiple requests.
+     * optional one defined only in XACML3
      */
     private boolean includeInResult;
-    // optional meta-data attributes
+
+    /**
+     * issuer of the attribute.   optional one
+     */
     private String issuer = null;
+
+    /**
+     * issue instance of the attribute. this is not used in XACML3
+     */
     private DateTimeAttribute issueInstant = null;
 
-    // the single value associated with this attribute
-    private AttributeValue value;
+    /**
+     * a <code>List</code> of <code>AttributeValue</code>  
+     */
+    private List<AttributeValue> attributeValues;
 
     private int xacmlVersion;
 
     /**
      * Creates a new <code>Attribute</code> of the type specified in the given
-     * <code>AttributeValue</code>.
-     * 
+     * <code>AttributeValue</code>.for XACML 3 with one  <code>AttributeValue</code>
+     *
      * @param id the id of the attribute
      * @param issuer the attribute's issuer or null if there is none
      * @param issueInstant the moment when the attribute was issued, or null if it's unspecified
      * @param value the actual value associated with the attribute meta-data
+     * @param includeInResult  whether to include this attribute in the result.
+     * @param version XACML version
      */
     public Attribute(URI id, String issuer, DateTimeAttribute issueInstant, AttributeValue value,
-                      boolean includeInResult) {
-        this(id, value.getType(), issuer, issueInstant, value, includeInResult, 0);
+                      boolean includeInResult, int version) {
+        this(id, value.getType(), issuer, issueInstant, Arrays.asList(value), includeInResult,version);
     }
 
-    public Attribute(URI id, String issuer, DateTimeAttribute issueInstant, AttributeValue value) {
-        this(id, value.getType(), issuer, issueInstant, value, false, 0);
+    /**
+     * Creates a new <code>Attribute</code>  for XACML 2 and XACML 1.X with one <code>AttributeValue</code>
+     *
+     * @param id the id of the attribute
+     * @param issuer the attribute's issuer or null if there is none
+     * @param issueInstant the moment when the attribute was issued, or null if it's unspecified
+     * @param value actual <code>List</code> of <code>AttributeValue</code>  associated with
+     * @param version XACML version
+     */
+    public Attribute(URI id, String issuer, DateTimeAttribute issueInstant, AttributeValue value,
+                                                                                    int version) {
+
+        this(id, value.getType(), issuer, issueInstant, Arrays.asList(value), false, version);
     }
 
     /**
      * Creates a new <code>Attribute</code>
      * 
-     * @deprecated As of version 1.1, replaced by
-     *             {@link #Attribute(URI,String,DateTimeAttribute,AttributeValue)}. This constructor
-     *             has some ambiguity in that it allows a specified datatype and a value that
-     *             already has some associated datatype. The new constructor clarifies this issue by
-     *             removing the datatype parameter and using the datatype specified by the given
-     *             value.
-     * 
      * @param id the id of the attribute
      * @param type the type of the attribute
      * @param issuer the attribute's issuer or null if there is none
      * @param issueInstant the moment when the attribute was issued, or null if it's unspecified
-     * @param value the actual value associated with the attribute meta-data
+     * @param attributeValues actual <code>List</code> of <code>AttributeValue</code>  associated with
+     * @param includeInResult whether to include this attribute in the result.
+     * @param xacmlVersion xacml version
      */
     public Attribute(URI id, URI type, String issuer, DateTimeAttribute issueInstant,
-            AttributeValue value, boolean includeInResult, int xacmlVersion) {
+            List<AttributeValue> attributeValues, boolean includeInResult, int xacmlVersion) {
         this.id = id;
         this.type = type;
         this.issuer = issuer;
         this.issueInstant = issueInstant;
-        this.value = value;
+        this.attributeValues = attributeValues;
         this.includeInResult = includeInResult;
         this.xacmlVersion = xacmlVersion;
     }
 
+    /**
+     * Creates an instance of an <code>Attribute</code> based on the root DOM node of the XML data.
+     *
+     * @param root the DOM root of the AttributeType XML type
+     * @return the attribute
+     * @throws ParsingException throws ParsingException if the data is invalid
+     */
     public static Attribute getInstance(Node root) throws ParsingException {
-        return getInstance(root, new PolicyMetaData());
+        // Assume as XACML 3.0 default one
+        return getInstance(root, XACMLConstants.XACML_VERSION_3_0);
     }
 
     /**
      * Creates an instance of an <code>Attribute</code> based on the root DOM node of the XML data.
-     * 
+     *
      * @param root the DOM root of the AttributeType XML type
-     * 
+     * @param version XACML version
      * @return the attribute
-     * 
-     *         throws ParsingException if the data is invalid
+     * @throws ParsingException throws ParsingException if the data is invalid
      */
-    public static Attribute getInstance(Node root, PolicyMetaData metaData) throws ParsingException {
+    public static Attribute getInstance(Node root, int version) throws ParsingException {
         URI id = null;
         URI type = null;
         String issuer = null;
         DateTimeAttribute issueInstant = null;
-        AttributeValue value = null;
+        List<AttributeValue> values = new ArrayList<AttributeValue>();
         boolean includeInResult = false ;
-        int version  = metaData.getXACMLVersion();
 
-        AttributeFactory attrFactory = AttributeFactory.getInstance();
+
+        AttributeFactory attributeFactory =  AttributeFactory.getInstance();
 
         // First check that we're really parsing an Attribute
         if (!root.getNodeName().equals("Attribute")) {
@@ -200,12 +234,6 @@ public class Attribute {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("AttributeValue")) {
-                // only one value can be in an Attribute
-                if (value != null){
-                    throw new ParsingException("Too many values in Attribute");
-                }
-                // now get the value
-
                 if(version == XACMLConstants.XACML_VERSION_3_0){
                     NamedNodeMap dataTypeAttribute = node.getAttributes();
                     try {
@@ -217,7 +245,7 @@ public class Attribute {
                 }
 
                 try {                    
-                    value = attrFactory.createValue(node, type);
+                    values.add(attributeFactory.createValue(node, type));
                 } catch (UnknownIdentifierException uie) {
                     throw new ParsingException("Unknown AttributeId", uie);
                 }
@@ -225,10 +253,10 @@ public class Attribute {
         }
 
         // make sure we got a value
-        if (value == null)
+        if (values.size() < 1){
             throw new ParsingException("Attribute must contain a value");
-
-        return new Attribute(id, type, issuer, issueInstant, value, includeInResult, version);
+        }
+        return new Attribute(id, type, issuer, issueInstant, values, includeInResult, version);
     }
 
     /**
@@ -269,20 +297,38 @@ public class Attribute {
 
     /**
      * Returns whether attribute must be present in response or not
-     * @return
+     *
+     * @return  true/false
      */
     public boolean isIncludeInResult() {
         return includeInResult;
     }
 
     /**
-     * The value of this attribute, or null if no value was included
+     * <code>List</code> of <code>AttributeValue</code>  of this attribute,
+     * or null if no value was included
      * 
-     * @return the attribute's value or null
+     * @return the attribute' s value or null
+     */
+    public List<AttributeValue> getValues() {
+        return attributeValues;
+    }
+
+
+    /**
+     * a <code>AttributeValue</code>  of this attribute,
+     * or null if no value was included
+     *
+     * @return the attribute' s value or null
      */
     public AttributeValue getValue() {
-        return value;
+
+        if(attributeValues != null){
+            return attributeValues.get(0);
+        }
+        return null;
     }
+
 
     /**
      * Encodes this attribute into its XML representation and writes this encoding to the given
@@ -294,47 +340,55 @@ public class Attribute {
         encode(output, new Indenter(0));
     }
 
+
     /**
      * Encodes this attribute into its XML representation and writes this encoding to the given
      * <code>OutputStream</code> with indentation.
-     * 
+     *
      * @param output a stream into which the XML-encoded data is written
      * @param indenter an object that creates indentation strings
      */
     public void encode(OutputStream output, Indenter indenter) {
-        // setup the formatting & outstream stuff
-        String indent = indenter.makeString();
-        PrintStream out = new PrintStream(output);
 
-        // write out the encoded form
-        out.println(indent + encode());
+        PrintStream out = new PrintStream(output);
+        String indent = indenter.makeString();
+        out.println(indent + "<Attribute AttributeId=\"" + id.toString() + "\"" );
+
+        if((xacmlVersion == XACMLConstants.XACML_VERSION_3_0)){
+           out.println(" IncludeInResult=\"" + includeInResult + "\"" );
+        } else {
+            out.println(" DataType=\"" + type.toString()  + "\"" );
+            if (issueInstant != null){
+                out.println(" IssueInstant=\"" + issueInstant.encode() + "\"");
+            }
+        }
+
+        if (issuer != null) {
+            out.println(" Issuer=\"" + issuer + "\"");
+        }
+
+        out.println(">");
+        indenter.in();
+
+        if(attributeValues != null && attributeValues.size() > 0){
+            for(AttributeValue value : attributeValues){
+                value.encodeWithTags(true);
+            }
+        }
+
+        indenter.out();
+
+        out.println( indent + "</Attribute>");
     }
 
     /**
      * Simple encoding method that returns the text-encoded version of this attribute with no
      * formatting.
-     * 
+     *
      * @return the text-encoded XML
      */
-    public String encode() {
-        String encoded = "<Attribute AttributeId=\"" + id.toString() + "\"";
-
-        if((xacmlVersion == XACMLConstants.XACML_VERSION_3_0)){
-            encoded += " IncludeInResult=\"" + includeInResult  + "\"";
-        } else {
-            encoded += " DataType=\"" + type.toString() + "\"";
-            if (issueInstant != null){
-                encoded += " IssueInstant=\"" + issueInstant.encode() + "\"";
-            }
-        }
-
-        if (issuer != null) {
-            encoded += " Issuer=\"" + issuer + "\"";
-        }
-
-        encoded += ">" + value.encodeWithTags(false) + "</Attribute>";
-
-        return encoded;
+    public String encode(){
+        return null;
     }
 
 }

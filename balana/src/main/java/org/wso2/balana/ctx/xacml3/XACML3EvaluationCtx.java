@@ -24,7 +24,7 @@ import org.wso2.balana.*;
 import org.wso2.balana.attr.*;
 import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.ctx.AbstractRequestCtx;
-import org.wso2.balana.Attribute;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.BasicEvaluationCtx;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.finder.ResourceFinderResult;
@@ -404,7 +404,8 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
 
                 if(resourceIdAttribute != null) {
                     attributeSet.add(new Attribute(resourceIdAttribute.getId(), resourceIdAttribute.getIssuer(),
-                    resourceIdAttribute.getIssueInstant(), resourceId, resourceIdAttribute.isIncludeInResult()));
+                    resourceIdAttribute.getIssueInstant(), resourceId, resourceIdAttribute.isIncludeInResult(),
+                                                                XACMLConstants.XACML_VERSION_3_0));
                 }
                 break;
             }

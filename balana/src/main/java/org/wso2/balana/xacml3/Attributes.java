@@ -19,7 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
-import org.wso2.balana.Attribute;
+import org.wso2.balana.ctx.Attribute;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -118,9 +118,7 @@ public class Attributes {
                 // now get the value
                 content = node;
             } else if(node.getNodeName().equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
-                attributes.add(Attribute.
-                        getInstance(node, new PolicyMetaData(XACMLConstants.XACML_VERSION_3_0,
-                                                                PolicyMetaData.XPATH_VERSION_1_0)));
+                attributes.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_3_0));
             }
         }
 

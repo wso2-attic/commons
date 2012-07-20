@@ -36,7 +36,6 @@
 package org.wso2.balana.attr;
 
 import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
 
 import java.net.URI;

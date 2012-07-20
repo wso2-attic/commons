@@ -35,7 +35,7 @@
 
 package org.wso2.balana.ctx.xacml2;
 
-import org.wso2.balana.Attribute;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 
@@ -279,7 +279,7 @@ public class RequestCtx extends AbstractRequestCtx {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("Attribute"))
-                set.add(Attribute.getInstance(node));
+                set.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_2_0));
         }
 
         return set;
