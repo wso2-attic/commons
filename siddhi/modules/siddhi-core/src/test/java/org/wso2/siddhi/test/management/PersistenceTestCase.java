@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.exception.NoPersistenceStoreAssignedException;
 import org.wso2.siddhi.core.persistence.InMemoryPersistenceStore;
 import org.wso2.siddhi.core.persistence.PersistenceStore;
 import org.wso2.siddhi.core.stream.input.InputHandler;
@@ -46,7 +47,7 @@ public class PersistenceTestCase {
 
     @Before
     public void init() {
-        lastValue=0;
+        lastValue = 0;
         count = 0;
         eventArrived = false;
     }
@@ -60,17 +61,17 @@ public class PersistenceTestCase {
 
         String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
         String query = "from cseStream[price>10][win.length(10)] " +
-                                  "insert into outStream symbol, price, sum(volume) as totalVol ";
+                       "insert into outStream symbol, price, sum(volume) as totalVol ";
         Callback callback = new Callback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
                 Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
-                lastValue= (Long)inEvents[0].getData(2);
+                lastValue = (Long) inEvents[0].getData(2);
                 count++;
-                eventArrived=true;
+                eventArrived = true;
             }
-        } ;
+        };
 
 
         SiddhiManager siddhiManager = new SiddhiManager();
@@ -151,7 +152,7 @@ public class PersistenceTestCase {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
                 org.junit.Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f}, inEvents[0].getData());
                 count++;
-                eventArrived=true;
+                eventArrived = true;
             }
 
         };
@@ -202,6 +203,73 @@ public class PersistenceTestCase {
 
         Assert.assertEquals(1, count);
         Assert.assertEquals(true, eventArrived);
+
+    }
+
+    @Test(expected = NoPersistenceStoreAssignedException.class)
+    public void testQuery3() throws InterruptedException {
+        log.info("No store defined case ");
+//        PersistenceStore persistenceStore = new InMemoryPersistenceStore();
+//        String revision;
+
+        StreamDefinition streamDefinition1 = QueryFactory.createStreamDefinition().name("Stream1").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT);
+        StreamDefinition streamDefinition2 = QueryFactory.createStreamDefinition().name("Stream2").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT);
+
+        Query query = QueryFactory.createQuery();
+        query.from(
+                QueryFactory.patternStream(
+                        Pattern.followedBy(
+                                Pattern.count(
+                                        QueryFactory.inputStream("e1", "Stream1").handler(
+                                                Condition.compare(Expression.variable("price"),
+                                                                  Condition.Operator.GREATER_THAN,
+                                                                  Expression.value(20))), 2, 5),
+                                QueryFactory.inputStream("e2", "Stream2").handler(
+                                        Condition.compare(Expression.variable("price"),
+                                                          Condition.Operator.GREATER_THAN,
+                                                          Expression.value(20))))));
+
+        query.insertInto("OutStream");
+        query.project(
+                QueryFactory.outputProjector().
+                        project("price1.1", Expression.variable("e1", 0, "price")).
+                        project("price1.2", Expression.variable("e1", 1, "price")).
+                        project("price1.3", Expression.variable("e1", 2, "price")).
+                        project("price1.4", Expression.variable("e1", 3, "price")).
+                        project("price2", Expression.variable("e2", "price"))
+
+        );
+
+        Callback callback = new Callback() {
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                org.junit.Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f}, inEvents[0].getData());
+                count++;
+                eventArrived = true;
+            }
+
+        };
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+//        siddhiManager.setPersistStore(persistenceStore);
+
+        InputHandler stream1 = siddhiManager.defineStream(streamDefinition1);
+        InputHandler stream2 = siddhiManager.defineStream(streamDefinition2);
+
+        siddhiManager.addQuery(query);
+
+        siddhiManager.addCallback("OutStream", callback);
+
+        stream1.send(new Object[]{"WSO2", 25.6f, 100});
+        Thread.sleep(500);
+        stream1.send(new Object[]{"GOOG", 47.6f, 100});
+        Thread.sleep(500);
+        stream1.send(new Object[]{"GOOG", 13.7f, 100});
+        Thread.sleep(1000);
+
+        //persisting
+        siddhiManager.persist();
+        Thread.sleep(1000);
 
     }
 

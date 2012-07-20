@@ -19,6 +19,7 @@ package org.wso2.siddhi.core.persistence;
 
 import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
+import org.wso2.siddhi.core.exception.NoPersistenceStoreAssignedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,19 +45,26 @@ public class PersistenceService {
     }
 
     public String persist() {
-        PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(System.currentTimeMillis(), executionPlanIdentifier);
-
-        for (Persister persister : persisterList) {
-            persister.save(persistEvent);
+        if (persistenceStore != null) {
+            PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(System.currentTimeMillis(), executionPlanIdentifier);
+            for (Persister persister : persisterList) {
+                persister.save(persistEvent);
+            }
+            lastPersistEvent = persistEvent;
+            return persistEvent.getRevision();
+        } else {
+            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
         }
-        lastPersistEvent = persistEvent;
-        return persistEvent.getRevision();
     }
 
     public void restoreRevision(String revision) {
-        PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(revision);
-        for (Persister persister : persisterList) {
-            persister.load(persistEvent);
+        if (persistenceStore != null) {
+            PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(revision);
+            for (Persister persister : persisterList) {
+                persister.load(persistEvent);
+            }
+        } else {
+            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
         }
     }
 
@@ -70,9 +78,12 @@ public class PersistenceService {
 
 
     public void restoreLastRevision() {
-        String revision = persistenceStore.getLastRevision();
-        if (revision != null) {
-            restoreRevision(revision);
+        if (persistenceStore != null) {
+            String revision = persistenceStore.getLastRevision();
+            if (revision != null) {
+                restoreRevision(revision);
+            }
+            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
         }
     }
 }
