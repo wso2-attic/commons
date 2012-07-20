@@ -28,10 +28,14 @@ public class TestConstants {
     public static final String RESOURCE_PATH =  "src" + File.separator + "test" + File.separator +
                                                 "resources" + File.separator;
 
-    public static final String POLICY_PATH =  RESOURCE_PATH + "policies" +  File.separator;
+    public static final String POLICY_DIRECTORY = "policies";
 
-    public static final String REQUEST_PATH =  RESOURCE_PATH + "requests" +  File.separator;
+    public static final String REQUEST_DIRECTORY =  "requests";
 
-    public static final String RESPONSE_PATH =  RESOURCE_PATH + "responses" +  File.separator;
+    public static final String RESPONSE_DIRECTORY =  "responses";
 
+    public static final String CONFIG_DIRECTORY = "src" + File.separator + "main" + File.separator +
+                                                "resources" + File.separator;
+
+    public static final String CONFIG_FILE =  CONFIG_DIRECTORY + "config.xml";
 }

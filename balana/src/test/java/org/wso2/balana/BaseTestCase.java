@@ -17,25 +17,23 @@
 
 package org.wso2.balana;
 
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.wso2.balana.basic.BasicTest0001;
-import org.wso2.balana.basic.BasicTest0002;
+import org.wso2.balana.basic.BasicTestV3;
+import org.wso2.balana.conformance.ConformanceTestV2;
 
 /**
- *
+ * Test suite for Balana 
  */
 public class BaseTestCase extends TestSuite {
-
-    
 
     public static Test suite() throws Exception {
 
         TestSuite testSuite = new TestSuite();
-        testSuite.addTestSuite(BasicTest0001.class);
+        // basic test of XACML version 3.0
+//        testSuite.addTestSuite(BasicTestV3.class);
+        // conformance test for XACML 2.0
+        testSuite.addTestSuite(ConformanceTestV2.class);
         return testSuite;
-
     }
-
 }

@@ -42,9 +42,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import org.wso2.balana.ctx.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 
@@ -58,142 +64,126 @@ public class TestUtil {
     private static Log log = LogFactory.getLog(TestUtil.class);
 
     /**
-     * TODO
-     * @param responseCtx
-     * @param response
-     * @return
-     */
-    public static boolean isCorrect(ResponseCtx responseCtx, String response) {
-
-        String correctResponse = createResponse(response);
-        String actualResponse = getXacmlResponse(responseCtx);
-
-        if(correctResponse != null){
-            correctResponse = correctResponse.replaceAll(">\\s+<", "><");
-        } else {
-            log.info("Response read from the file is null");
-            return false;
-        }
-
-        if(actualResponse != null){
-            actualResponse = actualResponse.replaceAll(">\\s+<", "><");
-        } else {
-            log.info("Response received from evaluation is null");
-            return false;
-        }
-
-        log.info("Correct : "  + correctResponse);
-        log.info("Actual  :  "  + actualResponse);        
-
-        return  correctResponse.trim().equals(actualResponse.trim());
-    }
-
-    /**
-     * 
-     * @param requestId
-     * @return
-     * @throws Exception
-     */
-    public static AbstractRequestCtx createRequest(String requestId) throws Exception {
-
-        File file = new File(".")  ;
-        String filePath =  file.getCanonicalPath() + File.separator +
-                                                        TestConstants.REQUEST_PATH + requestId;
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringComments(true);
-        factory.setNamespaceAware(true);
-        factory.setValidating(false);
-        DocumentBuilder db = factory.newDocumentBuilder();
-        Document doc = db.parse(new FileInputStream(filePath));
-        Element root = doc.getDocumentElement();
-        return RequestCtxFactory.getFactory().getRequestCtx(root);
-
-    }
-
-    /**
+     * Checks matching of result that got from PDP and expected response from a file.
      *
-     * @param requestId
-     * @return
-     * @throws Exception
+     * @param resultResponse  result that got from PDP
+     * @param expectedResponse  expected response from a file
+     * @return True/False
      */
-    public static String createResponse(String requestId) {
+    public static boolean isMatching(String resultResponse, String expectedResponse) {
 
-        StringBuilder response = new StringBuilder();
+        boolean result = false;
+        resultResponse = processResult(resultResponse);
+        if(resultResponse != null && expectedResponse != null){
+            result = resultResponse.trim().
+                            equals(expectedResponse.trim());
+        }
+
+        if(result){
+            log.info("Test is Passed........!!!   " +
+                    "Result received from the PDP is matched with expected result");
+        } else {
+            log.info("Test is Failed........!!!     " +
+                    "Result received from the PDP is NOT match with expected result");
+        }
+        return result;
+    }
+
+    /**
+     * This creates the XACML request from a file
+     *
+     * @param rootDirectory   root directory of the  request files
+     * @param versionDirectory   version directory of the  request files
+     * @param requestId  request file name
+     * @return String or null if any error
+     */
+    public static String createRequest(String rootDirectory, String versionDirectory,
+                                                   String requestId){
+
         File file = new File(".");
-        FileInputStream fileInputStream = null;
-        DataInputStream dataInputStream = null;
-        BufferedReader reader = null;
+        StringWriter writer = null;
         try{
-            String filePath =  file.getCanonicalPath() + File.separator +
-                                                            TestConstants.RESPONSE_PATH + requestId;
+            String filePath =  file.getCanonicalPath() + File.separator +   TestConstants.RESOURCE_PATH +
+                        File.separator + rootDirectory + File.separator + versionDirectory +
+                        File.separator + TestConstants.REQUEST_DIRECTORY + File.separator + requestId;
 
-            fileInputStream = new FileInputStream(filePath);
-            dataInputStream = new DataInputStream(fileInputStream);
-            reader = new BufferedReader(new InputStreamReader(dataInputStream));
-            String line;
-            while((line = reader.readLine()) != null){
-                response.append(line);
-            }
-
-            return response.toString();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setIgnoringComments(true);
+            factory.setNamespaceAware(true);
+            factory.setValidating(false);
+            DocumentBuilder db = factory.newDocumentBuilder();
+            Document doc = db.parse(new FileInputStream(filePath));
+            DOMSource domSource = new DOMSource(doc);
+            writer = new StringWriter();
+            StreamResult result = new StreamResult(writer);
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.transform(domSource, result);
+            return writer.toString();
         } catch (Exception e){
-            log.error("Error while creating ");
-            return null;    
+            log.error("Error while reading expected response from file ", e);
+            //ignore any exception and return null
         } finally {
-            try{
-                if(fileInputStream != null){
-                    fileInputStream.close();
+            if(writer != null){
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    log.error("Error closing stream ", e);
+                    //ignore any exception and return null
                 }
-
-                if(dataInputStream != null){
-                    dataInputStream.close();
-                }
-
-                if(reader != null){
-                    reader.close();
-                }
-            } catch (IOException e) {
-                log.error("Error while closing input streams");
             }
         }
+        return null;
     }
 
     /**
+     * This creates the expected XACML response from a file
      *
-     * @param responseCtx
-     * @return
+     * @param rootDirectory   root directory of the  response files
+     * @param versionDirectory   version directory of the  response files
+     * @param responseId  response file name
+     * @return ResponseCtx or null if any error
      */
-    public static String getXacmlResponse(ResponseCtx responseCtx) {
+    public static ResponseCtx createResponse(String rootDirectory, String versionDirectory,
+                                                                            String responseId) {
 
-        OutputStream stream = new ByteArrayOutputStream();
-        responseCtx.encode(stream);
-        String response = stream.toString();
-        try {
-            stream.close();
-        } catch (IOException e) {
-            log.error("Error while closing stream " + e);
+        File file = new File(".");
+        try{
+            String filePath =  file.getCanonicalPath() + File.separator +   TestConstants.RESOURCE_PATH +
+                        File.separator + rootDirectory + File.separator + versionDirectory +
+                        File.separator + TestConstants.RESPONSE_DIRECTORY + File.separator + responseId;
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setIgnoringComments(true);
+            factory.setNamespaceAware(true);
+            factory.setValidating(false);
+            DocumentBuilder db = factory.newDocumentBuilder();
+            Document doc = db.parse(new FileInputStream(filePath));
+            return ResponseCtx.getInstance(doc.getDocumentElement());
+        } catch (Exception e){
+            log.error("Error while reading expected response from file ", e);
+            //ignore any exception and return null
         }
+
+        return null;
+    }
+
+
+    /**
+     * This would remove the StatusMessage from the response. Because StatusMessage depends
+     * on the how you have defined it with the PDP, Therefore we can not compare it with
+     * conformance tests.
+     *
+     * @param response  XACML response String
+     * @return XACML response String with out StatusMessage 
+     */
+    private static String processResult(String response){
+
+        if(response.contains("StatusMessage")){
+            response = response.substring(0, response.indexOf("<StatusMessage>")) + 
+                 response.substring(response.indexOf("</Status>"));
+        }
+
         return response;
-        
     }
-
-    /**
-     *
-     * @param requestCtx
-     * @return
-     */
-    public static String getXacmlRequest(AbstractRequestCtx requestCtx) {
-
-        OutputStream stream = new ByteArrayOutputStream();
-        requestCtx.encode(stream);
-        String request = stream.toString();
-        try {
-            stream.close();
-        } catch (IOException e) {
-            log.error("Error while closing stream " + e);
-        }
-        return request;
-    }
-    
 }
