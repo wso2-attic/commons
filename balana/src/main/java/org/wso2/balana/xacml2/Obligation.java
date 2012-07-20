@@ -26,6 +26,7 @@ import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.Attribute;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.xacml2.Result;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -33,7 +34,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -168,6 +168,7 @@ public class Obligation extends AbstractObligation implements ObligationResult {
      * @param indenter an object that creates indentation strings
      */
     public void encode(OutputStream output, Indenter indenter) {
+        
         PrintStream out = new PrintStream(output);
         String indent = indenter.makeString();
 
@@ -176,13 +177,10 @@ public class Obligation extends AbstractObligation implements ObligationResult {
 
         indenter.in();
 
-        Iterator it = assignments.iterator();
-
-        while (it.hasNext()) {
-            Attribute attr = (Attribute) (it.next());
+        for (Attribute assignment : assignments) {
             out.println(indenter.makeString() + "<AttributeAssignment AttributeId=\""
-                    + attr.getId().toString() + "\" DataType=\"" + attr.getType().toString()
-                    + "\">" + attr.getValue().encode() + "</AttributeAssignment>");
+                    + assignment.getId().toString() + "\" DataType=\"" + assignment.getType().toString()
+                    + "\">" + assignment.getValue().encode() + "</AttributeAssignment>");
         }
 
         indenter.out();

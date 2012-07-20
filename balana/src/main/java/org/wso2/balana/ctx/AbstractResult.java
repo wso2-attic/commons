@@ -19,11 +19,8 @@
 
 package org.wso2.balana.ctx;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
-import org.wso2.balana.xacml3.Obligation;
-import org.wso2.balana.xacml3.advice.Advice;
+import org.wso2.balana.xacml3.Advice;
 
 import java.io.OutputStream;
 import java.util.HashSet;
@@ -59,9 +56,24 @@ public abstract class AbstractResult {
     public static final int DECISION_NOT_APPLICABLE = 3;
 
     /**
+     * The decision that a decision about the request cannot be made
+     */
+    public static final int DECISION_INDETERMINATE_DENY = 4;
+
+    /**
+     * The decision that a decision about the request cannot be made
+     */
+    public static final int DECISION_INDETERMINATE_PERMIT = 5;
+
+    /**
+     * The decision that a decision about the request cannot be made
+     */
+    public static final int DECISION_INDETERMINATE_DENY_OR_PERMIT = 6;
+    
+    /**
      * string versions of the 4 Decision types used for encoding
      */
-    public static final String[] DECISIONS = { "Permit", "Deny", "Indeterminate", "NotApplicable" };
+    public static final String[] DECISIONS = { "Permit", "Deny", "Indeterminate", "NotApplicable"};
 
     /**
      * set of obligations which may be empty

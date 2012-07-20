@@ -121,11 +121,11 @@ public class ConfigurationStore {
     private HashMap pdpConfigMap;
 
     // attribute factory elements
-    private AttributeFactory defaultAttributeFactory;
+    private AttributeFactoryProxy defaultAttributeFactoryProxy;
     private HashMap attributeMap;
 
     // combining algorithm factory elements
-    private CombiningAlgFactory defaultCombiningFactory;
+    private CombiningAlgFactoryProxy defaultCombiningFactoryProxy;
     private HashMap combiningMap;
 
     // function factory elements
@@ -261,19 +261,19 @@ public class ConfigurationStore {
         // finally, extract the default elements
         defaultPDPConfig = (PDPConfig) (pdpConfigMap.get(defaultPDP));
 
-        defaultAttributeFactory = (AttributeFactory) (attributeMap.get(defaultAF));
-        if (defaultAttributeFactory == null) {
+        defaultAttributeFactoryProxy = (AttributeFactoryProxy) (attributeMap.get(defaultAF));
+        if (defaultAttributeFactoryProxy == null) {
             try {
-                defaultAttributeFactory = AttributeFactory.getInstance(defaultAF);
+                defaultAttributeFactoryProxy = new AFProxy(AttributeFactory.getInstance(defaultAF));
             } catch (Exception e) {
                 throw new ParsingException("Unknown AttributeFactory", e);
             }
         }
 
-        defaultCombiningFactory = (CombiningAlgFactory) (combiningMap.get(defaultCAF));
-        if (defaultCombiningFactory == null) {
+        defaultCombiningFactoryProxy = (CombiningAlgFactoryProxy) (combiningMap.get(defaultCAF));
+        if (defaultCombiningFactoryProxy == null) {
             try {
-                defaultCombiningFactory = CombiningAlgFactory.getInstance(defaultCAF);
+                defaultCombiningFactoryProxy = new CAFProxy(CombiningAlgFactory.getInstance(defaultCAF));
             } catch (Exception e) {
                 throw new ParsingException("Unknown CombininAlgFactory", e);
             }
@@ -378,7 +378,7 @@ public class ConfigurationStore {
     /**
      * Private helper that handles the attributeFactory elements.
      */
-    private AttributeFactory parseAttributeFactory(Node root) throws ParsingException {
+    private AttributeFactoryProxy parseAttributeFactory(Node root) throws ParsingException {
         AttributeFactory factory = null;
 
         // check if we're starting with the standard factory setup
@@ -410,13 +410,13 @@ public class ConfigurationStore {
             }
         }
 
-        return factory;
+        return new AFProxy(factory);
     }
 
     /**
      * Private helper that handles the combiningAlgFactory elements.
      */
-    private CombiningAlgFactory parseCombiningAlgFactory(Node root) throws ParsingException {
+    private CombiningAlgFactoryProxy parseCombiningAlgFactory(Node root) throws ParsingException {
         CombiningAlgFactory factory = null;
 
         // check if we're starting with the standard factory setup
@@ -446,7 +446,7 @@ public class ConfigurationStore {
             }
         }
 
-        return factory;
+        return new CAFProxy(factory);
     }
 
     /**
@@ -747,8 +747,8 @@ public class ConfigurationStore {
      * 
      * @return the default attribute factory
      */
-    public AttributeFactory getDefaultAttributeFactory() {
-        return defaultAttributeFactory;
+    public AttributeFactoryProxy getDefaultAttributeFactoryProxy() {
+        return defaultAttributeFactoryProxy;
     }
 
     /**
@@ -806,8 +806,8 @@ public class ConfigurationStore {
      * 
      * @return the default combiningAlg factory
      */
-    public CombiningAlgFactory getDefaultCombiningAlgFactory() {
-        return defaultCombiningFactory;
+    public CombiningAlgFactoryProxy getDefaultCombiningFactoryProxy() {
+        return defaultCombiningFactoryProxy;
     }
 
     /**
@@ -931,13 +931,13 @@ public class ConfigurationStore {
         }
 
         // set the default attribute factory, if it exists here
-        if (defaultAttributeFactory != null) {
-            AttributeFactory.setDefaultFactory(new AFProxy(defaultAttributeFactory));
+        if (defaultAttributeFactoryProxy != null) {
+            AttributeFactory.setDefaultFactory(defaultAttributeFactoryProxy);
         }
 
         // set the default combining algorithm factory, if it exists here
-        if (defaultCombiningFactory != null) {
-            CombiningAlgFactory.setDefaultFactory(new CAFProxy(defaultCombiningFactory));
+        if (defaultCombiningFactoryProxy != null) {
+            CombiningAlgFactory.setDefaultFactory(defaultCombiningFactoryProxy);
         }
 
         // set the default function factories, if they exists here

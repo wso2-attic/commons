@@ -22,8 +22,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.ctx.xacml2.Result;
 
 import java.net.URI;
 import java.util.ArrayList;

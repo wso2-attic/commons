@@ -21,8 +21,8 @@ package org.wso2.balana;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
-import org.wso2.balana.xacml3.Result;
-import org.wso2.balana.xacml3.advice.Advice;
+import org.wso2.balana.ctx.xacml3.Result;
+import org.wso2.balana.xacml3.Advice;
 
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class ResultFactory {
         if(version == XACMLConstants.XACML_VERSION_3_0){
             return new Result(decision, status, null, null, null);
         } else {
-            return new org.wso2.balana.xacml2.Result(decision, status, null, null, null);
+            return new org.wso2.balana.ctx.xacml2.Result(decision, status, null, null, null);
         }
     }
 
@@ -64,7 +64,7 @@ public class ResultFactory {
         if(evaluationCtx.getXacmlVersion() == XACMLConstants.XACML_VERSION_3_0){
             return new Result(decision, null, null, null,evaluationCtx);
         } else {
-            return new org.wso2.balana.xacml2.Result(decision, null, null, null, evaluationCtx);
+            return new org.wso2.balana.ctx.xacml2.Result(decision, null, null, null, evaluationCtx);
         }
     }
 
@@ -82,7 +82,7 @@ public class ResultFactory {
         if(evaluationCtx.getXacmlVersion() == XACMLConstants.XACML_VERSION_3_0){
             return new Result(decision, status, null, null, evaluationCtx);
         } else {
-            return new org.wso2.balana.xacml2.Result(decision, status, null, null, evaluationCtx);
+            return new org.wso2.balana.ctx.xacml2.Result(decision, status, null, null, evaluationCtx);
         }
     }
 
@@ -103,7 +103,7 @@ public class ResultFactory {
             return new Result(decision, null, obligationResults,
                                                                             advices, evaluationCtx);
         } else {
-            return new org.wso2.balana.xacml2.Result(decision, null, obligationResults,
+            return new org.wso2.balana.ctx.xacml2.Result(decision, null, obligationResults,
                                                                              advices,evaluationCtx);
         }
     }
@@ -126,7 +126,7 @@ public class ResultFactory {
             return new Result(decision, status,obligationResults,
                                                                             advices, evaluationCtx);
         } else {
-            return new org.wso2.balana.xacml2.Result(decision, status, obligationResults,
+            return new org.wso2.balana.ctx.xacml2.Result(decision, status, obligationResults,
                                                                              advices,evaluationCtx);
         }
     }

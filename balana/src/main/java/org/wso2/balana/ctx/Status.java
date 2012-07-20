@@ -79,7 +79,7 @@ public class Status {
     public static final String STATUS_PROCESSING_ERROR = "urn:oasis:names:tc:xacml:1.0:status:processing-error";
 
     // the status code
-    private List code;
+    private List<String> code;
 
     // the message
     private String message;
@@ -92,7 +92,7 @@ public class Status {
 
     // initialize the OK Status object
     static {
-        List code = new ArrayList();
+        List<String> code = new ArrayList<String>();
         code.add(STATUS_OK);
         okStatus = new Status(code);
     };
@@ -104,7 +104,7 @@ public class Status {
      *            this may contain any number of minor codes after the first item in the list, which
      *            is the major code
      */
-    public Status(List code) {
+    public Status(List<String> code) {
         this(code, null, null);
     }
 
@@ -135,7 +135,7 @@ public class Status {
      * @throws IllegalArgumentException if detail is included for a status code that doesn't allow
      *             detail
      */
-    public Status(List code, String message, StatusDetail detail) throws IllegalArgumentException {
+    public Status(List<String> code, String message, StatusDetail detail) throws IllegalArgumentException {
         // if the code is ok, syntax error or processing error, there
         // must not be any detail included
         if (detail != null) {
@@ -146,7 +146,7 @@ public class Status {
                         + c);
         }
 
-        this.code = Collections.unmodifiableList(new ArrayList(code));
+        this.code = Collections.unmodifiableList(new ArrayList<String>(code));
         this.message = message;
         this.detail = detail;
     }
@@ -156,7 +156,7 @@ public class Status {
      * 
      * @return the status code
      */
-    public List getCode() {
+    public List<String> getCode() {
         return code;
     }
 
@@ -193,13 +193,14 @@ public class Status {
      * <code>ParsingException</code> is thrown if the DOM root doesn't represent a valid StatusType.
      * 
      * @param root the DOM root of a StatusType
-     * 
+     *
      * @return a new <code>Status</code>
      * 
      * @throws ParsingException if the node is invalid
      */
     public static Status getInstance(Node root) throws ParsingException {
-        List code = null;
+
+        List<String> code = null;
         String message = null;
         StatusDetail detail = null;
 
@@ -217,16 +218,24 @@ public class Status {
             }
         }
 
+        if(code == null){
+            throw new ParsingException("Missing required element StatusCode in StatusType");
+        }
+
         return new Status(code, message, detail);
     }
 
     /**
      * Private helper that parses the status code
+     * 
+     * @param root  the DOM root of a StatusCodeType
+     *
+     * @return a List for status
      */
-    private static List parseStatusCode(Node root) {
+    private static List<String> parseStatusCode(Node root) {
         // get the top-level code
         String val = root.getAttributes().getNamedItem("Value").getNodeValue();
-        List code = new ArrayList();
+        List<String> code = new ArrayList<String>();
         code.add(val);
 
         // now get the list of all sub-codes, and work through them

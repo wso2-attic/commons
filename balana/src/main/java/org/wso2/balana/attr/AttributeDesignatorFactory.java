@@ -4,6 +4,7 @@ import org.w3c.dom.Node;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.XACMLConstants;
+import org.wso2.balana.attr.xacml3.AttributeDesignator;
 
 /**
  *
@@ -16,9 +17,9 @@ public class AttributeDesignatorFactory {
                                                                         throws ParsingException {
 
         if(metaData.getXACMLVersion() == XACMLConstants.XACML_VERSION_3_0){
-            return org.wso2.balana.xacml3.attr.AttributeDesignator.getInstance(root);
+            return AttributeDesignator.getInstance(root);
         } else {
-            return org.wso2.balana.xacml2.attr.AttributeDesignator.getInstance(root);
+            return org.wso2.balana.attr.AttributeDesignator.getInstance(root);
         }
     }
 

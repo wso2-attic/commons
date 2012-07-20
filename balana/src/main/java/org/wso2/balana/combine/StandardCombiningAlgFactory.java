@@ -37,9 +37,10 @@ package org.wso2.balana.combine;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.UnknownIdentifierException;
 import org.wso2.balana.XACMLConstants;
+import org.wso2.balana.combine.xacml2.*;
+import org.wso2.balana.combine.xacml3.DenyUnlessPermitRuleAlg;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -117,6 +118,10 @@ public class StandardCombiningAlgFactory extends BaseCombiningAlgFactory {
         supportedAlgIds.add(FirstApplicableRuleAlg.algId);
         supportedAlgorithms.add(new FirstApplicablePolicyAlg());
         supportedAlgIds.add(FirstApplicablePolicyAlg.algId);
+
+        supportedAlgorithms.add(new DenyUnlessPermitRuleAlg());
+        supportedAlgIds.add(DenyUnlessPermitRuleAlg.algId);
+
 
         supportedAlgorithms.add(new OnlyOneApplicablePolicyAlg());
         supportedAlgIds.add(OnlyOneApplicablePolicyAlg.algId);

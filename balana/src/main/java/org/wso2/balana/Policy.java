@@ -262,9 +262,14 @@ public class Policy extends AbstractPolicy {
      * Creates a new Policy based on the given root node. This is private since every class is
      * supposed to use a getInstance() method to construct from a Node, but since we want some
      * common code in the parent class, we need this functionality in a constructor.
+     *
+     * @param root  the node to parse for the <code>Policy</code>
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
+     * @throws ParsingException ParsingException if the PolicyType is invalid
      */
-    private Policy(Node root) throws ParsingException {
-        super(root, "Policy", "RuleCombiningAlgId");
+    private Policy(Node root, FactoryConfig factoryConfig) throws ParsingException {
+        super(root, "Policy", "RuleCombiningAlgId", factoryConfig);
 
         List rules = new ArrayList();
         HashMap parameters = new HashMap();
@@ -369,7 +374,7 @@ public class Policy extends AbstractPolicy {
      * root of PolicyType XML object, otherwise an exception is thrown.
      * 
      * @param root the DOM root of a PolicyType XML type
-     * 
+     * @return  a <code>Policy</code> object
      * @throws ParsingException if the PolicyType is invalid
      */
     public static Policy getInstance(Node root) throws ParsingException {
@@ -379,7 +384,27 @@ public class Policy extends AbstractPolicy {
                     + root.getNodeName());
         }
 
-        return new Policy(root);
+        return new Policy(root, null);
+    }
+
+    /**
+     * Creates an instance of a <code>Policy</code> object based on a DOM node. The node must be the
+     * root of PolicyType XML object, otherwise an exception is thrown.
+     *
+     * @param root the DOM root of a PolicyType XML type
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
+     * @return  a <code>Policy</code> object
+     * @throws ParsingException if the PolicyType is invalid
+     */
+    public static Policy getInstance(Node root, FactoryConfig factoryConfig) throws ParsingException {
+        // first off, check that it's the right kind of node
+        if (!root.getNodeName().equals("Policy")) {
+            throw new ParsingException("Cannot create Policy from root of " + "type "
+                    + root.getNodeName());
+        }
+
+        return new Policy(root, factoryConfig);
     }
 
     /**

@@ -22,6 +22,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.Indenter;
+import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
@@ -165,7 +166,8 @@ public class AttributeAssignmentExpression {
                     while(iterator.hasNext()){
                         AttributeValue bagValue = (AttributeValue) iterator.next();
                         AttributeAssignment assignment =
-                                new AttributeAssignment(attributeId, bagValue, category, issuer);
+                                new AttributeAssignment(attributeId, bagValue.getType(), category,
+                                                                        bagValue.encode(), issuer);
 
                         values.add(assignment);
                     }
@@ -174,7 +176,8 @@ public class AttributeAssignmentExpression {
                 }
             } else {
                 AttributeAssignment assignment =
-                        new AttributeAssignment(attributeId, attributeValue, category, issuer);
+                        new AttributeAssignment(attributeId, attributeValue.getType(),
+                                                category, attributeValue.encode(), issuer);
                 values.add(assignment);
             }
         }

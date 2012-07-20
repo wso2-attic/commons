@@ -36,6 +36,7 @@
 package org.wso2.balana.cond.cluster;
 
 import org.wso2.balana.cond.FloorFunction;
+import org.wso2.balana.cond.Function;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,8 +50,8 @@ import java.util.Set;
  */
 public class FloorFunctionCluster implements FunctionCluster {
 
-    public Set getSupportedFunctions() {
-        Set set = new HashSet();
+    public Set<Function> getSupportedFunctions() {
+        Set<Function> set = new HashSet<Function>();
         Iterator it = FloorFunction.getSupportedIdentifiers().iterator();
 
         while (it.hasNext())

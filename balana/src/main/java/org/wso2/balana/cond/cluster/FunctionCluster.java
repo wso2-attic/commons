@@ -35,6 +35,8 @@
 
 package org.wso2.balana.cond.cluster;
 
+import org.wso2.balana.cond.Function;
+
 import java.util.Set;
 
 /**
@@ -59,6 +61,6 @@ public interface FunctionCluster {
      * 
      * @return the functions supported by this class
      */
-    public Set getSupportedFunctions();
+    public Set<Function> getSupportedFunctions();
 
 }

@@ -40,10 +40,11 @@ import org.apache.commons.logging.LogFactory;
 
 import org.wso2.balana.ctx.*;
 
+import org.wso2.balana.ctx.xacml3.RequestCtx;
 import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderResult;
-import org.wso2.balana.xacml3.ctx.XACML3EvaluationCtx;
-import org.wso2.balana.xacml3.ctx.RequestCtx;
+import org.wso2.balana.ctx.xacml3.Result;
+import org.wso2.balana.ctx.xacml3.XACML3EvaluationCtx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -93,6 +94,48 @@ public class PDP {
 		policyFinder.init();
 	}
 
+    /**
+     * Attempts to evaluate the request against the policies known to this PDP. This is really the
+     * core method of the entire XACML specification, and for most people will provide what you
+     * want. If you need any special handling, you should look at the version of this method that
+     * takes an <code>EvaluationCtx</code>.
+     * <p>
+     * Note that if the request is somehow invalid (it was missing a required attribute, it was
+     * using an unsupported scope, etc), then the result will be a decision of INDETERMINATE.
+     *
+     * @param request the request to evaluate
+     *
+     * @return a response paired to the request
+     */
+    public String evaluate(String request) {
+
+        AbstractRequestCtx  requestCtx;
+        ResponseCtx responseCtx;
+
+        try {
+            requestCtx = RequestCtxFactory.getFactory().getRequestCtx(request);
+            responseCtx = evaluate(requestCtx);
+        } catch (ParsingException e) {
+            logger.error("Invalid request  : " + e.getMessage());
+            // there was something wrong with the request, so we return
+            // Indeterminate with a status of syntax error...though this
+            // may change if a more appropriate status type exists
+            ArrayList<String> code = new ArrayList<String>();
+            code.add(Status.STATUS_SYNTAX_ERROR);
+            Status status = new Status(code, e.getMessage());
+            //As invalid request, XACML 3.0 response is created. 
+            responseCtx = new ResponseCtx( new Result(AbstractResult.DECISION_INDETERMINATE,
+                                                                        status, null, null, null));
+
+        }
+
+        OutputStream stream = new ByteArrayOutputStream();
+        responseCtx.encode(stream);
+        return stream.toString();
+    }
+
+
+
 	/**
 	 * Attempts to evaluate the request against the policies known to this PDP. This is really the
 	 * core method of the entire XACML specification, and for most people will provide what you
@@ -112,14 +155,14 @@ public class PDP {
 		try {
             evalContext = EvaluationCtxFactory.getFactory().getEvaluationCtx(request, pdpConfig);
 			return evaluate(evalContext);
-		} catch (ParsingException pe) {
-			logger.error("the PDP received an invalid request", pe);
+		} catch (ParsingException e) {
+			logger.error("Invalid request  : " + e.getMessage());
 			// there was something wrong with the request, so we return
 			// Indeterminate with a status of syntax error...though this
 			// may change if a more appropriate status type exists
 			ArrayList<String> code = new ArrayList<String>();
 			code.add(Status.STATUS_SYNTAX_ERROR);
-			Status status = new Status(code, pe.getMessage());
+			Status status = new Status(code, e.getMessage());
 			return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
                     status, evalContext));
 
@@ -168,7 +211,8 @@ public class PDP {
                 code.add(Status.STATUS_SYNTAX_ERROR);
                 Status status = new Status(code, "PDP does not supports multiple decision profile. " +
                         "Multiple <Attributes> elements with the same Category can be existed");
-                return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                return new ResponseCtx(ResultFactory.getFactory().
+                        getResult(AbstractResult.DECISION_INDETERMINATE,
                         status, context));
             } else if(context instanceof XACML3EvaluationCtx && ((RequestCtx)context.
                     getRequestCtx()).isCombinedDecision()){
@@ -176,7 +220,8 @@ public class PDP {
                 code.add(Status.STATUS_PROCESSING_ERROR);
                 Status status = new Status(code, "PDP does not supports multiple decision profile. " +
                         "Multiple decision is not existed to combine them");
-                return new ResponseCtx(ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
+                return new ResponseCtx(ResultFactory.getFactory().
+                        getResult(AbstractResult.DECISION_INDETERMINATE,
                         status, context));
             } else {
                 return new ResponseCtx(evaluateContext(context));
@@ -208,20 +253,6 @@ public class PDP {
             return ResultFactory.getFactory().getResult(AbstractResult.DECISION_INDETERMINATE,
                     finderResult.getStatus(),context);
         }
-
-        Set<String> policyIds = new HashSet<String>();
-
-        AbstractPolicy policy = finderResult.getPolicy();
-        if(policy instanceof Policy){
-            policyIds.add(policy.getId().toString());
-        } else if(policy instanceof PolicySet){
-            Iterator iterator = policy.getChildElements().iterator();
-            while(iterator.hasNext()){
-                AbstractPolicy child = (AbstractPolicy) iterator.next();
-                policyIds.add(child.getId().toString());
-            }
-        }
-
 		// we found a valid policy, so we can do the evaluation
 		return finderResult.getPolicy().evaluate(context);
 	}

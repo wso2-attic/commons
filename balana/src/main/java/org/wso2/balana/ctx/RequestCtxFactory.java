@@ -18,10 +18,18 @@
 
 package org.wso2.balana.ctx;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.XACMLConstants;
+import org.wso2.balana.ctx.xacml3.RequestCtx;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -29,7 +37,15 @@ import java.io.InputStream;
  */
 public class RequestCtxFactory {
 
+    /**
+     * Instance of this class
+     */
     private static RequestCtxFactory factoryInstance;
+
+    /**
+     *  the logger we'll use for all messages
+     */
+    private static Log log = LogFactory.getLog(RequestCtxFactory.class);    
 
     /**
      *  Returns instance of <code>AbstractRequestCtx</code> based one the XACML version. 
@@ -44,14 +60,46 @@ public class RequestCtxFactory {
 
         if(requestCtxNs != null){
             if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
-                return org.wso2.balana.xacml3.ctx.RequestCtx.getInstance(root);
+                return RequestCtx.getInstance(root);
+            } else if(XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(requestCtxNs.trim()) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(requestCtxNs.trim())) {
+                return org.wso2.balana.ctx.xacml2.RequestCtx.getInstance(root);
             } else {
-                return org.wso2.balana.xacml2.ctx.RequestCtx.getInstance(root);
+                throw new ParsingException("Invalid namespace in XACML request");
             }
         } else {
-            throw new ParsingException("Namespace of Request cannot be null"); //TODO correct error message
+            log.warn("No Namespace defined in XACML request and Assume as XACML 3.0");
+            return RequestCtx.getInstance(root);
         }
     }
+
+    /**
+     *  Returns instance of <code>AbstractRequestCtx</code> based one the XACML version.
+     *
+     * @param request  the String to parse for the <code>AbstractRequestCtx</code>
+     * @return <code>AbstractRequestCtx</code> object
+     * @throws ParsingException  if the request is invalid
+     */
+    public AbstractRequestCtx getRequestCtx(String request) throws ParsingException {
+
+        Node root = getXacmlRequest(request);
+        String requestCtxNs = root.getNamespaceURI();
+
+        if(requestCtxNs != null){
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
+                return RequestCtx.getInstance(root);
+            } else if(XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(requestCtxNs.trim()) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(requestCtxNs.trim())) {
+                return org.wso2.balana.ctx.xacml2.RequestCtx.getInstance(root);
+            } else {
+                throw new ParsingException("Invalid namespace in XACML request");
+            }
+        } else {
+            log.warn("No Namespace defined in XACML request and Assume as XACML 3.0");
+            return RequestCtx.getInstance(root);
+        }
+    }
+
 
     /**
      *  Returns instance of <code>AbstractRequestCtx</code> based one the XACML version.
@@ -73,12 +121,16 @@ public class RequestCtxFactory {
 
         if(requestCtxNs != null){
             if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
-                return org.wso2.balana.xacml3.ctx.RequestCtx.getInstance(root);
+                return RequestCtx.getInstance(root);
+            } else if(XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(requestCtxNs.trim()) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(requestCtxNs.trim())) {
+                return org.wso2.balana.ctx.xacml2.RequestCtx.getInstance(root);
             } else {
-                return org.wso2.balana.xacml2.ctx.RequestCtx.getInstance(root);
+                throw new ParsingException("Invalid namespace in XACML request");
             }
         } else {
-            throw new ParsingException("Namespace of Request cannot be null"); //TODO correct error message
+            log.warn("No Namespace defined in XACML request and Assume as XACML 3.0");
+            return RequestCtx.getInstance(root);
         }
     }
 
@@ -102,4 +154,35 @@ public class RequestCtxFactory {
         return factoryInstance;
     }
 
+
+    /**
+     * Creates DOM representation of the XACML request
+     *
+     * @param request  XACML request as a String object
+     * @return  XACML request as a DOM element
+     * @throws ParsingException throws, if fails
+     */
+    public Element getXacmlRequest(String request) throws ParsingException {
+
+        ByteArrayInputStream inputStream;
+        DocumentBuilderFactory dbf;
+        Document doc;
+
+        inputStream = new ByteArrayInputStream(request.getBytes());
+        dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+
+        try {
+            doc = dbf.newDocumentBuilder().parse(inputStream);
+        } catch (Exception e) {
+            throw new ParsingException("DOM of request element can not be created from String");
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+               log.error("Error in closing input stream of XACML request");
+            }
+        }
+        return doc.getDocumentElement();
+    }
 }

@@ -39,29 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.UnknownIdentifierException;
 
-import org.wso2.balana.cond.cluster.AbsFunctionCluster;
-import org.wso2.balana.cond.cluster.AddFunctionCluster;
-import org.wso2.balana.cond.cluster.ComparisonFunctionCluster;
-import org.wso2.balana.cond.cluster.ConditionBagFunctionCluster;
-import org.wso2.balana.cond.cluster.ConditionSetFunctionCluster;
-import org.wso2.balana.cond.cluster.DateMathFunctionCluster;
-import org.wso2.balana.cond.cluster.DivideFunctionCluster;
-import org.wso2.balana.cond.cluster.EqualFunctionCluster;
-import org.wso2.balana.cond.cluster.FloorFunctionCluster;
-import org.wso2.balana.cond.cluster.GeneralBagFunctionCluster;
-import org.wso2.balana.cond.cluster.GeneralSetFunctionCluster;
-import org.wso2.balana.cond.cluster.HigherOrderFunctionCluster;
-import org.wso2.balana.cond.cluster.LogicalFunctionCluster;
-import org.wso2.balana.cond.cluster.MatchFunctionCluster;
-import org.wso2.balana.cond.cluster.ModFunctionCluster;
-import org.wso2.balana.cond.cluster.MultiplyFunctionCluster;
-import org.wso2.balana.cond.cluster.NOfFunctionCluster;
-import org.wso2.balana.cond.cluster.NotFunctionCluster;
-import org.wso2.balana.cond.cluster.NumericConvertFunctionCluster;
-import org.wso2.balana.cond.cluster.RoundFunctionCluster;
-import org.wso2.balana.cond.cluster.StringFunctionCluster;
-import org.wso2.balana.cond.cluster.StringNormalizeFunctionCluster;
-import org.wso2.balana.cond.cluster.SubtractFunctionCluster;
+import org.wso2.balana.cond.cluster.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -95,13 +73,13 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
     private static StandardFunctionFactory generalFactory = null;
 
     // the three function sets/maps that we use internally
-    private static Set targetFunctions = null;
-    private static Set conditionFunctions = null;
-    private static Set generalFunctions = null;
+    private static Set<Function> targetFunctions = null;
+    private static Set<Function> conditionFunctions = null;
+    private static Set<Function> generalFunctions = null;
 
-    private static Map targetAbstractFunctions = null;
-    private static Map conditionAbstractFunctions = null;
-    private static Map generalAbstractFunctions = null;
+    private static Map<URI, FunctionProxy> targetAbstractFunctions = null;
+    private static Map<URI, FunctionProxy> conditionAbstractFunctions = null;
+    private static Map<URI, FunctionProxy> generalAbstractFunctions = null;
 
     // the static sets of supported identifiers for each XACML version
     private static Set supportedV1Functions;
@@ -134,7 +112,7 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
             logger.debug("Initializing standard Target functions");
         }
 
-        targetFunctions = new HashSet();
+        targetFunctions = new HashSet<Function>();
 
         // add EqualFunction
         targetFunctions.addAll((new EqualFunctionCluster()).getSupportedFunctions());
@@ -149,7 +127,7 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         // add MatchFunction
         targetFunctions.addAll((new MatchFunctionCluster()).getSupportedFunctions());
 
-        targetAbstractFunctions = new HashMap();
+        targetAbstractFunctions = new HashMap();            // TODO ??
     }
 
     /**
@@ -163,7 +141,7 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         if (targetFunctions == null)
             initTargetFunctions();
 
-        conditionFunctions = new HashSet(targetFunctions);
+        conditionFunctions = new HashSet<Function>(targetFunctions);
 
         // add condition function TimeInRange
         conditionFunctions.add(new TimeInRangeFunction());
@@ -174,7 +152,7 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         // add condition functions from HigherOrderFunction
         conditionFunctions.addAll((new HigherOrderFunctionCluster()).getSupportedFunctions());
 
-        conditionAbstractFunctions = new HashMap(targetAbstractFunctions);
+        conditionAbstractFunctions = new HashMap<URI, FunctionProxy>(targetAbstractFunctions);// TODO ??
     }
 
     /**
@@ -188,7 +166,7 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         if (conditionFunctions == null)
             initConditionFunctions();
 
-        generalFunctions = new HashSet(conditionFunctions);
+        generalFunctions = new HashSet<Function>(conditionFunctions);
 
         // add AddFunction
         generalFunctions.addAll((new AddFunctionCluster()).getSupportedFunctions());
@@ -218,8 +196,10 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         generalFunctions.addAll((new GeneralSetFunctionCluster()).getSupportedFunctions());
         // add the XACML 2.0 string functions
         generalFunctions.addAll((new StringFunctionCluster()).getSupportedFunctions());
+        // add the XACML 3.0 start with functions
+        generalFunctions.addAll((new StringComparingFunctionCluster()).getSupportedFunctions());
 
-        generalAbstractFunctions = new HashMap(conditionAbstractFunctions);
+        generalAbstractFunctions = new HashMap<URI, FunctionProxy>(conditionAbstractFunctions); // TODO
 
         // add the map function's proxy
         try {

@@ -37,9 +37,9 @@ package org.wso2.balana;
 
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.xacml2.Result;
-import org.wso2.balana.xacml3.advice.Advice;
-import org.wso2.balana.xacml3.advice.AdviceExpression;
+import org.wso2.balana.ctx.xacml2.Result;
+import org.wso2.balana.xacml3.Advice;
+import org.wso2.balana.xacml3.AdviceExpression;
 import org.wso2.balana.attr.BooleanAttribute;
 
 import org.wso2.balana.cond.Apply;
@@ -82,6 +82,7 @@ public class Rule implements PolicyTreeElement {
     private String description = null;
     private AbstractTarget target = null;
     private Condition condition = null;
+    private int xacmlVersion;
 
     /**
      * Creates a new <code>Rule</code> object for XACML 1.x and 2.0.
@@ -93,9 +94,13 @@ public class Rule implements PolicyTreeElement {
      * @param target the rule's target, or null if the target is to be inherited from the
      *            encompassing policy
      * @param condition the rule's condition, or null if there is none
+     * @param obligationExpressions  the rule's ObligationExpressions
+     * @param adviceExpressions   the rule's AdviceExpressions
+     * @param xacmlVersion xacml version
      */
     public Rule(URI id, int effect, String description, AbstractTarget target, Condition condition,
-                Set<AbstractObligation> obligationExpressions, Set<AdviceExpression> adviceExpressions) {
+                Set<AbstractObligation> obligationExpressions, Set<AdviceExpression> adviceExpressions,
+                                                                                int xacmlVersion) {
         idAttr = id;
         effectAttr = effect;
         this.description = description;
@@ -103,6 +108,7 @@ public class Rule implements PolicyTreeElement {
         this.condition = condition;
         this.adviceExpressions = adviceExpressions;
         this.obligationExpressions = obligationExpressions;
+        this.xacmlVersion = xacmlVersion;
     }
 
     /**
@@ -118,13 +124,16 @@ public class Rule implements PolicyTreeElement {
      * @param target the rule's target, or null if the target is to be inherited from the
      *            encompassing policy
      * @param condition the rule's condition, or null if there is none
+     * @param xacmlVersion  xacml version
      */
-    public Rule(URI id, int effect, String description, AbstractTarget target, Apply condition) {
+    public Rule(URI id, int effect, String description, AbstractTarget target, Apply condition,
+                                                                                int xacmlVersion) {
         idAttr = id;
         effectAttr = effect;
         this.description = description;
         this.target = target;
         this.condition = new Condition(condition.getFunction(), condition.getChildren());
+        this.xacmlVersion = xacmlVersion;
     }
 
 
@@ -241,7 +250,8 @@ public class Rule implements PolicyTreeElement {
             }
         }
 
-        return new Rule(id, effect, description, target, condition, obligationExpressions, adviceExpressions);
+        return new Rule(id, effect, description, target, condition, obligationExpressions,
+                                                    adviceExpressions, metaData.getXACMLVersion());
     }
 
     /**
@@ -355,6 +365,18 @@ public class Rule implements PolicyTreeElement {
 
             // if the target was indeterminate, we can't go on
             if (result == MatchResult.INDETERMINATE){
+
+                // defines extended indeterminate results with XACML 3.0
+                if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0){
+                    if(effectAttr == AbstractResult.DECISION_PERMIT){
+                        return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE_PERMIT,
+                                match.getStatus(), context);
+                    } else {
+                        return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE_DENY,
+                                match.getStatus(), context);
+                    }
+                }
+
                 return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE,
                         match.getStatus(), context);
             }
@@ -371,6 +393,18 @@ public class Rule implements PolicyTreeElement {
         EvaluationResult result = condition.evaluate(context);
 
         if (result.indeterminate()) {
+
+            // defines extended indeterminate results with XACML 3.0
+            if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0){
+                if(effectAttr == AbstractResult.DECISION_PERMIT){
+                    return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE_PERMIT,
+                            result.getStatus(), context);
+                } else {
+                    return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE_DENY,
+                           result.getStatus(), context);
+                }
+            }
+
             // if it was INDETERMINATE, then that's what we return
             return ResultFactory.getFactory().getResult(Result.DECISION_INDETERMINATE,
                                                                        result.getStatus(), context);

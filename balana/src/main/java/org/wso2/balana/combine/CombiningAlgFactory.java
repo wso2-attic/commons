@@ -56,10 +56,10 @@ public abstract class CombiningAlgFactory {
     private static CombiningAlgFactoryProxy defaultFactoryProxy;
 
     // the map of registered factories
-    private static HashMap registeredFactories;
+    private static HashMap<String, CombiningAlgFactoryProxy> registeredFactories;
 
     /**
-     * static intialiazer that sets up the default factory proxy and registers the standard
+     * static initializer that sets up the default factory proxy and registers the standard
      * namespaces
      */
     static {
@@ -69,9 +69,10 @@ public abstract class CombiningAlgFactory {
             }
         };
 
-        registeredFactories = new HashMap();
+        registeredFactories = new HashMap<String, CombiningAlgFactoryProxy>();
         registeredFactories.put(XACMLConstants.XACML_1_0_IDENTIFIER, proxy);
         registeredFactories.put(XACMLConstants.XACML_2_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_3_0_IDENTIFIER, proxy);
 
         defaultFactoryProxy = proxy;
     };
@@ -85,7 +86,7 @@ public abstract class CombiningAlgFactory {
 
     /**
      * Returns the default factory. Depending on the default factory's implementation, this may
-     * return a singleton instance or new instances with each invokation.
+     * return a singleton instance or new instances with each invocation.
      * 
      * @return the default <code>CombiningAlgFactory</code>
      */
@@ -96,8 +97,8 @@ public abstract class CombiningAlgFactory {
     /**
      * Returns a factory based on the given identifier. You may register as many factories as you
      * like, and then retrieve them through this interface, but a factory may only be registered
-     * once using a given identifier. By default, the standard XACML 1.0 and 2.0 identifiers are
-     * regsietered to provide the standard factory.
+     * once using a given identifier. By default, the standard XACML 1.0 2.0 and 3.0 identifiers are
+     * registered to provide the standard factory.
      * 
      * @param identifier the identifier for a factory
      * 
@@ -107,13 +108,12 @@ public abstract class CombiningAlgFactory {
      */
     public static final CombiningAlgFactory getInstance(String identifier)
             throws UnknownIdentifierException {
-        CombiningAlgFactoryProxy proxy = (CombiningAlgFactoryProxy) (registeredFactories
-                .get(identifier));
 
-        if (proxy == null)
-            throw new UnknownIdentifierException("Uknown CombiningAlgFactory " + "identifier: "
+        CombiningAlgFactoryProxy proxy = registeredFactories.get(identifier);
+        if (proxy == null) {
+            throw new UnknownIdentifierException("Unknown CombiningAlgFactory " + "identifier: "
                     + identifier);
-
+        }
         return proxy.getFactory();
     }
 

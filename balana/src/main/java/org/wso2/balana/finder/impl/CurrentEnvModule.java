@@ -38,7 +38,6 @@ package org.wso2.balana.finder.impl;
 import org.wso2.balana.ctx.EvaluationCtx;
 
 import org.wso2.balana.XACMLConstants;
-import org.wso2.balana.xacml2.attr.AttributeDesignator;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.attr.DateAttribute;
@@ -117,21 +116,18 @@ public class CurrentEnvModule extends AttributeFinderModule {
      * @param attributeId the identifier of the attributes to find, which must be one of the three
      *            ENVIRONMENT_* fields for this module to resolve a value
      * @param issuer the issuer of the attributes, or null if unspecified
-     * @param subjectCategory the category of the attribute or null, which ignored since this only
-     *            handles non-subjects
+     * @param category the category of the attribute 
      * @param context the representation of the request data
-     * @param designatorType the type of designator, which must be ENVIRONMENT_TARGET for this
-     *            module to resolve a value
      * 
      * @return the result of attribute retrieval, which will be a bag with a single attribute, an
      *         empty bag, or an error
      */
-    public EvaluationResult findAttribute(URI attributeType, URI attributeId, URI issuer,
-            URI subjectCategory, EvaluationCtx context, int designatorType) {
+    public EvaluationResult findAttribute(URI attributeType, URI attributeId, String issuer,
+            URI category, EvaluationCtx context) {
         // we only know about environment attributes
-        if (designatorType != AttributeDesignator.ENVIRONMENT_TARGET)
+        if (!XACMLConstants.ENT_CATEGORY.equals(category.toString())){
             return new EvaluationResult(BagAttribute.createEmptyBag(attributeType));
-
+        }
         // figure out which attribute we're looking for
         String attrName = attributeId.toString();
 
@@ -150,7 +146,7 @@ public class CurrentEnvModule extends AttributeFinderModule {
     /**
      * Handles requests for the current Time.
      */
-    private EvaluationResult handleTime(URI type, URI issuer, EvaluationCtx context) {
+    private EvaluationResult handleTime(URI type, String issuer, EvaluationCtx context) {
         // make sure they're asking for a time attribute
         if (!type.toString().equals(TimeAttribute.identifier))
             return new EvaluationResult(BagAttribute.createEmptyBag(type));
@@ -162,7 +158,7 @@ public class CurrentEnvModule extends AttributeFinderModule {
     /**
      * Handles requests for the current Date.
      */
-    private EvaluationResult handleDate(URI type, URI issuer, EvaluationCtx context) {
+    private EvaluationResult handleDate(URI type, String issuer, EvaluationCtx context) {
         // make sure they're asking for a date attribute
         if (!type.toString().equals(DateAttribute.identifier))
             return new EvaluationResult(BagAttribute.createEmptyBag(type));
@@ -174,7 +170,7 @@ public class CurrentEnvModule extends AttributeFinderModule {
     /**
      * Handles requests for the current DateTime.
      */
-    private EvaluationResult handleDateTime(URI type, URI issuer, EvaluationCtx context) {
+    private EvaluationResult handleDateTime(URI type, String issuer, EvaluationCtx context) {
         // make sure they're asking for a dateTime attribute
         if (!type.toString().equals(DateTimeAttribute.identifier))
             return new EvaluationResult(BagAttribute.createEmptyBag(type));

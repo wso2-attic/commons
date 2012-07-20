@@ -40,11 +40,18 @@ import org.wso2.balana.ParsingException;
 
 import java.io.ByteArrayInputStream;
 
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -66,32 +73,39 @@ public class StatusDetail {
     private String detailText = null;
 
     /**
-     * Constructor that uses a <code>List</code> of <code>Attribute</code>s to define the status
+     * a List of MissingAttributeDetail 
+     */
+    private  List<MissingAttributeDetail> missingAttributeDetails;
+
+    /**
+     * Constructor that uses a <code>List</code> of <code>MissingAttributeDetail</code>s to define the status
      * detail. This is a common form of detail data, and can be used for things like providing the
      * information included with the missing-attribute status code.
      * 
-     * @param attributes a <code>List</code> of <code>Attribute</code>s
+     * @param missingAttributeDetails a <code>List</code> of <code>MissingAttributeDetail</code>s
      * 
-     * @throws IllegalArgumentException if there is a problem encoding the <code>Attribute</code>s
+     * @throws IllegalArgumentException if there is a problem encoding the <code>MissingAttributeDetail</code>s
      */
-    public StatusDetail(List attributes) throws IllegalArgumentException {
-        detailText = "<StatusDetail>\n";
-        Iterator it = attributes.iterator();
+    public StatusDetail(List<MissingAttributeDetail> missingAttributeDetails)
+                                                                throws IllegalArgumentException {
 
-        while (it.hasNext()) {
-            Attribute attr = (Attribute) (it.next());
-            detailText += attr.encode() + "\n";
-        }
-
-        detailText += "</StatusDetail>";
-
+        this.missingAttributeDetails = missingAttributeDetails;
         try {
+            detailText = "<StatusDetail>\n";
+
+            for (MissingAttributeDetail attribute : missingAttributeDetails) {
+                detailText += attribute.getEncoded() + "\n";
+            }
+
+            detailText += "</StatusDetail>";                        
             detailRoot = textToNode(detailText);
         } catch (ParsingException pe) {
             // really, this should never happen, since we just made sure that
             // we're working with valid text, but it's possible that encoding
             // the attribute could have caused problems...
-            throw new IllegalArgumentException("invalid Attribute data");
+
+            throw new IllegalArgumentException("Invalid MissingAttributeDetail data, caused by " +
+                                                                                pe.getMessage());
         }
     }
 
@@ -109,16 +123,28 @@ public class StatusDetail {
         detailRoot = textToNode(detailText);
     }
 
+
     /**
      * Private constructor that just sets the root node. This interface is provided publically
      * through the getInstance method.
+     *
+     * @param root  the DOM root of StatusDetail element
      */
     private StatusDetail(Node root) {
         detailRoot = root;
+        try{
+            detailText = nodeToText(root);
+        } catch (ParsingException e) {
+            // just ignore as this is not a must to convert this to text
+        }
     }
 
     /**
      * Private helper routine that converts text into a node
+     * 
+     * @param encoded
+     * @return
+     * @throws ParsingException
      */
     private Node textToNode(String encoded) throws ParsingException {
         try {
@@ -136,23 +162,47 @@ public class StatusDetail {
     }
 
     /**
+     * Private helper routine that converts text into a node
+     * 
+     * @param node
+     * @return
+     * @throws ParsingException
+     */
+    private String nodeToText(Node node) throws ParsingException {
+
+        StringWriter sw = new StringWriter();
+        try {
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(new DOMSource(node), new StreamResult(sw));
+        } catch (TransformerException te) {
+            throw new ParsingException("invalid XML for status detail");
+        }
+        return sw.toString();
+    }
+
+    /**
      * Creates an instance of a <code>StatusDetail</code> object based on the given DOM root node.
      * The node must be a valid StatusDetailType root, or else a <code>ParsingException</code> is
      * thrown.
      * 
      * @param root the DOM root of the StatusDetailType XML type
-     * 
+     *
      * @return a new <code>StatusDetail</code> object
      * 
      * @throws ParsingException if the root node is invalid
      */
     public static StatusDetail getInstance(Node root) throws ParsingException {
         // check that it's really a StatusDetailType root
-        if (!root.getNodeName().equals("StatusDetail"))
+        if (!root.getNodeName().equals("StatusDetail")){
             throw new ParsingException("not a StatusDetail node");
-
+        }
         return new StatusDetail(root);
     }
+
+
+
 
     /**
      * Returns the StatusDetailType DOM root node. This may contain within it any type of valid XML
@@ -164,6 +214,15 @@ public class StatusDetail {
      */
     public Node getDetail() {
         return detailRoot;
+    }
+
+    /**
+     * Gets List of <code>MissingAttributeDetail</code> elements
+     *
+     * @return  a <code>List</code> of <code>MissingAttributeDetail</code> 
+     */
+    public List<MissingAttributeDetail> getMissingAttributeDetails() {
+        return missingAttributeDetails;
     }
 
     /**
@@ -179,9 +238,9 @@ public class StatusDetail {
      *             method
      */
     public String getEncoded() throws IllegalStateException {
-        if (detailText == null)
+        if (detailText == null){
             throw new IllegalStateException("no encoded form available");
-
+        }
         return detailText;
     }
 

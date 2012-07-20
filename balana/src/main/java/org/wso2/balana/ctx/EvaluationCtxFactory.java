@@ -20,8 +20,9 @@ package org.wso2.balana.ctx;
 
 import org.wso2.balana.PDPConfig;
 import org.wso2.balana.ParsingException;
-import org.wso2.balana.xacml2.ctx.XACML2EvaluationCtx;
-import org.wso2.balana.xacml3.ctx.XACML3EvaluationCtx;
+import org.wso2.balana.ctx.xacml2.XACML2EvaluationCtx;
+import org.wso2.balana.ctx.xacml3.RequestCtx;
+import org.wso2.balana.ctx.xacml3.XACML3EvaluationCtx;
 import org.wso2.balana.XACMLConstants;
 
 /**
@@ -36,12 +37,12 @@ public class EvaluationCtxFactory {
 
     
     public EvaluationCtx getEvaluationCtx(AbstractRequestCtx requestCtx, PDPConfig pdpConfig)
-                                    throws ParsingException {
+                                                                        throws ParsingException {
 
         if(XACMLConstants.XACML_VERSION_3_0 == requestCtx.getXacmlVersion()){
-            return new XACML3EvaluationCtx((org.wso2.balana.xacml3.ctx.RequestCtx)requestCtx, pdpConfig);
+            return new XACML3EvaluationCtx((RequestCtx)requestCtx, pdpConfig);
         } else {
-            return new XACML2EvaluationCtx((org.wso2.balana.xacml2.ctx.RequestCtx) requestCtx, pdpConfig);
+            return new XACML2EvaluationCtx((org.wso2.balana.ctx.xacml2.RequestCtx) requestCtx, pdpConfig);
         }
     }
 

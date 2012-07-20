@@ -166,7 +166,7 @@ public class Attribute {
         boolean includeInResult = false ;
         int version  = metaData.getXACMLVersion();
 
-        AttributeFactory attrFactory = AttributeFactory.getInstance();
+        AttributeFactory attrFactory = metaData.getAttributeFactory();
 
         // First check that we're really parsing an Attribute
         if (!root.getNodeName().equals("Attribute")) {

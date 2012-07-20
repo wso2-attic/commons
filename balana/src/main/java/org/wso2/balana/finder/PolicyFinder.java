@@ -37,10 +37,8 @@ package org.wso2.balana.finder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.balana.*;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.PolicyMetaData;
-import org.wso2.balana.PolicyReference;
-import org.wso2.balana.VersionConstraints;
 
 import org.wso2.balana.ctx.Status;
 
@@ -75,17 +73,48 @@ import java.util.Set;
  */
 public class PolicyFinder {
 
-    // all modules in this finder
+    /**
+     * all modules in this finder
+     */
     private Set allModules;
 
-    // all the request modules
+    /**
+     * all the request modules
+     */
     private Set requestModules;
 
-    // all the reference modules
+    /**
+     * all the reference modules
+     */
     private Set referenceModules;
 
-    // the logger we'll use for all messages
+    /**
+     * attribute, combine,function and other factory configurations are stored for building
+     * the XACML policy
+     */
+    private ConfigurationStore config;
+
+    /**
+     * the logger we'll use for all messages
+     */
     private static Log logger = LogFactory.getLog(PolicyFinder.class);
+
+    /**
+     * Constructor that creates a <code>PDPConfig</code> from components.
+     *
+     * @param config  factory configurations to build the XACML policy,  if null, use the
+     * default factory configurations
+     */
+    public PolicyFinder(ConfigurationStore config) {
+        this.config = config;
+    }
+
+    /**
+     * Default constructor that creates a <code>PDPConfig</code> from components.
+     */
+    public PolicyFinder() {
+
+    }
 
     /**
      * Returns the unordered <code>Set</code> of <code>PolicyFinderModule</code>s used by this class
@@ -135,6 +164,15 @@ public class PolicyFinder {
             PolicyFinderModule module = (PolicyFinderModule) (it.next());
             module.init(this);
         }
+    }
+
+    /**
+     * Gets configuration store to build factory configurations
+     *
+     * @return  configuration store
+     */
+    public ConfigurationStore getConfig() {
+        return config;
     }
 
     /**

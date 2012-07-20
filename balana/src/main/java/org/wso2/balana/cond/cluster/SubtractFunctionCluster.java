@@ -35,6 +35,7 @@
 
 package org.wso2.balana.cond.cluster;
 
+import org.wso2.balana.cond.Function;
 import org.wso2.balana.cond.SubtractFunction;
 
 import java.util.HashSet;
@@ -49,8 +50,8 @@ import java.util.Set;
  */
 public class SubtractFunctionCluster implements FunctionCluster {
 
-    public Set getSupportedFunctions() {
-        Set set = new HashSet();
+    public Set<Function> getSupportedFunctions() {
+        Set<Function> set = new HashSet<Function>();
         Iterator it = SubtractFunction.getSupportedIdentifiers().iterator();
 
         while (it.hasNext())

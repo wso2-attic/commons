@@ -73,6 +73,11 @@ public abstract class FunctionBase implements Function {
      */
     public static final String FUNCTION_NS_2 = "urn:oasis:names:tc:xacml:2.0:function:";
 
+    /**
+     * The standard namespace where all XACML 3.0 spec-defined functions live
+     */
+    public static final String FUNCTION_NS_3 = "urn:oasis:names:tc:xacml:3.0:function:";
+
     // A List used by makeProcessingError() to save some steps.
     private static List processingErrList = null;
 
@@ -307,7 +312,7 @@ public abstract class FunctionBase implements Function {
      * @return <code>null</code> if no errors were encountered, otherwise an
      *         <code>EvaluationResult</code> representing the error
      */
-    protected EvaluationResult evalArgs(List params, EvaluationCtx context, AttributeValue[] args) {
+    protected EvaluationResult evalArgs(List<Evaluatable> params, EvaluationCtx context, AttributeValue[] args) {
         Iterator it = params.iterator();
         int index = 0;
 
@@ -317,9 +322,9 @@ public abstract class FunctionBase implements Function {
             EvaluationResult result = eval.evaluate(context);
 
             // If there was an error, pass it back...
-            if (result.indeterminate())
+            if (result.indeterminate()){
                 return result;
-
+            }
             // ...otherwise save it and keep going
             args[index++] = result.getAttributeValue();
         }

@@ -91,6 +91,7 @@ public abstract class FunctionFactory {
         registeredFactories = new HashMap();
         registeredFactories.put(XACMLConstants.XACML_1_0_IDENTIFIER, proxy);
         registeredFactories.put(XACMLConstants.XACML_2_0_IDENTIFIER, proxy);
+        registeredFactories.put(XACMLConstants.XACML_3_0_IDENTIFIER, proxy);
 
         defaultFactoryProxy = proxy;
     };

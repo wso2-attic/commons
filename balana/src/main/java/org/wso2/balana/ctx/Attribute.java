@@ -45,7 +45,6 @@ import java.io.PrintStream;
 import java.io.OutputStream;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;

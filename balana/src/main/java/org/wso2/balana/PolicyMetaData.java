@@ -109,7 +109,7 @@ public class PolicyMetaData {
      * @param xpathVersion the XPath version to use in any selectors
      */
     public PolicyMetaData(int xacmlVersion, int xpathVersion) {
-        this(xacmlVersion, xpathVersion, null, null, null);
+        this(xacmlVersion, xpathVersion, null);
     }
 
     /**
@@ -123,7 +123,7 @@ public class PolicyMetaData {
      * @throws IllegalArgumentException if the identifier strings are unknown
      */
     public PolicyMetaData(String xacmlVersion, String xpathVersion) {
-        this(xacmlVersion, xpathVersion, null, null, null);
+        this(xacmlVersion, xpathVersion, null);
     }
 
     /**
@@ -132,18 +132,12 @@ public class PolicyMetaData {
      * 
      * @param xacmlVersion the version of XACML used in a policy
      * @param xpathVersion the XPath version to use in any selectors
-     * @param attributeFactoryProxy
-     * @param combiningAlgFactoryProxy
-     * @param functionFactoryProxy
      */
-    public PolicyMetaData(int xacmlVersion, int xpathVersion,
-            AttributeFactoryProxy attributeFactoryProxy,
-            CombiningAlgFactoryProxy combiningAlgFactoryProxy,
-            FunctionFactoryProxy functionFactoryProxy) {
+    public PolicyMetaData(int xacmlVersion, int xpathVersion, FactoryConfig factoryConfig) {
         this.xacmlVersion = xacmlVersion;
         this.xpathVersion = xpathVersion;
 
-        proxySetup(attributeFactoryProxy, combiningAlgFactoryProxy, functionFactoryProxy);
+        proxySetup(factoryConfig);
     }
 
     /**
@@ -152,14 +146,11 @@ public class PolicyMetaData {
      * @param xacmlVersion the version of XACML used in a policy
      * @param xpathVersion the XPath version to use in any selectors, or null if this is unspecified
      *            (ie, not supplied in the defaults section of the policy)
-     * @param
-     * 
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
      * @throws IllegalArgumentException if the identifier strings are unknown
      */
-    public PolicyMetaData(String xacmlVersion, String xpathVersion,
-            AttributeFactoryProxy attributeFactoryProxy,
-            CombiningAlgFactoryProxy combiningAlgFactoryProxy,
-            FunctionFactoryProxy functionFactoryProxy) {
+    public PolicyMetaData(String xacmlVersion, String xpathVersion, FactoryConfig factoryConfig) {
         if (xacmlVersion == null){
             this.xacmlVersion = XACML_DEFAULT_VERSION;
         } else if (xacmlVersion.equals(XACMLConstants.XACML_1_0_IDENTIFIER)){
@@ -181,37 +172,52 @@ public class PolicyMetaData {
             this.xpathVersion = XPATH_VERSION_UNSPECIFIED;
         }
 
-        proxySetup(attributeFactoryProxy, combiningAlgFactoryProxy, functionFactoryProxy);
+        proxySetup(factoryConfig);
     }
 
     /**
+     * Setups the  attribute,combine,function and other factory configurations
      *
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
      */
-    private void proxySetup(AttributeFactoryProxy attributeFactoryProxy,
-            CombiningAlgFactoryProxy combiningAlgFactoryProxy,
-            FunctionFactoryProxy functionFactoryProxy) {
-        if (attributeFactoryProxy == null)
+    private void proxySetup(FactoryConfig factoryConfig) {
+
+        AttributeFactoryProxy attributeFactoryProxy  = null;
+        CombiningAlgFactoryProxy combiningAlgFactoryProxy = null;
+        FunctionFactoryProxy functionFactoryProxy  = null;
+        
+        if(factoryConfig != null){
+            attributeFactoryProxy = factoryConfig.getAttributeFactoryProxy();
+            combiningAlgFactoryProxy = factoryConfig.getAlgFactoryProxy();
+            functionFactoryProxy = factoryConfig.getFunctionFactoryProxy();
+        }
+
+        if (attributeFactoryProxy == null){
             this.afProxy = new AttributeFactoryProxy() {
                 public AttributeFactory getFactory() {
                     return AttributeFactory.getInstance();
                 }
             };
-        else
+        } else {
             this.afProxy = attributeFactoryProxy;
+        }
 
-        if (combiningAlgFactoryProxy == null)
+        if (combiningAlgFactoryProxy == null){
             this.cafProxy = new CombiningAlgFactoryProxy() {
                 public CombiningAlgFactory getFactory() {
                     return CombiningAlgFactory.getInstance();
                 }
             };
-        else
+        } else {
             this.cafProxy = combiningAlgFactoryProxy;
+        }
 
-        if (functionFactoryProxy == null)
+        if (functionFactoryProxy == null) {
             this.ffProxy = FunctionFactory.getInstance();
-        else
+        } else {
             this.ffProxy = functionFactoryProxy;
+        }        
     }
 
     /**

@@ -95,7 +95,7 @@ public class StringFunction extends FunctionBase {
 	 *            be evaluated
 	 * @return an <code>EvaluationResult</code> representing the function's result
 	 */
-	public EvaluationResult evaluate(List inputs, EvaluationCtx context) {
+	public EvaluationResult evaluate(List<Evaluatable> inputs, EvaluationCtx context) {
 		// Evaluate the arguments
 		AttributeValue[] argValues = new AttributeValue[inputs.size()];
 		EvaluationResult result = evalArgs(inputs, context, argValues);

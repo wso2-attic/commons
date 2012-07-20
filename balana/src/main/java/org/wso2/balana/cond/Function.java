@@ -76,7 +76,7 @@ public interface Function extends Expression {
      * @return a result containing the <code>AttributeValue</code> computed when evaluating the
      *         function, or <code>Status</code> specifying some error condition
      */
-    public EvaluationResult evaluate(List inputs, EvaluationCtx context);
+    public EvaluationResult evaluate(List<Evaluatable> inputs, EvaluationCtx context);
 
     /**
      * Returns the identifier of this function as known by the factories. In the case of the

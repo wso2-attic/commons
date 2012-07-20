@@ -41,7 +41,7 @@ import org.wso2.balana.combine.CombiningAlgorithm;
 
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.xacml2.Result;
+import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.ctx.Status;
 
 import org.wso2.balana.finder.PolicyFinder;
@@ -158,7 +158,7 @@ public class PolicyReference extends AbstractPolicy {
      * 
      * @param root the DOM root of a PolicyIdReference or a PolicySetIdReference XML type
      * @param finder the <code>PolicyFinder</code> used to handle the reference
-     * 
+     * @return an instance of PolicyReference
      * @exception ParsingException if the node is invalid
      */
     public static PolicyReference getInstance(Node root, PolicyFinder finder)
@@ -172,12 +172,13 @@ public class PolicyReference extends AbstractPolicy {
      * @param root the DOM root of a PolicyIdReference or a PolicySetIdReference XML type
      * @param finder the <code>PolicyFinder</code> used to handle the reference
      * @param metaData the meta-data associated with the containing policy
-     * 
+     * @return an instance of PolicyReference
      * @exception ParsingException if the node is invalid
      */
     public static PolicyReference getInstance(Node root, PolicyFinder finder,
             PolicyMetaData metaData) throws ParsingException {
-        URI reference = null;
+
+        URI reference;
         int policyType;
 
         // see what type of reference we are
@@ -223,7 +224,7 @@ public class PolicyReference extends AbstractPolicy {
     }
 
     /**
-     * Returns the refernce identitfier used to resolve the policy.
+     * Returns the reference identifier used to resolve the policy.
      * 
      * @return the reference <code>URI</code>
      */

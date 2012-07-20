@@ -39,9 +39,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.xacml2.Result;
-import org.wso2.balana.xacml3.advice.Advice;
-import org.wso2.balana.xacml3.advice.AdviceExpression;
+import org.wso2.balana.ctx.xacml2.Result;
+import org.wso2.balana.xacml3.Advice;
+import org.wso2.balana.xacml3.AdviceExpression;
 import org.wso2.balana.combine.CombinerElement;
 import org.wso2.balana.combine.CombinerParameter;
 import org.wso2.balana.combine.CombiningAlgorithm;
@@ -72,7 +72,7 @@ import org.w3c.dom.NodeList;
  * @author Seth Proctor
  * @author Marco Barreno
  */
-public abstract class AbstractPolicy implements PolicyTreeElement {
+public abstract class AbstractPolicy  implements PolicyTreeElement{
 
     // attributes associated with this policy
     private URI idAttr;
@@ -205,10 +205,12 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
      * @param root the DOM root of the policy
      * @param policyPrefix either "Policy" or "PolicySet"
      * @param combiningName name of the field naming the combining alg
-     *
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
      * @throws ParsingException if the policy is invalid
      */
-    protected AbstractPolicy(Node root, String policyPrefix, String combiningName)
+    protected AbstractPolicy(Node root, String policyPrefix, String combiningName,
+                                                                    FactoryConfig factoryConfig)
             throws ParsingException {
         // get the attributes, all of which are common to Policies
         NamedNodeMap attrs = root.getAttributes();
@@ -219,6 +221,9 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
         } catch (Exception e) {
             throw new ParsingException("Error parsing required attribute " + policyPrefix + "Id", e);
         }
+
+        // with the defaults read, create the meta-data
+        metaData = new PolicyMetaData(root.getNamespaceURI(), defaultVersion, factoryConfig);
 
         // see if there's a version
         Node versionNode = attrs.getNamedItem("Version");
@@ -232,7 +237,7 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
         // now get the combining algorithm...
         try {
             URI algId = new URI(attrs.getNamedItem(combiningName).getNodeValue());
-            CombiningAlgFactory factory = CombiningAlgFactory.getInstance();
+            CombiningAlgFactory factory = metaData.getCombiningAlgFactory();
             combiningAlg = factory.createAlgorithm(algId);
         } catch (Exception e) {
             throw new ParsingException("Error parsing combining algorithm" + " in " + policyPrefix,
@@ -259,9 +264,6 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
                 handleDefaults(child);
         }
 
-        // with the defaults read, create the meta-data
-        metaData = new PolicyMetaData(root.getNamespaceURI(), defaultVersion);
-
         // now read the remaining policy elements
         obligationExpressions = new HashSet<AbstractObligation>();
         adviceExpressions = new HashSet();
@@ -273,12 +275,15 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
             String cname = child.getNodeName();
 
             if (cname.equals("Description")) {
-                if (child.hasChildNodes())
+                if (child.hasChildNodes()){
                     description = child.getFirstChild().getNodeValue();
+                }
             } else if (cname.equals("Target")) {
                 target = TargetFactory.getFactory().getTarget(child, metaData);
             } else if (cname.equals("ObligationExpressions") || cname.equals("Obligations")) {
                 parseObligationExpressions(child);
+            } else if (cname.equals("AdviceExpressions")) {
+                parseAdviceExpressions(child);
             } else if (cname.equals("CombinerParameters")) {
                 handleParameters(child);
             }
@@ -324,15 +329,17 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
 
     /**
      * Helper routine to parse the obligation data
-     * @param root
-     * @throws ParsingException
+     *
+     * @param root  root node of ObligationExpression
+     * @throws ParsingException if error while parsing node
      */
     private void parseObligationExpressions(Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("ObligationExpression")){
+            if (node.getNodeName().equals("ObligationExpression") ||
+                                node.getNodeName().equals("Obligation")){
                 AbstractObligation obligation = ObligationFactory.getFactory().
                                                                 getObligation(node, metaData);
                 obligationExpressions.add(obligation);
@@ -342,6 +349,9 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
 
     /**
      * Helper routine to parse the Advice Expression data
+     *
+     * @param root  root node of AdviceExpressions
+     * @throws ParsingException if error while parsing node
      */
     private void parseAdviceExpressions(Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
@@ -586,7 +596,6 @@ public abstract class AbstractPolicy implements PolicyTreeElement {
             for(AbstractObligation obligationExpression : obligationExpressions){
                 if(obligationExpression.getFulfillOn() == effect) {
                     results.add(obligationExpression.evaluate(evaluationCtx));
-
                 }
             }
             result.getObligations().addAll(results);

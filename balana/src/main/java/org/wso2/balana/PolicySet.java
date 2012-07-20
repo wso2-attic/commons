@@ -218,9 +218,15 @@ public class PolicySet extends AbstractPolicy {
      * Creates a new PolicySet based on the given root node. This is private since every class is
      * supposed to use a getInstance() method to construct from a Node, but since we want some
      * common code in the parent class, we need this functionality in a constructor.
+     *
+     * @param root  the node to parse for the <code>PolicySet</code>
+     * @param finder the <code>PolicyFinder</code> used to handle references
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
+     * @throws ParsingException ParsingException if the PolicyType is invalid
      */
-    private PolicySet(Node root, PolicyFinder finder) throws ParsingException {
-        super(root, "PolicySet", "PolicyCombiningAlgId");
+    private PolicySet(Node root, PolicyFinder finder, FactoryConfig factoryConfig) throws ParsingException {
+        super(root, "PolicySet", "PolicyCombiningAlgId", factoryConfig);
 
         List policies = new ArrayList();
         HashMap policyParameters = new HashMap();
@@ -325,7 +331,7 @@ public class PolicySet extends AbstractPolicy {
      * <code>PolicyFinder</code>.
      * 
      * @param root the DOM root of a PolicySetType XML type
-     * 
+     * @return  a <code>PolicySet</code> object
      * @throws ParsingException if the PolicySetType is invalid
      */
     public static PolicySet getInstance(Node root) throws ParsingException {
@@ -339,7 +345,7 @@ public class PolicySet extends AbstractPolicy {
      * 
      * @param root the DOM root of a PolicySetType XML type
      * @param finder the <code>PolicyFinder</code> used to handle references
-     * 
+     * @return a <code>PolicySet</code> object
      * @throws ParsingException if the PolicySetType is invalid
      */
     public static PolicySet getInstance(Node root, PolicyFinder finder) throws ParsingException {
@@ -349,7 +355,30 @@ public class PolicySet extends AbstractPolicy {
                     + root.getNodeName());
         }
 
-        return new PolicySet(root, finder);
+        return new PolicySet(root, finder, null);
+    }
+
+    /**
+     * Creates an instance of a <code>PolicySet</code> object based on a DOM node. The node must be
+     * the root of PolicySetType XML object, otherwise an exception is thrown. The finder is used to
+     * handle policy references.
+     *
+     * @param root the DOM root of a PolicySetType XML type
+     * @param finder the <code>PolicyFinder</code> used to handle references
+     * @param factoryConfig attribute,combine,function and other factory configurations for building
+     * the XACML policy, if null use default factories
+     * @return a <code>PolicySet</code> object
+     * @throws ParsingException if the PolicySetType is invalid
+     */
+    public static PolicySet getInstance(Node root, PolicyFinder finder, FactoryConfig factoryConfig)
+                                                                        throws ParsingException {
+        // first off, check that it's the right kind of node
+        if (!root.getNodeName().equals("PolicySet")) {
+            throw new ParsingException("Cannot create PolicySet from root of" + " type "
+                    + root.getNodeName());
+        }
+
+        return new PolicySet(root, finder, null);
     }
 
     /**

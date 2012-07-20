@@ -37,11 +37,10 @@ package org.wso2.balana.ctx;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.MatchResult;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.xacml3.Result;
+import org.wso2.balana.*;
+import org.wso2.balana.ctx.xacml2.Result;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -86,7 +85,7 @@ public class ResponseCtx {
      * 
      * @param results a <code>Set</code> of <code>Result</code> objects
      */
-    public ResponseCtx(Set results) {
+    public ResponseCtx(Set<AbstractResult> results) {
         this.results = Collections.unmodifiableSet(new HashSet<AbstractResult>(results));
     }
 
@@ -96,25 +95,55 @@ public class ResponseCtx {
      * root doesn't represent a valid ResponseType.
      *
      * @param root the DOM root of a ResponseType
-     *
      * @return a new <code>ResponseCtx</code>
-     *
      * @throws ParsingException if the node is invalid
      */
     public static ResponseCtx getInstance(Node root) throws ParsingException {
-        Set results = new HashSet();
+        String requestCtxNs = root.getNamespaceURI();
+
+        if(requestCtxNs != null){
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(requestCtxNs.trim())){
+                return getInstance(root, XACMLConstants.XACML_VERSION_3_0);
+            } else if(XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(requestCtxNs.trim()) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(requestCtxNs.trim())) {
+                return getInstance(root, XACMLConstants.XACML_VERSION_2_0);
+            } else {
+                throw new ParsingException("Invalid namespace in XACML response");
+            }
+        } else {
+            //No Namespace defined in XACML request and Assume as XACML 3.0
+            return getInstance(root, XACMLConstants.XACML_VERSION_3_0);
+        }
+    }
+
+    /**
+     * Creates a new instance of <code>ResponseCtx</code> based on the given
+     * DOM root node. A <code>ParsingException</code> is thrown if the DOM
+     * root doesn't represent a valid ResponseType.
+     *
+     * @param root the DOM root of a ResponseType
+     * @param version XACML version
+     * @return a new <code>ResponseCtx</code>
+     * @throws ParsingException if the node is invalid
+     */
+    public static ResponseCtx getInstance(Node root, int version) throws ParsingException {
+        Set<AbstractResult> results = new HashSet<AbstractResult>();
 
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("Result")) {
-                results.add(Result.getInstance(node));  // TODO
+                if(version == XACMLConstants.XACML_VERSION_3_0){
+                    results.add(org.wso2.balana.ctx.xacml3.Result.getInstance(node));
+                } else {
+                    results.add(Result.getInstance(node));
+                }
             }
         }
 
-        if (results.size() == 0)
+        if (results.size() == 0){
             throw new ParsingException("must have at least one Result");
-
+        }
         return new ResponseCtx(results);
     }    
 
@@ -123,8 +152,20 @@ public class ResponseCtx {
      * 
      * @return a <code>Set</code> of results
      */
-    public Set getResults() {
+    public Set<AbstractResult> getResults() {
         return results;
+    }
+
+    /**
+     * Return encoded context of XML representation
+     *
+     * @return as String 
+     */
+    public String getEncoded() {
+
+        OutputStream output = new ByteArrayOutputStream();
+        encode(output, new Indenter(0));
+        return output.toString();
     }
 
     /**

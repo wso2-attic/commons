@@ -24,6 +24,7 @@ import org.w3c.dom.NodeList;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ParsingException;
+import org.wso2.balana.ctx.AttributeAssignment;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -66,9 +67,10 @@ public class Obligation implements ObligationResult{
 
     /**
      * creates a <code>Obligation</code> based on its DOM node.
-     * @param root     TODO fulfillOn??
-     * @return
-     * @throws ParsingException
+     *
+     * @param root  the DOM root of the ObligationType XML type
+     * @return  an instance of an obligation
+     * @throws ParsingException  if the structure isn't valid
      */
     public static Obligation getInstance(Node root) throws ParsingException {
 
