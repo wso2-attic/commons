@@ -18,8 +18,11 @@
 package org.wso2.siddhi.core.query.projector.attibute.generator;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
+import org.wso2.siddhi.core.persistence.Persister;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.Aggregator;
 import org.wso2.siddhi.core.util.parser.AggregatorParser;
 import org.wso2.siddhi.core.util.parser.ExecutorParser;
@@ -29,9 +32,12 @@ import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.List;
 
-public class AvgAggregateAttributeGenerator extends AbstractAggregateAttributeGenerator {
+public class AvgAggregateAttributeGenerator extends AbstractAggregateAttributeGenerator implements
+                                                                                        Persister{
     private ExpressionExecutor expressionExecutor;
     private Aggregator aggregator;
+
+
 
     public AvgAggregateAttributeGenerator() {
     }
@@ -66,5 +72,16 @@ public class AvgAggregateAttributeGenerator extends AbstractAggregateAttributeGe
         } else {
             return aggregator.add(expressionExecutor.execute(event));
         }
+    }
+
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(aggregator));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
+        aggregator=((Aggregator)persistenceObject.getData()[0]);
     }
 }

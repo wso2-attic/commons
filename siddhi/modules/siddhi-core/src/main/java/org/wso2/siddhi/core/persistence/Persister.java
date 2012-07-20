@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2012, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -15,21 +15,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.core.query.projector.attibute.aggregator;
+package org.wso2.siddhi.core.persistence;
 
-import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 
-import java.io.Serializable;
+public interface Persister {
 
-public interface Aggregator extends Serializable {
+    public void setNodeId(String nodeId);
 
-    public Object getValue() ;
+    public void setPersistenceStore(PersistenceStore persistenceStore);
 
-    public Attribute.Type getType();
+    public void save(PersistenceManagementEvent persistenceManagementEvent);
 
-    Object add(Object obj);
-
-    Object remove(Object obj);
-
-    Aggregator createNewInstance();
+    public void load(PersistenceManagementEvent persistenceManagementEvent);
 }

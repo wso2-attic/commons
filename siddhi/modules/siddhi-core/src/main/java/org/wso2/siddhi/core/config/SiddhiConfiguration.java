@@ -17,6 +17,8 @@
 */
 package org.wso2.siddhi.core.config;
 
+import java.util.UUID;
+
 public class SiddhiConfiguration {
 
     private int threads;
@@ -24,6 +26,8 @@ public class SiddhiConfiguration {
     private boolean singleThreading;
 
     private int eventBatchSize;
+
+    private String executionPlanIdentifier;
 
 
     public SiddhiConfiguration() {
@@ -33,6 +37,8 @@ public class SiddhiConfiguration {
         singleThreading = true;
 
         eventBatchSize = 50;
+
+        executionPlanIdentifier= UUID.randomUUID().toString();
     }
 
     public int getThreads() {
@@ -57,5 +63,13 @@ public class SiddhiConfiguration {
 
     public void setEventBatchSize(int eventBatchSize) {
         this.eventBatchSize = eventBatchSize;
+    }
+
+    public String getExecutionPlanIdentifier() {
+        return executionPlanIdentifier;
+    }
+
+    public void setExecutionPlanIdentifier(String executionPlanIdentifier) {
+        this.executionPlanIdentifier = executionPlanIdentifier;
     }
 }

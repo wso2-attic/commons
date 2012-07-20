@@ -21,8 +21,10 @@ import org.wso2.siddhi.core.event.ComplexEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
 import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
@@ -43,44 +45,55 @@ public class LengthWindowHandler extends WindowHandler {
     @Override
     public void process(ComplexEvent complexEvent) {
 //        try {
-            if (complexEvent instanceof Event) {
-                SchedulerQueue<StreamEvent> queue = getWindow();
-                queue.put((StreamEvent) complexEvent);
-                passToNextStreamProcessor(complexEvent);
-                if (currentLength == lengthToKeep) {
-                    passToNextStreamProcessor(new RemoveEvent((Event) queue.poll(), System.currentTimeMillis()));
-                } else {
-                    currentLength++;
-                }
-            } else if (complexEvent instanceof ListEvent) {
-                SchedulerQueue<StreamEvent> queue = getWindow();
-                Event[] inEvents = ((ListEvent) complexEvent).getEvents();
-                int oldEventLength = inEvents.length - (lengthToKeep - currentLength);
-                if (oldEventLength > 0) {
-                    Event[] oldEvents = new Event[inEvents.length - (lengthToKeep - currentLength)];
-                    int oldEventIndex = 0;
-                    for (Event event : inEvents) {
-                        queue.put(event);
-                        passToNextStreamProcessor(complexEvent);
-                        if (currentLength == lengthToKeep) {
-                            oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.poll(), System.currentTimeMillis());
-                            oldEventIndex++;
-                        } else {
-                            currentLength++;
-                        }
-                    }
-                    passToNextStreamProcessor(new RemoveListEvent(oldEvents, System.currentTimeMillis()));
-                } else {
-                    for (Event event : inEvents) {
-                        queue.put(event);
-                        passToNextStreamProcessor(complexEvent);
+        if (complexEvent instanceof Event) {
+            SchedulerQueue<StreamEvent> queue = getWindow();
+            queue.put((StreamEvent) complexEvent);
+            passToNextStreamProcessor(complexEvent);
+            if (currentLength == lengthToKeep) {
+                passToNextStreamProcessor(new RemoveEvent((Event) queue.poll(), System.currentTimeMillis()));
+            } else {
+                currentLength++;
+            }
+        } else if (complexEvent instanceof ListEvent) {
+            SchedulerQueue<StreamEvent> queue = getWindow();
+            Event[] inEvents = ((ListEvent) complexEvent).getEvents();
+            int oldEventLength = inEvents.length - (lengthToKeep - currentLength);
+            if (oldEventLength > 0) {
+                Event[] oldEvents = new Event[inEvents.length - (lengthToKeep - currentLength)];
+                int oldEventIndex = 0;
+                for (Event event : inEvents) {
+                    queue.put(event);
+                    passToNextStreamProcessor(complexEvent);
+                    if (currentLength == lengthToKeep) {
+                        oldEvents[oldEventIndex] = new RemoveEvent((Event) queue.poll(), System.currentTimeMillis());
+                        oldEventIndex++;
+                    } else {
                         currentLength++;
                     }
                 }
+                passToNextStreamProcessor(new RemoveListEvent(oldEvents, System.currentTimeMillis()));
+            } else {
+                for (Event event : inEvents) {
+                    queue.put(event);
+                    passToNextStreamProcessor(complexEvent);
+                    currentLength++;
+                }
             }
+        }
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
     }
 
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(window, currentLength));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
+        window = ((SchedulerQueue<StreamEvent>) persistenceObject.getData()[0]);
+        currentLength = (Integer) persistenceObject.getData()[1];
+    }
 }

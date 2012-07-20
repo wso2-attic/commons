@@ -21,15 +21,21 @@ import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InStateEvent;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
+import org.wso2.siddhi.core.persistence.PersistenceStore;
+import org.wso2.siddhi.core.persistence.Persister;
 import org.wso2.siddhi.core.query.stream.StreamElement;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
 import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class SequenceSingleStreamReceiver implements StreamReceiver, StreamElement {
+public class SequenceSingleStreamReceiver implements StreamReceiver, StreamElement ,Persister{
     static final Logger log = Logger.getLogger(SequenceStreamReceiver.class);
     protected int complexEventSize;
     protected SequenceState state;
@@ -39,6 +45,8 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
     protected BlockingQueue<StateEvent> nextEvents = new LinkedBlockingQueue<StateEvent>();
     //    private final boolean first;
     protected final int currentState;
+    protected String nodeId;
+    protected PersistenceStore persistenceStore;
 
 
     public SequenceSingleStreamReceiver(SequenceState state,
@@ -115,6 +123,29 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 //        // 2
             currentEvents = nextEvents;
             nextEvents = new LinkedBlockingQueue<StateEvent>();
+    }
+
+    @Override
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    @Override
+    public void setPersistenceStore(PersistenceStore persistenceStore) {
+        this.persistenceStore=persistenceStore;
+    }
+
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents)));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
+        currentEvents.clear();
+        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
+        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
     }
 
 }

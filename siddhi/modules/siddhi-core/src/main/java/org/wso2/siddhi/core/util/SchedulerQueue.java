@@ -17,17 +17,17 @@
 */
 package org.wso2.siddhi.core.util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class SchedulerQueue<T> {
+public class SchedulerQueue<T> implements Serializable {
     private volatile AtomicBoolean isScheduledForDispatching = new AtomicBoolean(false);
 
-    private final ReentrantLock takeLock = new ReentrantLock();
-
-    private final ReentrantLock putLock = new ReentrantLock();
+//    private final ReentrantLock takeLock = new ReentrantLock();
+//
+//    private final ReentrantLock putLock = new ReentrantLock();
 
 
     private ConcurrentLinkedQueue<T> queue = new ConcurrentLinkedQueue<T>();

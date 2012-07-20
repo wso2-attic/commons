@@ -49,7 +49,7 @@ public class QueryProcessor {
         this.query = query;
         List<QueryEventStream> queryEventStreamList = query.getInputStream().constructQueryEventStreamList(streamDefinitionMap, new ArrayList<QueryEventStream>());
         initQuery(queryEventStreamList);
-        queryProjector = new QueryProjector(query.getOutputStreamId(), query.getProjector(), queryEventStreamList, streamJunctionMap, streamDefinitionMap);
+        queryProjector = new QueryProjector(query.getOutputStreamId(), query.getProjector(), queryEventStreamList, streamJunctionMap, siddhiContext);
 
         streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor, siddhiContext);
 

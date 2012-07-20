@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.config;
 
+import org.wso2.siddhi.core.persistence.PersistenceService;
 import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class SiddhiContext {
     private boolean singleThreading;
     private int eventBatchSize;
     private List<RunnableHandler> runnableHandlerList = new ArrayList<RunnableHandler>();
+    private PersistenceService persistenceService;
+    private String executionPlanIdentifier;
 
 
     public int getThreads() {
@@ -60,5 +63,21 @@ public class SiddhiContext {
 
     public List<RunnableHandler> getRunnableHandlerList() {
         return runnableHandlerList;
+    }
+
+    public void setPersistenceService(PersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
+    }
+
+    public PersistenceService getPersistenceService() {
+        return persistenceService;
+    }
+
+    public void setExecutionPlanIdentifier(String executionPlanIdentifier) {
+        this.executionPlanIdentifier = executionPlanIdentifier;
+    }
+
+    public String getExecutionPlanIdentifier() {
+        return executionPlanIdentifier;
     }
 }

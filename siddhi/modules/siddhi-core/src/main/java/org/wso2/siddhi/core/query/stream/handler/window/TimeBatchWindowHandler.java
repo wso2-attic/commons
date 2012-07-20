@@ -24,10 +24,13 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InEvent;
 import org.wso2.siddhi.core.event.in.InListEvent;
 import org.wso2.siddhi.core.event.in.InStream;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
 import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
+import org.wso2.siddhi.core.util.SchedulerQueue;
 import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 
 import java.util.ArrayList;
@@ -143,5 +146,28 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
     @Override
     public void shutdown() {
         eventRemoverScheduler.shutdown();
+    }
+
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(window,oldEventList,newEventList));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
+        window = ((SchedulerQueue<StreamEvent>) persistenceObject.getData()[0]);
+        oldEventList = ((ArrayList<Event>) persistenceObject.getData()[1]);
+        newEventList = ((ArrayList<Event>) persistenceObject.getData()[2]);
+        StreamEvent streamEvent = window.peek();
+        if (streamEvent != null) {
+
+            long timeDiff = ((RemoveStream) streamEvent).getExpiryTime() - System.currentTimeMillis();
+            if (timeDiff > 0) {
+                eventRemoverScheduler.schedule(this, timeDiff, TimeUnit.MILLISECONDS);
+            } else {
+                eventRemoverScheduler.schedule(this, 0, TimeUnit.MILLISECONDS);
+            }
+        }
     }
 }

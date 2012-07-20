@@ -17,10 +17,12 @@
 */
 package org.wso2.siddhi.core.event;
 
+import java.io.Serializable;
+
 /**
  * Super Class of all events
  */
-public interface ComplexEvent {
+public interface ComplexEvent extends Serializable {
 
     long getTimeStamp();
 }

@@ -56,4 +56,13 @@ public class GroupByAttributeGeneratorMap {
         }
         return sb.toString();
     }
+
+    public Map<String, AbstractAggregateAttributeGenerator> getAttributeGeneratorMap() {
+        return attributeGeneratorMap;
+    }
+
+    public void setAttributeGeneratorMap(
+            Map<String, AbstractAggregateAttributeGenerator> attributeGeneratorMap) {
+        this.attributeGeneratorMap = attributeGeneratorMap;
+    }
 }

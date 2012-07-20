@@ -18,7 +18,9 @@
 package org.wso2.siddhi.core.query.projector.attibute.generator.groupby;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
 import org.wso2.siddhi.core.query.projector.attibute.generator.AbstractAggregateAttributeGenerator;
 import org.wso2.siddhi.core.util.parser.ExecutorParser;
 import org.wso2.siddhi.query.api.definition.Attribute;
@@ -27,6 +29,7 @@ import org.wso2.siddhi.query.api.expression.Variable;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.List;
+import java.util.Map;
 
 public class GroupByOutputAttributeGenerator extends AbstractAggregateAttributeGenerator {
 
@@ -77,5 +80,16 @@ public class GroupByOutputAttributeGenerator extends AbstractAggregateAttributeG
     @Override
     public Object process(AtomicEvent event) {
         return attributeGeneratorMap.get(event).process(event);
+    }
+
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(attributeGeneratorMap.getAttributeGeneratorMap()));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
+        attributeGeneratorMap.setAttributeGeneratorMap(((Map<String,AbstractAggregateAttributeGenerator>)persistenceObject.getData()[0]));
     }
 }

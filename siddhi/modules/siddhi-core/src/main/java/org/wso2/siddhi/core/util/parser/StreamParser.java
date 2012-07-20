@@ -81,10 +81,11 @@ public class StreamParser {
                                                    ThreadPoolExecutor threadPoolExecutor,
                                                    SiddhiContext siddhiContext) {
         List<StreamReceiver> streamReceiverList = new ArrayList<StreamReceiver>();
-        if (queryStream instanceof SingleStream) {
-            List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) queryStream, queryEventStreamList, new SingleStreamPacker(),siddhiContext);
 
-            SingleStreamReceiver receiver = new SingleStreamReceiver((SingleStream) queryStream, simpleStreamProcessorList.get(0), threadPoolExecutor,siddhiContext);
+        if (queryStream instanceof SingleStream) {
+            List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) queryStream, queryEventStreamList, new SingleStreamPacker(), siddhiContext);
+
+            SingleStreamReceiver receiver = new SingleStreamReceiver((SingleStream) queryStream, simpleStreamProcessorList.get(0), threadPoolExecutor, siddhiContext);
 
             SingleStreamPacker singleStreamPacker = (SingleStreamPacker) simpleStreamProcessorList.get(simpleStreamProcessorList.size() - 1);
 
@@ -129,16 +130,16 @@ public class StreamParser {
 
             SingleStream leftStream = (SingleStream) ((JoinStream) queryStream).getLeftStream();
             SingleStream rightStream = (SingleStream) ((JoinStream) queryStream).getRightStream();
-            WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream));
-            if(leftWindowHandler instanceof RunnableHandler){
-                siddhiContext.addRunnableHandler((RunnableHandler)leftWindowHandler);
+            WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream),siddhiContext);
+            if (leftWindowHandler instanceof RunnableHandler) {
+                siddhiContext.addRunnableHandler((RunnableHandler) leftWindowHandler);
             }
-            WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream));
-            if(rightWindowHandler instanceof RunnableHandler){
-                siddhiContext.addRunnableHandler((RunnableHandler)rightWindowHandler);
+            WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream),siddhiContext);
+            if (rightWindowHandler instanceof RunnableHandler) {
+                siddhiContext.addRunnableHandler((RunnableHandler) rightWindowHandler);
             }
-            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinInStreamPacker,siddhiContext);
-            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinInStreamPacker,siddhiContext);
+            List<StreamProcessor> leftSimpleStreamProcessorList = parseStreamHandler(leftStream, queryEventStreamList, leftJoinInStreamPacker, siddhiContext);
+            List<StreamProcessor> rightSimpleStreamProcessorList = parseStreamHandler(rightStream, queryEventStreamList, rightJoinInStreamPacker, siddhiContext);
 
             SingleStreamReceiver leftReceiver = new SingleStreamReceiver(leftStream, leftSimpleStreamProcessorList.get(0), threadPoolExecutor, siddhiContext);
             SingleStreamReceiver rightReceiver = new SingleStreamReceiver(rightStream, rightSimpleStreamProcessorList.get(0), threadPoolExecutor, siddhiContext);
@@ -193,7 +194,7 @@ public class StreamParser {
                         } else {
                             patternStreamPacker = new PatternStreamPacker(state);
                         }
-                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, patternStreamPacker,siddhiContext);
+                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, patternStreamPacker, siddhiContext);
 
                         PatternSingleStreamReceiver patternSingleStreamReceiver;
 
@@ -221,9 +222,16 @@ public class StreamParser {
                     }
                 }
 
-                PatternStreamReceiver receiver = new PatternStreamReceiver(streamId, patternSingleStreamReceiverList, threadPoolExecutor,siddhiContext);
+                PatternStreamReceiver receiver = new PatternStreamReceiver(streamId, patternSingleStreamReceiverList, threadPoolExecutor, siddhiContext);
                 streamReceiverList.add(receiver);
+
+                //for persistence
+                for (PatternSingleStreamReceiver streamReceiver : patternSingleStreamReceiverList) {
+                    siddhiContext.getPersistenceService().addPersister(streamReceiver);
+                }
+
             }
+
 
             //   patternStreamPacker.setPatternSingleStreamReceiverArray(patternSingleStreamReceiverArray);
             //patternStreamPacker next
@@ -256,7 +264,7 @@ public class StreamParser {
                         } else {
                             sequenceStreamPacker = new SequenceStreamPacker(state);
                         }
-                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, sequenceStreamPacker,siddhiContext);
+                        List<StreamProcessor> simpleStreamProcessorList = parseStreamHandler((SingleStream) state.getSingleStream(), queryEventStreamList, sequenceStreamPacker, siddhiContext);
 
                         SequenceSingleStreamReceiver sequenceSingleStreamReceiver;
 
@@ -282,8 +290,13 @@ public class StreamParser {
                     }
                 }
 
-                SequenceStreamReceiver receiver = new SequenceStreamReceiver(streamId, sequenceSingleStreamReceiverList, threadPoolExecutor,siddhiContext);
+                SequenceStreamReceiver receiver = new SequenceStreamReceiver(streamId, sequenceSingleStreamReceiverList, threadPoolExecutor, siddhiContext);
                 streamReceiverList.add(receiver);
+
+                //for persistence
+                for (SequenceSingleStreamReceiver streamReceiver : sequenceSingleStreamReceiverList) {
+                    siddhiContext.getPersistenceService().addPersister(streamReceiver);
+                }
             }
 
             //   patternStreamPacker.setPatternSingleStreamReceiverArray(patternSingleStreamReceiverArray);
@@ -310,7 +323,7 @@ public class StreamParser {
     }
 
     private static Handler detachWindow(SingleStream singleStream) {
-        Handler windowHandler = new Handler("lenth", Handler.Type.WIN, new Object[]{Integer.MAX_VALUE});
+        Handler windowHandler = new Handler("length", Handler.Type.WIN, new Object[]{Integer.MAX_VALUE});
         for (Iterator<Handler> iterator = singleStream.getHandlerList().iterator(); iterator.hasNext(); ) {
             Handler handler = iterator.next();
             if (handler.getType() == Handler.Type.WIN) {
@@ -324,7 +337,8 @@ public class StreamParser {
 
     private static List<StreamProcessor> parseStreamHandler(SingleStream inputStream,
                                                             List<QueryEventStream> queryEventStreamList,
-                                                            SingleStreamPacker singleStreamPacker,SiddhiContext context) {
+                                                            SingleStreamPacker singleStreamPacker,
+                                                            SiddhiContext context) {
         List<StreamProcessor> streamProcessorList = new ArrayList<StreamProcessor>();
         List<Handler> handlerList = inputStream.getHandlerList();
         for (int i = 0; i < handlerList.size(); i++) {
@@ -337,10 +351,10 @@ public class StreamParser {
 
                 }
             } else if (handler.getType() == Handler.Type.WIN) {
-                streamHandler = generateWindowHandler(handler);
+                streamHandler = generateWindowHandler(handler,context);
             }
-            if(streamHandler instanceof RunnableHandler){
-                context.addRunnableHandler((RunnableHandler)streamHandler);
+            if (streamHandler instanceof RunnableHandler) {
+                context.addRunnableHandler((RunnableHandler) streamHandler);
             }
             if (streamProcessorList.size() > 0) {
                 StreamHandler prevStreamHandler = (StreamHandler) streamProcessorList.get(i - 1);
@@ -358,10 +372,15 @@ public class StreamParser {
         return streamProcessorList;
     }
 
-    private static WindowHandler generateWindowHandler(Handler handler) {
-        WindowHandler windowHandler = (WindowHandler) org.wso2.siddhi.core.util.ClassLoader.loadClass(WindowHandler.class.getPackage().getName() +"."+ handler.getName().substring(0, 1).toUpperCase() + handler.getName().substring(1) + "WindowHandler");
+    private static WindowHandler generateWindowHandler(Handler handler,
+                                                       SiddhiContext siddhiContext) {
+        WindowHandler windowHandler = (WindowHandler) org.wso2.siddhi.core.util.ClassLoader.loadClass(WindowHandler.class.getPackage().getName() + "." + handler.getName().substring(0, 1).toUpperCase() + handler.getName().substring(1) + "WindowHandler");
 //                    WindowHandler windowHandler = new TimeWindowHandler();
         windowHandler.setParameters(handler.getParameters());
+
+        //for persistence
+        siddhiContext.getPersistenceService().addPersister(windowHandler);
+
         return windowHandler;
     }
 

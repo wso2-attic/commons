@@ -23,8 +23,14 @@ import org.wso2.siddhi.core.event.ListEvent;
 import org.wso2.siddhi.core.event.StateEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InListEvent;
+import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
+import org.wso2.siddhi.core.persistence.PersistenceObject;
 import org.wso2.siddhi.core.statemachine.sequence.CountSequenceState;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamReceiver {
     static final Logger log = Logger.getLogger(SequenceSingleStreamReceiver.class);
@@ -140,5 +146,18 @@ public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamRecei
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void save(PersistenceManagementEvent persistenceManagementEvent) {
+        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents),passed));
+    }
+
+    @Override
+    public void load(PersistenceManagementEvent persistenceManagementEvent) {
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
+        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
+        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
+        passed=((Boolean)persistenceObject.getData()[2]);
     }
 }

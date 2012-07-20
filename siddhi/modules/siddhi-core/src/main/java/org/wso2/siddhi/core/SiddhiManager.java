@@ -20,6 +20,8 @@ package org.wso2.siddhi.core;
 import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.exception.EventStreamWithDifferentDefinitionAlreadyExistException;
+import org.wso2.siddhi.core.persistence.PersistenceService;
+import org.wso2.siddhi.core.persistence.PersistenceStore;
 import org.wso2.siddhi.core.query.QueryProcessor;
 import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.stream.StreamJunction;
@@ -55,6 +57,9 @@ public class SiddhiManager {
         this.siddhiContext.setEventBatchSize(configuration.getEventBatchSize());
         this.siddhiContext.setSingleThreading(configuration.isSingleThreading());
         this.siddhiContext.setThreads(configuration.getThreads());
+        this.siddhiContext.setExecutionPlanIdentifier(configuration.getExecutionPlanIdentifier());
+        this.siddhiContext.setPersistenceService(new PersistenceService(siddhiContext));
+
 
         threadPoolExecutor = new ThreadPoolExecutor(configuration.getThreads(),
                                                     Integer.MAX_VALUE,
@@ -173,7 +178,7 @@ public class SiddhiManager {
 //        System.out.println(streamIds);
 //    }
 
-    public Query getQuery(String queryReference){
+    public Query getQuery(String queryReference) {
         return queryProcessorMap.get(queryReference).getQuery();
     }
 
@@ -204,4 +209,21 @@ public class SiddhiManager {
     public StreamDefinition getStreamDefinition(String streamId) {
         return streamDefinitionMap.get(streamId);
     }
+
+    public void setPersistStore(PersistenceStore persistStore) {
+        siddhiContext.getPersistenceService().setPersistenceStore(persistStore);
+    }
+
+    public String persist() {
+        return siddhiContext.getPersistenceService().persist();
+    }
+
+    public void restoreRevision( String revision) {
+        siddhiContext.getPersistenceService().restoreRevision(revision);
+    }
+
+    public void restoreLastRevision() {
+        siddhiContext.getPersistenceService().restoreLastRevision();
+    }
+
 }

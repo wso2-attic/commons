@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.query.projector;
 
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
@@ -60,7 +61,7 @@ public class QueryProjector {
     public QueryProjector(String outputStreamId, Projector projector,
                           List<QueryEventStream> queryEventStreamList,
                           ConcurrentMap<String, StreamJunction> streamJunctionMap,
-                          ConcurrentMap<String, StreamDefinition> streamDefinitionMap) {
+                          SiddhiContext siddhiContext) {
         this.outputStreamId = outputStreamId;
         this.projector = projector;
 
@@ -69,12 +70,12 @@ public class QueryProjector {
         aggregateOutputAttributeGeneratorList = new ArrayList<OutputAttributeGenerator>(outputSize);
         outputStreamDefinition = new StreamDefinition();
         outputStreamDefinition.name(outputStreamId);
-        populateOutputAttributes(queryEventStreamList, generateGroupByOutputAttributeGenerator(projector.getGroupByList(), queryEventStreamList));
+        populateOutputAttributes(queryEventStreamList, generateGroupByOutputAttributeGenerator(projector.getGroupByList(), queryEventStreamList),siddhiContext);
 
         havingConditionExecutor = generateHavingExecutor(projector.getHavingCondition(), outputStreamId, outputStreamDefinition);
 
         outputStreamJunction = streamJunctionMap.get(outputStreamId);
-        if(outputStreamJunction==null){
+        if (outputStreamJunction == null) {
             outputStreamJunction = new StreamJunction(outputStreamId);
             streamJunctionMap.putIfAbsent(outputStreamId, outputStreamJunction);
 
@@ -105,7 +106,8 @@ public class QueryProjector {
     }
 
     private void populateOutputAttributes(List<QueryEventStream> queryEventStreamList,
-                                          GroupByOutputAttributeGenerator groupByOutputAttributeGenerator) {
+                                          GroupByOutputAttributeGenerator groupByOutputAttributeGenerator,
+                                          SiddhiContext siddhiContext) {
         for (OutputAttribute outputAttribute : projector.getProjectionList()) {
             if (outputAttribute instanceof SimpleAttribute) {
                 SimpleOutputAttributeGenerator attributeGenerator = new SimpleOutputAttributeGenerator(ExecutorParser.parseExpression(((SimpleAttribute) outputAttribute).getExpression(), queryEventStreamList, null));
@@ -113,6 +115,10 @@ public class QueryProjector {
                 outputStreamDefinition.attribute(outputAttribute.getRename(), attributeGenerator.getType());
             } else {  //Aggregations
                 AbstractAggregateAttributeGenerator attributeGenerator = AggregatorParser.loadAggregatorClass(((AggregationAttribute) outputAttribute).getAggregationName());
+
+                //for persistence
+                siddhiContext.getPersistenceService().addPersister(attributeGenerator);
+
                 if (groupByOutputAttributeGenerator != null) { //for group
                     attributeGenerator = groupByOutputAttributeGenerator.createNewInstance().assignAggregateAttributeGenerator(attributeGenerator);
                 }
