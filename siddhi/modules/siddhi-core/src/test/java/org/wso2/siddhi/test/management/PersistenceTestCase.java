@@ -22,6 +22,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
+import org.wso2.siddhi.core.config.SiddhiConfiguration;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.exception.NoPersistenceStoreAssignedException;
 import org.wso2.siddhi.core.persistence.InMemoryPersistenceStore;
@@ -74,7 +75,9 @@ public class PersistenceTestCase {
         };
 
 
-        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiConfiguration configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiManager siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         InputHandler inputHandler = siddhiManager.defineStream(streamDefinition);
@@ -92,7 +95,9 @@ public class PersistenceTestCase {
 
         //restarting Siddhi
         siddhiManager.shutdown();
-        siddhiManager = new SiddhiManager();
+        configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         inputHandler = siddhiManager.defineStream(streamDefinition);
@@ -157,7 +162,9 @@ public class PersistenceTestCase {
 
         };
 
-        SiddhiManager siddhiManager = new SiddhiManager();
+        SiddhiConfiguration configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiManager siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         InputHandler stream1 = siddhiManager.defineStream(streamDefinition1);
@@ -180,7 +187,9 @@ public class PersistenceTestCase {
 
         //Restarting siddhi
         siddhiManager.shutdown();
-        siddhiManager = new SiddhiManager();
+        configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         stream1 = siddhiManager.defineStream(streamDefinition1);

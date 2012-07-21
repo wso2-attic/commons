@@ -55,6 +55,7 @@ public class InMemoryPersistenceStore implements PersistenceStore {
         List<String> revisionList = revisionMap.get(persistenceManagementEvent.getExecutionPlanIdentifier());
         if (revisionList == null) {
             revisionList = new ArrayList<String>();
+            revisionMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(),revisionList);
         }
         if (revisionList.size() == 0 || (revisionList.size() > 0 && !persistenceManagementEvent.getRevision().equals(revisionList.get(revisionList.size() - 1)))) {
             revisionList.add(persistenceManagementEvent.getRevision());
