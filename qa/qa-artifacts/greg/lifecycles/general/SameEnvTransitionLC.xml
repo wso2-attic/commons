@@ -1,0 +1,296 @@
+<aspect name="QA2LifeCycle" class="org.wso2.carbon.governance.registry.extensions.aspects.DefaultLifeCycle">
+    <configuration type="literal">
+        <lifecycle>
+            <scxml xmlns="http://www.w3.org/2005/07/scxml"
+                   version="1.0"
+                   initialstate="Design.Test.Cases">
+                <state id="Design.Test.Cases">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Code Completed" forEvent="">
+                                <!--<permissions>
+                                    <permission roles=""/>
+                                </permissions>
+                                <validations>
+                                    <validation forEvent="" class="">
+                                        <parameter name="" value=""/>
+                                    </validation>
+                                </validations>-->
+                            </item>
+                            <item name="WSDL, Schema Created" forEvent="">
+                            </item>
+                            <item name="QoS Created" forEvent="">
+                            </item>
+                        </data>
+			<data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/trunk/{@resourcePath}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>			
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                        <!--<data name="transitionValidation">
+                            <validation forEvent="" class="">
+                                <parameter name="" value=""/>
+                            </validation>
+                        </data>
+                        <data name="transitionPermission">
+                            <permission forEvent="" roles=""/>
+                        </data>
+                        <data name="transitionScripts">
+                            <js forEvent="">
+                                <console function="">
+                                    <script type="text/javascript">
+                                    </script>
+                                </console>
+                                <server function="">
+                                    <script type="text/javascript"></script>
+                                </server>
+                            </js>
+                        </data>-->
+                    </datamodel>
+                    <transition event="Promote" target="Review.Test.Cases"/>                  
+                </state>
+                <state id="Review.Test.Cases">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Test.case.automation"/>
+                    <transition event="Demote" target="Design.Test.Cases"/>
+                </state>
+                <state id="Test.case.automation">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Smoke.Testing"/>
+                    <transition event="Demote" target="Review.Test.Cases"/>
+                </state>
+                <state id="Smoke.Testing">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Functional.Testing"/>
+                    <transition event="Demote" target="Test.case.automation"/>
+                </state>
+                <state id="Functional.Testing">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Regression.Testing"/>
+                    <transition event="Demote" target="Smoke.Testing"/>
+                </state>
+                <state id="Regression.Testing">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Performance/Long.Running.Testing"/>
+                    <transition event="Demote" target="Functional.Testing"/>
+                </state>
+                <state id="Performance/Long.Running.Testing">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Test.results.updation"/>
+                    <transition event="Demote" target="Regression.Testing"/>
+                </state>
+                <state id="Test.results.updation">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Verifying/Closing.JIRAs"/>
+                    <transition event="Demote" target="Performance/Long.Running.Testing"/>
+                </state>
+                <state id="Verifying/Closing.JIRAs">
+                    <datamodel>
+                        <data name="checkItems">
+                            <item name="Effective Inspection Completed" forEvent="">
+                            </item>
+                            <item name="Test Cases Passed" forEvent="">
+                            </item>
+                            <item name="Smoke Test Passed" forEvent="">
+                            </item>
+                        </data>
+                        <data name="transitionExecution">
+                            <execution forEvent="Promote" class="org.wso2.carbon.governance.registry.extensions.executors.ServiceVersionExecutor">
+                                <parameter name="currentEnvironment" value="/_system/governance/wso2/carbon/branches/testing/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="targetEnvironment" value="/_system/governance/wso2/carbon/branches/production/{@resourcePath}/{@version}/{@resourceName}"/>
+                                <parameter name="service.mediatype" value="application/vnd.wso2-service+xml"/>
+                                <parameter name="wsdl.mediatype" value="application/wsdl+xml"/>
+                                <parameter name="endpoint.mediatype" value="application/vnd.wso2.endpoint"/>
+                            </execution>
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+			<data name="transitionUI">
+                            <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp"/>
+                        </data>
+                    </datamodel>
+                    <transition event="Promote" target="Ready.to.be.Released"/>
+                    <transition event="Demote" target="Test.results.updation"/>
+                </state>
+                <state id="Ready.to.be.Released">  
+		    <datamodel>
+			<data name="transitionExecution">
+			    <execution forEvent="Demote" class="org.wso2.carbon.governance.registry.extensions.executors.DemoteActionExecutor">
+                            </execution>
+                        </data>
+                    </datamodel>
+                    <transition event="Demote" target="Regression.Testing"/>
+                </state>                
+            </scxml>
+        </lifecycle>
+    </configuration>
+</aspect>
+
