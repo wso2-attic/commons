@@ -473,6 +473,39 @@ public class FilterTestCase {
 
     }
 
+    @Test
+    public void testFilterQuery11() throws InterruptedException {
+        log.info("Filer test11");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
+
+        siddhiManager.addQuery("from cseStream [price>10][win.length(3)] " +
+                               "insert into outStream symbol, avg(price) as avgPrice, volume ");
+        siddhiManager.addCallback("outStream", new Callback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                if (removeEvents != null) {
+                    count++;
+                }
+                eventArrived = true;
+            }
+
+        });
+        InputHandler inputHandler = siddhiManager.getInputHandler("cseStream");
+        inputHandler.send(new Object[]{"WSO2", 55.6f, 100});
+        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 27.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 127.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 150.6f, 100});
+        Thread.sleep(7000);
+        Assert.assertEquals("Expected remove events ", 2, count);
+        Assert.assertEquals("Event arrived", true, eventArrived);
+
+    }
+
 //  @Test
 //    public void testCreatingFilterQuery() {
 //

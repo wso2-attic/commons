@@ -79,10 +79,11 @@ public class PersistenceService {
 
     public void restoreLastRevision() {
         if (persistenceStore != null) {
-            String revision = persistenceStore.getLastRevision();
+            String revision = persistenceStore.getLastRevision(executionPlanIdentifier);
             if (revision != null) {
                 restoreRevision(revision);
             }
+        } else {
             throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
         }
     }

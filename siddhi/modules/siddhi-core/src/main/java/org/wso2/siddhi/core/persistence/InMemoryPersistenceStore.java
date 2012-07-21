@@ -29,7 +29,8 @@ public class InMemoryPersistenceStore implements PersistenceStore {
 
     private static final Logger log = Logger.getLogger(InMemoryPersistenceStore.class);
     Map<String, Map<String, Map<String, byte[]>>> persistenceMap = new HashMap<String, Map<String, Map<String, byte[]>>>();
-    List<String> revisionList = new ArrayList<String>();
+    Map<String, List<String>> revisionMap = new HashMap<String, List<String>>();
+
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent, String nodeId,
@@ -50,7 +51,12 @@ public class InMemoryPersistenceStore implements PersistenceStore {
         if (log.isDebugEnabled()) {
             log.debug(nodeId + " serialized");
         }
-        if (revisionList.size()==0||(revisionList.size() > 0 && !persistenceManagementEvent.getRevision().equals(revisionList.get(revisionList.size() - 1)))) {
+
+        List<String> revisionList = revisionMap.get(persistenceManagementEvent.getExecutionPlanIdentifier());
+        if (revisionList == null) {
+            revisionList = new ArrayList<String>();
+        }
+        if (revisionList.size() == 0 || (revisionList.size() > 0 && !persistenceManagementEvent.getRevision().equals(revisionList.get(revisionList.size() - 1)))) {
             revisionList.add(persistenceManagementEvent.getRevision());
         }
 
@@ -79,7 +85,11 @@ public class InMemoryPersistenceStore implements PersistenceStore {
     }
 
     @Override
-    public String getLastRevision() {
+    public String getLastRevision(String executionPlanIdentifier) {
+        List<String> revisionList = revisionMap.get(executionPlanIdentifier);
+        if (revisionList == null) {
+            return null;
+        }
         if (revisionList.size() > 0) {
             return revisionList.get(revisionList.size() - 1);
         }

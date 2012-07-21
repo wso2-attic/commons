@@ -26,5 +26,5 @@ public interface PersistenceStore {
 
     public PersistenceObject load(PersistenceManagementEvent persistenceManagementEvent, String nodeId);
 
-    public String getLastRevision();
+    public String getLastRevision(String executionPlanIdentifier);
 }
