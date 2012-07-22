@@ -273,7 +273,7 @@ public class DefaultCharonManager implements CharonManager {
                 //pass a handler of charon manager to auth handler
                 basicAuthHandler.setCharonManager(getInstance());
                 //if not authenticated only, throw 401 exception.
-                if (!basicAuthHandler.isAuthenticated(authInfo)) {
+                if (!basicAuthHandler.isAuthenticated(httpAuthHeaders)) {
                     throw new UnauthorizedException();
                 }
                 //return auth info if successfully authenticated

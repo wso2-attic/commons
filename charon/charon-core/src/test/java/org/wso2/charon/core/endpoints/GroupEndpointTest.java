@@ -45,7 +45,10 @@ public class GroupEndpointTest {
     String parentGroupID;
 
     @Test
-    public void testGroupEndpoint() {
+    public void testGroupEndpoint() throws CharonException {
+        //register encoders and decoders in AbstractResourceEndpoint
+        AbstractResourceEndpoint.registerEncoder(SCIMConstants.JSON, new JSONEncoder());
+        AbstractResourceEndpoint.registerDecoder(SCIMConstants.JSON, new JSONDecoder());
         testCreateGroupWithOutMembers();
         user1ID = createUser("hasini", "hasini@wso2.com");
         //System.out.println(user1ID);
@@ -68,12 +71,9 @@ public class GroupEndpointTest {
             JSONEncoder jsonEncoder = new JSONEncoder();
             String encodedGroup = jsonEncoder.encodeSCIMObject(group);
             GroupResourceEndpoint groupREP = new GroupResourceEndpoint();
-            //register encoders and decoders in AbstractResourceEndpoint
-            AbstractResourceEndpoint.registerEncoder(SCIMConstants.JSON, new JSONEncoder());
-            AbstractResourceEndpoint.registerDecoder(SCIMConstants.JSON, new JSONDecoder());
             SCIMResponse response = groupREP.create(encodedGroup,
-                                                   SCIMConstants.APPLICATION_JSON,
-                                                   SCIMConstants.APPLICATION_JSON, userManager);
+                                                    SCIMConstants.APPLICATION_JSON,
+                                                    SCIMConstants.APPLICATION_JSON, userManager);
             Assert.assertEquals(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, response.getResponseCode());
         } catch (CharonException e) {
             Assert.fail("Error creating group");

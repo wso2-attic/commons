@@ -29,6 +29,7 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
+import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
@@ -39,7 +40,10 @@ public class UserEndpointTest {
     String id;
 
     @Test
-    public void testUserEndpoint() {
+    public void testUserEndpoint() throws CharonException {
+        //register encoders and decoders in AbstractResourceEndpoint
+        AbstractResourceEndpoint.registerEncoder(SCIMConstants.JSON, new JSONEncoder());
+        AbstractResourceEndpoint.registerDecoder(SCIMConstants.JSON, new JSONDecoder());
         testCreatingUser("hasini");
         testRetrievingUser();
         testCreatingUser("umesha");

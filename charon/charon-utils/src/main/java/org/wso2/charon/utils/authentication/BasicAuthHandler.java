@@ -21,9 +21,10 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.extensions.AuthenticationHandler;
 import org.wso2.charon.core.extensions.AuthenticationInfo;
 import org.wso2.charon.core.extensions.CharonManager;
-import org.wso2.charon.core.extensions.TenantDTO;
-import org.wso2.charon.core.extensions.TenantManager;
 import org.apache.axiom.om.util.Base64;
+import org.wso2.charon.core.schema.SCIMConstants;
+
+import java.util.Map;
 
 /**
  * AuthenticationHandler for validating API access through basic auth - authentication mechanism.
@@ -37,9 +38,9 @@ public class BasicAuthHandler implements AuthenticationHandler {
 
 
     @Override
-    public boolean isAuthenticated(AuthenticationInfo authInfo) throws CharonException {
-        //get authorization header from auth info
-        String authorizationHeader = ((BasicAuthInfo) authInfo).getAuthorizationHeader();
+    public boolean isAuthenticated(Map<String, String> authHeaders) throws CharonException {
+        //get authorization header from auth Headers
+        String authorizationHeader = authHeaders.get(SCIMConstants.AUTHORIZATION_HEADER);
         BasicAuthInfo decodedInfo = decodeBasicAuthHeader(authorizationHeader);
         if (USER_NAME.equals(decodedInfo.getUserName()) && (PASSWORD).equals(decodedInfo.getPassword())) {
             return true;
@@ -105,6 +106,17 @@ public class BasicAuthHandler implements AuthenticationHandler {
         if (this.charonManager == null) {
             this.charonManager = charonManager;
         }
+    }
+
+    /**
+     * Once - isAuthenticated method is called on an implementation of this, AuthenticationInfo object
+     * can be created out of the information extracted from the authentication headers passed into the
+     * isAuthenticated method.
+     *
+     * @return AuthenticationInfo
+     */
+    public AuthenticationInfo getAuthenticationInfo() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

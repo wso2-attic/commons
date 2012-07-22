@@ -17,6 +17,7 @@
 */
 package org.wso2.charon.core.protocol.endpoints;
 
+import org.apache.commons.logging.LogFactory;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
@@ -33,6 +34,8 @@ import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
+
+import org.apache.commons.logging.Log;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +57,8 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
 
     //Keeps  a map of endpoint urls of the exposed resources.
     private static Map<String, String> endpointURLMap;
+
+    private static Log log = LogFactory.getLog(AbstractResourceEndpoint.class);
 
     /**
      * Returns the encoder given the encoding format.
@@ -92,9 +97,9 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      */
     public static void registerEncoder(String format, Encoder encoder) throws CharonException {
         if (encoderMap.containsKey(format)) {
-            //log the error and throw.
-            String error = "Encoder for the given format is already registered.";
-            throw new CharonException(error);
+            //log a warn message.
+            String warnMessage = "Encoder for the given format is already registered.";
+            log.warn(warnMessage);
         } else {
             encoderMap.put(format, encoder);
         }
@@ -109,9 +114,9 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      */
     public static void registerDecoder(String format, Decoder decoder) throws CharonException {
         if (decoderMap.containsKey(format)) {
-            //log the error and throw.
-            String error = "Decoder for the given format is already registered.";
-            throw new CharonException(error);
+           //log a warn message.
+            String warnMessage = "Decoder for the given format is already registered.";
+            log.warn(warnMessage);
         } else {
             decoderMap.put(format, decoder);
         }
