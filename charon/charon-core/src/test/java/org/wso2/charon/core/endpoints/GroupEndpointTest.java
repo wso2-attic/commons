@@ -27,6 +27,7 @@ import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
+import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.GroupResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
@@ -65,9 +66,12 @@ public class GroupEndpointTest {
             Group group = new Group();
             group.setDisplayName("eng");
             JSONEncoder jsonEncoder = new JSONEncoder();
-            String encodedUser = jsonEncoder.encodeSCIMObject(group);
-            UserResourceEndpoint userREP = new UserResourceEndpoint();
-            SCIMResponse response = userREP.create(encodedUser,
+            String encodedGroup = jsonEncoder.encodeSCIMObject(group);
+            GroupResourceEndpoint groupREP = new GroupResourceEndpoint();
+            //register encoders and decoders in AbstractResourceEndpoint
+            AbstractResourceEndpoint.registerEncoder(SCIMConstants.JSON, new JSONEncoder());
+            AbstractResourceEndpoint.registerDecoder(SCIMConstants.JSON, new JSONDecoder());
+            SCIMResponse response = groupREP.create(encodedGroup,
                                                    SCIMConstants.APPLICATION_JSON,
                                                    SCIMConstants.APPLICATION_JSON, userManager);
             Assert.assertEquals(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, response.getResponseCode());

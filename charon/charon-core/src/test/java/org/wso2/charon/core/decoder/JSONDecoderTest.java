@@ -18,7 +18,8 @@
 package org.wso2.charon.core.decoder;
 
 import junit.framework.Assert;
-import org.json.simple.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
@@ -32,7 +33,7 @@ import java.util.List;
 public class JSONDecoderTest {
 
     @Test
-    public void testDecodeSimpleAttributeStringVal() {
+    public void testDecodeSimpleAttributeStringVal() throws JSONException {
         String myAddress = "512/8,High Level Road,\n" +
                            "Pannipitiya.";
         JSONObject encodedAddress = new JSONObject();

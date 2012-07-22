@@ -17,7 +17,6 @@
 */
 package org.wso2.charon.core.extensions;
 
-import com.sun.servicetag.UnauthorizedAccessException;
 import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.CharonException;

@@ -155,7 +155,7 @@ public class SCIMConstants {
         public static final String MEMBER = "member";
     }
 
-    public static class ListedResourcesConstants{
+    public static class ListedResourcesConstants {
         public static final String TOTAL_RESULTS = "totalResults";
         public static final String RESOURCES = "Resources";
         public static final String ITEMS_PER_PAGE = "itemsPerPage";
@@ -163,7 +163,7 @@ public class SCIMConstants {
     }
 
     public static class EnterpriseUserSchema {
-       // public static final String 
+        // public static final String
     }
 
     public static class AttributeConstants {
@@ -182,6 +182,8 @@ public class SCIMConstants {
     public static final String AUTH_HEADER_USERNAME = "userName";
     public static final String AUTH_HEADER_PASSWORD = "password";
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    //if a custom authentication mechanism is used, you can specify it in following header
+    public static final String AUTHENTICATION_TYPE_HEADER = "Auth_Type";
 
 
     /*Resource names as defined in SCIM Schema spec*/
