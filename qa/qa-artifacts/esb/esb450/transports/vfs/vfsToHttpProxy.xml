@@ -22,7 +22,17 @@
         <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
         <parameter name="transport.PollInterval">2</parameter>
         <parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/original</parameter>
-        <parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.200.3.109/vfs/in?vfs.passive=true</parameter>
+
+        <!--######################################## Different options for transport.vfs.FileURI#####################--> 
+        <!--FTP file path with credentials-->
+        <!--parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.200.3.109/vfs/in?vfs.passive=true</parameter-->
+
+        <!--FTP file path without credentials-->
+        <!--parameter name="transport.vfs.FileURI">vfs:ftp://10.200.3.109/in?vfs.passive=true</parameter-->
+
+        <!--Linux file path-->
+        <!--parameter name="transport.vfs.FileURI">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/in</parameter-->
+
         <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/error</parameter>
         <parameter name="transport.vfs.FileNamePattern">.*.xml</parameter>
         <parameter name="transport.vfs.ContentType">text/xml</parameter>
