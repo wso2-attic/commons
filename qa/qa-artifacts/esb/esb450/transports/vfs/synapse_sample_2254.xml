@@ -22,14 +22,14 @@
 <definitions xmlns="http://ws.apache.org/ns/synapse">
 
     <proxy name="StockQuoteProxy" transports="vfs">
-        <parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.100.3.109/vfs/in?vfs.passive=true</parameter>
+        <parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.200.3.109/vfs/in?vfs.passive=true</parameter>
         <!--CHANGE-->
         <parameter name="transport.vfs.ContentType">text/xml</parameter>
         <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
         <parameter name="transport.PollInterval">2</parameter>
-        <parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/original</parameter>
+        <parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/original</parameter>
         <!--CHANGE-->
-        <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/original</parameter>
+        <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/original</parameter>
         <!--CHANGE-->
         <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
         <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
@@ -45,7 +45,7 @@
                 <property action="set" name="OUT_ONLY" value="true"/>
                 <send>
                     <endpoint>
-                        <address uri="vfs:file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/out"/>
+                        <address uri="vfs:file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/out"/>
                         <!--CHANGE-->
                     </endpoint>
                 </send>
