@@ -39,6 +39,9 @@
         <!--Linux file path-->
         <!--parameter name="transport.vfs.FileURI">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/in</parameter-->
 
+	<!--Windows file path-->
+        <!--parameter name="transport.vfs.FileURI">file://C:\shared\vfs\in</parameter-->
+
         <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/error</parameter>
         <parameter name="transport.vfs.FileNamePattern">.*.xml</parameter>
         <parameter name="transport.vfs.ContentType">text/xml</parameter>
