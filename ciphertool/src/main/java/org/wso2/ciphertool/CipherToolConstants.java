@@ -37,6 +37,7 @@ public class CipherToolConstants {
     public static final String AXIS2_DIR = "axis2";
     public static final String TOMCAT_DIR = "tomcat";
     public static final String REPOSITORY_DIR = "repository";
+    public static final String DATA_SOURCE_DIRECTORY = "datasources";
 
 
     public static final String CARBON_CONFIG_FILE = "carbon.xml";
@@ -114,7 +115,8 @@ public class CipherToolConstants {
 
         public static final String REGISTRY_DB = "";
 
-        public static final String EVENT_BROKER_CONFIG = "eventBrokerConfig.eventBroker.deliveryManager.remoteMessageBroker.password";
+        public static final String EVENT_BROKER_CONFIG = "eventBrokerConfig.eventBroker." +
+                "                                   deliveryManager.remoteMessageBroker.password";
 
 
     }

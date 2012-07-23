@@ -18,12 +18,11 @@
 
 package org.wso2.ciphertool;
 
-import org.apache.axiom.util.base64.Base64Utils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import sun.misc.BASE64Encoder;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -69,7 +68,6 @@ import java.util.Properties;
  */
 public class CipherTool {
 
-    private static Log log = LogFactory.getLog(CipherTool.class);
     private static Map<String, String> aliasXpathMap = new HashMap<String, String>();
     private static Map<String, String> configFileXpathMap = new HashMap<String, String>();
     private static Map<String, String> aliasPasswordMap = new HashMap<String, String>();
@@ -140,7 +138,7 @@ public class CipherTool {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    log.error("Error while closing input stream");
+                    System.err.println("Error while closing input stream");
                 }
             }
         }
@@ -210,7 +208,7 @@ public class CipherTool {
             handleException("Error initializing Cipher ", e);
         }
 
-        log.info("\nPrimary KeyStore of Carbon Server is initialized Successfully\n");
+        System.out.println("\nPrimary KeyStore of Carbon Server is initialized Successfully\n");
 
         return cipher;
     }
@@ -227,13 +225,14 @@ public class CipherTool {
         try {
             byte[] plainTextPassByte = plainTextPass.getBytes();
             byte[] encryptedPassword = cipher.doFinal(plainTextPassByte);
-            encodedValue = Base64Utils.encode(encryptedPassword);
+            BASE64Encoder  encoder  = new BASE64Encoder();
+            encodedValue = encoder.encode(encryptedPassword);
         } catch (BadPaddingException e) {
             handleException("Error encrypting password ", e);
         } catch (IllegalBlockSizeException e) {
             handleException("Error encrypting password ", e);
         }
-        log.info("\nEncryption is done Successfully\n");
+         System.out.println("\nEncryption is done Successfully\n");
         return encodedValue;
     }
 
@@ -242,7 +241,7 @@ public class CipherTool {
      */
     private static void createEncryptedValue() {
 
-        log.info("By default, CipherTool can be used for creating encrypted value for given plain text." +
+         System.out.println("By default, CipherTool can be used for creating encrypted value for given plain text." +
                  " For more options visit help  ./ciphertool.sh -help or ./ciphertool.bat -help\n");
         Console console;
         char[] password;
@@ -357,7 +356,7 @@ public class CipherTool {
                 try {
                     bufferedInputStream.close();
                 } catch (IOException ignored) {
-                    log.error("Error while closing input stream");
+                     System.err.println("Error while closing input stream");
                 }
             }
         }
@@ -397,6 +396,9 @@ public class CipherTool {
      */
     private static void writeTokenToConfigFile(String fileName, String xPath, String secretAlias,
                                                boolean capitalLetter) {
+
+
+
         if (xPath != null && !xPath.equals("") && secretAlias != null && !secretAlias.equals("")) {
             File configFile;
             try {
@@ -412,28 +414,42 @@ public class CipherTool {
 
 
                 if (!configFile.exists()) {
-                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.SECURITY_DIR + File.separator + fileName;
+                    filePath = carbonHome + File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
+                        CipherToolConstants.CONF_DIR + File.separator +
+                        CipherToolConstants.SECURITY_DIR + File.separator + fileName;
                     configFile = new File(filePath);
                 }
 
 
                 if (!configFile.exists()) {
-                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.AXIS2_DIR + File.separator + fileName;
+                    filePath = carbonHome + File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
+                            CipherToolConstants.CONF_DIR + File.separator +
+                            CipherToolConstants.AXIS2_DIR + File.separator + fileName;
                     configFile = new File(filePath);
                 }
 
 
                 if (!configFile.exists()) {
-                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.TOMCAT_DIR + File.separator + fileName;
+                    filePath = carbonHome +  File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
+                            CipherToolConstants.CONF_DIR + File.separator +
+                            CipherToolConstants.TOMCAT_DIR + File.separator + fileName;
                     configFile = new File(filePath);
                 }
 
 
                 if (!configFile.exists()) {
-                    filePath = carbonHome + CipherToolConstants.REPOSITORY_DIR + File.separator + CipherToolConstants.ETC_DIR + File.separator + fileName;
+                    filePath = carbonHome +  File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
+                            CipherToolConstants.CONF_DIR + File.separator +
+                            CipherToolConstants.ETC_DIR + File.separator + fileName;
                     configFile = new File(filePath);
                 }
 
+                if (!configFile.exists()) {
+                    filePath = carbonHome +  File.separator + CipherToolConstants.REPOSITORY_DIR + File.separator +
+                            CipherToolConstants.CONF_DIR + File.separator +
+                            CipherToolConstants.DATA_SOURCE_DIRECTORY + File.separator + fileName;
+                    configFile = new File(filePath);
+                }
 
                 if (!configFile.exists()) {
                     return;
@@ -452,12 +468,18 @@ public class CipherTool {
                 XPathFactory xpf = XPathFactory.newInstance();
                 XPath xp = xpf.newXPath();
                 XPathExpression xpathEx = xp.compile(xPath);
-                Node securedNode = (Node) xpathEx.evaluate(doc.getDocumentElement(), XPathConstants.NODE);
-                if (securedNode != null) {
-                    Node secretAliasNode = doc.createAttribute(CipherToolConstants.SECURE_VAULT_ALIAS);
-                    secretAliasNode.setTextContent(secretAlias);
-                    securedNode.setTextContent("password");
-                    securedNode.getAttributes().setNamedItem(secretAliasNode);
+                NodeList securedNodes = (NodeList) xpathEx.evaluate(doc.getDocumentElement(),
+                                                                            XPathConstants.NODESET);
+                if (securedNodes != null && securedNodes.getLength() > 0) {
+                    for(int i = 0; i< securedNodes.getLength(); i++){
+                        Node secretAliasNode = doc.createAttribute(CipherToolConstants.SECURE_VAULT_ALIAS);
+                        secretAliasNode.setTextContent(secretAlias);
+                        Node node = securedNodes.item(i);
+                        if(node != null){
+                            node.setTextContent("password");
+                            node.getAttributes().setNamedItem(secretAliasNode);
+                        }
+                    }
                 } else {
                     handleException("Element for secret alias '" + secretAlias + "' can not be found in " +
                                     fileName + " file or You have entered invalid Xpath value");
@@ -469,18 +491,24 @@ public class CipherTool {
                 transformer.transform(source, result);
 
             } catch (ParserConfigurationException e) {
-                handleException("Error writing protected token to " + fileName + " file ", e);
+                handleException("Error writing protected token ["+ secretAlias +"] to " +
+                        fileName + " file ", e);
             } catch (TransformerException e) {
-                handleException("Error writing protected token to " + fileName + " file ", e);
+                handleException("Error writing protected token ["+ secretAlias +"] to " +
+                        fileName + " file ", e);
             } catch (SAXException e) {
-                handleException("Error writing protected token to " + fileName + " file ", e);
+                handleException("Error writing protected token  ["+ secretAlias +"] to " +
+                        fileName + " file ", e);
             } catch (IOException e) {
-                handleException("IOError writing protected token to " + fileName + " file ", e);
+                handleException("IOError writing protected token  ["+ secretAlias +"] to " +
+                        fileName + " file ", e);
             } catch (XPathExpressionException e) {
-                handleException("IOError writing protected token to " + fileName +" file ", e);
+                handleException("IOError writing protected token  ["+ secretAlias +"] to " +
+                        fileName +" file ", e);
             }
 
-            log.info("Protected Token is updated in " + fileName + " successfully\n");
+             System.out.println("Protected Token [" +secretAlias +"] is updated in " + fileName +
+                     " successfully\n");
         }
     }
 
@@ -498,7 +526,7 @@ public class CipherTool {
         String secondPassword = null;
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                             "Enter Password of Secret Alias - '" + key + "' :")) != null) {
+                                 "Enter Password of Secret Alias - '" + key + "' :")) != null) {
             firstPassword = String.valueOf(password);
         }
 
@@ -526,7 +554,7 @@ public class CipherTool {
         char[] password;
         if ((console = System.console()) != null &&
             (password = console.readPassword("[%s]",
-                                             "Please Enter Primary KeyStore Password of Carbon Server : ")) != null) {
+                         "Please Enter Primary KeyStore Password of Carbon Server : ")) != null) {
             return String.valueOf(password);
         }
         return null;
@@ -544,12 +572,12 @@ public class CipherTool {
         for (int i = 0; i < firstNode.getChildNodes().getLength(); i++) {
             if (capitalLetter) {
                 if (firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
-                                                                                   SECURE_VAULT_CAPITAL)) {
+                                                                           SECURE_VAULT_CAPITAL)) {
                     return true;
                 }
             } else {
                 if (firstNode.getChildNodes().item(i).getNodeName().equals(CipherToolConstants.
-                                                                                   SECURE_VAULT_SIMPLE)) {
+                                                                           SECURE_VAULT_SIMPLE)) {
                     return true;
                 }
             }
@@ -613,20 +641,22 @@ public class CipherTool {
         properties.setProperty("carbon.secretProvider", CipherToolConstants.SECRET_PROVIDER);
         properties.setProperty("secretRepositories", "file");
         properties.setProperty("secretRepositories.file.provider",
-                               "org.wso2.securevault.secret.repository.FileBaseSecretRepositoryProvider");
+                       "org.wso2.securevault.secret.repository.FileBaseSecretRepositoryProvider");
         properties.setProperty("secretRepositories.file.location", "repository" + File.separator +
-                                                                   "conf" + File.separator + "cipher-text.properties");
+                    "conf" + File.separator + "security" + File.separator +"cipher-text.properties");
         properties.setProperty("keystore.identity.location", keyStoreFile);
         properties.setProperty("keystore.identity.type", keyType);
         properties.setProperty("keystore.identity.alias", aliasName);
         properties.setProperty("keystore.identity.store.password", "identity.store.password");
-        properties.setProperty("keystore.identity.store.secretProvider", CipherToolConstants.CARBON_DEFAULT_SECRET_PROVIDER);
+        properties.setProperty("keystore.identity.store.secretProvider",
+                CipherToolConstants.CARBON_DEFAULT_SECRET_PROVIDER);
         properties.setProperty("keystore.identity.key.password", "identity.key.password");
-        properties.setProperty("keystore.identity.key.secretProvider", CipherToolConstants.CARBON_DEFAULT_SECRET_PROVIDER);
+        properties.setProperty("keystore.identity.key.secretProvider",
+                CipherToolConstants.CARBON_DEFAULT_SECRET_PROVIDER);
 
         writeProperties(properties, CipherToolConstants.SECRET_PROPERTY_FILE);
 
-        log.info("Secret Configurations are written to the property file successfully");
+        System.out.println("\nSecret Configurations are written to the property file successfully\n");
     }
 
 
@@ -684,15 +714,9 @@ public class CipherTool {
                 String unprocessedXpath = aliasXpathMap.get(passwordAlias);
                 configFileXpathMap.put(passwordAlias, unprocessedXpath);
                 aliasPasswordMap.put(passwordAlias, cipherTextProperties.getProperty(passwordAlias));
-            } else if (passwordAlias.startsWith("wso2registry")) {
-                String dbConfigName = passwordAlias.substring(passwordAlias.indexOf(".") + 1);
-                dbConfigName = dbConfigName.substring(0, dbConfigName.indexOf("."));
-                String registryXpath = "//wso2registry/dbConfig[@name='" + dbConfigName + "']/password";
-                configFileXpathMap.put(passwordAlias, "registry.xml" + registryXpath);
-                aliasPasswordMap.put(passwordAlias, cipherTextProperties.getProperty(passwordAlias));
             } else {
-                System.out.println("XPath value for secret alias '" + passwordAlias + "' can not be found " +
-                                   "Please enter XPath manually : ");
+                System.out.println("XPath value for secret alias '" + passwordAlias + "' " +
+                                            "can not be found " + "Please enter XPath manually : ");
                 String buffer1 = null;
                 String buffer2 = null;
                 BufferedReader input1 = new BufferedReader(new InputStreamReader(System.in));
@@ -787,14 +811,14 @@ public class CipherTool {
             properties.load(in);
         } catch (IOException e) {
             String msg = "Error loading properties from a file at :" + filePath;
-            log.warn(msg, e);
+            System.err.println(msg + " Error : " + e.getMessage());
             return properties;
         } finally {
             if (in != null) {
                 try {
                     in.close();
                 } catch (IOException ignored) {
-                    log.error("Error while closing input stream");
+                     System.err.println("Error while closing input stream");
                 }
             }
         }
@@ -819,14 +843,14 @@ public class CipherTool {
             properties.store(fileOutputStream, null);
         } catch (IOException e) {
             String msg = "Error loading properties from a file at :" + filePath;
-            log.warn(msg, e);
+             System.err.println(msg + " Error : " + e.getMessage());
         } finally {
             try {
                 if (fileOutputStream != null) {
                     fileOutputStream.close();
                 }
             } catch (IOException e) {
-                log.error("Error while closing output stream");
+                System.err.println("Error while closing output stream");
             }
         }
 
@@ -834,12 +858,10 @@ public class CipherTool {
 
 
     protected static void handleException(String msg, Exception e) {
-        log.error(msg, e);
         throw new CipherToolException(msg, e);
     }
 
     protected static void handleException(String msg) {
-        log.error(msg);
         throw new CipherToolException(msg);
     }
 }
