@@ -9,7 +9,13 @@
                 <address uri="http://10.200.3.64:9770/oracle/as/services/Axis2Service"/>
             </endpoint>
             <outSequence>
-                <property name="transport.vfs.ReplyFileName" expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')" scope="transport" type="STRING"/>
+                <!--############################Different options for transport.vfs.ReplyFilename parameter#########################-->
+                <!--File name  spacified as an expression-->
+                <!--property name="transport.vfs.ReplyFileName" expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')" scope="transport" type="STRING"/-->
+
+                <!--File name specidied as a value-->
+                <property name="transport.vfs.ReplyFileName" value="echoIntResponse.xml" scope="transport" type="STRING"/>
+
                 <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
                 <send>
                     <endpoint>
