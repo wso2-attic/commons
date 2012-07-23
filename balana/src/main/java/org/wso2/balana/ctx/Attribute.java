@@ -367,12 +367,12 @@ public class Attribute {
             out.println(" Issuer=\"" + issuer + "\"");
         }
 
-        out.println(">");
+        out.print(">");
         indenter.in();
 
         if(attributeValues != null && attributeValues.size() > 0){
             for(AttributeValue value : attributeValues){
-                value.encodeWithTags(true);
+                out.println(value.encodeWithTags(true));
             }
         }
 
