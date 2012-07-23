@@ -356,7 +356,7 @@ public class RequestCtx extends AbstractRequestCtx {
 
         // Prepare the indentation string
         String topIndent = indenter.makeString();
-        out.println(topIndent + "<Request xmlns=" + XACMLConstants.RESOURCE_SCOPE_2_0 + " >");
+        out.println(topIndent + "<Request xmlns=" + XACMLConstants.RESOURCE_SCOPE_2_0 + "\" >");
 
         // go in one more for next-level elements...
         indenter.in();

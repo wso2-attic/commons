@@ -244,7 +244,7 @@ public class RequestCtx extends AbstractRequestCtx {
         PrintStream out = new PrintStream(output);
 
         out.println(indent + "<Request xmlns=" + XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER +
-                " ReturnPolicyIdList=\"" + returnPolicyIdList + "\" CombinedDecision=\"" + 
+                "\" ReturnPolicyIdList=\"" + returnPolicyIdList + "\" CombinedDecision=\"" + 
                 combinedDecision +   "\" >");
 
         indenter.in();
