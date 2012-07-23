@@ -283,4 +283,72 @@ public class PersistenceTestCase {
     }
 
 
+    @Test
+    public void persistWindowRestartTestQuery() throws InterruptedException, SiddhiPraserException {
+        log.info("Persistence test on Restart of Window");
+
+        PersistenceStore persistenceStore = new InMemoryPersistenceStore();
+        String revision;
+
+        String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
+        String query = "from cseStream[price>10][win.time(10000)] " +
+                       "insert into outStream symbol, price, sum(volume) as totalVol ";
+        Callback callback = new Callback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+//                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+//                lastValue = (Long) inEvents[0].getData(2);
+                count++;
+                eventArrived = true;
+            }
+        };
+
+
+        SiddhiConfiguration configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiManager siddhiManager = new SiddhiManager(configuration);
+        siddhiManager.setPersistStore(persistenceStore);
+
+        InputHandler inputHandler = siddhiManager.defineStream(streamDefinition);
+        siddhiManager.addQuery(query);
+        siddhiManager.addCallback("outStream", callback);
+
+        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 76.6f, 100});
+
+        //persisting
+        revision = siddhiManager.persist();
+
+        inputHandler.send(new Object[]{"IBM", 77.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 78.6f, 100});
+
+        //restarting Siddhi
+        siddhiManager.shutdown();
+        configuration=new SiddhiConfiguration();
+        configuration.setExecutionPlanIdentifier("Test");
+        siddhiManager = new SiddhiManager(configuration);
+        siddhiManager.setPersistStore(persistenceStore);
+
+        inputHandler = siddhiManager.defineStream(streamDefinition);
+        siddhiManager.addQuery(query);
+        siddhiManager.addCallback("outStream", callback);
+
+        //loading
+        siddhiManager.restoreLastRevision();
+
+
+//        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+//        inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
+
+        Thread.sleep(1000);
+        siddhiManager.shutdown();
+
+//        Assert.assertEquals(6, count);
+//        Assert.assertEquals(400, lastValue);
+//        Assert.assertEquals(true, eventArrived);
+
+    }
+
+
 }

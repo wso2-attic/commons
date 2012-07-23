@@ -161,11 +161,11 @@ public class StreamParser {
             //joinStreamPacker prev
             JoinStreamPacker leftSingleStreamPacker = (JoinStreamPacker) leftSimpleStreamProcessorList.get(leftSimpleStreamProcessorList.size() - 1);
             JoinStreamPacker rightSingleStreamPacker = (JoinStreamPacker) rightSimpleStreamProcessorList.get(rightSimpleStreamProcessorList.size() - 1);
-            rightJoinInStreamPacker.setOppositeWindow(leftSingleStreamPacker.getWindow());
-            leftJoinInStreamPacker.setOppositeWindow(rightSingleStreamPacker.getWindow());
+            rightJoinInStreamPacker.setOppositeWindowHandler(leftSingleStreamPacker.getWindowHandler());
+            leftJoinInStreamPacker.setOppositeWindowHandler(rightSingleStreamPacker.getWindowHandler());
 
-            rightJoinRemoveStreamPacker.setOppositeWindow(leftSingleStreamPacker.getWindow());
-            leftJoinRemoveStreamPacker.setOppositeWindow(rightSingleStreamPacker.getWindow());
+            rightJoinRemoveStreamPacker.setOppositeWindowHandler(leftSingleStreamPacker.getWindowHandler());
+            leftJoinRemoveStreamPacker.setOppositeWindowHandler(rightSingleStreamPacker.getWindowHandler());
 
             streamReceiverList.add(leftReceiver);
             streamReceiverList.add(rightReceiver);

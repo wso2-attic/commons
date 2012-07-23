@@ -80,8 +80,11 @@ public class TimeWindowHandler extends WindowHandler implements RunnableHandler 
                 }
                 long timeDiff = ((RemoveStream) streamEvent).getExpiryTime() - System.currentTimeMillis();
                 if (timeDiff > 0) {
-                    eventRemoverScheduler.schedule(this, timeDiff, TimeUnit.MILLISECONDS);
-                    break;
+                    try {
+                        eventRemoverScheduler.schedule(this, timeDiff, TimeUnit.MILLISECONDS);
+                    } finally {
+                        break;
+                    }
                 } else {
                     streamEvent = getWindow().poll();
                     passToNextStreamProcessor(streamEvent);

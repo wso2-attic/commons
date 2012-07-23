@@ -29,7 +29,6 @@ import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 import org.wso2.siddhi.core.query.projector.QueryProjector;
 import org.wso2.siddhi.core.query.stream.handler.window.WindowHandler;
 import org.wso2.siddhi.core.query.stream.packer.SingleStreamPacker;
-import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,18 +37,19 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class JoinStreamPacker extends SingleStreamPacker {
     static final Logger log = Logger.getLogger(JoinStreamPacker.class);
-    protected SchedulerQueue<StreamEvent> oppositeWindow;
+//    protected SchedulerQueue<StreamEvent> oppositeWindow;
     protected WindowHandler windowHandler;
     protected final ReentrantLock lock;
     protected Class eventType;
 
     protected ConditionExecutor onConditionExecutor;
     protected boolean triggerEvent;
+    private WindowHandler oppositeWindowHandler;
     //    private int nextState;
 
 
-    public SchedulerQueue<StreamEvent> getWindow() {
-        return windowHandler.getWindow();
+    public WindowHandler getWindowHandler() {
+        return windowHandler;
     }
 
     public JoinStreamPacker(ConditionExecutor onConditionExecutor, boolean triggerEvent,
@@ -78,7 +78,7 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
                 if (triggerEvent) {
                     if (complexEvent instanceof Event) {
 
-                        Iterator<StreamEvent> iterator = oppositeWindow.iterator();
+                        Iterator<StreamEvent> iterator = oppositeWindowHandler.getWindow().iterator();
                         while (iterator.hasNext()) {
                             ComplexEvent windowComplexEvent = iterator.next();
                             if (windowComplexEvent instanceof Event) {
@@ -104,7 +104,7 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
                         }
                     } else if (complexEvent instanceof ListEvent) {
                         List<AtomicEvent> list = new ArrayList<AtomicEvent>();
-                        Iterator<StreamEvent> iterator = oppositeWindow.iterator();
+                        Iterator<StreamEvent> iterator = oppositeWindowHandler.getWindow().iterator();
                         for (Event event : ((ListEvent) complexEvent).getEvents()) {
                             while (iterator.hasNext()) {
                                 ComplexEvent windowComplexEvent = iterator.next();
@@ -161,8 +161,8 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
         }
     }
 
-    public void setOppositeWindow(SchedulerQueue<StreamEvent> window) {
-        this.oppositeWindow = window;
+    public void setOppositeWindowHandler(WindowHandler windowHandler) {
+        this.oppositeWindowHandler = windowHandler;
     }
 
     public void setWindowHandler(WindowHandler windowHandler) {
