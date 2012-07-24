@@ -26,7 +26,7 @@ public class PatternTestCase {
 
     @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
-        Query query = SiddhiCompiler.parseQuery("from every( a1 = infoStock0[action == 'buy'] or a2=infoStock1[action == 'buy'] ->  b1 = cseEventStream0[price > 70][timer.within(30)] )-> b2 = cseEventStream1[price > 75] " +
+        Query query = SiddhiCompiler.parseQuery("from every( a1 = infoStock0[action == 'buy'] or a2=infoStock1[action == 'buy'] ->  b1 = cseEventStream0[price > 70] )-> b2 = cseEventStream1[price > 75] " +
                                                 " insert into StockQuote " +
                                                 " a1.action as action, b1.price as priceA, b2.price as priceB ;"
         );
@@ -35,9 +35,9 @@ public class PatternTestCase {
 
     @Test
     public void Test3() throws RecognitionException, SiddhiPraserException {
-        Query query = SiddhiCompiler.parseQuery("from every a1 = infoStock[action == \"buy\"]^[2:] ->\n" +
-                                                "          b1 = cseEventStream[price > 70][timer.within(30)]^[3] ->\n" +
-                                                "          b2 = cseEventStream[price > 75]^[1:4]\n" +
+        Query query = SiddhiCompiler.parseQuery("from every a1 = infoStock[action == \"buy\"]<2:> ->\n" +
+                                                "          b1 = cseEventStream[price > 70]<3> ->\n" +
+                                                "          b2 = cseEventStream[price > 75]<1:4>\n" +
                                                 " insert into StockQuote\n" +
                                                 " a1.action as action, b1.price as priceA, b2.price as priceB");
         Assert.assertNotNull(query);
@@ -53,7 +53,7 @@ public class PatternTestCase {
     public void Test4() throws RecognitionException, SiddhiPraserException {
         Query query = SiddhiCompiler.parseQuery("from every a1 = infoStock[action == \"buy\"] or\n" +
                                                 "    a2 = infoStock[action == \"buy\"] ->\n" +
-                                                "          b1 = cseEventStream[price > 70][timer.within(30)] ->\n" +
+                                                "          b1 = cseEventStream[price > 70] ->\n" +
                                                 "          b2 = cseEventStream[price > 75]\n" +
                                                 "insert into StockQuote\n" +
                                                 "coalesce(a1.action, a2.action) as action,\n" +

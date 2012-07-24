@@ -61,7 +61,7 @@ public class PersistenceTestCase {
         String revision;
 
         String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
-        String query = "from cseStream[price>10][win.length(10)] " +
+        String query = "from cseStream[price>10]#window.length(10) " +
                        "insert into outStream symbol, price, sum(volume) as totalVol ";
         Callback callback = new Callback() {
             @Override
@@ -291,7 +291,7 @@ public class PersistenceTestCase {
         String revision;
 
         String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
-        String query = "from cseStream[price>10][win.time(10000)] " +
+        String query = "from cseStream[price>10]#window.time(10000) " +
                        "insert into outStream symbol, price, sum(volume) as totalVol ";
         Callback callback = new Callback() {
             @Override

@@ -11,8 +11,8 @@ public class FilterTestCase {
 
     @Test
     public void Test() throws RecognitionException, SiddhiPraserException {
-        Query query = SiddhiCompiler.parseQuery("from  cseEventStream [ price >= 20 ] [win.lenghtBatch(50)] [win.lenght(50)]  " +
-                                                "insert into StockQuote symbol, avg(price) as avgPrice" +
+        Query query = SiddhiCompiler.parseQuery("from  cseEventStream#window.lenghtBatch(50)  " +
+                                                "insert all-events into StockQuote symbol, avg(price) as avgPrice" +
                                                 " group by symbol" +
                                                 " having (price >= 20);"
         );
@@ -21,7 +21,7 @@ public class FilterTestCase {
 
     @Test
     public void Test1() throws RecognitionException, SiddhiPraserException {
-        Query query = SiddhiCompiler.parseQuery("from  cseEventStream [win.lenghtBatch(50)][price >= 20]" +
+        Query query = SiddhiCompiler.parseQuery("from  cseEventStream [price >= 20]#window.lengthBatch(50)" +
                                                 "insert into StockQuote symbol, avg(price) as avgPrice" +
                                                 " group by symbol" +
                                                 " having avgPrice>50;");
@@ -34,7 +34,7 @@ public class FilterTestCase {
 //            having avgPrice>50;
     @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
-        SiddhiCompiler.parse("from  cseEventStream [win.length(50)][price >= 20]" +
+        SiddhiCompiler.parse("from  cseEventStream [price >= 20]#window.length(50)" +
                              "insert into StockQuote symbol, avg(price) as avgPricegroup by symbol" +
                                      "group by symbol" +
                              " " +

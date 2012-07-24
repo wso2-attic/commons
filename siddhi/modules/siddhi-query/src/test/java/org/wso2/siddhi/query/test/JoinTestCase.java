@@ -11,7 +11,7 @@ public class JoinTestCase {
 
     @Test
     public void Test1() throws RecognitionException, SiddhiPraserException {
-     Query query=   SiddhiCompiler.parseQuery("from TickEvent as t unidirectional left outer join NewsEvent[std.unique(symbol)]as n \n" +
+     Query query=   SiddhiCompiler.parseQuery("from TickEvent as t unidirectional left outer join NewsEvent[filter.unique(symbol)]as n \n" +
                              "    on t.symbol == n.symbol\n" +
                              "insert into JoinStream ;");
         Assert.assertNotNull(query);
@@ -23,7 +23,7 @@ public class JoinTestCase {
 
     @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
-        Query query=  SiddhiCompiler.parseQuery("from TickEvent[std.lastevent()] join NewsEvent[std.lastevent()]\n" +
+        Query query=  SiddhiCompiler.parseQuery("from TickEvent#window.lastevent() join NewsEvent#window.lastevent()\n" +
                              "insert into JoinStream *");
         Assert.assertNotNull(query);
     }

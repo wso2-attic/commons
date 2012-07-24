@@ -10,7 +10,7 @@ public class NestedQueryTestCase {
     @Test
     public void Test1() throws RecognitionException, SiddhiPraserException {
         SiddhiCompiler.parse("from (\n" +
-                             "\tfrom cseEventStream[win.length(50)][ price >= 20]\n" +
+                             "\tfrom cseEventStream[ price >= 20]#window.length(50)\n" +
                              "return  symbol, avg(price) as avgPrice\n" +
                              "group by symbol) [symbol==\"IBM\"]\n" +
                              "insert into IBMStockQuote symbol, avgPrice");
@@ -24,9 +24,9 @@ public class NestedQueryTestCase {
     @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
         SiddhiCompiler.parse("from (\n" +
-                             "from MyStream[filter.rm] [price >10]\n" +
+                             "from MyStream [price >10]\n" +
                              "return *\n" +
-                             ") [filter.in] [win.length(1000)][win.time(50)][std.intersecWin]\n" +
+                             ") #window.length(1000)\n" +
                              "insert into StockQuote symbol ,  avg(price) as avgPrice");
     }
 

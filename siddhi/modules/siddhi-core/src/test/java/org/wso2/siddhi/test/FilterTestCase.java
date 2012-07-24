@@ -481,7 +481,7 @@ public class FilterTestCase {
 
         siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
 
-        siddhiManager.addQuery("from cseStream [price>10][win.length(3)] " +
+        siddhiManager.addQuery("from cseStream [price>10]#window.length(3) " +
                                "insert into outStream symbol, avg(price) as avgPrice, volume ");
         siddhiManager.addCallback("outStream", new Callback() {
             @Override

@@ -39,7 +39,7 @@ executionPlan returns [List<ExecutionPlan> executionPlanList]
     @init{
         $executionPlanList=new ArrayList<ExecutionPlan>();
     }
-	: (^(DEFINITION definitionStream {$executionPlanList.add($definitionStream.streamDefinition);}))*  (^(QUERY query))*
+	: (^(DEFINITION definitionStream {$executionPlanList.add($definitionStream.streamDefinition);}))*  (query)*
 	; 
    
 definitionStream returns [StreamDefinition streamDefinition]
@@ -50,24 +50,33 @@ definitionStream returns [StreamDefinition streamDefinition]
 	;
 
 query returns [Query query]
-	: ^(outputStream inputStream outputProjection ) {$query = QueryFactory.createQuery().insertInto($outputStream.value).
+	: ^(QUERY outputStream inputStream outputProjection ) {$query = QueryFactory.createQuery().insertInto($outputStream.value).
 																						from($inputStream.inStream).
 																						project($outputProjection.projector);}
 	;
 
 outputStream returns [String value]
-	: streamId {$value=$streamId.value;}
+	:  ^(OUT_STREAM streamId outputType?) {$value=$streamId.value;}
+	;
+
+outputType
+	: 'expired-events' | 'current-events' | 'all-events'
 	;
 
 inputStream returns [Stream inStream]
 	: ^(SEQUENCE_FULL sequenceFullStream) {$inStream=$sequenceFullStream.stream;}
 	| ^(PATTERN_FULL  patternFullStream patternHandler?) {$inStream=$patternFullStream.stream;}
 	| ^(JOIN joinStream) 	{$inStream=$joinStream.stream;}
-	| ^(STREAM stream ) 	{$inStream=$stream.singleStream;}	
+	| windowStream          {$inStream=$windowStream.singleStream;}
+	| stream  	            {$inStream=$stream.singleStream;}
 	;  
  
 stream returns [SingleStream singleStream]
-	: ^(STREAM basicStream {$singleStream=$basicStream.singleStream;}(id {$singleStream.setStreamReferenceId($id.value);})?)
+	: ^(STREAM basicStream {$singleStream=$basicStream.singleStream;} (id {$singleStream.setStreamReferenceId($id.value);})?)
+	;
+	
+windowStream returns [SingleStream singleStream]
+	: ^(STREAM basicStream {$singleStream=$basicStream.singleStream;} (windowHandler {$singleStream.addHandler($windowHandler.handler);}) (id {$singleStream.setStreamReferenceId($id.value);})?)
 	;
 	
 basicStream returns [SingleStream singleStream]
@@ -90,17 +99,19 @@ joinStream  returns [Stream stream]
 	scope{
 		Condition onCondition;
 	}
-	: ^(STREAM leftStream) join ^(STREAM rightStream) (condition {$joinStream::onCondition=$condition.condition;})?						{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition);} 
-	| ^(STREAM leftStream 'unidirectional')  join ^(STREAM rightStream) (condition {$joinStream::onCondition=$condition.condition;})?	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.LEFT);}
-	| ^(STREAM leftStream)  join ^(STREAM rightStream 'unidirectional') (condition {$joinStream::onCondition=$condition.condition;})?	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.RIGHT);}
+	: leftStream join rightStream (condition {$joinStream::onCondition=$condition.condition;})? time? 						{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition);}
+	| leftStream 'unidirectional'  join rightStream (condition {$joinStream::onCondition=$condition.condition;})? time? 	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.LEFT);}
+	| leftStream  join rightStream 'unidirectional' (condition {$joinStream::onCondition=$condition.condition;})? time? 	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.RIGHT);}
 	;
 
 leftStream returns [SingleStream singleStream]
-    :  stream {$singleStream=$stream.singleStream;}
+    :  windowStream {$singleStream=$windowStream.singleStream;}
+    |  stream       {$singleStream=$stream.singleStream;}
     ;
 
 rightStream returns [SingleStream singleStream]
-    :  stream {$singleStream=$stream.singleStream;}
+    :  windowStream {$singleStream=$windowStream.singleStream;}
+    |  stream       {$singleStream=$stream.singleStream;}
     ;
  
 returnQuery returns [SingleStream stream]
@@ -111,7 +122,7 @@ returnQuery returns [SingleStream stream]
 	;
 
 patternFullStream returns [PatternStream stream]
-	: ^(PATTERN  patternStream ) {$stream= QueryFactory.patternStream($patternStream.element);}
+	: ^(PATTERN  patternStream time? ) {$stream= QueryFactory.patternStream($patternStream.element);}
 	;
 
 patternHandler returns [Handler handler]
@@ -129,7 +140,7 @@ nonEveryPatternStream returns [PatternElement element]
 	;
 
 sequenceFullStream returns [SequenceStream stream]
-	: ^(SEQUENCE  sequenceStream ) {$stream= QueryFactory.sequenceStream($sequenceStream.element);}
+	: ^(SEQUENCE  sequenceStream time? ) {$stream= QueryFactory.sequenceStream($sequenceStream.element);}
 	;
 	
 sequenceStream returns [SequenceElement element]
@@ -214,6 +225,10 @@ handler returns [Handler handler]
 	| common	{$handler=new Handler($common.name, $common.type, $common.handlerParameters);}
 	; 
  
+windowHandler returns [Handler handler]
+	: ^(WINDOW id {$handler=new Handler($id.value, Handler.Type.WIN, null);} (parameters {$handler=new Handler($id.value, Handler.Type.WIN, $parameters.expressions);})? )
+	;
+	
 common returns [Handler.Type type, String name, Expression[\] handlerParameters]
 	: ^(handlerType {$type=$handlerType.type;} id {$name=$id.value;} (parameters {$handlerParameters=$parameters.expressions;})? )
 	; 
@@ -231,6 +246,10 @@ parameters returns [Expression[\] expressions]
 	:  ^(PARAMETERS (parameter {$parameters::parameterlist.add($parameter.expression);})+)
 	;
 
+time returns [Expression expression]
+	: parameter {$expression=$parameter.expression;}
+	;
+	
 parameter returns [Expression expression]
 	: modExpression	{$expression=$modExpression.expression;}
 	;
@@ -378,11 +397,10 @@ type returns [Attribute.Type type]
 	; 
 
 handlerType returns [Handler.Type type]
-	: 'win'		{$type=Handler.Type.WIN;}
-	|'filter'	{$type=Handler.Type.FILTER;}
-	|'expire'	{$type=Handler.Type.EXPIRE;}
-	|'std'		{$type=Handler.Type.STD;}
-	|'timer'	{$type=Handler.Type.TIMER;}
+	:'filter'	{$type=Handler.Type.FILTER;}
+//	|'expire'	{$type=Handler.Type.EXPIRE;}
+//	|'std'		{$type=Handler.Type.STD;}
+//	|'timer'	{$type=Handler.Type.TIMER;}
 	;
 	
 	

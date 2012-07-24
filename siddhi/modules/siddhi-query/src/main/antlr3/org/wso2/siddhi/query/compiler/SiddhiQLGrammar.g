@@ -15,6 +15,7 @@ tokens {
   OUT_STREAM;
   OUT_ATTRIBUTES;
   OUT_ATTRIBUTE;
+  OUT_STREAM;
   SEQUENCE;
   PATTERN;
   JOIN; 
@@ -30,6 +31,7 @@ tokens {
   RETURN_QUERY;
   PATTERN_FULL;
   SEQUENCE_FULL;
+  WINDOW;
 }
 
 @header {
@@ -43,7 +45,7 @@ tokens {
 
 
 executionPlan
-	:(definitionStream|query) (';' (definitionStream|query))* ';'?  ->  (^(DEFINITION definitionStream))*  (^(QUERY query))*
+	:(definitionStream|query) (';' (definitionStream|query))* ';'?  ->  (^(DEFINITION definitionStream))*  ( query)*
 	; 
    
 definitionStream 
@@ -51,25 +53,30 @@ definitionStream
 	;
 
 query
-	:inputStream outputStream outputProjection  ->  ^(outputStream inputStream outputProjection )
+	:inputStream outputStream outputProjection  ->  ^(QUERY outputStream inputStream outputProjection )
 	;
 
 outputStream
-	:'insert' 'into' streamId    ->    streamId 
+	:'insert' outputType? 'into' streamId    ->   ^(OUT_STREAM streamId outputType?)
+	;
+
+outputType
+	: 'expired-events' | 'current-events' | 'all-events'
 	;
 
 inputStream
 	:'from' ( sequenceFullStream ->^(SEQUENCE_FULL sequenceFullStream) 
 		| patternFullStream patternHandler? ->  ^(PATTERN_FULL  patternFullStream patternHandler?)
 		| joinStream -> ^(JOIN joinStream) 
-		| stream -> ^(STREAM stream )
+		| windowStream -> windowStream
+		| stream  -> stream
 		)
 	;  
 	
 	 
 patternFullStream
-	:'(' patternStream ')'	->  ^(PATTERN  patternStream ) 
-	|patternStream 			->  ^(PATTERN  patternStream ) 
+	:'(' patternStream ')' ('within' time)? ->  ^(PATTERN  patternStream  time? ) 
+	|patternStream  ('within' time)?  ->  ^(PATTERN  patternStream  time? ) 
 	;
 
 patternHandler
@@ -79,6 +86,10 @@ patternHandler
  
 stream 
 	: basicStream ('as' id)? -> ^(STREAM basicStream id?)
+	;
+	
+windowStream 
+	: basicStream'#'windowHandler ('as' id)? -> ^(STREAM basicStream windowHandler id?)
 	;
 	
 basicStream 
@@ -98,17 +109,19 @@ stream
 **/	
 	
 joinStream 
-	:leftStream join rightStream ('on' condition)? -> ^(STREAM leftStream)  join ^(STREAM rightStream) condition?
-	|leftStream 'unidirectional' join rightStream ('on' condition)?  -> ^(STREAM leftStream 'unidirectional')  join ^(STREAM rightStream) condition?
-	|leftStream join rightStream 'unidirectional' ('on' condition)?  -> ^(STREAM leftStream)  join ^(STREAM rightStream 'unidirectional') condition?
+	:leftStream join rightStream ('on' condition)? ('within' time)? ->  leftStream  join rightStream condition? time? 
+	|leftStream 'unidirectional' join rightStream ('on' condition)? ('within' time)? -> leftStream 'unidirectional'  join  rightStream condition? time?
+	|leftStream join rightStream 'unidirectional' ('on' condition)? ('within' time)? -> leftStream  join STREAM rightStream 'unidirectional' condition? time?
 	;
 
 leftStream
-    :  stream
+    :  windowStream
+    | stream
     ;
 
 rightStream
-    :  stream
+    :  windowStream
+    |  stream
     ;
  
 returnQuery
@@ -126,7 +139,7 @@ nonEveryPatternStream
 	;
 
 sequenceFullStream
-	:sequenceStream 			->  ^(SEQUENCE  sequenceStream ) 
+	:sequenceStream ('within' time)? ->  ^(SEQUENCE  sequenceStream time? ) 
 	;
 	
 sequenceStream
@@ -140,7 +153,7 @@ FOLLOWED_BY
 patternItem
 	: itemStream 'and'^ itemStream
 	| itemStream 'or'^ itemStream
-	| itemStream'^' '['collect']' -> ^(COLLECT itemStream collect)
+	| itemStream '<'collect '>' -> ^(COLLECT itemStream collect)
 	| itemStream
 	;
 
@@ -195,6 +208,10 @@ handler
 	: '['! (condition  |common  ) ']'!
 	;
 
+windowHandler
+	: 'window' '.' id  ('(' parameters? ')')?  ->   ^( WINDOW id parameters?)
+	;
+	
 common
 	: handlerType '.' id  ('(' parameters? ')')?  ->   ^(handlerType id parameters?)
 	;
@@ -203,6 +220,10 @@ parameters
 	: parameter (',' parameter)*  ->  ^(PARAMETERS parameter+)
 	;
 
+time
+	: parameter
+	;
+	
 parameter
 	: modExpression
 	;
@@ -328,7 +349,7 @@ stringVal: STRING_VAL;
 
 type: 'string' |'int' |'long' |'float' |'double' |'bool'; 
 
-handlerType: 'win'|'filter'|'expire'|'std'|'timer';
+handlerType: 'filter';
 
 POSITIVE_INT:  NUM('I'|'i')?;
 
@@ -368,4 +389,3 @@ COMMENT
 LINE_COMMENT
     : '//' ~('\n'|'\r')* '\r'? '\n' {$channel=HIDDEN;}
     ;
-  
