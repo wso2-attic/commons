@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Add the PlaceOrderTask.jar in to repository/components/lib and restart the server
+Then, add a stockfile.txt with a set of records as follows and save in your file system.
+IBM,100,120.50
+IBM,200,130.50
+IBM,300,140.50
+IBM,400,150.50
+IBM,500,160.50
+Trigger the task
+-->
+
+<task xmlns="http://ws.apache.org/ns/synapse"
+      name="PlaceOrderTask"
+      class="com.sample.test.PlaceStockOrderTask"
+      group="synapse.simple.quartz">
+   <trigger interval="10"/>
+   <property xmlns:task="http://www.wso2.org/products/wso2commons/tasks"
+             name="to"
+             value="http://localhost:9000/services/SimpleStockQuoteService"/>
+   <property xmlns:task="http://www.wso2.org/products/wso2commons/tasks"
+             name="stockFile"
+             value="/home/charitha/products/esb/hackathon/test-resources/stockfile.txt"/>
+</task>
