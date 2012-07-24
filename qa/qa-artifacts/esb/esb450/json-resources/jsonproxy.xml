@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Instructions -->
+<!-- 1. Deploy jaxrs_basic.war in WSO2 Application Server (sample service has been modified to return json response for all POST requests)
+     2. Deploy this proxy service in ESB
+     3. Send the following JSON request to ESB proxy service - I used soapUI
+{
+  "Customer": { "name": "charitha" }
+}
+
+4. Client should receive something similar to the following
+{"Customer": {
+   "id": "128",
+   "name": "charitha"
+}}
+
+-->
+
+
+   <proxy name="jsonproxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <target>
+         <endpoint>
+            <address uri="http://localhost:9769/jaxrs_basic/services/customers/customerservice/customers"/>
+         </endpoint>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </target>
+   </proxy>
