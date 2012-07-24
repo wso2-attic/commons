@@ -1,0 +1,24 @@
+
+Allowed permissions to guest user -
+	Login	
+	Governance
+ 		Service UI
+ 		Generic Artifacts
+ 		Lifecycles
+ 		APIs
+ 		WADL Resources
+ 		URIs
+ 		WADLs	
+	Manage
+		REsources	
+			Govern
+			 	ALL
+ 		
+			Browse
+
+
+NOTES:
+------
+make sure everyone is not set to read allow, when you are checking deny for a guest. READ allows overrides others.
+
+
