@@ -19,31 +19,43 @@ package org.wso2.siddhi.core.stream;
 
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
+import org.wso2.siddhi.core.stream.output.Callback;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StreamJunction {
     private List<StreamReceiver> streamReceivers = new CopyOnWriteArrayList<StreamReceiver>();
+    private List<Callback> callBacks = new CopyOnWriteArrayList<Callback>();
     private String streamId;
 
     public StreamJunction(String streamId) {
         this.streamId = streamId;
     }
 
-    public void send(StreamEvent streamEvent) {
+    public void send(StreamEvent currentEvents, StreamEvent expiredEvents, StreamEvent allEvents) {
+
         for (StreamReceiver receiver : streamReceivers) {
-            receiver.receive(streamEvent);
+            receiver.receive(allEvents);
+        }
+        //todo need to remove
+        for (Callback callback : callBacks) {
+            callback.receive(currentEvents, expiredEvents);
         }
     }
 
     public synchronized void addEventFlow(StreamReceiver streamReceiver) {
         //in reverse order to execute the later states first to overcome to dependencies of count states
-        streamReceivers.add(0, streamReceiver);
+        if (streamReceiver instanceof Callback) {
+            callBacks.add((Callback) streamReceiver);
+        } else {
+            streamReceivers.add(0, streamReceiver);
+        }
     }
 
     public synchronized void removeEventFlow(StreamReceiver streamReceiver) {
         streamReceivers.remove(streamReceiver);
+        callBacks.remove(streamReceiver);
     }
 
     public String getStreamId() {

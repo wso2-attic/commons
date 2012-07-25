@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.stream.input;
 
+import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InEvent;
 import org.wso2.siddhi.core.stream.StreamJunction;
 
@@ -29,11 +30,13 @@ public class InputHandler {
         this.streamJunction = streamJunction;
     }
 
-    public void send( Object[] data) throws InterruptedException {
-        streamJunction.send(new InEvent(streamId, System.currentTimeMillis(), data));
+    public void send(Object[] data) throws InterruptedException {
+        StreamEvent event = new InEvent(streamId, System.currentTimeMillis(), data);
+        streamJunction.send(event, null, event);
     }
 
     public void send(long timeStamp, Object[] data) throws InterruptedException {
-        streamJunction.send(new InEvent(streamId, timeStamp, data));
+        StreamEvent event = new InEvent(streamId, timeStamp, data);
+        streamJunction.send(event, null, event);
     }
 }

@@ -27,7 +27,7 @@ import org.wso2.siddhi.core.util.SchedulerQueue;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-public abstract class Callback implements Runnable,StreamReceiver {
+public abstract class Callback implements Runnable, StreamReceiver {
 
     private SchedulerQueue<StreamEvent> inputQueue = new SchedulerQueue<StreamEvent>();
     private ThreadPoolExecutor threadPoolExecutor;
@@ -39,7 +39,7 @@ public abstract class Callback implements Runnable,StreamReceiver {
     }
 
     public void setSiddhiContext(SiddhiContext context) {
-        this.context =context;
+        this.context = context;
     }
 
 //    public String toString(long timeStamp, Object[] newEventData, Object[] removeEventData,
@@ -78,7 +78,7 @@ public abstract class Callback implements Runnable,StreamReceiver {
 //        return ((Object[]) eventData[eventPosition])[dataPosition];
 //    }
 
-    public void receive(StreamEvent event)  {
+    public void receive(StreamEvent event) {
         if (context.isSingleThreading()) {
             process(event);
         } else {
@@ -87,6 +87,28 @@ public abstract class Callback implements Runnable,StreamReceiver {
             }
         }
     }
+
+    //todo this is a hack and need to be removed
+    public void receive(StreamEvent currentEvent, StreamEvent expiredEvent) {
+        StreamEvent event;
+        if (currentEvent != null) {
+            event = currentEvent;
+        } else {
+            event = expiredEvent;
+        }
+        if (event instanceof Event) {
+            try {
+                if (currentEvent != null) {
+                    receive(event.getTimeStamp(), new Event[]{((Event) event)}, null);
+                } else {
+                    receive(event.getTimeStamp(), null, new Event[]{((Event) event)});
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void run() {

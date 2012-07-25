@@ -24,7 +24,6 @@ import org.wso2.siddhi.core.event.ListEvent;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InEvent;
 import org.wso2.siddhi.core.event.in.InStream;
-import org.wso2.siddhi.core.event.remove.RemoveEvent;
 import org.wso2.siddhi.core.event.remove.RemoveStream;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 import org.wso2.siddhi.core.query.projector.attibute.generator.AbstractAggregateAttributeGenerator;
@@ -171,21 +170,23 @@ public class QueryProjector {
             if (havingConditionExecutor == null) {
                 if (atomicEvent instanceof InStream) {
                     event = new InEvent(outputStreamId, atomicEvent.getTimeStamp(), data);
-                    outputStreamJunction.send(event);
+                    outputStreamJunction.send(event, null, event);
                 } else {
-                    event = new RemoveEvent(outputStreamId, atomicEvent.getTimeStamp(), data, ((RemoveStream) atomicEvent).getExpiryTime());
-                    outputStreamJunction.send(event);
+                    event = new InEvent(outputStreamId, ((RemoveStream) atomicEvent).getExpiryTime(), data);
+                    outputStreamJunction.send(null, event, event);
                 }
             } else {
                 if (atomicEvent instanceof InStream) {
                     event = new InEvent(outputStreamId, atomicEvent.getTimeStamp(), data);
+                    if (havingConditionExecutor.execute((AtomicEvent) event)) {
+                        outputStreamJunction.send(event, null, event);
+                    }
                 } else {
-                    event = new RemoveEvent(outputStreamId, atomicEvent.getTimeStamp(), data, ((RemoveStream) atomicEvent).getExpiryTime());
+                    event = new InEvent(outputStreamId, ((RemoveStream) atomicEvent).getExpiryTime(), data);
+                    if (havingConditionExecutor.execute((AtomicEvent) event)) {
+                        outputStreamJunction.send(null, event, event);
+                    }
                 }
-                if (havingConditionExecutor.execute((AtomicEvent) event)) {
-                    outputStreamJunction.send(event);
-                }
-
             }
 
         }
