@@ -1,0 +1,86 @@
+Sample 663: Entity Persistence Framework Support with Smooks Mediator
+
+Here is the sample configuration with smooks mediator.
+
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <localEntry key="smooks-key" src="file:repository/samples/resources/smooks/smooks-config-663.xml" />
+    <proxy name="SmooksSample" transports="vfs" startOnLoad="true" trace="disable">
+	<!--CHANGE-->
+        <parameter name="transport.vfs.FileURI">file:///home/lakmali/dev/test/smooks/in</parameter>
+        <parameter name="transport.vfs.ContentType">application/xml</parameter>
+        <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
+        <parameter name="transport.PollInterval">5</parameter>
+        <!--CHANGE-->
+        <parameter name="transport.vfs.MoveAfterProcess">file:///home/lakmali/dev/test/smooks/original</parameter>
+        <!--CHANGE-->
+        <parameter name="transport.vfs.MoveAfterFailure">file:///home/lakmali/dev/test/smooks/original</parameter>
+        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+        <parameter name="Operation">urn:placeOrder</parameter>
+	<target>
+		<inSequence>
+			<smooks config-key="smooks-key" persistence-unit="db">
+				<input type="xml" />
+				<output type="xml"/>
+			</smooks>
+		</inSequence>
+	</target>
+   </proxy>
+</definitions>
+
+Objective:Demonstrate using JPA-Hibernate with Smooks Mediator
+
+Prerequisites: Enable the vfs transport in axis2.xml by uncomenting the vfs transport sender and receiver configurations in the axis2.xml.
+
+Edit the following configuration parameters of synapse_sample_661.xml found in the repository/samples directory.
+    * transport.vfs.FileURI
+    * transport.vfs.MoveAfterProcess
+    * transport.vfs.ActionAfterFailure
+
+Create mysql database named 'sales' and run the script sales.sql found in repository/samples/resources/smooks against sales database. 
+
+Add the example.jar to the to the the ESB_HOME/repository/components/lib directory and ESB_HOME/endorsed directory. It contains the Entity classes and the persistence.xml. (example.jar Can be found in comp-lib directory)
+
+persistence.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="1.0">
+
+	<persistence-unit name="db" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.connection.username" value="root" />
+			<property name="hibernate.connection.password" value="root" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sales" />
+			<mapping-file>example.entity.Product</mapping-file>
+			<mapping-file>example.entity.Order</mapping-file>
+			<mapping-file>example.entity.Product</mapping-file>
+		</properties>
+	</persistence-unit>
+</persistence>
+
+If the properties need to be changed extract the example.jar, change necessary values in persistence.xml and re-create the jar. 
+
+Add the following jars to ESB_HOME/repository/components/lib directory. (Can be found in comp-lib directory)
+asm.jar
+cglib-2.1.3.jar
+hibernate-3.2.7.ga.jar
+hibernate-entitymanager-3.2.0.ga.jar
+javassist-3.0.jar
+jboss-common-4.0.0.jar
+mysql-connector-java-5.x.x.jar
+persistence-api-1.0.jar
+
+Add the following jar to ESB_HOME/endorsed directory.
+hibernate-entitymanager-3.2.0.ga.jar
+
+Start ESB with the sample configuration 663 (i.e. wso2esb-samples.sh -sn 663).
+
+Drop the input-message-663.xml file found in the repository/samples/resources/smooks directory to the transport.vfs.FileURI parameter specified directory.
+
+The order and order-item records will be added to the orders and orderlines tables. 

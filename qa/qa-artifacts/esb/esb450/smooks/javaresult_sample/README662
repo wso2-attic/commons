@@ -1,0 +1,56 @@
+Sample 662: Output Java Result with Smooks Mediator
+
+Here is the sample configuration with smooks mediator.
+
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+
+    <localEntry key="smooks-key" src="file:repository/samples/resources/smooks/smooks-config-662.xml"/>
+
+    <proxy name="SmooksSample" transports="vfs">
+        <!--CHANGE-->
+        <parameter name="transport.vfs.FileURI">file:///home/lakmali/dev/test/smooks/in</parameter>
+        <parameter name="transport.vfs.ContentType">application/xml</parameter>
+        <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
+        <parameter name="transport.PollInterval">5</parameter>
+        <!--CHANGE-->
+        <parameter name="transport.vfs.MoveAfterProcess">file:///home/lakmali/dev/test/smooks/original</parameter>
+        <!--CHANGE-->
+        <parameter name="transport.vfs.MoveAfterFailure">file:///home/lakmali/dev/test/smooks/original</parameter>
+        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+        <parameter name="Operation">urn:placeOrder</parameter>
+        <target>
+            <inSequence>
+                <smooks config-key="smooks-key">
+                    <input type="xml"/>
+                    <output type="java" property="order"/>
+                </smooks>
+		<class name="org.wso2.esb.TestOrderBeanMediator"/>
+              </inSequence>
+            <outSequence/>
+        </target>
+   </proxy>
+</definitions>
+
+Objective:Demonstrate Smooks mediator can output Java bean object after processing input message. 
+
+Prerequisites: Enable the vfs transport in axis2.xml by uncomenting the vfs transport sender and receiver configurations in the axis2.xml.
+
+Edit the following configuration parameters of synapse_sample_662.xml found in the repository/samples directory.
+    * transport.vfs.FileURI
+    * transport.vfs.MoveAfterProcess
+    * transport.vfs.ActionAfterFailure
+
+Add example.model-0.0.1-SNAPSHOT, TestOrderBeanMediator-0.0.1-SNAPSHOT to the the ESB_HOME/repository/components/lib directory.
+
+Start ESB with the sample configuration 662 (i.e. wso2esb-samples.sh -sn 662).
+
+Drop the input-message-662.xml file found in the repository/samples/resources/smooks directory to the transport.vfs.FileURI parameter specified directory.
+
+ TestOrderBeanMediator custom mediator will extract the "order" property from Synapse MessageContext and log the name of the Customer Name. 
+	JavaResult result = (JavaResult)synCtx.getProperty("order");
+        Order order = (Order)result.getBean("order");
+        Header header = order.getHeader();
+	synLog.auditLog(header.getCustomerName());
+
+
