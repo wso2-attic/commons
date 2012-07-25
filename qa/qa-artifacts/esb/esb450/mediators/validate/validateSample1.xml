@@ -1,0 +1,33 @@
+<!--Use soapui to send requests-->
+
+<!--Add validate_schema as a local entry-->
+
+<proxy name="validateProxy2" transports="https http" startOnLoad="true" trace="disable">
+        <description/>
+        <target>
+            <inSequence>
+                <validate>
+                    <schema key="validate_schema"/>
+                    <on-fail>
+                        <makefault version="soap12">
+                            <code xmlns:soap12Env="http://www.w3.org/2003/05/soap-envelope" value="soap12Env:Receiver"/>
+                            <reason value="Invalid add request"/>
+                            <node/>
+                            <role/>
+                        </makefault>
+                        <property name="RESPONSE" value="true"/>
+                        <header xmlns:axis="http://ws.apache.org/axis2" xmlns:p="http://ws.apache.org/axis2" name="To" expression="get-property('ReplyTo')"/>
+                    </on-fail>
+                </validate>
+                <send>
+                    <endpoint>
+                        <address uri="http://localhost:8281/services/AdderService"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="http://localhost:8281/services/AdderService?wsdl"/>
+    </proxy>
