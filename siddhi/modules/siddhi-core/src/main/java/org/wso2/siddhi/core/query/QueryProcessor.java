@@ -45,11 +45,11 @@ public class QueryProcessor {
     public QueryProcessor(Query query, ConcurrentMap<String, StreamDefinition> streamDefinitionMap,
                           ConcurrentMap<String, StreamJunction> streamJunctionMap,
                           ThreadPoolExecutor threadPoolExecutor, SiddhiContext siddhiContext) {
-        this.queryId = query.getOutputStreamId() + "-" + UUID.randomUUID();
+        this.queryId = query.getOutputStream().getStreamId() + "-" + UUID.randomUUID();
         this.query = query;
         List<QueryEventStream> queryEventStreamList = query.getInputStream().constructQueryEventStreamList(streamDefinitionMap, new ArrayList<QueryEventStream>());
         initQuery(queryEventStreamList);
-        queryProjector = new QueryProjector(query.getOutputStreamId(), query.getProjector(), queryEventStreamList, streamJunctionMap, siddhiContext);
+        queryProjector = new QueryProjector(query.getOutputStream(), query.getProjector(), queryEventStreamList, streamJunctionMap, siddhiContext);
 
         streamReceiverList = StreamParser.parseStream(query.getInputStream(), queryEventStreamList, queryProjector, threadPoolExecutor, siddhiContext);
 
@@ -131,6 +131,6 @@ public class QueryProcessor {
             StreamJunction junction = streamJunctionMap.get(receiver.getStreamId());
             junction.removeEventFlow(receiver);
         }
-        streamDefinitionMap.remove(query.getOutputStreamId());
+        streamDefinitionMap.remove(query.getOutputStream().getStreamId());
     }
 }

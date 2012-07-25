@@ -15,7 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream;
+package org.wso2.siddhi.query.api.query.input;
 
 import org.wso2.siddhi.query.api.query.Query;
 

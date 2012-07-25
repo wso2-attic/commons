@@ -15,7 +15,18 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.pattern.element;
+package org.wso2.siddhi.query.api.query.input;
 
-public interface PatternElement {
+import org.wso2.siddhi.query.api.query.QueryEventStream;
+import org.wso2.siddhi.query.api.definition.StreamDefinition;
+
+import java.util.List;
+import java.util.Map;
+
+public interface Stream {
+
+    List<String> getStreamIds();
+
+    List<QueryEventStream> constructQueryEventStreamList(Map<String, StreamDefinition> streamDefinitionMap,
+                                       List<QueryEventStream> queryEventStreams);
 }

@@ -60,12 +60,12 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.stream.JoinStream;
-import org.wso2.siddhi.query.api.stream.SingleStream;
-import org.wso2.siddhi.query.api.stream.Stream;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
-import org.wso2.siddhi.query.api.stream.pattern.PatternStream;
-import org.wso2.siddhi.query.api.stream.sequence.SequenceStream;
+import org.wso2.siddhi.query.api.query.input.JoinStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.Stream;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.pattern.PatternStream;
+import org.wso2.siddhi.query.api.query.input.sequence.SequenceStream;
 
 import java.util.ArrayList;
 import java.util.Iterator;

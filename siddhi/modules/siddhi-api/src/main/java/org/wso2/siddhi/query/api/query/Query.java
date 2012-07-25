@@ -18,16 +18,17 @@
 package org.wso2.siddhi.query.api.query;
 
 import org.wso2.siddhi.query.api.ExecutionPlan;
+import org.wso2.siddhi.query.api.query.output.OutStream;
 import org.wso2.siddhi.query.api.query.projection.Projector;
-import org.wso2.siddhi.query.api.stream.AnonymousStream;
-import org.wso2.siddhi.query.api.stream.SingleStream;
-import org.wso2.siddhi.query.api.stream.Stream;
+import org.wso2.siddhi.query.api.query.input.AnonymousStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.Stream;
 
 public class Query implements ExecutionPlan {
 
     private Stream inputStream;
-    private String outputStreamId;
     private Projector projector=new Projector();
+    private OutStream outStream;
 
     public Query from(Stream stream) {
         this.inputStream = stream;
@@ -35,7 +36,12 @@ public class Query implements ExecutionPlan {
     }
 
     public Query insertInto(String outputStreamId) {
-        this.outputStreamId = outputStreamId;
+        this.outStream =new OutStream(outputStreamId);
+        return this;
+    }
+
+    public Query outStream(OutStream outStream) {
+        this.outStream =outStream;
         return this;
     }
 
@@ -53,11 +59,16 @@ public class Query implements ExecutionPlan {
         return inputStream;
     }
 
-    public String getOutputStreamId() {
-        return outputStreamId;
+    public OutStream getOutputStream() {
+        return outStream;
     }
 
     public Projector getProjector() {
         return projector;
+    }
+
+    public Query insertInto( String outputStreamId,OutStream.OutputEvents outputEvents) {
+        this.outStream= new OutStream(outputStreamId,outputEvents);
+        return this;
     }
 }

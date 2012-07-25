@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.pattern.Pattern;
-import org.wso2.siddhi.query.api.stream.pattern.element.LogicalElement;
+import org.wso2.siddhi.query.api.query.input.pattern.Pattern;
+import org.wso2.siddhi.query.api.query.input.pattern.element.LogicalElement;
 
 public class DefinePatternQueryTestCase {
 
@@ -47,7 +47,7 @@ public class DefinePatternQueryTestCase {
                                                    QueryFactory.inputStream("e3", "Stream2").handler(Condition.compare(Expression.variable("price"),
                                                                                                                        Condition.Operator.GREATER_THAN_EQUAL,
                                                                                                                        Expression.variable("e1", "price")))))
-                ,Expression.value(3000))
+                        , Expression.value(3000))
 
         );
         query.insertInto("OutStream");

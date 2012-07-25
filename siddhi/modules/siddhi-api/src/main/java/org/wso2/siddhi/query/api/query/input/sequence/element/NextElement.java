@@ -15,24 +15,24 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.pattern.element;
+package org.wso2.siddhi.query.api.query.input.sequence.element;
 
-public class FollowedByElement implements PatternElement {
-    private PatternElement patternElement;
-    private PatternElement followedByPatternElement;
+public class NextElement implements SequenceElement {
+    private SequenceElement sequenceElement;
+    private SequenceElement nextSequenceElement;
 
 
-    public FollowedByElement(PatternElement patternElement,
-                             PatternElement followedByPatternElement) {
-        this.patternElement = patternElement;
-        this.followedByPatternElement = followedByPatternElement;
+    public NextElement(SequenceElement sequenceElement,
+                       SequenceElement nextSequenceElement) {
+        this.sequenceElement = sequenceElement;
+        this.nextSequenceElement = nextSequenceElement;
     }
 
-    public PatternElement getPatternElement() {
-        return patternElement;
+    public SequenceElement getSequenceElement() {
+        return sequenceElement;
     }
 
-    public PatternElement getFollowedByPatternElement() {
-        return followedByPatternElement;
+    public SequenceElement getNextSequenceElement() {
+        return nextSequenceElement;
     }
 }

@@ -15,9 +15,9 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.pattern.element;
+package org.wso2.siddhi.query.api.query.input.pattern.element;
 
-import org.wso2.siddhi.query.api.stream.SingleStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
 
 public class CountElement implements PatternElement {
 

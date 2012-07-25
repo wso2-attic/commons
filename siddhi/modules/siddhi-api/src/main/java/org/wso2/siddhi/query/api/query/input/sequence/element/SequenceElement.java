@@ -15,24 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.sequence.element;
+package org.wso2.siddhi.query.api.query.input.sequence.element;
 
-public class NextElement implements SequenceElement {
-    private SequenceElement sequenceElement;
-    private SequenceElement nextSequenceElement;
-
-
-    public NextElement(SequenceElement sequenceElement,
-                       SequenceElement nextSequenceElement) {
-        this.sequenceElement = sequenceElement;
-        this.nextSequenceElement = nextSequenceElement;
-    }
-
-    public SequenceElement getSequenceElement() {
-        return sequenceElement;
-    }
-
-    public SequenceElement getNextSequenceElement() {
-        return nextSequenceElement;
-    }
+public interface SequenceElement {
 }

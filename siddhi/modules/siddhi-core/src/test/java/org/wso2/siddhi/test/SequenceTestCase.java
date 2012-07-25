@@ -31,7 +31,7 @@ import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.definition.Attribute;
-import org.wso2.siddhi.query.api.stream.sequence.Sequence;
+import org.wso2.siddhi.query.api.query.input.sequence.Sequence;
 import org.wso2.siddhi.query.api.utils.SiddhiConstants;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 

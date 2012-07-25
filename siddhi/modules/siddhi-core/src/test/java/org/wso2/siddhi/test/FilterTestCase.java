@@ -31,7 +31,8 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
+import org.wso2.siddhi.query.api.query.output.OutStream;
 
 public class FilterTestCase {
     static final Logger log = Logger.getLogger(FilterTestCase.class);
@@ -201,7 +202,7 @@ public class FilterTestCase {
                 QueryFactory.inputStream("cseEventStream").
                         handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
@@ -248,7 +249,7 @@ public class FilterTestCase {
                 QueryFactory.inputStream("cseEventStream").
                         handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
@@ -298,7 +299,7 @@ public class FilterTestCase {
                 QueryFactory.inputStream("cseEventStream").
                         handler(Handler.Type.WIN, "timeBatch", 5000)//.
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
@@ -387,7 +388,7 @@ public class FilterTestCase {
                 QueryFactory.inputStream("cseEventStream").
                         handler(Handler.Type.WIN, "time", Expression.value(5000))//.
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
@@ -485,7 +486,7 @@ public class FilterTestCase {
         siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
 
         siddhiManager.addQuery("from cseStream [price>10]#window.length(3) " +
-                               "insert into outStream symbol, avg(price) as avgPrice, volume ");
+                               "insert all-events into outStream symbol, avg(price) as avgPrice, volume ");
         siddhiManager.addCallback("outStream", new Callback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
@@ -505,6 +506,101 @@ public class FilterTestCase {
         inputHandler.send(new Object[]{"WSO2", 150.6f, 100});
         Thread.sleep(7000);
         Assert.assertEquals("Expected remove events ", 2, count);
+        Assert.assertEquals("Event arrived", true, eventArrived);
+
+    }
+
+    @Test
+    public void testFilterQuery12() throws InterruptedException {
+        log.info("Filer test12");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
+
+        Query query = QueryFactory.createQuery();
+        query.from(
+                QueryFactory.inputStream("cseEventStream").
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
+        );
+        query.insertInto("StockQuote");
+        query.project(
+                QueryFactory.outputProjector().
+                        project("symbol", Expression.variable("symbol")).
+                        project("price", "sum", Expression.variable("price")).
+                        groupBy("symbol")
+        );
+
+
+        siddhiManager.addQuery(query);
+        siddhiManager.addCallback("StockQuote", new Callback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+                    count++;
+                } else {
+                    Assert.fail("no expired events are expected ");
+                }
+                eventArrived = true;
+            }
+
+        });
+        InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
+        inputHandler.send(new Object[]{"WSO2", 55.6f, 100});
+        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+        Thread.sleep(500);
+        inputHandler.send(new Object[]{"WSO2", 57.6f, 100});
+        Thread.sleep(7000);
+        Assert.assertEquals("No expired events are expected only 3 current event", 3, count);
+        Assert.assertEquals("Event arrived", true, eventArrived);
+
+    }
+
+    @Test
+    public void testFilterQuery13() throws InterruptedException {
+        log.info("Filer test13");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
+
+        Query query = QueryFactory.createQuery();
+        query.from(
+                QueryFactory.inputStream("cseEventStream").
+                        handler(Handler.Type.WIN, "time", Expression.value(5000))//.
+        );
+        query.insertInto("StockQuote", OutStream.OutputEvents.EXPIRED_EVENTS);
+        query.project(
+                QueryFactory.outputProjector().
+                        project("symbol", Expression.variable("symbol")).
+                        project("price", "sum", Expression.variable("price")).
+                        groupBy("symbol")
+        );
+
+
+        siddhiManager.addQuery(query);
+        siddhiManager.addCallback("StockQuote", new Callback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                if (inEvents != null) {
+                    Assert.fail("no current  events are expected ");
+                } else {
+                    count--;
+                }
+                eventArrived = true;
+            }
+
+        });
+        InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");
+        inputHandler.send(new Object[]{"WSO2", 55.6f, 100});
+        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+        Thread.sleep(500);
+        inputHandler.send(new Object[]{"WSO2", 57.6f, 100});
+        Thread.sleep(7000);
+        Assert.assertEquals("No current events are expected only 3 expired event", -3, count);
         Assert.assertEquals("Event arrived", true, eventArrived);
 
     }

@@ -37,6 +37,7 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import org.wso2.siddhi.query.api.expression.Variable;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
+import org.wso2.siddhi.query.api.query.output.OutStream;
 import org.wso2.siddhi.query.api.query.projection.Projector;
 import org.wso2.siddhi.query.api.query.projection.attribute.AggregationAttribute;
 import org.wso2.siddhi.query.api.query.projection.attribute.OutputAttribute;
@@ -57,12 +58,23 @@ public class QueryProjector {
     private StreamJunction outputStreamJunction;
     private Projector projector;
     private ConditionExecutor havingConditionExecutor = null;
+    private OutStream outStream;
+    public boolean currentOn = false;
+    public boolean expiredOn = false;
 
-    public QueryProjector(String outputStreamId, Projector projector,
+    public QueryProjector(OutStream outStream, Projector projector,
                           List<QueryEventStream> queryEventStreamList,
                           ConcurrentMap<String, StreamJunction> streamJunctionMap,
                           SiddhiContext siddhiContext) {
-        this.outputStreamId = outputStreamId;
+        this.outStream = outStream;
+        if (outStream.getOutputEvents() == OutStream.OutputEvents.CURRENT_EVENTS || outStream.getOutputEvents() == OutStream.OutputEvents.ALL_EVENTS) {
+            currentOn = true;
+        }
+        if (outStream.getOutputEvents() == OutStream.OutputEvents.EXPIRED_EVENTS || outStream.getOutputEvents() == OutStream.OutputEvents.ALL_EVENTS) {
+            expiredOn = true;
+        }
+
+        this.outputStreamId = outStream.getStreamId();
         this.projector = projector;
 
         outputSize = projector.getProjectionList().size();
@@ -70,7 +82,7 @@ public class QueryProjector {
         aggregateOutputAttributeGeneratorList = new ArrayList<OutputAttributeGenerator>(outputSize);
         outputStreamDefinition = new StreamDefinition();
         outputStreamDefinition.name(outputStreamId);
-        populateOutputAttributes(queryEventStreamList, generateGroupByOutputAttributeGenerator(projector.getGroupByList(), queryEventStreamList),siddhiContext);
+        populateOutputAttributes(queryEventStreamList, generateGroupByOutputAttributeGenerator(projector.getGroupByList(), queryEventStreamList), siddhiContext);
 
         havingConditionExecutor = generateHavingExecutor(projector.getHavingCondition(), outputStreamId, outputStreamDefinition);
 
@@ -141,7 +153,13 @@ public class QueryProjector {
     }
 
     public void process(AtomicEvent atomicEvent) {
-//        System.out.println("Arrived ");
+        if ((!(atomicEvent instanceof InStream) || !currentOn) && (!(atomicEvent instanceof RemoveStream) || !expiredOn)) {
+            for (OutputAttributeGenerator outputAttributeGenerator : aggregateOutputAttributeGeneratorList) {
+                outputAttributeGenerator.process(atomicEvent);
+            }
+            return;
+        }
+
         Object[] data = new Object[outputSize];
         for (int i = 0; i < outputSize; i++) {
             OutputAttributeGenerator outputAttributeGenerator = outputAttributeGeneratorList.get(i);
@@ -169,6 +187,7 @@ public class QueryProjector {
                 }
 
             }
+
         }
     }
 

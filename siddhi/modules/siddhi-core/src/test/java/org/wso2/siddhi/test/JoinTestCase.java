@@ -31,8 +31,9 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.JoinStream;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.JoinStream;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
+import org.wso2.siddhi.query.api.query.output.OutStream;
 
 public class JoinTestCase {
     static final Logger log = Logger.getLogger(JoinTestCase.class);
@@ -69,7 +70,7 @@ public class JoinTestCase {
 
                 )
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("cseEventStream", "symbol")).
@@ -133,7 +134,7 @@ public class JoinTestCase {
 
                 )
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("a", "symbol")).
@@ -191,7 +192,7 @@ public class JoinTestCase {
                         Expression.value(1000)
                 )
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote", OutStream.OutputEvents.ALL_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("cseEventStream", "symbol")).

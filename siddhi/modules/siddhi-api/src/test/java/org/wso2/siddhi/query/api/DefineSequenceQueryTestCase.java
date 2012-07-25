@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.sequence.Sequence;
+import org.wso2.siddhi.query.api.query.input.sequence.Sequence;
 
 public class DefineSequenceQueryTestCase {
 

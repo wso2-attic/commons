@@ -15,25 +15,7 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.sequence.element;
+package org.wso2.siddhi.query.api.query.input.pattern.element;
 
-import org.wso2.siddhi.query.api.stream.SingleStream;
-
-public class OrElement implements SequenceElement {
-    SingleStream singleStream1;
-    SingleStream singleStream2;
-
-    public OrElement(SingleStream singleStream1,
-                     SingleStream singleStream2) {
-        this.singleStream1 = singleStream1;
-        this.singleStream2 = singleStream2;
-    }
-
-    public SingleStream getSingleStream1() {
-        return singleStream1;
-    }
-
-    public SingleStream getSingleStream2() {
-        return singleStream2;
-    }
+public interface PatternElement {
 }

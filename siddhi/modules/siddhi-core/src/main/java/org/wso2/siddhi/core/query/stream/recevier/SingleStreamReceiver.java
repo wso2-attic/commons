@@ -22,7 +22,7 @@ import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.query.stream.StreamElement;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.util.SchedulerQueue;
-import org.wso2.siddhi.query.api.stream.SingleStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
 
 import java.util.concurrent.ThreadPoolExecutor;
 

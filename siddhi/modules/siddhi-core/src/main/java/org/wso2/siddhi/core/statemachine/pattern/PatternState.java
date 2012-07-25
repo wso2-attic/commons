@@ -19,7 +19,7 @@ package org.wso2.siddhi.core.statemachine.pattern;
 
 import org.wso2.siddhi.core.query.stream.packer.pattern.PatternStreamPacker;
 import org.wso2.siddhi.core.query.stream.recevier.pattern.PatternSingleStreamReceiver;
-import org.wso2.siddhi.query.api.stream.SingleStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
 
 public class PatternState {
 

@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.core.statemachine.sequence;
 
-import org.wso2.siddhi.query.api.stream.SingleStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
 
 public class CountSequenceState extends SequenceState {
 

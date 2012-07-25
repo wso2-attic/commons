@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.core.util.statemachine;
 
-import org.wso2.siddhi.query.api.stream.SingleStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
 
 public class State {
 

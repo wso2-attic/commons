@@ -15,35 +15,31 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.pattern.element;
+package org.wso2.siddhi.query.api.query.input.handler;
 
-import org.wso2.siddhi.query.api.stream.SingleStream;
+public class Handler {
 
-public class LogicalElement implements PatternElement {
-    SingleStream singleStream1;
-    LogicalElement.Type type;
-    SingleStream singleStream2;
+    String name;
+    Type type;
+    Object[] parameters;
 
-    public LogicalElement(SingleStream singleStream1, LogicalElement.Type type,
-                          SingleStream singleStream2) {
-        this.singleStream1 = singleStream1;
+    public enum Type {WIN, STD, FILTER, TIMER, EXPIRE}
+
+    public Handler(String name, Type type, Object[] parameters) {
+        this.name = name;
         this.type = type;
-        this.singleStream2 = singleStream2;
+        this.parameters = parameters;
     }
 
-    public SingleStream getSingleStream1() {
-        return singleStream1;
-    }
-
-    public SingleStream getSingleStream2() {
-        return singleStream2;
+    public String getName() {
+        return name;
     }
 
     public Type getType() {
         return type;
     }
 
-    public enum Type {
-        AND, OR
+    public Object[] getParameters() {
+        return parameters;
     }
 }

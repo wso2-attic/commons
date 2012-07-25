@@ -15,18 +15,24 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream;
+package org.wso2.siddhi.query.api.query.input.pattern.element;
 
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
+public class FollowedByElement implements PatternElement {
+    private PatternElement patternElement;
+    private PatternElement followedByPatternElement;
 
-import java.util.List;
-import java.util.Map;
 
-public interface Stream {
+    public FollowedByElement(PatternElement patternElement,
+                             PatternElement followedByPatternElement) {
+        this.patternElement = patternElement;
+        this.followedByPatternElement = followedByPatternElement;
+    }
 
-    List<String> getStreamIds();
+    public PatternElement getPatternElement() {
+        return patternElement;
+    }
 
-    List<QueryEventStream> constructQueryEventStreamList(Map<String, StreamDefinition> streamDefinitionMap,
-                                       List<QueryEventStream> queryEventStreams);
+    public PatternElement getFollowedByPatternElement() {
+        return followedByPatternElement;
+    }
 }

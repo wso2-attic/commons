@@ -15,17 +15,17 @@
 * specific language governing permissions and limitations
 * under the License.
 */
-package org.wso2.siddhi.query.api.stream.pattern;
+package org.wso2.siddhi.query.api.query.input.pattern;
 
 import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.stream.SingleStream;
-import org.wso2.siddhi.query.api.stream.Stream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.Stream;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.query.api.stream.pattern.element.CountElement;
-import org.wso2.siddhi.query.api.stream.pattern.element.FollowedByElement;
-import org.wso2.siddhi.query.api.stream.pattern.element.LogicalElement;
-import org.wso2.siddhi.query.api.stream.pattern.element.PatternElement;
+import org.wso2.siddhi.query.api.query.input.pattern.element.CountElement;
+import org.wso2.siddhi.query.api.query.input.pattern.element.FollowedByElement;
+import org.wso2.siddhi.query.api.query.input.pattern.element.LogicalElement;
+import org.wso2.siddhi.query.api.query.input.pattern.element.PatternElement;
 
 import java.util.ArrayList;
 import java.util.HashSet;

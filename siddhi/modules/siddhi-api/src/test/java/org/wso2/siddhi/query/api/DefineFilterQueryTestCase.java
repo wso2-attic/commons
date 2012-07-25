@@ -23,7 +23,7 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.exception.AttributeAlreadyExist;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
 
 public class DefineFilterQueryTestCase {
 

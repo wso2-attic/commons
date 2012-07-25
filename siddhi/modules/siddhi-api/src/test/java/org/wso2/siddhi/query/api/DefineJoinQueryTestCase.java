@@ -22,8 +22,9 @@ import org.junit.Test;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.JoinStream;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.JoinStream;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
+import org.wso2.siddhi.query.api.query.output.OutStream;
 
 public class DefineJoinQueryTestCase {
 
@@ -59,7 +60,7 @@ public class DefineJoinQueryTestCase {
 
                 )
         );
-        query.insertInto("StockQuote");
+        query.insertInto("StockQuote",OutStream.OutputEvents.EXPIRED_EVENTS);
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("cseEventStream", "symbol")).

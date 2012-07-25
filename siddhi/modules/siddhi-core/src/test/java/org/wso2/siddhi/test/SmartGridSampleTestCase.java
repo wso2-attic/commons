@@ -32,9 +32,9 @@ import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.expression.Expression;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.stream.JoinStream;
-import org.wso2.siddhi.query.api.stream.handler.Handler;
-import org.wso2.siddhi.query.api.stream.pattern.Pattern;
+import org.wso2.siddhi.query.api.query.input.JoinStream;
+import org.wso2.siddhi.query.api.query.input.handler.Handler;
+import org.wso2.siddhi.query.api.query.input.pattern.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;

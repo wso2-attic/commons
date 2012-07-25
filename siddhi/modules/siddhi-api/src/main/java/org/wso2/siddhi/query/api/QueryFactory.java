@@ -22,13 +22,13 @@ import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.query.projection.Projector;
-import org.wso2.siddhi.query.api.stream.JoinStream;
-import org.wso2.siddhi.query.api.stream.SingleStream;
-import org.wso2.siddhi.query.api.stream.Stream;
-import org.wso2.siddhi.query.api.stream.pattern.PatternStream;
-import org.wso2.siddhi.query.api.stream.pattern.element.PatternElement;
-import org.wso2.siddhi.query.api.stream.sequence.SequenceStream;
-import org.wso2.siddhi.query.api.stream.sequence.element.SequenceElement;
+import org.wso2.siddhi.query.api.query.input.JoinStream;
+import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.Stream;
+import org.wso2.siddhi.query.api.query.input.pattern.PatternStream;
+import org.wso2.siddhi.query.api.query.input.pattern.element.PatternElement;
+import org.wso2.siddhi.query.api.query.input.sequence.SequenceStream;
+import org.wso2.siddhi.query.api.query.input.sequence.element.SequenceElement;
 
 public abstract class QueryFactory {
 
