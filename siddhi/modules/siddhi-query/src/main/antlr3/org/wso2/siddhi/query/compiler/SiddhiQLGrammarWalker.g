@@ -16,6 +16,7 @@ options {
     import org.wso2.siddhi.query.api.definition.StreamDefinition;
     import org.wso2.siddhi.query.api.expression.Expression;
     import org.wso2.siddhi.query.api.expression.Variable;
+    import org.wso2.siddhi.query.api.expression.constant.Constant;
     import org.wso2.siddhi.query.api.query.Query;
     import org.wso2.siddhi.query.api.query.projection.Projector;
     import org.wso2.siddhi.query.api.query.projection.attribute.AggregationAttribute;
@@ -98,10 +99,11 @@ stream returns [SingleStream singleStream]
 joinStream  returns [Stream stream]
 	scope{
 		Condition onCondition;
+		Expression within;
 	}
-	: leftStream join rightStream (condition {$joinStream::onCondition=$condition.condition;})? time? 						{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition);}
-	| leftStream 'unidirectional'  join rightStream (condition {$joinStream::onCondition=$condition.condition;})? time? 	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.LEFT);}
-	| leftStream  join rightStream 'unidirectional' (condition {$joinStream::onCondition=$condition.condition;})? time? 	{ $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,JoinStream.EventTrigger.RIGHT);}
+	: leftStream join rightStream (condition {$joinStream::onCondition=$condition.condition;})? (time {$joinStream::within=$time.expression;})? 				  { $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,(Constant)$joinStream::within);}
+	| leftStream 'unidirectional'  join rightStream (condition {$joinStream::onCondition=$condition.condition;})? (time {$joinStream::within=$time.expression;})? { $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,(Constant)$joinStream::within,JoinStream.EventTrigger.LEFT);}
+	| leftStream  join rightStream 'unidirectional' (condition {$joinStream::onCondition=$condition.condition;})? (time {$joinStream::within=$time.expression;})? { $stream=QueryFactory.joinStream($leftStream.singleStream,$join.type,$rightStream.singleStream,$joinStream::onCondition,(Constant)$joinStream::within,JoinStream.EventTrigger.RIGHT);}
 	;
 
 leftStream returns [SingleStream singleStream]
@@ -122,7 +124,7 @@ returnQuery returns [SingleStream stream]
 	;
 
 patternFullStream returns [PatternStream stream]
-	: ^(PATTERN  patternStream time? ) {$stream= QueryFactory.patternStream($patternStream.element);}
+	: ^(PATTERN  patternStream {$stream= QueryFactory.patternStream($patternStream.element);} (time {$stream= QueryFactory.patternStream($patternStream.element,(Constant)$time.expression);})?  )
 	;
 
 patternHandler returns [Handler handler]
@@ -140,7 +142,7 @@ nonEveryPatternStream returns [PatternElement element]
 	;
 
 sequenceFullStream returns [SequenceStream stream]
-	: ^(SEQUENCE  sequenceStream time? ) {$stream= QueryFactory.sequenceStream($sequenceStream.element);}
+	: ^(SEQUENCE  sequenceStream {$stream= QueryFactory.sequenceStream($sequenceStream.element);} (time {$stream= QueryFactory.sequenceStream($sequenceStream.element,(Constant)$time.expression);})? )
 	;
 	
 sequenceStream returns [SequenceElement element]
@@ -247,7 +249,7 @@ parameters returns [Expression[\] expressions]
 	;
 
 time returns [Expression expression]
-	: parameter {$expression=$parameter.expression;}
+	: constant {$expression=$constant.expression;}
 	;
 	
 parameter returns [Expression expression]

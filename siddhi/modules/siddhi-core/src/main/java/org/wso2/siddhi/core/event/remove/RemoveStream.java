@@ -22,4 +22,6 @@ package org.wso2.siddhi.core.event.remove;
  */
 public interface RemoveStream {
     long getExpiryTime();
+
+    void setExpiryTime(long expiryTime);
 }

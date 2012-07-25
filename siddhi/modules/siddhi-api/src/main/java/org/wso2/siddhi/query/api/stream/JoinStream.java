@@ -17,9 +17,10 @@
 */
 package org.wso2.siddhi.query.api.stream;
 
-import org.wso2.siddhi.query.api.query.QueryEventStream;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.expression.constant.Constant;
+import org.wso2.siddhi.query.api.query.QueryEventStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +33,19 @@ public class JoinStream implements Stream {
     private Stream rightStream;
     private Condition onCompare;
     private EventTrigger trigger;
+    private Constant within;
 
     public enum EventTrigger {
         LEFT,RIGHT,ALL
     }
     public JoinStream(Stream leftStream, Type type,
-                      Stream rightStream, Condition onCompare, EventTrigger trigger) {
+                      Stream rightStream, Condition onCompare, Constant within,
+                      EventTrigger trigger) {
         this.leftStream = leftStream;
         this.type = type;
         this.rightStream = rightStream;
         this.onCompare = onCompare;
+        this.within= within;
         this.trigger = trigger;
     }
 
@@ -63,6 +67,10 @@ public class JoinStream implements Stream {
 
     public EventTrigger getTrigger() {
         return trigger;
+    }
+
+    public Constant getWithin() {
+        return within;
     }
 
     @Override

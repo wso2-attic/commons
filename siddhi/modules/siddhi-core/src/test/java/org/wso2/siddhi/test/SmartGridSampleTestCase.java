@@ -337,7 +337,7 @@ public class SmartGridSampleTestCase {
                                                           Condition.Operator.LESS_THAN,
                                                           Expression.value(70))).
                                 handler(Handler.Type.WIN, "length", 1),
-                        null,
+                        null,null,
                         JoinStream.EventTrigger.RIGHT
 
                 ));

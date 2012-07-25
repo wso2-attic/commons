@@ -71,16 +71,17 @@ public class OrSequenceSingleStreamReceiver extends SequenceSingleStreamReceiver
         }
 //        System.out.println("next "+nextEvents);
         for (StateEvent currentEvent : currentEvents) {
+            if (isEventsWithin(streamEvent, currentEvent)) {
 
+                if (currentEvent.getEventState() != higherState) {
+                    currentEvent.setStreamEvent(currentState, (StreamEvent) streamEvent);
+                    firstSimpleStreamProcessor.process(currentEvent);
+                }
 
-            if (currentEvent.getEventState() != higherState) {
-                currentEvent.setStreamEvent(currentState, (StreamEvent) streamEvent);
-                firstSimpleStreamProcessor.process(currentEvent);
-            }
-
-            if (currentEvent.getEventState() < higherState) {
-                currentEvent.setStreamEvent(currentState, null);
+                if (currentEvent.getEventState() < higherState) {
+                    currentEvent.setStreamEvent(currentState, null);
 //                nextEvents.add(currentEvent);
+                }
             }
 //            init();
         }

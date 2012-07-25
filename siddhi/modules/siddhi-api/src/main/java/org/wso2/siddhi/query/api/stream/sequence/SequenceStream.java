@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.query.api.stream.sequence;
 
+import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
 import org.wso2.siddhi.query.api.stream.SingleStream;
 import org.wso2.siddhi.query.api.stream.Stream;
@@ -34,10 +35,12 @@ import java.util.Map;
 public class SequenceStream implements Stream, SequenceElement {
     private SequenceElement sequenceElement;
     private List<String> streamIdList;
+    private Constant within;
 
-    public SequenceStream(SequenceElement sequenceElement) {
+    public SequenceStream(SequenceElement sequenceElement, Constant within) {
         this.sequenceElement = sequenceElement;
         this.streamIdList = new ArrayList<String>(collectStreamIds(sequenceElement, new HashSet<String>()));
+        this.within=within;
     }
 
     public SequenceElement getSequenceElement() {
@@ -93,5 +96,9 @@ public class SequenceStream implements Stream, SequenceElement {
         }
 
         return queryEventStreams;
+    }
+
+    public Constant getWithin() {
+        return within;
     }
 }

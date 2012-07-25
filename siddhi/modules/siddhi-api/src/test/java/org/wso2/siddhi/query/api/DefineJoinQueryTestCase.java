@@ -89,8 +89,8 @@ public class DefineJoinQueryTestCase {
                         Condition.compare(Expression.variable("t", "symbol"),
                                           Condition.Operator.EQUAL,
                                           Expression.variable("n", "symbol")),
+                        null,
                         JoinStream.EventTrigger.LEFT
-
 
                 )
         );

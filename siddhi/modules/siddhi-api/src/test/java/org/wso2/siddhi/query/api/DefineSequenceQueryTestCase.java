@@ -37,7 +37,8 @@ public class DefineSequenceQueryTestCase {
         query.from(
                 QueryFactory.sequenceStream(
                         Sequence.next(QueryFactory.inputStream("e1", "Stream1"),
-                                      QueryFactory.inputStream("e2", "Stream1"))));
+                                      QueryFactory.inputStream("e2", "Stream1")),
+                        Expression.value(2000)));
         query.insertInto("OutStream");
         query.project(
                 QueryFactory.outputProjector().

@@ -23,15 +23,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
+import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.util.EventPrinter;
-import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
-import org.wso2.siddhi.query.api.expression.Expression;
-import org.wso2.siddhi.query.api.stream.JoinStream;
 import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.query.Query;
+import org.wso2.siddhi.query.api.stream.JoinStream;
 import org.wso2.siddhi.query.api.stream.handler.Handler;
 
 public class JoinTestCase {
@@ -165,6 +165,69 @@ public class JoinTestCase {
         siddhiManager.shutdown();
         Assert.assertEquals("Number of success events", 0, eventCount);
         Assert.assertEquals("Event arrived", true, eventArrived);
+
+    }
+    @Test
+    public void testQuery3() throws InterruptedException {
+        log.info("test3  within test");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("price", Attribute.Type.FLOAT).attribute("volume", Attribute.Type.INT));
+        siddhiManager.defineStream(QueryFactory.createStreamDefinition().name("twitterStream").attribute("user", Attribute.Type.STRING).attribute("tweet", Attribute.Type.STRING).attribute("symbol", Attribute.Type.STRING));
+
+        Query query = QueryFactory.createQuery();
+        query.from(
+                QueryFactory.joinStream(
+                        QueryFactory.inputStream("cseEventStream").
+                                handler(Handler.Type.WIN, "time", 2000),
+                        JoinStream.Type.INNER_JOIN,
+                        QueryFactory.inputStream("twitterStream").
+                                handler(Handler.Type.WIN, "time", 2000),
+                        Condition.compare(Expression.variable("cseEventStream", "symbol"),
+                                          Condition.Operator.EQUAL,
+                                          Expression.variable("twitterStream", "symbol"))
+                        ,
+                        Expression.value(1000)
+                )
+        );
+        query.insertInto("StockQuote");
+        query.project(
+                QueryFactory.outputProjector().
+                        project("symbol", Expression.variable("cseEventStream", "symbol")).
+                        project("tweet", Expression.variable("twitterStream", "tweet")).
+                        project("price", Expression.variable("cseEventStream", "price"))
+        );
+
+
+        siddhiManager.addQuery(query);
+        siddhiManager.addCallback("StockQuote", new Callback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                if (inEvents != null) {
+                    Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+                    eventCount+=2;
+                } else {
+                    Assert.assertTrue("IBM".equals(removeEvents[0].getData(0)) || "WSO2".equals(removeEvents[0].getData(0)));
+                    eventCount--;
+                }
+                eventArrived = true;
+            }
+
+        });
+        InputHandler cseEventStreamHandler = siddhiManager.getInputHandler("cseEventStream");
+        InputHandler twitterStreamHandler = siddhiManager.getInputHandler("twitterStream");
+        cseEventStreamHandler.send(new Object[]{"WSO2", 55.6f, 100});
+        twitterStreamHandler.send(new Object[]{"User1", "Hello World", "WSO2"});
+        cseEventStreamHandler.send(new Object[]{"IBM", 75.6f, 100});
+        Thread.sleep(1300);
+        cseEventStreamHandler.send(new Object[]{"WSO2", 57.6f, 100});
+        Thread.sleep(4000);
+
+        Assert.assertEquals("Number of success events", 1, eventCount);
+        Assert.assertEquals("Event arrived", true, eventArrived);
+
 
     }
 

@@ -221,7 +221,7 @@ parameters
 	;
 
 time
-	: parameter
+	: constant
 	;
 	
 parameter

@@ -38,4 +38,9 @@ public class RemoveEvent extends Event implements RemoveStream {
         return expiryTime;
     }
 
+
+    public void setExpiryTime(long expiryTime) {
+        this.expiryTime= expiryTime;
+    }
+
 }

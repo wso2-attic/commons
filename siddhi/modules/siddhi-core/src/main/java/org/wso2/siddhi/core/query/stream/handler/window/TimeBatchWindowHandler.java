@@ -95,7 +95,7 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
 
                 for (Event aEvent : oldEventList) {
 //                    try {
-                        getWindow().put(aEvent);
+                    getWindow().put(aEvent);
 //                    } catch (InterruptedException e) {
 //                        e.printStackTrace();
 //                    }
@@ -104,19 +104,11 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
 
                 break;
             }
-            if (event instanceof RemoveStream) {
-                if (event instanceof Event) {
-                    oldEventList.add(((Event) event));
-                } else {//ListEvent
-                    Collections.addAll(oldEventList, ((ListEvent) event).getEvents());
-                }
-            } else {
-                if (event instanceof Event) {
-                    oldEventList.add(new RemoveEvent((Event) event,System.currentTimeMillis()));
-                } else {//ListEvent
-                    for (Event aEvent : ((ListEvent) event).getEvents()) {
-                        oldEventList.add(new RemoveEvent(aEvent,System.currentTimeMillis()));
-                    }
+            if (event instanceof Event) {
+                oldEventList.add(new RemoveEvent((Event) event, System.currentTimeMillis()));
+            } else {//ListEvent
+                for (Event aEvent : ((ListEvent) event).getEvents()) {
+                    oldEventList.add(new RemoveEvent(aEvent, System.currentTimeMillis()));
                 }
             }
         }
@@ -150,7 +142,7 @@ public class TimeBatchWindowHandler extends WindowHandler implements RunnableHan
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent) {
-        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(window,oldEventList,newEventList));
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(window, oldEventList, newEventList));
     }
 
     @Override

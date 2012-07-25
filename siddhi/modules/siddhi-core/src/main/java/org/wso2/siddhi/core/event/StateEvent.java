@@ -56,6 +56,16 @@ public abstract class StateEvent implements ComplexEvent, AtomicEvent {
         return 0;
     }
 
+    public long getFirstEventTimeStamp() {
+        for (int i = 0; i < streamEvents.length; i++) {
+            StreamEvent streamEvent = streamEvents[i];
+            if (streamEvent != null) {
+                return streamEvent.getTimeStamp();
+            }
+        }
+        return 0;
+    }
+
     @Override
     public String toString() {
         return "StateEvent{" +

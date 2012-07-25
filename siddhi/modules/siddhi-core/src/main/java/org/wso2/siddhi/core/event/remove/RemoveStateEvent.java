@@ -51,5 +51,10 @@ public class RemoveStateEvent extends StateEvent implements RemoveStream {
         return expiryTime;
     }
 
+    @Override
+    public void setExpiryTime(long expiryTime) {
+        this.expiryTime=expiryTime;
+    }
+
 
 }

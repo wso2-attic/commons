@@ -23,6 +23,7 @@ import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregato
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorFloat;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorInt;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.avg.AvgAggregatorLong;
+import org.wso2.siddhi.core.query.projector.attibute.aggregator.count.CountAggregator;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorDouble;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorFloat;
 import org.wso2.siddhi.core.query.projector.attibute.aggregator.max.MaxAggregatorInt;
@@ -116,5 +117,9 @@ public class AggregatorParser {
                 throw new OperationNotSupportedException("Min not supported for bool");
         }
         throw new OperationNotSupportedException("Min not supported for " + type);
+    }
+
+    public static Aggregator createCountAggregator(Attribute.Type type) {
+        return new CountAggregator();
     }
 }

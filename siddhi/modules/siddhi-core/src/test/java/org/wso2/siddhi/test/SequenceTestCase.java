@@ -192,7 +192,7 @@ public class SequenceTestCase {
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{"WSO2", null, null}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new  Object[]{"IBM", null, null}, inEvents[0].getData());
+                    Assert.assertArrayEquals(new Object[]{"IBM", null, null}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -251,7 +251,7 @@ public class SequenceTestCase {
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, 55.7f, 57.6f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new  Object[]{55.7f, null, 57.6f}, inEvents[0].getData());
+                    Assert.assertArrayEquals(new Object[]{55.7f, null, 57.6f}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -379,7 +379,7 @@ public class SequenceTestCase {
                 if (eventCount == 0) {
                     Assert.assertArrayEquals(new Object[]{55.6f, null, 55.7f}, inEvents[0].getData());
                 } else if (eventCount == 1) {
-                    Assert.assertArrayEquals(new  Object[]{55.7f, 57.6f, null}, inEvents[0].getData());
+                    Assert.assertArrayEquals(new Object[]{55.7f, 57.6f, null}, inEvents[0].getData());
                 } else {
                     Assert.fail();
                 }
@@ -647,6 +647,49 @@ public class SequenceTestCase {
 
     }
 
+
+    @Test
+    public void testQuery11() throws InterruptedException, SiddhiPraserException {
+        log.info("test11  within test");
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+        siddhiManager.defineStream("define stream cseEventStream ( symbol string, price float, volume int )");
+        siddhiManager.defineStream("define stream twiterStream ( symbol string, count int )");
+        siddhiManager.addQuery("from e1 = cseEventStream [ price >= 50 and volume > 100 ] , e2 = twiterStream [count > 10 ] " +
+                               "within 1000 " +
+                               "insert into StockQuote e1.price as price, e1.symbol as symbol, e2.count as count ;");
+        siddhiManager.addCallback("StockQuote", new Callback() {
+
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+                if (eventCount == 0) {
+                    Assert.assertArrayEquals(new Object[]{76.6f, "WSO2", 24}, inEvents[0].getData());
+                } else {
+                    Assert.fail();
+                }
+                eventCount++;
+            }
+        });
+        InputHandler cseStreamHandler = siddhiManager.getInputHandler("cseEventStream");
+        InputHandler twitterStreamHandler = siddhiManager.getInputHandler("twiterStream");
+
+        cseStreamHandler.send(new Object[]{"IBM", 75.6f, 105});
+        Thread.sleep(1200);
+        twitterStreamHandler.send(new Object[]{"IBM", 20});
+        cseStreamHandler.send(new Object[]{"GOOG", 51f, 101});
+        cseStreamHandler.send(new Object[]{"WSO2", 76.6f, 111});
+
+        Thread.sleep(500);
+        twitterStreamHandler.send(new Object[]{"GOOG", 24});
+        cseStreamHandler.send(new Object[]{"WSO2", 45.6f, 100});
+
+        Thread.sleep(1000);
+
+
+        Assert.assertEquals("Number of success events", 1, eventCount);
+
+    }
 
 //    @Test
 //    public void testQuery1() throws InterruptedException {

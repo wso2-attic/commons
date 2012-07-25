@@ -19,6 +19,7 @@ package org.wso2.siddhi.query.api;
 
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.Query;
 import org.wso2.siddhi.query.api.query.projection.Projector;
 import org.wso2.siddhi.query.api.stream.JoinStream;
@@ -49,19 +50,31 @@ public abstract class QueryFactory {
 
     public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
                                     SingleStream rightStream,
-                                    Condition onCompare) {
-        return new JoinStream(leftStream, type, rightStream, onCompare, JoinStream.EventTrigger.ALL);
-    }
-
-    public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
-                                    SingleStream rightStream) {
-        return new JoinStream(leftStream, type, rightStream, null, JoinStream.EventTrigger.ALL);
+                                    Condition onCompare,
+                                    Constant within) {
+        return new JoinStream(leftStream, type, rightStream, onCompare, within, JoinStream.EventTrigger.ALL);
     }
 
     public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
                                     SingleStream rightStream,
-                                    Condition onCompare, JoinStream.EventTrigger trigger) {
-        return new JoinStream(leftStream, type, rightStream, onCompare, trigger);
+                                    Condition onCompare, Constant within,
+                                    JoinStream.EventTrigger trigger) {
+        return new JoinStream(leftStream, type, rightStream, onCompare, within, trigger);
+    }
+
+    public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
+                                    SingleStream rightStream, Constant within) {
+        return new JoinStream(leftStream, type, rightStream, null, within, JoinStream.EventTrigger.ALL);
+    }
+
+    public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
+                                    SingleStream rightStream, Condition onCompare) {
+        return new JoinStream(leftStream, type, rightStream, onCompare, null, JoinStream.EventTrigger.ALL);
+    }
+
+    public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
+                                    SingleStream rightStream) {
+        return new JoinStream(leftStream, type, rightStream, null, null, JoinStream.EventTrigger.ALL);
     }
 
     public static SingleStream inputStream(String streamReferenceId, String streamId) {
@@ -70,10 +83,18 @@ public abstract class QueryFactory {
     }
 
     public static PatternStream patternStream(PatternElement patternElement) {
-        return new PatternStream(patternElement);
+        return new PatternStream(patternElement, null);
+    }
+
+    public static PatternStream patternStream(PatternElement patternElement, Constant within) {
+        return new PatternStream(patternElement, within);
     }
 
     public static SequenceStream sequenceStream(SequenceElement sequenceElement) {
-        return new SequenceStream(sequenceElement);
+        return new SequenceStream(sequenceElement, null);
+    }
+
+    public static SequenceStream sequenceStream(SequenceElement sequenceElement, Constant within) {
+        return new SequenceStream(sequenceElement,within);
     }
 }

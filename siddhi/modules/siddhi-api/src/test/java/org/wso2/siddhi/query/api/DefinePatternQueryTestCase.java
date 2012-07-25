@@ -46,7 +46,8 @@ public class DefinePatternQueryTestCase {
                                                                                                                        Expression.value(20))),
                                                    QueryFactory.inputStream("e3", "Stream2").handler(Condition.compare(Expression.variable("price"),
                                                                                                                        Condition.Operator.GREATER_THAN_EQUAL,
-                                                                                                                       Expression.variable("e1", "price"))))))
+                                                                                                                       Expression.variable("e1", "price")))))
+                ,Expression.value(3000))
 
         );
         query.insertInto("OutStream");

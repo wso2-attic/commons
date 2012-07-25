@@ -83,22 +83,23 @@ public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamRecei
             log.debug("cr state=" + currentState + " event=" + streamEvent + " ||currentEvents=" + currentEvents);
         }
         for (StateEvent currentEvent : currentEvents) {
+            if (isEventsWithin(streamEvent, currentEvent)) {
+                if (currentEvent.getEventState() <= (state.getStateNumber())) {
+                    ListEvent listEvent = (ListEvent) currentEvent.getStreamEvent(currentState);
+                    if (listEvent == null) {
+                        listEvent = new InListEvent(max);
+                        currentEvent.setStreamEvent(currentState, listEvent);
+                    }
+                    setPassed(false);
+                    if (!listEvent.addEvent(((Event) streamEvent))) {
+                        continue;
+                    }
+                    firstSimpleStreamProcessor.process(currentEvent);
 
-            if (currentEvent.getEventState() <= (state.getStateNumber())) {
-                ListEvent listEvent = (ListEvent) currentEvent.getStreamEvent(currentState);
-                if (listEvent == null) {
-                    listEvent = new InListEvent(max);
-                    currentEvent.setStreamEvent(currentState, listEvent);
-                }
-                setPassed(false);
-                if (!listEvent.addEvent(((Event) streamEvent))) {
-                    continue;
-                }
-                firstSimpleStreamProcessor.process(currentEvent);
-
-                if (!isPassed()) {
-                    listEvent.removeLast();  //to stop aggregation of not passed events
+                    if (!isPassed()) {
+                        listEvent.removeLast();  //to stop aggregation of not passed events
 //                    nextEvents.add(currentEvent);   //only to add to itself
+                    }
                 }
 //                init();
             }
@@ -150,14 +151,14 @@ public class CountSequenceSingleStreamReceiver extends SequenceSingleStreamRecei
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent) {
-        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents),passed));
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(new ArrayList<StateEvent>(currentEvents), new ArrayList<StateEvent>(nextEvents), passed));
     }
 
     @Override
     public void load(PersistenceManagementEvent persistenceManagementEvent) {
-        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
-        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
-        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
-        passed=((Boolean)persistenceObject.getData()[2]);
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
+        currentEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[0]);
+        nextEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[1]);
+        passed = ((Boolean) persistenceObject.getData()[2]);
     }
 }

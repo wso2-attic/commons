@@ -20,13 +20,6 @@ package org.wso2.siddhi.core.util.parser;
 import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
 import org.wso2.siddhi.core.query.projector.QueryProjector;
-import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.CountPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.OrPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.PatternState;
-import org.wso2.siddhi.core.statemachine.sequence.CountSequenceState;
-import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
-import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.core.query.stream.StreamProcessor;
 import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
 import org.wso2.siddhi.core.query.stream.handler.StreamHandler;
@@ -56,8 +49,16 @@ import org.wso2.siddhi.core.query.stream.recevier.sequence.CountSequenceSingleSt
 import org.wso2.siddhi.core.query.stream.recevier.sequence.OrSequenceSingleStreamReceiver;
 import org.wso2.siddhi.core.query.stream.recevier.sequence.SequenceSingleStreamReceiver;
 import org.wso2.siddhi.core.query.stream.recevier.sequence.SequenceStreamReceiver;
+import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
+import org.wso2.siddhi.core.statemachine.pattern.CountPatternState;
+import org.wso2.siddhi.core.statemachine.pattern.OrPatternState;
+import org.wso2.siddhi.core.statemachine.pattern.PatternState;
+import org.wso2.siddhi.core.statemachine.sequence.CountSequenceState;
+import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
+import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
 import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.QueryEventStream;
 import org.wso2.siddhi.query.api.stream.JoinStream;
 import org.wso2.siddhi.query.api.stream.SingleStream;
@@ -127,14 +128,21 @@ public class StreamParser {
                     rightJoinRemoveStreamPacker = new RightJoinRemoveStreamPacker(onConditionExecutor, true, lock);
                     break;
             }
-
+            Constant within = ((JoinStream) queryStream).getWithin();
+            if (within != null) {
+                long longValue = ExecutorParser.getLong(within);
+                leftJoinInStreamPacker.setWithin(longValue);
+                rightJoinInStreamPacker.setWithin(longValue);
+                leftJoinRemoveStreamPacker.setWithin(longValue);
+                rightJoinRemoveStreamPacker.setWithin(longValue);
+            }
             SingleStream leftStream = (SingleStream) ((JoinStream) queryStream).getLeftStream();
             SingleStream rightStream = (SingleStream) ((JoinStream) queryStream).getRightStream();
-            WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream),siddhiContext);
+            WindowHandler leftWindowHandler = generateWindowHandler(detachWindow(leftStream), siddhiContext);
             if (leftWindowHandler instanceof RunnableHandler) {
                 siddhiContext.addRunnableHandler((RunnableHandler) leftWindowHandler);
             }
-            WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream),siddhiContext);
+            WindowHandler rightWindowHandler = generateWindowHandler(detachWindow(rightStream), siddhiContext);
             if (rightWindowHandler instanceof RunnableHandler) {
                 siddhiContext.addRunnableHandler((RunnableHandler) rightWindowHandler);
             }
@@ -225,8 +233,11 @@ public class StreamParser {
                 PatternStreamReceiver receiver = new PatternStreamReceiver(streamId, patternSingleStreamReceiverList, threadPoolExecutor, siddhiContext);
                 streamReceiverList.add(receiver);
 
-                //for persistence
+                //for persistence and window
                 for (PatternSingleStreamReceiver streamReceiver : patternSingleStreamReceiverList) {
+                    if (((PatternStream) queryStream).getWithin() != null) {
+                        streamReceiver.setWithin(ExecutorParser.getLong(((PatternStream) queryStream).getWithin()));
+                    }
                     siddhiContext.getPersistenceService().addPersister(streamReceiver);
                 }
 
@@ -293,8 +304,11 @@ public class StreamParser {
                 SequenceStreamReceiver receiver = new SequenceStreamReceiver(streamId, sequenceSingleStreamReceiverList, threadPoolExecutor, siddhiContext);
                 streamReceiverList.add(receiver);
 
-                //for persistence
+                //for persistence and window
                 for (SequenceSingleStreamReceiver streamReceiver : sequenceSingleStreamReceiverList) {
+                    if (((SequenceStream) queryStream).getWithin() != null) {
+                        streamReceiver.setWithin(ExecutorParser.getLong(((SequenceStream) queryStream).getWithin()));
+                    }
                     siddhiContext.getPersistenceService().addPersister(streamReceiver);
                 }
             }
@@ -351,7 +365,7 @@ public class StreamParser {
 
                 }
             } else if (handler.getType() == Handler.Type.WIN) {
-                streamHandler = generateWindowHandler(handler,context);
+                streamHandler = generateWindowHandler(handler, context);
             }
             if (streamHandler instanceof RunnableHandler) {
                 context.addRunnableHandler((RunnableHandler) streamHandler);

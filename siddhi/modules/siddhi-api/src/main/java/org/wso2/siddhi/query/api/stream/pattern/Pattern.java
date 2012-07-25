@@ -27,7 +27,7 @@ public class Pattern {
 
 
     public static PatternStream every(PatternElement patternElement) {
-        return new PatternStream(patternElement);
+        return new PatternStream(patternElement,null);
     }
 
     public static PatternElement logical(SingleStream singleStream1, LogicalElement.Type type,

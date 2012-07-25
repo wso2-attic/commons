@@ -62,5 +62,19 @@ public class PatternTestCase {
         Assert.assertNotNull(query);
     }
 
+    @Test
+    public void Test5() throws RecognitionException, SiddhiPraserException {
+        Query query = SiddhiCompiler.parseQuery("from every a1 = infoStock[action == \"buy\"] or\n" +
+                                                "    a2 = infoStock[action == \"buy\"] ->\n" +
+                                                "          b1 = cseEventStream[price > 70] ->\n" +
+                                                "          b2 = cseEventStream[price > 75]\n" +
+                                                " within 3000 " +
+                                                "insert into StockQuote\n" +
+                                                "coalesce(a1.action, a2.action) as action,\n" +
+                                                "b1.price as priceA,\n" +
+                                                "b2.price as priceB");
+        Assert.assertNotNull(query);
+    }
+
 
 }

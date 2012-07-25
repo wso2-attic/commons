@@ -32,10 +32,10 @@ public class OrPatternSingleStreamReceiver extends PatternSingleStreamReceiver {
                                          int complexEventSize) {
         super(state, firstSimpleStreamProcessor, complexEventSize);
 
-        if(state.getStateNumber()<  state.getPartnerState().getStateNumber()){
-            higherState=state.getPartnerState().getStateNumber();
-        }else {
-            higherState=state.getStateNumber();
+        if (state.getStateNumber() < state.getPartnerState().getStateNumber()) {
+            higherState = state.getPartnerState().getStateNumber();
+        } else {
+            higherState = state.getStateNumber();
         }
 
     }
@@ -43,23 +43,24 @@ public class OrPatternSingleStreamReceiver extends PatternSingleStreamReceiver {
     @Override
     public void receive(StreamEvent event) {
         if (log.isDebugEnabled()) {
-            log.debug("or state=" +currentState+" event="+ event+" ||currentEvents="+currentEvents);
+            log.debug("or state=" + currentState + " event=" + event + " ||currentEvents=" + currentEvents);
         }
 //        System.out.println("next "+nextEvents);
         for (StateEvent currentEvent : currentEvents) {
+            if (isEventsWithin(event, currentEvent)) {
 
+                if (currentEvent.getEventState() != higherState) {
+                    currentEvent.setStreamEvent(currentState, event);
+                    firstSimpleStreamProcessor.process(currentEvent);
+                }
 
-            if (currentEvent.getEventState() != higherState) {
-                currentEvent.setStreamEvent(currentState,  event);
-                firstSimpleStreamProcessor.process(currentEvent);
-            }
-
-            if (currentEvent.getEventState()<higherState) {
-                currentEvent.setStreamEvent(currentState, null);
-                try {
-                    nextEvents.put(currentEvent);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (currentEvent.getEventState() < higherState) {
+                    currentEvent.setStreamEvent(currentState, null);
+                    try {
+                        nextEvents.put(currentEvent);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

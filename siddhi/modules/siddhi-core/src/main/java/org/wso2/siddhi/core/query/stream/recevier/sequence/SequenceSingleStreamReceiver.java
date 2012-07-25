@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class SequenceSingleStreamReceiver implements StreamReceiver, StreamElement ,Persister{
+public class SequenceSingleStreamReceiver implements StreamReceiver, StreamElement, Persister {
     static final Logger log = Logger.getLogger(SequenceStreamReceiver.class);
     protected int complexEventSize;
     protected SequenceState state;
@@ -47,6 +47,7 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
     protected final int currentState;
     protected String nodeId;
     protected PersistenceStore persistenceStore;
+    protected long within=-1;
 
 
     public SequenceSingleStreamReceiver(SequenceState state,
@@ -92,13 +93,29 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
             log.debug("sr state=" + currentState + " event=" + event + " ||currentEvents=" + currentEvents);
         }
         for (StateEvent currentEvent : currentEvents) {
-            currentEvent.setStreamEvent(currentState, event);
-            firstSimpleStreamProcessor.process(currentEvent);
-            if (currentEvent.getEventState() < currentState) {
-                currentEvent.setStreamEvent(currentState, null);
+            if (isEventsWithin(event, currentEvent)) {
+                currentEvent.setStreamEvent(currentState, event);
+                firstSimpleStreamProcessor.process(currentEvent);
+                if (currentEvent.getEventState() < currentState) {
+                    currentEvent.setStreamEvent(currentState, null);
+                }
             }
         }
     }
+
+    protected boolean isEventsWithin(StreamEvent incomingEvent, StateEvent currentEvent) {
+        if (log.isDebugEnabled()) {
+            log.debug("Time difference for Sequence events " + (incomingEvent.getTimeStamp() - currentEvent.getFirstEventTimeStamp()));
+        }
+        if (within == -1 || currentEvent.getFirstEventTimeStamp() == 0) {
+            return true;
+        } else if ((incomingEvent.getTimeStamp() - currentEvent.getFirstEventTimeStamp()) <= within) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public String getStreamId() {
         return state.getSingleStream().getStreamId();
@@ -121,8 +138,8 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 //        nextEvents.clear();
 
 //        // 2
-            currentEvents = nextEvents;
-            nextEvents = new LinkedBlockingQueue<StateEvent>();
+        currentEvents = nextEvents;
+        nextEvents = new LinkedBlockingQueue<StateEvent>();
     }
 
     @Override
@@ -132,20 +149,23 @@ public class SequenceSingleStreamReceiver implements StreamReceiver, StreamEleme
 
     @Override
     public void setPersistenceStore(PersistenceStore persistenceStore) {
-        this.persistenceStore=persistenceStore;
+        this.persistenceStore = persistenceStore;
     }
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent) {
-        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents)));
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(new ArrayList<StateEvent>(currentEvents), new ArrayList<StateEvent>(nextEvents)));
     }
 
     @Override
     public void load(PersistenceManagementEvent persistenceManagementEvent) {
-        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
         currentEvents.clear();
-        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
-        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
+        currentEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[0]);
+        nextEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[1]);
     }
 
+    public void setWithin(long within) {
+        this.within = within;
+    }
 }

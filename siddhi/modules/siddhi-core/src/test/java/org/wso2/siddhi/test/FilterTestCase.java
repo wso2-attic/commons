@@ -252,7 +252,9 @@ public class FilterTestCase {
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
-                        project("price", "sum", Expression.variable("price"))
+                        project("price", "sum", Expression.variable("price")).
+                        project("count", "count", Expression.variable("price"))
+
         );
 
 
@@ -300,7 +302,8 @@ public class FilterTestCase {
         query.project(
                 QueryFactory.outputProjector().
                         project("symbol", Expression.variable("symbol")).
-                        project("price", "sum", Expression.variable("price"))
+                        project("price", "sum", Expression.variable("price")).
+                        project("count", "count", Expression.variable("price"))
         );
 
 

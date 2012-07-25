@@ -223,4 +223,16 @@ public class ExecutorParser {
             throw new ArithmeticException(leftExpressionExecutor.getType() + " or " + rightExpressionExecutor.getType() + " cannot be multiplied");
         }
     }
+
+    public static long getLong(Constant constant) {
+        long value;
+        if (constant instanceof IntConstant) {
+            value = ((IntConstant) (constant)).getValue();
+        } else if (constant instanceof LongConstant) {
+            value = ((LongConstant) (constant)).getValue();
+        } else {
+            throw new OperationNotSupportedException("Within only supports long and int and not supports others");
+        }
+        return value;
+    }
 }

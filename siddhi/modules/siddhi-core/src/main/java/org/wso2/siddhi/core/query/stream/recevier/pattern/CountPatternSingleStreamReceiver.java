@@ -53,27 +53,28 @@ public class CountPatternSingleStreamReceiver extends PatternSingleStreamReceive
             log.debug("cr state=" + currentState + " event=" + event + " ||currentEvents=" + currentEvents);
         }
         for (StateEvent currentEvent : currentEvents) {
-
-            if (currentEvent.getEventState() <= (state.getStateNumber())) {
-                ListEvent listEvent = (ListEvent) currentEvent.getStreamEvent(currentState);
-                if (listEvent == null) {
-                    listEvent = new InListEvent(max);
-                    currentEvent.setStreamEvent(currentState, listEvent);
-                }
-                setPassed(false);
+            if (isEventsWithin(event, currentEvent)) {
+                if (currentEvent.getEventState() <= (state.getStateNumber())) {
+                    ListEvent listEvent = (ListEvent) currentEvent.getStreamEvent(currentState);
+                    if (listEvent == null) {
+                        listEvent = new InListEvent(max);
+                        currentEvent.setStreamEvent(currentState, listEvent);
+                    }
+                    setPassed(false);
 //                System.out.println("---" + currentEvent);
-                if (!listEvent.addEvent(((Event) event))) {
-                    continue;
-                }
+                    if (!listEvent.addEvent(((Event) event))) {
+                        continue;
+                    }
 //                System.out.println("-+-" + currentEvent);
-                firstSimpleStreamProcessor.process(currentEvent);
+                    firstSimpleStreamProcessor.process(currentEvent);
 
-                if (!isPassed()) {
-                    listEvent.removeLast();  //to stop aggregation of not passed events
-                    try {
-                        nextEvents.put(currentEvent);  //only to add to itself
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (!isPassed()) {
+                        listEvent.removeLast();  //to stop aggregation of not passed events
+                        try {
+                            nextEvents.put(currentEvent);  //only to add to itself
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -135,14 +136,14 @@ public class CountPatternSingleStreamReceiver extends PatternSingleStreamReceive
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent) {
-        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents),passed));
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(new ArrayList<StateEvent>(currentEvents), new ArrayList<StateEvent>(nextEvents), passed));
     }
 
     @Override
     public void load(PersistenceManagementEvent persistenceManagementEvent) {
-        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
-        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
-        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
-        passed=((Boolean)persistenceObject.getData()[2]);
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
+        currentEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[0]);
+        nextEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[1]);
+        passed = ((Boolean) persistenceObject.getData()[2]);
     }
 }

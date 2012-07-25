@@ -44,4 +44,9 @@ public class RemoveListEvent extends ListEvent implements RemoveStream {
     public long getExpiryTime() {
         return expiryTime;
     }
+
+    @Override
+    public void setExpiryTime(long expiryTime) {
+        this.expiryTime=expiryTime;
+    }
 }

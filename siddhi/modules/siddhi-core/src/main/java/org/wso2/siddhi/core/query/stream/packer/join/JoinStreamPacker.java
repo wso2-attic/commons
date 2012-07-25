@@ -37,7 +37,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class JoinStreamPacker extends SingleStreamPacker {
     static final Logger log = Logger.getLogger(JoinStreamPacker.class);
-//    protected SchedulerQueue<StreamEvent> oppositeWindow;
+    //    protected SchedulerQueue<StreamEvent> oppositeWindow;
     protected WindowHandler windowHandler;
     protected final ReentrantLock lock;
     protected Class eventType;
@@ -45,6 +45,7 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
     protected ConditionExecutor onConditionExecutor;
     protected boolean triggerEvent;
     private WindowHandler oppositeWindowHandler;
+    protected long within = -1;
     //    private int nextState;
 
 
@@ -83,21 +84,31 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
                             ComplexEvent windowComplexEvent = iterator.next();
                             if (windowComplexEvent instanceof Event) {
 //                        Event newEvent = (new InComplexEvent(new Event[]{((Event) complexEvent), ((Event) windowComplexEvent)}));
-                                StateEvent newEvent = createNewEvent(complexEvent, windowComplexEvent);
-                                if (onConditionExecutor.execute(newEvent)) {
-                                    queryProjector.process(newEvent);
+                                if (isEventsWithin(complexEvent, windowComplexEvent)) {
+                                    StateEvent newEvent = createNewEvent(complexEvent, windowComplexEvent);
+                                    if (onConditionExecutor.execute(newEvent)) {
+                                        queryProjector.process(newEvent);
+                                    }
+                                } else {
+                                    break;
                                 }
                             } else if (windowComplexEvent instanceof ListEvent) {
                                 List<AtomicEvent> list = new ArrayList<AtomicEvent>();
                                 Event[] events = ((ListEvent) windowComplexEvent).getEvents();
                                 for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
 //                            Event newEvent = (new InComplexEvent(new Event[]{((Event) complexEvent), ((Event) events[i])}));
-                                    StateEvent newEvent = createNewEvent(complexEvent, events[i]);
-                                    if (onConditionExecutor.execute(newEvent)) {
-                                        list.add(newEvent);
+                                    if (isEventsWithin(complexEvent, windowComplexEvent)) {
+                                        StateEvent newEvent = createNewEvent(complexEvent, events[i]);
+                                        if (onConditionExecutor.execute(newEvent)) {
+                                            list.add(newEvent);
+                                        }
+                                    } else {
+                                        break;
                                     }
                                 }
-                                sendEventList(list);
+                                if (list.size() > 0) {
+                                    sendEventList(list);
+                                }
                             } else {
                                 //todo error Complex event not supported
                             }
@@ -110,16 +121,25 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
                                 ComplexEvent windowComplexEvent = iterator.next();
                                 if (windowComplexEvent instanceof Event) {
 //                            Event newEvent = (new InComplexEvent(new Event[]{((Event) event), ((Event) windowComplexEvent)}));
-                                    StateEvent newEvent = createNewEvent(event, windowComplexEvent);
-                                    if (onConditionExecutor.execute(newEvent)) {
-                                        list.add(newEvent);
+                                    if (isEventsWithin(complexEvent, windowComplexEvent)) {
+
+                                        StateEvent newEvent = createNewEvent(event, windowComplexEvent);
+                                        if (onConditionExecutor.execute(newEvent)) {
+                                            list.add(newEvent);
+                                        }
+                                    } else {
+                                        break;
                                     }
                                 } else if (windowComplexEvent instanceof ListEvent) {
                                     Event[] events = ((ListEvent) windowComplexEvent).getEvents();
                                     for (int i = 0, eventsLength = events.length; i < eventsLength; i++) {
-                                        StateEvent newEvent = createNewEvent(event, events[i]);
-                                        if (onConditionExecutor.execute(newEvent)) {
-                                            list.add(newEvent);
+                                        if (isEventsWithin(complexEvent, windowComplexEvent)) {
+                                            StateEvent newEvent = createNewEvent(event, events[i]);
+                                            if (onConditionExecutor.execute(newEvent)) {
+                                                list.add(newEvent);
+                                            }
+                                        } else {
+                                            break;
                                         }
                                     }
                                 } else {
@@ -136,6 +156,18 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
             } finally {
                 lock.unlock();
             }
+        }
+    }
+
+    private boolean isEventsWithin(ComplexEvent complexEvent, ComplexEvent windowComplexEvent) {
+        if (within > -1) {
+            long diff = Math.abs(complexEvent.getTimeStamp() - windowComplexEvent.getTimeStamp());
+            if (diff > within || diff == Long.MIN_VALUE) {
+                return false;
+            }
+            return true;
+        } else {
+            return true;
         }
     }
 
@@ -167,6 +199,10 @@ public abstract class JoinStreamPacker extends SingleStreamPacker {
 
     public void setWindowHandler(WindowHandler windowHandler) {
         this.windowHandler = windowHandler;
+    }
+
+    public void setWithin(long within) {
+        this.within = within;
     }
 
 }

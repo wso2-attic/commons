@@ -48,6 +48,7 @@ public class PatternSingleStreamReceiver implements StreamReceiver, StreamElemen
     protected final int currentState;
     protected String nodeId;
     protected PersistenceStore persistenceStore;
+    private long within = -1;
 
 
     public PatternSingleStreamReceiver(PatternState state,
@@ -75,16 +76,30 @@ public class PatternSingleStreamReceiver implements StreamReceiver, StreamElemen
             log.debug("pr state=" + currentState + " event=" + event + " ||currentEvents=" + currentEvents);
         }
         for (StateEvent currentEvent : currentEvents) {
-
-            currentEvent.setStreamEvent(currentState, event);
-            firstSimpleStreamProcessor.process(currentEvent);
-            if (currentEvent.getEventState() < currentState) {
-                currentEvent.setStreamEvent(currentState, null);
-                addToNextEvents(currentEvent);
+            if (isEventsWithin(event, currentEvent)) {
+                currentEvent.setStreamEvent(currentState, event);
+                firstSimpleStreamProcessor.process(currentEvent);
+                if (currentEvent.getEventState() < currentState) {
+                    currentEvent.setStreamEvent(currentState, null);
+                    addToNextEvents(currentEvent);
+                }
             }
         }
 //        currentEvents.clear();
 //        }
+    }
+
+    protected boolean isEventsWithin(StreamEvent incomingEvent, StateEvent currentEvent) {
+        if (log.isDebugEnabled()) {
+            log.debug("Time difference for Pattern events " + (incomingEvent.getTimeStamp() - currentEvent.getFirstEventTimeStamp()));
+        }
+        if (within == -1 || currentEvent.getFirstEventTimeStamp() == 0) {
+            return true;
+        } else if ((incomingEvent.getTimeStamp() - currentEvent.getFirstEventTimeStamp()) <= within) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getStreamId() {
@@ -119,18 +134,22 @@ public class PatternSingleStreamReceiver implements StreamReceiver, StreamElemen
 
     @Override
     public void setPersistenceStore(PersistenceStore persistenceStore) {
-        this.persistenceStore=persistenceStore;
+        this.persistenceStore = persistenceStore;
     }
 
     @Override
     public void save(PersistenceManagementEvent persistenceManagementEvent) {
-        persistenceStore.save(persistenceManagementEvent,nodeId,new PersistenceObject(new ArrayList<StateEvent>(currentEvents),new ArrayList<StateEvent>(nextEvents)));
+        persistenceStore.save(persistenceManagementEvent, nodeId, new PersistenceObject(new ArrayList<StateEvent>(currentEvents), new ArrayList<StateEvent>(nextEvents)));
     }
 
     @Override
     public void load(PersistenceManagementEvent persistenceManagementEvent) {
-      PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent,nodeId);
-        currentEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[0]);
-        nextEvents=new LinkedBlockingQueue<StateEvent>((List)persistenceObject.getData()[1]);
+        PersistenceObject persistenceObject = persistenceStore.load(persistenceManagementEvent, nodeId);
+        currentEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[0]);
+        nextEvents = new LinkedBlockingQueue<StateEvent>((List) persistenceObject.getData()[1]);
+    }
+
+    public void setWithin(long within) {
+        this.within = within;
     }
 }
