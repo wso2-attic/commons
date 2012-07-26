@@ -30,6 +30,9 @@
         <parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/original</parameter>
 
         <!--######################################## Different options for transport.vfs.FileURI#####################--> 
+        <!--Make sure to use transport.vfs.ContentType=application/octet-stream for binary files-->
+
+
         <!--FTP file path with credentials-->
         <!--parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.200.3.109/vfs/in?vfs.passive=true</parameter-->
 
@@ -38,14 +41,41 @@
 
         <!--Linux file path-->
         <!--parameter name="transport.vfs.FileURI">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/in</parameter-->
+        <!--parameter name="transport.vfs.FileURI">/home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/in</parameter-->
 
-	<!--Windows file path-->
+	<!--Windows file paths-->
         <!--parameter name="transport.vfs.FileURI">file://C:\shared\vfs\in</parameter-->
+        <!--parameter name="transport.vfs.FileURI">file:///C:/Documents and Settings/vfs/in</parameter-->
+        <!--parameter name="transport.vfs.FileURI">C:\Documents and Settings\vfs\in</parameter-->
+        <!--parameter name="transport.vfs.FileURI">C:/Documents and Settings/vfs/in</parameter-->
+
+        <!--Zip, Jar and Tar-->
+        <!--parameter name="transport.vfs.FileURI">jar:/home/evanthika/WSO2/CARBON/CARBON4/ESB/17th-July-2012/wso2esb-4.5.0-SNAPSHOT/repository/components/plugins/abdera_1.0.0.wso2v3.jar!/META-INF/MANIFEST.MF</parameter-->           <!--parameter name="transport.vfs.FileURI">jar:zip:http://localhost/downloads/wso2esb-4.5.0-SNAPSHOT.zip!/wso2esb-4.5.0-SNAPSHOT/repository/components/plugins/ant_1.7.0.wso2v1.jar!/org/apache/tools/ant/dispatch/</parameter-->
+
+ 
+
+        <!--######################################## Different options for transport.vfs.FileURI#####################-->
 
         <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/error</parameter>
         <parameter name="transport.vfs.FileNamePattern">.*.xml</parameter>
         <parameter name="transport.vfs.ContentType">text/xml</parameter>
         <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+
+        <!--######################################## Different options for transport.vfs.MoveTimestampFormat #####################-->
+
+        <parameter name="transport.vfs.MoveTimestampFormat">yyyy-MM-dd'T'HH:mm:ss.SSSZ</parameter>
+        <!--parameter name="transport.vfs.MoveTimestampFormat">dd/MM/yyyy/ HH:mm:ss</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">yyyy.MM.dd G 'at' HH:mm:ss z</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">EEE, MMM d, ''yy</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">h:mm a</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">hh 'o''clock' a, zzzz</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">K:mm a, z</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">yyyyy.MMMMM.dd GGG hh:mm aaa</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">EEE, d MMM yyyy HH:mm:ss Z</parameter>
+        <parameter name="transport.vfs.MoveTimestampFormat">yyMMddHHmmssZ</parameter-->
+
+        <!--######################################## Different options for transport.vfs.MoveTimestampFormat #####################-->
+
     </proxy>
     <sequence name="fault">
         <log level="full">

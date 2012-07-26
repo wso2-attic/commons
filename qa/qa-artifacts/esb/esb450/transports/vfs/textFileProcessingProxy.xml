@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://ws.apache.org/ns/synapse">
+    <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+        <parameter name="cachableDuration">15000</parameter>
+    </registry>
+    <proxy name="textFileProcessingProxy" transports="vfs" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <log level="full"/>
+        <property name="transport.vfs.ReplyFileName" expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.txt')" scope="transport"/>
+        <property name="OUT_ONLY" value="true"/>
+        <send>
+            <endpoint name="FileEpr">
+                <address uri="vfs:file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/out"/>
+            </endpoint>
+        </send>
+            </inSequence>
+        </target>
+        <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+        <parameter name="transport.PollInterval">5</parameter>
+        <parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/original</parameter>
+        <parameter name="transport.vfs.FileURI">vfs:ftp://vfsuser:vfsuser123@10.200.3.160/in?vfs.passive=true</parameter>
+        <parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/transports/vfs/error</parameter>
+        <parameter name="transport.vfs.FileNamePattern">.*.txt</parameter>
+
+        <!--#########################Different Content Types#######################################-->
+
+        <parameter name="transport.vfs.ContentType">text/plain</parameter>
+        <!--parameter name="transport.vfs.ContentType">text/plain; charset=ISO-8859-1</parameter-->
+
+        <!--#########################Different Content Types#######################################-->
+
+        <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+    </proxy>   
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <in>
+            <log level="full"/>
+            <filter source="get-property('To')" regex="http://localhost:9000.*">
+                <send/>
+            </filter>
+        </in>
+        <out>
+            <send/>
+        </out>
+        <description>The main sequence for the message mediation</description>
+    </sequence>
+</definitions>
