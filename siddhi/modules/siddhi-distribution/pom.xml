@@ -48,7 +48,7 @@
 
 
     <build>
-        <finalName>siddhi-${project.version}</finalName>
+        <finalName>siddhi-all-${project.version}</finalName>
         <plugins>
             <!-- copy dependencies for samples -->
             <plugin>
