@@ -1,0 +1,43 @@
+<!--ant stockquote -Dtrpurl=http://localhost:8280/services/HeaderMediator8-->
+
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="HeaderMediator8" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full" />
+         <property name="Original Request Symbol" expression="get-property('ORIGINAL_REQ')" scope="default" type="STRING" />
+         <property name="Request Payload" expression="get-property('REQUEST_PAYLOAD')" scope="default" type="STRING" />
+         <enrich>
+            <source xmlns:m0="http://services.samples" clone="true" xpath="//m0:getQuote/m0:request/m0:symbol/text()" />
+            <target type="property" property="ORIGINAL_REQ" />
+         </enrich>
+         <enrich>
+            <source type="body" clone="true" />
+            <target type="property" property="REQUEST_PAYLOAD" />
+         </enrich>
+         <enrich>
+            <source type="inline" clone="true" key="init_req" />
+            <target xmlns:m0="http://services.samples" xpath="//m0:getQuote/m0:request/m0:symbol/text()" />
+         </enrich>
+         <send>
+            <endpoint>
+               <address uri="http://localhost:9000/services/SimpleStockQuoteService" />
+            </endpoint>
+         </send>
+         <drop />
+      </inSequence>
+      <outSequence>
+         <log level="full" />
+         <header>
+            <urn:lastTradeTimestamp xmlns:urn="http://synapse.apache.org">Fri Jul 27 11:29:04 IST 2012</urn:lastTradeTimestamp>
+         </header>
+         <log level="full" />
+         <log>
+            <property name="Original Request Symbol" expression="get-property('ORIGINAL_REQ')" />
+            <property name="Request Payload" expression="get-property('REQUEST_PAYLOAD')" />
+         </log>
+         <send />
+      </outSequence>
+   </target>
+   <description></description>
+</proxy>
+                                
