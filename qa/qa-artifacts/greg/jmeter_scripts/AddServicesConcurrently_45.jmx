@@ -225,13 +225,6 @@
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">Overview_Description</stringProp>
               </elementProp>
-              <elementProp name="Service_Lifecycle_Lifecycle-Name" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">None</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">Service_Lifecycle_Lifecycle-Name</stringProp>
-              </elementProp>
               <elementProp name="ContactCount" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">0</stringProp>
@@ -590,6 +583,15 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
+        <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="Random Variable" enabled="true">
+          <stringProp name="maximumValue">1000000</stringProp>
+          <stringProp name="minimumValue">1</stringProp>
+          <stringProp name="outputFormat">#</stringProp>
+          <boolProp name="perThread">true</boolProp>
+          <stringProp name="randomSeed"></stringProp>
+          <stringProp name="variableName">fileNumber</stringProp>
+        </RandomVariableConfig>
+        <hashTree/>
         <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
           <collectionProp name="UserParameters.names">
             <stringProp name="-265713450">username</stringProp>
@@ -602,31 +604,31 @@
               <stringProp name="2040575146">admin</stringProp>
               <stringProp name="1635157075">admin</stringProp>
               <stringProp name="-1918405586">AirportDMFacade</stringProp>
-              <stringProp name="2067157118">Flight test Jmeter 61</stringProp>
+              <stringProp name="2067157118">Flight test Jmeter 61${fileNumber}</stringProp>
             </collectionProp>
             <collectionProp name="1745278077">
               <stringProp name="2040575110">admin</stringProp>
               <stringProp name="1635157075">admin</stringProp>
               <stringProp name="-1777519181">Flight Load Control</stringProp>
-              <stringProp name="2067157119">Flight test Jmeter 62</stringProp>
+              <stringProp name="2067157119">Flight test Jmeter 62${fileNumber}</stringProp>
             </collectionProp>
             <collectionProp name="716418942">
               <stringProp name="2040575170">admin</stringProp>
               <stringProp name="1635157075">admin</stringProp>
               <stringProp name="-264324587">Gopinathan</stringProp>
-              <stringProp name="2067157120">Flight test Jmeter 63</stringProp>
+              <stringProp name="2067157120">Flight test Jmeter 63${fileNumber}</stringProp>
             </collectionProp>
             <collectionProp name="-1461813464">
               <stringProp name="2040575146">admin</stringProp>
               <stringProp name="1635157075">admin</stringProp>
               <stringProp name="-878278569">Training_15July11_notionalservice</stringProp>
-              <stringProp name="2067157055">Flight test Jmeter 40</stringProp>
+              <stringProp name="2067157055">Flight test Jmeter 40${fileNumber}</stringProp>
             </collectionProp>
             <collectionProp name="918012641">
               <stringProp name="2040575146">admin</stringProp>
               <stringProp name="1635157075">admin</stringProp>
               <stringProp name="-1523921968">Training1507JULFMS</stringProp>
-              <stringProp name="2067157056">Flight test Jmeter 41</stringProp>
+              <stringProp name="2067157056">Flight test Jmeter 41${fileNumber}</stringProp>
             </collectionProp>
           </collectionProp>
           <boolProp name="UserParameters.per_iteration">false</boolProp>
