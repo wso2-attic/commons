@@ -11,7 +11,7 @@
 
     <groupId>org.wso2.charon</groupId>
     <artifactId>org.wso2.charon.core</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
     <name>WSO2 Charon - Core</name>
     <description>WSO2 Charon - SCIM Implementation</description>
     <url>http://wso2.com</url>
@@ -58,6 +58,27 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>1.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
+                        <Export-Package>
+                            org.wso2.charon.core.*;version=1.0.0-SNAPSHOT
+                        </Export-Package>
+                        <Import-Package>
+                            !org.wso2.charon.core.*;
+                            org.json.*;
+                            org.apache.commons.logging.*;
+                            resolution:=optional
+                        </Import-Package>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>
