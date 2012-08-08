@@ -28,14 +28,13 @@ public class TestingLCReportGenerator extends AbstractReportGenerator{
     private Log log = LogFactory.getLog(TestingLCReportGenerator.class);
     public String responsibleQA;
     public String responsibleQAA;
-
-    @Property(mandatory=true)
-    public void setFoo(String foo) {
+    @Property(mandatory=false)
+    public void setResponsibleQA(String responsibleQA) {
         this.responsibleQA = responsibleQA;
     }
 
     @Property(mandatory=true)
-    public void setBar(String bar) {
+    public void setResponsibleQAA(String responsibleQAA) {
         this.responsibleQAA = responsibleQAA;
     }
 
