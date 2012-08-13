@@ -275,6 +275,7 @@ do
     -Dcom.sun.jndi.ldap.connect.pool.authentication=simple  \
     -Dcom.sun.jndi.ldap.connect.pool.timeout=3000  \
     -Dorg.terracotta.quartz.skipUpdateCheck=true \
+    -Dbind.address=10.100.3.244 \
     org.wso2.carbon.bootstrap.Bootstrap $*
     status=$?
 done
