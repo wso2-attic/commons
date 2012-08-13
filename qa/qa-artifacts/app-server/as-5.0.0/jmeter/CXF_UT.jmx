@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.2">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">10</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">500</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
+        <longProp name="ThreadGroup.start_time">1344838043000</longProp>
+        <longProp name="ThreadGroup.end_time">1344838043000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end">100</stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">id</stringProp>
+          <stringProp name="CounterConfig.format"></stringProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
+        </CounterConfig>
+        <hashTree/>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">100</stringProp>
+        </LoopController>
+        <hashTree>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="UT-SOAPRequest" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://appserver.wso2.com:8300/ut_jaxws${id}/services/GreeterPort/</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+   &lt;soap:Header&gt;
+      &lt;wsse:Security xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot; xmlns:wsu=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot; soap:mustUnderstand=&quot;1&quot;&gt;
+         &lt;wsse:UsernameToken wsu:Id=&quot;UsernameToken-1&quot;&gt;
+            &lt;wsse:Username&gt;abcd&lt;/wsse:Username&gt;
+            &lt;wsse:Password Type=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&quot;&gt;dcba&lt;/wsse:Password&gt;
+         &lt;/wsse:UsernameToken&gt;
+      &lt;/wsse:Security&gt;
+      &lt;Action xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://cxf.apache.org/hello_world_soap_http/Greeter/greetMeRequest&lt;/Action&gt;
+      &lt;MessageID xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;urn:uuid:a6a84a66-8e2c-4521-b722-72959fb0f4ba&lt;/MessageID&gt;
+      &lt;To xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://appserver.wso2.com:8300/ut_jaxws${id}/services/GreeterPort&lt;/To&gt;
+      &lt;ReplyTo xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;
+         &lt;Address&gt;http://www.w3.org/2005/08/addressing/anonymous&lt;/Address&gt;
+      &lt;/ReplyTo&gt;
+   &lt;/soap:Header&gt;
+   &lt;soap:Body&gt;
+      &lt;greetMe xmlns=&quot;http://cxf.apache.org/hello_world_soap_http/types&quot;&gt;
+         &lt;requestType&gt;Nirodha&lt;/requestType&gt;
+      &lt;/greetMe&gt;
+&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="UT-SLiveRequest" enabled="false">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://appserver.stratosdev.private.wso2.com:9763/t/superqa.com/webapps/ut_jaxws/services/GreeterPort/</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+   &lt;soap:Header&gt;
+      &lt;wsse:Security xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot; xmlns:wsu=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot; soap:mustUnderstand=&quot;1&quot;&gt;
+         &lt;wsse:UsernameToken wsu:Id=&quot;UsernameToken-1&quot;&gt;
+            &lt;wsse:Username&gt;abcd&lt;/wsse:Username&gt;
+            &lt;wsse:Password Type=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&quot;&gt;dcba&lt;/wsse:Password&gt;
+         &lt;/wsse:UsernameToken&gt;
+      &lt;/wsse:Security&gt;
+      &lt;Action xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://cxf.apache.org/hello_world_soap_http/Greeter/greetMeRequest&lt;/Action&gt;
+      &lt;MessageID xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;urn:uuid:a6a84a66-8e2c-4521-b722-72959fb0f4ba&lt;/MessageID&gt;
+      &lt;To xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://appserver.stratosdev.private.wso2.com:9763/t/superqa.com/webapps/ut_jaxws/services/GreeterPort/&lt;/To&gt;
+      &lt;ReplyTo xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;
+         &lt;Address&gt;http://www.w3.org/2005/08/addressing/anonymous&lt;/Address&gt;
+      &lt;/ReplyTo&gt;
+   &lt;/soap:Header&gt;
+   &lt;soap:Body&gt;
+      &lt;greetMe xmlns=&quot;http://cxf.apache.org/hello_world_soap_http/types&quot;&gt;
+         &lt;requestType&gt;Anne&lt;/requestType&gt;
+      &lt;/greetMe&gt;
+&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="UT-localRequest" enabled="false">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://localhost:9763/ut_jaxws1/services/GreeterPort</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soap:Envelope xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+   &lt;soap:Header&gt;
+      &lt;wsse:Security xmlns:wsse=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd&quot; xmlns:wsu=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd&quot; soap:mustUnderstand=&quot;1&quot;&gt;
+         &lt;wsse:UsernameToken wsu:Id=&quot;UsernameToken-1&quot;&gt;
+            &lt;wsse:Username&gt;abcd&lt;/wsse:Username&gt;
+            &lt;wsse:Password Type=&quot;http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText&quot;&gt;dcba&lt;/wsse:Password&gt;
+         &lt;/wsse:UsernameToken&gt;
+      &lt;/wsse:Security&gt;
+      &lt;Action xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://cxf.apache.org/hello_world_soap_http/Greeter/greetMeRequest&lt;/Action&gt;
+      &lt;MessageID xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;urn:uuid:a6a84a66-8e2c-4521-b722-72959fb0f4ba&lt;/MessageID&gt;
+      &lt;To xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;http://localhost:9763/ut_jaxws1/services/GreeterPort&lt;/To&gt;
+      &lt;ReplyTo xmlns=&quot;http://www.w3.org/2005/08/addressing&quot;&gt;
+         &lt;Address&gt;http://www.w3.org/2005/08/addressing/anonymous&lt;/Address&gt;
+      &lt;/ReplyTo&gt;
+   &lt;/soap:Header&gt;
+   &lt;soap:Body&gt;
+      &lt;greetMe xmlns=&quot;http://cxf.apache.org/hello_world_soap_http/types&quot;&gt;
+         &lt;requestType&gt;Anne&lt;/requestType&gt;
+      &lt;/greetMe&gt;
+&lt;/soap:Body&gt;&lt;/soap:Envelope&gt;</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+          </SoapSampler>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
