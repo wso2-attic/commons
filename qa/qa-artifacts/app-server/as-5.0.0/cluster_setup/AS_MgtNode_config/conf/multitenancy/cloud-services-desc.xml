@@ -1,0 +1,109 @@
+<!-- 
+     This has the configurations for the cloud services. 
+     Label, link, icon, description, and the other similar information for each of the services are
+     given here. 
+  -->
+<cloudServices xmlns="http://wso2.com/carbon/cloud/mgt/services">
+	<cloudService name="WSO2 Stratos Manager">
+		<link>https://cloud.wso2.com</link>
+    </cloudService>
+    <cloudService name="WSO2 Enterprise Service Bus" default="true">
+        <label>Enterprise Service Bus</label>
+        <link>https://esb.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/esb.gif
+        </icon>
+        <productPageURL>http://wso2.com/products/enterprise-service-bus/</productPageURL>
+        <description>Enterprise Service Bus in the cloud.</description>
+    </cloudService>
+    <cloudService name="Application Server" default="true">
+        <label>Application Server</label>
+        <link>https://appserver.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/appserver.gif
+        </icon>
+        <productPageURL>http://wso2.com/products/application-server/</productPageURL>
+        <description>Application Server in the cloud.</description>
+    </cloudService>
+    <cloudService name="WSO2 Data Services Server" default="true">
+        <label>WSO2 Data Services Server</label>
+        <link>https://dss.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/ds.gif
+        </icon>
+        <productPageURL>http://wso2.com/products/data-services-server/</productPageURL>
+        <description>Data Services Server in the cloud.</description>
+    </cloudService>
+    <cloudService name="WSO2 Governance Registry" default="true">
+        <label>Governance</label>
+        <link>https://governance.cloud.wso2.com</link>
+        <description>Governance in the cloud.</description>
+        <icon>
+            https://localhost:9443/cloud-services-icons/governance.gif
+        </icon>
+        <productPageURL>http://wso2.com/products/governance-registry/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Identity Server" default="true">
+        <label>WSO2 Identity Server</label>
+        <link>https://identity.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/identity.gif
+        </icon>
+        <description>Identity in the cloud.</description>
+        <productPageURL>http://wso2.com/products/identity-server/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Business Activity Monitor" default="true">
+        <label>Business Activity Monitor</label>
+        <link>https://bam.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/bam.gif
+        </icon>
+        <description>Business Activity Monitor in the cloud.</description>
+        <productPageURL>http://wso2.com/products/business-activity-monitor/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Business Process Server" default="true">
+        <label>Business Process Server</label>
+        <link>https://bps.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/bps.gif
+        </icon>
+        <description>Business Process Server in the cloud.</description>
+        <productPageURL>http://wso2.com/products/business-process-server/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Business Rule Server" default="true">
+        <label>Business Rule Server</label>
+        <link>https://brs.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/brs.gif
+        </icon>
+        <description>Business Rules Server in the cloud.</description>
+        <productPageURL>http://wso2.com/products/business-rules-server/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Mashup Server" default="true">
+        <label>Mashup Server</label>
+        <link>https://mashup.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/mashup.gif
+        </icon>
+        <description>Mashup Server in the cloud.</description>
+        <productPageURL>http://wso2.com/products/mashup-server/</productPageURL>
+    </cloudService>
+    <cloudService name="WSO2 Gadget Server" default="true">
+        <label>Gadget Server</label>
+        <link>https://gadget.cloud.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/gadget.gif
+        </icon>
+        <description>Gadgets in the cloud.</description>
+        <productPageURL>http://wso2.com/products/gadget-server/</productPageURL>
+    </cloudService>
+    <cloudService name="Cloud Services Gateway" default="true">
+        <label>Cloud Services Gateway</label>
+        <link>https://csg.stratoslive.wso2.com</link>
+        <icon>
+            https://localhost:9443/cloud-services-icons/csg.gif
+        </icon>
+        <description>Cloud Services Gateway in the cloud.</description>
+	<productPageURL>http://wso2.com/products/cloud-services-gateway/</productPageURL>
+    </cloudService>
+</cloudServices>
