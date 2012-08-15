@@ -26,11 +26,11 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="3kRequest" enabled="true">
+        <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="3kRequest" enabled="false">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="SoapSampler.URL_DATA">http://mgt.esb.wso2.com:8320/services/PassThroughProxy1M/</stringProp>
+          <stringProp name="SoapSampler.URL_DATA">http://esb.wso2.com:8320/services/PassThroughProxy1M/</stringProp>
           <stringProp name="HTTPSamper.xml_data">&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;
   &lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
      &lt;soapenv:Body&gt;
@@ -51,7 +51,7 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="SoapSampler.URL_DATA">http://mgt.esb.wso2.com:8320/services/PassThroughProxy1M/</stringProp>
+          <stringProp name="SoapSampler.URL_DATA">http://esb.wso2.com:8320/services/PassThroughProxy1M/</stringProp>
           <stringProp name="HTTPSamper.xml_data">&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;
   &lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
      &lt;soapenv:Body&gt;
