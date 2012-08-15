@@ -1,0 +1,15 @@
+<service name="calculatorImportSchema_1149">
+    <description>
+        This is a sample service to test schema imports when the wsdl is placed at META-INF and the schema is located in a url repo - http://people.wso2.com/~charitha
+    </description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+	<parameter name="useOriginalwsdl">true</parameter>
+    <parameter name="ServiceClass" locked="false">
+       org.charitha.calculatorImportSchema
+    </parameter>
+</service>
