@@ -26,7 +26,8 @@ import java.util.List;
  * Schema for the sub attributes defined in the SCIMAttributeSchema. Optional.
  */
 public class SCIMSubAttributeSchema implements AttributeSchema {
-
+    //Absolute URI of the attribute
+    private String attributeURI;
     //The attribute's name.
     private String name;
     //The attribute's data type
@@ -42,18 +43,19 @@ public class SCIMSubAttributeSchema implements AttributeSchema {
     //A collection of canonical values
     private List<String> canonicalValues;
 
-    public static SCIMSubAttributeSchema createSCIMSubAttributeSchema(String name, DataType type,
+    public static SCIMSubAttributeSchema createSCIMSubAttributeSchema(String uri, String name, DataType type,
                                                                       String description,
                                                                       Boolean readOnly,
                                                                       Boolean required,
                                                                       Boolean caseExact,
                                                                       String... canonicalValues) {
-        return new SCIMSubAttributeSchema(name, type, description, readOnly, required, caseExact, canonicalValues);
+        return new SCIMSubAttributeSchema(uri, name, type, description, readOnly, required, caseExact, canonicalValues);
     }
 
-    private SCIMSubAttributeSchema(String name, DataType type, String description,
+    private SCIMSubAttributeSchema(String uri, String name, DataType type, String description,
                                    Boolean readOnly, Boolean required, Boolean caseExact,
                                    String... canonicalValues) {
+        this.attributeURI = uri;
         this.name = name;
         this.type = type;
         this.description = description;
@@ -93,6 +95,14 @@ public class SCIMSubAttributeSchema implements AttributeSchema {
     @Override
     public void setSchema(String schema) {
         //no implementation of this method in SubAttributeSchema
+    }
+
+    public String getURI() {
+        return attributeURI;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setURI(String uri) {
+        attributeURI = uri;
     }
 
     public DataType getType() {

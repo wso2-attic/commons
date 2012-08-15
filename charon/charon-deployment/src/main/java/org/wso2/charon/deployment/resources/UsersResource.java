@@ -115,7 +115,7 @@ public class UsersResource {
 
             //content-type header is compulsory in post request.
             if (inputFormat == null) {
-                String error = SCIMConstants.CONTENT_TYPE_HEADER + " not present in the request header";
+                String error = SCIMConstants.CONTENT_TYPE_HEADER + " not present in the request header.";
                 throw new FormatNotSupportedException(error);
             }
             //set the format in which the response should be encoded, if not specified in the request,

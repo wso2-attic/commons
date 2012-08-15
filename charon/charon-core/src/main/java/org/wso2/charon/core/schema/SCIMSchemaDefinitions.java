@@ -39,50 +39,60 @@ public class SCIMSchemaDefinitions {
      */
     //TODO:add canonical values.
     public static final SCIMSubAttributeSchema TYPE =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.TYPE,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.TYPE,
                                                                 DataType.STRING, SCIMConstants.TYPE_DESC,
                                                                 false, false, false, null);
     public static final SCIMSubAttributeSchema PRIMARY =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.PRIMARY,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.PRIMARY,
                                                                 DataType.BOOLEAN, SCIMConstants.PRIMARY_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema DISPLAY =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.DISPLAY,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.DISPLAY,
                                                                 DataType.STRING, SCIMConstants.DISPLAY_DESC,
                                                                 true, false, false, null);
 
     public static final SCIMSubAttributeSchema OPERATION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.OPERATION,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.OPERATION,
                                                                 DataType.STRING, SCIMConstants.OPERATION_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema VALUE =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.VALUE,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.VALUE,
                                                                 DataType.STRING, SCIMConstants.VALUE_DESC,
                                                                 false, false, false, null);
 
     // sub attributes of meta and then the meta attribute
     public static final SCIMSubAttributeSchema CREATED =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.CREATED,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.CREATED,
                                                                 SCIMSchemaDefinitions.DataType.DATE_TIME,
                                                                 SCIMConstants.CREATED_DESC, true, false, false, null);
 
     public static final SCIMSubAttributeSchema LAST_MODIFIED =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LAST_MODIFIED,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.LAST_MODIFIED,
                                                                 SCIMSchemaDefinitions.DataType.DATE_TIME,
                                                                 SCIMConstants.LAST_MODIFIED_DESC, true, false, false, null);
 
     public static final SCIMSubAttributeSchema LOCATION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.LOCATION,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.LOCATION,
                                                                 SCIMSchemaDefinitions.DataType.STRING,
                                                                 SCIMConstants.LOCATION_DESC, true, false, false, null);
     public static final SCIMSubAttributeSchema VERSION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.VERSION,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.VERSION,
                                                                 SCIMSchemaDefinitions.DataType.STRING,
                                                                 SCIMConstants.VERSION_DESC, true, false, false, null);
     public static final SCIMSubAttributeSchema ATTRIBUTES =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.CommonSchemaConstants.ATTRIBUTES,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.CommonSchemaConstants.ATTRIBUTES,
                                                                 SCIMSchemaDefinitions.DataType.STRING,
                                                                 SCIMConstants.ATTRIBUTES_DESC, false, false, false, null);
 
@@ -92,59 +102,71 @@ public class SCIMSchemaDefinitions {
      */
     //sub attributes of name
     public static final SCIMSubAttributeSchema FORMATTED =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema("formatted", DataType.STRING,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                "formatted", DataType.STRING,
                                                                 SCIMConstants.FORMATTED_NAME_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema FAMILY_NAME =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.FAMILY_NAME,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.FAMILY_NAME,
                                                                 DataType.STRING, SCIMConstants.FAMILY_NAME_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema GIVEN_NAME =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.GIVEN_NAME,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.GIVEN_NAME,
                                                                 DataType.STRING, SCIMConstants.GIVEN_NAME_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema MIDDLE_NAME =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.MIDDLE_NAME,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.MIDDLE_NAME,
                                                                 DataType.STRING, SCIMConstants.MIDDLE_NAME_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema HONORIFIC_PREFIX =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_PREFIX,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.HONORIFIC_PREFIX,
                                                                 DataType.STRING, SCIMConstants.HONORIFIC_PREFIX_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema HONORIFIC_SUFFIX =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.HONORIFIC_SUFFIX,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.HONORIFIC_SUFFIX,
                                                                 DataType.STRING, SCIMConstants.HONORIFIC_SUFFIX_DESC,
                                                                 false, false, false, null);
 
     //sub attributes of addresses
     public static final SCIMSubAttributeSchema FORMATTED_ADDRESS =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.FORMATTED_ADDRESS,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.FORMATTED_ADDRESS,
                                                                 DataType.STRING, SCIMConstants.FORMATTED_ADDRESS_DESC,
                                                                 false, false, false, null);
     public static final SCIMSubAttributeSchema STREET_ADDRESS =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.STREET_ADDRESS,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.STREET_ADDRESS,
                                                                 DataType.STRING, SCIMConstants.STREET_ADDRESS_DESC,
                                                                 false, false, false, null);
 
     public static final SCIMSubAttributeSchema LOCALITY =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.LOCALITY,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.LOCALITY,
                                                                 DataType.STRING, SCIMConstants.LOCALITY_DESC,
                                                                 false, false, false, null);
     public static final SCIMSubAttributeSchema REGION =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.REGION,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.REGION,
                                                                 DataType.STRING, SCIMConstants.REGION_DESC,
                                                                 false, false, false, null);
     public static final SCIMSubAttributeSchema POSTAL_CODE =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.POSTAL_CODE,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.POSTAL_CODE,
                                                                 DataType.STRING, SCIMConstants.POSTAL_CODE_DESC,
                                                                 false, false, false, null);
     public static final SCIMSubAttributeSchema COUNTRY =
-            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(SCIMConstants.UserSchemaConstants.COUNTRY,
+            SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
+                                                                SCIMConstants.UserSchemaConstants.COUNTRY,
                                                                 DataType.STRING, SCIMConstants.COUNTRY_DESC,
                                                                 false, false, false, null);
 
@@ -157,7 +179,8 @@ public class SCIMSchemaDefinitions {
 
     /*Unique identifier for the SCIM Resource as defined by the Service Provider*/
     public static final SCIMAttributeSchema ID =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.CommonSchemaConstants.ID,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.CommonSchemaConstants.ID,
                                                           SCIMSchemaDefinitions.DataType.STRING, false,
                                                           null, SCIMConstants.ID_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, true, true, true, null);
@@ -165,7 +188,8 @@ public class SCIMSchemaDefinitions {
     /*Unique identifier for the Resource as defined by the Service Consumer.The Service Provider
     MUST always interpret the externalId as scoped to the Service Consumer's tenant*/
     public static final SCIMAttributeSchema EXTERNAL_ID =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
                                                           SCIMSchemaDefinitions.DataType.STRING, false, null,
                                                           SCIMConstants.EXTERNAL_ID_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
@@ -174,7 +198,8 @@ public class SCIMSchemaDefinitions {
 
     /*Since all sub attributes of META are optional, META attribute is also optional.*/
     public static final SCIMAttributeSchema META =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.CommonSchemaConstants.META,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.CommonSchemaConstants.META,
                                                           null, false, null, SCIMConstants.META_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false,
                                                           CREATED, LAST_MODIFIED, LOCATION, VERSION, ATTRIBUTES);
@@ -184,7 +209,8 @@ public class SCIMSchemaDefinitions {
 
     /*Unique identifier for the User, typically used by the user to directly authenticate to the service provider.*/
     public static final SCIMAttributeSchema USER_NAME =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.USER_NAME,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.USER_NAME,
                                                           SCIMSchemaDefinitions.DataType.STRING, false, null,
                                                           SCIMConstants.USER_NAME_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, true, false, null);
@@ -193,85 +219,100 @@ public class SCIMSchemaDefinitions {
     //TODO:how 'work','home' and 'other' specified in emails
     //TODO:NOTE:MULTI-VALUED ATTRIBUTES HAVE SUB ATTRIBUTES - DEFINED IN SCHEMA
     public static final SCIMAttributeSchema EMAILS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.EMAILS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.EMAILS,
                                                           SCIMSchemaDefinitions.DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.EMAIL,
                                                           SCIMConstants.EMAILS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, null);
 
     public static final SCIMAttributeSchema USER_DISPLAY_NAME =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.DISPLAY_NAME,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.DISPLAY_NAME,
                                                           SCIMSchemaDefinitions.DataType.STRING, false, null,
                                                           SCIMConstants.USER_DISPLAY_NAME_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false,
                                                           false, false, null);
 
     public static final SCIMAttributeSchema NAME =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.NAME,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.NAME,
                                                           DataType.STRING, false, null,
                                                           SCIMConstants.NAME_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false,
                                                           FORMATTED, FAMILY_NAME, GIVEN_NAME, MIDDLE_NAME,
                                                           HONORIFIC_PREFIX, HONORIFIC_SUFFIX);
     public static final SCIMAttributeSchema NICK_NAME =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.NICK_NAME,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.NICK_NAME,
                                                           DataType.STRING, false, null, SCIMConstants.NICK_NAME_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
     public static final SCIMAttributeSchema PROFILE_URL =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PROFILE_URL,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.PROFILE_URL,
                                                           DataType.STRING, false, null, SCIMConstants.PROFILE_URL_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema TITLE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.TITLE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.TITLE,
                                                           DataType.STRING, false, null, SCIMConstants.TITLE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema USER_TYPE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.USER_TYPE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.USER_TYPE,
                                                           DataType.STRING, false, null, SCIMConstants.USER_TYPE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema PREFERRED_LANGUAGE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PREFERRED_LANGUAGE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.PREFERRED_LANGUAGE,
                                                           DataType.STRING, false, null,
                                                           SCIMConstants.PREFERRED_LANGUAGE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
     public static final SCIMAttributeSchema LOCALE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.LOCALE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.LOCALE,
                                                           DataType.STRING, false, null, SCIMConstants.LOCALE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
     public static final SCIMAttributeSchema TIMEZONE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.TIME_ZONE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.TIME_ZONE,
                                                           DataType.STRING, false, null, SCIMConstants.TIME_ZONE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema ACTIVE =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ACTIVE,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.ACTIVE,
                                                           DataType.BOOLEAN, false, null, SCIMConstants.ACTIVE_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema PASSWORD =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PASSWORD,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.PASSWORD,
                                                           DataType.STRING, false, null, SCIMConstants.PASSWORD_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
 
     public static final SCIMAttributeSchema PHONE_NUMBERS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PHONE_NUMBERS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.PHONE_NUMBERS,
                                                           DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.PHONE_NUMBER,
                                                           SCIMConstants.PHONE_NUMBERS_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, null);
 
     public static final SCIMAttributeSchema IMS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.IMS, DataType.STRING,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.IMS, DataType.STRING,
                                                           true, SCIMConstants.UserSchemaConstants.IM,
                                                           SCIMConstants.IMS_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false,
                                                           null);
 
     public static final SCIMAttributeSchema PHOTOS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.PHOTOS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.PHOTOS,
                                                           DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.PHOTO,
                                                           SCIMConstants.PHOTOS_DESC,
@@ -279,30 +320,35 @@ public class SCIMSchemaDefinitions {
 
 
     public static final SCIMAttributeSchema GROUPS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.GROUPS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.GROUPS,
                                                           DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.GROUP,
                                                           SCIMConstants.USER_GROUP_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, true, false, null);
 
     public static final SCIMAttributeSchema ADDRESSES =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ADDRESSES,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.ADDRESSES,
                                                           DataType.STRING, true,
                                                           SCIMConstants.UserSchemaConstants.ADDRESS,
                                                           SCIMConstants.ADDRESSES_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, FORMATTED_ADDRESS, STREET_ADDRESS,
                                                           LOCALITY, REGION, POSTAL_CODE, COUNTRY);
     public static final SCIMAttributeSchema ENTITLEMENTS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ENTITLEMENTS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.ENTITLEMENTS,
                                                           DataType.STRING, true, SCIMConstants.UserSchemaConstants.ENTITLEMENT,
                                                           SCIMConstants.ENTITLEMENTS_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, null);
     public static final SCIMAttributeSchema ROLES =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.ROLES, DataType.STRING,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.ROLES, DataType.STRING,
                                                           true, SCIMConstants.UserSchemaConstants.ROLE, SCIMConstants.ROLES_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
     public static final SCIMAttributeSchema X509CERTIFICATES =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.UserSchemaConstants.X509CERTIFICATES,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.UserSchemaConstants.X509CERTIFICATES,
                                                           DataType.BINARY, true,
                                                           SCIMConstants.UserSchemaConstants.X509CERTIFICATE,
                                                           SCIMConstants.X509CERTIFICATES_DESC,
@@ -311,12 +357,14 @@ public class SCIMSchemaDefinitions {
 
     //attribute schemas of the attributes defined in group schema.
     public static final SCIMAttributeSchema DISPLAY_NAME =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.DISPLAY_NAME,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.GroupSchemaConstants.DISPLAY_NAME,
                                                           SCIMSchemaDefinitions.DataType.STRING, false, null,
                                                           SCIMConstants.DISPLAY_NAME_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, null);
     public static final SCIMAttributeSchema MEMBERS =
-            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.GroupSchemaConstants.MEMBERS,
+            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+                                                          SCIMConstants.GroupSchemaConstants.MEMBERS,
                                                           SCIMSchemaDefinitions.DataType.STRING, true,
                                                           SCIMConstants.GroupSchemaConstants.MEMBER,
                                                           SCIMConstants.MEMBERS_DESC, SCIMConstants.CORE_SCHEMA_URI,
@@ -325,8 +373,7 @@ public class SCIMSchemaDefinitions {
     /**
      * *************************Attributes defined in Enterprise User Schema***********************
      */
-     //TODO
-
+    //TODO
 
 
     //schemas of the resources as defined in SCIM Schema spec.
@@ -337,7 +384,7 @@ public class SCIMSchemaDefinitions {
      */
     public static final SCIMResourceSchema SCIM_COMMON_SCHEMA = SCIMResourceSchema.createSCIMResourceSchema(
             SCIMConstants.COMMON, SCIMConstants.CORE_SCHEMA_URI, SCIMConstants.COMMON_DESC, null,
-            SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID,SCIMSchemaDefinitions.META);
+            SCIMSchemaDefinitions.ID, SCIMSchemaDefinitions.EXTERNAL_ID, SCIMSchemaDefinitions.META);
 
 
     public static final SCIMResourceSchema SCIM_USER_SCHEMA =

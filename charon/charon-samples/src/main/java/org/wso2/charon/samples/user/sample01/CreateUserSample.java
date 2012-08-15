@@ -64,6 +64,8 @@ public class CreateUserSample {
             //set the handler in wink client config
             ClientConfig clientConfig = new ClientConfig();
             clientConfig.handlers(new ClientHandler[]{responseHandler});
+            //for the moment, bypass the host name verification for ssl endpoints.
+            clientConfig.setBypassHostnameVerification(true);
             //create a wink rest client with the above config
             RestClient restClient = new RestClient(clientConfig);
             //create resource endpoint to access User resource

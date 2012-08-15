@@ -22,8 +22,10 @@ package org.wso2.charon.samples.utils;
  */
 public class SampleConstants {
     //credentials for accessing API
-    public static final String CRED_USER_NAME = "charonAdmin";
-    public static final String CRED_PASSWORD = "charonAdmin";
+    /*public static final String CRED_USER_NAME = "charonAdmin";
+    public static final String CRED_PASSWORD = "charonAdmin";*/
+    public static final String CRED_USER_NAME = "admin";
+    public static final String CRED_PASSWORD = "admin";
 
     public static final String CRED_TENANT_DOMAIN = "wso2.edu";
 
@@ -41,7 +43,7 @@ public class SampleConstants {
     public static final String GROUP_ENDPOINT = "http://people.wso2.com:8080/charonDemoApp/scim/Groups/";
     public static final String REG_SERVICE_ENDPOINT = "http://people.wso2.com:8080/charonDemoApp/scim/RegistrationService";*/
 
-    public static final String USER_ENDPOINT = "http://localhost:9763/scim/Users/";
+    public static final String USER_ENDPOINT = "http://localhost:9763/wso2/scim/Users";
     public static final String GROUP_ENDPOINT = "http://localhost:9763/scim/Groups/";
     public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/RegistrationService";
 

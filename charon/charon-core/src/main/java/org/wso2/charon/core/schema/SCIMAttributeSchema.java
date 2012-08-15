@@ -26,6 +26,8 @@ import java.util.List;
  * Unless otherwise specified are optional, modifiable by Consumers, and of type String.
  */
 public class SCIMAttributeSchema implements AttributeSchema {
+    //Absolute URI of the attribute
+    private String attributeURI;
     //name of the attribute
     private String name;
     //data type of the attribute
@@ -47,7 +49,8 @@ public class SCIMAttributeSchema implements AttributeSchema {
     //A list specifying the contained attributes. OPTIONAL.
     List<SCIMSubAttributeSchema> subAttributes;
 
-    public static SCIMAttributeSchema createSCIMAttributeSchema(String name,
+    public static SCIMAttributeSchema createSCIMAttributeSchema(String uri,
+                                                                String name,
                                                                 SCIMSchemaDefinitions.DataType type,
                                                                 Boolean multiValued,
                                                                 String multiValuedAttributeChildName,
@@ -72,28 +75,29 @@ public class SCIMAttributeSchema implements AttributeSchema {
                 //combine common sub attributes and specific sub attributes passed in,
                 System.arraycopy(subAttributes, 0, combinedSubAttributeSchema, 0, subAttributes.length);
                 System.arraycopy(multiValuedProperties, 0, combinedSubAttributeSchema, subAttributes.length, 5);
-                return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                return new SCIMAttributeSchema(uri, name, type, multiValued, multiValuedAttributeChildName, description,
                                                schema, readOnly, required, caseExact, combinedSubAttributeSchema);
             } else {
-                return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+                return new SCIMAttributeSchema(uri, name, type, multiValued, multiValuedAttributeChildName, description,
                                                schema, readOnly, required, caseExact, SCIMSchemaDefinitions.TYPE,
                                                SCIMSchemaDefinitions.PRIMARY, SCIMSchemaDefinitions.DISPLAY,
                                                SCIMSchemaDefinitions.VALUE, SCIMSchemaDefinitions.OPERATION);
             }
         } else {
 
-            return new SCIMAttributeSchema(name, type, multiValued, multiValuedAttributeChildName, description,
+            return new SCIMAttributeSchema(uri, name, type, multiValued, multiValuedAttributeChildName, description,
                                            schema, readOnly, required, caseExact, subAttributes);
         }
 
     }
 
-    private SCIMAttributeSchema(String name, SCIMSchemaDefinitions.DataType type,
+    private SCIMAttributeSchema(String uri, String name, SCIMSchemaDefinitions.DataType type,
                                 Boolean multiValued,
                                 String multiValuedAttributeChildName, String description,
                                 String schema,
                                 Boolean readOnly, Boolean required, Boolean caseExact,
                                 SCIMSubAttributeSchema... subAttributes) {
+        this.attributeURI = uri;
         this.name = name;
         this.type = type;
         this.multiValued = multiValued;
@@ -155,6 +159,14 @@ public class SCIMAttributeSchema implements AttributeSchema {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public String getURI() {
+        return attributeURI;
+    }
+
+    public void setURI(String uri) {
+        attributeURI = uri;
     }
 
     public Boolean getReadOnly() {

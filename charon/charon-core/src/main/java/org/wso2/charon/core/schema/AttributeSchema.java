@@ -51,4 +51,8 @@ public interface AttributeSchema {
 
     public void setSchema(String schema);
 
+    public String getURI();
+
+    public void setURI(String uri);
+
 }
