@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+    <proxy name="StockQuoteProxy655" startOnLoad="true"  xmlns="http://ws.apache.org/ns/synapse">
+        <target>
+            <inSequence>
+                <log level="full"/>
+                <send>
+                    <endpoint name="epr">
+                        <address uri="http://appserver.wso2.com:8300/services/SimpleStockQuoteService"/>
+                    </endpoint>
+                </send>
+            </inSequence>
+            <outSequence>
+                <log level="full"/>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+    </proxy>

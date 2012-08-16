@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+    <!--this sequence template will trasnform requests with the given xslt local entry key And will log
+    the message before and after. Takes Iterate local entry key as an argument-->	
+    <template xmlns="http://ws.apache.org/ns/synapse" name="xslt_func" xmlns="http://ws.apache.org/ns/synapse">
+        <parameter name="xslt_key"/>
+        <sequence>
+            	<log level="full">
+			<property name="BEFORE_TRANSFORM" value="true" />
+		</log>
+         	<xslt key="{$func:xslt_key}"/>
+		<log level="full">
+			<property name="AFTER_TRANSFORM" value="true" />
+		</log>
+        </sequence>
+    </template>	

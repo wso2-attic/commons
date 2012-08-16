@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+     	
+    <localEntry key="xslt-key-back" src="file:repository/samples/resources/transform/transform_back.xslt" xmlns="http://ws.apache.org/ns/synapse"/>
