@@ -310,5 +310,13 @@ public class SCIMConstants {
     public static final String CONTENT_TYPE_HEADER = "Content-Type";
     public static final String ACCEPT_HEADER = "Accept";
 
+    //integer constants used for identification
+    public static final int USER_INT = 1;
+    public static final int GROUP_INT = 2;
+
+    public static final int GET = 1;
+    public static final int POST = 2;
+    public static final int DELETE = 3;
+    public static final int PUT = 4;
 
 }
