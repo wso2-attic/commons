@@ -227,12 +227,9 @@ public class KMarketAccessControl {
 
     public static void printDescription(){
 
-        System.out.println("\nIn a web page,  there can be various static contents. Lets assume web page " +
-            "contains various type of static images.  These images are not authorized to view for all users. " +
-            "There are specific permissions for each image. Therefore before web page is viewed by user, " +
-            "authorization must be done for each images and dynamically filter the authorized content for user. " +
-            "To achieve, in a fine grained, dynamic and attribute based authorization manner, we can use XACML " +
-            "based authorization  engine such as WSO2 Balana.\n");
+        System.out.println("\nK-Market is on-line trading company. They have implemented some access " +
+                "control over the on-line trading using XACML policies. K-Martket has separated their " +
+                "customers in to three groups and has put limit on on-line buying items.\n");
 
     }
 
