@@ -23,116 +23,27 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.balana</groupId>
-    <artifactId>org.wso2.balana</artifactId>
-    <packaging>bundle</packaging>
-    <name>XACML implementation of WSO2</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>balana</artifactId>
+    <packaging>pom</packaging>
+    <name>WSO2 Balana Open source XACML implementation of WSO2</name>
+    <version>${balana.version}</version>
     <description>
-    This is the pom file that defines the build process for the WSO2 XACML
+    This is the pom file that defines the build process  for the WSO2 Balana. Balana is XACML
     open source project which is based on the sunxacml http://sunxacml.sourceforge.net/ under the license 
     http://sunxacml.sourceforge.net/license.txt. But future development is released under Apache2 license
     http://www.apache.org/licenses/LICENSE-2.0
     </description>
     <url>http://wso2.org</url>
 
-    <dependencies>
-        <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.2</version>
-            <scope>test</scope>
-        </dependency>        
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>logkit</groupId>
-                    <artifactId>logkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>avalon-framework</groupId>
-                    <artifactId>avalon-framework</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>modules/balana-core</module>
+        <module>modules/balana-samples</module>
+        <module>modules/balana-documentation</module>
+        <module>modules/balana-distribution</module>
+    </modules>
 
-    <build>
-        <plugins>
-	    <plugin> 
-		<groupId>org.jvnet.maven.incrementalbuild</groupId> 
-		<artifactId>incremental-build-plugin</artifactId>
-		<version>1.3</version>
-		<executions> 
-		    <execution> 
-		        <goals> 
-			    <goal>incremental-build</goal>
-			</goals>
-		    </execution> 
-		</executions> 
-	    </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <version>1.4.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
- 			<Bundle-Name>${pom.artifactId}</Bundle-Name>
-                        <Export-Package>
-                            org.wso2.balana.*,
-                        </Export-Package>
-                        <Import-Package>
-                            !javax.xml.namespace,
-                            javax.xml.namespace; version=0.0.0,
-                            *;resolution:=optional,
-                        </Import-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*BaseTestCase.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    <pluginRepositories>
-	<pluginRepository> 
-            <id>repository.dev.java.net-maven2</id>
-	    <name>Java.net Repository for Maven</name> 
-	    <url>http://download.java.net/maven/2/</url> 
-	    <layout>default</layout> 
-	</pluginRepository>
-    </pluginRepositories> 
+    <properties>
+        <balana.version>1.0.0-SNAPSHOT</balana.version>
+    </properties>
+
 </project>
