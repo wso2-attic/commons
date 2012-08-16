@@ -1,0 +1,79 @@
+<!--
+ ~ Copyright (c) 2005-2011, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+
+<!--
+    This is the configuration file for logging specific properties.
+-->
+
+<loggingConfig xmlns="http://wso2.org/projects/carbon/carbon.xml">
+    <isDataFromCassandra>false</isDataFromCassandra>
+    <!--Set the BAM Event publisher host url which specifies the log location where the logs are hosted-->
+    <cassandraHost>localhost:9160</cassandraHost>
+    <keyspace>EVENT_KS</keyspace>
+    <columnFamily>log</columnFamily>
+    <userName>admin</userName>
+    <password>admin</password>
+    <cluster>admin</cluster>
+   <publisherURL>tcp://localhost:7611</publisherURL>
+   <publisherUser>admin</publisherUser>
+   <publisherPassword>admin</publisherPassword>
+   <archivedHost>http://127.0.0.1/logs/stratos/0/WSO2%20Stratos%20Manager/</archivedHost>
+   <archivedUser>admin</archivedUser>
+   <archivedPassword>admin</archivedPassword>
+  <archivedPort>80</archivedPort>
+  <archivedRealm>Stratos</archivedRealm>
+  <hiveQuery>
+        drop table LogStats;
+	set mapred.output.compress=true;
+	set hive.exec.compress.output=true;
+	set mapred.output.compression.codec=org.apache.hadoop.io.compress.GzipCodec;
+	set io.compression.codecs=org.apache.hadoop.io.compress.GzipCodec;
+	set hive.aux.jars.path=file://${CARBON_HOME}/repository/components/lib/LogFilePathCreator.jar;
+	create temporary function getFilePath as 'org.wso2.carbon.filepath.PathCreator';
+	set testVar = getFilePath( "0","esbserver" );
+	set -v;
+	set logs_column_family= "log_0_Application_Server_2012_07_19";
+	set file_name= home/manisha/Desktop/logDir/logs/${hiveconf:testVar};
+	CREATE EXTERNAL TABLE IF NOT EXISTS LogStats (key STRING,
+	payload_tenantID STRING,payload_serverName 
+	STRING,
+	payload_message STRING,payload_stacktrace STRING,
+	payload_appName STRING,payload_logger 
+	STRING,
+	payload_priority STRING,payload_logTime BIGINT) STORED BY 
+	'org.apache.hadoop.hive.cassandra.CassandraStorageHandler' WITH SERDEPROPERTIES ( "cassandra.host" = 
+	"127.0.0.1",
+	"cassandra.port" = "9160","cassandra.ks.name" = "EVENT_KS",
+	"cassandra.ks.username" 
+	= "admin","cassandra.ks.password" = "admin",
+	"cassandra.cf.name" = 
+	${hiveconf:logs_column_family},
+	"cassandra.columns.mapping" = 
+	":key,payload_tenantID,
+	payload_serverName,payload_appName,payload_message,
+	payload_stacktrace,payload_logger,payload_priority,
+	payload_logTime" 
+	);
+	INSERT OVERWRITE LOCAL DIRECTORY 'file:///${hiveconf:file_name}' select payload_tenantID,
+	payload_serverName,payload_appName,payload_message,
+	payload_stacktrace,payload_logger,payload_priority,
+	getFilePath( "0","esbserver" ),(from_unixtime(payload_logTime,
+	'yyyy-MM-dd HH:mm:ss.SSS' )) as logTime from LogStats ORDER BY  
+	logTime;
+  </hiveQuery>
+</loggingConfig>

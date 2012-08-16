@@ -1,0 +1,10 @@
+<!--<TenantManager class="org.wso2.carbon.user.core.tenant.JDBCTenantManager">
+</TenantManager>-->
+<TenantManager class="org.wso2.carbon.user.core.tenant.CommonHybridLDAPTenantManager">
+    <Property name="RootPartition">dc=wso2,dc=com</Property>
+    <Property name="OrganizationalObjectClass">organizationalUnit</Property>
+    <Property name="OrganizationalAttribute">ou</Property>
+    <Property name="OrganizationalSubContextObjectClass">organizationalUnit</Property>
+    <Property name="OrganizationalSubContextAttribute">ou</Property>
+</TenantManager>
+
