@@ -17,13 +17,32 @@
 */
 package org.wso2.charon.core.config;
 
+import java.util.List;
 import java.util.Map;
 
 public class SCIMConsumer {
     private String id;
-    private Map<String,SCIMProvider> scimProviders;
-    private Map<String,String> propertiesMap;
+    private Map<String, SCIMProvider> scimProviders;
+    private Map<String, String> propertiesMap;
+    private boolean isIncludeAll;
+    private List<String> excludedProviderList;
     
+    public List<String> getExcludedProviderList() {
+        return excludedProviderList;
+    }
+
+    public void setExcludedProviderList(List<String> excludedProviderList) {
+        this.excludedProviderList = excludedProviderList;
+    }
+
+    public boolean isIncludeAll() {
+        return isIncludeAll;
+    }
+
+    public void setIncludeAll(boolean includeAll) {
+        isIncludeAll = includeAll;
+    }
+
     public String getId() {
         return id;
     }
@@ -47,4 +66,6 @@ public class SCIMConsumer {
     public void setPropertiesMap(Map<String, String> propertiesMap) {
         this.propertiesMap = propertiesMap;
     }
+
+    
 }

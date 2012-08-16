@@ -21,9 +21,9 @@
             <scim-provider id="salesforce">
                 <Property name="userEndpoint"></Property>
             </scim-provider>
-            <!--include/-->
+            <includeAll>true</includeAll>
             <!--exclude>
-                <provider id=""/>
+                <scim-provider id=""/>
             </exclude-->
             <!--Implementer specific properties-->
             <Property name="isAppliedToPrivilegedActions">true</Property>

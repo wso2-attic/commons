@@ -28,8 +28,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,9 +58,11 @@ public class SCIMConfigProcessor {
         } catch (FileNotFoundException e) {
             throw new CharonException(SCIMConfigConstants.PROVISIONING_CONFIG_NAME + "not found.");
         } catch (XMLStreamException e) {
-            throw new CharonException("Error in building the configuration file.");
+            throw new CharonException("Error in building the configuration file: " +
+                                      SCIMConfigConstants.PROVISIONING_CONFIG_NAME);
         } catch (IOException e) {
-            throw new CharonException("Error in building the configuration file.");
+            throw new CharonException("Error in building the configuration file: " +
+                                      SCIMConfigConstants.PROVISIONING_CONFIG_NAME);
         }
     }
 
@@ -185,6 +189,34 @@ public class SCIMConfigProcessor {
                 scimConsumer.setScimProviders(providersMap);
             }
             consumersMap.put(consumerId, scimConsumer);
+
+            //read for <includeAll/> element
+            OMElement includeAllElement = scimConsumerElement.getFirstChildWithName(
+                    new QName(SCIMConfigConstants.ELEMENT_NAME_INCLUDE));
+            if (includeAllElement != null) {
+                String isIncludeAll = includeAllElement.getText();
+                scimConsumer.setIncludeAll(Boolean.parseBoolean(isIncludeAll));
+            } else {
+                scimConsumer.setIncludeAll(false);
+            }
+            //read for excluded provider list
+            OMElement excludedProviderList = scimConsumerElement.getFirstChildWithName(new QName(
+                    SCIMConfigConstants.ELEMENT_NAME_EXCLUDE));
+            Iterator<OMElement> excludedProviderIterator = scimConsumerElement.getChildrenWithName(
+                    new QName(SCIMConfigConstants.ELEMENT_NAME_SCIM_PROVIDER));
+            List<String> excludedProviders = new ArrayList<String>();
+
+            if (excludedProviderIterator != null) {
+                while (excludedProviderIterator.hasNext()) {
+                    OMElement excludedProvider = excludedProviderIterator.next();
+                    String id = excludedProvider.getAttributeValue(new QName(
+                            SCIMConfigConstants.ATTRIBUTE_NAME_ID));
+                    excludedProviders.add(id);
+                }
+            }
+            if (!excludedProviders.isEmpty()) {
+                scimConsumer.setExcludedProviderList(excludedProviders);
+            }
         }
         return consumersMap;
     }

@@ -29,9 +29,11 @@ public class SCIMConfigConstants {
     public static final String ELEMENT_NAME_SCIM_ENDPOINTS = "scim-endpoints";
     public static final String ELEMENT_NAME_USER_ENDPOINT = "user-endpoint";
     public static final String ELEMENT_NAME_GROUP_ENDPOINT = "group-endpoint";
-    public static final String ELEMENT_NAME_INCLUDE = "include";
+    public static final String ELEMENT_NAME_INCLUDE = "includeAll";
     public static final String ELEMENT_NAME_EXCLUDE = "exclude";
     public static final String ELEMENT_NAME_PROPERTY = "Property";
+    public static final String ELEMENT_NAME_APPLIED_TO_PRIVILEGED_ACTIONS = "isAppliedToPrivilegedActions";
+    public static final String ELEMENT_NAME_APPLIED_TO_SCIM_OPERATIONS = "isAppliedToSCIMOperations";
 
     public static final String ATTRIBUTE_NAME_ID = "id";
     public static final String ATTRIBUTE_NAME_USERNAME = "username";

@@ -17,9 +17,13 @@
 */
 package org.wso2.charon.core.config;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Programmatic representation of the provisioning-config.xml
+ */
 public class SCIMConfig {
 
     private Map<String, SCIMProvider> providersMap;
@@ -41,13 +45,21 @@ public class SCIMConfig {
         consumersMap = consumersMap;
     }
 
-    public SCIMConsumer getConsumer(String consumerId) {
+    /**
+     * Obtain the SCIM Consumer with all the provider details processed according to the conventions
+     * of provisioning-config.xml
+     *
+     * @param consumerId
+     * @return
+     */
+    public SCIMConsumer getConsumerProcessed(String consumerId) {
         if (consumersMap != null && consumersMap.containsKey(consumerId)) {
-            //when returning the consumer, go through the consumer's providers map and fill
-            //their properties map if no property map is in the consumer, and if there is any properties
-            //in consumer's provider, skip those attributes and inherit other attributes
+            //when returning the consumer, go through the providers map defined under consumer element
+            //and fill their properties map if no property map is in the particular provider, or if there are
+            //any properties in this provider, skip filling those attributes and inherit only the other attributes.
             SCIMConsumer scimConsumer = consumersMap.get(consumerId);
             Map<String, SCIMProvider> providers = scimConsumer.getScimProviders();
+
             if ((providers != null) && (!providers.isEmpty())) {
                 for (Map.Entry<String, SCIMProvider> scimProviderEntry : providers.entrySet()) {
                     String providerId = scimProviderEntry.getKey();
@@ -55,17 +67,16 @@ public class SCIMConfig {
                     if ((scimProvider.getProperties() != null) &&
                         (!scimProvider.getProperties().isEmpty())) {
                         //inherit properties from provider list other than the ones in the consumer's provider
-                        Map<String, String> providerPropMap = scimProvider.getProperties();
+                        Map<String, String> scimProviderPropMap = scimProvider.getProperties();
+
                         if ((providersMap != null) && (!providersMap.isEmpty())) {
                             SCIMProvider provider = providersMap.get(providerId);
                             Map<String, String> providerProperties = provider.getProperties();
                             for (Map.Entry<String, String> entry : providerProperties.entrySet()) {
-                                if (providerPropMap.containsKey(entry.getKey())) {
-                                    continue;
+                                if (!scimProviderPropMap.containsKey(entry.getKey())) {
+                                    scimProviderPropMap.put(entry.getKey(), entry.getValue());
                                 }
-                                providerPropMap.put(entry.getKey(), entry.getValue());
                             }
-                            scimProvider.setProperties(providerProperties);
                         }
                     } else {
                         //go through the providers map, get the relevant provider's map,
@@ -79,7 +90,37 @@ public class SCIMConfig {
                     }
                 }
             }
-            return consumersMap.get(consumerId);
+            //get the updated provider map and if <includeAll> is true, fill the providers other than
+            //the ones in the providers map
+            if (scimConsumer.isIncludeAll()) {
+                //get the updated provider list of the consumer
+                Map<String, SCIMProvider> scimProviders = scimConsumer.getScimProviders();
+                //go through all providers and
+                for (String providerId : providers.keySet()) {
+                    if (!scimProviders.containsKey(providerId)) {
+                        scimProviders.put(providerId, providers.get(providerId));
+                    }
+                }
+            }
+            //once again get the updated provider map and see whether any providers are excluded.
+            List<String> excludedProviderList = scimConsumer.getExcludedProviderList();
+            if ((excludedProviderList != null) && (!excludedProviderList.isEmpty())) {
+                Map<String, SCIMProvider> scimProviders = scimConsumer.getScimProviders();
+                for (String excludedProvider : excludedProviderList) {
+                    if (scimProviders.containsKey(excludedProvider)) {
+                        scimProviders.remove(excludedProvider);
+                    }
+                }
+            }
+            return scimConsumer;
+        } else {
+            return null;
+        }
+    }
+
+    public SCIMConsumer getSCIMConsumer(String id) {
+        if (consumersMap.containsKey(id)) {
+            return consumersMap.get(id);
         } else {
             return null;
         }
