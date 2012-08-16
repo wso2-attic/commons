@@ -42,10 +42,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SCIMConfigProcessor {
 
-    public SCIMConfig buildConfigFromFile(String filepath) throws CharonException {
+    public SCIMConfig buildConfigFromFile(String filePath) throws CharonException {
         try {
             InputStream inputStream = null;
-            File provisioningConfig = new File(filepath);
+            File provisioningConfig = new File(filePath);
             if (provisioningConfig.exists()) {
                 inputStream = new FileInputStream(provisioningConfig);
             }
@@ -141,7 +141,7 @@ public class SCIMConfigProcessor {
             //get consumer id
             String consumerId = scimConsumerElement.getAttributeValue(new QName(
                     SCIMConfigConstants.ATTRIBUTE_NAME_ID));
-
+            scimConsumer.setId(consumerId);
             //get providers
             Iterator<OMElement> scimProviders = scimConsumerElement.getChildrenWithName(
                     new QName(SCIMConfigConstants.ELEMENT_NAME_SCIM_PROVIDER));
@@ -202,7 +202,7 @@ public class SCIMConfigProcessor {
             //read for excluded provider list
             OMElement excludedProviderList = scimConsumerElement.getFirstChildWithName(new QName(
                     SCIMConfigConstants.ELEMENT_NAME_EXCLUDE));
-            Iterator<OMElement> excludedProviderIterator = scimConsumerElement.getChildrenWithName(
+            Iterator<OMElement> excludedProviderIterator = excludedProviderList.getChildrenWithName(
                     new QName(SCIMConfigConstants.ELEMENT_NAME_SCIM_PROVIDER));
             List<String> excludedProviders = new ArrayList<String>();
 
