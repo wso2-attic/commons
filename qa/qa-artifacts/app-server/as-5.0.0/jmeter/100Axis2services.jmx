@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="2.2">
+<jmeterTestPlan version="1.2" properties="2.3">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -15,10 +15,10 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">100</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">100</stringProp>
         <longProp name="ThreadGroup.start_time">1339414812000</longProp>
         <longProp name="ThreadGroup.end_time">1339414812000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -52,7 +52,7 @@
         <hashTree/>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">3</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
         </LoopController>
         <hashTree>
           <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
@@ -64,7 +64,7 @@
             <boolProp name="CounterConfig.per_user">true</boolProp>
           </CounterConfig>
           <hashTree/>
-          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request" enabled="true">
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-int" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
@@ -75,6 +75,63 @@
                  &lt;xs:x xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input}&lt;/xs:x&gt;
         &lt;/p:echoInt&gt;
      &lt;/s:Body&gt;
+  &lt;/s:Envelope&gt;
+</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-string" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+  &lt;s:Body&gt;
+ &lt;p:echoString xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
+  &lt;!--0 to 1 occurrence--&gt;
+  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} bar&lt;/xs:s&gt;
+ &lt;/p:echoString&gt;
+     &lt;/s:Body&gt;
+  &lt;/s:Envelope&gt;
+</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-ping" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+  &lt;s:Body&gt;
+&lt;p:Ping xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
+  &lt;!--0 to 1 occurrence--&gt;
+  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} foo&lt;/xs:s&gt;
+ &lt;/p:Ping&gt;
+     &lt;/s:Body&gt;
+  &lt;/s:Envelope&gt;
+</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-time" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
+  &lt;s:Body&gt;
+&lt;ns:getTime xmlns:ns=&quot;http://service.carbon.wso2.org&quot;/&gt;
+&lt;/s:Body&gt;
   &lt;/s:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
