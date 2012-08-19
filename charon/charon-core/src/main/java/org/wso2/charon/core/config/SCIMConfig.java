@@ -34,7 +34,7 @@ public class SCIMConfig {
     }
 
     public void setProvidersMap(Map<String, SCIMProvider> providersMap) {
-        providersMap = providersMap;
+        this.providersMap = providersMap;
     }
 
     public Map<String, SCIMConsumer> getConsumersMap() {
@@ -42,7 +42,7 @@ public class SCIMConfig {
     }
 
     public void setConsumersMap(Map<String, SCIMConsumer> consumersMap) {
-        consumersMap = consumersMap;
+        this.consumersMap = consumersMap;
     }
 
     /**
@@ -94,11 +94,11 @@ public class SCIMConfig {
             //the ones in the providers map
             if (scimConsumer.isIncludeAll()) {
                 //get the updated provider list of the consumer
-                Map<String, SCIMProvider> scimProviders = scimConsumer.getScimProviders();
+                //Map<String, SCIMProvider> scimProviders = scimConsumer.getScimProviders();
                 //go through all providers and
-                for (String providerId : providers.keySet()) {
-                    if (!scimProviders.containsKey(providerId)) {
-                        scimProviders.put(providerId, providers.get(providerId));
+                for (String providerId : providersMap.keySet()) {
+                    if (!providers.containsKey(providerId)) {
+                        providers.put(providerId, providersMap.get(providerId));
                     }
                 }
             }

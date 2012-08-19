@@ -27,8 +27,8 @@ public class SCIMConfigConstants {
     public static final String ELEMENT_NAME_USERNAME = "userName";
     public static final String ELEMENT_NAME_PASSWORD = "password";
     public static final String ELEMENT_NAME_SCIM_ENDPOINTS = "scim-endpoints";
-    public static final String ELEMENT_NAME_USER_ENDPOINT = "user-endpoint";
-    public static final String ELEMENT_NAME_GROUP_ENDPOINT = "group-endpoint";
+    public static final String ELEMENT_NAME_USER_ENDPOINT = "userEndpoint";
+    public static final String ELEMENT_NAME_GROUP_ENDPOINT = "groupEndpoint";
     public static final String ELEMENT_NAME_INCLUDE = "includeAll";
     public static final String ELEMENT_NAME_EXCLUDE = "exclude";
     public static final String ELEMENT_NAME_PROPERTY = "Property";

@@ -19,6 +19,8 @@ package org.wso2.charon.core.config;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.wso2.charon.core.exceptions.CharonException;
 
 import javax.xml.namespace.QName;
@@ -42,19 +44,23 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SCIMConfigProcessor {
 
+    private Log logger = LogFactory.getLog(SCIMConfigProcessor.class);
+
     public SCIMConfig buildConfigFromFile(String filePath) throws CharonException {
         try {
             InputStream inputStream = null;
             File provisioningConfig = new File(filePath);
             if (provisioningConfig.exists()) {
                 inputStream = new FileInputStream(provisioningConfig);
+                StAXOMBuilder staxOMBuilder = new StAXOMBuilder(inputStream);
+                OMElement documentElement = staxOMBuilder.getDocumentElement();
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                return buildConfigFromRootElement(documentElement);
+            } else {
+                throw new FileNotFoundException();
             }
-            StAXOMBuilder staxOMBuilder = new StAXOMBuilder(inputStream);
-            OMElement documentElement = staxOMBuilder.getDocumentElement();
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            return buildConfigFromRootElement(documentElement);
         } catch (FileNotFoundException e) {
             throw new CharonException(SCIMConfigConstants.PROVISIONING_CONFIG_NAME + "not found.");
         } catch (XMLStreamException e) {
@@ -63,6 +69,23 @@ public class SCIMConfigProcessor {
         } catch (IOException e) {
             throw new CharonException("Error in building the configuration file: " +
                                       SCIMConfigConstants.PROVISIONING_CONFIG_NAME);
+        }
+    }
+
+    public SCIMConfig buildConfigFromInputStream(InputStream inStream) throws CharonException {
+        try {
+            StAXOMBuilder omBuilder = new StAXOMBuilder(inStream);
+            OMElement rootElement = omBuilder.getDocumentElement();
+            if (inStream != null) {
+                inStream.close();
+            }
+            return buildConfigFromRootElement(rootElement);
+        } catch (XMLStreamException e) {
+            throw new CharonException("Error in building the configuration file: " +
+                                      SCIMConfigConstants.PROVISIONING_CONFIG_NAME);
+
+        } catch (IOException e) {
+            throw new CharonException("Error in closing the input stream.");
         }
     }
 
@@ -154,10 +177,29 @@ public class SCIMConfigProcessor {
                     SCIMProvider scimProvider = new SCIMProvider();
 
                     OMElement scimProviderElement = scimProviders.next();
-                    //get attributes if exist
-                    String providerId = scimProviderElement.getAttributeValue(new QName(SCIMConfigConstants.ATTRIBUTE_NAME_ID));
+
+                    //get provider id
+                    String providerId = scimProviderElement.getAttributeValue(
+                            new QName(SCIMConfigConstants.ATTRIBUTE_NAME_ID));
                     scimProvider.setId(providerId);
 
+                    //read properties if exist
+                    Map<String, String> providerProperties = new HashMap<String, String>();
+                    Iterator<OMElement> propertiesMapIterator = scimProviderElement.getChildrenWithName(
+                            new QName(SCIMConfigConstants.ELEMENT_NAME_PROPERTY));
+                    if (propertiesMapIterator != null) {
+                        //iterate through propertiesMapIterator
+                        while (propertiesMapIterator.hasNext()) {
+                            OMElement property = propertiesMapIterator.next();
+                            String propertyName = property.getAttributeValue(new QName(
+                                    SCIMConfigConstants.ATTRIBUTE_NAME_NAME));
+                            String propertyValue = property.getText();
+                            providerProperties.put(propertyName, propertyValue);
+                        }
+                    }
+                    scimProvider.setProperties(providerProperties);
+
+                    //read customized credentials as attributes and set as properties
                     String userName = scimProviderElement.getAttributeValue(new QName(
                             SCIMConfigConstants.ATTRIBUTE_NAME_USERNAME));
                     if (userName != null) {
@@ -168,22 +210,6 @@ public class SCIMConfigProcessor {
                     if (password != null) {
                         scimProvider.setProperty(SCIMConfigConstants.ELEMENT_NAME_PASSWORD, password);
                     }
-
-                    //read properties if exist
-                    Map<String, String> providerProperties = new HashMap<String, String>();
-                    Iterator<OMElement> propertiesMap = scimConsumerElement.getChildrenWithName(
-                            new QName(SCIMConfigConstants.ELEMENT_NAME_PROPERTY));
-                    if (propertiesMap != null) {
-                        //iterate through propertiesMap
-                        while (propertiesMap.hasNext()) {
-                            OMElement property = propertiesMap.next();
-                            String propertyName = property.getAttributeValue(new QName(
-                                    SCIMConfigConstants.ATTRIBUTE_NAME_NAME));
-                            String propertyValue = property.getText();
-                            providerProperties.put(propertyName, propertyValue);
-                        }
-                    }
-                    scimProvider.setProperties(providerProperties);
                     providersMap.put(providerId, scimProvider);
                 }
                 scimConsumer.setScimProviders(providersMap);
@@ -200,22 +226,40 @@ public class SCIMConfigProcessor {
                 scimConsumer.setIncludeAll(false);
             }
             //read for excluded provider list
-            OMElement excludedProviderList = scimConsumerElement.getFirstChildWithName(new QName(
-                    SCIMConfigConstants.ELEMENT_NAME_EXCLUDE));
-            Iterator<OMElement> excludedProviderIterator = excludedProviderList.getChildrenWithName(
-                    new QName(SCIMConfigConstants.ELEMENT_NAME_SCIM_PROVIDER));
-            List<String> excludedProviders = new ArrayList<String>();
+            OMElement excludedProviderListElement = scimConsumerElement.getFirstChildWithName(
+                    new QName(SCIMConfigConstants.ELEMENT_NAME_EXCLUDE));
+            if (excludedProviderListElement != null) {
+                Iterator<OMElement> excludedProviderIterator =
+                        excludedProviderListElement.getChildrenWithName(
+                                new QName(SCIMConfigConstants.ELEMENT_NAME_SCIM_PROVIDER));
+                List<String> excludedProviders = new ArrayList<String>();
 
-            if (excludedProviderIterator != null) {
-                while (excludedProviderIterator.hasNext()) {
-                    OMElement excludedProvider = excludedProviderIterator.next();
-                    String id = excludedProvider.getAttributeValue(new QName(
-                            SCIMConfigConstants.ATTRIBUTE_NAME_ID));
-                    excludedProviders.add(id);
+                if (excludedProviderIterator != null) {
+                    while (excludedProviderIterator.hasNext()) {
+                        OMElement excludedProvider = excludedProviderIterator.next();
+                        String id = excludedProvider.getAttributeValue(new QName(
+                                SCIMConfigConstants.ATTRIBUTE_NAME_ID));
+                        excludedProviders.add(id);
+                    }
+                }
+                if (!excludedProviders.isEmpty()) {
+                    scimConsumer.setExcludedProviderList(excludedProviders);
                 }
             }
-            if (!excludedProviders.isEmpty()) {
-                scimConsumer.setExcludedProviderList(excludedProviders);
+
+            //read implementer specific consumer properties
+            Iterator<OMElement> customPropIterator = scimConsumerElement.getChildrenWithName(
+                    new QName(SCIMConfigConstants.ELEMENT_NAME_PROPERTY));
+            Map<String, String> customPropertiesMap = new HashMap<String, String>();
+            if (customPropIterator != null) {
+                while (customPropIterator.hasNext()) {
+                    OMElement propElement = customPropIterator.next();
+                    String propName = propElement.getAttributeValue(new QName(
+                            SCIMConfigConstants.ATTRIBUTE_NAME_NAME));
+                    String propValue = propElement.getText();
+                    customPropertiesMap.put(propName, propValue);
+                }
+                scimConsumer.setPropertiesMap(customPropertiesMap);
             }
         }
         return consumersMap;
