@@ -15,6 +15,10 @@
    <source>../../README.txt</source>
    <outputDirectory>/</outputDirectory>
   </file>
+  <file>
+   <source>../../NOTICE.txt</source>
+   <outputDirectory>/</outputDirectory>
+  </file>
  </files>
  <fileSets>
   <fileSet>
