@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><api xmlns="http://ws.apache.org/ns/synapse" name="googlePlacesAPIRequest" context="/reqgoogle">
+    <resource methods="POST">
+        <inSequence>
+            <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+            <log level="full"/>
+            <send>
+                <endpoint>
+                    <address uri="vfs:file:///home/evanthika/WSO2/CARBON/CARBON4/ESB/json/response/twitterresponse.json"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+</api>
