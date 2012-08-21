@@ -673,7 +673,7 @@
             The "enable" attribute indicates whether context replication has been enabled
         -->
         <stateManager class="org.apache.axis2.clustering.state.DefaultStateManager"
-                      enable="true">
+                      enable="false">
             <replication>
                 <defaults>
                     <exclude name="local_*"/>
