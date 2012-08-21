@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><sequence xmlns="http://ws.apache.org/ns/synapse" name="main">
+    <in>
+        <property name="REQUEST_HOST_HEADER" value="maps.googleapis.com" scope="axis2"/>
+        <property name="POST_TO_PATH" value="true" scope="axis2" type="STRING"/>
+        <property name="REST_URL_POSTFIX " value="maps/api/place/search/json?location=-33.8670522,151.1957362&amp;radius=500&amp;types=food&amp;name=harbour&amp;sensor=false&amp;key=AIzaSyDsOTlM4jPzWcDP0dQGwe-9A8IIpuFXhYU" scope="axis2" type="STRING"/>
+        <send>
+            <endpoint>
+                <address uri="https://maps.googleapis.com"/>
+            </endpoint>
+        </send>
+    </in>
+    <out>
+        <send/>
+    </out>
+    <description>The main sequence for the message mediation</description>
+</sequence>

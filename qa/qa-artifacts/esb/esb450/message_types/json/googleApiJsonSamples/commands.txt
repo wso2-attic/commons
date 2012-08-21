@@ -2,3 +2,14 @@ Invoking JsonProxy which returns a json response message for google places API s
 =====================================================================================
 curl -v -X GET "http://localhost:8281/services/JsonProxy/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&sensor=false&key=AIzaSyDsOTlM4jPzWcDP0dQGwe-9A8IIpuFXhYU"
 
+
+
+Invoking API which returns a json response message for google places API search
+=====================================================================================
+curl -v -X GET "http://localhost:8281/google/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&sensor=false&key=AIzaSyDsOTlM4jPzWcDP0dQGwe-9A8IIpuFXhYU"
+
+
+
+Invoking main sequence which returns a json response message for google places API search
+=====================================================================================
+curl -v -X GET "http://localhost:8281/maps/api/place/search/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&sensor=false&key=AIzaSyDsOTlM4jPzWcDP0dQGwe-9A8IIpuFXhYU"
