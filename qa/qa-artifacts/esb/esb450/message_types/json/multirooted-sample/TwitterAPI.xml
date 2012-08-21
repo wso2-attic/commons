@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><api xmlns="http://ws.apache.org/ns/synapse" name="TwitterAPI" context="/twitter">
+    <resource methods="GET" url-mapping="/search.json">
+        <inSequence>
+            <send>
+                <endpoint>
+                    <address uri="http://search.twitter.com/"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+</api>

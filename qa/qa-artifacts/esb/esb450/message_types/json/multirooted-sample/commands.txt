@@ -1,0 +1,12 @@
+Multirooted JSon support with Proxy Services & APIs
+===================================================
+
+Invoking TwitterProxy
+---------------------
+curl -v -X GET http://localhost:8281/services/TwitterProxy/search.json?q=%23wso2
+
+
+Invoking the services through an API
+------------------------------------
+curl -v -X GET http://localhost:8281/twitter/search.json?q=%23wso2
+
