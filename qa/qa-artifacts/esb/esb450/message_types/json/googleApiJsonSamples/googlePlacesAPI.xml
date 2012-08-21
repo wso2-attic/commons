@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><api xmlns="http://ws.apache.org/ns/synapse" name="googlePlacesAPI" context="/google">
+    <resource methods="GET" url-mapping="/maps/api/place/search/json">
+        <inSequence>
+            <property name="REQUEST_HOST_HEADER" value="maps.googleapis.com" scope="axis2"/>
+            <send>
+                <endpoint>
+                    <address uri="https://maps.googleapis.com/"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+</api>
