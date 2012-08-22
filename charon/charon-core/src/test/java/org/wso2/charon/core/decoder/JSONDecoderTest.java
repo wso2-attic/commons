@@ -188,9 +188,16 @@ public class JSONDecoderTest {
             Assert.assertEquals("Tour Guides", decodedGroup.getDisplayName());
             List<String> memberIDs = decodedGroup.getMembers();
             for (String memberID : memberIDs) {
-                if((!"2819c223-7f76-453a-919d-413861904646".equals(memberID))&&
-                   (!"902c246b-6245-4190-8e05-00816be7344a".equals(memberID))){
-                    Assert.fail("given members do not exist in the group.");    
+                if ((!"2819c223-7f76-453a-919d-413861904646".equals(memberID)) &&
+                    (!"902c246b-6245-4190-8e05-00816be7344a".equals(memberID))) {
+                    Assert.fail("given members do not exist in the group.");
+                }
+            }
+            List<String> displayNames = decodedGroup.getMembersWithDisplayName();
+            for (String displayName : displayNames) {
+                if ((!"Babs Jensen".equals(displayName)) &&
+                    (!"Mandy Pepperidge".equals(displayName))) {
+                    Assert.fail("given members' display names do not exist in the group.");
                 }
             }
         } catch (BadRequestException e) {

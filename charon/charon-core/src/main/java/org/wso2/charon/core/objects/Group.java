@@ -77,6 +77,32 @@ public class Group extends AbstractSCIMObject {
         return getMembers(SCIMConstants.USER);
     }
 
+    //get members with is and display name - return Map<ID,DisplayName>
+
+    public List<String> getMembersWithDisplayName() {
+        if (isAttributeExist(SCIMConstants.GroupSchemaConstants.MEMBERS)) {
+            MultiValuedAttribute members = (MultiValuedAttribute) attributeList.get(
+                    SCIMConstants.GroupSchemaConstants.MEMBERS);
+            List<String> displayNames = new ArrayList<String>();
+            List<Map<String, Object>> values = members.getComplexValues();
+            for (Map<String, Object> value : values) {
+                for (Map.Entry<String, Object> entry : value.entrySet()) {
+                    if ((SCIMConstants.CommonSchemaConstants.DISPLAY).equals(entry.getKey())) {
+                        //add display name to the list
+                        displayNames.add((String) entry.getValue());
+                    }
+                }
+            }
+            if (!displayNames.isEmpty()) {
+                return displayNames;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     //get user members with display name - return Map<ID,DisplayName>
 
     //get group members with display name - Map<ID,DisplayName>
@@ -133,7 +159,7 @@ public class Group extends AbstractSCIMObject {
                 SimpleAttribute valueAttribute =
                         (SimpleAttribute) ((ComplexAttribute) value).getSubAttribute(
                                 SCIMConstants.CommonSchemaConstants.VALUE);
-                if(id.equals(valueAttribute.getStringValue())){
+                if (id.equals(valueAttribute.getStringValue())) {
                     members.removeAttributeValue(value);
                     break;
                 }

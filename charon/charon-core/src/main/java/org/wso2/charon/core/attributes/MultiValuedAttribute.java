@@ -24,6 +24,7 @@ import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions.DataType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,7 +128,7 @@ public class MultiValuedAttribute extends AbstractAttribute {
      * To construct and set a value of a multi-valued attribute, as a complex value containing
      * set of sub attributes.
      */
-    public void setComplexValueWithSetOfSubAttributes(Map<String,Attribute> subAttributes){
+    public void setComplexValueWithSetOfSubAttributes(Map<String, Attribute> subAttributes) {
         ComplexAttribute complexValue = new ComplexAttribute();
         complexValue.setSubAttributes(subAttributes);
         this.attributeValues.add(complexValue);
@@ -365,8 +366,34 @@ public class MultiValuedAttribute extends AbstractAttribute {
         throw new CharonException("Error: getSubAttribute method not supported by MultiValuedAttribute.");
     }
 
-    public void removeAttributeValue(Attribute attributeValue){
+    public void removeAttributeValue(Attribute attributeValue) {
         attributeValues.remove(attributeValue);
     }
 
+    /**
+     * To get the list of complex values of a sub multivalued attribute, with sub attributes of each value
+     * with each attribute's(simple attribute) name and value as a map
+     *
+     * @return
+     */
+    public List<Map<String, Object>> getComplexValues() {
+        List complexValues = new ArrayList();
+        for (Attribute attributeValue : attributeValues) {
+            if (attributeValue instanceof ComplexAttribute) {
+                Map<String, Object> subAttributeValues = new HashMap<String, Object>();
+                Map<String, Attribute> subAttributes =
+                        ((ComplexAttribute) attributeValue).getSubAttributes();
+                for (Map.Entry<String, Attribute> attributeEntry : subAttributes.entrySet()) {
+                    subAttributeValues.put(attributeEntry.getKey(),
+                                           ((SimpleAttribute) attributeEntry.getValue()).getValue());
+                }
+                complexValues.add(subAttributeValues);
+            }
+        }
+        if (!complexValues.isEmpty()) {
+            return complexValues;
+        } else {
+            return null;
+        }
+    }
 }

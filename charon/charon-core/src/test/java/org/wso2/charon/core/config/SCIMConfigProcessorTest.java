@@ -102,4 +102,12 @@ public class SCIMConfigProcessorTest {
         Assert.assertNotNull(scimConfig.getConsumerProcessed("admin@carbon.super").getScimProviders().get("salesforce"));
 
     }
+
+    @Test
+    public void testBuildingSampleConfig3() throws IOException, CharonException {
+        SCIMConfigProcessor scimConfigProcessor = new SCIMConfigProcessor();
+        InputStream inStream = this.getClass().getClassLoader().getResource(
+                "provisioning-config-sample3.xml").openStream();
+        SCIMConfig scimConfig = scimConfigProcessor.buildConfigFromInputStream(inStream);
+    }
 }
