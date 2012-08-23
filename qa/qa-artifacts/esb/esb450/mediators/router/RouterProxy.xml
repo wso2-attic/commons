@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><proxy xmlns="http://ws.apache.org/ns/synapse" name="RouterProxy" transports="https http" startOnLoad="true" trace="disable">
+    <description/>
+    <target>
+        <inSequence>
+            <router>
+                <route xmlns:m0="http://service.carbon.wso2.org" expression="//m0:echoString/m0:s" match="Hellooo!!!">
+                    <target>
+                        <endpoint>
+                            <address uri="http://10.100.3.188:9763/services/Axis2Service"/>
+                        </endpoint>
+                    </target>
+                </route>
+                <route xmlns:m0="http://services.samples" expression="//m0:getQuote/m0:request/m0:symbol" match="IBM">
+                    <target>
+                        <endpoint>
+                            <address uri="http://10.100.3.188:9763/services/SimpleStockQuoteService"/>
+                        </endpoint>
+                    </target>
+                </route>
+            </router>
+            <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+            <property name="transport.vfs.ReplyFileName" expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')" scope="transport"/>
+            <send>
+                <endpoint>
+                    <address uri="vfs:file:///home/evanthika/RESOURCES/router_mediator/out"/>
+                </endpoint>
+            </send>
+        </inSequence>
+    </target>
+</proxy>
