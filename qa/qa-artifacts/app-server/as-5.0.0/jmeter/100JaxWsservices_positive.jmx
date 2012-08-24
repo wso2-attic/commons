@@ -17,15 +17,10 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-<<<<<<< .mine
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">2</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-=======
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">100</stringProp>
->>>>>>> .r139079
-        <longProp name="ThreadGroup.start_time">1339414812000</longProp>
-        <longProp name="ThreadGroup.end_time">1339414812000</longProp>
+        <longProp name="ThreadGroup.start_time">1345473420000</longProp>
+        <longProp name="ThreadGroup.end_time">1345473480000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
@@ -46,22 +41,22 @@
           </collectionProp>
         </Arguments>
         <hashTree/>
-        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-          <stringProp name="CounterConfig.start">1</stringProp>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter1" enabled="true">
+          <stringProp name="CounterConfig.start">0</stringProp>
           <stringProp name="CounterConfig.end">100</stringProp>
           <stringProp name="CounterConfig.incr">1</stringProp>
           <stringProp name="CounterConfig.name">id</stringProp>
           <stringProp name="CounterConfig.format">#</stringProp>
-          <boolProp name="CounterConfig.per_user">true</boolProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
         </CounterConfig>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="false">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </LoopController>
         <hashTree>
-          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-            <stringProp name="CounterConfig.start">1</stringProp>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter2" enabled="true">
+            <stringProp name="CounterConfig.start">0</stringProp>
             <stringProp name="CounterConfig.end">100</stringProp>
             <stringProp name="CounterConfig.incr">1</stringProp>
             <stringProp name="CounterConfig.name">input</stringProp>
@@ -73,80 +68,121 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://esb.wso2.com:8320/services/Axis2SampleService_100_PS/</stringProp>
-            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
-  &lt;s:Body&gt;
-     &lt;p:echoInt xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
-                 &lt;xs:x xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input}&lt;/xs:x&gt;
-        &lt;/p:echoInt&gt;
-     &lt;/s:Body&gt;
-&lt;/s:Envelope&gt;
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/JaxWsService_1.0.${id}/services/JaxwsService</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:sam=&quot;http://sample/&quot;&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;sam:echoInt&gt;
+         &lt;intValue&gt;${input}&lt;/intValue&gt;
+      &lt;/sam:echoInt&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
             <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
             <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           </SoapSampler>
-          <hashTree/>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1829726741">echoIntResponse</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
           <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-string" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
-            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
-  &lt;s:Body&gt;
- &lt;p:echoString xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
-  &lt;!--0 to 1 occurrence--&gt;
-  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} bar&lt;/xs:s&gt;
- &lt;/p:echoString&gt;
-     &lt;/s:Body&gt;
-  &lt;/s:Envelope&gt;
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/JaxWsService_1.0.${id}/services/JaxwsService</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:sam=&quot;http://sample/&quot;&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;sam:echoString&gt;
+         &lt;!--Optional:--&gt;
+         &lt;stringValue&gt;${input}foo&lt;/stringValue&gt;
+      &lt;/sam:echoString&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
             <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
             <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           </SoapSampler>
-          <hashTree/>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="-1266857737">echoStringResponse</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
           <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-ping" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
-            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
-  &lt;s:Body&gt;
-&lt;p:Ping xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
-  &lt;!--0 to 1 occurrence--&gt;
-  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} foo&lt;/xs:s&gt;
- &lt;/p:Ping&gt;
-     &lt;/s:Body&gt;
-  &lt;/s:Envelope&gt;
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/JaxWsService_1.0.${id}/services/JaxwsService</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:sam=&quot;http://sample/&quot;&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;sam:ping/&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
             <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
             <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           </SoapSampler>
-          <hashTree/>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="49588">202</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">8</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
           <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="SOAP/XML-RPC Request-time" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
-            <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
-  &lt;s:Body&gt;
-&lt;ns:getTime xmlns:ns=&quot;http://service.carbon.wso2.org&quot;/&gt;
-&lt;/s:Body&gt;
-  &lt;/s:Envelope&gt;
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/JaxWsService_1.0.${id}/services/JaxwsService</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:sam=&quot;http://sample/&quot;&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;sam:getTime/&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
             <stringProp name="SoapSampler.SOAP_ACTION"></stringProp>
             <stringProp name="SoapSampler.SEND_SOAP_ACTION">false</stringProp>
             <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
           </SoapSampler>
-          <hashTree/>
+          <hashTree>
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+              <collectionProp name="Asserion.test_strings">
+                <stringProp name="1628782756">getTimeResponse</stringProp>
+              </collectionProp>
+              <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+              <boolProp name="Assertion.assume_success">false</boolProp>
+              <intProp name="Assertion.test_type">2</intProp>
+            </ResponseAssertion>
+            <hashTree/>
+          </hashTree>
         </hashTree>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -207,7 +243,7 @@
               <bytes>true</bytes>
             </value>
           </objProp>
-          <stringProp name="filename"></stringProp>
+          <stringProp name="filename">/home/charitha/results_positive.jtl</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
