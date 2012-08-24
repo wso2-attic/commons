@@ -200,6 +200,9 @@ public class JSONDecoderTest {
                     Assert.fail("given members' display names do not exist in the group.");
                 }
             }
+
+            //encode the decoded object and decode again and seee
+            
         } catch (BadRequestException e) {
             Assert.fail(e.getDescription());
         } catch (CharonException e) {

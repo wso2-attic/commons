@@ -65,6 +65,7 @@ public class GroupEndpointTest {
     }
 
     public void testCreateGroupWithOutMembers() {
+        //should pass according to SCIM 1.1 although fails according to 1.0
         try {
             Group group = new Group();
             group.setDisplayName("eng");
@@ -74,7 +75,7 @@ public class GroupEndpointTest {
             SCIMResponse response = groupREP.create(encodedGroup,
                                                     SCIMConstants.APPLICATION_JSON,
                                                     SCIMConstants.APPLICATION_JSON, userManager);
-            Assert.assertEquals(ResponseCodeConstants.CODE_INTERNAL_SERVER_ERROR, response.getResponseCode());
+            Assert.assertEquals(ResponseCodeConstants.CODE_CREATED, response.getResponseCode());
         } catch (CharonException e) {
             Assert.fail("Error creating group");
         }

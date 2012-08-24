@@ -48,12 +48,13 @@ public class SCIMSchemaDefinitions {
                                                                 SCIMConstants.CommonSchemaConstants.PRIMARY,
                                                                 DataType.BOOLEAN, SCIMConstants.PRIMARY_DESC,
                                                                 false, false, false, null);
-
+    /*TODO:Verify: removing read only requirement on DISPLAY to support creating groups with members whose
+    name is sent in DISPLAY attribute*/
     public static final SCIMSubAttributeSchema DISPLAY =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
                                                                 SCIMConstants.CommonSchemaConstants.DISPLAY,
                                                                 DataType.STRING, SCIMConstants.DISPLAY_DESC,
-                                                                true, false, false, null);
+                                                                false, false, false, null);
 
     public static final SCIMSubAttributeSchema OPERATION =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
@@ -362,13 +363,14 @@ public class SCIMSchemaDefinitions {
                                                           SCIMSchemaDefinitions.DataType.STRING, false, null,
                                                           SCIMConstants.DISPLAY_NAME_DESC, SCIMConstants.CORE_SCHEMA_URI,
                                                           false, false, false, null);
+    /*in SCIM 1.1 members is not required for groups.*/
     public static final SCIMAttributeSchema MEMBERS =
             SCIMAttributeSchema.createSCIMAttributeSchema(null,
                                                           SCIMConstants.GroupSchemaConstants.MEMBERS,
                                                           SCIMSchemaDefinitions.DataType.STRING, true,
                                                           SCIMConstants.GroupSchemaConstants.MEMBER,
                                                           SCIMConstants.MEMBERS_DESC, SCIMConstants.CORE_SCHEMA_URI,
-                                                          false, true, false, null);
+                                                          false, false, false, null);
 
     /**
      * *************************Attributes defined in Enterprise User Schema***********************

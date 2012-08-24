@@ -36,10 +36,14 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * REST API exposed by Charon-Core to perform operations on UserResource.
@@ -47,6 +51,7 @@ import java.util.Map;
  * based on the HTTP requests received by SCIM Client.
  */
 public class GroupResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
+    private Log logger = LogFactory.getLog(GroupResourceEndpoint.class);
 
     /**
      * Retrieves a group resource given an unique group id. Mapped to HTTP GET request.
@@ -87,9 +92,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
 
 
         } catch (FormatNotSupportedException e) {
+            logger.error(e.getDescription());
             //if requested format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -97,6 +104,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }
@@ -157,9 +165,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedGroup, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
+            logger.error(e.getDescription());
             //if the submitted format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -167,8 +177,10 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }
@@ -200,12 +212,16 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             //on successful deletion SCIMResponse only has 200 OK status code.
             return new SCIMResponse(ResponseCodeConstants.CODE_OK, null, null);
         } catch (InternalServerException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (NotFoundException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (FormatNotSupportedException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -289,9 +305,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
 
         } catch (FormatNotSupportedException e) {
+            logger.error(e.getDescription());
             //if requested format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -299,10 +317,13 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (NotFoundException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }
@@ -370,9 +391,11 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedGroup, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
+            logger.error(e.getDescription());
             //if the submitted format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -380,10 +403,13 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
     }

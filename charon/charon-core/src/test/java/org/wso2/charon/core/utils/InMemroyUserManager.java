@@ -362,26 +362,28 @@ public class InMemroyUserManager implements UserManager {
 
     private void updateUserMembers(Group group) throws CharonException {
         List<String> members = group.getMembers();
-        for (String member : members) {
-            if (inMemoryUserList.containsKey(member)) {
-                User user = inMemoryUserList.get(member);
-                //update group with all details regarding member
-                group.removeMember(member);
-                Map<String, Object> valueProperties = new HashMap<String, Object>();
-                valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, user.getId());
-                if (user.getDisplayName() != null) {
-                    valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, user.getDisplayName());
-                }
-                valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.USER);
-                group.setMember(valueProperties);
-                //update user with details about the group it belongs to.
-                if (user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId())) {
-                    //update group details in user
-                    user.removeFromGroup(group.getId());
-                    user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
-                } else {
-                    //add group details in user
-                    user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+        if (members != null && !members.isEmpty()) {
+            for (String member : members) {
+                if (inMemoryUserList.containsKey(member)) {
+                    User user = inMemoryUserList.get(member);
+                    //update group with all details regarding member
+                    group.removeMember(member);
+                    Map<String, Object> valueProperties = new HashMap<String, Object>();
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, user.getId());
+                    if (user.getDisplayName() != null) {
+                        valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, user.getDisplayName());
+                    }
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.USER);
+                    group.setMember(valueProperties);
+                    //update user with details about the group it belongs to.
+                    if (user.isUserMemberOfGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId())) {
+                        //update group details in user
+                        user.removeFromGroup(group.getId());
+                        user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+                    } else {
+                        //add group details in user
+                        user.setGroup(SCIMConstants.UserSchemaConstants.DIRECT_MEMBERSHIP, group.getId(), group.getDisplayName());
+                    }
                 }
             }
         }
@@ -391,18 +393,20 @@ public class InMemroyUserManager implements UserManager {
 
     private void updateGroupMembers(Group group) throws CharonException {
         List<String> members = group.getMembers();
-        for (String member : members) {
-            if (inMemoryGroupList.containsKey(member)) {
-                Group memberGroup = inMemoryGroupList.get(member);
-                group.removeMember(member);
+        if (members != null && !members.isEmpty()) {
+            for (String member : members) {
+                if (inMemoryGroupList.containsKey(member)) {
+                    Group memberGroup = inMemoryGroupList.get(member);
+                    group.removeMember(member);
 
-                Map<String, Object> valueProperties = new HashMap<String, Object>();
-                valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, memberGroup.getId());
-                if (memberGroup.getDisplayName() != null) {
-                    valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, memberGroup.getDisplayName());
+                    Map<String, Object> valueProperties = new HashMap<String, Object>();
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.VALUE, memberGroup.getId());
+                    if (memberGroup.getDisplayName() != null) {
+                        valueProperties.put(SCIMConstants.CommonSchemaConstants.DISPLAY, memberGroup.getDisplayName());
+                    }
+                    valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.GROUP);
+                    group.setMember(valueProperties);
                 }
-                valueProperties.put(SCIMConstants.CommonSchemaConstants.TYPE, SCIMConstants.GROUP);
-                group.setMember(valueProperties);
             }
         }
 
