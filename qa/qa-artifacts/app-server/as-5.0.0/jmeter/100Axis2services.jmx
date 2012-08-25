@@ -15,15 +15,10 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">10</stringProp>
         </elementProp>
-
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
-
-        <stringProp name="ThreadGroup.num_threads">1</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">100</stringProp>
-
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
         <longProp name="ThreadGroup.start_time">1339414812000</longProp>
         <longProp name="ThreadGroup.end_time">1339414812000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -35,12 +30,12 @@
           <collectionProp name="Arguments.arguments">
             <elementProp name="server" elementType="Argument">
               <stringProp name="Argument.name">server</stringProp>
-              <stringProp name="Argument.value">appserver.wso2.com</stringProp>
+              <stringProp name="Argument.value">localhost</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
             <elementProp name="port" elementType="Argument">
               <stringProp name="Argument.name">port</stringProp>
-              <stringProp name="Argument.value">8300</stringProp>
+              <stringProp name="Argument.value">9763</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -55,9 +50,9 @@
           <boolProp name="CounterConfig.per_user">true</boolProp>
         </CounterConfig>
         <hashTree/>
-        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="false">
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">10</stringProp>
         </LoopController>
         <hashTree>
           <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
@@ -73,7 +68,7 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://esb.wso2.com:8320/services/Axis2SampleService_100_PS/</stringProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;s:Body&gt;
      &lt;p:echoInt xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
@@ -95,10 +90,9 @@
             <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;s:Body&gt;
- &lt;p:echoString xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
-  &lt;!--0 to 1 occurrence--&gt;
-  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} bar&lt;/xs:s&gt;
- &lt;/p:echoString&gt;
+       &lt;p:echoString xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
+           &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} bar&lt;/xs:s&gt;
+        &lt;/p:echoString&gt;
      &lt;/s:Body&gt;
   &lt;/s:Envelope&gt;
 </stringProp>
@@ -115,10 +109,9 @@
             <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;s:Body&gt;
-&lt;p:Ping xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
-  &lt;!--0 to 1 occurrence--&gt;
-  &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} foo&lt;/xs:s&gt;
- &lt;/p:Ping&gt;
+       &lt;p:Ping xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
+             &lt;xs:s xmlns:xs=&quot;http://service.carbon.wso2.org&quot;&gt;${input} foo&lt;/xs:s&gt;
+        &lt;/p:Ping&gt;
      &lt;/s:Body&gt;
   &lt;/s:Envelope&gt;
 </stringProp>
@@ -135,8 +128,8 @@
             <stringProp name="SoapSampler.URL_DATA">http://${server}:${port}/services/Axis2SampleService_${id}</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;s:Envelope xmlns:s=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
   &lt;s:Body&gt;
-&lt;ns:getTime xmlns:ns=&quot;http://service.carbon.wso2.org&quot;/&gt;
-&lt;/s:Body&gt;
+	&lt;ns:getTime xmlns:ns=&quot;http://service.carbon.wso2.org&quot;/&gt;
+   &lt;/s:Body&gt;
   &lt;/s:Envelope&gt;
 </stringProp>
             <stringProp name="SoapSampler.xml_data_file"></stringProp>
