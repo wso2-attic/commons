@@ -279,9 +279,10 @@ public class UserEndpointTest {
             Assert.assertEquals(SCIMConstants.USER_NAME_URI, userName.getAttributeURI());
             //test if URI is set for sub attributes of complex attributes
             Attribute nameAttribute = attributes.get(SCIMConstants.UserSchemaConstants.NAME);
-            Assert.assertEquals(SCIMConstants.NAME_GIVEN_NAME_URI, nameAttribute.getAttributeURI());
+            Assert.assertEquals(SCIMConstants.NAME_GIVEN_NAME_URI, nameAttribute.getSubAttribute(
+                    SCIMConstants.UserSchemaConstants.GIVEN_NAME).getAttributeURI());
             //test if URI is set for multivalued attribute root and sub
-            Attribute emailAttribute = attributes.get(SCIMConstants.UserSchemaConstants.EMAIL);
+            Attribute emailAttribute = attributes.get(SCIMConstants.UserSchemaConstants.EMAILS);
             Assert.assertEquals(SCIMConstants.EMAILS_URI, emailAttribute.getAttributeURI());
 
 
