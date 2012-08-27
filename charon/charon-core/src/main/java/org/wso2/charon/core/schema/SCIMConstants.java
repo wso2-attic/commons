@@ -319,4 +319,30 @@ public class SCIMConstants {
     public static final int DELETE = 3;
     public static final int PUT = 4;
 
+
+    /*Attribute URIs for attributes defined in scim-core schema spec.
+    * NOTE: No URI for parent attribute of complex attributes.*/
+
+    //for SCIM-Common Schema
+    public static final String ID_URI = "urn:scim:schemas:core:1.0:id";
+    public static final String EXTERNAL_ID_URI = "urn:scim:schemas:core:1.0:externalId";
+    public static final String META_CREATED_URI = "urn:scim:schemas:core:1.0:meta.created";
+    public static final String META_LAST_MODIFIED_URI = "urn:scim:schemas:core:1.0:meta.lastModified";
+    public static final String META_LOCATION_URI = "urn:scim:schemas:core:1.0:meta.location";
+    public static final String META_VERSION_URI = "urn:scim:schemas:core:1.0:meta.version";
+    public static final String META_ATTRIBUTES_URI = "urn:scim:schemas:core:1.0:meta.attributes";
+
+    //for SCIM-User Schema
+    public static final String USER_NAME_URI = "urn:scim:schemas:core:1.0:userName";
+    public static final String NAME_GIVEN_NAME_URI = "urn:scim:schemas:core:1.0:name.givenName";
+    public static final String NAME_FAMILY_NAME_URI = "urn:scim:schemas:core:1.0:name.familyName";
+
+    public static final String EMAILS_URI = "urn:scim:schemas:core:1.0:emails";
+    public static final String WORK_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.work";
+    public static final String HOME_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.home";
+
+    public static final String PHONE_NUMBERS_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
+    public static final String PHONE_NUMBERS_MOBILE_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
+    public static final String PHONE_NUMBERS_HOME_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
+
 }

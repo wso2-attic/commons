@@ -53,8 +53,6 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
         //Default attribute factory knows about SCIMAttribute schema
         if (attributeSchema instanceof SCIMAttributeSchema) {
             return createSCIMAttribute((SCIMAttributeSchema) attributeSchema, attribute);
-            //TODO:once the attribute is created, before returning it, needs to validate the attribute
-            //like - whether attribute value is the same type as data type etc..
         } else if (attributeSchema instanceof SCIMSubAttributeSchema) {
             return createSCIMSubAttribute((SCIMSubAttributeSchema) attributeSchema, attribute);
         }
@@ -109,6 +107,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     protected static SimpleAttribute createSimpleAttribute(AttributeSchema attributeSchema,
                                                            SimpleAttribute simpleAttribute)
             throws CharonException {
+        simpleAttribute.setAttributeURI(attributeSchema.getURI());
         if (simpleAttribute.getValue() != null) {
             if (isAttributeDataTypeValid(simpleAttribute.getValue(), attributeSchema.getType())) {
 
@@ -136,6 +135,7 @@ public class DefaultAttributeFactory /*implements AttributeFactory*/ {
     protected static MultiValuedAttribute createMultiValuedAttribute(
             SCIMAttributeSchema attributeSchema, MultiValuedAttribute multiValuedAttribute)
             throws CharonException {
+        multiValuedAttribute.setAttributeURI(attributeSchema.getURI());
         return validateMultiValuedAttribute(attributeSchema, multiValuedAttribute);
     }
 

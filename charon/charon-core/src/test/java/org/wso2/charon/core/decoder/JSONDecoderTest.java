@@ -22,11 +22,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
+import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
+import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+import org.wso2.charon.core.utils.InMemroyUserManager;
 
 import java.util.List;
 
@@ -202,7 +206,7 @@ public class JSONDecoderTest {
             }
 
             //encode the decoded object and decode again and seee
-            
+
         } catch (BadRequestException e) {
             Assert.fail(e.getDescription());
         } catch (CharonException e) {
@@ -210,6 +214,5 @@ public class JSONDecoderTest {
         }
 
     }
-
 
 }

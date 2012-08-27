@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
+import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
@@ -34,6 +35,8 @@ import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.utils.InMemroyUserManager;
+
+import java.util.Map;
 
 public class UserEndpointTest {
     InMemroyUserManager inMemroyUserManager = new InMemroyUserManager(1, "wso2.org");
@@ -50,6 +53,7 @@ public class UserEndpointTest {
         testListingUsers(2);
         testDeletingUser();
         testRetrievingDeletedUser();
+        testAttributeURIs();
     }
 
     //@Test
@@ -247,5 +251,44 @@ public class UserEndpointTest {
 
     }
 
+    //@Test
+    public void testAttributeURIs() {
+        try {
+            User scimUser = new User();
+            scimUser.setUserName("hasini");
+            scimUser.setHomeEmail("abc_home.com", true);
+            scimUser.setWorkEmail("abc_work.com", false);
+            scimUser.setGivenName("hasini");
+            scimUser.setFamilyName("gunasinghe");
+            scimUser.setPhoneNumber("456456", "mobile", false);
+            scimUser.setPhoneNumber("777777", "home", true);
 
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            String encodedSCIMUser = jsonEncoder.encodeSCIMObject(scimUser);
+            UserResourceEndpoint userResourceEndpoint = new UserResourceEndpoint();
+            SCIMResponse scimResponse = userResourceEndpoint.create(
+                    encodedSCIMUser, SCIMConstants.APPLICATION_JSON,
+                    SCIMConstants.APPLICATION_JSON, new InMemroyUserManager(0, ""));
+            String userString = scimResponse.getResponseMessage();
+            JSONDecoder jsonDecoder = new JSONDecoder();
+            User user = (User) jsonDecoder.decodeResource(
+                    userString, SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+            Map<String, Attribute> attributes = user.getAttributeList();
+            Attribute userName = attributes.get(SCIMConstants.UserSchemaConstants.USER_NAME);
+            //test if URI is set for simple attribute
+            Assert.assertEquals(SCIMConstants.USER_NAME_URI, userName.getAttributeURI());
+            //test if URI is set for sub attributes of complex attributes
+            Attribute nameAttribute = attributes.get(SCIMConstants.UserSchemaConstants.NAME);
+            Assert.assertEquals(SCIMConstants.NAME_GIVEN_NAME_URI, nameAttribute.getAttributeURI());
+            //test if URI is set for multivalued attribute root and sub
+            Attribute emailAttribute = attributes.get(SCIMConstants.UserSchemaConstants.EMAIL);
+            Assert.assertEquals(SCIMConstants.EMAILS_URI, emailAttribute.getAttributeURI());
+
+
+        } catch (CharonException e) {
+            Assert.fail(e.getDescription());
+        } catch (BadRequestException e) {
+            Assert.fail(e.getDescription());
+        }
+    }
 }

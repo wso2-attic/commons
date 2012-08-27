@@ -87,4 +87,8 @@ public interface Attribute {
     public void setComplexValue(Map<String, Object> multiValueAttributeProperties)
             throws CharonException;
 
+    public void setAttributeURI(String attributeURI);
+
+    public String getAttributeURI();
+
 }

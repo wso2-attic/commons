@@ -36,6 +36,16 @@ public abstract class AbstractAttribute implements Attribute {
     protected String attributeName;
     /*Whether attribute is required or mandatory*/
     boolean required = true;
+    /*attribute uri according to the attribute notation defined in core-schema spec*/
+    String attributeURI;
+    
+    public String getAttributeURI() {
+        return attributeURI;
+    }
+
+    public void setAttributeURI(String attributeURI) {
+        this.attributeURI = attributeURI;
+    }
 
     public boolean isReadOnly() {
         return readOnly;
