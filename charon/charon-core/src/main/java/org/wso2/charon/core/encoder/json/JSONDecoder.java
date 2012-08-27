@@ -36,6 +36,7 @@ import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
+import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 
@@ -86,7 +87,7 @@ public class JSONDecoder implements Decoder {
                     //if the corresponding json value object is JSONObject, it is a ComplexAttribute.
                     scimObject.setAttribute(buildComplexAttribute(attributeSchema,
                                                                   (JSONObject) attributeValObj));
-                    
+
                 }
             }
             //return DefaultResourceFactory.createSCIMObject(resourceSchema, scimObject);
@@ -316,6 +317,12 @@ public class JSONDecoder implements Decoder {
             if (subAttributeValue instanceof String) {
                 SimpleAttribute simpleAttribute =
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
+                //set the URI of value according to the type if present
+                if (SCIMConstants.CommonSchemaConstants.VALUE.equals(subAttributeSchema.getName())) {
+                    String type = (String) jsonObject.opt(SCIMConstants.CommonSchemaConstants.TYPE);
+                    String uri = attributeSchema.getURI() + "." + type;
+                    simpleAttribute.setAttributeURI(uri);
+                }
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
                 //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
                 subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);

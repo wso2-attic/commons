@@ -23,6 +23,9 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Test;
 import org.wso2.charon.core.attributes.Attribute;
+import org.wso2.charon.core.attributes.ComplexAttribute;
+import org.wso2.charon.core.attributes.MultiValuedAttribute;
+import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.encoder.json.JSONDecoder;
 import org.wso2.charon.core.encoder.json.JSONEncoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
@@ -36,6 +39,7 @@ import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.utils.InMemroyUserManager;
 
+import java.util.List;
 import java.util.Map;
 
 public class UserEndpointTest {
@@ -282,8 +286,22 @@ public class UserEndpointTest {
             Assert.assertEquals(SCIMConstants.NAME_GIVEN_NAME_URI, nameAttribute.getSubAttribute(
                     SCIMConstants.UserSchemaConstants.GIVEN_NAME).getAttributeURI());
             //test if URI is set for multivalued attribute root and sub
+            //root
             Attribute emailAttribute = attributes.get(SCIMConstants.UserSchemaConstants.EMAILS);
+            //sub
             Assert.assertEquals(SCIMConstants.EMAILS_URI, emailAttribute.getAttributeURI());
+            List<Attribute> attributeList = ((MultiValuedAttribute) emailAttribute).getValuesAsSubAttributes();
+            for (Attribute attribute : attributeList) {
+                Map<String, Attribute> subAttributes = ((ComplexAttribute) attribute).getSubAttributes();
+                SimpleAttribute typeAttribute = (SimpleAttribute) subAttributes.get(
+                        SCIMConstants.CommonSchemaConstants.TYPE);
+                String typeValue = (String) typeAttribute.getValue();
+                if (SCIMConstants.UserSchemaConstants.WORK.equals(typeValue)) {
+                    SimpleAttribute valueAttribute = (SimpleAttribute) subAttributes.get(
+                            SCIMConstants.CommonSchemaConstants.VALUE);
+                    Assert.assertEquals(SCIMConstants.WORK_EMAIL_URI, valueAttribute.getAttributeURI());
+                }
+            }
 
 
         } catch (CharonException e) {
