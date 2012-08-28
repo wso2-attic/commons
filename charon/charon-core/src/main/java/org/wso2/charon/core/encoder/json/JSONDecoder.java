@@ -319,9 +319,11 @@ public class JSONDecoder implements Decoder {
                         buildSimpleAttribute(subAttributeSchema, subAttributeValue);
                 //set the URI of value according to the type if present
                 if (SCIMConstants.CommonSchemaConstants.VALUE.equals(subAttributeSchema.getName())) {
-                    String type = (String) jsonObject.opt(SCIMConstants.CommonSchemaConstants.TYPE);
-                    String uri = attributeSchema.getURI() + "." + type;
-                    simpleAttribute.setAttributeURI(uri);
+                    if ((jsonObject.opt(SCIMConstants.CommonSchemaConstants.TYPE) != null)) {
+                        String type = (String) jsonObject.opt(SCIMConstants.CommonSchemaConstants.TYPE);
+                        String uri = attributeSchema.getURI() + "." + type;
+                        simpleAttribute.setAttributeURI(uri);
+                    }
                 }
                 //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
                 //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
