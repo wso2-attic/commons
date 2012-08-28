@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="complexInSeq_30">
+   <iterate xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+            xmlns:ns3="http://org.apache.synapse/xsd"
+            xmlns:ser="http://service.carbon.wso2.org"
+            preservePayload="true"
+            attachPath="//ser:echoString"
+            expression="//ser:echoString/ser:s">
+      <target sequence="anon">
+         <sequence>
+            <switch source="//ser:echoString/ser:s">
+               <case regex="1">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="2">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="3">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="4">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="5">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="6">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="7">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="8">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="9">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+               <case regex="10">
+                  <property name="epr" expression="//ser:echoString/ser:s"/>
+                  <xslt key="StringToInttransform.xslt"/>
+                  <send>
+                     <endpoint>
+                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                     </endpoint>
+                  </send>
+               </case>
+            </switch>
+         </sequence>
+      </target>
+   </iterate>
+</sequence>

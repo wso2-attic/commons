@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="complexOutSeq_8">
+   <xslt key="StringToInttransform_back.xslt"/>
+   <aggregate>
+      <completeCondition>
+         <messageCount min="-1" max="20"/>
+      </completeCondition>
+      <onComplete xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope"
+                  xmlns:ns3="http://org.apache.synapse/xsd"
+                  xmlns:ser="http://service.carbon.wso2.org"
+                  expression="//ser:echoStringResponse">
+         <send/>
+      </onComplete>
+   </aggregate>
+</sequence>

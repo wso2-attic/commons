@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="ComplexProxy_32"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target inSequence="complexInSeq_32" outSequence="complexOutSeq_32"/>
+</proxy>
