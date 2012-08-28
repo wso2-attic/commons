@@ -286,6 +286,7 @@ public class UserEndpointTest {
             Assert.assertEquals(SCIMConstants.NAME_GIVEN_NAME_URI, nameAttribute.getSubAttribute(
                     SCIMConstants.UserSchemaConstants.GIVEN_NAME).getAttributeURI());
             //test if URI is set for multivalued attribute root and sub
+
             //root
             Attribute emailAttribute = attributes.get(SCIMConstants.UserSchemaConstants.EMAILS);
             //sub

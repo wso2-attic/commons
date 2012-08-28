@@ -180,7 +180,7 @@ public class SCIMSchemaDefinitions {
 
     /*Unique identifier for the SCIM Resource as defined by the Service Provider*/
     public static final SCIMAttributeSchema ID =
-            SCIMAttributeSchema.createSCIMAttributeSchema(null,
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.ID_URI,
                                                           SCIMConstants.CommonSchemaConstants.ID,
                                                           SCIMSchemaDefinitions.DataType.STRING, false,
                                                           null, SCIMConstants.ID_DESC,

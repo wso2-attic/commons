@@ -86,10 +86,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //if requested format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //Inside API code throws CharonException.
             if (e.getCode() == -1) {
@@ -97,6 +99,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
@@ -157,10 +160,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             return new SCIMResponse(ResponseCodeConstants.CODE_CREATED, encodedUser, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //if the submitted format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
@@ -169,9 +174,11 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
@@ -205,15 +212,19 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             //on successful deletion SCIMResponse only has 200 OK status code.
             return new SCIMResponse(ResponseCodeConstants.CODE_OK, null, null);
         } catch (InternalServerException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (NotFoundException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (FormatNotSupportedException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
@@ -302,10 +313,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
 
         } catch (FormatNotSupportedException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //if requested format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
@@ -314,12 +327,15 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (NotFoundException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
@@ -388,10 +404,12 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             return new SCIMResponse(ResponseCodeConstants.CODE_OK, encodedUser, httpHeaders);
 
         } catch (FormatNotSupportedException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //if the submitted format not supported, encode exception and set it in the response.
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (CharonException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             //we have charon exceptions also, instead of having only internal server error exceptions,
             //because inside API code throws CharonException.
@@ -400,12 +418,15 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             }
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (BadRequestException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         }
