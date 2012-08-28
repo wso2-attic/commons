@@ -11,91 +11,91 @@
             <switch source="//ser:echoString/ser:s">
                <case regex="1">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="2">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="3">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="4">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="5">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="6">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="7">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="8">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="9">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
                <case regex="10">
                   <property name="epr" expression="//ser:echoString/ser:s"/>
-                  <xslt key="StringToInttransform.xslt"/>
+                  <xslt key="StringToInttransform"/>
                   <send>
                      <endpoint>
-                        <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                        <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
                      </endpoint>
                   </send>
                </case>
