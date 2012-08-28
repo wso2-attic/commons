@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sequence xmlns="http://ws.apache.org/ns/synapse" name="complexOutSeq_45">
-   <xslt key="StringToInttransform_back.xslt"/>
+   <xslt key="StringToInttransform_back"/>
    <aggregate>
       <completeCondition>
          <messageCount min="-1" max="20"/>
