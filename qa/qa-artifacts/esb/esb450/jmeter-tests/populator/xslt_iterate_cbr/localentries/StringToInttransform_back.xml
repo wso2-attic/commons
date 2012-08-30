@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<localEntry xmlns="http://ws.apache.org/ns/synapse"
+            key="StringToInttransform_back">
+   <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                   xmlns:ax21="http://services.samples/xsd"
+                   xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+                   xmlns:m0="http://service.carbon.wso2.org"
+                   version="2.0"
+                   exclude-result-prefixes="m0 ax21 fn">
+      <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+      <xsl:template match="/">
+         <xsl:apply-templates select="//m0:echoIntResponse"/>
+      </xsl:template>
+      <xsl:template match="m0:echoIntResponse">
+         <ns:echoStringResponse xmlns:ns="http://service.carbon.wso2.org">
+            <ns:return>Hi ESB User!!!!!!</ns:return>
+         </ns:echoStringResponse>
+      </xsl:template>
+   </xsl:stylesheet>
+</localEntry>

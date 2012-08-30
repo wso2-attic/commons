@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<localEntry xmlns="http://ws.apache.org/ns/synapse" key="StringToInttransform">
+   <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                   xmlns:ser="http://service.carbon.wso2.org"
+                   xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+                   version="2.0"
+                   exclude-result-prefixes="ser fn">
+      <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+      <xsl:template match="/">
+         <xsl:apply-templates select="//ser:echoString"/>
+      </xsl:template>
+      <xsl:template match="ser:echoString">
+         <ser:echoInt>
+            <ser:x>15000</ser:x>
+         </ser:echoInt>
+      </xsl:template>
+   </xsl:stylesheet>
+</localEntry>
