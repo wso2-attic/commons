@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="SignedAxis2Service" resourceRoot="" soapui-version="4.5.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Axis2ServiceSoap11Binding" type="wsdl" bindingName="{http://service.carbon.wso2.org}Axis2ServiceSoap11Binding" soapVersion="1_1" anonymous="optional" definition="http://10.100.3.188:9764/services/Axis2Service?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:endpoint>https://10.100.3.188:9444/services/Axis2Service.Axis2ServiceHttpsSoap11Endpoint/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:echoInt" name="echoInt" bindingOperationName="echoInt" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1" outgoingWss="SignOutgoingConfig" incomingWss="SignIncomingConfig" useWsAddressing="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">1000</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoInt>
+         <!--Optional:-->
+         <ser:x>1</ser:x>
+      </ser:echoInt>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:echoInt"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="urn:echoString" name="echoString" bindingOperationName="echoString" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoString>
+         <!--Optional:-->
+         <ser:s>?</ser:s>
+      </ser:echoString>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:echoString"/></con:call></con:operation><con:operation isOneWay="false" action="urn:getTime" name="getTime" bindingOperationName="getTime" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:getTime/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:getTime"/></con:call></con:operation><con:operation isOneWay="false" action="urn:Ping" name="Ping" bindingOperationName="Ping" type="One-Way" inputName="" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:Ping>
+         <!--Optional:-->
+         <ser:s>?</ser:s>
+      </ser:Ping>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:Ping"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Axis2ServiceSoap12Binding" type="wsdl" bindingName="{http://service.carbon.wso2.org}Axis2ServiceSoap12Binding" soapVersion="1_2" anonymous="optional" definition="http://10.100.3.188:9764/services/Axis2Service?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://10.100.3.188:9764/services/Axis2Service?wsdl"><con:part><con:url>http://10.100.3.188:9764/services/Axis2Service?wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://service.carbon.wso2.org" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://service.carbon.wso2.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsp:Policy wsu:Id="SigOnly" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:InitiatorToken>
+              <wsp:Policy>
+                <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                  <wsp:Policy>
+                    <sp:RequireThumbprintReference/>
+                    <sp:WssX509V3Token10/>
+                  </wsp:Policy>
+                </sp:X509Token>
+              </wsp:Policy>
+            </sp:InitiatorToken>
+            <sp:RecipientToken>
+              <wsp:Policy>
+                <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                  <wsp:Policy>
+                    <sp:RequireThumbprintReference/>
+                    <sp:WssX509V3Token10/>
+                  </wsp:Policy>
+                </sp:X509Token>
+              </wsp:Policy>
+            </sp:RecipientToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+            <sp:OnlySignEntireHeadersAndBody/>
+          </wsp:Policy>
+        </sp:AsymmetricBinding>
+        <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Policy>
+            <sp:MustSupportRefKeyIdentifier/>
+            <sp:MustSupportRefIssuerSerial/>
+          </sp:Policy>
+        </sp:Wss10>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body/>
+        </sp:SignedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:documentation>This is a sample service to test axis2 web services</wsdl:documentation>
+  <wsdl:types>
+    <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://service.carbon.wso2.org">
+      <xs:element name="getTime">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTimeResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Ping">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="s" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="echoInt">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="x" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="echoIntResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="xs:int"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="echoString">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="s" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="echoStringResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="return" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="echoIntRequest">
+    <wsdl:part name="parameters" element="ns:echoInt"/>
+  </wsdl:message>
+  <wsdl:message name="echoIntResponse">
+    <wsdl:part name="parameters" element="ns:echoIntResponse"/>
+  </wsdl:message>
+  <wsdl:message name="PingRequest">
+    <wsdl:part name="parameters" element="ns:Ping"/>
+  </wsdl:message>
+  <wsdl:message name="getTimeRequest">
+    <wsdl:part name="parameters" element="ns:getTime"/>
+  </wsdl:message>
+  <wsdl:message name="getTimeResponse">
+    <wsdl:part name="parameters" element="ns:getTimeResponse"/>
+  </wsdl:message>
+  <wsdl:message name="echoStringRequest">
+    <wsdl:part name="parameters" element="ns:echoString"/>
+  </wsdl:message>
+  <wsdl:message name="echoStringResponse">
+    <wsdl:part name="parameters" element="ns:echoStringResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="Axis2ServicePortType">
+    <wsdl:operation name="echoInt">
+      <wsdl:input message="ns:echoIntRequest" wsaw:Action="urn:echoInt"/>
+      <wsdl:output message="ns:echoIntResponse" wsaw:Action="urn:echoIntResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <wsdl:input message="ns:PingRequest" wsaw:Action="urn:Ping"/>
+    </wsdl:operation>
+    <wsdl:operation name="getTime">
+      <wsdl:input message="ns:getTimeRequest" wsaw:Action="urn:getTime"/>
+      <wsdl:output message="ns:getTimeResponse" wsaw:Action="urn:getTimeResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="echoString">
+      <wsdl:input message="ns:echoStringRequest" wsaw:Action="urn:echoString"/>
+      <wsdl:output message="ns:echoStringResponse" wsaw:Action="urn:echoStringResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="Axis2ServiceSoap11Binding" type="ns:Axis2ServicePortType">
+    <wsp:PolicyReference URI="#SigOnly" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="echoInt">
+      <soap:operation soapAction="urn:echoInt" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap:operation soapAction="urn:Ping" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="getTime">
+      <soap:operation soapAction="urn:getTime" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoString">
+      <soap:operation soapAction="urn:echoString" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="Axis2ServiceSoap12Binding" type="ns:Axis2ServicePortType">
+    <wsp:PolicyReference URI="#SigOnly" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"/>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="echoInt">
+      <soap12:operation soapAction="urn:echoInt" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Ping">
+      <soap12:operation soapAction="urn:Ping" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="getTime">
+      <soap12:operation soapAction="urn:getTime" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="echoString">
+      <soap12:operation soapAction="urn:echoString" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Axis2Service">
+    <wsdl:port name="Axis2ServiceHttpSoap11Endpoint" binding="ns:Axis2ServiceSoap11Binding">
+      <soap:address location="http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap11Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="Axis2ServiceHttpsSoap11Endpoint" binding="ns:Axis2ServiceSoap11Binding">
+      <soap:address location="https://10.100.3.188:9444/services/Axis2Service.Axis2ServiceHttpsSoap11Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="Axis2ServiceHttpSoap12Endpoint" binding="ns:Axis2ServiceSoap12Binding">
+      <soap12:address location="http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="Axis2ServiceHttpsSoap12Endpoint" binding="ns:Axis2ServiceSoap12Binding">
+      <soap12:address location="https://10.100.3.188:9444/services/Axis2Service.Axis2ServiceHttpsSoap12Endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/</con:endpoint><con:endpoint>https://10.100.3.188:9444/services/Axis2Service.Axis2ServiceHttpsSoap12Endpoint/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:echoInt" name="echoInt" bindingOperationName="echoInt" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://service.carbon.wso2.org">
+   <soap:Header/>
+   <soap:Body>
+      <ser:echoInt>
+         <!--Optional:-->
+         <ser:x>?</ser:x>
+      </ser:echoInt>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:echoInt"/></con:call></con:operation><con:operation isOneWay="false" action="urn:echoString" name="echoString" bindingOperationName="echoString" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://service.carbon.wso2.org">
+   <soap:Header/>
+   <soap:Body>
+      <ser:echoString>
+         <!--Optional:-->
+         <ser:s>?</ser:s>
+      </ser:echoString>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:echoString"/></con:call></con:operation><con:operation isOneWay="false" action="urn:getTime" name="getTime" bindingOperationName="getTime" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://service.carbon.wso2.org">
+   <soap:Header/>
+   <soap:Body>
+      <ser:getTime/>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:getTime"/></con:call></con:operation><con:operation isOneWay="false" action="urn:Ping" name="Ping" bindingOperationName="Ping" type="One-Way" inputName="" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:9764/services/Axis2Service.Axis2ServiceHttpSoap12Endpoint/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ser="http://service.carbon.wso2.org">
+   <soap:Header/>
+   <soap:Body>
+      <ser:Ping>
+         <!--Optional:-->
+         <ser:s>?</ser:s>
+      </ser:Ping>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:Ping"/></con:call></con:operation></con:interface><con:testSuite name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="request" name="echoInt - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>Axis2ServiceSoap11Binding</con:interface><con:operation>echoInt</con:operation><con:request name="echoInt - Request 1" outgoingWss="SignOutgoingConfig" incomingWss="SignIncomingConfig" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@wss-time-to-live">6000</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://10.100.3.188:8281/services/SecurityTermincate</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoInt>
+         <!--Optional:-->
+         <ser:x>1</ser:x>
+      </ser:echoInt>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" name="SOAP Response"/><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:echoInt"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:loadTest name="LoadTest 1"><con:settings><con:setting id="HttpSettings@close-connections">false</con:setting></con:settings><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>300</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer><con:crypto><con:source>/home/evanthika/WSO2/CARBON/CARBON4/ESB/27th-Aug-2012/wso2esb-4.5.0/repository/resources/security/wso2carbon.jks</con:source><con:password>wso2carbon</con:password><con:type>KEYSTORE</con:type><con:defaultAlias>wso2carbon</con:defaultAlias><con:aliasPassword>wso2carbon</con:aliasPassword></con:crypto><con:incoming><con:name>SignIncomingConfig</con:name><con:decryptCrypto>wso2carbon.jks</con:decryptCrypto><con:signatureCrypto>wso2carbon.jks</con:signatureCrypto><con:decryptPassword>wso2carbon</con:decryptPassword></con:incoming><con:outgoing><con:name>SignOutgoingConfig</con:name><con:entry type="Signature" username="wso2carbon" password="wso2carbon"><con:configuration><crypto>wso2carbon.jks</crypto><keyIdentifierType>1</keyIdentifierType><signatureAlgorithm>http://www.w3.org/2000/09/xmldsig#rsa-sha1</signatureAlgorithm><signatureCanonicalization/><useSingleCert>true</useSingleCert><digestAlgorithm/><signaturePart><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="id" value=""/>
+  <con:entry key="name" value="Body"/>
+  <con:entry key="enc" value="Content"/>
+  <con:entry key="namespace" value="http://schemas.xmlsoap.org/soap/envelope/"/>
+</xml-fragment>]]></signaturePart></con:configuration></con:entry><con:entry type="Timestamp"><con:configuration><timeToLive>300</timeToLive><strictTimestamp>true</strictTimestamp></con:configuration></con:entry></con:outgoing></con:wssContainer><con:sensitiveInformation/></con:soapui-project>
