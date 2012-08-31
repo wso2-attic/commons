@@ -104,7 +104,8 @@ public class SCIMSchemaDefinitions {
     //sub attributes of name
     public static final SCIMSubAttributeSchema FORMATTED =
             SCIMSubAttributeSchema.createSCIMSubAttributeSchema(null,
-                                                                "formatted", DataType.STRING,
+                                                                SCIMConstants.UserSchemaConstants.FORMATTED_NAME,
+                                                                DataType.STRING,
                                                                 SCIMConstants.FORMATTED_NAME_DESC,
                                                                 false, false, false, null);
 

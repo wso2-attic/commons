@@ -25,6 +25,7 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
+import org.wso2.charon.core.util.AttributeUtil;
 
 import java.io.File;
 import java.util.Date;
@@ -53,9 +54,9 @@ public class ServerSideValidator extends AbstractValidator {
         String id = UUID.randomUUID().toString();
         scimObject.setId(id);
         Date date = new Date();
-        scimObject.setCreatedDate(date);
+        scimObject.setCreatedDate(AttributeUtil.parseDateTime(AttributeUtil.formatDateTime(date)));
         //created n last modified are the same if not updated.
-        scimObject.setLastModified(date);
+        scimObject.setLastModified(AttributeUtil.parseDateTime(AttributeUtil.formatDateTime(date)));
         //set location
         if (SCIMConstants.USER.equals(resourceSchema.getName())) {
             String location = createLocationHeader(AbstractResourceEndpoint.getResourceEndpointURL(

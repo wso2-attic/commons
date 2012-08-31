@@ -31,6 +31,7 @@ import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+import org.wso2.charon.core.util.AttributeUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,7 +42,7 @@ import java.util.Map;
  * Encoder that encodes a given SCIM Object in JSON format.
  */
 public class JSONEncoder implements Encoder {
-    
+
     private String format;
 
     public JSONEncoder() {
@@ -125,7 +126,7 @@ public class JSONEncoder implements Encoder {
      */
     @Override
     public String getFormat() {
-        return format;  
+        return format;
     }
 
     protected void encodeArrayOfValues(String arrayName, Object[] arrayValues,
@@ -149,7 +150,8 @@ public class JSONEncoder implements Encoder {
             //if type is DateTime, convert before encoding.
             if (attribute.getDataType() != null &&
                 attribute.getDataType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
-                rootObject.put(attribute.getName(), formatDateTime((Date) attribute.getValue()));
+                rootObject.put(attribute.getName(),
+                               AttributeUtil.formatDateTime((Date) attribute.getValue()));
                 return;
             }
             rootObject.put(attribute.getName(), attribute.getValue());
@@ -172,7 +174,7 @@ public class JSONEncoder implements Encoder {
             if (attributeValue.getDataType() != null &&
                 attributeValue.getDataType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
                 attributeValueObject.put(attributeValue.getName(),
-                                         formatDateTime((Date) attributeValue.getValue()));
+                                         AttributeUtil.formatDateTime((Date) attributeValue.getValue()));
                 return;
             }
             attributeValueObject.put(attributeValue.getName(), attributeValue.getValue());
@@ -265,16 +267,5 @@ public class JSONEncoder implements Encoder {
             }
         }
         jsonObject.put(multiValuedAttribute.getName(), jsonArray);
-    }
-
-    /**
-     * SCIM spec requires date time to be adhered to XML Schema Datatypes Specification
-     *
-     * @param date
-     */
-    private String formatDateTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        String formattedDate = sdf.format(date);
-        return formattedDate;
     }
 }

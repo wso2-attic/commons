@@ -39,6 +39,7 @@ import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
+import org.wso2.charon.core.util.AttributeUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -155,12 +156,9 @@ public class JSONDecoder implements Decoder {
      */
     private SimpleAttribute buildSimpleAttribute(AttributeSchema attributeSchema,
                                                  Object attributeValue) throws CharonException {
-        //if expecting to decode an attribute of date time type, parse it to Date type.
-        if (attributeSchema.getType() == SCIMSchemaDefinitions.DataType.DATE_TIME) {
-            attributeValue = parseDateTime((String) attributeValue);
-        }
-        SimpleAttribute simpleAttribute = new SimpleAttribute(attributeSchema.getName(), attributeValue);
-//      simpleAttribute.setValue(attributeValue);
+        Object attributeValueObject = AttributeUtil.getAttributeValueFromString(
+                (String) attributeValue, attributeSchema.getType());
+        SimpleAttribute simpleAttribute = new SimpleAttribute(attributeSchema.getName(), attributeValueObject);
         return (SimpleAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                          simpleAttribute);
     }
@@ -343,20 +341,4 @@ public class JSONDecoder implements Decoder {
                                                                           complexAttribute);
     }
 
-    /**
-     * SCIM spec requires date time to be adhered to XML Schema Datatypes Specification
-     *
-     * @param dateTimeString
-     * @return
-     * @throws ParseException
-     */
-    private Date parseDateTime(String dateTimeString) throws CharonException {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            return sdf.parse(dateTimeString);
-        } catch (ParseException e) {
-            throw new CharonException("Error in parsing date time. " +
-                                      "Date time should adhere to the format: yyyy-MM-dd'T'HH:mm:ss");
-        }
-    }
 }

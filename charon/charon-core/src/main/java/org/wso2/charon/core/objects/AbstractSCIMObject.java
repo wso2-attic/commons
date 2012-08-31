@@ -109,7 +109,7 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         return schemaList.contains(schemaName);
     }
 
-    protected boolean isAttributeExist(String attributeName) {
+    public boolean isAttributeExist(String attributeName) {
         return attributeList.containsKey(attributeName);
     }
 
@@ -218,13 +218,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(createdDateAttribute, null);
+                metaAttribute.setSubAttribute(createdDateAttribute);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(createdDateAttribute, null);
+            getMetaAttribute().setSubAttribute(createdDateAttribute);
 
         }
     }
@@ -260,16 +260,16 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             //check created date attribute already exist
             if (metaAttribute.isSubAttributeExist(lastModifiedAttribute.getName())) {
                 metaAttribute.removeSubAttribute(lastModifiedAttribute.getName());
-                metaAttribute.setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
+                metaAttribute.setSubAttribute(lastModifiedAttribute);
             } else {
 
-                metaAttribute.setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
+                metaAttribute.setSubAttribute(lastModifiedAttribute);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(lastModifiedAttribute, SCIMSchemaDefinitions.LAST_MODIFIED);
+            getMetaAttribute().setSubAttribute(lastModifiedAttribute);
 
         }
     }
@@ -300,15 +300,15 @@ public abstract class AbstractSCIMObject implements SCIMObject {
             //check version attribute already exist
             if (metaAttribute.isSubAttributeExist(versionAttribute.getName())) {
                 metaAttribute.removeSubAttribute(versionAttribute.getName());
-                metaAttribute.setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
+                metaAttribute.setSubAttribute(versionAttribute);
             } else {
-                metaAttribute.setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
+                metaAttribute.setSubAttribute(versionAttribute);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(versionAttribute, SCIMSchemaDefinitions.VERSION);
+            getMetaAttribute().setSubAttribute(versionAttribute);
 
         }
     }
@@ -342,13 +342,13 @@ public abstract class AbstractSCIMObject implements SCIMObject {
                 throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
             } else {
 
-                metaAttribute.setSubAttribute(versionAttribute, null);
+                metaAttribute.setSubAttribute(versionAttribute);
             }
 
         } else {
             //create meta attribute and set the sub attribute.
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(versionAttribute, null);
+            getMetaAttribute().setSubAttribute(versionAttribute);
 
         }
     }
@@ -381,10 +381,10 @@ public abstract class AbstractSCIMObject implements SCIMObject {
         if (getMetaAttribute() != null) {
             ComplexAttribute metaAttribute = getMetaAttribute();
             //since this is not read-only, we just replace the attribute with newly created one.
-            metaAttribute.setSubAttribute(attributes, null);
+            metaAttribute.setSubAttribute(attributes);
         } else {
             createMetaAttribute();
-            getMetaAttribute().setSubAttribute(attributes, null);
+            getMetaAttribute().setSubAttribute(attributes);
         }
     }
 

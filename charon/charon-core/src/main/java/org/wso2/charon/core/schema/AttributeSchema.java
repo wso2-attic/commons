@@ -55,4 +55,8 @@ public interface AttributeSchema {
 
     public void setURI(String uri);
 
+    public Boolean getMultiValued();
+
+    public void setMultiValued(Boolean isMultiValued);
+
 }

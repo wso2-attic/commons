@@ -90,31 +90,31 @@ public class MultiValuedAttribute extends AbstractAttribute {
                         new SimpleAttribute(SCIMConstants.CommonSchemaConstants.TYPE, entry.getValue());
                 typeAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.TYPE, typeAttribute);
-                attributeValue.setSubAttribute(typeAttribute, null);
+                attributeValue.setSubAttribute(typeAttribute);
             } else if ((SCIMConstants.CommonSchemaConstants.VALUE).equals(entry.getKey())) {
                 SimpleAttribute valueAttribute =
                         new SimpleAttribute(SCIMConstants.CommonSchemaConstants.VALUE, entry.getValue());
                 valueAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.VALUE, valueAttribute);
-                attributeValue.setSubAttribute(valueAttribute, null);
+                attributeValue.setSubAttribute(valueAttribute);
             } else if ((SCIMConstants.CommonSchemaConstants.DISPLAY).equals(entry.getKey())) {
                 SimpleAttribute displayAttribute =
                         new SimpleAttribute(SCIMConstants.CommonSchemaConstants.DISPLAY, entry.getValue());
                 displayAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.DISPLAY, displayAttribute);
-                attributeValue.setSubAttribute(displayAttribute, null);
+                attributeValue.setSubAttribute(displayAttribute);
             } else if ((SCIMConstants.CommonSchemaConstants.PRIMARY).equals(entry.getKey())) {
                 SimpleAttribute primaryAttribute =
                         new SimpleAttribute(SCIMConstants.CommonSchemaConstants.PRIMARY, entry.getValue());
                 primaryAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.PRIMARY, primaryAttribute);
-                attributeValue.setSubAttribute(primaryAttribute, null);
+                attributeValue.setSubAttribute(primaryAttribute);
             } else if ((SCIMConstants.CommonSchemaConstants.OPERATION).equals(entry.getKey())) {
                 SimpleAttribute operationAttribute =
                         new SimpleAttribute(SCIMConstants.CommonSchemaConstants.OPERATION, entry.getValue());
                 operationAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                         SCIMSchemaDefinitions.OPERATION, operationAttribute);
-                attributeValue.setSubAttribute(operationAttribute, null);
+                attributeValue.setSubAttribute(operationAttribute);
             }
             //TODO: if a multi valued attribute contains more sub attributes than the ones mentioned above,
             //need to have a separate method to handle that.

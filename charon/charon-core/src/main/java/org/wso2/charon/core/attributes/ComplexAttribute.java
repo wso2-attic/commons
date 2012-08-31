@@ -82,21 +82,11 @@ public class ComplexAttribute extends AbstractAttribute {
      * Set a sub attribute on the complex attribute.
      *
      * @param subAttribute
-     * @param attributeSchema
      * @throws CharonException
      */
-    public void setSubAttribute(Attribute subAttribute, AttributeSchema attributeSchema)
+    public void setSubAttribute(Attribute subAttribute)
             throws CharonException {
-        if (subAttributes.containsKey(subAttribute.getName())) {
-            //check if sub attribute read only.
-            if (!attributeSchema.getReadOnly()) {
-                subAttributes.put(subAttribute.getName(), subAttribute);
-            }
-            //log info level log that version already set and can't set again.
-            //throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
-        } else {
-            subAttributes.put(subAttribute.getName(), subAttribute);
-        }
+        subAttributes.put(subAttribute.getName(), subAttribute);
     }
 
 

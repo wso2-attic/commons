@@ -105,6 +105,15 @@ public class SCIMSubAttributeSchema implements AttributeSchema {
         attributeURI = uri;
     }
 
+    public Boolean getMultiValued() {
+        //we say sub attributes are not multivalued
+        return false;
+    }
+
+    public void setMultiValued(Boolean isMultiValued) {
+        //do nothing
+    }
+
     public DataType getType() {
         return type;
     }

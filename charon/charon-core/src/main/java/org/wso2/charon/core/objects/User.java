@@ -359,10 +359,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.FORMATTED_NAME, formattedName));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(formattedAttribute, SCIMSchemaDefinitions.FORMATTED);
+            nameAttribute.setSubAttribute(formattedAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(formattedAttribute, SCIMSchemaDefinitions.FORMATTED);
+            getNameAttribute().setSubAttribute(formattedAttribute);
         }
     }
 
@@ -390,10 +390,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.FAMILY_NAME, familyName));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(familyNameAttribute, SCIMSchemaDefinitions.FAMILY_NAME);
+            nameAttribute.setSubAttribute(familyNameAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(familyNameAttribute, SCIMSchemaDefinitions.FAMILY_NAME);
+            getNameAttribute().setSubAttribute(familyNameAttribute);
         }
     }
 
@@ -421,10 +421,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.GIVEN_NAME, givenName));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(givenNameAttribute, SCIMSchemaDefinitions.GIVEN_NAME);
+            nameAttribute.setSubAttribute(givenNameAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(givenNameAttribute, SCIMSchemaDefinitions.GIVEN_NAME);
+            getNameAttribute().setSubAttribute(givenNameAttribute);
         }
     }
 
@@ -452,10 +452,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.MIDDLE_NAME, middleName));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(middleNameAttribute, SCIMSchemaDefinitions.MIDDLE_NAME);
+            nameAttribute.setSubAttribute(middleNameAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(middleNameAttribute, SCIMSchemaDefinitions.MIDDLE_NAME);
+            getNameAttribute().setSubAttribute(middleNameAttribute);
         }
     }
 
@@ -483,10 +483,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.HONORIFIC_PREFIX, honorificPrefix));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(honorificPrefixAttribute, SCIMSchemaDefinitions.HONORIFIC_PREFIX);
+            nameAttribute.setSubAttribute(honorificPrefixAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(honorificPrefixAttribute, SCIMSchemaDefinitions.HONORIFIC_PREFIX);
+            getNameAttribute().setSubAttribute(honorificPrefixAttribute);
         }
     }
 
@@ -514,10 +514,10 @@ public class User extends AbstractSCIMObject {
                         new SimpleAttribute(SCIMConstants.UserSchemaConstants.HONORIFIC_SUFFIX, honorificSuffix));
         if (isNameExist()) {
             ComplexAttribute nameAttribute = getNameAttribute();
-            nameAttribute.setSubAttribute(honorificSuffixAttribute, SCIMSchemaDefinitions.HONORIFIC_SUFFIX);
+            nameAttribute.setSubAttribute(honorificSuffixAttribute);
         } else {
             createName();
-            getNameAttribute().setSubAttribute(honorificSuffixAttribute, SCIMSchemaDefinitions.HONORIFIC_SUFFIX);
+            getNameAttribute().setSubAttribute(honorificSuffixAttribute);
         }
     }
 

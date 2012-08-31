@@ -253,7 +253,6 @@ public class SimpleAttribute extends AbstractAttribute {
      */
     public void updateValue(Object value, DataType datatype) throws CharonException {
         if (isAttributeDataTypeValid(value, dataType)) {
-
             this.value = value;
         }
     }
