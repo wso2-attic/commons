@@ -81,7 +81,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
             throws FormatNotSupportedException, CharonException {
 
         //if the requested format not supported, return an error.
-        if (!decoderMap.containsKey(format)) {
+        if ((format == null) && (!decoderMap.containsKey(format))) {
             //Error is logged by the caller.
             throw new FormatNotSupportedException();
         }
@@ -114,7 +114,7 @@ public abstract class AbstractResourceEndpoint implements ResourceEndpoint {
      */
     public static void registerDecoder(String format, Decoder decoder) throws CharonException {
         if (decoderMap.containsKey(format)) {
-           //log a warn message.
+            //log a warn message.
             String warnMessage = "Decoder for the given format is already registered.";
             log.warn(warnMessage);
         } else {

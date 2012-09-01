@@ -341,6 +341,8 @@ public class SCIMConstants {
     public static final String WORK_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.work";
     public static final String HOME_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.home";
 
+    public static final String GROUPS_URI = "urn:scim:schemas:core:1.0:groups";
+
     public static final String PHONE_NUMBERS_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
     public static final String PHONE_NUMBERS_MOBILE_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
     public static final String PHONE_NUMBERS_HOME_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
