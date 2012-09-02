@@ -50,6 +50,7 @@ import java.util.Map;
  */
 public class UserResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
     private Log logger = LogFactory.getLog(UserResourceEndpoint.class);
+
     /**
      * Retrieves a user resource given an unique user id. Mapped to HTTP GET request.
      *
@@ -330,7 +331,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         }
     }
 
-    
+
     public SCIMResponse updateWithPUT(String existingId, String scimObjectString,
                                       String inputFormat,
                                       String outputFormat, UserManager userManager
@@ -421,14 +422,17 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
         ListedResource listedResource = new ListedResource();
         listedResource.setTotalResults(users.size());
         for (User user : users) {
-            Map<String, Attribute> attributesOfUserResource = new HashMap<String, Attribute>();
-            attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.ID,
-                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+            //Map<String, Attribute> attributesOfUserResource = new HashMap<String, Attribute>();
+            Map<String, Attribute> userAttributes = user.getAttributeList();
+
+            /*attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.ID,
+            user.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
+            //
             attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID,
-                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
-            attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.META,
-                                         user.getAttribute(SCIMConstants.CommonSchemaConstants.META));
-            listedResource.setResources(attributesOfUserResource);
+            user.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));
+                attributesOfUserResource.put(SCIMConstants.CommonSchemaConstants.META,
+            user.getAttribute(SCIMConstants.CommonSchemaConstants.META));*/
+            listedResource.setResources(userAttributes);
         }
         return listedResource;
     }
