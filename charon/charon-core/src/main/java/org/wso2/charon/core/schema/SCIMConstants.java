@@ -326,6 +326,8 @@ public class SCIMConstants {
     //for SCIM-Common Schema
     public static final String ID_URI = "urn:scim:schemas:core:1.0:id";
     public static final String EXTERNAL_ID_URI = "urn:scim:schemas:core:1.0:externalId";
+
+    public static final String META_URI = "urn:scim:schemas:core:1.0:meta";
     public static final String META_CREATED_URI = "urn:scim:schemas:core:1.0:meta.created";
     public static final String META_LAST_MODIFIED_URI = "urn:scim:schemas:core:1.0:meta.lastModified";
     public static final String META_LOCATION_URI = "urn:scim:schemas:core:1.0:meta.location";
@@ -334,17 +336,70 @@ public class SCIMConstants {
 
     //for SCIM-User Schema
     public static final String USER_NAME_URI = "urn:scim:schemas:core:1.0:userName";
+
+    public static final String NAME_URI = "urn:scim:schemas:core:1.0:name";
     public static final String NAME_GIVEN_NAME_URI = "urn:scim:schemas:core:1.0:name.givenName";
     public static final String NAME_FAMILY_NAME_URI = "urn:scim:schemas:core:1.0:name.familyName";
+    public static final String NAME_FORMATTED_NAME_URI = "urn:scim:schemas:core:1.0:name.formattedName";
+    public static final String NAME_MIDDLE_NAME_URI = "urn:scim:schemas:core:1.0:name.middleName";
+    public static final String NAME_HONORIC_PREFIX_URI = "urn:scim:schemas:core:1.0:name.honorificPrefix";
+    public static final String NAME_HONORIC_SUFFIX_URI = "urn:scim:schemas:core:1.0:name.honorificSuffix";
+
+    public static final String DISPLAY_NAME_URI = "urn:scim:schemas:core:1.0:displayName"; 
+    public static final String NICK_NAME_URI = "urn:scim:schemas:core:1.0:nickName"; 
+    public static final String PROFILE_URL_URI = "urn:scim:schemas:core:1.0:profileUrl"; 
+    public static final String TITLE_URI = "urn:scim:schemas:core:1.0:title";
+    public static final String USER_TYPE_URI = "urn:scim:schemas:core:1.0:userType";
+    public static final String PREFERRED_LANGUAGE_URI = "urn:scim:schemas:core:1.0:preferredLanguage";
+    public static final String LOCAL_URI = "urn:scim:schemas:core:1.0:local";
+    public static final String TIMEZONE_URI = "urn:scim:schemas:core:1.0:timeZone";
+    public static final String ACTIVE_URI = "urn:scim:schemas:core:1.0:active";
+    public static final String PASSWORD_URI = "urn:scim:schemas:core:1.0:password";
 
     public static final String EMAILS_URI = "urn:scim:schemas:core:1.0:emails";
     public static final String WORK_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.work";
     public static final String HOME_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.home";
-
-    public static final String GROUPS_URI = "urn:scim:schemas:core:1.0:groups";
+    public static final String OTHER_EMAIL_URI = "urn:scim:schemas:core:1.0:emails.other";
 
     public static final String PHONE_NUMBERS_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
-    public static final String PHONE_NUMBERS_MOBILE_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
-    public static final String PHONE_NUMBERS_HOME_URI = "urn:scim:schemas:core:1.0:phoneNumbers";
+    public static final String PHONE_NUMBERS_MOBILE_URI = "urn:scim:schemas:core:1.0:phoneNumbers.mobile";
+    public static final String PHONE_NUMBERS_HOME_URI = "urn:scim:schemas:core:1.0:phoneNumbers.home";
+    public static final String PHONE_NUMBERS_WORK_URI = "urn:scim:schemas:core:1.0:phoneNumbers.work";
+    public static final String PHONE_NUMBERS_FAX_URI = "urn:scim:schemas:core:1.0:phoneNumbers.fax";
+    public static final String PHONE_NUMBERS_PAGER_URI = "urn:scim:schemas:core:1.0:phoneNumbers.pager";
+    public static final String PHONE_NUMBERS_OTHER_URI = "urn:scim:schemas:core:1.0:phoneNumbers.other";
+
+    public static final String IMS_URI = "urn:scim:schemas:core:1.0:ims";
+    public static final String GTALK_IM_URI = "urn:scim:schemas:core:1.0:ims.gtalk";
+    public static final String SKYPE_IM_URI = "urn:scim:schemas:core:1.0:ims.skype";
+
+    public static final String PHOTOS_URI = "urn:scim:schemas:core:1.0:photos";
+    public static final String PHOTOS_PHOTO_URI = "urn:scim:schemas:core:1.0:photos.photo";
+    public static final String PHOTOS_THUMBNAIL_URI = "urn:scim:schemas:core:1.0:photos.thumbnail";
+
+    public static final String ADDRESSES_URI = "urn:scim:schemas:core:1.0:addresses";
+    public static final String ADDRESSES_FORMATTED_URI = "urn:scim:schemas:core:1.0:addresses.formatted";
+    public static final String ADDRESSES_STREET_ADDRESS_URI = "urn:scim:schemas:core:1.0:addresses.streetAddress";
+    public static final String ADDRESSES_LOCALITY_URI = "urn:scim:schemas:core:1.0:addresses.locality";
+    public static final String ADDRESSES_REGION_URI = "urn:scim:schemas:core:1.0:addresses.region";
+    public static final String ADDRESSES_POSTALCODE_URI = "urn:scim:schemas:core:1.0:addresses.postalCode";
+    public static final String ADDRESSES_COUNTRY_URI = "urn:scim:schemas:core:1.0:addresses.country";
+    
+    public static final String GROUPS_URI = "urn:scim:schemas:core:1.0:groups";
+
+    public static final String ENTITLEMENTS_URI = "urn:scim:schemas:core:1.0:entitlements";
+    public static final String ROLES_URI = "urn:scim:schemas:core:1.0:roles";
+    public static final String X509CERTIFICATES_URI = "urn:scim:schemas:core:1.0:x509Certificates";
+
+
+
+    
+
+
+
+
+    
+
+    
 
 }
