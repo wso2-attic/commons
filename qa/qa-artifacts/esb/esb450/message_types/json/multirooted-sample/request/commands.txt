@@ -1,0 +1,15 @@
+Multirooted JSon support with Proxy Services & APIs
+===================================================
+
+Invoking TwitterProxy
+---------------------
+
+curl -v -X POST -H "Content-type: application/json" -d @multirooted.json http://localhost:8281/services/MultirootedJsonReqestProxy
+
+Invoking the services through an API
+------------------------------------
+curl -v -X POST -H "Content-type: application/json" -d @multirooted.json http://localhost:8281/reqgoogle/
+
+Invoking the main sequence
+--------------------------
+curl -v -X POST -H "Content-type: application/json" -d @multirooted.json http://localhost:8281/
