@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoint xmlns="http://ws.apache.org/ns/synapse" name="Axis2SampleServiceEP_1">
+   <address uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1"/>
+</endpoint>

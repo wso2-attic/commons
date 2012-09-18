@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse"
+          name="Axis2PassThroughProxyInSequence_1">
+   <send>
+      <endpoint key="Axis2SampleServiceEP_1"/>
+   </send>
+</sequence>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="Axis2PassThroughProxyService_1"
+       transports="https http jms"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target inSequence="Axis2PassThroughProxyInSequence_1">
+      <outSequence>
+         <send/>
+      </outSequence>
+   </target>
+<publishWSDL uri="http://appserver.wso2.com:8300/services/Axis2SampleService_1?wsdl"/>
+</proxy>
