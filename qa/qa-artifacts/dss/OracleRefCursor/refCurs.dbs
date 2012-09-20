@@ -1,0 +1,23 @@
+<data name="RefCursorsample">   
+   <config id="refcursample">      
+      <property name="org.wso2.ws.dataservice.driver">oracle.jdbc.driver.OracleDriver</property>      
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:oracle:thin:@localhost:1521/XE </property>      
+      <property name="org.wso2.ws.dataservice.user">tester</property>      
+      <property name="org.wso2.ws.dataservice.password">tester</property>   
+   </config>   
+   <query id="get_Dept" useConfig="refcursample">      
+      <sql>{? = call ref_cursor_package.get_dept_ref_cursor(?)}</sql>      
+      <result element="Departments" rowName="Department">         
+         <element name="name" column="name" xsdType="xs:string" />         
+         <element name="dept_id" column="dept_id" xsdType="xs:string" />         
+         <element name="location" column="location" xsdType="xs:string" />      
+      </result>      
+      <param name="dept_id" sqlType="INTEGER" ordinal="2" />      
+      <param name="dept_info" sqlType="ORACLE_REF_CURSOR" type="OUT" ordinal="1" />   
+   </query>   
+   <operation name="getDepartments">      
+      <call-query href="get_Dept">         
+         <with-param name="dept_id" query-param="dept_id" />      
+      </call-query>   
+   </operation>
+</data>
