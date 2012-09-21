@@ -1,20 +1,33 @@
-<data name="sqlparsertest">
-   <config id="excel">
+<data name="sqlparserExcel">
+   <config id="excel123">
       <property name="driverClassName">org.wso2.carbon.dataservices.sql.driver.TDriver</property>
       <property name="url">jdbc:wso2:excel:filePath=/home/nirodha/WSO2/Carbon4/DSS/14thsept/wso2dss-3.0.0/samples/resources/Products.xls</property>
    </config>
-   <query id="getDetails" useConfig="excel">
+   <query id="getDetails" useConfig="excel123">
       <sql>Select ID, Model from Sheet1</sql>
       <result element="Entries" rowName="Entry">
          <element column="ID" name="ID" xsdType="string"/>
          <element column="Model" name="Model" xsdType="string"/>
       </result>
    </query>
-   <query id="insertProduct" useConfig="excel">
+   <query id="insertProduct" useConfig="excel123">
       <sql>Insert Into Sheet1 (ID, Model, Classification) VALUES (:id, :mod, :class)</sql>
       <param name="id" sqlType="STRING"/>
       <param name="mod" sqlType="STRING"/>
       <param name="class" sqlType="STRING"/>
+   </query>
+   <query id="updateQ" useConfig="excel123">
+      <sql>UPDATE Sheet1 SET Model=:model, Classification=:classification WHERE ID=:id</sql>
+      <param name="model" sqlType="STRING"/>
+      <param name="classification" sqlType="STRING"/>
+      <param name="id" sqlType="STRING"/>
+   </query>
+   <query id="deleteQ" useConfig="excel123">
+      <sql>DELETE FROM Sheet1 WHERE ID=:id</sql>
+      <param name="id" sqlType="STRING"/>
+   </query>
+   <query id="dropQ" useConfig="excel123">
+      <sql>DROP Table Sheet2</sql>
    </query>
    <operation name="Getdetails">
       <call-query href="getDetails"/>
@@ -25,6 +38,21 @@
          <with-param name="mod" query-param="mod"/>
          <with-param name="class" query-param="class"/>
       </call-query>
+   </operation>
+   <operation name="Update" returnRequestStatus="true">
+      <call-query href="updateQ">
+         <with-param name="model" query-param="model"/>
+         <with-param name="classification" query-param="classification"/>
+         <with-param name="id" query-param="id"/>
+      </call-query>
+   </operation>
+   <operation disableStreaming="true" name="DELETE" returnRequestStatus="true">
+      <call-query href="deleteQ">
+         <with-param name="id" query-param="id"/>
+      </call-query>
+   </operation>
+   <operation name="dropsheet2" returnRequestStatus="true">
+      <call-query href="dropQ"/>
    </operation>
 </data>
 
