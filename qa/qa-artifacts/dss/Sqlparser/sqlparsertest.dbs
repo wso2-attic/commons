@@ -1,0 +1,30 @@
+<data name="sqlparsertest">
+   <config id="excel">
+      <property name="driverClassName">org.wso2.carbon.dataservices.sql.driver.TDriver</property>
+      <property name="url">jdbc:wso2:excel:filePath=/home/nirodha/WSO2/Carbon4/DSS/14thsept/wso2dss-3.0.0/samples/resources/Products.xls</property>
+   </config>
+   <query id="getDetails" useConfig="excel">
+      <sql>Select ID, Model from Sheet1</sql>
+      <result element="Entries" rowName="Entry">
+         <element column="ID" name="ID" xsdType="string"/>
+         <element column="Model" name="Model" xsdType="string"/>
+      </result>
+   </query>
+   <query id="insertProduct" useConfig="excel">
+      <sql>Insert Into Sheet1 (ID, Model, Classification) VALUES (:id, :mod, :class)</sql>
+      <param name="id" sqlType="STRING"/>
+      <param name="mod" sqlType="STRING"/>
+      <param name="class" sqlType="STRING"/>
+   </query>
+   <operation name="Getdetails">
+      <call-query href="getDetails"/>
+   </operation>
+   <operation name="insertop" returnRequestStatus="true">
+      <call-query href="insertProduct">
+         <with-param name="id" query-param="id"/>
+         <with-param name="mod" query-param="mod"/>
+         <with-param name="class" query-param="class"/>
+      </call-query>
+   </operation>
+</data>
+
