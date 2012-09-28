@@ -1,0 +1,21 @@
+<data name="vfa">            
+   <config id="OracleDS">                        
+      <property name="org.wso2.ws.dataservice.driver">oracle.jdbc.driver.OracleDriver</property>                        
+      <property name="org.wso2.ws.dataservice.protocol">jdbc:oracle:thin:vfa/vfa@localhost:1521:XE</property>                        
+      <property name="org.wso2.ws.dataservice.user">vfa</property>                        
+      <property name="org.wso2.ws.dataservice.password">vfa</property>            
+   </config>            
+   <query id="q1" useConfig="OracleDS">                        
+      <sql>call see_employee3(?, num_arr(?))</sql>                        
+      <result element="resultats" rowName="res">                                    
+         <element name="result" column="numo_param" xsdType="xs:integer" arrayName="NUMO" />                        
+      </result>                        
+      <param name="numo_param" sqlType="ARRAY" type="OUT" ordinal="1" structType="NUMO" />                        
+      <param name="num_arr_param" paramType="ARRAY" sqlType="INTEGER" ordinal="2" />            
+   </query>            
+   <operation name="op1">                        
+      <call-query href="q1">                                    
+         <with-param name="num_arr_param" query-param="num_arr_param" />                        
+      </call-query>            
+   </operation>
+</data>
