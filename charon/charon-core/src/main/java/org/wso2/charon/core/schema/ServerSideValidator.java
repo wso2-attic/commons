@@ -22,6 +22,7 @@ import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.protocol.endpoints.AbstractResourceEndpoint;
@@ -33,10 +34,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 /**
  * This is to perform SCIM service provider side validation and additions according to SCIM schema spec.
  */
 public class ServerSideValidator extends AbstractValidator {
+
+    private static Log logger = LogFactory.getLog(ServerSideValidator.class);
 
     /**
      * Add read-only attributes that only the service provider adds and validate the SCIM object
@@ -76,6 +82,7 @@ public class ServerSideValidator extends AbstractValidator {
 
     /**
      * Perform validation on SCIM Object update on service provider side.
+     *
      * @param oldObject
      * @param newObject
      * @param resourceSchema
@@ -87,12 +94,19 @@ public class ServerSideValidator extends AbstractValidator {
                                                                SCIMResourceSchema resourceSchema)
             throws CharonException {
 
-        AbstractSCIMObject validatedObject = checkIfReadOnlyAttributesModified(oldObject, newObject, resourceSchema);
-        //edit last modified date
-        Date date = new Date();
-        validatedObject.setLastModified(date);
-        //check for required attributes.
-        validateSCIMObjectForRequiredAttributes(validatedObject, resourceSchema);
+        AbstractSCIMObject validatedObject = null;
+        try {
+            validatedObject = checkIfReadOnlyAttributesModified(oldObject, newObject, resourceSchema);
+            //copy meta attribute from old to new
+            validatedObject.setAttribute(oldObject.getAttribute(SCIMConstants.CommonSchemaConstants.META));
+            //edit last modified date
+            Date date = new Date();
+            validatedObject.setLastModified(date);
+            //check for required attributes.
+            validateSCIMObjectForRequiredAttributes(validatedObject, resourceSchema);
+        } catch (NotFoundException e) {
+            logger.error("Meta attribute not found in the updating object.");
+        }
         return validatedObject;
         //TODO: if user object, validate name
     }
@@ -100,6 +114,7 @@ public class ServerSideValidator extends AbstractValidator {
     /**
      * Perform validation on the SCIM Object retrieved from service provider's UserManager before
      * returning it to client.
+     *
      * @param scimObject
      * @param resourceSchema
      * @throws CharonException
@@ -121,6 +136,7 @@ public class ServerSideValidator extends AbstractValidator {
 
     /**
      * Log and ignore if any read only attributes are modified in the SCIM - update request.
+     *
      * @param oldObject
      * @param newObject
      * @param resourceSchema
