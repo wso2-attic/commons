@@ -1,0 +1,172 @@
+<serviceGroup name="HotelReservation">
+    <service name="GuestManagementService"
+             targetNamespace="http//sample.com/reservation/guest">
+        <description>
+            Guest management web service
+        </description>
+        <schema schemaNamespace="http//sample.com/reservation/guest/types"
+                elementFormDefaultQualified="true">
+            <mapping namespace="http//sample.com/reservation/guest/types"
+                     package="com.sample.reservation.dto"/>
+        </schema>
+        <messageReceivers>
+
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">com.sample.reservation.GuestManagementService</parameter>
+        <operation name="addGuest" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:addGuest</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>
+        <operation name="getGuestDetails" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:getGuestDetails</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>
+        <operation name="deleteGuest" mep="http://www.w3.org/2006/01/wsdl/in-only">
+            <actionMapping>urn:deleteGuest</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        </operation>
+    </service>
+
+    <service name="RoomManagementService_name"
+             targetNamespace="http//sample.com/reservation/room">
+        <description>
+            Room service
+        </description>
+<module ref="rampart" />
+<wsp:Policy wsu:Id="SigOnly"
+                xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                 <wsp:Policy>
+                        <sp:InitiatorToken>
+                            <wsp:Policy>
+                                <sp:X509Token
+                                        sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                    <wsp:Policy>
+                                        <sp:RequireThumbprintReference/>
+                                        <sp:WssX509V3Token10/>
+                                    </wsp:Policy>
+                                </sp:X509Token>
+                            </wsp:Policy>
+                        </sp:InitiatorToken>
+                        <sp:RecipientToken>
+                            <wsp:Policy>
+                                <sp:X509Token
+                                        sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                    <wsp:Policy>
+                                        <sp:RequireThumbprintReference/>
+                                        <sp:WssX509V3Token10/>
+                                    </wsp:Policy>
+                               </sp:X509Token>
+                            </wsp:Policy>
+                        </sp:RecipientToken>
+                        <sp:AlgorithmSuite>
+                            <wsp:Policy>
+                                <sp:TripleDesRsa15/>
+                            </wsp:Policy>
+                        </sp:AlgorithmSuite>
+                        <sp:Layout>
+                            <wsp:Policy>
+                                <sp:Strict/>
+                            </wsp:Policy>
+                        </sp:Layout>
+                        <sp:IncludeTimestamp/>
+                        <sp:OnlySignEntireHeadersAndBody/>
+                    </wsp:Policy>
+                </sp:AsymmetricBinding>
+                <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                    <wsp:Policy>
+                        <sp:MustSupportRefKeyIdentifier/>
+                        <sp:MustSupportRefIssuerSerial/>
+                    </wsp:Policy>
+                </sp:Wss10>
+                <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                    <sp:Body/>
+                </sp:SignedParts>
+                <ramp:RampartConfig xmlns:ramp="http://ws.apache.org/rampart/policy">
+                    <ramp:user>serviceks</ramp:user>
+                    <ramp:encryptionUser>clientks</ramp:encryptionUser>
+                    <ramp:passwordCallbackClass>com.sample.reservation.security.PWCBSignatureHandler</ramp:passwordCallbackClass>
+                    <ramp:signatureCrypto>
+                        <ramp:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                            <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</ramp:property>
+ <ramp:property name="org.apache.ws.security.crypto.merlin.file">serviceks.jks</ramp:property>
+                           <ramp:property name="org.apache.ws.security.crypto.merlin.keystore.password">serviceks</ramp:property>
+                        </ramp:crypto>
+                    </ramp:signatureCrypto>
+                </ramp:RampartConfig>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+        <!--schema schemaNamespace="http//sample.com/reservation/room/types"
+                elementFormDefaultQualified="true">
+            <mapping namespace="http//sample.com/reservation/room/types"
+                     package="com.sample.reservation.dto"/>
+        </schema-->
+        <messageReceivers>
+
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+           
+        </messageReceivers>
+        <parameter name="ServiceClass">com.sample.reservation.RoomManagementService</parameter>
+        <operation name="addRoom" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:addRoom</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>
+        <operation name="getRoomDetails" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:getRoomDetails</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>
+        <operation name="deleteRoom" mep="http://www.w3.org/2006/01/wsdl/in-only">
+            <actionMapping>urn:getRoomDetails</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        </operation>
+    </service>
+
+    <service name="ReservationService"
+             targetNamespace="http//sample.com/reservation/res">
+        <description>
+            Reservation web service
+        </description>
+        <schema schemaNamespace="http//sample.com/reservation/res/types"
+                elementFormDefaultQualified="true">
+            <mapping namespace="http//sample.com/reservation/res/types"
+                     package="com.sample.reservation.dto"/>
+        </schema>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/2006/01/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">com.sample.reservation.ReservationService</parameter>
+        <operation name="addReservation" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:addReservation</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation> 
+        <operation name="getReservationDetails" mep="http://www.w3.org/2006/01/wsdl/in-out">
+            <actionMapping>urn:getReservationDetails</actionMapping>
+            <messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </operation>      
+    </service>
+
+
+</serviceGroup>
+
