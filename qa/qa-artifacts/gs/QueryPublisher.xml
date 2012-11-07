@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Query Publisher">
+<Require feature="pubsub"/>
+</ModulePrefs>
+	<Content type="html">
+		<![CDATA[
+			<script>
+				function publish() {
+		  		  var message = document.getElementById("query").value;
+		  		  gadgets.pubsub.publish("search-query", message);
+		  		  document.getElementById("output").innerHTML = "Current active query is '" + message + "'.";		  			
+				}		
+			</script>
+			
+			<div>
+				<input id="query" type="text" value=""/>
+				<input type="button" value="Search" onclick="publish()"/>
+			</div>
+			
+			<div id="output"></div>
+		]]>
+	</Content>
+</Module>
+

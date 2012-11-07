@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="Photos">
+  <Require feature="analytics" />
+</ModulePrefs>
+<Content type="html">
+<![CDATA[
+<table>
+<iframe
+src ="http://lh3.ggpht.com/_6ZIdE55I9e8/THqULIoMzMI/AAAAAAAABfo/u-gxxuVACgg/s128/Bandarawela%20063.JPG" width="500" height="640" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
+</iframe>
+</table>
+]]>
+</Content>
+</Module>
+

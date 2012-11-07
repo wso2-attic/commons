@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs title="feed example" /> 
+  <Content type="html">
+     <![CDATA[ 
+    <script type="text/javascript">
+function makeFeedRequest() {
+  var params = {};
+  params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
+  var url = "http://www.nytimes.com/services/xml/rss/nyt/HomePage.xml";
+  gadgets.io.makeRequest(url, response, params);
+};
+
+function response(obj) {
+  //obj.data contains a JavaScript object corresponding to the feed that was requested
+  output(obj.data);
+};
+
+makeFeedRequest();
+  </script>
+     ]]>
+     
+     
+  </Content> 
+</Module>
+

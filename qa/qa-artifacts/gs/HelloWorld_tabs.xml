@@ -1,0 +1,31 @@
+<Module>
+<ModulePrefs
+        title="Tabs Demo"
+        height="240"        
+        author="Tyrell Perera" author_email="tyrell@wso2.com" author_affiliation="WSO2"
+        author_location="Colombo, Sri Lanka">    
+    <Require feature="tabs"/>
+</ModulePrefs>
+<Content type="html">
+    <![CDATA[
+
+    <div id="disp_config" style="display:none;">
+       Me too ...
+    </div>
+
+    <div id="main_disp" style="display:none;">
+        Hi I'm a Tab
+    </div>
+
+    <script type="text/javascript">       
+
+        // Adding Tabs
+        var tabs = new gadgets.TabSet(__MODULE_ID__, "Display");
+        tabs.addTab("Display", "main_disp");
+        tabs.addTab("Configure", "disp_config");      
+
+    </script>
+
+    ]]>
+</Content>
+</Module>

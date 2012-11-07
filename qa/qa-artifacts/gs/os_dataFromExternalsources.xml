@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Hello, world!">
+    <Require feature="opensocial-0.7"/>
+    <Require feature="dynamic-height"/>
+  </ModulePrefs>
+  <Content type="html"><![CDATA[
+    <script type="text/javascript">
+
+    function request() {
+  		var params = {};
+  		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+		  var url = "http://lastfm-api-ext.appspot.com/2.0/?method=artist.getinfo&outtype=json&api_key=b25b959554ed76058ac220b7b2e0a026&artist=Cher";
+  		gadgets.io.makeRequest(url, response, params);
+};
+
+function response(obj) {
+    output("Cher");
+  	output(obj.data.image_large);
+};
+
+request();
+
+        </script>
+    <div id="dom_handle"></div>
+    
+    
+ ]]></Content>
+</Module>
+

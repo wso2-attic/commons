@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Hello, world!">
+    <Require feature="opensocial-1.0"/>
+    <Require feature="dynamic-height"/>
+  </ModulePrefs>
+  <Content type="html"><![CDATA[
+    <script type="text/javascript">
+    function response(data) {
+      var viewer = data.get("viewer").getData();
+      var name = viewer.getDisplayName();
+      var thumb = viewer.getField(opensocial.Person.Field.THUMBNAIL_URL);
+
+      var html = '<img src="' + thumb + '"/>' + name;
+      document.getElementById('dom_handle').innerHTML = html;
+    };
+
+    function request() {
+      var req = opensocial.newDataRequest();
+      // req.add(req.newFetchPersonRequest('VIEWER'), 'viewer');
+      var viewer = opensocial.IdSpec.PersonId.VIEWER;
+      req.add(req.newFetchPersonRequest(viewer), 'viewer');
+      req.send(response);
+    };
+
+    request();
+    </script>
+    <div id="dom_handle"></div>
+ ]]></Content>
+</Module>
+

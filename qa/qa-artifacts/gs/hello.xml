@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Hello Example" />
+    <UserPref name="Name" display_name="Your Name" default_value="World" />
+    <Content type="html">
+     <![CDATA[
+       Hello, <span id="nameSpan"> Name goes here </span>
+       <script type="text/javascript">
+          var prefs = new gadgets.Prefs();
+          document.getElementById('nameSpan').innerHTML = prefs.getString("Name");
+      </script>
+      !
+     ]]>
+    </Content>
+</Module>

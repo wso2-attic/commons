@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="Gifting friends" 
+  descrition="App that demonstrates the use of templates in the profile view to retrieve and display data.">
+<Require feature="opensocial-0.8"/>
+<Require feature="opensocial-data"/>
+<Require feature="opensocial-templates">
+  <Param name="process-on-server">true</Param>
+</Require>
+</ModulePrefs>
+<Content type="html" view="profile"><![CDATA[
+  <style type="text/css">
+  body,span,p {
+    font-family:times;
+  }     
+  .name {
+    color: blue;
+  }
+  .male {
+    color: red;
+  }
+  .female {
+    color: purple;
+  }
+  .gift {
+    font-family: arial;
+    font-size: 12px;
+    padding: 8px;
+  }
+  </style>
+  <script type="text/os-data" xmlns:os="http://ns.opensocial.org/2008/markup">
+    <os:ViewerRequest key="viewer" fields="name,gender"/>
+    <os:OwnerRequest key="owner" />
+    <os:PeopleRequest key="viewerFriends" userId="@viewer" groupId="@friends" fields="name,profileUrl"/>
+    <os:PersonAppDataRequest key="gifts" method="appdata.get" userId="@viewer" appId="@app" fields="giftsData,lastGiftBy" />
+    <os:PeopleRequest key="lastGift" userId="${gifts[viewer.id]['lastGiftBy']}" groupId="@self" />
+  </script>
+  <script type="text/os-template"  xmlns:os="http://ns.opensocial.org/2008/markup" xmlns:osx= "http://ns.opensocial.org/2009/extensions">
+    <span class="${viewer.gender}"><b>Welcome ${viewer.name.givenName}</b></span>
+    <p/>
+ 
+    This app belongs to 
+    <span if="${viewer.id != owner.id}"><a href="${owner.url}">${owner.name.givenName} ${owner.name.familyName}</a></span>
+    <span if="${viewer.id == owner.id}">you</span>
+    <p/>Your friends :       
+    <ul>
+      <li repeat="${viewerFriends}">
+        <osx:NavigateToPerson person="${Cur}">
+        <span class="name" id="id${Context.Index}">${Cur.name.givenName}</span></osx:NavigateToPerson>
+ 
+        <span class="gift" if="${osx:parseJson(gifts[viewer.id].giftsData)[id] != null}"> 
+          received <os:Html code=${osx:parseJson(gifts[viewer.id].giftsData)[id]}></span>
+      </li>
+    </ul>
+    The last gift was sent by : ${lastGift.name.givenName}
+    <br/>
+    <br/>
+    <osx:NavigateToApp>Send gift to a friend</osx:NavigateToApp>
+    <p/>
+    <img src="http://code.google.com/apis/opensocial/images/opensocial.jpg" alt="OpenSocial logo" height="50%" />
+    <p/>
+  </script>    
+]]></Content>
+<Content type="html" view="canvas"><![CDATA[
+  <script type="text/javascript">
+    var availableGifts = ['a music CD', 'a PSP game', 'a novel', 'a dress'];
+    var givenGifts = {};
+ 
+    function requestViewerAndFriends() {
+      // Create a new data request skeleton
+      var request = opensocial.newDataRequest();
+ 
+      // Add the viewer ID to the request
+      request.add(request.newFetchPersonRequest('VIEWER'), 'viewer');
+      request.add(request.newFetchPersonRequest('OWNER'), 'owner');
+ 
+      // Add the friends to the request
+      var viewerFriends = opensocial.newIdSpec({"userId" : "VIEWER", "groupId" : "FRIENDS", "networkDistance" : "2"});
+      var opt_params = {max:100};
+ 
+      request.add(request.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+ 
+      var personIdSpec = opensocial.newIdSpec({"userId": "VIEWER"});
+      request.add(request.newFetchPersonAppDataRequest(personIdSpec, 'giftsData'), 'giftData');
+ 
+      request.send(processFriends);
+    };
+ 
+    /**
+     * Method to process the data returned from the request.
+     * The friends list is displayed as a drop down and the
+     * app data is saved in the local gifts list, so it can used
+     * when updating the app data when a new gift is given
+     */
+    function processFriends(data) {
+      var viewer = data.get('viewer').getData();
+ 
+      if (viewer != null) {
+        var owner = data.get('owner').getData();
+ 
+        document.getElementById('viewerName').innerHTML = viewer.getDisplayName();
+        document.getElementById('viewerId').value = viewer.getId();
+ 
+        var html = [];
+        html.push("<select id='friend'>");
+ 
+        var friends = data.get('viewerFriends').getData();
+ 
+        friends.each(
+          function(person) {
+            html.push('<option value="', person.getId(), '">', person.getDisplayName(), '</option>');
+          });
+ 
+        html.push('</select>');
+ 
+        document.getElementById('friendNames').innerHTML = html.join('');
+ 
+        // Get the list of gifts
+        var giftData = data.get('giftData').getData();
+        var json = null;
+ 
+        if (giftData[viewer.getId()]) {
+          json = giftData[viewer.getId()]['giftsData'];
+        }
+ 
+        if (!json) {
+          givenGifts = {};
+        }
+ 
+        try {
+          // The app data is an escaped string, hence needs to be unescaped 
+          // before being parsed as a json object
+          givenGifts = gadgets.json.parse(gadgets.util.unescapeString(json));
+        }
+        catch (e) {
+          givenGifts = {};
+        }
+ 
+        // Display the gifts given
+        var giftsHtml = [];
+        giftsHtml.push('The following are the gifts that you have given to your friends:', '<br/>', '<ul>');
+        for (i in givenGifts) {
+          if (i.hasOwnProperty) {
+            giftsHtml.push('<li>', friends.getById(i).getDisplayName(), 'got', gadgets.util.escapeString(givenGifts[i]));
+          }
+        }
+        giftsHtml.push('</ul>');
+        document.getElementById('givenGifts').innerHTML = giftsHtml.join(' ');
+      }
+      else {
+        document.getElementById('main').innerHTML = "Please install the app in order to view the content";
+      }    
+    };
+ 
+    /**
+     * Method to display the constant list of available gifts as a drop down
+     */
+    function displayGiftOptions() {
+      var html = [];
+      html.push("<select id='gift'>");
+      for (var i=0; i<availableGifts.length; i++) {
+        html.push('<option value="', availableGifts[i], '">', availableGifts[i], '</option>');
+      } 
+      html.push("</select>");
+ 
+      document.getElementById('giftNames').innerHTML = html.join('');
+    };
+ 
+    /**
+     * Method to save the name of the gift and the message entered
+     * with the ID of the friend who it was given to
+     */
+    function saveGift() {     
+      var giftHtml = [];
+      giftHtml.push(document.getElementById('gift').value);
+      giftHtml.push(" - ")
+      giftHtml.push(document.getElementById('yourMessage').value);
+ 
+      var gift = giftHtml.join('');     
+      var friend = document.getElementById('friend').value;
+ 
+      givenGifts[friend] = gift;
+ 
+      // Now since each element in gift data was unescaped, it needs to be re-escaped before saving 
+      for (i in givenGifts) {
+        givenGifts[i] = gadgets.util.escapeString(givenGifts[i]);
+      };     
+ 
+      var jsonRep = gadgets.json.stringify(givenGifts);
+ 
+      var updateReq = opensocial.newDataRequest();
+      updateReq.add(updateReq.newUpdatePersonAppDataRequest('VIEWER', 'giftsData', jsonRep));
+      updateReq.add(updateReq.newUpdatePersonAppDataRequest('VIEWER', 'lastGiftBy', 
+                              document.getElementById('viewerId').value));
+ 
+      // Get the list of friends and given gifts again
+      var viewerFriends = opensocial.newIdSpec({"userId" : "VIEWER", "groupId" : "FRIENDS", "networkDistance" : "2"});
+      var opt_params = {max:100};
+      var personIdSpec = opensocial.newIdSpec({"userId": "VIEWER"});
+ 
+      updateReq.add(updateReq.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+      updateReq.add(updateReq.newFetchPersonAppDataRequest(personIdSpec, 'giftsData'), 'giftData');
+ 
+      updateReq.send(giftSent);
+    };
+ 
+    function giftSent(data) {
+      document.getElementById('status').innerHTML = "Your gift was saved";
+      document.getElementById('yourMessage').value = "";
+ 
+      requestViewerAndFriends();
+    };
+ 
+    function init() {
+      requestViewerAndFriends();
+      displayGiftOptions();     
+    };
+ 
+    gadgets.util.registerOnLoadHandler(init);
+ 
+  </script>
+  <div id="main">
+    <form>
+      <span id='status' style="font-size:12px;color:red"></span>
+      <p/>
+      <span id='viewerName'></span> wants to gift a <span id='giftNames'></span> to 
+      <span id='friendNames'></span>
+      <p/>
+      Enter the message to go with your gift <br/>
+      <input type='text' id='yourMessage'></input>
+      <p/>
+      <input type='button' value='Give' onClick='saveGift();' />  
+      <input type="hidden" id="viewerId" />
+      <p/>
+      <span id='givenGifts'></span>
+    </form>
+  </div>
+]]></Content>
+ 
+</Module>

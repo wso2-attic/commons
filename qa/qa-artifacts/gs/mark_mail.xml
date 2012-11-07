@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs title="MarkMail WSO2 Lists">
+    </ModulePrefs>
+    <Content type="url" href="http://wso2.markmail.org/search/?q="/>
+</Module>

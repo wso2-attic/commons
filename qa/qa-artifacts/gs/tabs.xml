@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="__UP_subject__" directory_title="BBC News Feeds" description="Live News feeds from BBC News. Edit the gadget settings to view between 3 to 15 Headlines in each Category (Top Stories, World, Business, Politics, Entertainment, Science, Health, UK, England, Ireland, and many more RSS options). Choose long or short news summaries." title_url="http://gwidgets.com" author="Shazingo" author_email="shazingo@gmail.com" screenshot="http://hosting.gmodules.com/ig/gadgets/file/115288948760256340515/bbc_ss.png" thumbnail="http://hosting.gmodules.com/ig/gadgets/file/115288948760256340515/bbc_tn.png" height="360" scrolling="false" singleton="false" category="news" category2="communication">
+  <Require feature="dynamic-height"/>
+  <Require feature="setprefs"/>
+  <Require feature="tabs"/>
+  <Require feature="analytics" />
+</ModulePrefs>
+<UserPref name="extrafeed" display_name="Option Category:" datatype="enum" default_value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/health/rss.xml">
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/health/rss.xml" display_value="Health"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/uk/rss.xml" display_value="UK"/>
+
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/england/rss.xml" display_value="England"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/northern_ireland/rss.xml" display_value="Northern Ireland"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/scotland/rss.xml" display_value="Scotland"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/wales/rss.xml" display_value="Wales"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/education/rss.xml" display_value="Education"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/technology/rss.xml" display_value="Technology"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/talking_point/rss.xml" display_value="Have Your Say"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/magazine/rss.xml" display_value="Magazine"/>
+  <EnumValue value="http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/latest_published_stories/rss.xml" display_value="Recent"/>
+
+</UserPref>
+<UserPref name="extratitle"
+  display_name="Option Title:"
+  default_value="Health"/>
+<UserPref name="subject"
+  display_name="Gadget Title:"
+  default_value="BBC News"/>
+<UserPref name="entries" display_name="# of Entries:" datatype="enum" default_value="6">
+  <EnumValue value="3"/>
+  <EnumValue value="4"/>
+  <EnumValue value="5"/>
+  <EnumValue value="6"/>
+  <EnumValue value="7"/>
+  <EnumValue value="8"/>
+  <EnumValue value="9"/>
+
+  <EnumValue value="10"/>
+  <EnumValue value="11"/>
+  <EnumValue value="12"/>
+  <EnumValue value="13"/>
+  <EnumValue value="14"/>
+  <EnumValue value="15"/>
+</UserPref>
+<UserPref name="summaries" display_name="Summary Length" datatype="enum" default_value="300">
+  <EnumValue value="0" display_value="None"/>
+  <EnumValue value="100" display_value="Short"/>
+
+  <EnumValue value="300" display_value="Long"/>
+</UserPref>
+<UserPref name="selectedTab" datatype="hidden"/>
+<Content type="html"><![CDATA[
+  <style type="text/css">
+  @import url(http://www.google.com/ig/tablib.css);
+  .tablib_table__MODULE_ID__ { font-size: 11px; }
+
+  .statusLabel {
+    font-size:11px;
+    font-style:italic;
+    padding-top:10px;
+    text-align:center;
+  }
+  .feedHeader {
+    padding-top:5px;
+    font-size:13px;
+  }
+  .feedList {
+    font-size:13px;
+    margin:5px 0px 0px 0px;
+    padding:0px 3px 5px 3px;
+/*    border-top: 1px solid #aaaaaa; */
+    border-bottom: 1px solid #aaaaaa;
+  }
+  .feedList li {
+    margin-top:5px;
+    padding:0px;
+  }
+  .feedList div.entrySummary {
+    font-size:12px;
+  }
+  .feedlist div.entryTimestamp {
+    font-size:10px;
+    font-style:italic;
+    color:#676767;
+  }
+  </style>
+
+  <script>
+  // Global variables
+  var prefs = new _IG_Prefs(__MODULE_ID__);
+  var tabs = new _IG_Tabs(__MODULE_ID__);
+
+  /**
+   * Initialize tabs when page loads.
+   * Create tab for each userpref only if userpref is not empty.
+   */
+  function init() {
+    var f1 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/front_page/rss.xml";
+    var f2 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/world/rss.xml";
+    var f3 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/business/rss.xml";
+    var f4 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/uk_politics/rss.xml";
+    var f5 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/sci/tech/rss.xml";
+    var f6 = "http://newsrss.bbc.co.uk/rss/newsonline_uk_edition/entertainment/rss.xml";
+    var f7 = _trim(prefs.getString("extrafeed"));
+
+    if (f1 != "") {
+      tabs.addDynamicTab(_trim("Top"), callbackGenerator(f1));
+    }
+    if (f2 != "") {
+      tabs.addDynamicTab(_trim("World"), callbackGenerator(f2));
+    }
+    if (f3 != "") {
+      tabs.addDynamicTab(_trim("Business"), callbackGenerator(f3));
+    }
+    if (f4 != "") {
+      tabs.addDynamicTab(_trim("Politics"), callbackGenerator(f4));
+    }
+    if (f5 != "") {
+      tabs.addDynamicTab(_trim("Science"), callbackGenerator(f5));
+    }
+    if (f6 != "") {
+      tabs.addDynamicTab(_trim("Entertainment"), callbackGenerator(f6));
+    }
+    if (f7 != "") {
+      tabs.addDynamicTab(_trim(prefs.getString("extratitle")), callbackGenerator(f7));
+    }
+  };
+
+  /**
+   * Creates a function that calls the tab's callback function
+   * and passes along an additional variable from the calling environment.
+   */
+  function callbackGenerator(feedUrl) {
+    return function(tabId) {
+      callbackTab(tabId, feedUrl);
+    }
+  }
+
+  /**
+   * Fetches an Atom or RSS feed and generates content inside the
+   * selected tab's content container.  This function is called whenever
+   * a tab is selected.
+   */
+  function callbackTab(tabId, feedUrl) {
+    var summaries = prefs.getInt("summaries");
+    var entries = prefs.getInt("entries");
+    var container = _gel(tabId);
+
+    // Display loading message before fetching feed.
+    container.innerHTML = '<div class="statusLabel">Loading...</div>';
+
+    // Fetch feed and return it as a JSON object.
+    // Callback function is defined within local scope.
+    _IG_FetchFeedAsJSON(
+      feedUrl,
+      function(feed) {
+        if (typeof feed == "undefined" || typeof feed.Entry == "undefined") {
+          container.innerHTML = '<div class="statusLabel">Invalid feed URL:<br>' + feedUrl + '</div>';
+        } else {
+          // Fetch feed successful.  Generate HTML content from returned JSON object.
+          var html = new Array();
+
+/*          // Create feed header containing title and description.
+          html.push('<div class="feedHeader">');
+          html.push('<b>' + _hesc(feed.Title) + '</b><br>');
+          html.push(_hesc(feed.Description));
+          html.push('</div>'); */
+ 
+          // Iterate through each feed entry and generate list of content.
+          html.push('<ul class="feedList">');
+          for (var n = 0; n < feed.Entry.length; n++) {
+            var entry = feed.Entry[n];
+
+            var summ=entry.Summary;
+            var summary=summ.replace(/<V?[^>]+>/gi,"");
+
+            html.push('<li>');
+            html.push('<a target="_top" title="' + _hesc(summary) + '" href="' + entry.Link + '">' + _hesc(entry.Title) + '</a>');
+            if (typeof entry.Summary != "undefined" && entry.Summary != "" && summaries > 0) {
+              if (entry.Summary.length > summaries) {
+                html.push('<div class="entrySummary">' + _hesc(summary.substr(0, summaries)) + ' ...</div>');
+              } else {
+                html.push('<div class="entrySummary">' + _hesc(summary) + '</div>');
+              }
+            }
+            if (!isNaN(entry.Date)) {
+              html.push('<div class="entryTimestamp">' + new Date(entry.Date * 1000).toLocaleString() + '</div>');
+            }
+            html.push('</li>');
+          }
+          html.push('</ul>');
+          container.innerHTML = html.join("");
+        }
+
+        // Resize iframe height to fit content.
+        _IG_AdjustIFrameHeight();
+      },
+      entries,
+      1
+    );
+  }
+
+  // Set onload event handler to call init()
+  _IG_RegisterOnloadHandler(init);
+  _IG_Analytics("UA-2054544-3", "/rss-bbc");
+  </script>
+<script type="text/javascript"><!--
+google_ad_client = "pub-0459020192348222";
+/* BBC news c447 234x60 */
+google_ad_slot = "1824028891";
+google_ad_width = 234;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+]]>
+</Content>
+</Module>
+

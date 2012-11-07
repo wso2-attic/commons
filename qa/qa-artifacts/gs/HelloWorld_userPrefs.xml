@@ -1,0 +1,27 @@
+<Module>
+  <ModulePrefs title="UserPref" 
+     height="200" 
+     author="Tyrell Perera" 
+     author_email="tyrell@wso2.com"/> 
+  <UserPref name="myname" display_name="Name" required="true" />  
+  <Content type="html">
+     <![CDATA[ 
+       Hello, world!
+
+       <div id="name-display"></div>
+
+       <script type="text/javascript">
+         
+           // Get userprefs
+           var prefs = new gadgets.Prefs();
+
+           // Get the name entered by the user
+           var name = prefs.getString("myname");  
+           var html = "Hello " + name;
+  
+           document.getElementById("name-display").innerHTML = html;
+        
+       </script>
+     ]]>
+  </Content> 
+</Module>

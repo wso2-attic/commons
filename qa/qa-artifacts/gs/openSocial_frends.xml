@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="Server-side Template">
+    <Require feature="opensocial-data" />
+    <Require feature="opensocial-templates">
+    </Require>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[      
+      <script xmlns:os="http://ns.opensocial.org/2008/markup" type="text/os-data">
+        <os:PeopleRequest key="friends" userId="@viewer" groupId="@friends"/>
+      </script>
+ 
+      <script type="text/os-template">
+        <ul>
+          <li repeat="${friends}">
+            <span id="id${Context.Index}">${Cur.name.givenName}</span>
+          </li>
+        </ul>
+     </script>
+    ]]>
+  </Content>
+</Module>

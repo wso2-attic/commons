@@ -1,0 +1,150 @@
+	<!--
+    YAP OpenSocial Activities Demo 
+    Reid Burke
+    10 Sep 2008
+-->
+<script type="text/javascript">
+
+function getViewerActivities() {
+
+    var idSpec = opensocial.newIdSpec();
+    idSpec.setField(opensocial.IdSpec.Field.USER_ID, opensocial.IdSpec.PersonId.VIEWER);
+
+    var req = opensocial.newDataRequest();
+    req.add(req.newFetchActivitiesRequest(idSpec), 'activities');
+    req.add(req.newFetchPeopleRequest(idSpec), 'people');
+    req.send(onLoadViewerActivities);
+
+}
+
+function getViewerFriendsActivities() {
+
+    var idSpec = opensocial.newIdSpec();
+    idSpec.setField(opensocial.IdSpec.Field.USER_ID, opensocial.IdSpec.PersonId.VIEWER);
+    idSpec.setField(opensocial.IdSpec.Field.NETWORK_DISTANCE, 1);
+
+    var req = opensocial.newDataRequest();
+    req.add(req.newFetchActivitiesRequest(idSpec), 'activities');
+    req.add(req.newFetchPeopleRequest(idSpec), 'people');
+    req.send(onLoadViewerFriendsActivities);
+
+}
+
+function onLoadViewerFriendsActivities(response) {
+
+    var html = processResponse(response);
+
+    document.getElementById('yap-activity-viewer-friends').innerHTML = html;
+
+}
+
+function onLoadViewerActivities(response) {
+
+    var html = processResponse(response);
+
+    document.getElementById('yap-activity-viewer').innerHTML = html;
+
+}
+
+function processResponse(response) {
+
+    var activities = response.get('activities').getData();
+    var people = response.get('people').getData();
+
+    var peopleNames = {};
+    var peopleLink = {};
+    var peoplePic = {};
+    people.each(function(person) {
+        peopleNames[person.getId()] = person.getDisplayName();
+        peopleLink[person.getId()] = person.getField(opensocial.Person.Field.PROFILE_URL);
+        peoplePic[person.getId()] = person.getField(opensocial.Person.Field.THUMBNAIL_URL);
+    });
+
+    var html = new Array();
+    var size = activities.getTotalSize();
+    if (size > 0) {
+        var what = ' activities';
+        if (size == 1) what = ' activity';
+        html.push('<p>You have ' + size + what + ':</p>');
+        html.push('<ul>');
+        activities.each(function(activity) {
+            var userId = activity.getField(opensocial.Activity.Field.USER_ID);
+            var title = activity.getField(opensocial.Activity.Field.TITLE);
+            html.push('<li><img src="' + peoplePic[userId] + '" height="32" width="32"><b>' + title + '</b> from <a href="' + peopleLink[userId] + '">' + peopleNames[userId] + '</a></li>');
+        });
+        html.push('</ul>');
+    } else {
+        html.push('<div class="yap-error">No activities yet!</div>');
+    }
+
+    return html.join('');
+
+}
+
+function postActivity() {
+    var params = {};
+    params[opensocial.Activity.Field.TITLE] = 'J. Hacker bookmarked the Yahoo! Application Platform';
+    params[opensocial.Activity.Field.BODY] = 'The Yahoo! Application Platform allows you to create social applications. Check it out!';
+    var activity = opensocial.newActivity(params);
+    opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.LOW, function() {
+        document.getElementById('yap-status').innerHTML = '<div>Activity created!</div>';
+    });
+}
+
+gadgets.util.registerOnLoadHandler(function() {
+    postActivity();
+    getViewerActivities();
+    getViewerFriendsActivities();
+});
+
+</script>
+
+<style type="text/css">
+#yap-app {
+    font-family: Arial, sans-serif;
+    padding: 5px;
+}
+
+#yap-status div, .yap-notice, .yap-error {
+    background: #ffc;
+    padding: 5px 15px 5px;
+    margin-bottom: 3px;
+}
+
+.yap-error {
+    font-style: italic;
+    background: #fcc;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    padding: 3px;
+    border: 1px solid #ccc;
+    margin-bottom: 3px;
+}
+</style>
+
+<div id="yap-app">
+
+<h1>YAP OpenSocial Activities Demo</h1>
+
+<div id="yap-status">
+<div>Posting a sample activity...</div>
+</div>
+
+<h3>Your Recent Updates</h3>
+<div id="yap-activity-viewer">
+<div class="yap-notice">Loading...</div>
+</div>
+
+<h3>Your Friend's Recent Updates</h3>
+<div id="yap-activity-viewer-friends">
+<div class="yap-notice">Loading...</div>
+</div>
+
+</div>
+
+

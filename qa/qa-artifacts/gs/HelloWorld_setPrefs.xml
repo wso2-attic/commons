@@ -1,0 +1,33 @@
+<Module>
+  <ModulePrefs title="SetPrefs" 
+     height="500" 
+     author="Tyrell Perera" 
+     author_email="tyrell@wso2.com">
+   <Require feature="setprefs" /> 
+  </ModulePrefs>   
+  <UserPref name="counter" display_name="Count" default_value="0" /> 
+  <Content type="html">
+     <![CDATA[ 
+       Hello, world!       
+       
+       <div id="counter-div"></div>
+
+       <script type="text/javascript">
+         
+           // Get userprefs
+           var prefs = new _IG_Prefs(__MODULE_ID__);           
+                        
+           var div = document.getElementById('counter-div');
+           
+           // Increment value of "counter" user preference           
+           var count = prefs.getString("counter");
+           div.innerHTML = "The count is " + count + ".";
+              
+           // Increment "counter" userpref 
+           var newCount = parseInt(count) + 1;     
+           prefs.set("counter", newCount);        
+
+       </script>
+     ]]>
+  </Content> 
+</Module>

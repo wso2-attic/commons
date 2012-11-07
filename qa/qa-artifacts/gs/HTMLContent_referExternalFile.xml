@@ -1,0 +1,7 @@
+<Module>
+  <ModulePrefs title="clock"/> 
+  <Content type="html"><![CDATA[
+    <script src="http://www.example.com/gadgets/clock/clock.js" type="text/javascript"></script>
+
+  ]]></Content> 
+</Module>
