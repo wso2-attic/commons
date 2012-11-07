@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ ~ Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ ~
+ ~ WSO2 Inc. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied.  See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<Module>
+  <ModulePrefs title="Search Amazon products" scrolling="true">
+  	        <Require feature="dynamic-height"/>
+  	        <Require feature="pubsub"/> 
+  	        
+  </ModulePrefs>
+  <UserPref 
+    name="item_count" 
+    display_name="# Search Results ?" 
+    default_value="5"/>
+  <Content type="html">
+  <![CDATA[
+  	<div id="form_div">
+	   	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+		    <td><a href="http://www.amazon.com" target="_blank"><img src="http://ec.mashable.com/wp-content/uploads/2007/04/amazon-logo.png" width="100" height="46" border="0" align="left"></a>
+		      <table border="0" cellpadding="0" cellspacing="0" height="46">
+		        <form action="" onsubmit="search(this); return false;" method="get">
+		          <tr>
+		            <td width="95%">
+		              <input type="text" name="query" style="width:98%" maxlength="100" value=""></td>
+		            <td align=left>
+		              <input type="submit" value="Search" name="submit">
+		            </td>
+		          </tr>
+		        </form>
+		      </table>
+		    </td>
+		  </tr>
+		</table>
+	</div>
+    <div id="content_div"></div>
+    <script type="text/javascript">
+		// get prefs
+		var prefs = new gadgets.Prefs();
+		var itemCount = prefs.getString("item_count");
+		var description = prefs.getBool("mychoice");
+		var moreUrl
+		    _IG_AdjustIFrameHeight();
+		function search(form){
+			document.getElementById('content_div').innerHTML = "<div style=\"margin-top: 10px; margin-left: 200px;\"><img src=\"waiting.gif\" alt=\"\" /> loading...</div>";
+			_IG_AdjustIFrameHeight();
+		    var amazonURL = "http://nuwanbando.com/ig/amazon.php";
+		    moreUrl = "http://www.amazon.com/s?ie=UTF8&index=blended";
+			for (var i = 0; i < form.elements.length; i++) {
+		        var e = form.elements[i];
+		        if ((e.name === "query")) {
+		            //&keywords=harry%20potter%20phoenix
+		            amazonURL += "?keywords" + "=" + e.value;
+					//&keywords=shoes
+					moreUrl += "&keywords" + "=" + e.value;
+					
+					//&paginationInput.entriesPerPage=10
+					amazonURL += "&count" + "=" + itemCount;
+		        }
+		    }
+			
+		    makeDOMRequest(amazonURL);
+		};
+		
+				// Callback to handle messages received from channel.
+		function callback(sender, message) {
+			  document.getElementById("query").value = gadgets.util.escapeString(message + "")
+			  search(document.queryForm);
+		}
+
+		// Function to subscribe to the channel. Registered to be executed at Gadget load.
+		function subscribe() {
+			  gadgets.pubsub.subscribe("search-query", callback);
+		}
+		
+		
+		function makeDOMRequest(amazonUrl){
+		    var params = {};
+		    params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.DOM;
+		    var url = amazonUrl;
+		    gadgets.io.makeRequest(url, response, params);
+		};
+		
+		function more() {
+			parent.location = moreUrl;
+		};
+		
+		function response(obj){
+		    var html = "<div style='padding: 5px;font-family:Arial, Helvetica; text-align:left;'>";
+		    // Set style for title.
+		 //   html += "<div style='text-align:center; font-size: 100%;" +
+		 //   "font-weight: 600;'>";
+		
+		    var domdata = obj.data;
+		
+		 //   var title = domdata.getElementsByTagName("searchResult").item(0).getAttribute("count");
+		    
+		 //   html += title + "</div><br><table>";
+		 	html += "<table style=\"font-size:85%\">";
+		
+		    var itemList = domdata.getElementsByTagName("Item");
+		    
+		    // Loop through all <Item> nodes
+		    for (var i = 0; i < itemList.length; i++) {
+		        var nodeList = itemList.item(i).childNodes;
+		        for (var j = 0; j < nodeList.length; j++) {
+		            var node = nodeList.item(j);
+		            if (node.nodeName == "ItemAttributes") {
+						//var innerNode = node.lastChild;
+						//alert(node.getElementsByTagName("Title").item(0).firstChild.nodeValue);
+		                var itemTitle = node.getElementsByTagName("Title").item(0).firstChild.nodeValue;
+		            }
+		            if (node.nodeName == "OfferSummary") {
+						var price;
+						if(node.firstChild != null && node.firstChild.lastChild != null && node.firstChild.lastChild.firstChild != null){
+		                	price = node.firstChild.lastChild.firstChild.nodeValue;
+						}
+						price = "Not Available";
+		            }
+					if (node.nodeName == "DetailPageURL") {
+						var itemUrl = node.firstChild.nodeValue;
+					}
+					if (node.nodeName == "MediumImage") {
+						var innerImgNode = node.childNodes.item(0);
+		                var img = innerImgNode.firstChild.nodeValue;
+		            }
+
+		        }
+		        // Append extracted data to the HTML string.
+		        html += "<tr style=\"border-botom:solid 1px #000;\">";
+				html += "<td><a href=\"" + itemUrl + "\">";
+		        html += itemTitle;
+				html += "</a></td>";
+				html += "<td width=\"70px;\">";
+		        html += price;
+				html += "</td>";
+				html += "<td>";
+				html += "<img height=\"50\" width=\"50\" src=\"" + img + "\"></img>";
+				html += "</td>";
+				html += "</tr>";
+		    }
+		    // Close up div
+		    html += "</table></div><div style=\"float:right; font-size: 80%\"><a href=\"javascript:more();\">more results >></a></div>";
+		    document.getElementById('content_div').innerHTML = html;
+		    _IG_AdjustIFrameHeight();
+		};
+		//   gadgets.util.registerOnLoadHandler(makeDOMRequest);
+
+
+    </script>
+  ]]>
+  </Content>
+</Module>
