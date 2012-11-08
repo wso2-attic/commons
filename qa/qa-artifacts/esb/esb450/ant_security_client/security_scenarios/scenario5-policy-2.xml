@@ -1,0 +1,190 @@
+<!--
+  ~ Copyright 2005-2007 WSO2, Inc. (http://wso2.com)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--wsp:Policy wsu:Id="SigEncr"
+            xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+            xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+    <wsp:ExactlyOne>
+        <wsp:All>
+            <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:InitiatorToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                <wsp:Policy>
+                                    <sp:RequireThumbprintReference/>
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:InitiatorToken>
+                    <sp:RecipientToken>
+                        <wsp:Policy>
+                            <sp:X509Token
+                                    sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                                <wsp:Policy>
+                                    <sp:RequireThumbprintReference/> 
+                                </wsp:Policy>
+                            </sp:X509Token>
+                        </wsp:Policy>
+                    </sp:RecipientToken>
+                    <sp:AlgorithmSuite>
+                        <wsp:Policy>
+                            <sp:Basic256/>
+                        </wsp:Policy>
+                    </sp:AlgorithmSuite>
+                    <sp:Layout>
+                        <wsp:Policy>
+                            <sp:Strict/>
+                        </wsp:Policy>
+                    </sp:Layout>
+                    <sp:IncludeTimestamp/>
+                    <sp:OnlySignEntireHeadersAndBody/>
+                </wsp:Policy>
+            </sp:AsymmetricBinding>
+      <sp:EncryptedElements xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:p="http://charitha.org" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:XPath>soapenv:Body/p:addition1/p</sp:XPath>
+      </sp:EncryptedElements>
+      <sp:EncryptedElements xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://charitha.org" xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:XPath>soapenv:Body/ns1:additionResponse/return</sp:XPath>
+      </sp:EncryptedElements>
+            <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:MustSupportRefKeyIdentifier/>
+                    <sp:MustSupportRefIssuerSerial/>
+                    <sp:MustSupportRefThumbprint/>
+                    <sp:MustSupportRefEncryptedKey/>
+                    <sp:RequireSignatureConfirmation/>
+                </wsp:Policy>
+            </sp:Wss11>
+            <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <wsp:Policy>
+                    <sp:MustSupportRefKeyIdentifier/>
+                    <sp:MustSupportRefIssuerSerial/>
+                </wsp:Policy>
+            </sp:Wss10>
+            <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <sp:Body/>
+            </sp:SignedParts>
+            <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+                <sp:Body/>
+            </sp:EncryptedParts>
+        </wsp:All>
+    </wsp:ExactlyOne>
+</wsp:Policy-->
+<wsp:Policy wsu:Id="SigEncr" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+  <wsp:ExactlyOne>
+    <wsp:All>
+      <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <wsp:Policy>
+          <sp:InitiatorToken>
+            <wsp:Policy>
+              <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                <wsp:Policy>
+                  <sp:RequireThumbprintReference/>
+                  <sp:WssX509V3Token10/>
+                </wsp:Policy>
+              </sp:X509Token>
+            </wsp:Policy>
+          </sp:InitiatorToken>
+          <sp:RecipientToken>
+            <wsp:Policy>
+              <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                <wsp:Policy>
+                  <sp:RequireThumbprintReference/>
+                  <sp:WssX509V3Token10/>
+                </wsp:Policy>
+              </sp:X509Token>
+            </wsp:Policy>
+          </sp:RecipientToken>
+          <sp:AlgorithmSuite>
+            <wsp:Policy>
+              <sp:Basic256/>
+            </wsp:Policy>
+          </sp:AlgorithmSuite>
+          <sp:Layout>
+            <wsp:Policy>
+              <sp:Strict/>
+            </wsp:Policy>
+          </sp:Layout>
+          <sp:IncludeTimestamp/>
+          <sp:OnlySignEntireHeadersAndBody/>
+        </wsp:Policy>
+      </sp:AsymmetricBinding>
+      <sp:EncryptedElements xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+		xmlns:xs="http://services.samples/xsd" 
+		xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+		xmlns:p="http://services.samples">
+        <sp:XPath>soapenv:Body/p:getQuote/p:request/xs:symbol</sp:XPath>
+      </sp:EncryptedElements>
+      <sp:EncryptedElements xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+	xmlns:ns="http://services.samples">
+        <sp:XPath >soapenv:Body/ns:getQuoteResponse/ns:return</sp:XPath>
+      </sp:EncryptedElements>
+      <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Policy>
+          <sp:MustSupportRefKeyIdentifier/>
+          <sp:MustSupportRefIssuerSerial/>
+          <sp:MustSupportRefThumbprint/>
+          <sp:RequireSignatureConfirmation/>
+        </sp:Policy>
+      </sp:Wss11>
+      <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Policy>
+          <sp:MustSupportRefKeyIdentifier/>
+          <sp:MustSupportRefIssuerSerial/>
+        </sp:Policy>
+      </sp:Wss10>
+      <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Body/>
+      </sp:SignedParts>
+      <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+        <sp:Body/>
+      </sp:EncryptedParts>
+      <rampart:RampartConfig xmlns:rampart="http://ws.apache.org/rampart/policy">
+        <rampart:user>service</rampart:user>
+        <rampart:encryptionUser>useReqSigCert</rampart:encryptionUser>
+        <rampart:timestampPrecisionInMilliseconds>true</rampart:timestampPrecisionInMilliseconds>
+        <rampart:timestampTTL>300</rampart:timestampTTL>
+        <rampart:timestampMaxSkew>300</rampart:timestampMaxSkew>
+        <rampart:tokenStoreClass>org.wso2.carbon.security.util.SecurityTokenStore</rampart:tokenStoreClass>
+        <rampart:nonceLifeTime>300</rampart:nonceLifeTime>
+        <rampart:encryptionCrypto>
+          <rampart:crypto provider="org.wso2.carbon.security.util.ServerCrypto">
+            <rampart:property name="org.wso2.carbon.security.crypto.alias">service</rampart:property>
+            <rampart:property name="org.wso2.carbon.security.crypto.privatestore">service.jks</rampart:property>
+            <rampart:property name="org.wso2.stratos.tenant.id">0</rampart:property>
+            <rampart:property name="org.apache.ws.security.crypto.provider">org.wso2.carbon.security.util.ServerCrypto</rampart:property>
+            <rampart:property name="org.wso2.carbon.security.crypto.truststores">service.jks,</rampart:property>
+            <rampart:property name="rampart.config.user">service</rampart:property>
+          </rampart:crypto>
+        </rampart:encryptionCrypto>
+        <rampart:signatureCrypto>
+          <rampart:crypto provider="org.wso2.carbon.security.util.ServerCrypto">
+            <rampart:property name="org.wso2.carbon.security.crypto.alias">service</rampart:property>
+            <rampart:property name="org.wso2.carbon.security.crypto.privatestore">service.jks</rampart:property>
+            <rampart:property name="org.wso2.stratos.tenant.id">0</rampart:property>
+            <rampart:property name="org.apache.ws.security.crypto.provider">org.wso2.carbon.security.util.ServerCrypto</rampart:property>
+            <rampart:property name="org.wso2.carbon.security.crypto.truststores">service.jks,</rampart:property>
+            <rampart:property name="rampart.config.user">service</rampart:property>
+          </rampart:crypto>
+        </rampart:signatureCrypto>
+      </rampart:RampartConfig>
+    </wsp:All>
+  </wsp:ExactlyOne>
+</wsp:Policy>
+
