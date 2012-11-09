@@ -45,7 +45,7 @@ public class SecurityClient implements CallbackHandler {
     public OMElement runSecurityClient() throws Exception {
 
         Properties properties = new Properties();
-        FileInputStream freader = new FileInputStream("." + File.separator + "src" + File.separator + "client.properties");
+        FileInputStream freader = new FileInputStream("client.properties");
         properties.load(freader);
         String carbon_home = properties.getProperty("carbon.home");
         String client_repo = properties.getProperty("client_repo");
