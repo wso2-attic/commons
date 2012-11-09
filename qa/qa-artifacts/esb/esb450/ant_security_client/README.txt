@@ -11,6 +11,7 @@ s in the code.
 How to Run
 ----------
 
+Update the client.properties according to the service you want to try and the endpoint urls.
 Run ant from this directory.
 The project will build and ask you for the security scenario number you want to try.
 Enter the number and press enter. The scenario will be executed. 
