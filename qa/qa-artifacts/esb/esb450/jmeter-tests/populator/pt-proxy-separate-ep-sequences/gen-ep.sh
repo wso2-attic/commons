@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for c in `seq 2 10`; 
+for c in `seq 2 100`; 
 do
  cp Axis2SampleServiceEP_1.xml Axis2SampleServiceEP_$c.xml ; 
  sed -i  "s/Axis2SampleServiceEP_1/Axis2SampleServiceEP_$c/g" Axis2SampleServiceEP_$c.xml ;

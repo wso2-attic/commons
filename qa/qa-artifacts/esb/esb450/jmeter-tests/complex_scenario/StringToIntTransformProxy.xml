@@ -19,7 +19,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_1"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_1"/>
                            </endpoint>
                         </send>
                      </case>
@@ -28,7 +28,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_2"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_2"/>
                            </endpoint>
                         </send>
                      </case>
@@ -37,7 +37,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_3"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_3"/>
                            </endpoint>
                         </send>
                      </case>
@@ -46,7 +46,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_4"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_4"/>
                            </endpoint>
                         </send>
                      </case>
@@ -55,7 +55,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_5"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_5"/>
                            </endpoint>
                         </send>
                      </case>
@@ -64,7 +64,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_6"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_6"/>
                            </endpoint>
                         </send>
                      </case>
@@ -73,7 +73,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_7"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_7"/>
                            </endpoint>
                         </send>
                      </case>
@@ -82,7 +82,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_8"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_8"/>
                            </endpoint>
                         </send>
                      </case>
@@ -91,7 +91,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_9"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_9"/>
                            </endpoint>
                         </send>
                      </case>
@@ -100,7 +100,7 @@
                         <xslt key="StringToInttransform.xslt"/>
                         <send>
                            <endpoint>
-                              <address uri="http://localhost:9764/services/Axis2SampleService_10"/>
+                              <address uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_10"/>
                            </endpoint>
                         </send>
                      </case>
@@ -122,5 +122,5 @@
          </aggregate>
       </outSequence>
    </target>
-   <publishWSDL uri="http://localhost:9764/services/Axis2SampleService_5000?wsdl"/>
+   <publishWSDL uri="http://appserver.qadev.com:180/services/t/tuk.com/Axis2SampleService_1?wsdl"/>
 </proxy>

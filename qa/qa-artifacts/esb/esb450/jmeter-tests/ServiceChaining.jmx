@@ -17,8 +17,8 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1000</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">500</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
         <longProp name="ThreadGroup.start_time">1345102125000</longProp>
         <longProp name="ThreadGroup.end_time">1345102125000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -30,7 +30,7 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="SoapSampler.URL_DATA">http://esb.wso2.com:8320/services/CreditProxy</stringProp>
+          <stringProp name="SoapSampler.URL_DATA">http://esb.qadev.com:8380/services/t/pix.com/CreditProxy</stringProp>
           <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:sam=&quot;http://samples.esb.wso2.org&quot;&gt;
     &lt;soapenv:Body&gt;
         &lt;sam:credit&gt;         
@@ -44,7 +44,17 @@
           <stringProp name="SoapSampler.SEND_SOAP_ACTION">true</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
         </SoapSampler>
-        <hashTree/>
+        <hashTree>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="305994330">creditResponse</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
