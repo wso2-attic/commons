@@ -6,16 +6,16 @@
 <property name="OUT_ONLY" value="true" />
 <send>
 <endpoint>
-<address uri="vfs:file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/out" />
+<address uri="vfs:file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/XYZ/ftp/out" />
 </endpoint>
 </send>
 </inSequence>
 </target>
 <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
 <parameter name="transport.PollInterval">2</parameter>
-<parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/original</parameter>
+<parameter name="transport.vfs.MoveAfterProcess">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/XYZ/ftp/original</parameter>
 <parameter name="transport.vfs.FileURI">vfs:ftp://anonymous@192.168.4.57/vfs?vfs.passive=true</parameter>
-<parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/error</parameter>
+<parameter name="transport.vfs.MoveAfterFailure">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/XYZ/ftp/error</parameter>
 <parameter name="transport.vfs.FileNamePattern">.*</parameter>
 <parameter name="transport.vfs.Locking">disable</parameter>
 <parameter name="transport.vfs.ContentType">text/plain</parameter>
