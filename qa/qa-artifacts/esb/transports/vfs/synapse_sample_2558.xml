@@ -22,7 +22,7 @@
 <definitions xmlns="http://ws.apache.org/ns/synapse">
 
     <proxy name="StockQuoteProxy" transports="vfs">
-       <parameter name="transport.vfs.FileURI">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/EMANDEV-6/ftp/in</parameter>
+       <parameter name="transport.vfs.FileURI">file:///home/evanthika/WSO2/CARBON/PATCH_VERIFICATION/XYZ/ftp/in</parameter>
         <!--CHANGE-->
         <parameter name="transport.vfs.ContentType">text/xml</parameter>
         <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
