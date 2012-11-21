@@ -35,7 +35,7 @@
             </elementProp>
             <elementProp name="tenantId" elementType="Argument">
               <stringProp name="Argument.name">tenantId</stringProp>
-              <stringProp name="Argument.value">delta.com</stringProp>
+              <stringProp name="Argument.value">hydra.com</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -68,7 +68,7 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/spring/archives/SpringBean</stringProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/SpringBean</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
    &lt;soapenv:Header/&gt;
    &lt;soapenv:Body&gt;
@@ -97,7 +97,7 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/spring/archives/SpringBean</stringProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/SpringBean</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
    &lt;soapenv:Header/&gt;
    &lt;soapenv:Body&gt;
@@ -126,7 +126,7 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/spring/archives/SpringBean</stringProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/SpringBean</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;
    &lt;soapenv:Header/&gt;
    &lt;soapenv:Body&gt;
@@ -156,7 +156,7 @@
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/spring/archives/SpringBean</stringProp>
+            <stringProp name="SoapSampler.URL_DATA">http://${server}/services/t/${tenantId}/SpringBean</stringProp>
             <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:p=&quot;http://service.carbon.wso2.org&quot;&gt;
    &lt;soapenv:Header/&gt;
    &lt;soapenv:Body&gt;
