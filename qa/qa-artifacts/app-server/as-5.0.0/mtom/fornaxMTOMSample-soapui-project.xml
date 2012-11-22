@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="fornaxMTOMSample" resourceRoot="" soapui-version="4.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="MTOMServiceSOAP12Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2/mtomsample/}MTOMServiceSOAP12Binding" soapVersion="1_2" anonymous="optional" definition="http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP12port_http/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="attachment" name="attachment" bindingOperationName="attachment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP12port_http/</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:mtom="http://ws.apache.org/axis2/mtomsample/" xmlns:xm="http://www.w3.org/2005/05/xmlmime">
+   <soap:Header/>
+   <soap:Body>
+      <mtom:AttachmentRequest>
+         <!--Optional:-->
+         <mtom:fileName>?</mtom:fileName>
+         <!--Optional:-->
+         <mtom:binaryData xm:contentType="application/?">cid:1175961782405</mtom:binaryData>
+      </mtom:AttachmentRequest>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="{http://schemas.xmlsoap.org/wsdl/}attachment"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="MTOMServiceSOAP11Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2/mtomsample/}MTOMServiceSOAP11Binding" soapVersion="1_1" anonymous="optional" definition="http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample?wsdl"><con:part><con:url>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample?wsdl</con:url><con:content><![CDATA[<definitions targetNamespace="http://ws.apache.org/axis2/mtomsample/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.apache.org/axis2/mtomsample/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2/mtomsample/">
+      <xsd:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="MTOMSample?xsd=xmime.xsd"/>
+      <xsd:complexType name="AttachmentType">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fileName" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="binaryData" type="xmime:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="AttachmentRequest" type="tns:AttachmentType"/>
+      <xsd:element name="AttachmentResponse" type="xsd:string"/>
+    </xsd:schema>
+  </types>
+  <message name="AttachmentResponse">
+    <part name="part1" element="tns:AttachmentResponse"></part>
+  </message>
+  <message name="AttachmentRequest">
+    <part name="part1" element="tns:AttachmentRequest"></part>
+  </message>
+  <portType name="MTOMServicePortType">
+    <operation name="attachment">
+      <input message="tns:AttachmentRequest" wsaw:Action="attachment"></input>
+      <output message="tns:AttachmentResponse" wsaw:Action="http://schemas.xmlsoap.org/wsdl/MTOMServicePortType/AttachmentResponse"></output>
+    </operation>
+  </portType>
+  <binding name="MTOMServiceSOAP11Binding" type="tns:MTOMServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="attachment">
+      <soap:operation soapAction="attachment" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <binding name="MTOMServiceSOAP12Binding" type="tns:MTOMServicePortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="attachment">
+      <soap12:operation soapAction="attachment" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="MTOMSample">
+    <port name="MTOMSampleSOAP12port_http" binding="tns:MTOMServiceSOAP12Binding">
+      <soap12:address location="http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP12port_http/"/>
+    </port>
+    <port name="MTOMSampleSOAP11port_http" binding="tns:MTOMServiceSOAP11Binding">
+      <soap:address location="http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP11port_http/"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample?xsd=xmime.xsd</con:url><con:content><![CDATA[<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+  <xs:attribute name="contentType">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="3"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:attribute name="expectedContentTypes" type="xs:string"/>
+  <xs:complexType name="base64Binary">
+    <xs:simpleContent>
+      <xs:extension base="xs:base64Binary">
+        <xs:attribute ref="xmime:contentType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="hexBinary">
+    <xs:simpleContent>
+      <xs:extension base="xs:hexBinary">
+        <xs:attribute ref="xmime:contentType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP11port_http/</con:endpoint><con:endpoint>http://10.100.3.143:9763/services/MTOMSample</con:endpoint></con:endpoints><con:operation isOneWay="false" action="attachment" name="attachment" bindingOperationName="attachment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="WsdlSettings@enable-mtom">true</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@expand-mtom-attachments">true</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://appserver.stratosdev.private.wso2.com/services/t/fornax.org/MTOMSample.MTOMSampleSOAP11port_http/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mtom="http://ws.apache.org/axis2/mtomsample/" xmlns:xm="http://www.w3.org/2005/05/xmlmime">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mtom:AttachmentRequest>
+         <!--Optional:-->
+         <mtom:fileName>/mnt/packs/mtom/dest/soapui64.png</mtom:fileName>
+         <!--Optional:-->
+         <mtom:binaryData xm:contentType="application/?">cid:soapui32.png</mtom:binaryData>
+      </mtom:AttachmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:attachment><con:name>soapui32.png</con:name><con:contentType>image/x-png</con:contentType><con:size>1041</con:size><con:contentId>soapui32.png</con:contentId><con:data>UEsDBBQACAgIADCHdEEAAAAAAAAAAAAAAAAMAAAAc29hcHVpMzIucG5nAREE7vuJUE5HDQoaCgAAAA1JSERSAAAAJQAAACUIBgAAAMWeIAMAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAADs0lEQVR42syYX0hTYRTAz/fdu7nNP1dT1P65KSgUxBZBpqWbGRX1kL1Eb86nICoWQkFB7sEH3xTqpV6mQS/5MpECw2zLIApBjQih0mk5zNBMUza3e29nswSn98/mnB44nLu77373t3POd77vjECShLtWzqHxoJpQ7b8fvOtKdC4KyRMHqgU1G9WNkK6dAGWP/Zx145hr26DQK+Z/YVsjIgF7emOFa7s8ZZf7Tn/7uGs7oOqUoA13T7SmDApDZ9wodOuEEEdmU3V9qjxlUz2SQHtWs828s6CiDgNPTksNt9VQljjHZxMaLbJbC5WRxQCXy0IWqgGv1TyT11rbKh3lBMXvL+F6vmU6O/35Do2BAUEE4PE+jzYYEmFmKgT+0QAE8FpgKRANBYYlQCNWg1ZLgTLENn2915sUT41NlF5ACF9OhujQGdZPweCLc/elwYEqDgqKdZLzYHFtz394mtsU1MexQ9yI76BLBOKO5MbsskbxmXyTHvaU6aWS3oSxciYMNfDlMMcLxINAq9X786JBXWYXaCHfqJMCcxS6zljjhnozcsTMC+CLXWlLvHpHc4VaSMtkpMCccUH1fjpqFlbOSdmx300GdPFV/91pUsvNtvfJ2XpVUN0fKsyY0BsCJSLaDAY0eioF5lSE6hysjHpIlABSm0+xos9hJZPe+PScVRLq8UCVLNBmhNFRub3RviHUo/fVRj4KRJIOFJFIoZWBqlsH1fbWxoVFcMMWeEjtvmhyn7eugcItoh1xLbDNsgrV3H+ySVQ+QaYO6o631oqJ7UzFC0NLvDqocDRsqRE+IChD3eg7Va/qjB0juzShhKCC8/Ke8tU981Ks2PZEJs/VhuIG45cFCP6RhRqKeor8u0hESjOW4ho/Ox6QH7CypQG9X9t7k66sOl+8UDV5v1SPXfi5DMEFXgmqbTXRW2wvu+5V9RWTKJzoVvui/foAlKUvKo4LYMimRuW9JOJiG7/0fHxdRW+s9HRdLX99EY/S2QREO0K6UefkJmso8oOBkfbAzPcAjA7+UfLQHKojrsahHw95WirYdAxv0TJhSxoNRyxoKA8sFWB4PhNavxatNg5hnHZmahl+TARhHlebZOOAlqAlLLFNNfR4N93NTE6WGFnKmyJQLBXhcneR5eM4acNfDIsIwmPxExiCQEQSCmHm8L5j+sqLjqS0WDJ/Cbn/1z1ZKA0doiyxY4s1nLS+TwEuUpAdCGXZAMqDUO2zt151JL0ZVSvpjRXW/1BLzf1eNc/8FWAATrEp4qxS1p8AAAAASUVORK5CYIJQSwcISTfweRYEAAARBAAAUEsBAhQAFAAICAgAMId0QUk38HkWBAAAEQQAAAwAAAAAAAAAAAAAAAAAAAAAAHNvYXB1aTMyLnBuZ1BLBQYAAAAAAQABADoAAABQBAAAAAA=</con:data><con:id>e3cda4b7-2dbf-4c14-9139-59742b41d03a</con:id></con:attachment><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="attachment"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
