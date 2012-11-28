@@ -1,0 +1,65 @@
+<data description="multiple services per each table" enableBatchRequests="false" enableBoxcarring="false" name="Department_DataService" serviceNamespace="http://ws.wso2.org/dataservice" serviceStatus="active">
+   <config id="default">
+      <property name="carbon_datasource_name">Company</property>
+   </config>
+   <query id="update_Department_query" useConfig="default">
+      <sql>UPDATE Department SET Dep_Name=?,Location=? WHERE Dep_ID=?</sql>
+      <param name="Dep_Name" ordinal="1" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="Location" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="Dep_ID" ordinal="3" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+   </query>
+   <query id="select_all_Department_query" useConfig="default">
+      <sql>SELECT Dep_ID, Dep_Name, Location FROM Department</sql>
+      <result element="DepartmentCollection" rowName="Department">
+         <element column="Dep_ID" name="Dep_ID" xsdType="xs:integer"/>
+         <element column="Dep_Name" name="Dep_Name" xsdType="xs:string"/>
+         <element column="Location" name="Location" xsdType="xs:string"/>
+      </result>
+   </query>
+   <query id="select_with_key_Department_query" useConfig="default">
+      <sql>SELECT Dep_ID, Dep_Name, Location FROM Department WHERE Dep_ID=?</sql>
+      <param name="Dep_ID" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <result element="DepartmentCollection" rowName="Department">
+         <element column="Dep_ID" name="Dep_ID" xsdType="xs:integer"/>
+         <element column="Dep_Name" name="Dep_Name" xsdType="xs:string"/>
+         <element column="Location" name="Location" xsdType="xs:string"/>
+      </result>
+   </query>
+   <query id="delete_Department_query" useConfig="default">
+      <sql>DELETE FROM Department WHERE Dep_ID=?</sql>
+      <param name="Dep_ID" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+   </query>
+   <query id="insert_Department_query" useConfig="default">
+      <sql>INSERT INTO Department(Dep_ID,Dep_Name,Location) VALUES(?,?,?)</sql>
+      <param name="Dep_ID" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <param name="Dep_Name" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="Location" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"/>
+   </query>
+   <operation name="update_Department_operation">
+      <call-query href="update_Department_query">
+         <with-param name="Dep_Name" query-param="Dep_Name"/>
+         <with-param name="Location" query-param="Location"/>
+         <with-param name="Dep_ID" query-param="Dep_ID"/>
+      </call-query>
+   </operation>
+   <operation name="select_all_Department_operation">
+      <call-query href="select_all_Department_query"/>
+   </operation>
+   <operation name="delete_Department_operation">
+      <call-query href="delete_Department_query">
+         <with-param name="Dep_ID" query-param="Dep_ID"/>
+      </call-query>
+   </operation>
+   <operation name="insert_Department_operation">
+      <call-query href="insert_Department_query">
+         <with-param name="Dep_Name" query-param="Dep_Name"/>
+         <with-param name="Location" query-param="Location"/>
+         <with-param name="Dep_ID" query-param="Dep_ID"/>
+      </call-query>
+   </operation>
+   <operation name="select_with_key_Department_operation">
+      <call-query href="select_with_key_Department_query">
+         <with-param name="Dep_ID" query-param="Dep_ID"/>
+      </call-query>
+   </operation>
+</data>
