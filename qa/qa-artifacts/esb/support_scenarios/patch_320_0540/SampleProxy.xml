@@ -1,0 +1,34 @@
+    <proxy name="SampleProxy" transports="https http" startOnLoad="true" trace="disable">
+        <target>
+            <inSequence>
+                <header name="To" action="remove"/>
+                <property name="RESPONSE" value="true"/>
+                <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+                <log level="full">
+                    <property name="=======1========" value="======================"/>
+                </log>
+                <property xmlns:m0="http://services.samples/xsd" name="prop1" expression="//m0:aa" scope="default" type="OM"/>
+                <log level="custom">
+                    <property name="=======2=======" expression="get-property('prop1')"/>
+                </log>
+                <payloadFactory>
+                    <format>
+                        <ns:getQuoteResponse xmlns:ns="http://services.samples">
+                            <ns:return xmlns:ax21="http://services.samples/xsd">
+                                <ax21:symbol>IBM</ax21:symbol>
+                                <ax21:change>$1</ax21:change>
+                            </ns:return>
+                            <ns:return2/>
+                        </ns:getQuoteResponse>
+                    </format>
+                    <args>
+                        <arg xmlns:m0="http://services.samples/xsd" expression="get-property('prop1')"/>
+                    </args>
+                </payloadFactory>
+                <log level="full">
+                    <property name="======3=========" value="======================"/>
+                </log>
+                <send/>
+            </inSequence>
+        </target>
+    </proxy>
