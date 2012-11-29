@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><api xmlns="http://ws.apache.org/ns/synapse" name="amad.com/nirodha--patch44" context="/jaxp44" version="1.0.0" version-type="url">
+    <resource methods="GET POST" uri-template="/customerservice/customers/test1/{id}{/var}">
+        <inSequence>
+            <class name="org.wso2.carbon.apimgt.gateway.mediators.TokenPasser"/>
+            <filter source="$ctx:AM_KEY_TYPE" regex="PRODUCTION">
+                <then>
+                    <send>
+                        <endpoint name="amad.com/nirodha--patch44_APIEndpoint_0">
+                            <address uri="http://10.100.3.69:9763/jaxrs_basic/services/customers"/>
+                        </endpoint>
+                    </send>
+                </then>
+                <else>
+                    <sequence key="_sandbox_key_error_"/>
+                </else>
+            </filter>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+
+    <resource methods="POST" uri-template="/customerservice/customers/order/123/*">
+
+        <inSequence>
+            <class name="org.wso2.carbon.apimgt.gateway.mediators.TokenPasser"/>
+            <filter source="$ctx:AM_KEY_TYPE" regex="PRODUCTION">
+                <then>
+                    <send>
+                        <endpoint name="amad.com/nirodha--patch44_APIEndpoint_0">
+                            <address uri="http://10.100.3.69:9763/jaxrs_basic/services/customers"/>
+                        </endpoint>
+                    </send>
+                </then>
+                <else>
+                    <sequence key="_sandbox_key_error_"/>
+                </else>
+            </filter>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource> 
+
+    <resource methods="DELETE" uri-template="/customerservice/customers/order/*">
+
+        <inSequence>
+            <class name="org.wso2.carbon.apimgt.gateway.mediators.TokenPasser"/>
+            <filter source="$ctx:AM_KEY_TYPE" regex="PRODUCTION">
+                <then>
+                    <send>
+                        <endpoint name="amad.com/nirodha--patch44_APIEndpoint_0">
+                            <address uri="http://10.100.3.69:9763/jaxrs_basic/services/customers"/>
+                        </endpoint>
+                    </send>
+                </then>
+                <else>
+                    <sequence key="_sandbox_key_error_"/>
+                </else>
+            </filter>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+
+
+<resource methods="PUT" uri-template="/customerservice/customers/order/{id1,id2,id3}/*">
+
+        <inSequence>
+            <class name="org.wso2.carbon.apimgt.gateway.mediators.TokenPasser"/>
+            <filter source="$ctx:AM_KEY_TYPE" regex="PRODUCTION">
+                <then>
+                    <send>
+                        <endpoint name="amad.com/nirodha--patch44_APIEndpoint_0">
+                            <address uri="http://10.100.3.69:9763/jaxrs_basic/services/customers"/>
+                        </endpoint>
+                    </send>
+                </then>
+                <else>
+                    <sequence key="_sandbox_key_error_"/>
+                </else>
+            </filter>
+        </inSequence>
+        <outSequence>
+            <send/>
+        </outSequence>
+    </resource>
+
+
+
+
+    <handlers>
+        <handler class="org.wso2.carbon.apimgt.gateway.handlers.security.APIAuthenticationHandler"/>
+        <handler class="org.wso2.carbon.apimgt.usage.publisher.APIMgtUsageHandler"/>
+        <handler class="org.wso2.carbon.apimgt.gateway.handlers.throttling.APIThrottleHandler">
+            <property name="id" value="A"/>
+            <property name="policyKey" value="gov:/apimgt/applicationdata/tiers.xml"/>
+        </handler>
+        <handler class="org.wso2.carbon.apimgt.gateway.handlers.ext.APIManagerExtensionHandler"/>
+    </handlers>
+</api>
