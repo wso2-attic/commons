@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<localEntry xmlns="http://ws.apache.org/ns/synapse"
+            key="Axis2ServiceSoap11BindingPolicy_Sce3">
+   <wsp:Policy xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+               xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+               wsu:Id="SgnOnlyAnonymous">
+      <wsp:ExactlyOne>
+         <wsp:All>
+            <sp:SymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <wsp:Policy>
+                  <sp:ProtectionToken>
+                     <wsp:Policy>
+                        <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Never">
+                           <wsp:Policy>
+                              <sp:RequireThumbprintReference/>
+                              <sp:WssX509V3Token10/>
+                           </wsp:Policy>
+                        </sp:X509Token>
+                     </wsp:Policy>
+                  </sp:ProtectionToken>
+                  <sp:AlgorithmSuite>
+                     <wsp:Policy>
+                        <sp:Basic256/>
+                     </wsp:Policy>
+                  </sp:AlgorithmSuite>
+                  <sp:Layout>
+                     <wsp:Policy>
+                        <sp:Lax/>
+                     </wsp:Policy>
+                  </sp:Layout>
+                  <sp:IncludeTimestamp/>
+                  <sp:OnlySignEntireHeadersAndBody/>
+               </wsp:Policy>
+            </sp:SymmetricBinding>
+            <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <sp:Body/>
+            </sp:SignedParts>
+            <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <sp:Policy>
+                  <sp:MustSupportRefKeyIdentifier/>
+                  <sp:MustSupportRefIssuerSerial/>
+                  <sp:MustSupportRefThumbprint/>
+                  <sp:RequireSignatureConfirmation/>
+               </sp:Policy>
+            </sp:Wss11>
+            <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+               <wsp:Policy>
+                  <sp:RequireClientEntropy/>
+                  <sp:RequireServerEntropy/>
+                  <sp:MustSupportIssuedTokens/>
+               </wsp:Policy>
+            </sp:Trust10>
+            <rampart:RampartConfig xmlns:rampart="http://ws.apache.org/rampart/policy">
+               <rampart:user>clientks</rampart:user>
+               <rampart:encryptionUser>serviceks</rampart:encryptionUser>
+               <rampart:passwordCallbackClass>org.wso2.esb.samples.pwcb.PWCBHandler</rampart:passwordCallbackClass>
+               <rampart:timestampPrecisionInMilliseconds>true</rampart:timestampPrecisionInMilliseconds>
+               <rampart:timestampTTL>300</rampart:timestampTTL>
+               <rampart:timestampMaxSkew>300</rampart:timestampMaxSkew>
+               <rampart:timestampStrict>false</rampart:timestampStrict>
+               <rampart:tokenStoreClass>org.wso2.carbon.security.util.SecurityTokenStore</rampart:tokenStoreClass>
+               <rampart:nonceLifeTime>300</rampart:nonceLifeTime>
+               <rampart:signatureCrypto>
+                  <rampart:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</rampart:property>
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.file">/opt/personal/SOAPUI_BOOK/Chapter7/clientks.jks</rampart:property>
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.keystore.password">clientks</rampart:property>
+                  </rampart:crypto>
+               </rampart:signatureCrypto>
+               <rampart:encryptionCypto>
+                  <rampart:crypto provider="org.apache.ws.security.components.crypto.Merlin">
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.keystore.type">JKS</rampart:property>
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.file">/opt/personal/SOAPUI_BOOK/Chapter7/clientks.jks</rampart:property>
+                     <rampart:property name="org.apache.ws.security.crypto.merlin.keystore.password">clientks</rampart:property>
+                  </rampart:crypto>
+               </rampart:encryptionCypto>
+            </rampart:RampartConfig>
+         </wsp:All>
+      </wsp:ExactlyOne>
+   </wsp:Policy>
+   <description/>
+</localEntry>
