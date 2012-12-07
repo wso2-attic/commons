@@ -33,8 +33,8 @@ public class QAResource {
         Storage storage = new Storage();
 
         User user = storage.getUserDetails(name);
-        //return Response.ok(user.getName(), MediaType.TEXT_XML_TYPE).build();
-         return Response.ok(user.getName(), MediaType.APPLICATION_JSON).build();
+        return Response.ok(user.getName(), MediaType.TEXT_XML_TYPE).build();
+        // return Response.ok(user.getName(), MediaType.APPLICATION_JSON).build();
 
     }
 
