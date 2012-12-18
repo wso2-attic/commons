@@ -25,15 +25,12 @@ import org.wso2.balana.PDP;
 import org.wso2.balana.PDPConfig;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.ctx.AbstractResult;
-import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.ResponseCtx;
-import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.finder.AttributeFinder;
 import org.wso2.balana.finder.AttributeFinderModule;
 import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.xacml3.Advice;
-import org.wso2.balana.xacml3.Attributes;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
@@ -126,7 +123,7 @@ public class KMarketAccessControl {
                 System.out.println("\n" + userName + " is authorized to perform this purchase\n\n");
             } else {
                 System.out.println("\n" + userName + " is NOT authorized to perform this purchase\n");
-                Set<Advice> advices = result.getAdvices();
+                List<Advice> advices = result.getAdvices();
                 for(Advice advice : advices){
                     List<AttributeAssignment> assignments = advice.getAssignments();
                     for(AttributeAssignment assignment : assignments){

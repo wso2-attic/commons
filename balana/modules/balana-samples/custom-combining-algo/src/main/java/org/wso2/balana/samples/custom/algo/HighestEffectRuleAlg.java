@@ -18,12 +18,12 @@
 
 package org.wso2.balana.samples.custom.algo;
 
-import org.wso2.balana.ResultFactory;
 import org.wso2.balana.Rule;
 import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.xacml2.Result;
 
 import java.net.URI;
