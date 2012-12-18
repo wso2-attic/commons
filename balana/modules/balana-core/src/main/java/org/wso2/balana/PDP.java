@@ -46,6 +46,7 @@ import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderResult;
 import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.ctx.xacml3.XACML3EvaluationCtx;
+import org.wso2.balana.xacml3.MultipleCtxResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

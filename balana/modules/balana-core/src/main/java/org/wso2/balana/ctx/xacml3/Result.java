@@ -33,9 +33,7 @@ import org.wso2.balana.xacml3.Obligation;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * XACML 3 implementation of  <code>AbstractResult</code>
@@ -56,18 +54,39 @@ public class Result extends AbstractResult{
         super(decision, status);
     }
 
-    public Result(int decision, Status status, Set<ObligationResult> obligationResults, 
-                  Set<Advice> advices, EvaluationCtx evaluationCtx) throws IllegalArgumentException {
-        super(decision, status, obligationResults, advices, evaluationCtx);
-        XACML3EvaluationCtx ctx = (XACML3EvaluationCtx) evaluationCtx;
-        this.policyReferences = ctx.getPolicyReferences();
-        this.attributes = ctx.getRequestCtx().getAttributesSet();
+    /**
+     *
+     * @param decision
+     * @param status
+     * @param obligationResults
+     * @param advices
+     * @param evaluationCtx
+     * @throws IllegalArgumentException
+     */
+    public Result(int decision, Status status, List<ObligationResult> obligationResults,
+                  List<Advice> advices, EvaluationCtx evaluationCtx) throws IllegalArgumentException {
+        super(decision, status, obligationResults, advices);
+        if(evaluationCtx != null){
+            XACML3EvaluationCtx ctx = (XACML3EvaluationCtx) evaluationCtx;
+            this.policyReferences = ctx.getPolicyReferences();
+            this.attributes = ctx.getAttributesSet();
+        }
     }
 
-    public Result(int decision, Status status, Set<ObligationResult> obligationResults,
-                  Set<Advice> advices, Set<PolicyReference> policyReferences, Set<Attributes> attributes)
+    /**
+     *
+     * @param decision
+     * @param status
+     * @param obligationResults
+     * @param advices
+     * @param policyReferences
+     * @param attributes
+     * @throws IllegalArgumentException
+     */
+    public Result(int decision, Status status, List<ObligationResult> obligationResults,
+                  List<Advice> advices, Set<PolicyReference> policyReferences, Set<Attributes> attributes)
                                                                 throws IllegalArgumentException {
-        super(decision, status, obligationResults, advices, null);
+        super(decision, status, obligationResults, advices);
         this.policyReferences = policyReferences;
         this.attributes = attributes;
     }
@@ -86,8 +105,8 @@ public class Result extends AbstractResult{
 
         int decision = -1;
         Status status = null;
-        Set<ObligationResult> obligations = null;
-        Set<Advice> advices = null;
+        List<ObligationResult> obligations = null;
+        List<Advice> advices = null;
         Set<PolicyReference> policyReferences = null;
         Set<Attributes>  attributes = null;
 
@@ -147,47 +166,50 @@ public class Result extends AbstractResult{
      * Helper method that handles the obligations
      *
      * @param root the DOM root of the ObligationsType XML type
-     * @return a <code>Set</code> of <code>ObligationResult</code>
+     * @return a <code>List</code> of <code>ObligationResult</code>
      * @throws ParsingException  if any issues in parsing DOM
      */
-    private static Set<ObligationResult> parseObligations(Node root) throws ParsingException {
-        Set<ObligationResult> set = new HashSet<ObligationResult>();
+    private static List<ObligationResult> parseObligations(Node root) throws ParsingException {
+
+        List<ObligationResult> list = new ArrayList<ObligationResult>();
 
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("Obligation"))
-                set.add(Obligation.getInstance(node));
+            if (node.getNodeName().equals("Obligation")){
+                list.add(Obligation.getInstance(node));
+            }
         }
 
-        if (set.size() == 0) {
+        if (list.size() == 0) {
             throw new ParsingException("ObligationsType must not be empty");
         }
-        return set;
+        return list;
     }
 
     /**
      * Helper method that handles the Advices
      * 
      * @param root the DOM root of the AssociatedAdviceType XML type
-     * @return a <code>Set</code> of <code>Advice</code>
+     * @return a <code>List</code> of <code>Advice</code>
      * @throws ParsingException  if any issues in parsing DOM
      */
-    private static Set<Advice> parseAdvices(Node root) throws ParsingException {
-        Set<Advice> set = new HashSet<Advice>();
+    private static List<Advice> parseAdvices(Node root) throws ParsingException {
+
+        List<Advice> list = new ArrayList<Advice>();
 
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("Advice")){
-                set.add(Advice.getInstance(node));
+                list.add(Advice.getInstance(node));
             }
         }
 
-        if (set.size() == 0) {
+        if (list.size() == 0) {
             throw new ParsingException("AssociatedAdviceType must not be empty");
         }
-        return set;
+        return list;
     }
 
     /**
@@ -264,9 +286,12 @@ public class Result extends AbstractResult{
         // encode the advices
         if (advices != null  && advices.size() != 0) {
             out.println(indentNext + "<AssociatedAdvice>");
+
+            Iterator it = advices.iterator();
             indenter.in();
 
-            for(Advice advice : advices){
+            while (it.hasNext()) {
+                Advice advice = (Advice) (it.next());
                 advice.encode(out, indenter);
             }
 

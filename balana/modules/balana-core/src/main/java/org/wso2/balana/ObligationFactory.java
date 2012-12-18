@@ -30,7 +30,7 @@ public class ObligationFactory {
 
     private HashMap<String, AbstractObligation> targetMap = new HashMap<String, AbstractObligation>();
 
-    private static ObligationFactory factoryInstance;
+    private static volatile ObligationFactory factoryInstance;
 
     private static void init(){
         // TODO

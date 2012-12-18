@@ -28,7 +28,7 @@ import org.wso2.balana.XACMLConstants;
  */
 public class AttributeSelectorFactory {
 
-    private static AttributeSelectorFactory factoryInstance;
+    private static volatile AttributeSelectorFactory factoryInstance;
 
     public AbstractAttributeSelector getAbstractSelector(Node root, PolicyMetaData metaData)
                                                                         throws ParsingException {

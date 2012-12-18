@@ -27,7 +27,7 @@ import java.util.HashMap;
  */
 public class TargetFactory {
 
-    private static TargetFactory factoryInstance;
+    private static volatile TargetFactory factoryInstance;
 
     /**
      * Returns AbstractTarget based one the XACML version

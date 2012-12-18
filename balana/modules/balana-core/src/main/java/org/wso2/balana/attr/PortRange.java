@@ -207,6 +207,15 @@ public class PortRange {
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        
+        int result = lowerBound;
+        result = 31 * result + upperBound;
+        return result;
+        
+    }
+
     /**
      *
      */

@@ -247,7 +247,7 @@ public class Attribute {
                 try {                    
                     values.add(attributeFactory.createValue(node, type));
                 } catch (UnknownIdentifierException uie) {
-                    throw new ParsingException("Unknown AttributeId", uie);
+                    throw new ParsingException(uie.getMessage(), uie);
                 }
             }
         }

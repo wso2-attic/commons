@@ -35,7 +35,7 @@
 
 package org.wso2.balana.ctx;
 
-import org.wso2.balana.MultipleCtxResult;
+import org.wso2.balana.xacml3.MultipleCtxResult;
 import org.wso2.balana.attr.DateAttribute;
 import org.wso2.balana.attr.DateTimeAttribute;
 import org.wso2.balana.attr.TimeAttribute;
@@ -119,8 +119,6 @@ public interface EvaluationCtx {
      * Returns the attribute value(s) retrieved using the given XPath expression.
      *
      * @param path the XPath expression to search
-     * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
-     *            come from the context root or content element
      * @param type the type of the attribute value(s) to find
      * @param category the category the attribute value(s) must be in
      * @param contextSelector the selector to find the context to apply XPath expression
@@ -131,7 +129,7 @@ public interface EvaluationCtx {
      *         least one value, or status associated with an Indeterminate result
      */
 
-    public EvaluationResult getAttribute(String path, Node namespaceNode, URI type, URI category,
+    public EvaluationResult getAttribute(String path, URI type, URI category,
                                          URI contextSelector, String xpathVersion);
 
 

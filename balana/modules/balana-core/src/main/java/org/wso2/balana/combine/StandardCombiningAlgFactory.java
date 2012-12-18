@@ -67,7 +67,7 @@ import java.util.Set;
 public class StandardCombiningAlgFactory extends BaseCombiningAlgFactory {
 
     // the single factory instance
-    private static StandardCombiningAlgFactory factoryInstance = null;
+    private static volatile StandardCombiningAlgFactory factoryInstance = null;
 
     // the algorithms supported by this factory
     private static Set supportedAlgorithms = null;

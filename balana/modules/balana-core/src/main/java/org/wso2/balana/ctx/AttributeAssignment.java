@@ -170,7 +170,7 @@ public class AttributeAssignment extends AttributeValue {
             out.print("\" Issuer=\"" + issuer + "\"");
         }
 
-        out.println(">");
+        out.print(">");
 
         if(content != null){
             out.print(content);

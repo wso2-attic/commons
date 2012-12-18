@@ -33,7 +33,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 /**
- * 
+ * String conversion functions that creates different data-types from String type
  */
 public class StringConversionFunction extends FunctionBase{
 

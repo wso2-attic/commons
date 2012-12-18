@@ -2,7 +2,8 @@
         xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="TestPolicy0001"
         RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"
         Version="1.0">
-    <Description>Test policy 0001</Description>
+    <Description>Test policy 0001 - Sample Policy.  The bar1 action can be done by bob on resource foo/foo1
+        and The bar2 action can be done by alice on resource foo/foo2</Description>
     <Target>
         <AnyOf>
             <AllOf>
@@ -17,12 +18,12 @@
         </AnyOf>
     </Target>
     <Rule RuleId="rule1" Effect="Permit">
-        <Description>Test rule1</Description>
+        <Description>Test rule1 : The bar1 action can be done by bob on resource foo/foo1</Description>
         <Target>
             <AnyOf>
                 <AllOf>
-                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
-                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">foo/foo</AttributeValue>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">foo/foo1</AttributeValue>
                         <AttributeDesignator MustBePresent="false"
                                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
                                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
@@ -34,7 +35,7 @@
                 <AllOf>
                      <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                         <AttributeValue
-                                DataType="http://www.w3.org/2001/XMLSchema#string">bar</AttributeValue>
+                                DataType="http://www.w3.org/2001/XMLSchema#string">bar1</AttributeValue>
                         <AttributeDesignator MustBePresent="false"
                                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
                                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
@@ -55,12 +56,12 @@
         </Condition>
     </Rule>
     <Rule RuleId="rule2" Effect="Permit">
-        <Description>Test rule2</Description>
+        <Description>Test rule2 : The bar2 action can be done by alice on resource foo/foo2</Description>
         <Target>
             <AnyOf>
                 <AllOf>
-                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
-                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">foo/foo/foo</AttributeValue>
+                    <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+                        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">foo/foo2</AttributeValue>
                         <AttributeDesignator MustBePresent="false"
                                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
                                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
@@ -68,7 +69,7 @@
                     </Match>
                      <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
                         <AttributeValue
-                                DataType="http://www.w3.org/2001/XMLSchema#string">bar</AttributeValue>
+                                DataType="http://www.w3.org/2001/XMLSchema#string">bar2</AttributeValue>
                         <AttributeDesignator MustBePresent="false"
                                              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
                                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
@@ -88,21 +89,7 @@
             </Apply>
         </Condition>
     </Rule>
-    <Rule RuleId="rule3" Effect="Deny"/>
-    <ObligationExpressions>
-        <ObligationExpression ObligationId="permitObligation" FulfillOn="Permit">
-            <AttributeAssignmentExpression
-                    AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text"
-                    DataType="http://www.w3.org/2001/XMLSchema#string">
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">My Obligation Id is permitObligation. Policy result is Permit.</AttributeValue>
-            </AttributeAssignmentExpression>
-        </ObligationExpression>
-        <ObligationExpression ObligationId="denyObligation" FulfillOn="Deny">
-            <AttributeAssignmentExpression
-                    AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text"
-                    DataType="http://www.w3.org/2001/XMLSchema#string">
-                <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">My Obligation Id is denyObligation. Policy result is Deny.</AttributeValue>
-            </AttributeAssignmentExpression>
-        </ObligationExpression>
-    </ObligationExpressions>
+    <Rule RuleId="rule3" Effect="Deny">
+        <Description>Test rule3 : All other requests are denied</Description>        
+    </Rule>
 </Policy>

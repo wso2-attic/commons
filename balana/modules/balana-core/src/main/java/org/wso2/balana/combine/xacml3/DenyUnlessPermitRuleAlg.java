@@ -19,7 +19,7 @@
 package org.wso2.balana.combine.xacml3;
 
 import org.wso2.balana.ObligationResult;
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.Rule;
 import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
@@ -29,6 +29,7 @@ import org.wso2.balana.xacml3.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +37,9 @@ import java.util.Set;
 /**
  * This is the standard Deny unless permit rule combining algorithm. This algorithm is intended for
  * those cases where a permit decision should have priority over a deny decision, 
- * and an “Indeterminate” or “NotApplicable” must never be the result.
+ * and an "Indeterminate" or "NotApplicable" must never be the result.
  * It is particularly useful at the top level in a policy structure to ensure that a
- * PDP will always return a definite “Permit” or “Deny”  result.
+ * PDP will always return a definite "Permit" or "Deny"  result.
  */
 public class DenyUnlessPermitRuleAlg extends RuleCombiningAlgorithm {
 
@@ -86,8 +87,8 @@ public class DenyUnlessPermitRuleAlg extends RuleCombiningAlgorithm {
     @Override
     public AbstractResult combine(EvaluationCtx context, List parameters, List ruleElements) {
 
-        Set<ObligationResult> denyObligations = new HashSet<ObligationResult>();
-        Set<Advice> denyAdvices = new HashSet<Advice>();
+        List<ObligationResult> denyObligations = new ArrayList<ObligationResult>();
+        List<Advice> denyAdvices = new ArrayList<Advice>();
         
         for (Object ruleElement : ruleElements) {
             Rule rule = ((RuleCombinerElement) (ruleElement)).getRule();

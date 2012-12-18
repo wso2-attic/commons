@@ -93,7 +93,7 @@ public class CombinerParameter {
         try {
             value = attrFactory.createValue(root.getFirstChild());
         } catch (UnknownIdentifierException uie) {
-            throw new ParsingException("Unknown AttributeId", uie);
+            throw new ParsingException(uie.getMessage(), uie);
         }
 
         return new CombinerParameter(name, value);

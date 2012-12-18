@@ -29,7 +29,7 @@ import org.wso2.balana.attr.xacml3.AttributeDesignator;
  */
 public class AttributeDesignatorFactory {
 
-    private static AttributeDesignatorFactory factoryInstance;
+    private static volatile AttributeDesignatorFactory factoryInstance;
 
     public AbstractDesignator getAbstractDesignator(Node root, PolicyMetaData metaData)
                                                                         throws ParsingException {

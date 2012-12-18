@@ -111,16 +111,14 @@ public class XPathAttribute extends AttributeValue {
 
         String xPathCategory = null;
 
-        Node node = root.getFirstChild();
-
-        NamedNodeMap nodeMap = node.getAttributes();
+        NamedNodeMap nodeMap = root.getAttributes();
         if(nodeMap != null){
             Node categoryNode = nodeMap.getNamedItem("XPathCategory");
             xPathCategory = categoryNode.getNodeValue();
         }
 
 
-        return getInstance(node.getNodeValue(), xPathCategory);
+        return getInstance(root.getFirstChild().getNodeValue(), xPathCategory);
     }
 
     /**

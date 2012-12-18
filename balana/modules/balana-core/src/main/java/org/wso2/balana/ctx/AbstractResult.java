@@ -23,8 +23,8 @@ import org.wso2.balana.*;
 import org.wso2.balana.xacml3.Advice;
 
 import java.io.OutputStream;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract Represents the ResultType XML object from the Context schema. Any number
@@ -76,14 +76,14 @@ public abstract class AbstractResult {
     public static final String[] DECISIONS = { "Permit", "Deny", "Indeterminate", "NotApplicable"};
 
     /**
-     * set of obligations which may be empty
+     * List of obligations which may be empty
      */
-    protected Set<ObligationResult> obligations;
+    protected List<ObligationResult> obligations;
 
     /**
-     * set of advices which may be empty
+     * List of advices which may be empty
      */
-    protected Set<Advice> advices;
+    protected List<Advice> advices;
 
     /**
      * the decision effect
@@ -129,13 +129,12 @@ public abstract class AbstractResult {
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
-     * @param obligationResults a set of <code>ObligationResult</code> objects
-     * @param advices  a set of <code>Advice</code> objects
-     * @param evaluationCtx  <code>EvaluationCtx</code> object  
+     * @param obligationResults a list of <code>ObligationResult</code> objects
+     * @param advices  a list of <code>Advice</code> objects  
      * @throws IllegalArgumentException if decision is not valid
      */
-    public AbstractResult(int decision, Status status, Set<ObligationResult> obligationResults,
-                  Set<Advice> advices, EvaluationCtx evaluationCtx) throws IllegalArgumentException {
+    public AbstractResult(int decision, Status status, List<ObligationResult> obligationResults,
+                  List<Advice> advices) throws IllegalArgumentException {
 
         // check that decision is valid
         if ((decision != DECISION_PERMIT) && (decision != DECISION_DENY)
@@ -167,9 +166,9 @@ public abstract class AbstractResult {
      *
      * @return the set of <code>Obligation</code>
      */
-    public Set<ObligationResult> getObligations() {
+    public List<ObligationResult> getObligations() {
         if(obligations == null){
-            obligations = new HashSet<ObligationResult>();
+            obligations = new ArrayList<ObligationResult>();
         }
         return obligations;
     }
@@ -180,9 +179,9 @@ public abstract class AbstractResult {
      *
      * @return the set of <code>Advice</code>
      */
-    public Set<Advice> getAdvices() {
+    public List<Advice> getAdvices() {
         if(advices  == null){
-            advices = new HashSet<Advice>();
+            advices = new ArrayList<Advice>();
         }
         return advices;
     }

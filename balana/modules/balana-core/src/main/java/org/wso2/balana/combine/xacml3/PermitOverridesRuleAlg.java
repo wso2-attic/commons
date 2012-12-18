@@ -20,7 +20,7 @@
 package org.wso2.balana.combine.xacml3;
 
 import org.wso2.balana.ObligationResult;
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.Rule;
 import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
@@ -30,10 +30,7 @@ import org.wso2.balana.xacml3.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the new (XACML 3.0) the standard Permit Overrides rule combining algorithm. It allows a single evaluation of
@@ -99,8 +96,8 @@ public class PermitOverridesRuleAlg extends RuleCombiningAlgorithm{
         boolean atLeastOneDeny = false;
         AbstractResult firstIndeterminateResultD = null;
         AbstractResult firstIndeterminateResultP = null;
-        Set<ObligationResult> denyObligations = new HashSet<ObligationResult>();
-        Set<Advice> denyAdvices = new HashSet<Advice>();
+        List<ObligationResult> denyObligations = new ArrayList<ObligationResult>();
+        List<Advice> denyAdvices = new ArrayList<Advice>();
 
         Iterator it = ruleElements.iterator();
 

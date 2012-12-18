@@ -41,6 +41,7 @@ import org.wso2.balana.combine.CombiningAlgorithm;
 
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.ctx.Status;
 

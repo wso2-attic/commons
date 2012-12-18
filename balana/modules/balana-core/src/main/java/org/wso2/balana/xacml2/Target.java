@@ -151,11 +151,11 @@ public class Target extends AbstractTarget {
      * @throws ParsingException if the DOM node is invalid
      */
     public static Target getInstance(Node root, PolicyMetaData metaData) throws ParsingException {
+        
         TargetSection subjects = null;
         TargetSection resources = null;
         TargetSection actions = null;
         TargetSection environments = null;
-        Set<TargetSection> anyOfSet = new HashSet<TargetSection>();
         int version = metaData.getXACMLVersion();
         NodeList children = root.getChildNodes();
 

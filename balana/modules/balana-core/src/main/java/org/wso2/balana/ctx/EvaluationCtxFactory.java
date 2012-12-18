@@ -33,7 +33,7 @@ public class EvaluationCtxFactory {
     /**
      * factory instance
      */
-    private static EvaluationCtxFactory factoryInstance;
+    private static volatile EvaluationCtxFactory factoryInstance;
 
     
     public EvaluationCtx getEvaluationCtx(AbstractRequestCtx requestCtx, PDPConfig pdpConfig)

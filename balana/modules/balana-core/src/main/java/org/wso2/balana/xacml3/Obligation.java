@@ -49,11 +49,6 @@ public class Obligation implements ObligationResult{
     private List<AttributeAssignment> assignments;
 
     /**
-     * effect that will cause this obligation to be included in a response
-     */
-    private int fulfillOn = -1;
-
-    /**
      * Constructor that creates a new <code>Obligation</code> based on
      * the given elements.
      *

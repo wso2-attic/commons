@@ -179,7 +179,7 @@ public class AttributeSelector extends AbstractAttributeSelector {
 
     public EvaluationResult evaluate(EvaluationCtx context) {
         // query the context
-        EvaluationResult result = context.getAttribute(path, null, type, category,
+        EvaluationResult result = context.getAttribute(path, type, category,
                                                                 contextSelectorId, xpathVersion);
 
         // see if we got anything

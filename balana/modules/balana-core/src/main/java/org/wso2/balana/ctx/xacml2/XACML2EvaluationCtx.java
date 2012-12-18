@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.attr.StringAttribute;
+import org.wso2.balana.xacml3.MultipleCtxResult;
 
 import java.net.URI;
 

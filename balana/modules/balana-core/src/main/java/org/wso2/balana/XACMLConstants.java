@@ -55,6 +55,11 @@ public class XACMLConstants {
      */
     public static final int SCOPE_DESCENDANTS = 2;
 
+    public static final String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:" +
+                                                                        "multiple:content-selector";
+
+    public static final String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
+
     public final static String ATTRIBUTES_ELEMENT =  "Attributes";
 
     public final static String MULTI_REQUESTS =  "MultiRequests";

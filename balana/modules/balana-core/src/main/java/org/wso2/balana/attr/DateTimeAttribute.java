@@ -108,7 +108,7 @@ public class DateTimeAttribute extends AttributeValue {
 	 * could easily make this a method variable in methods that use it instead of a class field. But
 	 * that would mean we'd need to spend a lot more time creating these objects.
 	 */
-	private static DateFormat simpleParser;
+	private static volatile DateFormat simpleParser;
 
 	/**
 	 * Parser for dates with RFC 822 time zones (like +0300)
@@ -126,7 +126,7 @@ public class DateTimeAttribute extends AttributeValue {
 	 * NOTE: This object should only be accessed from code that has a lock on it, since Calendar
 	 * objects are not generally thread-safe.
 	 */
-	private static Calendar gmtCalendar;
+	private static volatile Calendar gmtCalendar;
 
 	/**
 	 * Time zone value that indicates that the time zone was not specified.

@@ -39,19 +39,20 @@ package org.wso2.balana;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import org.wso2.balana.ctx.*;
-import org.xml.sax.SAXException;
+import org.wso2.balana.xacml3.Advice;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -70,15 +71,156 @@ public class TestUtil {
      * @param expectedResponse  expected response from a file
      * @return True/False
      */
+    public static boolean isMatching(ResponseCtx resultResponse, ResponseCtx expectedResponse) {
+
+        Set<AbstractResult> results = resultResponse.getResults();
+        Set<AbstractResult> expectedResults = expectedResponse.getResults();
+
+        boolean finalResult = false;
+
+        for(AbstractResult result : results){
+
+            boolean match = false;
+
+            int decision = result.getDecision();
+
+            OutputStream stream = new ByteArrayOutputStream();
+            result.getStatus().encode(stream);
+            String status = stream.toString();
+
+            List<String> advices = new ArrayList <String>();
+            if( result.getAdvices() != null){
+                for(Advice advice : result.getAdvices()){
+                    stream = new ByteArrayOutputStream();
+                    advice.encode(stream);
+                    advices.add(stream.toString());
+                }
+            }
+
+            List<String> obligations = new ArrayList <String>();
+            if(result.getObligations() != null){
+                for(ObligationResult obligationResult : result.getObligations()){
+                    stream = new ByteArrayOutputStream();
+                    obligationResult.encode(stream);
+                    obligations.add(stream.toString());
+                }
+            }
+
+            for(AbstractResult expectedResult : expectedResults){
+
+                int decisionExpected = expectedResult.getDecision();
+                if(decision == 4 || decision == 5 || decision == 6){
+                    decision = 2;
+                }
+                if(decision != decisionExpected){
+                    continue;
+                }
+
+                OutputStream streamExpected = new ByteArrayOutputStream();
+                expectedResult.getStatus().encode(streamExpected);
+                String statusExpected = streamExpected.toString();
+
+                if(!processResult(statusExpected).equals(processResult(status))){
+                    continue;
+                }
+
+                List<String> advicesExpected = new ArrayList <String>();
+                if(expectedResult.getAdvices() != null){
+                    for(Advice advice : expectedResult.getAdvices()){
+                        stream = new ByteArrayOutputStream();
+                        advice.encode(stream);
+                        advicesExpected.add(stream.toString());
+                    }
+                }
+
+                if(advices.size() != advicesExpected.size()){
+                    continue;
+                }
+
+                if(advices.size() > 0){
+                    boolean adviceContains = false;
+                    for(String advice : advices){
+                        if(!advicesExpected.contains(advice)){
+                            adviceContains = false;
+                            break;
+                        } else {
+                            adviceContains = true;
+                        }
+                    }
+
+                    if(!adviceContains){
+                        continue;
+                    }
+                }
+
+                List<String> obligationsExpected = new ArrayList <String>();
+                if(expectedResult.getObligations() != null){
+                    for(ObligationResult obligationResult : expectedResult.getObligations()){
+                        stream = new ByteArrayOutputStream();
+                        obligationResult.encode(stream);
+                        obligationsExpected.add(stream.toString());
+                    }
+                }
+
+                if(obligations.size() != obligationsExpected.size()){
+                    continue;
+                }
+
+                if(obligations.size() > 0){
+                    boolean obligationContains = false;
+                    for(String obligation : obligations){
+                        if(!obligationsExpected.contains(obligation)){
+                            obligationContains = false;
+                            break;
+                        } else {
+                            obligationContains = true;
+                        }
+                    }
+
+                    if(!obligationContains){
+                        continue;
+                    }
+                }
+
+                match = true;
+                break;
+            }
+
+            if(match){
+                finalResult = true;    
+            } else {
+                finalResult = false;
+                break;
+            }
+        }
+
+        if(finalResult){
+            log.info("Test is Passed........!!!   " +
+                    "Result received from the PDP is matched with expected result");
+        } else {
+            log.info("Test is Failed........!!!     " +
+                    "Result received from the PDP is NOT match with expected result");
+        }
+        return finalResult;
+    }
+
+
+    /**
+     * Checks matching of result that got from PDP and expected response from a file.
+     *
+     * @param resultResponse  result that got from PDP
+     * @param expectedResponse  expected response from a file
+     * @return True/False
+     */
     public static boolean isMatching(String resultResponse, String expectedResponse) {
 
         boolean result = false;
         resultResponse = processResult(resultResponse);
         if(resultResponse != null && expectedResponse != null){
-            result = resultResponse.trim().
-                            equals(expectedResponse.trim());
+            result = resultResponse.trim().replaceAll(">\\s+<", "><").
+                            equals(expectedResponse.trim().replaceAll(">\\s+<", "><"));
         }
-
+        
         if(result){
             log.info("Test is Passed........!!!   " +
                     "Result received from the PDP is matched with expected result");
@@ -110,7 +252,6 @@ public class TestUtil {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setIgnoringComments(true);
             factory.setNamespaceAware(true);
-            factory.setValidating(false);
             DocumentBuilder db = factory.newDocumentBuilder();
             Document doc = db.parse(new FileInputStream(filePath));
             DOMSource domSource = new DOMSource(doc);

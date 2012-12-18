@@ -52,11 +52,22 @@ public abstract class AbstractAttributeSelector implements Evaluatable {
         return type;
     }
 
+    /**
+     * Returns whether or not a value is required to be resolved by this selector.
+     *
+     * @return true if a value is required, false otherwise
+     */
     public boolean isMustBePresent() {
         return mustBePresent;
     }
 
-    public String getXpathVersion() {
+    /**
+     * Returns the XPath version this selector is supposed to use. This is typically provided by the
+     * defaults section of the policy containing this selector.
+     *
+     * @return the XPath version
+     */
+    public String getXPathVersion() {
         return xpathVersion;
     }
 }

@@ -67,6 +67,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -319,14 +320,24 @@ public class ConfigurationStore {
         }
 
         Document doc = null;
+        InputStream stream = null;
         try {
-            doc = db.parse(new FileInputStream(configFile));
+            stream = new FileInputStream(configFile);
+            doc = db.parse(stream);
         } catch (IOException ioe) {
             throw new ParsingException("failed to load the file ", ioe);
         } catch (SAXException saxe) {
             throw new ParsingException("error parsing the XML tree", saxe);
         } catch (IllegalArgumentException iae) {
             throw new ParsingException("no data to parse", iae);
+        } finally {
+            if(stream != null){
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    logger.error("Error while closing input stream");
+                }
+            }
         }
 
         Element root = doc.getDocumentElement();

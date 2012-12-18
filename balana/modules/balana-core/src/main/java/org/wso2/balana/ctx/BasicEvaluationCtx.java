@@ -22,7 +22,6 @@ package org.wso2.balana.ctx;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Node;
-import org.wso2.balana.MultipleCtxResult;
 import org.wso2.balana.PDPConfig;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.attr.DateAttribute;
@@ -164,8 +163,6 @@ public abstract class BasicEvaluationCtx implements EvaluationCtx {
      * Returns the attribute value(s) retrieved using the given XPath expression.
      *
      * @param path the XPath expression to search
-     * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
-     *            come from the context root or content element
      * @param type the type of the attribute value(s) to find
      * @param category the category the attribute value(s) must be in
      * @param contextSelector the selector to find the context to apply XPath expression
@@ -176,11 +173,11 @@ public abstract class BasicEvaluationCtx implements EvaluationCtx {
      *         least one value, or status associated with an Indeterminate result
      */
 
-    public EvaluationResult getAttribute(String path, Node namespaceNode, URI type, URI category,
+    public EvaluationResult getAttribute(String path, URI type, URI category,
                                          URI contextSelector, String xpathVersion){
 
         if (pdpConfig.getAttributeFinder() != null) {
-            return pdpConfig.getAttributeFinder().findAttribute(path, namespaceNode, type, this,
+            return pdpConfig.getAttributeFinder().findAttribute(path, type, this,
                                         xpathVersion);
         } else {
             logger.warn("Context tried to invoke AttributeFinder but was " +

@@ -73,9 +73,9 @@ import java.util.Set;
 public class StandardFunctionFactory extends BaseFunctionFactory {
 
     // the three singleton instances
-    private static StandardFunctionFactory targetFactory = null;
-    private static StandardFunctionFactory conditionFactory = null;
-    private static StandardFunctionFactory generalFactory = null;
+    private static volatile StandardFunctionFactory targetFactory = null;
+    private static volatile StandardFunctionFactory conditionFactory = null;
+    private static volatile StandardFunctionFactory generalFactory = null;
 
     // the three function sets/maps that we use internally
     private static Set<Function> targetFunctions = null;

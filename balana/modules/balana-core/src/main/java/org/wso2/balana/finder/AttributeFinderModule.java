@@ -160,11 +160,9 @@ public abstract class AttributeFinderModule {
      * take care not to create a scenario that loops forever.
      *
      * @param contextPath the XPath expression to search against
-     * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
-     *            come from the context root
      * @param attributeType the datatype of the attributes to find
      * @param contextSelector the selector to find the context to apply XPath expression
-     *                       if this is null, applied for default content. This is only used with XACML 3.0
+     *              if this is null, applied for default content. This is only used with XACML 3.0
      * @param root  the DOM node that XPath evaluation is done. this only used by XACML 3.0
      *              this can be null, if other XACML versions are used.
      * @param context the representation of the request data
@@ -172,7 +170,7 @@ public abstract class AttributeFinderModule {
      * 
      * @return the result of attribute retrieval, which will be a bag of attributes or an error
      */
-    public EvaluationResult findAttribute(String contextPath, Node namespaceNode, URI attributeType,
+    public EvaluationResult findAttribute(String contextPath, URI attributeType,
                     String contextSelector, Node root, EvaluationCtx context, String xpathVersion) {
         
         return new EvaluationResult(BagAttribute.createEmptyBag(attributeType));

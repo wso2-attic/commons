@@ -41,7 +41,7 @@ import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.MatchResult;
 
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.xacml2.Result;
 
@@ -125,7 +125,7 @@ public class FirstApplicablePolicyAlg extends PolicyCombiningAlgorithm {
             }
         }
         // if we got here, then none of the rules applied
-        return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context);         
+        return ResultFactory.getFactory().getResult(AbstractResult.DECISION_NOT_APPLICABLE, context);
     }
 
 }

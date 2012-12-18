@@ -41,6 +41,7 @@ import org.wso2.balana.combine.PolicyCombinerElement;
 import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.ctx.Status;
 import org.wso2.balana.xacml3.Advice;
@@ -48,10 +49,7 @@ import org.wso2.balana.xacml3.Advice;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the standard Permit Overrides policy combining algorithm. It allows a single evaluation
@@ -116,8 +114,8 @@ public class PermitOverridesPolicyAlg extends PolicyCombiningAlgorithm {
     public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         boolean atLeastOneError = false;
         boolean atLeastOneDeny = false;
-        Set<ObligationResult> denyObligations = new HashSet<ObligationResult>();
-        Set<Advice> denyAdvices = new HashSet<Advice>();
+        List<ObligationResult> denyObligations = new ArrayList<ObligationResult>();
+        List<Advice> denyAdvices = new ArrayList<Advice>();
         Status firstIndeterminateStatus = null;
         Iterator it = policyElements.iterator();
 

@@ -116,9 +116,9 @@ public class Obligation extends AbstractObligation implements ObligationResult {
                 } catch (URISyntaxException use) {
                     throw new ParsingException("Error parsing URI", use);
                 } catch (UnknownIdentifierException uie) {
-                    throw new ParsingException("Unknown AttributeId", uie);
+                    throw new ParsingException(uie.getMessage(), uie);
                 } catch (Exception e) {
-                    throw new ParsingException("Error parsing attribute " + "assignments", e);
+                    throw new ParsingException("Error parsing attribute assignments", e);
                 }
             }
         }

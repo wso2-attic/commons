@@ -35,13 +35,8 @@
 
 package org.wso2.balana;
 
-import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.AttributeFactoryProxy;
-
-import org.wso2.balana.combine.CombiningAlgFactory;
 import org.wso2.balana.combine.CombiningAlgFactoryProxy;
-
-import org.wso2.balana.cond.FunctionFactory;
 import org.wso2.balana.cond.FunctionFactoryProxy;
 
 /**
@@ -87,11 +82,6 @@ public class PolicyMetaData {
 
     // the version of XPath, or null if none is specified
     private int xpathVersion;
-
-    // the factories used with this policy
-    private AttributeFactoryProxy afProxy;
-    private CombiningAlgFactoryProxy cafProxy;
-    private FunctionFactoryProxy ffProxy;
 
     /**
      * Creates a <code>PolicyMetaData</code> instance with all the parameters set to their default

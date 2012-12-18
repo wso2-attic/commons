@@ -37,11 +37,6 @@ import java.util.Set;
 public class MultipleDecisionTest extends TestCase {
 
     /**
-     * Configuration store
-     */
-    private static ConfigurationStore store;
-
-    /**
      * directory name that states the test type
      */
     private final static String ROOT_DIRECTORY  = "advance";
@@ -55,14 +50,6 @@ public class MultipleDecisionTest extends TestCase {
      * the logger we'll use for all messages
      */
 	private static Log log = LogFactory.getLog(MultipleDecisionTest.class);
-
-
-    @Override
-    public void setUp() throws Exception {
-
-        String configFile = (new File(".")).getCanonicalPath() + File.separator + TestConstants.CONFIG_FILE;
-        store = new ConfigurationStore(new File(configFile));
-    }
 
     public void testAdvanceTest0001() throws Exception {
 

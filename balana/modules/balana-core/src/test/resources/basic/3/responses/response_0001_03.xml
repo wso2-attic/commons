@@ -1,0 +1,9 @@
+<Response>
+<Result>
+<Decision>Deny</Decision>
+<Status>
+<StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:ok"/>
+</Status>
+</Result>
+</Response>
+        

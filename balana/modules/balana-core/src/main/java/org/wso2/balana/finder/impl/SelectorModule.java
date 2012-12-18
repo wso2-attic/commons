@@ -35,12 +35,9 @@
 
 package org.wso2.balana.finder.impl;
 
-import org.wso2.balana.Balana;
+import org.wso2.balana.*;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyMetaData;
-import org.wso2.balana.UnknownIdentifierException;
 
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.attr.BagAttribute;
@@ -54,17 +51,15 @@ import org.wso2.balana.finder.AttributeFinderModule;
 import java.net.URI;
 
 import java.util.ArrayList;
-
-import org.apache.xpath.XPathAPI;
+import java.util.Iterator;
+import java.util.List;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.*;
 
 /**
  * This module implements the basic behavior of the AttributeSelectorType, looking for attribute
@@ -98,100 +93,140 @@ public class SelectorModule extends AttributeFinderModule {
         return true;
     }
 
-    /**
-     * Private helper to create a new processing error status result
-     */
-    private EvaluationResult createProcessingError(String msg) {
-        ArrayList code = new ArrayList();
-        code.add(Status.STATUS_PROCESSING_ERROR);
-        return new EvaluationResult(new Status(code, msg));
-    }
 
-    @Override  // TODO
-    public EvaluationResult findAttribute(String contextPath, Node namespaceNode, URI attributeType,
+    @Override
+    public EvaluationResult findAttribute(String contextPath, URI attributeType,
                   String contextSelector, Node root, EvaluationCtx context, String xpathVersion) {
 
-        Node contextNode;
-        String path;
-        Node nsNode;
+        Node contextNode = null;
+        NamespaceContext namespaceContext;
 
         if(root == null){
-            // we only support 1.0
-            if (!xpathVersion.equals(PolicyMetaData.XPATH_1_0_IDENTIFIER))
-                return new EvaluationResult(BagAttribute.createEmptyBag(attributeType));
-
+            // root == null means there is not content element defined with the attributes element
+            // therefore complete request is evaluated.
             // get the DOM root of the request document
-            contextNode = context.getRequestRoot();       // TODO
-
-            // setup the root path (pre-pended to the context path), which...
-            String rootPath = "";
-
-            // ...only has content if the context path is relative
-            if (contextPath.charAt(0) != '/') {
-                String rootName = root.getLocalName();
-
-                // see if the request root is in a namespace
-                String namespace = root.getNamespaceURI();
-
-                if (namespace == null) {
-                    // no namespacing, so we're done
-                    rootPath = "/" + rootName + "/";
-                } else {
-                    // namespaces are used, so we need to lookup the correct
-                    // prefix to use in the search string
-                    NamedNodeMap nmap = namespaceNode.getAttributes();
-                    rootPath = null;
-
-                    for (int i = 0; i < nmap.getLength(); i++) {
-                        Node n = nmap.item(i);
-                        if (n.getNodeValue().equals(namespace)) {
-                            // we found the matching namespace, so get the prefix
-                            // and then break out
-                            String name = n.getNodeName();
-                            int pos = name.indexOf(':');
-
-                            if (pos == -1) {
-                                // the namespace was the default namespace
-                                rootPath = "/";
-                            } else {
-                                // we found a prefixed namespace
-                                rootPath = "/" + name.substring(pos + 1);
-                            }
-
-                            // finish off the string
-                            rootPath += ":" + rootName + "/";
-
-                            break;
-                        }
-                    }
-
-                    // if the rootPath is still null, then we don't have any
-                    // definitions for the namespace
-                    if (rootPath == null)
-                        return createProcessingError("Failed to map a namespace"
-                                + " in an XPath expression");
-                }
-            }
+            contextNode = context.getRequestRoot();
+        } else if(contextSelector != null) {
+            // root != null  means content element is there.  we can find the context node by
+            // evaluating the contextSelector
             
-            path = rootPath + contextPath;
+            // see if the request root is in a namespace
+            String namespace = root.getNamespaceURI();
 
+            XPathFactory factory = XPathFactory.newInstance();
+            XPath xpath = factory.newXPath();
+
+            if(namespace != null){
+                // name spaces are used, so we need to lookup the correct
+                // prefix to use in the search string
+                NamedNodeMap namedNodeMap = root.getAttributes();
+                String prefix = "ns";
+                String nodeName = null;
+
+                for (int i = 0; i < namedNodeMap.getLength(); i++) {
+                    Node n = namedNodeMap.item(i);
+                    if (n.getNodeValue().equals(namespace)) {
+                        // we found the matching namespace, so get the prefix
+                        // and then break out
+                        nodeName = n.getNodeName();
+
+                        break;
+                    }
+                }
+                
+                if(nodeName != null){
+                    int pos = nodeName.indexOf(':');
+                    if (pos != -1) {
+                        // we found a prefixed namespace
+                        prefix = nodeName.substring(pos + 1);
+                    } else {
+                        contextSelector = Utils.prepareXPathForDefaultNs(contextSelector);
+                    }
+                } else {
+                    contextSelector = Utils.prepareXPathForDefaultNs(contextSelector);
+                }
+                
+                namespaceContext = new DefaultNamespaceContext(prefix, namespace);
+
+                xpath.setNamespaceContext(namespaceContext);
+            }
+
+            try{
+                XPathExpression expression = xpath.compile(contextSelector);
+                NodeList result = (NodeList) expression.evaluate(root, XPathConstants.NODESET);                
+                if(result == null){
+                    throw new Exception("No node is found from context selector id evaluation");    
+                } else if(result.getLength() != 1){
+                    throw new Exception("More than one node is found from context selector id evaluation");
+                }
+            } catch (Exception e) {
+            List<String> codes = new ArrayList<String>();
+            codes.add(Status.STATUS_SYNTAX_ERROR);
+            Status status = new Status(codes, e.getMessage());
+            return new EvaluationResult(status);
+            }
         } else {
             contextNode = root;
-            path = contextPath;
         }
 
-        // if we were provided with a non-null namespace node, then use it
-        // to resolve namespaces, otherwise use the context root node
-        nsNode = (namespaceNode != null) ? namespaceNode : root;
+        //see if the request root is in a namespace
+        String namespace = null;
+        if(contextNode != null){
+            namespace = contextNode.getNamespaceURI();
+        }
 
-        // now do the query, pre-pending the root path to the context path
-        NodeList matches = null;
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+
+        if(namespace != null){
+            // name spaces are used, so we need to lookup the correct
+            // prefix to use in the search string
+            NamedNodeMap namedNodeMap = contextNode.getAttributes();
+            String prefix = "ns";
+            String nodeName = null;
+
+            for (int i = 0; i < namedNodeMap.getLength(); i++) {
+                Node n = namedNodeMap.item(i);
+                if (n.getNodeValue().equals(namespace)) {
+                    // we found the matching namespace, so get the prefix
+                    // and then break out
+                    nodeName = n.getNodeName();
+                    break;
+                }
+            }
+
+            if(nodeName != null){
+                int pos = nodeName.indexOf(':');
+                // if the namespace is the default namespace
+                // use a default prefix
+                if (pos != -1) {
+                    // we found a prefixed namespace
+                    prefix = nodeName.substring(pos + 1);
+                } else {
+                    contextPath = Utils.prepareXPathForDefaultNs(contextPath);
+                }
+            } else {
+                contextPath = Utils.prepareXPathForDefaultNs(contextPath);
+            }
+
+            namespaceContext = new DefaultNamespaceContext(prefix, namespace);
+
+            xpath.setNamespaceContext(namespaceContext);
+        }
+
+        NodeList matches;
+        
         try {
-            // NOTE: see comments in XALAN docs about why this is slow
-            matches = XPathAPI.selectNodeList(contextNode, path, nsNode);        
+            XPathExpression expression = xpath.compile(contextPath);
+            matches = (NodeList) expression.evaluate(contextNode, XPathConstants.NODESET);
+            if(matches == null || matches.getLength() < 1){
+                throw new Exception("No node is found from xpath evaluation");                 
+            }
         } catch (Exception e) {
-            // in the case of any exception, we need to return an error
-            return createProcessingError("error in XPath: " + e.getMessage());
+            List<String> codes = new ArrayList<String>();
+            codes.add(Status.STATUS_SYNTAX_ERROR);
+            Status status = new Status(codes, e.getMessage());
+            return new EvaluationResult(status);
         }
 
         if (matches.getLength() == 0) {
@@ -224,10 +259,15 @@ public class SelectorModule extends AttributeFinderModule {
             }
 
             return new EvaluationResult(new BagAttribute(attributeType, list));
+            
         } catch (ParsingException pe) {
-            return createProcessingError(pe.getMessage());
+            ArrayList<String> code = new ArrayList<String>();
+            code.add(Status.STATUS_PROCESSING_ERROR);
+            return new EvaluationResult(new Status(code, pe.getMessage()));
         } catch (UnknownIdentifierException uie) {
-            return createProcessingError("unknown attribute type: " + attributeType);
+            ArrayList<String> code = new ArrayList<String>();
+            code.add(Status.STATUS_PROCESSING_ERROR);
+            return new EvaluationResult(new Status(code, "Unknown attribute type : " + attributeType));
         }
     }
 }

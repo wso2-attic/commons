@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.balana;
+package org.wso2.balana.xacml3;
 
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
@@ -44,6 +44,15 @@ public class MultipleCtxResult {
      * whether any indeterminate has occurred or not
      */
     private boolean indeterminate;
+
+    /**
+     * Constructs a <code>MultipleCtxResult</code> object with  required data
+     *
+     * @param evaluationCtxSet  A ,<code>Set</code> of <code>EvaluationCtx</code>
+     */
+    public MultipleCtxResult(Set<EvaluationCtx> evaluationCtxSet) {
+        this(evaluationCtxSet, null, false);
+    }
 
     /**
      * Constructs a <code>MultipleCtxResult</code> object with  required data

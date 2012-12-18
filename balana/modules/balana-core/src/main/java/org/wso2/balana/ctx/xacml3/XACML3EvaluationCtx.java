@@ -20,21 +20,22 @@ package org.wso2.balana.ctx.xacml3;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
 import org.wso2.balana.attr.*;
 import org.wso2.balana.attr.xacml3.XPathAttribute;
 import org.wso2.balana.cond.EvaluationResult;
-import org.wso2.balana.ctx.AbstractRequestCtx;
-import org.wso2.balana.ctx.Attribute;
-import org.wso2.balana.ctx.BasicEvaluationCtx;
-import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.*;
 import org.wso2.balana.finder.ResourceFinderResult;
-import org.wso2.balana.xacml3.Attributes;
-import org.wso2.balana.xacml3.AttributesReference;
-import org.wso2.balana.xacml3.MultiRequests;
-import org.wso2.balana.xacml3.RequestReference;
+import org.wso2.balana.xacml3.*;
 
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 import java.net.URI;
 import java.util.*;
 
@@ -49,7 +50,11 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
      */
     private Set<Attributes> attributesSet;
 
-
+    /**
+     * multiple content selectors.
+     */
+    private Set<Attributes> multipleContentSelectors;
+    
     /**
      * whether multiple attributes are present or not
      */
@@ -66,17 +71,6 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
      * Category  --> Attributes Set
      */
     private Map<String, Set<Attributes>> mapAttributes;
-
-
-    /**
-     * obligations results
-     */
-//    private Set<ObligationResult>  obligationResults;
-
-    /**
-     * Advice results
-     */
-//    private Set<Advice> advices;
 
     /**
      * XACML3 request
@@ -131,7 +125,10 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                 if(attribute.getId().equals(id) && attribute.getType().equals(type)
                         && (issuer == null || issuer.equals(attribute.getIssuer()))
                         && attribute.getValue() != null){
-                    attributeValues.add(attribute.getValue());
+                    List<AttributeValue> attributeValueList = attribute.getValues();
+                    for (AttributeValue attributeVal : attributeValueList) {
+                    	attributeValues.add(attributeVal);
+                    }
                 }
             }
 
@@ -144,7 +141,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     }
 
 
-    public EvaluationResult getAttribute(String path, Node namespaceNode, URI type, URI category,
+    public EvaluationResult getAttribute(String path, URI type, URI category,
                                          URI contextSelector, String xpathVersion){
 
         if(pdpConfig.getAttributeFinder() == null){
@@ -172,12 +169,11 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                             for(AttributeValue value : values){
                                 if(value instanceof XPathAttribute){
                                     XPathAttribute xPathAttribute = (XPathAttribute)value;
-                                    if(xPathAttribute.getType().equals(type) &&
-                                            xPathAttribute.getXPathCategory().
+                                    if(xPathAttribute.getXPathCategory().
                                                                     equals(category.toString())){
                                         return pdpConfig.getAttributeFinder().findAttribute(path,
                                                             xPathAttribute.getValue(), type,
-                                                            namespaceNode, root, this, xpathVersion);
+                                                            root, this, xpathVersion);
                                     }
                                 }
                             }
@@ -185,7 +181,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                     }
                 } else {
                     return pdpConfig.getAttributeFinder().findAttribute(path, null, type,
-                                                        namespaceNode, root, this, xpathVersion);
+                                                         root, this, xpathVersion);
                 }
             }
         }
@@ -214,8 +210,9 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         for (Attributes attributes : attributeSet) {
             String category = attributes.getCategory().toString();
 
-            if(XACMLConstants.RESOURCE_CATEGORY.equals(category)){
-                for(Attribute attribute : attributes.getAttributes()){
+
+            for(Attribute attribute : attributes.getAttributes()){
+                if(XACMLConstants.RESOURCE_CATEGORY.equals(category)){
                     if(XACMLConstants.RESOURCE_SCOPE_2_0.equals(attribute.getId().toString())){
                         AttributeValue value = attribute.getValue();
                         if (value instanceof StringAttribute) {
@@ -235,6 +232,13 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                             resourceId = attribute.getValue();
                         }
                     }
+                }
+
+                if(attribute.getId().toString().equals(XACMLConstants.MULTIPLE_CONTENT_SELECTOR)){
+                    if(multipleContentSelectors == null){
+                        multipleContentSelectors = new HashSet<Attributes>();
+                    }
+                    multipleContentSelectors.add(attributes);
                 }
             }
 
@@ -262,6 +266,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         Set<EvaluationCtx> evaluationCtxSet = new HashSet<EvaluationCtx>();
         MultiRequests multiRequests =  requestCtx.getMultiRequests();
 
+        // 1st check whether there is a multi request attribute
         if(multiRequests != null){
 
             MultipleCtxResult result = processMultiRequestElement(this);
@@ -272,6 +277,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             }
         }
 
+        // 2nd check repeated values for category attribute
         if(evaluationCtxSet.size() > 0){
             Set<EvaluationCtx> newSet = new HashSet<EvaluationCtx>(evaluationCtxSet);
             for(EvaluationCtx evaluationCtx : newSet){
@@ -296,13 +302,22 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             }
         }
 
-
+        // 3rd check for both scope and multiple-content-selector attributes. Spec does not mention
+        // which one to pick when both are present, there for high priority has given to scope
+        // attribute
         if(evaluationCtxSet.size() > 0){
             Set<EvaluationCtx> newSet = new HashSet<EvaluationCtx>(evaluationCtxSet);
             for(EvaluationCtx evaluationCtx : newSet){
                 if(resourceScope != XACMLConstants.SCOPE_IMMEDIATE){
                     evaluationCtxSet.remove(evaluationCtx);
                     MultipleCtxResult result = processHierarchicalAttributes((XACML3EvaluationCtx)evaluationCtx);
+                    if(result.isIndeterminate()){
+                        return result;
+                    } else {
+                        evaluationCtxSet.addAll(result.getEvaluationCtxSet());
+                    }
+                } else if(((XACML3EvaluationCtx)evaluationCtx).getMultipleContentSelectors() != null){
+                    MultipleCtxResult result = processMultipleContentSelectors((XACML3EvaluationCtx)evaluationCtx);
                     if(result.isIndeterminate()){
                         return result;
                     } else {
@@ -318,14 +333,21 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                 } else {
                     evaluationCtxSet.addAll(result.getEvaluationCtxSet());
                 }
+            } else if(multipleContentSelectors != null){
+                MultipleCtxResult result = processMultipleContentSelectors(this);
+                if(result.isIndeterminate()){
+                    return result;
+                } else {
+                    evaluationCtxSet.addAll(result.getEvaluationCtxSet());
+                }
             }
         }
 
         if(evaluationCtxSet.size() > 0){
-            return new MultipleCtxResult(evaluationCtxSet, null, false);
+            return new MultipleCtxResult(evaluationCtxSet);
         } else {
             evaluationCtxSet.add(this);
-            return new MultipleCtxResult(evaluationCtxSet, null, false);
+            return new MultipleCtxResult(evaluationCtxSet);
         }
     }
 
@@ -348,13 +370,12 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                     for(AttributesReference attributesReference : attributesReferences){
                         String referenceId = attributesReference.getId();
                         if(referenceId != null){
-                            for(Attributes attribute : evaluationCtx.getRequestCtx().getAttributesSet()){
+                            for(Attributes attribute : evaluationCtx.getAttributesSet()){
                                 if(attribute.getId() != null && attribute.getId().equals(referenceId)){
                                     attributes.add(attribute);
                                 }
                             }
                         }
-
                         RequestCtx ctx = new RequestCtx(attributes, null);
                         children.add(new XACML3EvaluationCtx(ctx, pdpConfig));
                     }
@@ -362,7 +383,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             }
         }
 
-        return new MultipleCtxResult(children, null, false);
+        return new MultipleCtxResult(children);
     }
 
     /**
@@ -375,10 +396,12 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         Set<EvaluationCtx> children = new HashSet<EvaluationCtx>();
         Set<RequestCtx> newRequestCtxSet = new HashSet<RequestCtx>();
 
+        Map<String, Set<Attributes>> mapAttributes = evaluationCtx.getMapAttributes();
+
         for(Map.Entry<String, Set<Attributes>> mapAttributesEntry : mapAttributes.entrySet()){
             if(mapAttributesEntry.getValue().size() > 1){
                 for(Attributes attributesElement :  mapAttributesEntry.getValue()){
-                    Set<Attributes> newSet = new HashSet<Attributes>(attributesSet);
+                    Set<Attributes> newSet = new HashSet<Attributes>(evaluationCtx.getAttributesSet());
                     newSet.removeAll(mapAttributesEntry.getValue());
                     newSet.add(attributesElement);
                     RequestCtx newRequestCtx = new RequestCtx(newSet, null);
@@ -391,7 +414,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             children.add(new XACML3EvaluationCtx(ctx, pdpConfig));
         }
 
-        return new MultipleCtxResult(children, null, false);
+        return new MultipleCtxResult(children);
 
     }
 
@@ -431,7 +454,80 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             }
         }
 
-        return new MultipleCtxResult(children, null, false);
+        return new MultipleCtxResult(children);
+
+    }
+
+    /**
+     *
+     * @param evaluationCtx
+     * @return
+     */
+    private MultipleCtxResult processMultipleContentSelectors(XACML3EvaluationCtx evaluationCtx) {
+
+        Set<EvaluationCtx> children = new HashSet<EvaluationCtx>();
+        Set<Attributes> newAttributesSet = new HashSet<Attributes>();
+
+        for(Attributes attributes : evaluationCtx.getMultipleContentSelectors()){
+            Set<Attribute> newAttributes = null;
+            Attribute oldAttribute = null;
+            Object content = attributes.getContent();
+            if(content != null && content instanceof Node){
+                Node root = (Node) content;
+                for(Attribute attribute : attributes.getAttributes()){
+                    oldAttribute = attribute;
+                    if(attribute.getId().toString().equals(XACMLConstants.MULTIPLE_CONTENT_SELECTOR)){
+                        List<AttributeValue> values = attribute.getValues();
+                        for(AttributeValue value : values){
+                            if(value instanceof XPathAttribute){
+                                XPathAttribute xPathAttribute = (XPathAttribute)value;
+                                if(xPathAttribute.getXPathCategory().
+                                                    equals(attributes.getCategory().toString())){
+                                    Set<String> xPaths = getChildXPaths(root, xPathAttribute.getValue());
+                                    for(String xPath : xPaths){
+                                        try {
+                                            AttributeValue newValue = Balana.getInstance().getAttributeFactory().
+                                                createValue(value.getType(), xPath,
+                                                new String[] {xPathAttribute.getXPathCategory()});
+                                            Attribute newAttribute =
+                                                new Attribute(new URI(XACMLConstants.CONTENT_SELECTOR),
+                                                attribute.getIssuer(), attribute.getIssueInstant(),
+                                                newValue, attribute.isIncludeInResult(),
+                                                XACMLConstants.XACML_VERSION_3_0);
+                                            if(newAttributes == null){
+                                                newAttributes = new HashSet<Attribute>();
+                                            }
+                                            newAttributes.add(newAttribute);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();  // TODO
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if(newAttributes != null){
+                    attributes.getAttributes().remove(oldAttribute);
+                    for(Attribute attribute : newAttributes){
+                        Set<Attribute> set = new HashSet<Attribute>(attributes.getAttributes());
+                        set.add(attribute);
+                        Attributes attr = new Attributes(attributes.getCategory(), set);
+                        newAttributesSet.add(attr);
+                    }
+                    evaluationCtx.getAttributesSet().remove(attributes);
+                }
+            }
+        }
+
+        for(Attributes attributes : newAttributesSet){
+            Set<Attributes> set = new HashSet<Attributes>(evaluationCtx.getAttributesSet());
+            set.add(attributes);
+            RequestCtx requestCtx = new RequestCtx(set, null);
+            children.add(new XACML3EvaluationCtx(requestCtx, pdpConfig));
+        }
+
+        return new MultipleCtxResult(children);
 
     }
     
@@ -471,6 +567,85 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         }
     }
 
+    private Set<String> getChildXPaths(Node root, String xPath){
+
+        Set<String> xPaths = new HashSet<String>();
+        NamespaceContext namespaceContext;
+        
+        //see if the request root is in a namespace
+        String namespace = root.getNamespaceURI();
+
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+
+        if(namespace != null){
+            // name spaces are used, so we need to lookup the correct
+            // prefix to use in the search string
+            NamedNodeMap namedNodeMap = root.getAttributes();
+            String prefix = "ns";
+            String nodeName = null;
+
+            for (int i = 0; i < namedNodeMap.getLength(); i++) {
+                Node n = namedNodeMap.item(i);
+                if (n.getNodeValue().equals(namespace)) {
+                    // we found the matching namespace, so get the prefix
+                    // and then break out
+                    nodeName = n.getNodeName();
+                    break;
+                }
+            }
+
+            if(nodeName != null){
+                int pos = nodeName.indexOf(':');
+                // if the namespace is the default namespace
+                // use a default prefix
+                if (pos != -1) {
+                    // we found a prefixed namespace
+                    prefix = nodeName.substring(pos + 1);
+                } else {
+                    xPath = Utils.prepareXPathForDefaultNs(xPath);
+                }
+            } else {
+                xPath = Utils.prepareXPathForDefaultNs(xPath);
+            }
+
+            namespaceContext = new DefaultNamespaceContext(prefix, namespace);
+
+            xpath.setNamespaceContext(namespaceContext);
+
+        }
+
+        try {
+            XPathExpression expression = xpath.compile(xPath);
+            NodeList matches = (NodeList) expression.evaluate(root, XPathConstants.NODESET);
+            if(matches != null && matches.getLength() > 0){
+
+                for (int i = 0; i < matches.getLength(); i++) {
+                    String text = null;
+                    Node node = matches.item(i);
+                    short nodeType = node.getNodeType();
+
+                    // see if this is straight text, or a node with data under
+                    // it and then get the values accordingly
+                    if ((nodeType == Node.CDATA_SECTION_NODE) || (nodeType == Node.COMMENT_NODE)
+                            || (nodeType == Node.TEXT_NODE) || (nodeType == Node.ATTRIBUTE_NODE)) {
+                        // there is no child to this node
+                        text = node.getNodeValue();
+                    } else {
+                        // the data is in a child node
+                        text = "/" + node.getNodeName();
+                    }
+
+                    xPaths.add(text);
+                }
+            }
+        } catch (Exception e) {
+            // TODO
+        }
+
+        return xPaths;
+    }
+
     public boolean isMultipleAttributes() {
         return multipleAttributes;
     }
@@ -493,5 +668,17 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
      */
     public void setPolicyReferences(Set<PolicyReference> policyReferences) {
         this.policyReferences = policyReferences;
+    }
+
+    public Set<Attributes> getMultipleContentSelectors() {
+        return multipleContentSelectors;
+    }
+
+    public Map<String, Set<Attributes>> getMapAttributes() {
+        return mapAttributes;
+    }
+
+    public Set<Attributes> getAttributesSet() {
+        return attributesSet;
     }
 }

@@ -43,9 +43,9 @@ import org.wso2.balana.ctx.Status;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -68,14 +68,14 @@ public class Result extends AbstractResult {
         super(decision, status);
     }
     
-    public Result(int decision, Status status, Set<ObligationResult> obligationResults,
-                  Set<Advice> advices, EvaluationCtx evaluationCtx) throws IllegalArgumentException {
-        super(decision, status, obligationResults, advices, evaluationCtx);
+    public Result(int decision, Status status, List<ObligationResult> obligationResults)
+                                                                throws IllegalArgumentException {
+        super(decision, status, obligationResults, null);
     }
 
-    public Result(int decision, Status status, Set<ObligationResult> obligationResults,
+    public Result(int decision, Status status, List<ObligationResult> obligationResults,
                   String resourceId) throws IllegalArgumentException {
-        super(decision, status, obligationResults, null, null);
+        super(decision, status, obligationResults, null);
         this.resourceId = resourceId;
     }
 
@@ -95,7 +95,7 @@ public class Result extends AbstractResult {
         int decision = -1;
         Status status = null;
         String resource = null;
-        Set<ObligationResult> obligations = null;
+        List<ObligationResult> obligations = null;
 
         NamedNodeMap attrs = root.getAttributes();
         Node resourceAttr = attrs.getNamedItem("ResourceId");
@@ -140,25 +140,25 @@ public class Result extends AbstractResult {
      * Helper method that handles the obligations
      *
      * @param root the DOM root of the ObligationsType XML type
-     * @return a <code>Set</code> of <code>ObligationResult</code>
+     * @return a <code>List</code> of <code>ObligationResult</code>
      * @throws ParsingException  if any issues in parsing DOM
      */
-    private static Set<ObligationResult> parseObligations(Node root) throws ParsingException {
+    private static List<ObligationResult> parseObligations(Node root) throws ParsingException {
 
-        Set<ObligationResult> set = new HashSet<ObligationResult>();
+        List<ObligationResult> list = new ArrayList<ObligationResult>();
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeName().equals("Obligation")){
-                set.add(Obligation.getInstance(node));
+                list.add(Obligation.getInstance(node));
             }
         }
 
-        if (set.size() == 0){
+        if (list.size() == 0){
             throw new ParsingException("ObligationsType must not be empty");
         }
 
-        return set;
+        return list;
     }
 
 

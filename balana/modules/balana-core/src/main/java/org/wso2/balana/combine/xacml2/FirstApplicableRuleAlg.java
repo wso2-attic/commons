@@ -38,7 +38,7 @@ package org.wso2.balana.combine.xacml2;
 import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.Rule;
 
 import org.wso2.balana.ctx.AbstractResult;

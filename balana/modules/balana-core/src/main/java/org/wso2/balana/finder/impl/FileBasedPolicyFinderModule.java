@@ -33,11 +33,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
 
 /**
- * 
+ * This is file based policy repository.  Policies can be inside the directory in a file system.
+ * Then you can set directory location using "org.wso2.balana.PolicyDirectory" JAVA property   
  */
 public class FileBasedPolicyFinderModule extends PolicyFinderModule{
 
@@ -200,6 +203,7 @@ public class FileBasedPolicyFinderModule extends PolicyFinderModule{
     private AbstractPolicy loadPolicy(String policyFile, PolicyFinder finder) {
 
         AbstractPolicy policy = null;
+        InputStream stream = null;
 
         try {
             // create the factory
@@ -210,7 +214,8 @@ public class FileBasedPolicyFinderModule extends PolicyFinderModule{
 
             // create a builder based on the factory & try to load the policy
             DocumentBuilder db = factory.newDocumentBuilder();
-            Document doc = db.parse(new FileInputStream(policyFile));
+            stream = new FileInputStream(policyFile);
+            Document doc = db.parse(stream);
 
             // handle the policy, if it's a known type
             Element root = doc.getDocumentElement();
@@ -224,6 +229,14 @@ public class FileBasedPolicyFinderModule extends PolicyFinderModule{
         } catch (Exception e) {
             // just only logs
             log.error("Fail to load policy : " + policyFile , e);
+        } finally {
+            if(stream != null){
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    log.error("Error while closing input stream");
+                }
+            }
         }
 
         if(policy != null){

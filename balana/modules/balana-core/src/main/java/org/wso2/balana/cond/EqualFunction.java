@@ -255,7 +255,7 @@ public class EqualFunction extends FunctionBase {
      *            be evaluated
      * @return an <code>EvaluationResult</code> representing the function's result
      */
-    public EvaluationResult evaluate(List inputs, EvaluationCtx context) {
+    public EvaluationResult evaluate(List<Evaluatable> inputs, EvaluationCtx context) {
 
         // Evaluate the arguments
         AttributeValue[] argValues = new AttributeValue[inputs.size()];
@@ -263,7 +263,7 @@ public class EqualFunction extends FunctionBase {
         if (result != null)
             return result;
 
-        if (argValues[1] instanceof StringAttribute && context.isSearching()
+        if (argValues[1] instanceof StringAttribute
                 && XACMLConstants.ANY.equals(((StringAttribute) argValues[1]).getValue())) {
             return EvaluationResult.getInstance(true);
         }

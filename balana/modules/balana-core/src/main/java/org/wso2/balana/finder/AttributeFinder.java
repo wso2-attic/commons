@@ -179,16 +179,14 @@ public class AttributeFinder {
      * values were found, but no other error occurred, an empty bag is returned.
      * 
      * @param contextPath the XPath expression to search against
-     * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
-     *            come from the context root
      * @param attributeType the datatype of the attributes to find
      * @param context the representation of the request data
      * @param xpathVersion the XPath version to use
      * 
      * @return the result of attribute retrieval, which will be a bag of attributes or an error
      */
-    public EvaluationResult findAttribute(String contextPath, Node namespaceNode,
-            URI attributeType, EvaluationCtx context, String xpathVersion) {
+    public EvaluationResult findAttribute(String contextPath, URI attributeType,
+                                          EvaluationCtx context, String xpathVersion) {
         Iterator it = selectorModules.iterator();
        
         // go through each module in order
@@ -196,7 +194,7 @@ public class AttributeFinder {
             AttributeFinderModule module = (AttributeFinderModule) (it.next());
 
             // see if the module can find an attribute value
-            EvaluationResult result = module.findAttribute(contextPath, namespaceNode,
+            EvaluationResult result = module.findAttribute(contextPath,
                     attributeType, null, null, context, xpathVersion);
 
             // if there was an error, we stop right away
@@ -225,16 +223,16 @@ public class AttributeFinder {
      * values were found, but no other error occurred, an empty bag is returned.
      *
      * @param contextPath the XPath expression to search against
-     * @param namespaceNode the DOM node defining namespace mappings to use, or null if mappings
-     *            come from the context root
+     * @param contextSelector select the context to evaluate
      * @param attributeType the datatype of the attributes to find
+     * @param root root XML node
      * @param context the representation of the request data
      * @param xpathVersion the XPath version to use
      *
      * @return the result of attribute retrieval, which will be a bag of attributes or an error
      */    
-    public EvaluationResult findAttribute(String contextPath, String contextSelector,  URI attributeType,
-                        Node namespaceNode, Node root, EvaluationCtx context, String xpathVersion) {
+    public EvaluationResult findAttribute(String contextPath, String contextSelector, URI attributeType,
+                        Node root, EvaluationCtx context, String xpathVersion) {
 
         Iterator it = selectorModules.iterator();
 
@@ -243,7 +241,7 @@ public class AttributeFinder {
             AttributeFinderModule module = (AttributeFinderModule) (it.next());
 
             // see if the module can find an attribute value
-            EvaluationResult result = module.findAttribute(contextPath, namespaceNode,
+            EvaluationResult result = module.findAttribute(contextPath, 
                     attributeType, contextSelector, root, context, xpathVersion);
 
             // if there was an error, we stop right away

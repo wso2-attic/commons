@@ -61,12 +61,6 @@ public class ResponseCtx {
 
     // The set of Result objects returned by the PDP
     private Set<AbstractResult> results = null;
-    private List<MatchResult> matches = null;
-    
-    
-    public List<MatchResult> getMatches() {
-        return matches;
-    }
 
     /**
      * Constructor that creates a new <code>ResponseCtx</code> with only a single

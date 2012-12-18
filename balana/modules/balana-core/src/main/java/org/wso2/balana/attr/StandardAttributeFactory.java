@@ -66,7 +66,7 @@ import java.util.Set;
 public class StandardAttributeFactory extends BaseAttributeFactory {
 
     // the one instance of this factory
-    private static StandardAttributeFactory factoryInstance = null;
+    private static volatile StandardAttributeFactory factoryInstance = null;
 
     // the datatypes supported by this factory
     private static HashMap supportedDatatypes = null;

@@ -39,7 +39,7 @@ import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ObligationResult;
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.Rule;
 
 import org.wso2.balana.ctx.AbstractResult;
@@ -48,10 +48,7 @@ import org.wso2.balana.xacml3.Advice;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the standard Deny Overrides rule combining algorithm. It allows a single evaluation of
@@ -119,8 +116,8 @@ public class DenyOverridesRuleAlg extends RuleCombiningAlgorithm {
         boolean potentialDeny = false;
         boolean atLeastOnePermit = false;
         AbstractResult firstIndeterminateResult = null;
-        Set<ObligationResult> permitObligations = new HashSet<ObligationResult>();
-        Set<Advice> permitAdvices = new HashSet<Advice>();
+        List<ObligationResult> permitObligations = new ArrayList<ObligationResult>();
+        List<Advice> permitAdvices = new ArrayList<Advice>();
         Iterator it = ruleElements.iterator();
 
         while (it.hasNext()) {

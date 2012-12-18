@@ -53,6 +53,16 @@ public class Attributes {
      */
     private String id;
 
+    /**
+     * Constructor that creates a new <code>Attributes</code> based on
+     * the given elements.
+     * @param category category of the Attributes element whether it is subject, action and etc
+     * @param attributes  a <code>Set</code> of <code>Attribute</code>
+     * that contains in <code>Attributes</code>
+     */
+    public Attributes(URI category,Set<Attribute> attributes) {
+        this(category, null, attributes, null);
+    }
 
     /**
      * Constructor that creates a new <code>Attributes</code> based on

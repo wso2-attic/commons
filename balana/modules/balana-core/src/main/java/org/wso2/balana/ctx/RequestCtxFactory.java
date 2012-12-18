@@ -40,7 +40,7 @@ public class RequestCtxFactory {
     /**
      * Instance of this class
      */
-    private static RequestCtxFactory factoryInstance;
+    private static volatile RequestCtxFactory factoryInstance;
 
     /**
      *  the logger we'll use for all messages

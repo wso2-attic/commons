@@ -41,7 +41,7 @@ import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.MatchResult;
 
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.Status;
 

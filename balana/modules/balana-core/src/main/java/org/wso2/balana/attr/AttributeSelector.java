@@ -222,15 +222,6 @@ public class AttributeSelector extends AbstractAttributeSelector {
     }
 
     /**
-     * Returns whether or not a value is required to be resolved by this selector.
-     * 
-     * @return true if a value is required, false otherwise
-     */
-    public boolean mustBePresent() {
-        return mustBePresent;
-    }
-
-    /**
      * Always returns true, since a selector always returns a bag of attribute values.
      * 
      * @return true
@@ -260,15 +251,6 @@ public class AttributeSelector extends AbstractAttributeSelector {
         return Collections.EMPTY_LIST;
     }
 
-    /**
-     * Returns the XPath version this selector is supposed to use. This is typically provided by the
-     * defaults section of the policy containing this selector.
-     * 
-     * @return the XPath version
-     */
-    public String getXPathVersion() {
-        return xpathVersion;
-    }
 
     /**
      * Invokes the <code>AttributeFinder</code> used by the given <code>EvaluationCtx</code> to try
@@ -285,8 +267,7 @@ public class AttributeSelector extends AbstractAttributeSelector {
      */
     public EvaluationResult evaluate(EvaluationCtx context) {
         // query the context
-        EvaluationResult result = context.getAttribute(contextPath, policyRoot, type, null, null,
-                                                                                    xpathVersion);
+        EvaluationResult result = context.getAttribute(contextPath, type, null, null, xpathVersion);
 
         // see if we got anything
         if (!result.indeterminate()) {

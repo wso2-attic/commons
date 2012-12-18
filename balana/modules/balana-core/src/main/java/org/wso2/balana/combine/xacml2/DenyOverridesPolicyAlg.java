@@ -41,16 +41,14 @@ import org.wso2.balana.combine.PolicyCombinerElement;
 import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.xacml3.Advice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the standard Deny Overrides policy combining algorithm. It allows a single evaluation of
@@ -114,8 +112,8 @@ public class DenyOverridesPolicyAlg extends PolicyCombiningAlgorithm {
      */
     public AbstractResult combine(EvaluationCtx context, List parameters, List policyElements) {
         boolean atLeastOnePermit = false;
-        Set<ObligationResult> permitObligations = new HashSet<ObligationResult>();
-        Set<Advice> permitAdvices= new HashSet<Advice>();
+        List<ObligationResult> permitObligations = new ArrayList<ObligationResult>();
+        List<Advice> permitAdvices= new ArrayList<Advice>();
         Iterator it = policyElements.iterator();
 
         while (it.hasNext()) {
@@ -134,8 +132,11 @@ public class DenyOverridesPolicyAlg extends PolicyCombiningAlgorithm {
 
                 // unlike in the RuleCombining version of this alg, we always
                 // return DENY if any Policy returns DENY or INDETERMINATE
-                if (effect == AbstractResult.DECISION_DENY ||
-                    effect == AbstractResult.DECISION_INDETERMINATE ||
+                if (effect == AbstractResult.DECISION_DENY){
+                    return result;
+                }
+                
+                if (effect == AbstractResult.DECISION_INDETERMINATE ||
                     effect == AbstractResult.DECISION_INDETERMINATE_DENY ||
                     effect == AbstractResult.DECISION_INDETERMINATE_PERMIT ||
                     effect == AbstractResult.DECISION_INDETERMINATE_DENY_OR_PERMIT) {

@@ -33,7 +33,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- *  This XACML 3.0 basic test.
+ *  This XACML 3.0 basic polciy test. This would test a basic policy, basic policy with obligations and
+ *   basic policy with advices. 
  */
 public class BasicTestV3 extends TestCase {
 
@@ -60,7 +61,7 @@ public class BasicTestV3 extends TestCase {
         PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0001 is started");
 
-        for(int i = 1; i < 2 ; i++){
+        for(int i = 1; i < 8 ; i++){
             
             if(i < 10){
                 reqResNo = "0" + i;
@@ -102,7 +103,7 @@ public class BasicTestV3 extends TestCase {
         PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0002 is started");
 
-        for(int i = 1; i < 2 ; i++){
+        for(int i = 1; i < 4 ; i++){
 
             if(i < 10){
                 reqResNo = "0" + i;
@@ -132,6 +133,129 @@ public class BasicTestV3 extends TestCase {
             }
 
             log.info("Basic Test 0002 is finished");
+        }
+    }
+
+    public void testBasicTest0003() throws Exception {
+
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0003.xml");
+        PDP pdp = getPDPNewInstance(policies);
+        log.info("Basic Test 0003 is started");
+
+        for(int i = 1; i < 4 ; i++){
+
+            if(i < 10){
+                reqResNo = "0" + i;
+            } else {
+                reqResNo = Integer.toString(i);
+            }
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                        "request_0003_" + reqResNo + ".xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                String response = pdp.evaluate(request);
+                if(response != null){
+                    log.info("Response that is received from the PDP :  " + response);
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                    VERSION_DIRECTORY, "response_0003_" + reqResNo + ".xml");
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Basic Test 0003 is finished");
+        }
+    }
+
+    public void testBasicTest0004() throws Exception {
+
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0004.xml");
+        PDP pdp = getPDPNewInstance(policies);
+        log.info("Basic Test 0004 is started");
+
+        for(int i = 1; i < 4 ; i++){
+
+            if(i < 10){
+                reqResNo = "0" + i;
+            } else {
+                reqResNo = Integer.toString(i);
+            }
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                        "request_0004_" + reqResNo + ".xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                String response = pdp.evaluate(request);
+                if(response != null){
+                    log.info("Response that is received from the PDP :  " + response);
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                    VERSION_DIRECTORY, "response_0004_" + reqResNo + ".xml");
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Basic Test 0003 is finished");
+        }
+    }
+
+    public void testBasicTest0005() throws Exception {
+
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0005.xml");
+        PDP pdp = getPDPNewInstance(policies);
+        log.info("Basic Test 0005 is started");
+
+        for(int i = 1; i < 4 ; i++){
+
+            if(i < 10){
+                reqResNo = "0" + i;
+            } else {
+                reqResNo = Integer.toString(i);
+            }
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                        "request_0005_" + reqResNo + ".xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                String response = pdp.evaluate(request);
+                if(response != null){
+                    log.info("Response that is received from the PDP :  " + response);
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                    VERSION_DIRECTORY, "response_0005_" + reqResNo + ".xml");
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Basic Test 0003 is finished");
         }
     }
 
@@ -172,7 +296,7 @@ public class BasicTestV3 extends TestCase {
         Balana balana = Balana.getInstance();
         PDPConfig pdpConfig = balana.getPdpConfig();
         pdpConfig = new PDPConfig(pdpConfig.getAttributeFinder(), finder,
-                                                            pdpConfig.getResourceFinder(), false);
+                                                            pdpConfig.getResourceFinder(), true);
         return new PDP(pdpConfig);
 
     }

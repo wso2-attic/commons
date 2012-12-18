@@ -21,7 +21,7 @@ package org.wso2.balana.combine.xacml3;
 import org.wso2.balana.AbstractPolicy;
 import org.wso2.balana.MatchResult;
 import org.wso2.balana.ObligationResult;
-import org.wso2.balana.ResultFactory;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.combine.PolicyCombinerElement;
 import org.wso2.balana.combine.PolicyCombiningAlgorithm;
 import org.wso2.balana.ctx.AbstractResult;
@@ -99,8 +99,8 @@ public class DenyOverridesPolicyAlg extends PolicyCombiningAlgorithm {
         AbstractResult firstIndeterminateResultD = null;
         AbstractResult firstIndeterminateResultP = null;
         AbstractResult firstIndeterminateResultDP = null;
-        Set<ObligationResult> permitObligations = new HashSet<ObligationResult>();
-        Set<Advice> permitAdvices= new HashSet<Advice>();
+        List<ObligationResult> permitObligations = new ArrayList<ObligationResult>();
+        List<Advice> permitAdvices= new ArrayList<Advice>();
         Iterator it = policyElements.iterator();
 
 

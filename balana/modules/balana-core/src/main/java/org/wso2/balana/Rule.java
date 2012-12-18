@@ -37,6 +37,7 @@ package org.wso2.balana;
 
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.ResultFactory;
 import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.xacml3.Advice;
 import org.wso2.balana.xacml3.AdviceExpression;
@@ -426,12 +427,12 @@ public class Rule implements PolicyTreeElement {
      * helper method to evaluate the obligations expressions
      *
      * @param evaluationCtx context of a single policy evaluation
-     * @return set of <code>ObligationResult</code> or null
+     * @return list of <code>ObligationResult</code> or null
      */
-    private Set<ObligationResult> processObligations(EvaluationCtx evaluationCtx){
+    private List<ObligationResult> processObligations(EvaluationCtx evaluationCtx){
 
         if(obligationExpressions != null && obligationExpressions.size() > 0){
-            Set<ObligationResult>  results = new HashSet<ObligationResult>();
+            List<ObligationResult>  results = new ArrayList<ObligationResult>();
             for(AbstractObligation obligationExpression : obligationExpressions){
                 if(obligationExpression.getFulfillOn() == effectAttr) {
                     results.add(obligationExpression.evaluate(evaluationCtx));
@@ -449,9 +450,9 @@ public class Rule implements PolicyTreeElement {
      * @param evaluationCtx context of a single policy evaluation
      * @return set of <code>Advice</code> or null
      */
-    private Set<Advice> processAdvices(EvaluationCtx evaluationCtx){
+    private List<Advice> processAdvices(EvaluationCtx evaluationCtx){
         if(adviceExpressions != null && adviceExpressions.size() > 0){
-            Set<Advice>  advices = new HashSet<Advice>();
+            List<Advice>  advices = new ArrayList<Advice>();
             for(AdviceExpression adviceExpression : adviceExpressions){
                 if(adviceExpression.getAppliesTo() == effectAttr) {
                     advices.add(adviceExpression.evaluate(evaluationCtx));

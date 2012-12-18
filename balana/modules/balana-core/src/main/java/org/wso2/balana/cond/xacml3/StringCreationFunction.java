@@ -27,8 +27,7 @@ import org.wso2.balana.ctx.EvaluationCtx;
 import java.util.*;
 
 /**
- *
- *
+ * String creation function that creates String from other data types
  */
 public class StringCreationFunction extends FunctionBase {
 

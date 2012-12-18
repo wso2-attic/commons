@@ -39,11 +39,13 @@ import org.wso2.balana.ParsingException;
 
 import java.io.ByteArrayInputStream;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -53,6 +55,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 /**
  * This class represents the StatusDetailType in the context schema. Because status detail is
@@ -154,7 +157,11 @@ public class StatusDetail {
             Document doc = db.parse(new ByteArrayInputStream(bytes));
 
             return doc.getDocumentElement();
-        } catch (Exception e) {
+        } catch (ParserConfigurationException e) {
+            throw new ParsingException("invalid XML for status detail");
+        } catch (SAXException e) {
+            throw new ParsingException("invalid XML for status detail");
+        } catch (IOException e) {
             throw new ParsingException("invalid XML for status detail");
         }
     }
