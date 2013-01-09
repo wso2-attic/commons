@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Web page image filtering sample
+ * hierarchical resource sample
  */
 public class Main {
 
@@ -60,13 +60,23 @@ public class Main {
 
         System.out.println("\nYou can check the authorization for children or descendants resource " +
                                                                         "under root resources \n");
-        
+
+        System.out.println("root-");
+        System.out.println("    ------ private ---- leadership");
+        System.out.println("    -              ---- support");
+        System.out.println("    -              ---- team");
+        System.out.println("    -              ---- business");
+        System.out.println("    -");
+        System.out.println("    ------ public  ---- developments");
+        System.out.println("    -              ---- news");
+        System.out.println();
+
         if ((console = System.console()) != null){
-            userName = console.readLine("Check authorized resources for user : ");
+            userName = console.readLine("\nCheck authorized resources for user : ");
         }
 
         if ((console = System.console()) != null){
-            type = console.readLine("Descendants or Children resources [D|C] : ");
+            type = console.readLine("\nDescendants or Children resources [D|C] : ");
         }
 
         if(userName != null && userName.trim().length() > 0){
