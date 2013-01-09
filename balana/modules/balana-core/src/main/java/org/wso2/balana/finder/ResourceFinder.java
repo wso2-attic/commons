@@ -98,7 +98,7 @@ public class ResourceFinder {
      * 
      * @return a <code>List</code> of <code>ResourceFinderModule</code>s
      */
-    public List getModules() {
+    public List<ResourceFinderModule> getModules() {
         return new ArrayList<ResourceFinderModule>(allModules);
     }
 
