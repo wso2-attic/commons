@@ -72,13 +72,13 @@ import java.util.List;
 public class ResourceFinder {
 
     // the list of all modules
-    private List allModules;
+    private List<ResourceFinderModule> allModules;
 
     // the list of child modules
-    private List childModules;
+    private List<ResourceFinderModule> childModules;
 
     // the list of descendant modules
-    private List descendantModules;
+    private List<ResourceFinderModule> descendantModules;
 
     // the logger we'll use for all messages
     private static Log logger = LogFactory.getLog(ResourceFinder.class);
@@ -87,9 +87,9 @@ public class ResourceFinder {
      * Default constructor.
      */
     public ResourceFinder() {
-        allModules = new ArrayList();
-        childModules = new ArrayList();
-        descendantModules = new ArrayList();
+        allModules = new ArrayList<ResourceFinderModule>();
+        childModules = new ArrayList<ResourceFinderModule>();
+        descendantModules = new ArrayList<ResourceFinderModule>();
     }
 
     /**
@@ -99,7 +99,7 @@ public class ResourceFinder {
      * @return a <code>List</code> of <code>ResourceFinderModule</code>s
      */
     public List getModules() {
-        return new ArrayList(allModules);
+        return new ArrayList<ResourceFinderModule>(allModules);
     }
 
     /**
@@ -108,12 +108,12 @@ public class ResourceFinder {
      * 
      * @param modules a code>List</code> of <code>ResourceFinderModule</code>s
      */
-    public void setModules(List modules) {
+    public void setModules(List<ResourceFinderModule> modules) {
         Iterator it = modules.iterator();
 
-        allModules = new ArrayList(modules);
-        childModules = new ArrayList();
-        descendantModules = new ArrayList();
+        allModules = new ArrayList<ResourceFinderModule>(modules);
+        childModules = new ArrayList<ResourceFinderModule>();
+        descendantModules = new ArrayList<ResourceFinderModule>();
 
         while (it.hasNext()) {
             ResourceFinderModule module = (ResourceFinderModule) (it.next());
