@@ -183,12 +183,14 @@ public class FileBasedPolicyFinderModule extends PolicyFinderModule{
             if(file.isDirectory()){
                 String[] files = file.list();
                 for(String policyFile : files){
-                    loadPolicy(policyLocation + File.separator + policyFile, finder);
+                    File fileLocation = new File(policyLocation + File.separator + policyFile);
+                    if(!fileLocation.isDirectory()){
+                        loadPolicy(policyLocation + File.separator + policyFile, finder);
+                    }
                 }
             } else {
                 loadPolicy(policyLocation, finder);    
             }
-
         }
     }    
 

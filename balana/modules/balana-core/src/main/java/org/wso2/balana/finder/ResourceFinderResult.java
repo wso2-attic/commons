@@ -67,7 +67,7 @@ public class ResourceFinderResult {
      * Creates an empty result.
      */
     public ResourceFinderResult() {
-        resources = Collections.unmodifiableSet(new HashSet());
+        resources = Collections.unmodifiableSet(new HashSet<AttributeValue>());
         failures = Collections.unmodifiableMap(new HashMap());
         empty = true;
     }
@@ -79,7 +79,7 @@ public class ResourceFinderResult {
      * 
      * @param resources a non-null <code>Set</code> of <code>AttributeValue</code>s
      */
-    public ResourceFinderResult(Set resources) {
+    public ResourceFinderResult(Set<AttributeValue> resources) {
         this(resources, new HashMap());
     }
 
@@ -106,7 +106,7 @@ public class ResourceFinderResult {
      *            identifiers to their <code>Status</code>
      */
     public ResourceFinderResult(Set resources, Map failures) {
-        this.resources = Collections.unmodifiableSet(new HashSet(resources));
+        this.resources = Collections.unmodifiableSet(new HashSet<AttributeValue>(resources));
         this.failures = Collections.unmodifiableMap(new HashMap(failures));
         empty = false;
     }

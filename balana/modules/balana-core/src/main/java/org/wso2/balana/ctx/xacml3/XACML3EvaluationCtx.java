@@ -37,6 +37,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 /**
@@ -78,6 +79,11 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     private RequestCtx requestCtx;
 
     /**
+     * XACML3 request scope. used with multiple resource profile
+     */
+    private Attribute resourceScopeAttribute;
+
+    /**
      * XACML3 request scope. used with hierarchical resource
      */
     private int resourceScope;
@@ -85,7 +91,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     /**
      * XACML 3 request resource id.  used with hierarchical resource
      */
-    private AttributeValue resourceId;
+    private Attribute resourceId;
 
     /**
      * logger
@@ -206,14 +212,12 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
      */
     private void setupAttributes(Set<Attributes> attributeSet, Map<String,
                                             Set<Attributes>> mapAttributes)  {
-
         for (Attributes attributes : attributeSet) {
             String category = attributes.getCategory().toString();
-
-
             for(Attribute attribute : attributes.getAttributes()){
                 if(XACMLConstants.RESOURCE_CATEGORY.equals(category)){
                     if(XACMLConstants.RESOURCE_SCOPE_2_0.equals(attribute.getId().toString())){
+                        resourceScopeAttribute = attribute;
                         AttributeValue value = attribute.getValue();
                         if (value instanceof StringAttribute) {
                             String scope = ((StringAttribute) value).getValue();
@@ -226,10 +230,11 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                             logger.error("scope attribute must be a string");     //TODO
                             //throw new ParsingException("scope attribute must be a string");
                         }
-                        break;
-                    } else if (XACMLConstants.RESOURCE_ID.equals(attribute.getId().toString())){
+                    }
+
+                    if (XACMLConstants.RESOURCE_ID.equals(attribute.getId().toString())){
                         if(resourceId == null) { //TODO  when there are more than one resource ids??
-                            resourceId = attribute.getValue();
+                            resourceId = attribute;
                         }
                     }
                 }
@@ -428,13 +433,15 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         ResourceFinderResult resourceResult = null;
         Set<EvaluationCtx> children = new HashSet<EvaluationCtx>();
 
+        Attribute resourceId = evaluationCtx.getResourceId();
         if(resourceId != null){
-            if(resourceScope == XACMLConstants.SCOPE_CHILDREN){
+
+            if(evaluationCtx.getResourceScope() == XACMLConstants.SCOPE_CHILDREN){
                 resourceResult = pdpConfig.getResourceFinder().
-                                                findChildResources(resourceId, evaluationCtx);
-            } else if(resourceScope == XACMLConstants.SCOPE_DESCENDANTS) {
+                                                findChildResources(resourceId.getValue(), evaluationCtx);
+            } else if(evaluationCtx.getResourceScope()  == XACMLConstants.SCOPE_DESCENDANTS) {
                 resourceResult = pdpConfig.getResourceFinder().
-                                                findDescendantResources(resourceId, evaluationCtx);
+                                                findDescendantResources(resourceId.getValue(), evaluationCtx);
             } else {
                 logger.error("Unknown scope type: " );
                 //TODO
@@ -449,8 +456,34 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             // TODO
         } else {
             for (AttributeValue resource : resourceResult.getResources()) {
-                evaluationCtx.setResourceId(resource, attributesSet);
-                children.add(new XACML3EvaluationCtx(new RequestCtx(attributesSet, null), pdpConfig));
+                Set<Attributes> newSet = new HashSet<Attributes>(evaluationCtx.getAttributesSet());
+                Iterator iterator = newSet.iterator();
+                Attributes resourceAttributes = null;
+                while(iterator.hasNext()){
+                    Attributes attributes = (Attributes) iterator.next();
+                    if(XACMLConstants.RESOURCE_CATEGORY.equals(attributes.getCategory().toString())){
+                        Set<Attribute> attributeSet = new HashSet<Attribute>(attributes.getAttributes());
+                        attributeSet.remove(resourceScopeAttribute);
+                        attributeSet.remove(resourceId);
+                        try{
+                            Attribute attribute = new Attribute(new URI(XACMLConstants.RESOURCE_ID),
+                                    resourceId.getIssuer(), null, resource, resourceId.isIncludeInResult(),
+                                    XACMLConstants.XACML_VERSION_3_0);
+                            attributeSet.add(attribute);
+                            Attributes newAttributes = new Attributes(new URI(XACMLConstants.RESOURCE_CATEGORY),
+                                        (Node)attributes.getContent(), attributeSet, attributes.getId());
+                            newSet.add(newAttributes);
+                            resourceAttributes = attributes;
+                        } catch (URISyntaxException e) {
+                            //ignore
+                        }
+                        break;
+                    }
+                }
+                if(resourceAttributes != null){
+                    newSet.remove(resourceAttributes);
+                    children.add(new XACML3EvaluationCtx(new RequestCtx(newSet, null), pdpConfig));
+                }
             }
         }
 
@@ -680,5 +713,17 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
 
     public Set<Attributes> getAttributesSet() {
         return attributesSet;
+    }
+
+    public Attribute getResourceId() {
+        return resourceId;
+    }
+
+    public int getResourceScope() {
+        return resourceScope;
+    }
+
+    public Attribute getResourceScopeAttribute() {
+        return resourceScopeAttribute;
     }
 }
