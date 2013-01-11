@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.charon</groupId>
+    <artifactId>charon-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <name>WSO2 Charon - Parent</name>
+	<description>WSO2 Charon - SCIM Implementation</description>
+	<url>http://wso2.com</url>
+
+    <modules>
+        <module>charon-core</module>
+        <module>charon-utils</module>
+        <module>charon-samples</module>
+        <module>charon-impl</module>
+    </modules>
+
+   <distributionManagement>
+        <repository>
+            <id>wso2-maven2-repository</id>
+            <name>WSO2 Maven2 Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>wso2-maven2-snapshot-repository</id>
+            <name>WSO2 Maven2 Snapshot Repository</name>
+            <url>scp://dist.wso2.org/home/httpd/dist.wso2.org/snapshots/maven2/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+   <build>
+        <extensions>
+      	    <extension>
+        	<groupId>org.apache.maven.wagon</groupId>
+        	<artifactId>wagon-ssh</artifactId>
+        	<version>2.1</version>
+      	    </extension>
+    	</extensions>
+    </build>
+
+    <properties>
+        <charon.version>1.0.0</charon.version>
+    </properties>
+</project>
