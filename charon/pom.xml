@@ -7,7 +7,7 @@
     <groupId>org.wso2.charon</groupId>
     <artifactId>charon-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>${charon.version}</version>
     <name>WSO2 Charon - Parent</name>
 	<description>WSO2 Charon - SCIM Implementation</description>
 	<url>http://wso2.com</url>
@@ -43,6 +43,6 @@
     </build>
 
     <properties>
-        <charon.version>1.0.0</charon.version>
+        <charon.version>2.0.0-SNAPSHOT</charon.version>
     </properties>
 </project>
