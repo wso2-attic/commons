@@ -15,5 +15,6 @@
 # under the License.
 org.wso2.charon.impl.resources.UsersResource
 org.wso2.charon.impl.resources.GroupResource
+org.wso2.charon.impl.resources.BulkResource
 org.wso2.charon.impl.resources.RegistrationService
 org.apache.wink.server.internal.servlet.AdminServlet

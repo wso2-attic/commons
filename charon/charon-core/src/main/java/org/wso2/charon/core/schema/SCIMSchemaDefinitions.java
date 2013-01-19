@@ -217,6 +217,30 @@ public class SCIMSchemaDefinitions {
                                                           SCIMConstants.USER_NAME_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, true, false, null);
 
+    /**
+     * This is used to refer the bulk operation
+     */
+    public static final SCIMAttributeSchema BULK_ID =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.BULK_ID,
+                                                          SCIMConstants.CommonSchemaConstants.BULK_ID,
+                                                          SCIMSchemaDefinitions.DataType.STRING, false, null,
+                                                          SCIMConstants.BULK_ID_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema PATH =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.PATH,
+                                                          SCIMConstants.CommonSchemaConstants.PATH,
+                                                          SCIMSchemaDefinitions.DataType.STRING, false, null,
+                                                          SCIMConstants.PATH_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
+    public static final SCIMAttributeSchema METHOD =
+            SCIMAttributeSchema.createSCIMAttributeSchema(SCIMConstants.METHOD,
+                                                          SCIMConstants.CommonSchemaConstants.METHOD,
+                                                          SCIMSchemaDefinitions.DataType.STRING, false, null,
+                                                          SCIMConstants.METHOD_DESC,
+                                                          SCIMConstants.CORE_SCHEMA_URI, false, false, false, null);
+
     /*E-mail addresses for the User. The value SHOULD be canonicalized by the Service Provider*/
     //TODO:how 'work','home' and 'other' specified in emails
     //TODO:NOTE:MULTI-VALUED ATTRIBUTES HAVE SUB ATTRIBUTES - DEFINED IN SCHEMA

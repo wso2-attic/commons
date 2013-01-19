@@ -29,6 +29,7 @@ import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.ListedResource;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.objects.bulk.BulkData;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.ClientSideValidator;
 import org.wso2.charon.core.schema.ResourceSchema;
@@ -79,6 +80,10 @@ public class SCIMClient {
         return new Group();
     }
 
+    public BulkData createBulkRequestData() {
+        return new BulkData();
+    }
+
     /**
      * Encode the SCIM object, in the given format.
      *
@@ -93,8 +98,7 @@ public class SCIMClient {
             return jsonEncoder.encodeSCIMObject(scimObject);
         } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlEncoder.encodeSCIMObject(scimObject);
-        }*/
-        else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }
@@ -117,8 +121,7 @@ public class SCIMClient {
         }/* else if ((format.equals(SCIMConstants.XML)) && (xmlDecoder != null)) {
             return decodeSCIMResponse(scimResponse, xmlDecoder, resourceType);
 
-        }*/
-        else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }
@@ -196,8 +199,7 @@ public class SCIMClient {
         } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlDecoder.decodeResource(scimResponse, resourceSchema, scimObject);
 
-        }*/
-        else {
+        }*/ else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
 
@@ -219,8 +221,24 @@ public class SCIMClient {
         } /*else if ((format.equals(SCIMConstants.XML)) && (xmlEncoder != null)) {
             return xmlDecoder.decodeException(scimResponse);
 
-        }*/
-        else {
+        }*/ else {
+            throw new CharonException("Encoder in the given format is not properly initialized..");
+        }
+    }
+
+    /**
+     * Encode given BulkData object and return bulk data string
+     *
+     * @param bulkData
+     * @param format
+     * @return
+     */
+    public String encodeSCIMObject(BulkData bulkData, String format) throws CharonException,
+                                                                            BadRequestException {
+        if ((format.equals(SCIMConstants.JSON)) && (jsonEncoder != null)) {
+            return jsonEncoder.encodeBulkData(bulkData);
+
+        } else {
             throw new CharonException("Encoder in the given format is not properly initialized..");
         }
     }

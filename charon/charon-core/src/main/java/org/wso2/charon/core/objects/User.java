@@ -44,6 +44,69 @@ public class User extends AbstractSCIMObject {
         super();
     }
 
+    /**
+     * Set bulkID when going to do the bulk operation
+     *
+     * @param bulkID
+     * @throws CharonException
+     */
+    public void setBulkID(String bulkID) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.BULK_ID, SCIMSchemaDefinitions.BULK_ID,
+                           bulkID, DataType.STRING);
+    }
+
+    /**
+     * Get bulkID
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getBulkID() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.BULK_ID);
+    }
+
+    /**
+     * Set path ex - /Users or /Groups
+     *
+     * @param path
+     * @throws CharonException
+     */
+    public void setPath(String path) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.PATH, SCIMSchemaDefinitions.PATH,
+                           path, DataType.STRING);
+    }
+
+    /**
+     * Get path
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getPath() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.PATH);
+    }
+
+    /**
+     * Set request method ex - POST
+     *
+     * @param method
+     * @throws CharonException
+     */
+    public void setMethod(String method) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.METHOD, SCIMSchemaDefinitions.METHOD,
+                           method, DataType.STRING);
+    }
+
+    /**
+     * Get request method
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getMethod() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.METHOD);
+    }
+
     /***********************UserName manipulation methods*************************************/
     /**
      * Set UserName attribute of the User.
@@ -912,7 +975,7 @@ public class User extends AbstractSCIMObject {
      *                       public void updateValue(Object value) {
      *                       this.value = value;
      *                       }
-     */        
+     */
     /*@Override
     public void updateAttribute(String attributeName, Object attributeValue) {
         //To change body of implemented methods use File | Settings | File Templates.

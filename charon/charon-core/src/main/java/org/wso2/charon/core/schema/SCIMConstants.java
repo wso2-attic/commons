@@ -81,6 +81,18 @@ public class SCIMConstants {
         public static final String OPERATION = "operation";
         public static final String VALUE = "value";
 
+        //need bulk operations
+        public static final String BULK_ID = "bulkId";
+        public static final String METHOD = "method";
+        public static final String DATA = "data";
+        public static final String PATH = "path";
+        public static final String USERS_PATH = "/Users";
+        public static final String GROUPS_PATH = "/Groups";
+        public static final String FAIL_ON_ERRORS = "failOnErrors";
+        public static final String OPERATIONS = "Operations";
+        public static final String CODE = "code";
+        public static final String STATUS = "status";
+
     }
 
     /*Constants found in core-user schema.*/
@@ -209,6 +221,14 @@ public class SCIMConstants {
      */
     public static final String ID_DESC = "Unique identifier for the SCIM Resource as defined by the Service Provider.";
 
+    //*********
+    // following descriptions used for bulk endpoint
+    public static final String BULK_ID_DESC = "defined by the Service Consumer and must not be used in the unique identifier";
+    public static final String PATH_DESC = "The Resource's relative path. If the method is POST the value must specify a Resource type endpoint; " +
+                                           "e.g., /Users or /Groups whereas all other method values must specify the path to a specific Resource";
+    public static final String METHOD_DESC = "The HTTP method of the current operation. Possible values are POST, PUT, PATCH or DELETE. REQUIRED.";
+    //*********
+
     public static final String EXTERNAL_ID_DESC = "Unique identifier for the Resource as defined by the Service Consumer." +
                                                   "The Service Provider MUST always interpret the externalId as scoped to the Service Consumer's tenant.";
     public static final String CREATED_DESC = "The DateTime the Resource was added to the Service Provider.";
@@ -334,6 +354,10 @@ public class SCIMConstants {
     public static final String META_LOCATION_URI = "urn:scim:schemas:core:1.0:meta.location";
     public static final String META_VERSION_URI = "urn:scim:schemas:core:1.0:meta.version";
     public static final String META_ATTRIBUTES_URI = "urn:scim:schemas:core:1.0:meta.attributes";
+
+    public static final String BULK_ID = "urn:scim:schemas:core:1.0:bulkId";
+    public static final String PATH = "urn:scim:schemas:core:1.0:path";
+    public static final String METHOD = "urn:scim:schemas:core:1.0:method";
 
     //for SCIM-User Schema
     public static final String USER_NAME_URI = "urn:scim:schemas:core:1.0:userName";

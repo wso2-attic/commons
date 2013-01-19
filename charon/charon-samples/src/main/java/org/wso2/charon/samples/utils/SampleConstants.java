@@ -32,12 +32,13 @@ public class SampleConstants {
     public static final String KEY_STORE_PATH = "charon-samples" + File.separator + "src" + File.separator +
                                                 "main" + File.separator + "resources" + File.separator +
                                                 "charonserverkeystore.jks";
-    
+
     public static final String KEY_STORE_PASS = "wso2@Charon#123";
 
     /*change the transport of following urls to https if you need secure communication.*/
     public static final String USER_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/Users/";
     public static final String GROUP_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/Groups/";
+    public static final String BULK_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/Bulk/";
     public static final String REG_SERVICE_ENDPOINT = "http://localhost:8080/charonDemoApp/scim/RegistrationService";
 
     //*******************************************

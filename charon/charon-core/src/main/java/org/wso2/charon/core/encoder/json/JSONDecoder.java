@@ -17,6 +17,8 @@
 */
 package org.wso2.charon.core.encoder.json;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,25 +35,28 @@ import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.AbstractSCIMObject;
 import org.wso2.charon.core.objects.ListedResource;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.objects.bulk.BulkRequestContent;
+import org.wso2.charon.core.objects.bulk.BulkRequestData;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.ResourceSchema;
 import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
-import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 import org.wso2.charon.core.util.AttributeUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JSONDecoder implements Decoder {
 
+    private Log logger;
+
+    public JSONDecoder() {
+        logger = LogFactory.getLog(JSONDecoder.class);
+    }
 
     /**
      * Decode the resource string sent in the SCIM request/response payload.
@@ -384,6 +389,93 @@ public class JSONDecoder implements Decoder {
         complexAttribute.setSubAttributes(subAttributesMap);
         return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
                                                                           complexAttribute);
+    }
+
+
+    /**
+     * Decode BulkRequestData Json Sting
+     *
+     * @param bulkResourceString
+     * @return BulkRequestData Object
+     */
+    public BulkRequestData decodeBulkData(String bulkResourceString) throws BadRequestException {
+        BulkRequestData bulkRequestDataObject = new BulkRequestData();
+        List<BulkRequestContent> userCreatingRequestList = new ArrayList<BulkRequestContent>();
+        List<BulkRequestContent> groupCreatingRequestList = new ArrayList<BulkRequestContent>();
+        int failOnErrorsAttribute = 0;
+        List<String> schemas = new ArrayList<String>();
+
+        //TODO: Validation has to be done for failOnErrors,..etc
+        JSONObject decodedObject = null;
+        try {
+            decodedObject = new JSONObject(new JSONTokener(bulkResourceString));
+
+            //prepare the schema list
+            JSONArray membersAttributeSchemas = (JSONArray) decodedObject.opt(
+                    SCIMConstants.CommonSchemaConstants.SCHEMAS);
+            for (int i = 0; i < membersAttributeSchemas.length(); i++) {
+                schemas.add(membersAttributeSchemas.get(i).toString());
+            }
+            bulkRequestDataObject.setSchemas(schemas);
+
+            //get [operations] from the Json String and prepare the request List
+            JSONArray membersAttributeOperations = (JSONArray) decodedObject.opt(
+                    SCIMConstants.CommonSchemaConstants.OPERATIONS);
+
+            for (int i = 0; i < membersAttributeOperations.length(); i++) {
+                JSONObject member = (JSONObject) membersAttributeOperations.get(i);
+                //Request type - /Users or /Groups
+                String requestType = member.optString(SCIMConstants.CommonSchemaConstants.PATH);
+                //Request method  - POST,PUT..etc
+                String requestMethod = member.optString(SCIMConstants.CommonSchemaConstants.METHOD);
+
+                //only filter the post requests (user or group creating methods)
+                if (requestMethod.equals("POST")) {
+                    //create user request list
+                    if (requestType.equals(SCIMConstants.CommonSchemaConstants.USERS_PATH)) {
+                        BulkRequestContent newRequestData = new BulkRequestContent();
+
+                        newRequestData.setData(member.optString(SCIMConstants.CommonSchemaConstants.DATA));
+                        newRequestData.setBulkID(member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID));
+                        newRequestData.setMethod(requestMethod);
+                        newRequestData.setPath(requestType);
+
+                        userCreatingRequestList.add(newRequestData);
+                        logger.debug("User Request-" + i + "-" + newRequestData.toString());
+                    }
+
+                    //create group request list
+                    if (requestType.equals(SCIMConstants.CommonSchemaConstants.GROUPS_PATH)) {
+
+//                        BulkRequestContent newRequestData = new BulkRequestContent();
+//
+//                        newRequestData.setData(member.optString("data"));
+//                        newRequestData.setBulkID(member.optString("bulkId"));
+//                        newRequestData.setMethod(requestMethod);
+//                        newRequestData.setPath(type);
+//
+//                        groupCreatingRequestList.add(newRequestData);
+//                        logger.debug("Group Request-" + i + "-" + newRequestData.toString());
+                    }
+                }
+
+            }
+
+            //extract [failOnErrors] attribute from Json string
+            failOnErrorsAttribute = decodedObject.optInt(SCIMConstants.CommonSchemaConstants.FAIL_ON_ERRORS);
+            logger.debug(failOnErrorsAttribute);
+
+            bulkRequestDataObject.setFailOnErrors(failOnErrorsAttribute);
+            bulkRequestDataObject.setUserCreatingRequests(userCreatingRequestList);
+            bulkRequestDataObject.setGroupCreatingRequests(groupCreatingRequestList);
+
+        } catch (JSONException e1) {
+            String error = "JSON string could not be decoded properly.";
+            logger.error(error);
+            throw new BadRequestException();
+        }
+        
+        return bulkRequestDataObject;
     }
 
 

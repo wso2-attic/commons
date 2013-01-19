@@ -20,6 +20,8 @@ package org.wso2.charon.core.encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.objects.bulk.BulkData;
+import org.wso2.charon.core.objects.bulk.BulkResponseData;
 
 /**
  * SCIM API which is based on REST style, may support multiple formats of the resource.
@@ -30,6 +32,7 @@ public interface Encoder {
 
     /**
      * Encode the given SCIM object.
+     *
      * @param scimObject
      * @return the resulting string after encoding.
      */
@@ -37,6 +40,7 @@ public interface Encoder {
 
     /**
      * Encode the Exception to be sent in the SCIM - response payload.
+     *
      * @param exception
      * @return the resulting string after encoding
      */
@@ -44,8 +48,25 @@ public interface Encoder {
 
     /**
      * Obtain the format that the particular encoder supports. This can be initialized in the constructor.
+     *
      * @return
      */
     public String getFormat();
-    
+
+    /**
+     * Encode the BulkResponseData object and return the encoded String
+     *
+     * @param bulkResponseData
+     * @return
+     */
+    public String encodeBulkResponseData(BulkResponseData bulkResponseData);
+
+    /**
+     * Encode given BulkData object and return encoded String
+     *
+     * @param bulkData
+     * @return
+     */
+    public String encodeBulkData(BulkData bulkData);
+
 }

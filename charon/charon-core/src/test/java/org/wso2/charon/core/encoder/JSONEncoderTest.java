@@ -33,11 +33,11 @@ import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.ListedResource;
 import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.objects.bulk.BulkData;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +60,7 @@ public class JSONEncoderTest {
             jsonEncoder.encodeSimpleAttribute(simpleAttribute, jsonObject);
             String encodedString = jsonObject.toString();
             //Assert encoded String
-            Assert.assertEquals("{\"userName\":\"hasini\"}",encodedString);
+            Assert.assertEquals("{\"userName\":\"hasini\"}", encodedString);
 
             //test whether properly encoded
             JSONObject decodedObject = new JSONObject(new JSONTokener(encodedString));
@@ -90,7 +90,7 @@ public class JSONEncoderTest {
 
             //Assert encoded string
             SimpleDateFormat sdf = new SimpleDateFormat(SCIMConstants.dateTimeFormat);
-            Assert.assertEquals("{\"created\":\""+sdf.format(now)+"\"}",encodedString);
+            Assert.assertEquals("{\"created\":\"" + sdf.format(now) + "\"}", encodedString);
 
             //test whether properly encoded
             JSONObject decodedObject = new JSONObject(new JSONTokener(encodedString));
@@ -135,10 +135,10 @@ public class JSONEncoderTest {
                     ((MultiValuedAttribute) testGroup.getAttribute(SCIMConstants.GroupSchemaConstants.MEMBERS)), jsonObject);
 
             //Assert encoded string
-            Assert.assertEquals("{\"members\":[{\"value\":\""+group1Value+"\",\"display\":\"eng\"," +
-                    "\"type\":\"Group\"},{\"value\":\""+group2Value+"\",\"display\":\"qa\",\"type\":\"Group\"}," +
-                    "{\"value\":\""+user1Value+"\",\"display\":\"hasini\",\"type\":\"User\"}," +
-                    "{\"value\":\""+user2Value+"\",\"display\":\"umesha\",\"type\":\"User\"}]}",jsonObject.toString());
+            Assert.assertEquals("{\"members\":[{\"value\":\"" + group1Value + "\",\"display\":\"eng\"," +
+                                "\"type\":\"Group\"},{\"value\":\"" + group2Value + "\",\"display\":\"qa\",\"type\":\"Group\"}," +
+                                "{\"value\":\"" + user1Value + "\",\"display\":\"hasini\",\"type\":\"User\"}," +
+                                "{\"value\":\"" + user2Value + "\",\"display\":\"umesha\",\"type\":\"User\"}]}", jsonObject.toString());
 
             JSONObject decodedObject = new JSONObject(new JSONTokener(jsonObject.toString()));
             JSONArray membersAttribute = (JSONArray) decodedObject.opt(SCIMConstants.GroupSchemaConstants.MEMBERS);
@@ -205,10 +205,10 @@ public class JSONEncoderTest {
             jsonEncoder.encodeComplexAttribute(metaAttribute, encodedObject);
 
             //Assert encoded sting
-            Assert.assertEquals("{\"meta\":{\"lastModified\":\""+sdf.format(lastModified)+"\"," +
-                    "\"created\":\""+sdf.format(createdDate)+"\"," +
-                    "\"location\":\"http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Users/\"," +
-                    "\"attributes\":[\"displayName\",\"userName\"],\"version\":\"v1\"}}",encodedObject.toString());
+            Assert.assertEquals("{\"meta\":{\"lastModified\":\"" + sdf.format(lastModified) + "\"," +
+                                "\"created\":\"" + sdf.format(createdDate) + "\"," +
+                                "\"location\":\"http://appserver.stratoslive.wso2.com/t/charon.com/webapps/charonDemoApp/scim/Users/\"," +
+                                "\"attributes\":[\"displayName\",\"userName\"],\"version\":\"v1\"}}", encodedObject.toString());
 
             JSONObject decodedObject = new JSONObject(new JSONTokener(encodedObject.toString()));
             JSONObject metaObject = decodedObject.optJSONObject(SCIMConstants.CommonSchemaConstants.META);
@@ -240,7 +240,7 @@ public class JSONEncoderTest {
     }
 
     @Test
-    public void testEncodeListedResource(){
+    public void testEncodeListedResource() {
         try {
             List<User> users = new ArrayList<User>();
 
@@ -282,13 +282,13 @@ public class JSONEncoderTest {
             SimpleDateFormat sdf = new SimpleDateFormat(SCIMConstants.dateTimeFormat);
             //Assert encoded string
             Assert.assertEquals("{\"schemas\":[\"urn:scim:schemas:core:1.0\"],\"totalResults\":2," +
-                    "\"Resources\":[{\"id\":\""+user1ID+"\",\"active\":false,\"externalId\":\"hasini\"," +
-                    "\"meta\":{\"lastModified\":\""+sdf.format(user1LastModified)+"\",\"created\":\""+sdf.format(user1CreatedDate)+"\"," +
-                    "\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\",\"version\":\"v1\"}}," +
-                    "{\"id\":\""+user2ID+"\",\"active\":true,\"externalId\":\"umesha\"," +
-                    "\"meta\":{\"lastModified\":\""+sdf.format(user2LastModified)+"\",\"created\":\""+sdf.format(user2LastModified)+"\"," +
-                    "\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\",\"version\":\"v1\"}}]}",encodedString);
-            
+                                "\"Resources\":[{\"id\":\"" + user1ID + "\",\"active\":false,\"externalId\":\"hasini\"," +
+                                "\"meta\":{\"lastModified\":\"" + sdf.format(user1LastModified) + "\",\"created\":\"" + sdf.format(user1CreatedDate) + "\"," +
+                                "\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\",\"version\":\"v1\"}}," +
+                                "{\"id\":\"" + user2ID + "\",\"active\":true,\"externalId\":\"umesha\"," +
+                                "\"meta\":{\"lastModified\":\"" + sdf.format(user2LastModified) + "\",\"created\":\"" + sdf.format(user2LastModified) + "\"," +
+                                "\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\",\"version\":\"v1\"}}]}", encodedString);
+
         } catch (CharonException e) {
             Assert.fail(e.getDescription());
         } catch (NotFoundException e) {
@@ -299,5 +299,94 @@ public class JSONEncoderTest {
     }
     //check how boolean is encoded :i.e it can't be represented within double quotes.
 
-    
+    @Test
+    public void testEncodeBulkData() {
+        try {
+            JSONEncoder jsonEncoder = new JSONEncoder();
+            BulkData bulkData = new BulkData();
+            bulkData.setFailOnErrors(2);
+            bulkData.addSchemas("urn:scim:schemas:core:1.0");
+
+            //creating user one
+            User user1 = new User();
+            String user1ID = UUID.randomUUID().toString();
+            Date user1CreatedDate = new Date();
+            Date user1LastModified = new Date();
+
+            user1.setId(user1ID);
+            user1.setExternalId("Hasini");
+            user1.setCreatedDate(user1CreatedDate);
+            user1.setLastModified(user1LastModified);
+            user1.setLocation("http://10.200.3.120:9763/charonDemoApp/scim/Users/");
+            user1.setVersion("v1");
+            user1.setActive(false);
+            user1.setBulkID("asbv23");
+            user1.setPath("/Users");
+            user1.setMethod("POST");
+
+            //creating user two
+            User user2 = new User();
+            String user2ID = UUID.randomUUID().toString();
+            Date user2CreatedDate = new Date();
+            Date user2LastModified = new Date();
+
+            user2.setId(user2ID);
+            user2.setExternalId("Prabath");
+            user2.setCreatedDate(user2CreatedDate);
+            user2.setLastModified(user2LastModified);
+            user2.setLocation("http://10.200.3.120:9763/charonDemoApp/scim/Users/");
+            user2.setVersion("v1");
+            user2.setActive(true);
+            user2.setBulkID("scdgs");
+            user2.setPath("/Users");
+            user2.setMethod("POST");
+
+            //creating user two
+            User user3 = new User();
+            String user3ID = UUID.randomUUID().toString();
+            Date user3CreatedDate = new Date();
+            Date user3LastModified = new Date();
+
+            user3.setId(user3ID);
+            user3.setExternalId("Dinuka");
+            user3.setCreatedDate(user3CreatedDate);
+            user3.setLastModified(user3LastModified);
+            user3.setLocation("http://10.200.3.120:9763/charonDemoApp/scim/Users/");
+            user3.setVersion("v1");
+            user3.setActive(true);
+            user3.setBulkID("123");
+            user3.setPath("/Users");
+            user3.setMethod("POST");
+
+            bulkData.addUser(user1);
+            bulkData.addUser(user2);
+            bulkData.addUser(user3);
+
+            SimpleDateFormat sdf = new SimpleDateFormat(SCIMConstants.dateTimeFormat);
+            String encodedString = jsonEncoder.encodeBulkData(bulkData);
+            String response = "{\"failOnErrors\":2,\"schemas\":[\"urn:scim:schemas:core:1.0\"]," +
+                              "\"Operations\":[{\"data\":{\"id\":\"" + user1ID + "\"," +
+                              "\"schemas\":[\"urn:scim:schemas:core:1.0\"],\"path\":\"/Users\",\"active\":false," +
+                              "\"method\":\"POST\",\"externalId\":\"Hasini\",\"meta\":{\"lastModified\":\"" + sdf.format(user1LastModified) + "\"," +
+                              "\"created\":\"" + sdf.format(user1CreatedDate) + "\",\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\"," +
+                              "\"version\":\"v1\"},\"bulkId\":\"asbv23\"},\"path\":\"/Users\",\"method\":\"POST\"," +
+                              "\"bulkId\":\"asbv23\"},{\"data\":{\"id\":\"" + user2ID + "\"," +
+                              "\"schemas\":[\"urn:scim:schemas:core:1.0\"],\"path\":\"/Users\",\"active\":true," +
+                              "\"method\":\"POST\",\"externalId\":\"Prabath\",\"meta\":{\"lastModified\":\"" + sdf.format(user2LastModified) + "\"," +
+                              "\"created\":\"" + sdf.format(user2CreatedDate) + "\",\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\"," +
+                              "\"version\":\"v1\"},\"bulkId\":\"scdgs\"},\"path\":\"/Users\",\"method\":\"POST\"," +
+                              "\"bulkId\":\"scdgs\"},{\"data\":{\"id\":\"" + user3ID + "\"," +
+                              "\"schemas\":[\"urn:scim:schemas:core:1.0\"],\"path\":\"/Users\",\"active\":true," +
+                              "\"method\":\"POST\",\"externalId\":\"Dinuka\",\"meta\":{\"lastModified\":\"" + sdf.format(user3LastModified) + "\"," +
+                              "\"created\":\"" + sdf.format(user3CreatedDate) + "\",\"location\":\"http://10.200.3.120:9763/charonDemoApp/scim/Users/\"," +
+                              "\"version\":\"v1\"},\"bulkId\":\"123\"},\"path\":\"/Users\",\"method\":\"POST\",\"bulkId\":\"123\"}]}";
+
+            Assert.assertEquals(response, encodedString);
+
+        } catch (CharonException e) {
+            Assert.fail(e.getDescription());
+        }
+    }
+
+
 }

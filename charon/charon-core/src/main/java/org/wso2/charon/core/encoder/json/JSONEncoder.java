@@ -20,6 +20,7 @@ package org.wso2.charon.core.encoder.json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.attributes.ComplexAttribute;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
@@ -28,12 +29,16 @@ import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.objects.SCIMObject;
+import org.wso2.charon.core.objects.User;
+import org.wso2.charon.core.objects.bulk.BulkData;
+import org.wso2.charon.core.objects.bulk.BulkResponseContent;
+import org.wso2.charon.core.objects.bulk.BulkResponseData;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
+import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.util.AttributeUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +61,19 @@ public class JSONEncoder implements Encoder {
      * @return the resulting string after encoding.
      */
     public String encodeSCIMObject(SCIMObject scimObject) throws CharonException {
+        //root json object containing the encoded SCIM Object.
+        JSONObject rootObject = new JSONObject();
+        rootObject = this.getSCIMObjectAsJSONObject(scimObject);
+        return rootObject.toString();
+    }
+
+    /**
+     * Make JSON object from given SCIM object.
+     *
+     * @param scimObject
+     * @return the resulting string after encoding.
+     */
+    public JSONObject getSCIMObjectAsJSONObject(SCIMObject scimObject) throws CharonException {
         //root json object containing the encoded SCIM Object.
         JSONObject rootObject = new JSONObject();
         try {
@@ -84,7 +102,7 @@ public class JSONEncoder implements Encoder {
             //TODO:log the error
             throw new CharonException(errorMessage);
         }
-        return rootObject.toString();
+        return rootObject;
     }
 
     /**
@@ -129,8 +147,8 @@ public class JSONEncoder implements Encoder {
         return format;
     }
 
-    protected void encodeArrayOfValues(String arrayName, Object[] arrayValues,
-                                       JSONObject rootObject) throws JSONException {
+    public void encodeArrayOfValues(String arrayName, Object[] arrayValues,
+                                    JSONObject rootObject) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         for (Object arrayValue : arrayValues) {
             jsonArray.put(arrayValue);
@@ -267,5 +285,128 @@ public class JSONEncoder implements Encoder {
             }
         }
         jsonObject.put(multiValuedAttribute.getName(), jsonArray);
+    }
+
+    /**
+     * Encode given bulkResponseData object and return the encoded string
+     *
+     * @param bulkResponseData
+     * @return
+     */
+    public String encodeBulkResponseData(BulkResponseData bulkResponseData) {
+        String encodedString = "";
+        List<BulkResponseContent> userResponseDataList = bulkResponseData.getUserCreatingResponse();
+
+        JSONObject rootObject = new JSONObject();
+
+        //encode schemas
+        try {
+            //set the [schemas]
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.SCHEMAS,
+                                     bulkResponseData.getSchemas().toArray(), rootObject);
+
+            //[Operations] - multi value attribute
+            JSONObject[] operationResponseList = new JSONObject[userResponseDataList.size()];
+            JSONObject operationObject = new JSONObject();
+            //user creating response
+            int i = 0;
+            for (BulkResponseContent userCreatingResponse : userResponseDataList) {
+
+                SCIMResponse scimResponse = userCreatingResponse.getScimResponse();
+                JSONObject decodedObject = new JSONObject(new JSONTokener(scimResponse.getResponseMessage()));
+
+                //*****Split SCIM response******
+                //get location from meta section
+                JSONObject meta = decodedObject.optJSONObject(SCIMConstants.CommonSchemaConstants.META);
+                String location = meta.optString(SCIMConstants.CommonSchemaConstants.LOCATION);
+                //get method from response
+                String method = userCreatingResponse.getMethod();
+                //get bulkID from response
+                String bulkId = userCreatingResponse.getBulkID();
+
+                //create status object
+                String code = userCreatingResponse.getResponseCode();
+                JSONObject status = new JSONObject();
+                status.put(SCIMConstants.CommonSchemaConstants.CODE, code);
+
+
+                operationObject.put(SCIMConstants.CommonSchemaConstants.LOCATION, location);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.METHOD, location);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.BULK_ID, bulkId);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.STATUS, status);
+
+                operationResponseList[i] = operationObject;
+
+                i++;
+            }
+            //TODO: Have to encode the groups response data
+
+            //set operations
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.OPERATIONS, operationResponseList, rootObject);
+
+            encodedString = rootObject.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+
+
+        return encodedString;
+    }
+
+    public String encodeBulkData(BulkData bulkData) {
+        String encodedString = "";
+        //root object
+        JSONObject rootObject = new JSONObject();
+        try {
+            //encode [schema]
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.SCHEMAS,
+                                     bulkData.getSchemas().toArray(), rootObject);
+            //encode [failOnErrors]
+            SimpleAttribute failOnErrorsAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.FAIL_ON_ERRORS,
+                                                                        bulkData.getFailOnErrors());
+            this.encodeSimpleAttribute(failOnErrorsAttribute, rootObject);
+
+            //encode user requests
+            JSONObject[] userRequestList = new JSONObject[bulkData.getUserList().size()];
+            JSONObject encodedUserRequest;
+            int i = 0;
+            for (User user : bulkData.getUserList()) {
+                encodedUserRequest = this.getSCIMObjectAsJSONObject(user);
+                JSONObject userOperation = new JSONObject();
+
+                //set [bulkId]
+                userOperation.put(SCIMConstants.CommonSchemaConstants.BULK_ID, user.getBulkID());
+                //set [path]
+                userOperation.put(SCIMConstants.CommonSchemaConstants.PATH, user.getPath());
+                //set [method]
+                userOperation.put(SCIMConstants.CommonSchemaConstants.METHOD, user.getMethod());
+                //set [data]
+                SimpleAttribute dataAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.DATA,
+                                                                    encodedUserRequest);
+                this.encodeSimpleAttribute(dataAttribute, userOperation);
+
+
+                userRequestList[i] = userOperation;
+
+                i = i + 1;
+            }
+
+            //set to [Operations]
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.OPERATIONS, userRequestList, rootObject);
+
+            encodedString = rootObject.toString();
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        } catch (CharonException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+
+        return encodedString;
     }
 }
