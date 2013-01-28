@@ -18,41 +18,38 @@
 
 package org.wso2.balana;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * implementation of <code>NamespaceContext</code>
  */
 public class DefaultNamespaceContext implements NamespaceContext {
 
-    private String prefix;
+    Map<String, String> nsMap = new HashMap<String, String>();
 
-    private String namespaceURI;
-
-    public DefaultNamespaceContext(String prefix, String namespaceURI) {
-        this.prefix = prefix;
-        this.namespaceURI = namespaceURI;
+    public DefaultNamespaceContext(Map<String, String> nsMap) {
+        this.nsMap = nsMap;
     }
 
     public String getNamespaceURI(String prefix) {
-        if(prefix != null && prefix.equals(this.prefix)){
-            return namespaceURI;
-        } else {
-            return null;
+
+        if(prefix != null){
+            return nsMap.get(prefix);
         }
+        return XMLConstants.NULL_NS_URI;
+
     }
 
     public String getPrefix(String namespaceURI) {
-        if(namespaceURI != null && namespaceURI.equals(this.namespaceURI)){
-            return prefix;
-        } else {
-            return null;
-        }
+        throw new UnsupportedOperationException();
     }
 
     public Iterator getPrefixes(String namespaceURI) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }

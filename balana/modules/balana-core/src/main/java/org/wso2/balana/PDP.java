@@ -115,7 +115,7 @@ public class PDP {
         ResponseCtx responseCtx;
 
         try {
-            requestCtx = RequestCtxFactory.getFactory().getRequestCtx(request);
+            requestCtx = RequestCtxFactory.getFactory().getRequestCtx(request.replaceAll(">\\s+<", "><"));
             responseCtx = evaluate(requestCtx);
         } catch (ParsingException e) {
             logger.error("Invalid request  : " + e.getMessage());

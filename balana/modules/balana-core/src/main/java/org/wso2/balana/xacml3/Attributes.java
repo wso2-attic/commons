@@ -126,7 +126,7 @@ public class Attributes {
                     throw new ParsingException("Too many content elements are defined.");
                 }
                 // now get the value
-                content = node;
+                content = node.getFirstChild();
             } else if(node.getNodeName().equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
                 attributes.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_3_0));
             }

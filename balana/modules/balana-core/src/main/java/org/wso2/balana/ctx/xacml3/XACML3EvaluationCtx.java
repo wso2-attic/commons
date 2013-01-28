@@ -603,50 +603,51 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     private Set<String> getChildXPaths(Node root, String xPath){
 
         Set<String> xPaths = new HashSet<String>();
-        NamespaceContext namespaceContext;
+        NamespaceContext namespaceContext = null;
         
-        //see if the request root is in a namespace
-        String namespace = root.getNamespaceURI();
-
         XPathFactory factory = XPathFactory.newInstance();
         XPath xpath = factory.newXPath();
 
-        if(namespace != null){
+        if(namespaceContext == null){
+
+            //see if the request root is in a namespace
+            String namespace = null;
+            if(root != null){
+                namespace = root.getNamespaceURI();
+            }
             // name spaces are used, so we need to lookup the correct
             // prefix to use in the search string
             NamedNodeMap namedNodeMap = root.getAttributes();
-            String prefix = "ns";
-            String nodeName = null;
+
+            Map<String, String> nsMap = new HashMap<String, String>();
 
             for (int i = 0; i < namedNodeMap.getLength(); i++) {
                 Node n = namedNodeMap.item(i);
-                if (n.getNodeValue().equals(namespace)) {
-                    // we found the matching namespace, so get the prefix
-                    // and then break out
-                    nodeName = n.getNodeName();
-                    break;
-                }
-            }
-
-            if(nodeName != null){
-                int pos = nodeName.indexOf(':');
-                // if the namespace is the default namespace
-                // use a default prefix
-                if (pos != -1) {
+                // we found the matching namespace, so get the prefix
+                // and then break out
+                String nodeName = n.getNodeName();
+                String nodeValue= n.getNodeValue();
+                int index = nodeName.indexOf(':');
+                if (index != -1 && nodeValue != null) {
                     // we found a prefixed namespace
-                    prefix = nodeName.substring(pos + 1);
-                } else {
-                    xPath = Utils.prepareXPathForDefaultNs(xPath);
+                    String prefix = nodeName.substring(index + 1);
+                    nsMap.put(prefix, nodeValue);
                 }
-            } else {
-                xPath = Utils.prepareXPathForDefaultNs(xPath);
             }
 
-            namespaceContext = new DefaultNamespaceContext(prefix, namespace);
+            // if there is not any namespace is defined for content element, default XACML request
+            //  name space would be there.
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(namespace)){
+                nsMap.put("xacml", namespace);
+            }
 
-            xpath.setNamespaceContext(namespaceContext);
-
+            namespaceContext = new DefaultNamespaceContext(nsMap);
         }
+
+        xpath.setNamespaceContext(namespaceContext);
+
 
         try {
             XPathExpression expression = xpath.compile(xPath);

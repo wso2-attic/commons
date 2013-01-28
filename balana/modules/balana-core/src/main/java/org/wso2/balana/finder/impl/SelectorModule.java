@@ -35,6 +35,7 @@
 
 package org.wso2.balana.finder.impl;
 
+
 import org.wso2.balana.*;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.ctx.EvaluationCtx;
@@ -51,13 +52,15 @@ import org.wso2.balana.finder.AttributeFinderModule;
 import java.net.URI;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.*;
 
@@ -99,7 +102,7 @@ public class SelectorModule extends AttributeFinderModule {
                   String contextSelector, Node root, EvaluationCtx context, String xpathVersion) {
 
         Node contextNode = null;
-        NamespaceContext namespaceContext;
+        NamespaceContext namespaceContext = null;
 
         if(root == null){
             // root == null means there is not content element defined with the attributes element
@@ -109,47 +112,44 @@ public class SelectorModule extends AttributeFinderModule {
         } else if(contextSelector != null) {
             // root != null  means content element is there.  we can find the context node by
             // evaluating the contextSelector
-            
-            // see if the request root is in a namespace
-            String namespace = root.getNamespaceURI();
 
             XPathFactory factory = XPathFactory.newInstance();
             XPath xpath = factory.newXPath();
 
-            if(namespace != null){
-                // name spaces are used, so we need to lookup the correct
-                // prefix to use in the search string
-                NamedNodeMap namedNodeMap = root.getAttributes();
-                String prefix = "ns";
-                String nodeName = null;
-
-                for (int i = 0; i < namedNodeMap.getLength(); i++) {
-                    Node n = namedNodeMap.item(i);
-                    if (n.getNodeValue().equals(namespace)) {
-                        // we found the matching namespace, so get the prefix
-                        // and then break out
-                        nodeName = n.getNodeName();
-
-                        break;
-                    }
-                }
-                
-                if(nodeName != null){
-                    int pos = nodeName.indexOf(':');
-                    if (pos != -1) {
-                        // we found a prefixed namespace
-                        prefix = nodeName.substring(pos + 1);
-                    } else {
-                        contextSelector = Utils.prepareXPathForDefaultNs(contextSelector);
-                    }
-                } else {
-                    contextSelector = Utils.prepareXPathForDefaultNs(contextSelector);
-                }
-                
-                namespaceContext = new DefaultNamespaceContext(prefix, namespace);
-
-                xpath.setNamespaceContext(namespaceContext);
+            //see if the request root is in a namespace
+            String namespace = null;
+            if(contextNode != null){
+                namespace = contextNode.getNamespaceURI();
             }
+            // name spaces are used, so we need to lookup the correct
+            // prefix to use in the search string
+            NamedNodeMap namedNodeMap = contextNode.getAttributes();
+
+            Map<String, String> nsMap = new HashMap<String, String>();
+
+            for (int i = 0; i < namedNodeMap.getLength(); i++) {
+                Node n = namedNodeMap.item(i);
+                // we found the matching namespace, so get the prefix
+                // and then break out
+                String nodeName = n.getNodeName();
+                String nodeValue= n.getNodeValue();
+                int index = nodeName.indexOf(':');
+                if (index != -1 && nodeValue != null) {
+                    // we found a prefixed namespace
+                    String prefix = nodeName.substring(index + 1);
+                    nsMap.put(prefix, nodeValue);
+                }
+            }
+
+            // if there is not any namespace is defined for content element, default XACML request
+            //  name space would be there.
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(namespace)){
+                nsMap.put("xacml", namespace);
+            }
+
+            namespaceContext = new DefaultNamespaceContext(nsMap);
 
             try{
                 XPathExpression expression = xpath.compile(contextSelector);
@@ -169,50 +169,49 @@ public class SelectorModule extends AttributeFinderModule {
             contextNode = root;
         }
 
-        //see if the request root is in a namespace
-        String namespace = null;
-        if(contextNode != null){
-            namespace = contextNode.getNamespaceURI();
-        }
 
         XPathFactory factory = XPathFactory.newInstance();
         XPath xpath = factory.newXPath();
 
-        if(namespace != null){
+        if(namespaceContext == null){
+
+            //see if the request root is in a namespace
+            String namespace = null;
+            if(contextNode != null){
+                namespace = contextNode.getNamespaceURI();
+            }
             // name spaces are used, so we need to lookup the correct
             // prefix to use in the search string
             NamedNodeMap namedNodeMap = contextNode.getAttributes();
-            String prefix = "ns";
-            String nodeName = null;
+
+            Map<String, String> nsMap = new HashMap<String, String>();
 
             for (int i = 0; i < namedNodeMap.getLength(); i++) {
                 Node n = namedNodeMap.item(i);
-                if (n.getNodeValue().equals(namespace)) {
-                    // we found the matching namespace, so get the prefix
-                    // and then break out
-                    nodeName = n.getNodeName();
-                    break;
-                }
-            }
-
-            if(nodeName != null){
-                int pos = nodeName.indexOf(':');
-                // if the namespace is the default namespace
-                // use a default prefix
-                if (pos != -1) {
+                // we found the matching namespace, so get the prefix
+                // and then break out
+                String nodeName = n.getNodeName();
+                String nodeValue= n.getNodeValue();
+                int index = nodeName.indexOf(':');
+                if (index != -1 && nodeValue != null) {
                     // we found a prefixed namespace
-                    prefix = nodeName.substring(pos + 1);
-                } else {
-                    contextPath = Utils.prepareXPathForDefaultNs(contextPath);
+                    String prefix = nodeName.substring(index + 1);
+                    nsMap.put(prefix, nodeValue);
                 }
-            } else {
-                contextPath = Utils.prepareXPathForDefaultNs(contextPath);
+            }
+            
+            // if there is not any namespace is defined for content element, default XACML request
+            //  name space would be there.
+            if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(namespace) ||
+                    XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(namespace)){
+                nsMap.put("xacml", namespace);
             }
 
-            namespaceContext = new DefaultNamespaceContext(prefix, namespace);
-
-            xpath.setNamespaceContext(namespaceContext);
+            namespaceContext = new DefaultNamespaceContext(nsMap);
         }
+
+        xpath.setNamespaceContext(namespaceContext);
 
         NodeList matches;
         
@@ -223,7 +222,7 @@ public class SelectorModule extends AttributeFinderModule {
                 throw new Exception("No node is found from xpath evaluation");                 
             }
         } catch (Exception e) {
-            List<String> codes = new ArrayList<String>();
+            List<String> codes = new ArrayList<String>();      
             codes.add(Status.STATUS_SYNTAX_ERROR);
             Status status = new Status(codes, e.getMessage());
             return new EvaluationResult(status);

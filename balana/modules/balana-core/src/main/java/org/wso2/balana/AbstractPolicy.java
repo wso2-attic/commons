@@ -372,8 +372,9 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("XPathVersion"))
+            if (node.getNodeName().equals("XPathVersion")){
                 defaultVersion = node.getFirstChild().getNodeValue();
+            }
         }
     }
 
