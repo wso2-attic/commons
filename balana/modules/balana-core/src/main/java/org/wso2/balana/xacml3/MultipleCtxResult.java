@@ -54,6 +54,15 @@ public class MultipleCtxResult {
         this(evaluationCtxSet, null, false);
     }
 
+     /**
+     * Constructs a <code>MultipleCtxResult</code> object with status error
+     *
+      * @param status  <code>Status<code>
+      */
+    public MultipleCtxResult(Status status) {
+        this(null, status, true);
+    }
+
     /**
      * Constructs a <code>MultipleCtxResult</code> object with  required data
      *
@@ -71,10 +80,6 @@ public class MultipleCtxResult {
         return evaluationCtxSet;
     }
 
-    public void setEvaluationCtxSet(Set<EvaluationCtx> evaluationCtxSet) {
-        this.evaluationCtxSet = evaluationCtxSet;
-    }
-
     public Status getStatus() {
         if(indeterminate){
             return status;
@@ -83,15 +88,7 @@ public class MultipleCtxResult {
         }
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public boolean isIndeterminate() {
         return indeterminate;
-    }
-
-    public void setIndeterminate(boolean indeterminate) {
-        this.indeterminate = indeterminate;
     }
 }

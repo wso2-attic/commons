@@ -259,13 +259,6 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         }
     }
 
-
-    /**
-     * get multiple <code>EvaluationCtx</code> if, request is combination of multiple requests
-     *
-     * @return <code>MultipleCtxResult</code> result that contains
-     *  multiple <code>EvaluationCtx</code>
-     */
     public MultipleCtxResult getMultipleEvaluationCtx()  {
 
         Set<EvaluationCtx> evaluationCtxSet = new HashSet<EvaluationCtx>();
@@ -286,7 +279,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         if(evaluationCtxSet.size() > 0){
             Set<EvaluationCtx> newSet = new HashSet<EvaluationCtx>(evaluationCtxSet);
             for(EvaluationCtx evaluationCtx : newSet){
-                if(multipleAttributes){
+                if(((XACML3EvaluationCtx)evaluationCtx).isMultipleAttributes()){
                     evaluationCtxSet.remove(evaluationCtx);
                     MultipleCtxResult result = processMultipleAttributes((XACML3EvaluationCtx)evaluationCtx);
                     if(result.isIndeterminate()){
@@ -313,7 +306,7 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         if(evaluationCtxSet.size() > 0){
             Set<EvaluationCtx> newSet = new HashSet<EvaluationCtx>(evaluationCtxSet);
             for(EvaluationCtx evaluationCtx : newSet){
-                if(resourceScope != XACMLConstants.SCOPE_IMMEDIATE){
+                if(((XACML3EvaluationCtx)evaluationCtx).getResourceScope() != XACMLConstants.SCOPE_IMMEDIATE){
                     evaluationCtxSet.remove(evaluationCtx);
                     MultipleCtxResult result = processHierarchicalAttributes((XACML3EvaluationCtx)evaluationCtx);
                     if(result.isIndeterminate()){
@@ -357,44 +350,55 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     }
 
     /**
-     *
-     * @param evaluationCtx
-     * @return
+     * Process multi request element
+     * 
+     * @param evaluationCtx <code>XACML3EvaluationCtx</code>
+     * @return <code>MultipleCtxResult</code>
      */
     private MultipleCtxResult processMultiRequestElement(XACML3EvaluationCtx evaluationCtx)  {
 
         Set<EvaluationCtx> children = new HashSet<EvaluationCtx>();
         MultiRequests multiRequests =  requestCtx.getMultiRequests();
 
-        if(multiRequests != null){
-            Set<RequestReference> requestReferences =  multiRequests.getRequestReferences();
-            for(RequestReference reference :  requestReferences) {
-                Set<AttributesReference>  attributesReferences = reference.getReferences();
-                if(attributesReferences != null && attributesReferences.size() > 0){
-                    Set<Attributes> attributes = new HashSet<Attributes>();
-                    for(AttributesReference attributesReference : attributesReferences){
-                        String referenceId = attributesReference.getId();
-                        if(referenceId != null){
-                            for(Attributes attribute : evaluationCtx.getAttributesSet()){
-                                if(attribute.getId() != null && attribute.getId().equals(referenceId)){
-                                    attributes.add(attribute);
-                                }
-                            }
-                        }
-                        RequestCtx ctx = new RequestCtx(attributes, null);
-                        children.add(new XACML3EvaluationCtx(ctx, pdpConfig));
-                    }
-                }
-            }
+        if(multiRequests == null){
+            return new MultipleCtxResult(children);
         }
 
+        Set<RequestReference> requestReferences =  multiRequests.getRequestReferences();
+        for(RequestReference reference :  requestReferences) {
+            Set<AttributesReference>  attributesReferences = reference.getReferences();
+            if(attributesReferences != null && attributesReferences.size() > 0){
+                Set<Attributes> attributes = new HashSet<Attributes>();
+                for(AttributesReference attributesReference : attributesReferences){
+                    String referenceId = attributesReference.getId();
+                    if(referenceId != null){
+                        for(Attributes attribute : evaluationCtx.getAttributesSet()){
+                            // check equal with reference id
+                            if(attribute.getId() != null && attribute.getId().equals(referenceId)){
+                                attributes.add(attribute);
+                            } else {
+                                // This must be only for one result. But here it is used to create error for
+                                List<String> code = new ArrayList<String>();
+                                code.add(Status.STATUS_SYNTAX_ERROR);
+                                return new MultipleCtxResult(new Status(code,
+                                                                "Invalid reference to attributes"));
+                            }
+                        }
+                    }
+                }
+                RequestCtx ctx = new RequestCtx(attributes, null);
+                children.add(new XACML3EvaluationCtx(ctx, pdpConfig));
+            }
+        }
+        
         return new MultipleCtxResult(children);
     }
 
     /**
-     *
-     * @param evaluationCtx
-     * @return
+     * Process multiple attributes with same category
+     * 
+     * @param evaluationCtx <code>XACML3EvaluationCtx</code>
+     * @return <code>MultipleCtxResult</code>
      */
     private MultipleCtxResult processMultipleAttributes(XACML3EvaluationCtx evaluationCtx) {
 
@@ -420,7 +424,6 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         }
 
         return new MultipleCtxResult(children);
-
     }
 
     /**

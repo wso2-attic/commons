@@ -70,24 +70,24 @@ public class MultiRequests {
                 RequestReference requestReference = new RequestReference();
                 NodeList childNodes = node.getChildNodes();
                 for(int j = 0; j < childNodes.getLength(); j++){
-                    Node childNode = childNodes.item(i);
+                    Node childNode = childNodes.item(j);
                     if("AttributesReference".equals(childNode.getNodeName())){
                         AttributesReference attributesReference = new AttributesReference();
-                        attributesReferences.add(attributesReference);
-                        NamedNodeMap nodeAttributes = root.getAttributes();
+                        NamedNodeMap nodeAttributes = childNode.getAttributes();
                         try {
                             String referenceId = nodeAttributes.getNamedItem("ReferenceId").getNodeValue();
                             attributesReference.setId(referenceId);
+                            attributesReferences.add(attributesReference);
                         } catch (Exception e) {
                             throw new ParsingException("Error parsing required ReferenceId in " +
-                                    "MultiRequestsType", e);
+                                    "AttributesReferenceType", e);
                         }
                     }
                 }
 
                 if(attributesReferences.isEmpty()){
                     throw new ParsingException("RequestReference must contain at least one " +
-                            "AttributesReference");
+                            "AttributesReferenceType");
                 }
                 requestReference.setReferences(attributesReferences);
                 requestReferences.add(requestReference);
@@ -95,7 +95,7 @@ public class MultiRequests {
         }
 
         if(requestReferences.isEmpty()){
-            throw new ParsingException("MultiRequests must contain at least one RequestReference");
+            throw new ParsingException("MultiRequests must contain at least one RequestReferenceType");
         }
 
         return new MultiRequests(requestReferences);

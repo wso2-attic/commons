@@ -149,7 +149,7 @@ public interface EvaluationCtx {
     public AbstractRequestCtx getRequestCtx();
 
     /**
-     * Returns multiple context results
+     * Returns multiple context results. if, request is combination of multiple requests
      *
      * @return <code>MultipleCtxResult</code>
      */

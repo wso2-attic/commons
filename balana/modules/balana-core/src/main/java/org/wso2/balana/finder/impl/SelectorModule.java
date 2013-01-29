@@ -221,8 +221,13 @@ public class SelectorModule extends AttributeFinderModule {
             if(matches == null || matches.getLength() < 1){
                 throw new Exception("No node is found from xpath evaluation");                 
             }
+        } catch (XPathExpressionException e) {
+            List<String> codes = new ArrayList<String>();
+            codes.add(Status.STATUS_SYNTAX_ERROR);
+            Status status = new Status(codes, e.getMessage());
+            return new EvaluationResult(status);
         } catch (Exception e) {
-            List<String> codes = new ArrayList<String>();      
+            List<String> codes = new ArrayList<String>();
             codes.add(Status.STATUS_SYNTAX_ERROR);
             Status status = new Status(codes, e.getMessage());
             return new EvaluationResult(status);

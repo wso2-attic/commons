@@ -117,7 +117,7 @@ public class TimeInRangeFunction extends FunctionBase {
         // maxTime is bigger, otherwise right), and making sure that we
         // handle any wrapping values for the middle time (the maxTime will
         // never wrap around 00:00:00 GMT as long as we're dealing with
-        // windows of less than 24 hours)
+        // windows of less than 24 hours)                                              ur
 
         // the amount we're shifting
         long shiftSpan;

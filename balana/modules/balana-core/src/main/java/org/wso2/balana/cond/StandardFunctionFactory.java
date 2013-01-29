@@ -40,11 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.UnknownIdentifierException;
 
 import org.wso2.balana.cond.cluster.*;
-import org.wso2.balana.cond.cluster.xacml3.StringComparingFunctionCluster;
-import org.wso2.balana.cond.cluster.xacml3.StringConversionFunctionCluster;
-import org.wso2.balana.cond.cluster.xacml3.StringCreationFunctionCluster;
-import org.wso2.balana.cond.cluster.xacml3.SubStringFunctionCluster;
-import org.wso2.balana.cond.xacml3.StringConversionFunction;
+import org.wso2.balana.cond.cluster.xacml3.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -209,6 +205,8 @@ public class StandardFunctionFactory extends BaseFunctionFactory {
         generalFunctions.addAll((new SubStringFunctionCluster()).getSupportedFunctions());
         // add the XACML 3.0 start with functions
         generalFunctions.addAll((new StringCreationFunctionCluster()).getSupportedFunctions());  
+        // add the XACML 3.0 start with functions
+        generalFunctions.addAll((new XPathFunctionCluster()).getSupportedFunctions());  
 
         generalAbstractFunctions = new HashMap<URI, FunctionProxy>(conditionAbstractFunctions); // TODO
 
