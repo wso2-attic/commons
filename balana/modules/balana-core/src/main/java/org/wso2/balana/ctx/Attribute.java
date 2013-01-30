@@ -147,17 +147,6 @@ public class Attribute {
         this.xacmlVersion = xacmlVersion;
     }
 
-    /**
-     * Creates an instance of an <code>Attribute</code> based on the root DOM node of the XML data.
-     *
-     * @param root the DOM root of the AttributeType XML type
-     * @return the attribute
-     * @throws ParsingException throws ParsingException if the data is invalid
-     */
-    public static Attribute getInstance(Node root) throws ParsingException {
-        // Assume as XACML 3.0 default one
-        return getInstance(root, XACMLConstants.XACML_VERSION_3_0);
-    }
 
     /**
      * Creates an instance of an <code>Attribute</code> based on the root DOM node of the XML data.

@@ -81,6 +81,7 @@ public class CombinerParameter {
      * @param root the DOM root of a CombinerParameterType XML type
      * 
      * @throws ParsingException if the CombinerParameterType is invalid
+     * @return an instance of <code>CombinerParameter</code>
      */
     public static CombinerParameter getInstance(Node root) throws ParsingException {
         // get the name, which is a required attribute

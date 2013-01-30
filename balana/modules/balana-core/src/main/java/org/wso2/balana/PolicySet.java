@@ -35,6 +35,7 @@
 
 package org.wso2.balana;
 
+import org.wso2.balana.combine.CombinerElement;
 import org.wso2.balana.combine.CombinerParameter;
 import org.wso2.balana.combine.PolicyCombinerElement;
 import org.wso2.balana.combine.PolicyCombiningAlgorithm;
@@ -149,15 +150,15 @@ public class PolicySet extends AbstractPolicy {
      *             is not an <code>AbstractPolicy</code>
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
-            String description, AbstractTarget target, List policies, String defaultVersion,
-            Set obligations) {
+            String description, AbstractTarget target, List<AbstractPolicy> policies, String defaultVersion,
+            Set<AbstractObligation> obligations) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
-        List list = null;
+        List<CombinerElement> list = null;
 
         // check that the list contains only AbstractPolicy objects
         if (policies != null) {
-            list = new ArrayList();
+            list = new ArrayList<CombinerElement>();
             Iterator it = policies.iterator();
             while (it.hasNext()) {
                 Object o = it.next();
@@ -197,7 +198,8 @@ public class PolicySet extends AbstractPolicy {
      */
     public PolicySet(URI id, String version, PolicyCombiningAlgorithm combiningAlg,
             String description, AbstractTarget target, List policyElements, String defaultVersion,
-            Set obligations, List parameters) {
+            Set<AbstractObligation> obligations, List<CombinerParameter>  parameters) {
+        
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null,
                 parameters);
 
@@ -225,11 +227,14 @@ public class PolicySet extends AbstractPolicy {
      * @throws ParsingException ParsingException if the PolicyType is invalid
      */
     private PolicySet(Node root, PolicyFinder finder) throws ParsingException {
+        
         super(root, "PolicySet", "PolicyCombiningAlgId");
 
-        List policies = new ArrayList();
-        HashMap policyParameters = new HashMap();
-        HashMap policySetParameters = new HashMap();
+        List<AbstractPolicy> policies = new ArrayList<AbstractPolicy>();
+        HashMap<String, List<CombinerParameter>> policyParameters =
+                                                new HashMap<String, List<CombinerParameter>>();
+        HashMap<String, List<CombinerParameter>> policySetParameters =
+                                                new HashMap<String, List<CombinerParameter>>();
         PolicyMetaData metaData = getMetaData();
 
         // collect the PolicySet-specific elements
@@ -247,64 +252,72 @@ public class PolicySet extends AbstractPolicy {
             } else if (name.equals("PolicyIdReference")) {
                 policies.add(PolicyReference.getInstance(child, finder, metaData));
             } else if (name.equals("PolicyCombinerParameters")) {
-                paramaterHelper(policyParameters, child, "Policy");
+                parameterHelper(policyParameters, child, "Policy");
             } else if (name.equals("PolicySetCombinerParameters")) {
-                paramaterHelper(policySetParameters, child, "PolicySet");
+                parameterHelper(policySetParameters, child, "PolicySet");
             }
         }
 
         // now make sure that we can match up any parameters we may have
-        // found to a cooresponding Policy or PolicySet...
-        List elements = new ArrayList();
+        // found to a corresponding Policy or PolicySet...
+        List<CombinerElement> elements = new ArrayList<CombinerElement>();
         Iterator it = policies.iterator();
 
         // right now we have to go though each policy and based on several
-        // possible cases figure out what paranmeters might apply...but
+        // possible cases figure out what parameters might apply...but
         // there should be a better way to do this
 
         while (it.hasNext()) {
             AbstractPolicy policy = (AbstractPolicy) (it.next());
-            List list = null;
+            List<CombinerParameter> list = null;
 
             if (policy instanceof Policy) {
-                list = (List) (policyParameters.remove(policy.getId().toString()));
+                list = policyParameters.remove(policy.getId().toString());
             } else if (policy instanceof PolicySet) {
-                list = (List) (policySetParameters.remove(policy.getId().toString()));
+                list = policySetParameters.remove(policy.getId().toString());
             } else {
                 PolicyReference ref = (PolicyReference) policy;
                 String id = ref.getReference().toString();
-
-                if (ref.getReferenceType() == PolicyReference.POLICY_REFERENCE)
-                    list = (List) (policyParameters.remove(id));
-                else
-                    list = (List) (policySetParameters.remove(id));
+                if (ref.getReferenceType() == PolicyReference.POLICY_REFERENCE){
+                    list = policyParameters.remove(id);
+                } else {
+                    list = policySetParameters.remove(id);
+                }
             }
 
             elements.add(new PolicyCombinerElement(policy, list));
         }
 
         // ...and that there aren't extra parameters
-        if (!policyParameters.isEmpty())
+        if (!policyParameters.isEmpty()) {
             throw new ParsingException("Unmatched parameters in Policy");
-        if (!policySetParameters.isEmpty())
+        }
+        
+        if (!policySetParameters.isEmpty()){
             throw new ParsingException("Unmatched parameters in PolicySet");
-
+        }
         // finally, set the list of Rules
         setChildren(elements);
     }
 
     /**
      * Private helper method that handles parsing a collection of parameters
+     * @param parameters
+     * @param root
+     * @param prefix
+     * @param parameters
+     * @throws ParsingException
      */
-    private void paramaterHelper(HashMap parameters, Node root, String prefix)
-            throws ParsingException {
+    private void parameterHelper(HashMap<String, List<CombinerParameter>> parameters,
+                                                Node root, String prefix) throws ParsingException {
+        
         String ref = root.getAttributes().getNamedItem(prefix + "IdRef").getNodeValue();
 
         if (parameters.containsKey(ref)) {
-            List list = (List) (parameters.get(ref));
+            List<CombinerParameter> list = parameters.get(ref);
             parseParameters(list, root);
         } else {
-            List list = new ArrayList();
+            List<CombinerParameter> list = new ArrayList<CombinerParameter>();
             parseParameters(list, root);
             parameters.put(ref, list);
         }
@@ -312,14 +325,18 @@ public class PolicySet extends AbstractPolicy {
 
     /**
      * Private helper method that handles parsing a single parameter.
+     * @param parameters
+     * @param root
+     * @throws ParsingException
      */
-    private void parseParameters(List parameters, Node root) throws ParsingException {
+    private void parseParameters(List<CombinerParameter> parameters, Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("CombinerParameter"))
+            if (node.getNodeName().equals("CombinerParameter")){
                 parameters.add(CombinerParameter.getInstance(node));
+            }
         }
     }
 

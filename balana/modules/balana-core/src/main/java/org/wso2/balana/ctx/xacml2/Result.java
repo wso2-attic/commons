@@ -65,17 +65,20 @@ public class Result extends AbstractResult {
     private String resourceId = null;
 
     public Result(int decision, Status status){
-        super(decision, status);
+        // version can be XACML 2.0,  1.1 or 1.0 But here we assume as XACML 2.0 as a common
+        super(decision, status, XACMLConstants.XACML_VERSION_2_0);
     }
-    
+
     public Result(int decision, Status status, List<ObligationResult> obligationResults)
                                                                 throws IllegalArgumentException {
-        super(decision, status, obligationResults, null);
+        // version can be XACML 2.0,  1.1 or 1.0 But here we assume as XACML 2.0 as a common
+        super(decision, status, obligationResults, null,  XACMLConstants.XACML_VERSION_2_0);
     }
 
     public Result(int decision, Status status, List<ObligationResult> obligationResults,
                   String resourceId) throws IllegalArgumentException {
-        super(decision, status, obligationResults, null);
+        // version can be XACML 2.0,  1.1 or 1.0 But here we assume as XACML 2.0 as a common
+        super(decision, status, obligationResults, null,  XACMLConstants.XACML_VERSION_2_0);
         this.resourceId = resourceId;
     }
 

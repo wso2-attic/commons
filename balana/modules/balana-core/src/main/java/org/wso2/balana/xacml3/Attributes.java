@@ -147,9 +147,9 @@ public class Attributes {
     /**
      * Returns the content of this attributes, or null if no content was included
      *
-     * @return the attribute 's content as <code>Object</code> or null
+     * @return the attribute 's content as <code>Node</code> or null
      */
-    public Object getContent() {
+    public Node getContent() {
         return content;
     }
 
@@ -213,74 +213,74 @@ public class Attributes {
         out.println(indent + "</Attributes>");
     }
 
-    /**
-     * Encodes only the included attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encodeIncludeAttribute(OutputStream output, Indenter indenter) {
+//    /**
+//     * Encodes only the included attribute into its XML representation and writes this encoding to the given
+//     * <code>OutputStream</code> with indentation.
+//     *
+//     * @param output a stream into which the XML-encoded data is written
+//     * @param indenter an object that creates indentation strings
+//     */
+//    public void encodeIncludeAttribute(OutputStream output, Indenter indenter) {
+//
+//        String indent = indenter.makeString();
+//        PrintStream out = new PrintStream(output);
+//        boolean atLestOneAttribute = false;
+//
+//        for(Attribute attribute : attributes){
+//            if(attribute.isIncludeInResult()){
+//                if(!atLestOneAttribute){
+//                    // if there is one included attribute, encode the attributes element
+//                    out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
+//                    indenter.in();
+//                }
+//                atLestOneAttribute = true;
+//                attribute.encode(output, indenter);
+//            }
+//        }
+//
+//        if(atLestOneAttribute){
+//            indenter.out();
+//            indenter.in();
+//            if (content != null) {
+//            // TODO
+//            }
+//
+//            out.println(indent + "</Attributes>");
+//        }
+//    }
 
-        String indent = indenter.makeString();
-        PrintStream out = new PrintStream(output);
-        boolean atLestOneAttribute = false;
-
-        for(Attribute attribute : attributes){
-            if(attribute.isIncludeInResult()){
-                if(!atLestOneAttribute){
-                    // if there is one included attribute, encode the attributes element
-                    out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
-                    indenter.in();
-                }
-                atLestOneAttribute = true;
-                attribute.encode(output, indenter);
-            }
-        }
-
-        if(atLestOneAttribute){
-            indenter.out();
-            indenter.in();
-            if (content != null) {
-            // TODO
-            }
-
-            out.println(indent + "</Attributes>");
-        }
-    }
 
 
-
-    /**
-     * Encodes this attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encodeWithIncludedAttributes(OutputStream output, Indenter indenter) {
-        // setup the formatting & outstream stuff
-        String indent = indenter.makeString();
-        PrintStream out = new PrintStream(output);
-
-        out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
-
-        indenter.in();
-
-        for(Attribute attribute : attributes){
-            if(attribute.isIncludeInResult()){
-                attribute.encode(output, indenter);
-            }
-        }
-
-        indenter.out();
-
-        indenter.in();
-        if (content != null) {
-        // TODO
-        }
-
-        out.println(indent + "</Attributes>");
-    }
+//    /**
+//     * Encodes this attribute into its XML representation and writes this encoding to the given
+//     * <code>OutputStream</code> with indentation.
+//     *
+//     * @param output a stream into which the XML-encoded data is written
+//     * @param indenter an object that creates indentation strings
+//     */
+//    public void encodeWithIncludedAttributes(OutputStream output, Indenter indenter) {
+//        // setup the formatting & outstream stuff
+//        String indent = indenter.makeString();
+//        PrintStream out = new PrintStream(output);
+//
+//        out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
+//
+//        indenter.in();
+//
+//        for(Attribute attribute : attributes){
+//            if(attribute.isIncludeInResult()){
+//                attribute.encode(output, indenter);
+//            }
+//        }
+//
+//        indenter.out();
+//
+//        indenter.in();
+//        if (content != null) {
+//        // TODO
+//        }
+//
+//        out.println(indent + "</Attributes>");
+//    }
 
 }

@@ -27,7 +27,9 @@ import org.wso2.balana.attr.AbstractDesignator;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.MissingAttributeDetail;
 import org.wso2.balana.ctx.Status;
+import org.wso2.balana.ctx.StatusDetail;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -258,7 +260,12 @@ public class AttributeDesignator extends AbstractDesignator {
                 }
 
                 ArrayList<String> code = new ArrayList<String>();
+                ArrayList<MissingAttributeDetail> missingAttributes = new ArrayList<MissingAttributeDetail>();
                 code.add(Status.STATUS_MISSING_ATTRIBUTE);
+                MissingAttributeDetail missingAttribute = new MissingAttributeDetail(id, type,
+                                        category, issuer, null, XACMLConstants.XACML_VERSION_3_0);
+                missingAttributes.add(missingAttribute);
+                StatusDetail detail = new StatusDetail(missingAttributes);
 
                 String message = "Couldn't find AttributeDesignator attribute";
 
@@ -274,7 +281,7 @@ public class AttributeDesignator extends AbstractDesignator {
                 * StatusDetail(attrs);
                 */
 
-                return new EvaluationResult(new Status(code, message));
+                return new EvaluationResult(new Status(code, message, detail));
             }
         }
 

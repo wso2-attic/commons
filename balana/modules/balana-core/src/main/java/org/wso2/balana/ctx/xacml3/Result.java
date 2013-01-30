@@ -20,11 +20,9 @@ package org.wso2.balana.ctx.xacml3;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.wso2.balana.ParsingException;
-import org.wso2.balana.PolicyReference;
+import org.wso2.balana.*;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.EvaluationCtx;
-import org.wso2.balana.Indenter;
-import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.Status;
 import org.wso2.balana.xacml3.Advice;
@@ -51,7 +49,7 @@ public class Result extends AbstractResult{
     Set<Attributes> attributes;
     
     public Result(int decision, Status status){
-        super(decision, status);
+        super(decision, status, XACMLConstants.XACML_VERSION_3_0);
     }
 
     /**
@@ -65,11 +63,11 @@ public class Result extends AbstractResult{
      */
     public Result(int decision, Status status, List<ObligationResult> obligationResults,
                   List<Advice> advices, EvaluationCtx evaluationCtx) throws IllegalArgumentException {
-        super(decision, status, obligationResults, advices);
+        super(decision, status, obligationResults, advices, XACMLConstants.XACML_VERSION_3_0);
         if(evaluationCtx != null){
             XACML3EvaluationCtx ctx = (XACML3EvaluationCtx) evaluationCtx;
             this.policyReferences = ctx.getPolicyReferences();
-            this.attributes = ctx.getAttributesSet();
+            processAttributes(ctx.getAttributesSet());
         }
     }
 
@@ -86,9 +84,9 @@ public class Result extends AbstractResult{
     public Result(int decision, Status status, List<ObligationResult> obligationResults,
                   List<Advice> advices, Set<PolicyReference> policyReferences, Set<Attributes> attributes)
                                                                 throws IllegalArgumentException {
-        super(decision, status, obligationResults, advices);
+        super(decision, status, obligationResults, advices, XACMLConstants.XACML_VERSION_3_0);
         this.policyReferences = policyReferences;
-        this.attributes = attributes;
+        processAttributes(attributes);
     }
     /**
      * Creates a new instance of a <code>Result</code> based on the given
@@ -242,6 +240,41 @@ public class Result extends AbstractResult{
     }
 
     /**
+     * Extract the attributes that must be included in the response
+     *
+     * @param attributesSet  a <code>Set</code> of <code>Attributes</code>
+     */
+    public void processAttributes(Set<Attributes> attributesSet){
+
+        if(attributesSet == null){
+            return;
+        }
+
+        Set<Attributes> newSet = new HashSet<Attributes>();
+
+        for(Attributes attributes : attributesSet){
+            Set<Attribute> attributeSet = attributes.getAttributes();
+            if(attributeSet == null){
+                continue;
+            }
+            Set<Attribute> newAttributeSet = new HashSet<Attribute>();
+            for(Attribute attribute : attributeSet){
+                if(attribute.isIncludeInResult()){
+                    newAttributeSet.add(attribute);
+                }
+            }
+
+            if(newAttributeSet.size() > 0){
+                Attributes newAttributes = new Attributes(attributes.getCategory(),
+                                    attributes.getContent(), newAttributeSet, attributes.getId());
+                newSet.add(newAttributes);
+            }
+        }
+
+        this.attributes = newSet;
+    }
+
+    /**
      * Encodes this <code>Result</code> into its XML form and writes this out to the provided
      * <code>OutputStream<code> with indentation.
      *
@@ -315,7 +348,7 @@ public class Result extends AbstractResult{
         // encode the attributes
         if (attributes != null  && attributes.size() != 0) {
             for(Attributes attribute : attributes){
-                attribute.encodeIncludeAttribute(out, indenter);
+                attribute.encode(out, indenter);
             }
         }
         

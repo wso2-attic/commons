@@ -96,15 +96,23 @@ public abstract class AbstractResult {
     protected Status status = null;
 
     /**
+     * XACML version
+     */
+    protected int version;
+
+    /**
      * Constructs a <code>AbstractResult</code> object with decision status data, obligations, advices
      *  and evaluation ctx
      *
      * @param decision the decision effect to include in this result. This must be one of the four
      *            fields in this class.
      * @param status the <code>Status</code> to include in this result
+     * @param version XACML version
      * @throws IllegalArgumentException if decision is not valid
      */
-    public AbstractResult(int decision, Status status) throws IllegalArgumentException {
+    public AbstractResult(int decision, Status status, int version) throws IllegalArgumentException {
+
+        this.version = version;
 
         // check that decision is valid
         if ((decision != DECISION_PERMIT) && (decision != DECISION_DENY)
@@ -131,11 +139,14 @@ public abstract class AbstractResult {
      * @param status the <code>Status</code> to include in this result
      * @param obligationResults a list of <code>ObligationResult</code> objects
      * @param advices  a list of <code>Advice</code> objects  
+     * @param version XACML version
      * @throws IllegalArgumentException if decision is not valid
      */
     public AbstractResult(int decision, Status status, List<ObligationResult> obligationResults,
-                  List<Advice> advices) throws IllegalArgumentException {
+                  List<Advice> advices, int version) throws IllegalArgumentException {
 
+        this.version = version;
+        
         // check that decision is valid
         if ((decision != DECISION_PERMIT) && (decision != DECISION_DENY)
                 && (decision != DECISION_INDETERMINATE) && (decision != DECISION_NOT_APPLICABLE)
@@ -204,6 +215,15 @@ public abstract class AbstractResult {
      */
     public Status getStatus() {
         return status;
+    }
+
+    /**
+     * Gets XACML version
+     *
+     * @return XACML version id
+     */
+    public int getVersion() {
+        return version;
     }
 
     /**

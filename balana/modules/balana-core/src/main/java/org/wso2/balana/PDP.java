@@ -118,22 +118,22 @@ public class PDP {
             requestCtx = RequestCtxFactory.getFactory().getRequestCtx(request.replaceAll(">\\s+<", "><"));
             responseCtx = evaluate(requestCtx);
         } catch (ParsingException e) {
-            logger.error("Invalid request  : " + e.getMessage());
+            String error = "Invalid request  : " + e.getMessage();
+            logger.error(error);
             // there was something wrong with the request, so we return
             // Indeterminate with a status of syntax error...though this
             // may change if a more appropriate status type exists
             ArrayList<String> code = new ArrayList<String>();
             code.add(Status.STATUS_SYNTAX_ERROR);
-            Status status = new Status(code, e.getMessage());
+            Status status = new Status(code, error);
             //As invalid request, by default XACML 3.0 response is created. 
-            responseCtx = new ResponseCtx( new Result(AbstractResult.DECISION_INDETERMINATE, status));
+            responseCtx = new ResponseCtx(new Result(AbstractResult.DECISION_INDETERMINATE, status));
         }
 
         OutputStream stream = new ByteArrayOutputStream();
         responseCtx.encode(stream);
         return stream.toString();
     }
-
 
 
 	/**
@@ -160,11 +160,11 @@ public class PDP {
 			// there was something wrong with the request, so we return
 			// Indeterminate with a status of syntax error...though this
 			// may change if a more appropriate status type exists
-            // invalid request, by default XACML 3.0 response is created.
 			ArrayList<String> code = new ArrayList<String>();
 			code.add(Status.STATUS_SYNTAX_ERROR);
 			Status status = new Status(code, e.getMessage());
-			return new ResponseCtx(new Result(AbstractResult.DECISION_INDETERMINATE, status));
+			return new ResponseCtx(ResultFactory.getFactory().
+                getResult(AbstractResult.DECISION_INDETERMINATE, status, request.getXacmlVersion()));
 
 		}
     }
@@ -200,7 +200,8 @@ public class PDP {
                     // add the result
                     results.add(result);
                 }
-                return new ResponseCtx(results);
+                // XACML 3.0.version
+                return new ResponseCtx(results, XACMLConstants.XACML_VERSION_3_0);
             }
         } else {
             // this is special case that specific to XACML3 request

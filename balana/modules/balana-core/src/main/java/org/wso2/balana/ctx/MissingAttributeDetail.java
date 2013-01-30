@@ -208,26 +208,26 @@ public class MissingAttributeDetail {
      */
     public String getEncoded() throws ParsingException {
 
-        if(id != null){
+        if(id == null){
             throw new ParsingException("Required AttributeId attribute is Null");
         }
 
-        if(type != null){
+        if(type == null){
             throw new ParsingException("Required DataType attribute is Null");
         }
 
-        if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0 && category != null){
+        if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0 && category == null){
             throw new ParsingException("Required Category attribute is Null");
         }
         
-        String encoded = "<MissingAttributeDetail AttributeId=" + id + " DataType=" + type;
+        String encoded = "<MissingAttributeDetail AttributeId=\"" + id + "\" DataType=\"" + type + "\"";
 
         if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0){
-            encoded += " Category=" + category;
+            encoded += " Category=\"" + category + "\"";
         }
 
         if(issuer != null){
-            encoded += " Issuer=" + issuer;
+            encoded += " Issuer=\"" + issuer + "\"";
         }
 
         encoded += " >";

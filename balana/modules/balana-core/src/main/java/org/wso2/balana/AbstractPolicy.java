@@ -37,17 +37,12 @@ package org.wso2.balana;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.wso2.balana.combine.*;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.xacml2.Result;
 import org.wso2.balana.xacml3.Advice;
 import org.wso2.balana.xacml3.AdviceExpression;
-import org.wso2.balana.combine.CombinerElement;
-import org.wso2.balana.combine.CombinerParameter;
-import org.wso2.balana.combine.CombiningAlgorithm;
-import org.wso2.balana.combine.CombiningAlgFactory;
-import org.wso2.balana.combine.PolicyCombiningAlgorithm;
-import org.wso2.balana.combine.RuleCombiningAlgorithm;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -93,7 +88,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
     // PolicyTreeElements...
     private List children;
     // ...or the CombinerElements that are passed to combining algorithms
-    private List childElements;
+    private List<CombinerElement> childElements;
 
     // any obligations held by this policy
     private Set<AbstractObligation> obligationExpressions;
@@ -102,7 +97,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
     private Set<AdviceExpression> adviceExpressions;
 
     // the list of combiner parameters
-    private List parameters;
+    private List<CombinerParameter> parameters;
 
     private String subjectPolicyValue;
     private String resourcePolicyValue;
@@ -167,7 +162,9 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
      */
     protected AbstractPolicy(URI id, String version, CombiningAlgorithm combiningAlg,
             String description, AbstractTarget target, String defaultVersion,
-            Set obligationExpressions, Set adviceExpressions, List parameters) {
+            Set<AbstractObligation> obligationExpressions, Set<AdviceExpression> adviceExpressions,
+            List<CombinerParameter> parameters) {
+        
         idAttr = id;
         this.combiningAlg = combiningAlg;
         this.description = description;
@@ -183,20 +180,22 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
         metaData = null;
 
         if (obligationExpressions == null)
-            this.obligationExpressions = Collections.EMPTY_SET;
+            this.obligationExpressions = new HashSet<AbstractObligation>();
         else
-            this.obligationExpressions = Collections.unmodifiableSet(new HashSet(obligationExpressions));
+            this.obligationExpressions = Collections.
+                        unmodifiableSet(new HashSet<AbstractObligation>(obligationExpressions));
 
         if(adviceExpressions == null){
-            this.adviceExpressions = Collections.EMPTY_SET;
+            this.adviceExpressions = new HashSet<AdviceExpression>();
         } else {
-            this.adviceExpressions = Collections.unmodifiableSet(new HashSet(adviceExpressions));
+            this.adviceExpressions = Collections.
+                        unmodifiableSet(new HashSet<AdviceExpression>(adviceExpressions));
         }
 
         if (parameters == null)
-            this.parameters = Collections.EMPTY_LIST;
+            this.parameters = new ArrayList<CombinerParameter>();
         else
-            this.parameters = Collections.unmodifiableList(new ArrayList(parameters));
+            this.parameters = Collections.unmodifiableList(new ArrayList<CombinerParameter>(parameters));
     }
 
     /**
@@ -264,8 +263,8 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         // now read the remaining policy elements
         obligationExpressions = new HashSet<AbstractObligation>();
-        adviceExpressions = new HashSet();
-        parameters = new ArrayList();
+        adviceExpressions = new HashSet<AdviceExpression>();
+        parameters = new ArrayList<CombinerParameter>();
         children = root.getChildNodes();
 
         for (int i = 0; i < children.getLength(); i++) {
@@ -365,6 +364,8 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
      * There used to be multiple things in the defaults type, but now there's just the one string
      * that must be a certain value, so it doesn't seem all that useful to have a class for
      * this...we could always bring it back, however, if it started to do more
+     * @param root
+     * @throws ParsingException
      */
     private void handleDefaults(Node root) throws ParsingException {
         defaultVersion = null;
@@ -380,14 +381,17 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
     /**
      * Handles all the CombinerParameters in the policy or policy set
+     * @param root
+     * @throws ParsingException
      */
     private void handleParameters(Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("CombinerParameter"))
+            if (node.getNodeName().equals("CombinerParameter")){
                 parameters.add(CombinerParameter.getInstance(node));
+            }
         }
     }
 
@@ -526,7 +530,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
      * @param children a <code>List</code> of <code>CombinerElement</code>s representing the child
      *            elements used by the combining algorithm
      */
-    protected void setChildren(List children) {
+    protected void setChildren(List<CombinerElement> children) {
         // we always want a concrete list, since we're going to pass it to
         // a combiner that expects a non-null input
         if (children == null) {
@@ -534,7 +538,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
         } else {
             // NOTE: since this is only getting called by known child
             // classes we don't check that the types are all the same
-            List list = new ArrayList();
+            List<PolicyTreeElement> list = new ArrayList<PolicyTreeElement>();
             Iterator it = children.iterator();
 
             while (it.hasNext()) {

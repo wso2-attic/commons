@@ -20,6 +20,8 @@ package org.wso2.balana;
 
 import org.wso2.balana.ctx.EvaluationCtx;
 
+import java.io.OutputStream;
+
 /**
  * Represents the TargetType XML type in XACML. This defined as abstract, because there can be
  * more than one implementation of TargetType. As an example, TargetType is considerably defer in
@@ -39,5 +41,14 @@ public abstract class AbstractTarget {
      * @return the result of trying to match the target and the request
      */
     public abstract MatchResult match(EvaluationCtx context);
+
+    /**
+     * Encodes this <code>Target</code> into its XML representation and writes this encoding to the
+     * given <code>OutputStream</code> with indentation.
+     *
+     * @param output a stream into which the XML-encoded data is written
+     * @param indenter an object that creates indentation strings
+     */
+    public abstract void encode(OutputStream output, Indenter indenter);
 
 }

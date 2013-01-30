@@ -24,6 +24,7 @@ import org.wso2.balana.*;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.Status;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -112,5 +113,10 @@ public class Target extends AbstractTarget {
             return new MatchResult(MatchResult.INDETERMINATE,
                                    firstIndeterminateStatus);
         }
+    }
+
+    @Override
+    public void encode(OutputStream output, Indenter indenter) {
+       
     }
 }

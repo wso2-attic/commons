@@ -372,17 +372,21 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                 for(AttributesReference attributesReference : attributesReferences){
                     String referenceId = attributesReference.getId();
                     if(referenceId != null){
+                        Attributes newAttributes = null;
                         for(Attributes attribute : evaluationCtx.getAttributesSet()){
                             // check equal with reference id
                             if(attribute.getId() != null && attribute.getId().equals(referenceId)){
-                                attributes.add(attribute);
-                            } else {
-                                // This must be only for one result. But here it is used to create error for
-                                List<String> code = new ArrayList<String>();
-                                code.add(Status.STATUS_SYNTAX_ERROR);
-                                return new MultipleCtxResult(new Status(code,
-                                                                "Invalid reference to attributes"));
+                                newAttributes = attribute;
                             }
+                        }
+                        if(newAttributes != null){
+                            attributes.add(newAttributes);
+                        } else {
+                            // This must be only for one result. But here it is used to create error for
+                            List<String> code = new ArrayList<String>();
+                            code.add(Status.STATUS_SYNTAX_ERROR);
+                            return new MultipleCtxResult(new Status(code,
+                                                            "Invalid reference to attributes"));
                         }
                     }
                 }

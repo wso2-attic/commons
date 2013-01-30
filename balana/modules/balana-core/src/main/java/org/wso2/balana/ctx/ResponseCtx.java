@@ -60,7 +60,10 @@ import java.util.Set;
 public class ResponseCtx {
 
     // The set of Result objects returned by the PDP
-    private Set<AbstractResult> results = null;
+    private Set<AbstractResult> results = new HashSet<AbstractResult>();
+
+    // XACML version
+    private int version;
 
     /**
      * Constructor that creates a new <code>ResponseCtx</code> with only a single
@@ -69,7 +72,7 @@ public class ResponseCtx {
      * @param result the single result in the response
      */
     public ResponseCtx(AbstractResult result) {
-        results = new HashSet<AbstractResult>();
+        this.version = result.getVersion();
         results.add(result);
     }
 
@@ -78,8 +81,10 @@ public class ResponseCtx {
      * <code>Result</code>s. The <code>Set</code> must be non-empty.
      * 
      * @param results a <code>Set</code> of <code>Result</code> objects
+     * @param version XACML version
      */
-    public ResponseCtx(Set<AbstractResult> results) {
+    public ResponseCtx(Set<AbstractResult> results, int version) {
+        this.version = version;
         this.results = Collections.unmodifiableSet(new HashSet<AbstractResult>(results));
     }
 
@@ -138,7 +143,7 @@ public class ResponseCtx {
         if (results.size() == 0){
             throw new ParsingException("must have at least one Result");
         }
-        return new ResponseCtx(results);
+        return new ResponseCtx(results, version);
     }    
 
     /**
@@ -189,7 +194,13 @@ public class ResponseCtx {
 
         // Now write the XML...
 
-        out.println(indent + "<Response>");
+        out.print(indent + "<Response");
+
+        if(version == XACMLConstants.XACML_VERSION_3_0){
+            out.print(" xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\"");
+        }
+
+        out.println(">");
 
         // Go through all results
         Iterator it = results.iterator();

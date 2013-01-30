@@ -92,7 +92,7 @@ public class Policy extends AbstractPolicy {
      * @throws IllegalArgumentException if the <code>List</code> of rules contains an object that is
      *             not a <code>Rule</code>
      */
-    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, AbstractTarget target, List rules) {
+    public Policy(URI id, RuleCombiningAlgorithm combiningAlg, AbstractTarget target, List<Rule> rules) {
         this(id, null, combiningAlg, null, target, null, rules, null);
     }
 
@@ -112,7 +112,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            AbstractTarget target, List rules) {
+            AbstractTarget target, List<Rule> rules) {
         this(id, version, combiningAlg, description, target, null, rules, null);
     }
 
@@ -133,7 +133,7 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            AbstractTarget target, String defaultVersion, List rules) {
+            AbstractTarget target, String defaultVersion, List<Rule> rules) {
         this(id, version, combiningAlg, description, target, defaultVersion, rules, null);
     }
 
@@ -155,7 +155,8 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            AbstractTarget target, String defaultVersion, List rules, Set obligations) {
+            AbstractTarget target, String defaultVersion, List<Rule> rules,
+                                                            Set<AbstractObligation> obligations) {
         this(id, version, combiningAlg, description, target, defaultVersion, rules, obligations,
                 null);
     }
@@ -181,7 +182,8 @@ public class Policy extends AbstractPolicy {
      *             not a <code>Rule</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            AbstractTarget target, String defaultVersion, List rules, Set obligations, Set definitions) {
+            AbstractTarget target, String defaultVersion, List<Rule> rules,
+                    Set<AbstractObligation> obligations, Set<VariableDefinition> definitions) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
         List list = null;
