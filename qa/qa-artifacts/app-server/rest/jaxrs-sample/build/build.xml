@@ -2,7 +2,7 @@
 
     <target name="init">
         <property environment="env"/>
-        <property name="WINK_HOME" value="/home/charitha/products/apache-wink/apache-wink-1.1.3-incubating"/>
+        <property name="WINK_HOME" value="/home/chamara/apache-wink-1.2.0-incubating"/>
         <property name="service_home" value="${basedir}"/>
         <property name="classes_dir" value="${service_home}/classes"/>
         <property name="src_dir" value="${service_home}/src"/>

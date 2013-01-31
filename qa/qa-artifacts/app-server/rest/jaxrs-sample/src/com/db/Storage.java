@@ -163,11 +163,17 @@ public class Storage {
 
     private Connection getConnection() {
         String driverName = "com.mysql.jdbc.Driver";
-        String conectionURI = "jdbc:mysql://localhost:3306/CUSTOMER_DB";
+        String conectionURI = "jdbc:mysql://rss1.stratoslive.wso2.com/customer_chamqa11_com";
+        String userName = "admin_VRRjmlUU";
+        String password = "admin123";
+
+
+/*
+	String driverName = "com.mysql.jdbc.Driver";
+        String conectionURI = "jdbc:mysql://localhost:3306/customer";
         String userName = "root";
         String password = "root";
-
-
+*/
         try {
             Class.forName(driverName);
             //Connection connection = null;
