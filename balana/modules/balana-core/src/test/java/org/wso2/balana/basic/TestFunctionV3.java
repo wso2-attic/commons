@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.wso2.balana.advance;
+
+package org.wso2.balana.basic;
 
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
@@ -32,14 +33,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Multiple decision profile test cases
+ *  This XACML 3.0 basic XACML function. This would test new functions that is introduced with XACML 3.0. 
  */
-public class MultipleDecisionTest extends TestCase {
+public class TestFunctionV3 extends TestCase {
 
     /**
      * directory name that states the test type
      */
-    private final static String ROOT_DIRECTORY  = "advance";
+    private final static String ROOT_DIRECTORY  = "basic";
 
     /**
      * directory name that states XACML version
@@ -49,17 +50,17 @@ public class MultipleDecisionTest extends TestCase {
     /**
      * the logger we'll use for all messages
      */
-	private static Log log = LogFactory.getLog(MultipleDecisionTest.class);
+	private static Log log = LogFactory.getLog(TestFunctionV3.class);
 
-    public void testAdvanceTest0001() throws Exception {
+    public void testBasicTest0001() throws Exception {
 
         String reqResNo;
         Set<String> policies = new HashSet<String>();
-        policies.add("TestPolicy_0001.xml");
+        policies.add("TestPolicy_0006.xml");
         PDP pdp = getPDPNewInstance(policies);
-        log.info("Advance Test 0001 is started");
+        log.info("Basic Test 0006 is started");
 
-        for(int i = 1; i < 2 ; i++){
+        for(int i = 1; i < 4 ; i++){
 
             if(i < 10){
                 reqResNo = "0" + i;
@@ -68,16 +69,16 @@ public class MultipleDecisionTest extends TestCase {
             }
 
             String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
-                                                        "request_0001_" + reqResNo + ".xml");
+                                                        "request_0006_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
-                                    VERSION_DIRECTORY, "response_0001_" + reqResNo + ".xml");
+                                    VERSION_DIRECTORY, "response_0006_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -88,9 +89,10 @@ public class MultipleDecisionTest extends TestCase {
                 assertTrue("Request read from file is Null", false);
             }
 
-            log.info("Advance Test 0001 is finished");
+            log.info("Basic Test 0003 is finished");
         }
     }
+
     /**
      * Returns a new PDP instance with new XACML policies
      *
@@ -128,8 +130,9 @@ public class MultipleDecisionTest extends TestCase {
         Balana balana = Balana.getInstance();
         PDPConfig pdpConfig = balana.getPdpConfig();
         pdpConfig = new PDPConfig(pdpConfig.getAttributeFinder(), finder,
-                                                            pdpConfig.getResourceFinder(), false);
+                                                            pdpConfig.getResourceFinder(), true);
         return new PDP(pdpConfig);
 
     }
+
 }

@@ -19,8 +19,10 @@ package org.wso2.balana;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.wso2.balana.basic.BasicTestFunctionV3;
+import org.wso2.balana.basic.TestFunctionV3;
 import org.wso2.balana.basic.BasicTestV3;
+import org.wso2.balana.basic.TestMultipleRequestV3;
+import org.wso2.balana.basic.TestXPathV3;
 import org.wso2.balana.conformance.ConformanceTestV2;
 import org.wso2.balana.conformance.ConformanceTestV3;
 
@@ -39,7 +41,11 @@ public class BaseTestCase extends TestSuite {
         // basic test of XACML version 3.0. Simple policy and obligation, advice
         testSuite.addTestSuite(BasicTestV3.class);
         // basic function test of XACML version 3.0
-        testSuite.addTestSuite(BasicTestFunctionV3.class);
+        testSuite.addTestSuite(TestFunctionV3.class);
+        // multiple decision profile
+        testSuite.addTestSuite(TestMultipleRequestV3.class);
+        // XPath test
+        testSuite.addTestSuite(TestXPathV3.class);
 
         testSuite.addTestSuite(ConformanceTestV3.class);
         return testSuite;

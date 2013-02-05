@@ -461,7 +461,7 @@ public class HigherOrderFunction implements Function {
 		Iterator it = bag.iterator();
 
 		while (it.hasNext()) {
-			List params = new ArrayList();
+			List<Evaluatable> params = new ArrayList<Evaluatable>();
 
 			if (!argumentsAreSwapped) {
 				params.add(value);

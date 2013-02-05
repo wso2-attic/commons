@@ -260,8 +260,9 @@ public class AttributeDesignator extends AbstractDesignator {
                 }
 
                 ArrayList<String> code = new ArrayList<String>();
-                ArrayList<MissingAttributeDetail> missingAttributes = new ArrayList<MissingAttributeDetail>();
                 code.add(Status.STATUS_MISSING_ATTRIBUTE);
+
+                ArrayList<MissingAttributeDetail> missingAttributes = new ArrayList<MissingAttributeDetail>();
                 MissingAttributeDetail missingAttribute = new MissingAttributeDetail(id, type,
                                         category, issuer, null, XACMLConstants.XACML_VERSION_3_0);
                 missingAttributes.add(missingAttribute);

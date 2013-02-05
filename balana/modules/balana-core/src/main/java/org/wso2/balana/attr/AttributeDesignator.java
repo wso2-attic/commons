@@ -42,6 +42,7 @@ import org.wso2.balana.*;
 import org.wso2.balana.cond.EvaluationResult;
 
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.MissingAttributeDetail;
 import org.wso2.balana.ctx.Status;
 
 import java.io.OutputStream;
@@ -55,6 +56,7 @@ import java.util.List;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.wso2.balana.ctx.StatusDetail;
 
 /**
  * Represents all four kinds of Designators in XACML.
@@ -381,7 +383,11 @@ public class AttributeDesignator extends AbstractDesignator {
 
                     ArrayList<String> code = new ArrayList<String>();
                     code.add(Status.STATUS_MISSING_ATTRIBUTE);
-
+                    ArrayList<MissingAttributeDetail> missingAttributes = new ArrayList<MissingAttributeDetail>();
+                    MissingAttributeDetail missingAttribute = new MissingAttributeDetail(id, type,
+                                            category, issuer, null, XACMLConstants.XACML_VERSION_3_0);
+                    missingAttributes.add(missingAttribute);
+                    StatusDetail detail = new StatusDetail(missingAttributes);
                     String message = "Couldn't find " + targetTypes[target]
                             + "AttributeDesignator attribute";
 
@@ -397,15 +403,20 @@ public class AttributeDesignator extends AbstractDesignator {
                      * StatusDetail(attrs);
                      */
 
-                    return new EvaluationResult(new Status(code, message));
+                    return new EvaluationResult(new Status(code, message, detail));
                 }
             }
         } else {
             ArrayList<String> code = new ArrayList<String>();
             code.add(Status.STATUS_MISSING_ATTRIBUTE);
+            ArrayList<MissingAttributeDetail> missingAttributes = new ArrayList<MissingAttributeDetail>();
+            MissingAttributeDetail missingAttribute = new MissingAttributeDetail(id, type,
+                                    category, issuer, null, XACMLConstants.XACML_VERSION_3_0);
+            missingAttributes.add(missingAttribute);
+            StatusDetail detail = new StatusDetail(missingAttributes);
             String message = "Couldn't find " + targetTypes[target]
                     + "AttributeDesignator attribute";
-            return new EvaluationResult(new Status(code, message));  //TODO
+            return new EvaluationResult(new Status(code, message, detail));  //TODO
     }
 
         // if we got here the bag wasn't empty, or mustBePresent was false,

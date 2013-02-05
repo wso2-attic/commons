@@ -334,7 +334,7 @@ public class Result extends AbstractResult{
 
         // encode the policy, policySet references
         if (policyReferences != null  && policyReferences.size() != 0) {
-            out.println(indentNext + "<ReturnPolicyIdList>");
+            out.println(indentNext + "<PolicyIdentifierList>");
             indenter.in();
 
             for(PolicyReference reference : policyReferences){
@@ -342,7 +342,7 @@ public class Result extends AbstractResult{
             }
 
             indenter.out();
-            out.println(indentNext + "</ReturnPolicyIdList>");
+            out.println(indentNext + "</PolicyIdentifierList>");
         }
 
         // encode the attributes

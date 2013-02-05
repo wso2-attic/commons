@@ -711,6 +711,15 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
         this.policyReferences = policyReferences;
     }
 
+    /**
+     * 
+     * @param category
+     * @return
+     */
+    public Set<Attributes> getAttributes(String category){        
+        return mapAttributes.get(category);
+    }
+
     public Set<Attributes> getMultipleContentSelectors() {
         return multipleContentSelectors;
     }

@@ -17,6 +17,13 @@
  */
 package org.wso2.balana.cond.xacml3;
 
+import com.sun.org.apache.xpath.internal.NodeSet;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.wso2.balana.DefaultNamespaceContext;
+import org.wso2.balana.XACMLConstants;
+import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.attr.BooleanAttribute;
 import org.wso2.balana.attr.IntegerAttribute;
 import org.wso2.balana.attr.xacml3.XPathAttribute;
@@ -24,10 +31,13 @@ import org.wso2.balana.cond.Evaluatable;
 import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.cond.FunctionBase;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.Status;
+import org.wso2.balana.ctx.xacml3.XACML3EvaluationCtx;
+import org.wso2.balana.xacml3.Attributes;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.*;
+import java.util.*;
 
 /**
  * The class that implement all XPath based functions. An XPath expression evaluates to a node-set,
@@ -151,6 +161,106 @@ public class XPathFunction extends FunctionBase {
 
     public EvaluationResult evaluate(List<Evaluatable> inputs, EvaluationCtx context) {
 
-        return null; //  TODO
+        // Evaluate the arguments
+        AttributeValue[] argValues = new AttributeValue[inputs.size()];
+        EvaluationResult result = evalArgs(inputs, context, argValues);
+        if (result != null) {
+            return result;
+        }
+
+		switch (getFunctionId()) {
+
+            case ID_XPATH_NODE_COUNT: {
+
+                XPathAttribute xpathAttribute = ((XPathAttribute) argValues[0]);
+                String xpathValue = xpathAttribute.getValue();
+                String category = xpathAttribute.getXPathCategory();
+
+                Node contextNode = null;
+
+                // this must be XACML 3
+                Set<Attributes> attributesSet = ((XACML3EvaluationCtx) context).getAttributes(category);
+                if(attributesSet != null){
+                    // only one attributes can be there
+                    Attributes attributes = attributesSet.iterator().next();
+                    contextNode = attributes.getContent();
+                }
+
+                if(contextNode != null){
+                    // now apply XPath
+                    try {
+                        NodeList nodeList = getXPathResults(contextNode, xpathValue);
+                        return new EvaluationResult(new IntegerAttribute(nodeList.getLength()));
+                    } catch (XPathExpressionException e) {
+                        List<String> codes = new ArrayList<String>();
+                        codes.add(Status.STATUS_SYNTAX_ERROR);
+                        Status status = new Status(codes, e.getMessage());
+                        return new EvaluationResult(status);
+                    }
+                }
+            }
+
+            case ID_XPATH_NODE_EQUAL :{
+                    //TODO
+            }
+
+        }
+
+        List<String> codes = new ArrayList<String>();
+        codes.add(Status.STATUS_SYNTAX_ERROR);
+        Status status = new Status(codes, "Not supported function");
+        return new EvaluationResult(status);
+    }
+
+
+    /**
+     * Gets Xpath results
+     *
+     * @param contextNode
+     * @param xpathValue
+     * @return
+     * @throws XPathExpressionException
+     */
+    private NodeList getXPathResults(Node contextNode, String xpathValue)
+                                                                throws XPathExpressionException {
+
+        XPathFactory factory = XPathFactory.newInstance();
+        XPath xpath = factory.newXPath();
+
+        //see if the request root is in a namespace
+        String namespace = contextNode.getNamespaceURI();
+        // name spaces are used, so we need to lookup the correct
+        // prefix to use in the search string
+        NamedNodeMap namedNodeMap = contextNode.getAttributes();
+
+        Map<String, String> nsMap = new HashMap<String, String>();
+
+        for (int i = 0; i < namedNodeMap.getLength(); i++) {
+            Node n = namedNodeMap.item(i);
+            // we found the matching namespace, so get the prefix
+            // and then break out
+            String nodeName = n.getNodeName();
+            String nodeValue= n.getNodeValue();
+            int index = nodeName.indexOf(':');
+            if (index != -1 && nodeValue != null) {
+                // we found a prefixed namespace
+                String prefix = nodeName.substring(index + 1);
+                nsMap.put(prefix, nodeValue);
+            }
+        }
+
+        // if there is not any namespace is defined for content element, default XACML request
+        //  name space would be there.
+        if(XACMLConstants.REQUEST_CONTEXT_3_0_IDENTIFIER.equals(namespace) ||
+                XACMLConstants.REQUEST_CONTEXT_2_0_IDENTIFIER.equals(namespace) ||
+                XACMLConstants.REQUEST_CONTEXT_1_0_IDENTIFIER.equals(namespace)){
+            nsMap.put("xacml", namespace);
+        }
+
+        NamespaceContext namespaceContext = new DefaultNamespaceContext(nsMap);
+        xpath.setNamespaceContext(namespaceContext);
+
+        XPathExpression expression = xpath.compile(xpathValue);
+        return (NodeList) expression.evaluate(contextNode, XPathConstants.NODESET);
     }
 }

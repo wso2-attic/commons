@@ -1,4 +1,4 @@
-<Response>
+<Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17">
 <Result>
 <Decision>NotApplicable</Decision>
 <Status>

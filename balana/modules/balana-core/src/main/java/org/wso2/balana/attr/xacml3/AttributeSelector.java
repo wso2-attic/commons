@@ -25,11 +25,14 @@ import org.w3c.dom.Node;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
+import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.AbstractAttributeSelector;
 import org.wso2.balana.attr.BagAttribute;
 import org.wso2.balana.cond.EvaluationResult;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.MissingAttributeDetail;
 import org.wso2.balana.ctx.Status;
+import org.wso2.balana.ctx.StatusDetail;
 
 import java.io.OutputStream;
 import java.net.URI;
@@ -196,8 +199,9 @@ public class AttributeSelector extends AbstractAttributeSelector {
                                 + "value for a required attribute: " + path);
                     }
 
-                    ArrayList code = new ArrayList();
+                    ArrayList<String> code = new ArrayList<String>();
                     code.add(Status.STATUS_MISSING_ATTRIBUTE);
+
                     String message = "couldn't resolve XPath expression " + path
                             + " for type " + type.toString();
                     return new EvaluationResult(new Status(code, message));

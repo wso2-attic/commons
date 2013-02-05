@@ -113,6 +113,9 @@ public class SelectorModule extends AttributeFinderModule {
             // root != null  means content element is there.  we can find the context node by
             // evaluating the contextSelector
 
+            // 1st assume context node as the root
+            contextNode = root;
+
             XPathFactory factory = XPathFactory.newInstance();
             XPath xpath = factory.newXPath();
 
@@ -150,20 +153,22 @@ public class SelectorModule extends AttributeFinderModule {
             }
 
             namespaceContext = new DefaultNamespaceContext(nsMap);
+            xpath.setNamespaceContext(namespaceContext);
 
             try{
                 XPathExpression expression = xpath.compile(contextSelector);
-                NodeList result = (NodeList) expression.evaluate(root, XPathConstants.NODESET);                
-                if(result == null){
+                NodeList result = (NodeList) expression.evaluate(contextNode, XPathConstants.NODESET);                
+                if(result == null || result.getLength() == 0){
                     throw new Exception("No node is found from context selector id evaluation");    
                 } else if(result.getLength() != 1){
                     throw new Exception("More than one node is found from context selector id evaluation");
                 }
+                contextNode = result.item(0);
             } catch (Exception e) {
-            List<String> codes = new ArrayList<String>();
-            codes.add(Status.STATUS_SYNTAX_ERROR);
-            Status status = new Status(codes, e.getMessage());
-            return new EvaluationResult(status);
+                List<String> codes = new ArrayList<String>();
+                codes.add(Status.STATUS_SYNTAX_ERROR);
+                Status status = new Status(codes, e.getMessage());
+                return new EvaluationResult(status);
             }
         } else {
             contextNode = root;

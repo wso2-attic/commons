@@ -3,6 +3,7 @@
 <Decision>Indeterminate</Decision>
 <Status>
 <StatusCode Value="urn:oasis:names:tc:xacml:1.0:status:syntax-error"/>
+<StatusMessage>More than one node is found from context selector id evaluation</StatusMessage>
 </Status>
 </Result>
 </Response>

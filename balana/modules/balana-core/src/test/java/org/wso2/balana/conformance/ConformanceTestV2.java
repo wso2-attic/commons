@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderModule;
@@ -70,7 +71,7 @@ public class ConformanceTestV2 extends TestCase {
 
         String policyNumber;
 
-        for(int i = 1; i < 22 ; i++){
+        for(int i = 1; i < 22 ; i++){     
 
             //Some test has been skipped due to errors
             if(i == 2 || i == 4 || i == 14){
@@ -95,13 +96,13 @@ public class ConformanceTestV2 extends TestCase {
                 log.info("Request that is sent to the PDP :  " + request);
                 Set<String> policies = new HashSet<String>();
                 policies.add("IIA" + policyNumber + "Policy.xml");                
-                String response = getPDPNewInstance(policies).evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIA" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -145,13 +146,13 @@ public class ConformanceTestV2 extends TestCase {
                 log.info("Request that is sent to the PDP :  " + request);
                 Set<String> policies = new HashSet<String>();
                 policies.add("IIB" + policyNumber + "Policy.xml");
-                String response = getPDPNewInstance(policies).evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIB" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -196,13 +197,13 @@ public class ConformanceTestV2 extends TestCase {
                 log.info("Request that is sent to the PDP :  " + request);
                 Set<String> policies = new HashSet<String>();
                 policies.add("IIC" + policyNumber + "Policy.xml");
-                String response = getPDPNewInstance(policies).evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIC" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -239,13 +240,13 @@ public class ConformanceTestV2 extends TestCase {
                 log.info("Request that is sent to the PDP :  " + request);
                 Set<String> policies = new HashSet<String>();
                 policies.add("IID" + policyNumber + "Policy.xml");
-                String response = getPDPNewInstance(policies).evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IID" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }

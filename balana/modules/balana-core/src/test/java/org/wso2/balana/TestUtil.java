@@ -41,7 +41,9 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 
 import org.wso2.balana.ctx.*;
+import org.wso2.balana.ctx.xacml3.Result;
 import org.wso2.balana.xacml3.Advice;
+import org.wso2.balana.xacml3.Attributes;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -103,6 +105,19 @@ public class TestUtil {
                     stream = new ByteArrayOutputStream();
                     obligationResult.encode(stream);
                     obligations.add(stream.toString());
+                }
+            }
+
+            List<String> attributesList = new ArrayList <String>();
+
+            if(result instanceof Result){
+                Result xacml3Result = (Result) result;
+                if(xacml3Result.getAttributes() != null){
+                    for(Attributes attributesElement : xacml3Result.getAttributes()){
+                        stream = new ByteArrayOutputStream();
+                        attributesElement.encode(stream);
+                        attributesList.add(stream.toString());
+                    }
                 }
             }
 
@@ -182,6 +197,40 @@ public class TestUtil {
                     }
                 }
 
+                // if only XACML 3.0. result
+                if(expectedResult instanceof Result){
+
+                    Result xacml3Result = (Result) expectedResult;
+                    List<String> attributesExpected = new ArrayList <String>();
+
+                    if(xacml3Result.getAttributes() != null){
+                        for(Attributes  attributes : xacml3Result.getAttributes()){
+                            stream = new ByteArrayOutputStream();
+                            attributes.encode(stream);
+                            attributesExpected.add(stream.toString());
+                        }
+                    }
+
+                    if(attributesList.size() != attributesExpected.size()){
+                        continue;
+                    }
+
+                    if(attributesList.size() > 0){
+                        boolean attributeContains = false;
+                        for(String attribute : attributesList){
+                            if(!attributesExpected.contains(attribute)){
+                                attributeContains = false;
+                                break;
+                            } else {
+                                attributeContains = true;
+                            }
+                        }
+
+                        if(!attributeContains){
+                            continue;
+                        }
+                    }
+                }
                 match = true;
                 break;
             }
@@ -204,31 +253,34 @@ public class TestUtil {
         return finalResult;
     }
 
-
     /**
-     * Checks matching of result that got from PDP and expected response from a file.
+     * Evaluates XACML request
      *
-     * @param resultResponse  result that got from PDP
-     * @param expectedResponse  expected response from a file
-     * @return True/False
+     * @param pdp  PDP instance
+     * @param request XACML request
+     * @return XACML response as ResponseCtx
      */
-    public static boolean isMatching(String resultResponse, String expectedResponse) {
+    public static ResponseCtx evaluate(PDP pdp, String request) {
 
-        boolean result = false;
-        resultResponse = processResult(resultResponse);
-        if(resultResponse != null && expectedResponse != null){
-            result = resultResponse.trim().replaceAll(">\\s+<", "><").
-                            equals(expectedResponse.trim().replaceAll(">\\s+<", "><"));
+        AbstractRequestCtx  requestCtx;
+        ResponseCtx responseCtx;
+
+        try {
+            requestCtx = RequestCtxFactory.getFactory().getRequestCtx(request.replaceAll(">\\s+<", "><"));
+            responseCtx = pdp.evaluate(requestCtx);
+        } catch (ParsingException e) {
+            String error = "Invalid request  : " + e.getMessage();
+            // there was something wrong with the request, so we return
+            // Indeterminate with a status of syntax error...though this
+            // may change if a more appropriate status type exists
+            ArrayList<String> code = new ArrayList<String>();
+            code.add(Status.STATUS_SYNTAX_ERROR);
+            Status status = new Status(code, error);
+            //As invalid request, by default XACML 3.0 response is created.
+            responseCtx = new ResponseCtx(new Result(AbstractResult.DECISION_INDETERMINATE, status));
         }
         
-        if(result){
-            log.info("Test is Passed........!!!   " +
-                    "Result received from the PDP is matched with expected result");
-        } else {
-            log.info("Test is Failed........!!!     " +
-                    "Result received from the PDP is NOT match with expected result");
-        }
-        return result;
+        return responseCtx;
     }
 
     /**

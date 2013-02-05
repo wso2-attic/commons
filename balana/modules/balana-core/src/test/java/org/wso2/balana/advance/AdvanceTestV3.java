@@ -15,15 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-package org.wso2.balana.conformance;
+package org.wso2.balana.advance;
 
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.*;
-import org.wso2.balana.ctx.AbstractRequestCtx;
-import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderModule;
@@ -34,22 +31,15 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
- *  This XACML 3.0 conformation test. But this is the correct tests published bu OASIS
+ * Multiple decision profile test cases
  */
-public class ConformanceTestV3 extends TestCase {
-
-
-    /**
-     * Configuration store
-     */
-    private static ConfigurationStore store;
+public class AdvanceTestV3 extends TestCase {
 
     /**
      * directory name that states the test type
      */
-    private final static String ROOT_DIRECTORY  = "conformance";
+    private final static String ROOT_DIRECTORY  = "advance";
 
     /**
      * directory name that states XACML version
@@ -59,45 +49,35 @@ public class ConformanceTestV3 extends TestCase {
     /**
      * the logger we'll use for all messages
      */
-	private static Log log = LogFactory.getLog(ConformanceTestV2.class);
+	private static Log log = LogFactory.getLog(AdvanceTestV3.class);
 
-    @Override
-    public void setUp() throws Exception {
+    public void testAdvanceTest0001() throws Exception {
 
-        String configFile = (new File(".")).getCanonicalPath() + File.separator + TestConstants.CONFIG_FILE;
-        store = new ConfigurationStore(new File(configFile));
-    }
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0001.xml");
+        PDP pdp = getPDPNewInstance(policies);
+        log.info("Advance Test 0001 is started");
 
+        for(int i = 1; i < 2 ; i++){
 
-    public void testConformanceTestA() throws Exception {
-
-        String policyNumber;
-
-        for(int i = 1; i < 29 ; i++){
-            
             if(i < 10){
-                policyNumber = "00" + i;
-            } else if(9 < i && i < 100) {
-                policyNumber = "0" + i;
+                reqResNo = "0" + i;
             } else {
-                policyNumber = Integer.toString(i);
+                reqResNo = Integer.toString(i);
             }
 
-            log.info("Conformance Test IIIA" + policyNumber + " is started");
-
             String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
-                                                            "IIIA" + policyNumber + "Request.xacml3.xml");
+                                                        "request_0001_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                Set<String> policies = new HashSet<String>();
-                policies.add("IIIA" + policyNumber + "Policy.xacml3.xml");
                 ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
-                                        VERSION_DIRECTORY, "IIIA" + policyNumber + "Response.xacml3.xml");
                     log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                    VERSION_DIRECTORY, "response_0001_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                       assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -108,11 +88,60 @@ public class ConformanceTestV3 extends TestCase {
                 assertTrue("Request read from file is Null", false);
             }
 
-            log.info("Conformance Test IIIA" + policyNumber + " is finished");
+            log.info("Advance Test 0001 is finished");
+        }
+    }
+
+    public void testAdvanceTest0002() throws Exception {
+
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0002.xml");
+        PDP pdp = getPDPNewInstance(policies);
+        log.info("Advance Test 0002 is started");
+
+        for(int i = 1; i < 2 ; i++){
+
+            if(i < 10){
+                reqResNo = "0" + i; 
+            } else {
+                reqResNo = Integer.toString(i);
+            }
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                        "request_0002_" + reqResNo + ".xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
+                if(response != null){
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                    VERSION_DIRECTORY, "response_0002_" + reqResNo + ".xml");
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Advance Test 0002 is finished");
         }
     }
 
 
+
+
+    /**
+     * Returns a new PDP instance with new XACML policies
+     *
+     * @param policies  Set of XACML policy file names
+     * @return a  PDP instance
+     */
     /**
      * Returns a new PDP instance with new XACML policies
      *
@@ -147,5 +176,5 @@ public class ConformanceTestV3 extends TestCase {
                                                             pdpConfig.getResourceFinder(), false);
         return new PDP(pdpConfig);
 
-    }    
+    }
 }

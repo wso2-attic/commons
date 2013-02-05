@@ -73,13 +73,13 @@ public class BasicTestV3 extends TestCase {
                                                         "request_0001_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0001_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);    
                     }
@@ -115,13 +115,13 @@ public class BasicTestV3 extends TestCase {
                                                         "request_0002_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0002_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -156,13 +156,13 @@ public class BasicTestV3 extends TestCase {
                                                         "request_0003_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0003_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -197,13 +197,13 @@ public class BasicTestV3 extends TestCase {
                                                         "request_0004_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0004_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
@@ -238,13 +238,13 @@ public class BasicTestV3 extends TestCase {
                                                         "request_0005_" + reqResNo + ".xml");
             if(request != null){
                 log.info("Request that is sent to the PDP :  " + request);
-                String response = pdp.evaluate(request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response);
+                    log.info("Response that is received from the PDP :  " + response.getEncoded());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0005_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
                         assertTrue("Response read from file is Null",false);
                     }
