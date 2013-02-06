@@ -50,7 +50,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="App_Data_CVS" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">app_factory_ldap_users.csv</stringProp>
+          <stringProp name="filename">myuser.csv</stringProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">All threads</stringProp>
@@ -539,7 +539,7 @@
         </LoopController>
         <hashTree>
           <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
-            <stringProp name="CounterConfig.start">1000</stringProp>
+            <stringProp name="CounterConfig.start">2020</stringProp>
             <stringProp name="CounterConfig.end">1000000000</stringProp>
             <stringProp name="CounterConfig.incr">1</stringProp>
             <stringProp name="CounterConfig.name">count</stringProp>
@@ -677,12 +677,12 @@
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     <stringProp name="Argument.name">action</stringProp>
                   </elementProp>
-                  <elementProp name="username" elementType="HTTPArgument">
+                  <elementProp name="userName" elementType="HTTPArgument">
                     <boolProp name="HTTPArgument.always_encode">false</boolProp>
                     <stringProp name="Argument.value">${user_name_from_file}</stringProp>
                     <stringProp name="Argument.metadata">=</stringProp>
                     <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    <stringProp name="Argument.name">username</stringProp>
+                    <stringProp name="Argument.name">userName</stringProp>
                   </elementProp>
                 </collectionProp>
               </elementProp>
@@ -757,9 +757,9 @@
               </CookieManager>
               <hashTree/>
             </hashTree>
-            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
+            <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="1043267499">foo${count}</stringProp>
+                <stringProp name="-1995248738">fooKey${count}</stringProp>
               </collectionProp>
               <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
               <boolProp name="Assertion.assume_success">false</boolProp>
