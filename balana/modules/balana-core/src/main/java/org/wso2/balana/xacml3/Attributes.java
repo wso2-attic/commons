@@ -93,9 +93,9 @@ public class Attributes {
         Set<Attribute> attributes = new HashSet<Attribute>();
 
         // First check that we're really parsing an Attribute
-        if (!root.getNodeName().equals(XACMLConstants.ATTRIBUTES_ELEMENT)) {
+        if (!DOMHelper.getLocalName(root).equals(XACMLConstants.ATTRIBUTES_ELEMENT)) {
             throw new ParsingException("Attributes object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap attrs = root.getAttributes();
@@ -120,14 +120,14 @@ public class Attributes {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals(XACMLConstants.ATTRIBUTES_CONTENT)) {
+            if (DOMHelper.getLocalName(node).equals(XACMLConstants.ATTRIBUTES_CONTENT)) {
                 // only one value can be in an Attribute
                 if (content != null){
                     throw new ParsingException("Too many content elements are defined.");
                 }
                 // now get the value
                 content = node.getFirstChild();
-            } else if(node.getNodeName().equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
+            } else if(DOMHelper.getLocalName(node).equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
                 attributes.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_3_0));
             }
         }

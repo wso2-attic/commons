@@ -283,7 +283,7 @@ public class Policy extends AbstractPolicy {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if (child.getNodeName().equals("VariableDefinition")) {
+            if (DOMHelper.getLocalName(child).equals("VariableDefinition")) {
                 String id = child.getAttributes().getNamedItem("VariableId").getNodeValue();
 
                 // it's an error to have more than one definition with the
@@ -302,7 +302,7 @@ public class Policy extends AbstractPolicy {
         // next, collect the Policy-specific elements
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (name.equals("Rule")) {
                 rules.add(Rule.getInstance(child, metaData, manager));
@@ -365,7 +365,7 @@ public class Policy extends AbstractPolicy {
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("CombinerParameter"))
+            if (DOMHelper.getLocalName(node).equals("CombinerParameter"))
                 parameters.add(CombinerParameter.getInstance(node));
         }
     }
@@ -381,9 +381,9 @@ public class Policy extends AbstractPolicy {
      */
     public static Policy getInstance(Node root) throws ParsingException {
         // first off, check that it's the right kind of node
-        if (!root.getNodeName().equals("Policy")) {
+        if (!DOMHelper.getLocalName(root).equals("Policy")) {
             throw new ParsingException("Cannot create Policy from root of " + "type "
-                    + root.getNodeName());
+                    + DOMHelper.getLocalName(root));
         }
 
         return new Policy(root);

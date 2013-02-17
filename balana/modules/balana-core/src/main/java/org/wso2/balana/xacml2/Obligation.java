@@ -106,7 +106,7 @@ public class Obligation extends AbstractObligation implements ObligationResult {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("AttributeAssignment")) {
+            if (DOMHelper.getLocalName(node).equals("AttributeAssignment")) {
                 try {
                     URI attrId = new URI(node.getAttributes().getNamedItem("AttributeId")
                             .getNodeValue());

@@ -218,7 +218,7 @@ public class ConfigurationStore {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String childName = child.getNodeName();
+            String childName = DOMHelper.getLocalName(child);
             String elementName = null;
 
             // get the element's name
@@ -360,7 +360,7 @@ public class ConfigurationStore {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (name.equals("policyFinderModule")) {
                 policyModules.add(loadClass("module", child));
@@ -408,7 +408,7 @@ public class ConfigurationStore {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if (child.getNodeName().equals("datatype")) {
+            if (DOMHelper.getLocalName(child).equals("datatype")) {
                 // a datatype is a class with an identifier
                 String identifier = child.getAttributes().getNamedItem("identifier").getNodeValue();
                 AttributeProxy proxy = (AttributeProxy) (loadClass("datatype", child));
@@ -445,7 +445,7 @@ public class ConfigurationStore {
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
 
-            if (child.getNodeName().equals("algorithm")) {
+            if (DOMHelper.getLocalName(child).equals("algorithm")) {
                 // an algorithm is a simple class element
                 CombiningAlgorithm alg = (CombiningAlgorithm) (loadClass("algorithm", child));
                 try {
@@ -495,7 +495,7 @@ public class ConfigurationStore {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (name.equals("target")) {
                 if (logger.isDebugEnabled()) {
@@ -527,7 +527,7 @@ public class ConfigurationStore {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (name.equals("function")) {
                 // a function section is a simple class element
@@ -680,7 +680,7 @@ public class ConfigurationStore {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (child.getNodeType() == Node.ELEMENT_NODE) {
                 if (name.equals("string")) {

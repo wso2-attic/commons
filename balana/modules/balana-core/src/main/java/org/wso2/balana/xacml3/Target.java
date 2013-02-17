@@ -74,7 +74,7 @@ public class Target extends AbstractTarget {
 
         for(int i = 0; i < children.getLength(); i++){
             Node child = children.item(i);
-            if("AnyOf".equals(child.getNodeName())){
+            if("AnyOf".equals(DOMHelper.getLocalName(child))){
                 anyOfSelections.add(AnyOfSelection.getInstance(child, metaData));
             }
         }

@@ -109,7 +109,7 @@ public class AdviceExpression {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("AttributeAssignmentExpression")) {
+            if (DOMHelper.getLocalName(node).equals("AttributeAssignmentExpression")) {
                 try {
                     AttributeAssignmentExpression expression = AttributeAssignmentExpression.
                             getInstance(node, metaData);

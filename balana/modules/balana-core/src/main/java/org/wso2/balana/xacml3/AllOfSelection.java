@@ -64,7 +64,7 @@ public class AllOfSelection {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if ("Match".equals(child.getNodeName())) {
+            if ("Match".equals(DOMHelper.getLocalName(child))) {
                 targetMatches.add(TargetMatch.getInstance(child, metaData));
             }
         }

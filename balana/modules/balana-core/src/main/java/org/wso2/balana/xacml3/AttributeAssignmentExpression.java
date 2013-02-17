@@ -21,6 +21,7 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.EvaluationCtx;
@@ -94,9 +95,9 @@ public class AttributeAssignmentExpression {
         String issuer= null;
         Expression expression = null;
 
-        if (!root.getNodeName().equals("AttributeAssignmentExpression")) {
+        if (!DOMHelper.getLocalName(root).equals("AttributeAssignmentExpression")) {
             throw new ParsingException("ObligationExpression object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap nodeAttributes = root.getAttributes();

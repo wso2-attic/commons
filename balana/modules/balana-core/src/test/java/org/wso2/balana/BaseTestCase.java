@@ -19,6 +19,7 @@ package org.wso2.balana;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.wso2.balana.advance.AdvanceTestV3;
 import org.wso2.balana.basic.TestFunctionV3;
 import org.wso2.balana.basic.BasicTestV3;
 import org.wso2.balana.basic.TestMultipleRequestV3;
@@ -48,6 +49,8 @@ public class BaseTestCase extends TestSuite {
         testSuite.addTestSuite(TestXPathV3.class);
 
         testSuite.addTestSuite(ConformanceTestV3.class);
+        // test that has been written for jira issue
+        testSuite.addTestSuite(AdvanceTestV3.class);
         return testSuite;
     }
 }

@@ -21,6 +21,7 @@ import com.sun.org.apache.xpath.internal.NodeSet;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.DefaultNamespaceContext;
 import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.attr.AttributeValue;
@@ -239,14 +240,9 @@ public class XPathFunction extends FunctionBase {
             Node n = namedNodeMap.item(i);
             // we found the matching namespace, so get the prefix
             // and then break out
-            String nodeName = n.getNodeName();
+            String prefix = DOMHelper.getLocalName(n);
             String nodeValue= n.getNodeValue();
-            int index = nodeName.indexOf(':');
-            if (index != -1 && nodeValue != null) {
-                // we found a prefixed namespace
-                String prefix = nodeName.substring(index + 1);
-                nsMap.put(prefix, nodeValue);
-            }
+            nsMap.put(prefix, nodeValue);
         }
 
         // if there is not any namespace is defined for content element, default XACML request

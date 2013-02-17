@@ -77,9 +77,9 @@ public class ObligationExpression extends AbstractObligation {
         String effect;
 
         // First check that we're really parsing an Attribute
-        if (!root.getNodeName().equals("ObligationExpression")) {
+        if (!DOMHelper.getLocalName(root).equals("ObligationExpression")) {
             throw new ParsingException("ObligationExpression object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap nodeAttributes = root.getAttributes();
@@ -110,7 +110,7 @@ public class ObligationExpression extends AbstractObligation {
 
         for(int i = 0; i < children.getLength(); i ++){
             Node child = children.item(i);
-            if("AttributeAssignmentExpression".equals(child.getNodeName())){
+            if("AttributeAssignmentExpression".equals(DOMHelper.getLocalName(child))){
                 expressions.add(AttributeAssignmentExpression.getInstance(child, metaData));
             }
         }

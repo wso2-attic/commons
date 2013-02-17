@@ -20,6 +20,7 @@ package org.wso2.balana.xacml3;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 
 import java.io.OutputStream;
@@ -59,7 +60,7 @@ public class RequestDefaults {
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if ("XPathVersion".equals(node.getNodeName())){
+            if ("XPathVersion".equals(DOMHelper.getLocalName(node))){
                 xPathVersion = node.getFirstChild().getNodeValue();
             }
         }

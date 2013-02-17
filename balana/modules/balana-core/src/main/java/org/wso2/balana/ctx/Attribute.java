@@ -168,9 +168,9 @@ public class Attribute {
         AttributeFactory attributeFactory =  Balana.getInstance().getAttributeFactory();
 
         // First check that we're really parsing an Attribute
-        if (!root.getNodeName().equals("Attribute")) {
+        if (!DOMHelper.getLocalName(root).equals("Attribute")) {
             throw new ParsingException("Attribute object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap attrs = root.getAttributes();
@@ -222,7 +222,7 @@ public class Attribute {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("AttributeValue")) {
+            if (DOMHelper.getLocalName(node).equals("AttributeValue")) {
                 if(version == XACMLConstants.XACML_VERSION_3_0){
                     NamedNodeMap dataTypeAttribute = node.getAttributes();
                     try {

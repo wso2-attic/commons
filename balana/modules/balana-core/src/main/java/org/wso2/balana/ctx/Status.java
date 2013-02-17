@@ -35,6 +35,7 @@
 
 package org.wso2.balana.ctx;
 
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 
@@ -207,7 +208,7 @@ public class Status {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            String name = node.getNodeName();
+            String name = DOMHelper.getLocalName(node);
 
             if (name.equals("StatusCode")) {
                 code = parseStatusCode(node);

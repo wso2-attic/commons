@@ -20,6 +20,7 @@ package org.wso2.balana.xacml3;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
 
@@ -64,7 +65,7 @@ public class ObligationExpressions {
 
         for(int i = 0; i < children.getLength(); i ++){
             Node child = children.item(i);
-            if("ObligationExpression".equals(child.getNodeName())){
+            if("ObligationExpression".equals(DOMHelper.getLocalName(child))){
                 obligationExpressions.add(ObligationExpression.getInstance(child, metaData));    
             }
         }

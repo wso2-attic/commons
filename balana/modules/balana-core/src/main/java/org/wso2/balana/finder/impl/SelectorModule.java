@@ -134,14 +134,9 @@ public class SelectorModule extends AttributeFinderModule {
                 Node n = namedNodeMap.item(i);
                 // we found the matching namespace, so get the prefix
                 // and then break out
-                String nodeName = n.getNodeName();
+                String prefix = DOMHelper.getLocalName(n);
                 String nodeValue= n.getNodeValue();
-                int index = nodeName.indexOf(':');
-                if (index != -1 && nodeValue != null) {
-                    // we found a prefixed namespace
-                    String prefix = nodeName.substring(index + 1);
-                    nsMap.put(prefix, nodeValue);
-                }
+                nsMap.put(prefix, nodeValue);
             }
 
             // if there is not any namespace is defined for content element, default XACML request
@@ -195,14 +190,9 @@ public class SelectorModule extends AttributeFinderModule {
                 Node n = namedNodeMap.item(i);
                 // we found the matching namespace, so get the prefix
                 // and then break out
-                String nodeName = n.getNodeName();
+                String prefix = DOMHelper.getLocalName(n);
                 String nodeValue= n.getNodeValue();
-                int index = nodeName.indexOf(':');
-                if (index != -1 && nodeValue != null) {
-                    // we found a prefixed namespace
-                    String prefix = nodeName.substring(index + 1);
-                    nsMap.put(prefix, nodeValue);
-                }
+                nsMap.put(prefix, nodeValue);
             }
             
             // if there is not any namespace is defined for content element, default XACML request

@@ -224,10 +224,12 @@ public class Rule implements PolicyTreeElement {
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String cname = child.getNodeName();
+            String cname = DOMHelper.getLocalName(child);
 
             if (cname.equals("Description")) {
-                description = child.getFirstChild().getNodeValue();
+                if(child.getFirstChild() != null){
+                    description = child.getFirstChild().getNodeValue();
+                }
             } else if (cname.equals("Target")) {
                 target = TargetFactory.getFactory().getTarget(child, metaData);
             } else if (cname.equals("Condition")) {
@@ -236,7 +238,7 @@ public class Rule implements PolicyTreeElement {
                 NodeList nodes = child.getChildNodes();
                 for (int j = 0; j < nodes.getLength(); j++) {
                     Node node = nodes.item(j);
-                    if ("ObligationExpression".equals(node.getNodeName())){
+                    if ("ObligationExpression".equals(DOMHelper.getLocalName(node))){
                         obligationExpressions.add(ObligationFactory.getFactory().
                                 getObligation(node, metaData));
                     }
@@ -245,7 +247,7 @@ public class Rule implements PolicyTreeElement {
                 NodeList nodes = child.getChildNodes();
                 for (int j = 0; j < nodes.getLength(); j++) {
                     Node node = nodes.item(j);
-                    if ("AdviceExpression".equals(node.getNodeName()))
+                    if ("AdviceExpression".equals(DOMHelper.getLocalName(node)))
                         adviceExpressions.add(AdviceExpression.getInstance(node, metaData));
                 }
             }

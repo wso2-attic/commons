@@ -101,7 +101,7 @@ public class TargetMatchGroup {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
             String matchName = TargetMatch.NAMES[matchType] + "Match";
             if (name.equals(matchName)) {
                 matches.add(TargetMatch.getInstance(child, matchType, metaData));

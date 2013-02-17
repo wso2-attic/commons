@@ -20,6 +20,7 @@ package org.wso2.balana.ctx;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.attr.AttributeFactory;
@@ -91,9 +92,9 @@ public class AttributeAssignment extends AttributeValue {
         String issuer = null;
         String content = null;
 
-        if (!root.getNodeName().equals("AttributeAssignment")) {
+        if (!DOMHelper.getLocalName(root).equals("AttributeAssignment")) {
             throw new ParsingException("AttributeAssignment object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap nodeAttributes = root.getAttributes();

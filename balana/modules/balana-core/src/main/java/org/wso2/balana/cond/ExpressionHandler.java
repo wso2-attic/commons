@@ -45,7 +45,7 @@ public class ExpressionHandler {
      */
     public static Expression parseExpression(Node root, PolicyMetaData metaData,
             VariableManager manager) throws ParsingException {
-        String name = root.getNodeName();
+        String name = DOMHelper.getLocalName(root);
 
         if (name.equals("Apply")) {
             return Apply.getInstance(root, metaData, manager);

@@ -21,6 +21,7 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ObligationResult;
 import org.wso2.balana.ParsingException;
@@ -72,9 +73,9 @@ public class Obligation implements ObligationResult{
         URI obligationId;
         List<AttributeAssignment> assignments = new ArrayList<AttributeAssignment>();
 
-        if (!root.getNodeName().equals("Obligation")) {
+        if (!DOMHelper.getLocalName(root).equals("Obligation")) {
             throw new ParsingException("Obligation object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap nodeAttributes = root.getAttributes();
@@ -90,7 +91,7 @@ public class Obligation implements ObligationResult{
 
         for(int i = 0; i < children.getLength(); i ++){
             Node child = children.item(i);
-            if("AttributeAssignment".equals(child.getNodeName())){
+            if("AttributeAssignment".equals(DOMHelper.getLocalName(child))){
                 assignments.add(AttributeAssignment.getInstance(child));
             }
         }

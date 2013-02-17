@@ -111,7 +111,7 @@ public class TargetSection
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
             String typeName = TargetMatch.NAMES[matchType];
 
             if (name.equals(typeName)) {

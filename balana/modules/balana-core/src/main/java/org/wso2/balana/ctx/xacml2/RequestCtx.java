@@ -35,6 +35,7 @@
 
 package org.wso2.balana.ctx.xacml2;
 
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
@@ -184,10 +185,10 @@ public class RequestCtx extends AbstractRequestCtx {
         Set<Attribute> newEnvironment = null;
 
         // First check to be sure the node passed is indeed a Request node.
-        String tagName = root.getNodeName();
+        String tagName = DOMHelper.getLocalName(root);
         if (!tagName.equals("Request")) {
             throw new ParsingException("Request cannot be constructed using " + "type: "
-                    + root.getNodeName());
+                    + DOMHelper.getLocalName(root));
         }
 
         // Now go through its child nodes, finding Subject,
@@ -196,7 +197,7 @@ public class RequestCtx extends AbstractRequestCtx {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
-            String tag = node.getNodeName();
+            String tag = DOMHelper.getLocalName(node);
             if (tag.equals("Subject")) {
                 // see if there is a category
                 Node catNode = node.getAttributes().getNamedItem("SubjectCategory");
@@ -227,7 +228,7 @@ public class RequestCtx extends AbstractRequestCtx {
                 NodeList nodes = node.getChildNodes();
                 for (int j = 0; j < nodes.getLength(); j++) {
                     Node child = nodes.item(j);
-                    if (node.getNodeName().equals(XACMLConstants.RESOURCE_CONTENT)) {
+                    if (DOMHelper.getLocalName(node).equals(XACMLConstants.RESOURCE_CONTENT)) {
                         // only one value can be in an Attribute
                         if (content != null){
                             throw new ParsingException("Too many resource content elements are defined.");
@@ -278,7 +279,7 @@ public class RequestCtx extends AbstractRequestCtx {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("Attribute"))
+            if (DOMHelper.getLocalName(node).equals("Attribute"))
                 set.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_2_0));
         }
 

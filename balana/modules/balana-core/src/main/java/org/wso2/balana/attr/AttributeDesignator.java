@@ -184,7 +184,7 @@ public class AttributeDesignator extends AbstractDesignator {
         URI category = null;
         int target;
 
-        String tagName = root.getNodeName();
+        String tagName = DOMHelper.getLocalName(root);
 
         if (tagName.equals("SubjectAttributeDesignator")) {
             target = SUBJECT_TARGET;
@@ -196,7 +196,7 @@ public class AttributeDesignator extends AbstractDesignator {
             target = ENVIRONMENT_TARGET;
         } else {
             throw new ParsingException("AttributeDesignator cannot be constructed using " + "type: "
-                    + root.getNodeName());
+                    + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap attrs = root.getAttributes();

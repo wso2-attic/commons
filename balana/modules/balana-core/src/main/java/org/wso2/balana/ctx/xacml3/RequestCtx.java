@@ -38,6 +38,7 @@ package org.wso2.balana.ctx.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.XACMLConstants;
@@ -132,10 +133,10 @@ public class RequestCtx extends AbstractRequestCtx {
         RequestDefaults defaults = null;
 
         // First check to be sure the node passed is indeed a Request node.
-        String tagName = root.getNodeName();
+        String tagName = DOMHelper.getLocalName(root);
         if (!tagName.equals("Request")) {
             throw new ParsingException("Request cannot be constructed using " + "type: "
-                    + root.getNodeName());
+                    + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap attrs = root.getAttributes();
@@ -166,7 +167,7 @@ public class RequestCtx extends AbstractRequestCtx {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
-            String tag = node.getNodeName();
+            String tag = DOMHelper.getLocalName(node);
             if (tag.equals(XACMLConstants.ATTRIBUTES_ELEMENT)) {
                 Attributes attributes = Attributes.getInstance(node);
                 attributesElements.add(attributes);

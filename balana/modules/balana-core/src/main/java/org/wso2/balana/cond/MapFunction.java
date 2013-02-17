@@ -35,6 +35,7 @@
 
 package org.wso2.balana.cond;
 
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.Indenter;
 import org.wso2.balana.ParsingException;
@@ -127,7 +128,7 @@ class MapFunction implements Function {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
 
-            if (node.getNodeName().equals("Function")) {
+            if (DOMHelper.getLocalName(node).equals("Function")) {
                 String funcName = node.getAttributes().getNamedItem("FunctionId").getNodeValue();
                 FunctionFactory factory = FunctionFactory.getGeneralInstance();
                 try {

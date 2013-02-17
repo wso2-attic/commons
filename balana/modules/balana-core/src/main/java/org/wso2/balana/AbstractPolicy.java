@@ -254,7 +254,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            if (child.getNodeName().equals(policyPrefix + "Defaults"))
+            if (DOMHelper.getLocalName(child).equals(policyPrefix + "Defaults"))
                 handleDefaults(child);
         }
 
@@ -269,7 +269,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String cname = child.getNodeName();
+            String cname = DOMHelper.getLocalName(child);
 
             if (cname.equals("Description")) {
                 if (child.hasChildNodes()){
@@ -335,8 +335,8 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("ObligationExpression") ||
-                                node.getNodeName().equals("Obligation")){
+            if (DOMHelper.getLocalName(node).equals("ObligationExpression") ||
+                                DOMHelper.getLocalName(node).equals("Obligation")){
                 AbstractObligation obligation = ObligationFactory.getFactory().
                                                                 getObligation(node, metaData);
                 obligationExpressions.add(obligation);
@@ -355,7 +355,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("AdviceExpression"))
+            if (DOMHelper.getLocalName(node).equals("AdviceExpression"))
                 adviceExpressions.add(AdviceExpression.getInstance(node, metaData));
         }
     }
@@ -373,7 +373,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("XPathVersion")){
+            if (DOMHelper.getLocalName(node).equals("XPathVersion")){
                 defaultVersion = node.getFirstChild().getNodeValue();
             }
         }
@@ -389,7 +389,7 @@ public abstract class AbstractPolicy  implements PolicyTreeElement{
 
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("CombinerParameter")){
+            if (DOMHelper.getLocalName(node).equals("CombinerParameter")){
                 parameters.add(CombinerParameter.getInstance(node));
             }
         }

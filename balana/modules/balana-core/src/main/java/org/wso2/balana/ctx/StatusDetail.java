@@ -35,6 +35,7 @@
 
 package org.wso2.balana.ctx;
 
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ParsingException;
 
 import java.io.ByteArrayInputStream;
@@ -200,7 +201,7 @@ public class StatusDetail {
      */
     public static StatusDetail getInstance(Node root) throws ParsingException {
         // check that it's really a StatusDetailType root
-        if (!root.getNodeName().equals("StatusDetail")){
+        if (!DOMHelper.getLocalName(root).equals("StatusDetail")){
             throw new ParsingException("not a StatusDetail node");
         }
         return new StatusDetail(root);

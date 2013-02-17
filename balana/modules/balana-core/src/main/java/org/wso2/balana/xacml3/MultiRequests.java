@@ -19,6 +19,7 @@ package org.wso2.balana.xacml3;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.XACMLConstants;
 
@@ -57,21 +58,21 @@ public class MultiRequests {
         Set<RequestReference> requestReferences = new HashSet<RequestReference>();
 
         // First check that we're really parsing an MultiRequests
-        if (!root.getNodeName().equals("MultiRequests")) {
+        if (!DOMHelper.getLocalName(root).equals("MultiRequests")) {
             throw new ParsingException("MultiRequests object cannot be created "
-                    + "with root node of type: " + root.getNodeName());
+                    + "with root node of type: " + DOMHelper.getLocalName(root));
         }
 
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if ("RequestReference".equals(node.getNodeName())){
+            if ("RequestReference".equals(DOMHelper.getLocalName(node))){
                 Set<AttributesReference> attributesReferences = new HashSet<AttributesReference>();
                 RequestReference requestReference = new RequestReference();
                 NodeList childNodes = node.getChildNodes();
                 for(int j = 0; j < childNodes.getLength(); j++){
                     Node childNode = childNodes.item(j);
-                    if("AttributesReference".equals(childNode.getNodeName())){
+                    if("AttributesReference".equals(DOMHelper.getLocalName(childNode))){
                         AttributesReference attributesReference = new AttributesReference();
                         NamedNodeMap nodeAttributes = childNode.getAttributes();
                         try {

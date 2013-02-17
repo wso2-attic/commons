@@ -161,7 +161,7 @@ public class Target extends AbstractTarget {
 
         for (int i = 0; i < children.getLength(); i++) {
             Node child = children.item(i);
-            String name = child.getNodeName();
+            String name = DOMHelper.getLocalName(child);
 
             if (name.equals("Subjects")) {
                 subjects = TargetSection.getInstance(child, TargetMatch.SUBJECT, metaData);

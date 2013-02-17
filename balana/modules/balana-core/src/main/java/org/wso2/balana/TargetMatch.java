@@ -217,7 +217,7 @@ public class TargetMatch {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            String name = node.getNodeName();
+            String name = DOMHelper.getLocalName(node);
 
             if (XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion()
                     && "AttributeDesignator".equals(name)){

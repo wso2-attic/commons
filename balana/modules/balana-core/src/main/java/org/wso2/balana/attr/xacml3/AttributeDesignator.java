@@ -107,10 +107,10 @@ public class AttributeDesignator extends AbstractDesignator {
         boolean mustBePresent = false;
 
         // First check to be sure the node passed is indeed a AttributeDesignator node.
-        String tagName = root.getNodeName();
+        String tagName = DOMHelper.getLocalName(root);
         if (!tagName.equals("AttributeDesignator")) {
             throw new ParsingException("AttributeDesignator cannot be constructed using " + "type: "
-                    + root.getNodeName());
+                    + DOMHelper.getLocalName(root));
         }
 
         NamedNodeMap attrs = root.getAttributes();

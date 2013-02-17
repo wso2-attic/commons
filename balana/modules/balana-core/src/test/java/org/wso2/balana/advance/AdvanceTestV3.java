@@ -55,55 +55,13 @@ public class AdvanceTestV3 extends TestCase {
 
         String reqResNo;
         Set<String> policies = new HashSet<String>();
-        policies.add("TestPolicy_0001.xml");
-        PDP pdp = getPDPNewInstance(policies);
-        log.info("Advance Test 0001 is started");
+        policies.add("TestPolicy_0002.xml");
+        log.info("Advance Test 0002 is started. This test is for Jira IDENTITY-416");
 
         for(int i = 1; i < 2 ; i++){
 
             if(i < 10){
                 reqResNo = "0" + i;
-            } else {
-                reqResNo = Integer.toString(i);
-            }
-
-            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
-                                                        "request_0001_" + reqResNo + ".xml");
-            if(request != null){
-                log.info("Request that is sent to the PDP :  " + request);
-                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
-                if(response != null){
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
-                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
-                                    VERSION_DIRECTORY, "response_0001_" + reqResNo + ".xml");
-                    if(expectedResponseCtx != null){
-                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
-                    } else {
-                        assertTrue("Response read from file is Null",false);
-                    }
-                } else {
-                    assertFalse("Response received PDP is Null",false);
-                }
-            } else {
-                assertTrue("Request read from file is Null", false);
-            }
-
-            log.info("Advance Test 0001 is finished");
-        }
-    }
-
-    public void testAdvanceTest0002() throws Exception {
-
-        String reqResNo;
-        Set<String> policies = new HashSet<String>();
-        policies.add("TestPolicy_0002.xml");
-        PDP pdp = getPDPNewInstance(policies);
-        log.info("Advance Test 0002 is started");
-
-        for(int i = 1; i < 2 ; i++){
-
-            if(i < 10){
-                reqResNo = "0" + i; 
             } else {
                 reqResNo = Integer.toString(i);
             }
@@ -134,14 +92,6 @@ public class AdvanceTestV3 extends TestCase {
     }
 
 
-
-
-    /**
-     * Returns a new PDP instance with new XACML policies
-     *
-     * @param policies  Set of XACML policy file names
-     * @return a  PDP instance
-     */
     /**
      * Returns a new PDP instance with new XACML policies
      *

@@ -111,7 +111,7 @@ public class Result extends AbstractResult{
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            String name = node.getNodeName();
+            String name = DOMHelper.getLocalName(node);
 
             if (name.equals("Decision")) {
                 String type = node.getFirstChild().getNodeValue();
@@ -174,7 +174,7 @@ public class Result extends AbstractResult{
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("Obligation")){
+            if (DOMHelper.getLocalName(node).equals("Obligation")){
                 list.add(Obligation.getInstance(node));
             }
         }
@@ -199,7 +199,7 @@ public class Result extends AbstractResult{
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("Advice")){
+            if (DOMHelper.getLocalName(node).equals("Advice")){
                 list.add(Advice.getInstance(node));
             }
         }

@@ -221,7 +221,7 @@ public class FileBasedPolicyFinderModule extends PolicyFinderModule{
 
             // handle the policy, if it's a known type
             Element root = doc.getDocumentElement();
-            String name = root.getLocalName();
+            String name = DOMHelper.getLocalName(root);
 
             if (name.equals("Policy")) {
                 policy = Policy.getInstance(root);

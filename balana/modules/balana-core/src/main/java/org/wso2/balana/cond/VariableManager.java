@@ -35,6 +35,7 @@
 
 package org.wso2.balana.cond;
 
+import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.PolicyMetaData;
 import org.wso2.balana.ProcessingException;
@@ -180,7 +181,7 @@ public class VariableManager {
             xprNode = nodes.item(i++);
 
         // now see if the node is an Apply
-        if (xprNode.getNodeName().equals("Apply")) {
+        if (DOMHelper.getLocalName(xprNode).equals("Apply")) {
             try {
                 // get the function in the Apply...
                 Function function = ExpressionHandler.getFunction(xprNode, metaData,

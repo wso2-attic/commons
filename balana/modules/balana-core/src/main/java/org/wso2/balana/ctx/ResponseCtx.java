@@ -131,7 +131,7 @@ public class ResponseCtx {
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            if (node.getNodeName().equals("Result")) {
+            if (DOMHelper.getLocalName(node).equals("Result")) {
                 if(version == XACMLConstants.XACML_VERSION_3_0){
                     results.add(org.wso2.balana.ctx.xacml3.Result.getInstance(node));
                 } else {
