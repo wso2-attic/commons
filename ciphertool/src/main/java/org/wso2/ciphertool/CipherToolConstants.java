@@ -23,14 +23,14 @@ package org.wso2.ciphertool;
  */
 public class CipherToolConstants {
 
-    public static final String SECURE_VAULT_NS = "http://org.wso2.securevault/configuration";
+    public static final String SECURE_VAULT_NS = "http://org.wso2.securevault";
     public static final String SECURE_VAULT_CAPITAL = "svns:SecureVault";
     public static final String SECURE_VAULT_SIMPLE = "svns:secureVault";
     public static final String SECURE_VAULT_NS_PREFIX = "xmlns:svns";
     public static final String SECURE_VAULT_ATTRIBUTE = "provider";
     public static final String SECURE_VAULT_ALIAS= "svns:secretAlias";    
     public static final String SECRET_PROVIDER = "org.wso2.securevault.secret.handler.SecretManagerSecretCallbackHandler";
-    public static final String CARBON_DEFAULT_SECRET_PROVIDER = "org.wso2.carbon.securevault.DefaultSecretCallbackHandler";
+    public static final String CARBON_DEFAULT_SECRET_PROVIDER = "org.wso2.securevault.secret.handler.DefaultSecretCallbackHandler";
     public static final String CONF_DIR = "conf";
     public static final String SECURITY_DIR = "security";
     public static final String ETC_DIR = "etc";
