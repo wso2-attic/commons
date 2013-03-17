@@ -1,0 +1,10 @@
+Pre-Requisites
+==============
+
+1. Change the server/port values of "User Defined Variables" 
+2. Change the 'Filename' value of "CSV Data Set Config"
+3. Change the following parameters of "User Parameters" according to your environment
+- username
+- password
+- warfile (only the path. Leave the part ${aafFileNames}
+
