@@ -1,5 +1,5 @@
 #!/bin/bash
 
-replace $1 $2 -- gen.sh
+replace $1 $2 $3-- gen.sh
 
  
