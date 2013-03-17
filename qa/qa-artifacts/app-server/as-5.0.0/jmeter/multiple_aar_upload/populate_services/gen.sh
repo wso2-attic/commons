@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /opt/svn_repos/qa_artifacts/qa-artifacts/app-server/as-5.0.0/jmeter/multiple_aar_upload/populate_services
+cd {change_me_to_the_current_directory}
 i=1
 while test $i != 101
 do
