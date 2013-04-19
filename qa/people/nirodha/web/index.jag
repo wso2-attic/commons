@@ -1,0 +1,9 @@
+<link href="myCSSfile.css" rel="stylesheet" type="text/css">
+<%
+print("Welcome to QA Portal");
+%>
+<br>
+<br>
+<br>
+ <a href="./web/addProduct.html">Add Product</a>  <br>
+<a href="./web/showProducts.jag">Show Products</a>  <br>
