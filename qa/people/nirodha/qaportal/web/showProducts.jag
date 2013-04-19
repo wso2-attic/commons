@@ -1,0 +1,39 @@
+
+<h1><strong>Products List
+</strong></h1>
+<%
+var db = new Database("jdbc:mysql://localhost:3306/QA_PORTAL_DB", "root", "root");
+var result = db.query("SELECT * FROM QAP_PRODUCT");
+%>
+
+<table style="text-align: left; width: 387px; height: 90px;" border="1"
+cellpadding="2" cellspacing="2">
+    <tbody>
+        <tr>
+            <td style="vertical-align: top; width: 115px;">
+               <big><span style="font-weight: bold;">Product ID</span><br>
+               </big>
+            </td>
+            <td style="vertical-align: top; width: 252px;">
+                <big><span style="font-weight: bold;">Product Name</span><br>
+                </big>
+            </td>
+        </tr>
+
+
+<%
+for (var i = 0; i < result.length; i++) {
+%>
+    <tr>
+        <td style="vertical-align: top; width: 115px;"><br>
+        <% print(result[i].QAP_PRODUCT_ID); %>
+        </td>
+        <td style="vertical-align: top; width: 252px;"><br>
+        <% print(result[i].QAP_PRODUCT_NAME); %>
+        </td>
+    </tr>
+<%
+ }
+%>
+    </tbody>
+</table>

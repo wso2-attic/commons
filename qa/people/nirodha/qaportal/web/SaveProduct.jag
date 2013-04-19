@@ -1,0 +1,11 @@
+
+<%
+print("Method : " + request.getMethod() + "<br/>");
+var product_name = request.getParameter("txt_productName");
+print("Product Name : " + product_name + "<br/>");
+
+var db = new Database("jdbc:mysql://localhost:3306/QA_PORTAL_DB", "root", "root");
+db.query("INSERT INTO QAP_PRODUCT(QAP_PRODUCT_NAME) VALUES('" + product_name + "');");
+var result = db.query("SELECT * FROM QAP_PRODUCT");
+//print(result);
+%>
