@@ -84,7 +84,7 @@ public class CreateUsers {
             //encode the user in JSON format
             String encodedUser;
             //====================
-            BulkData bulkData = new BulkData();
+            BulkData bulkData = scimClient.createBulkRequestData();
             bulkData.setFailOnErrors(2);
             bulkData.addSchemas("urn:scim:schemas:core:1.0");
 

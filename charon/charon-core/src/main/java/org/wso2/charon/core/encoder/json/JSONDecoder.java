@@ -424,38 +424,45 @@ public class JSONDecoder implements Decoder {
 
             for (int i = 0; i < membersAttributeOperations.length(); i++) {
                 JSONObject member = (JSONObject) membersAttributeOperations.get(i);
-                //Request type - /Users or /Groups
+                //Request path - /Users or /Groups
                 String requestType = member.optString(SCIMConstants.CommonSchemaConstants.PATH);
                 //Request method  - POST,PUT..etc
                 String requestMethod = member.optString(SCIMConstants.CommonSchemaConstants.METHOD);
 
                 //only filter the post requests (user or group creating methods)
                 if (requestMethod.equals("POST")) {
-                    //create user request list
-                    if (requestType.equals(SCIMConstants.CommonSchemaConstants.USERS_PATH)) {
-                        BulkRequestContent newRequestData = new BulkRequestContent();
+                    if (!member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID).equals("") &&
+                        !member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID).equals(null)) {
+                        //create user request list
+                        if (requestType.equals(SCIMConstants.CommonSchemaConstants.USERS_PATH)) {
+                            BulkRequestContent newRequestData = new BulkRequestContent();
 
-                        newRequestData.setData(member.optString(SCIMConstants.CommonSchemaConstants.DATA));
-                        newRequestData.setBulkID(member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID));
-                        newRequestData.setMethod(requestMethod);
-                        newRequestData.setPath(requestType);
+                            newRequestData.setData(member.optString(SCIMConstants.CommonSchemaConstants.DATA));
+                            newRequestData.setBulkID(member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID));
+                            newRequestData.setMethod(requestMethod);
+                            newRequestData.setPath(requestType);
 
-                        userCreatingRequestList.add(newRequestData);
-                        logger.debug("User Request-" + i + "-" + newRequestData.toString());
-                    }
+                            userCreatingRequestList.add(newRequestData);
+                            logger.debug("User Request-" + i + "-" + newRequestData.toString());
+                        }
 
-                    //create group request list
-                    if (requestType.equals(SCIMConstants.CommonSchemaConstants.GROUPS_PATH)) {
+                        //create group request list
+                        if (requestType.equals(SCIMConstants.CommonSchemaConstants.GROUPS_PATH)) {
+                            BulkRequestContent newRequestData = new BulkRequestContent();
 
-//                        BulkRequestContent newRequestData = new BulkRequestContent();
-//
-//                        newRequestData.setData(member.optString("data"));
-//                        newRequestData.setBulkID(member.optString("bulkId"));
-//                        newRequestData.setMethod(requestMethod);
-//                        newRequestData.setPath(type);
-//
-//                        groupCreatingRequestList.add(newRequestData);
+                            newRequestData.setData(member.optString(SCIMConstants.CommonSchemaConstants.DATA));
+                            newRequestData.setBulkID(member.optString(SCIMConstants.CommonSchemaConstants.BULK_ID));
+                            newRequestData.setMethod(requestMethod);
+                            newRequestData.setPath(requestType);
+
+                            groupCreatingRequestList.add(newRequestData);
 //                        logger.debug("Group Request-" + i + "-" + newRequestData.toString());
+                        }
+                    } else {
+                        String error = "JSON string could not be decoded properly.Required " +
+                                       "attribute BULK_ID is missing in the request";
+                        logger.error(error);
+                        throw new BadRequestException();
                     }
                 }
 
@@ -474,7 +481,7 @@ public class JSONDecoder implements Decoder {
             logger.error(error);
             throw new BadRequestException();
         }
-        
+
         return bulkRequestDataObject;
     }
 

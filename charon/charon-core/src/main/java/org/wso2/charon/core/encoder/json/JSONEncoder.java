@@ -28,6 +28,7 @@ import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.AbstractCharonException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.SCIMObject;
 import org.wso2.charon.core.objects.User;
 import org.wso2.charon.core.objects.bulk.BulkData;
@@ -296,7 +297,7 @@ public class JSONEncoder implements Encoder {
     public String encodeBulkResponseData(BulkResponseData bulkResponseData) {
         String encodedString = "";
         List<BulkResponseContent> userResponseDataList = bulkResponseData.getUserCreatingResponse();
-
+        List<BulkResponseContent> groupResponseDataList = bulkResponseData.getGroupCreatingResponse();
         JSONObject rootObject = new JSONObject();
 
         //encode schemas
@@ -306,14 +307,15 @@ public class JSONEncoder implements Encoder {
                                      bulkResponseData.getSchemas().toArray(), rootObject);
 
             //[Operations] - multi value attribute
-            JSONObject[] operationResponseList = new JSONObject[userResponseDataList.size()];
-            JSONObject operationObject = new JSONObject();
-            //user creating response
+            JSONObject[] operationResponseList = new JSONObject[userResponseDataList.size() + groupResponseDataList.size()];
+
+            //POST: User creating response
             int i = 0;
             for (BulkResponseContent userCreatingResponse : userResponseDataList) {
 
                 SCIMResponse scimResponse = userCreatingResponse.getScimResponse();
                 JSONObject decodedObject = new JSONObject(new JSONTokener(scimResponse.getResponseMessage()));
+                JSONObject operationObject = new JSONObject();
 
                 //*****Split SCIM response******
                 //get location from meta section
@@ -331,7 +333,7 @@ public class JSONEncoder implements Encoder {
 
 
                 operationObject.put(SCIMConstants.CommonSchemaConstants.LOCATION, location);
-                operationObject.put(SCIMConstants.CommonSchemaConstants.METHOD, location);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.METHOD, "POST");
                 operationObject.put(SCIMConstants.CommonSchemaConstants.BULK_ID, bulkId);
                 operationObject.put(SCIMConstants.CommonSchemaConstants.STATUS, status);
 
@@ -339,7 +341,39 @@ public class JSONEncoder implements Encoder {
 
                 i++;
             }
-            //TODO: Have to encode the groups response data
+            //POST: Group creating response
+            for (BulkResponseContent groupCreatingResponse : groupResponseDataList) {
+
+                SCIMResponse scimResponse = groupCreatingResponse.getScimResponse();
+                JSONObject decodedObject = new JSONObject(new JSONTokener(scimResponse.getResponseMessage()));
+                JSONObject operationObject = new JSONObject();
+
+                //*****Split SCIM response******
+                //get location from meta section
+                JSONObject meta = decodedObject.optJSONObject(SCIMConstants.CommonSchemaConstants.META);
+                String location = meta.optString(SCIMConstants.CommonSchemaConstants.LOCATION);
+                //get method from response
+                String method = groupCreatingResponse.getMethod();
+                //get bulkID from response
+                String bulkId = groupCreatingResponse.getBulkID();
+
+                //create status object
+                String code = groupCreatingResponse.getResponseCode();
+                JSONObject status = new JSONObject();
+                status.put(SCIMConstants.CommonSchemaConstants.CODE, code);
+
+
+                operationObject.put(SCIMConstants.CommonSchemaConstants.LOCATION, location);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.METHOD, "POST");
+                operationObject.put(SCIMConstants.CommonSchemaConstants.BULK_ID, bulkId);
+                operationObject.put(SCIMConstants.CommonSchemaConstants.STATUS, status);
+
+                operationResponseList[i] = operationObject;
+
+                i++;
+            }
+
+            //TODO: Have to encode the other types in User and Groups response data
 
             //set operations
             this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.OPERATIONS, operationResponseList, rootObject);
@@ -368,33 +402,57 @@ public class JSONEncoder implements Encoder {
                                                                         bulkData.getFailOnErrors());
             this.encodeSimpleAttribute(failOnErrorsAttribute, rootObject);
 
-            //encode user requests
-            JSONObject[] userRequestList = new JSONObject[bulkData.getUserList().size()];
+            //encode all User and Group requests
+            JSONObject[] allRequestList = new JSONObject[bulkData.getUserList().size() + bulkData.getGroupList().size()];
             JSONObject encodedUserRequest;
             int i = 0;
             for (User user : bulkData.getUserList()) {
-                encodedUserRequest = this.getSCIMObjectAsJSONObject(user);
                 JSONObject userOperation = new JSONObject();
-
                 //set [bulkId]
                 userOperation.put(SCIMConstants.CommonSchemaConstants.BULK_ID, user.getBulkID());
                 //set [path]
                 userOperation.put(SCIMConstants.CommonSchemaConstants.PATH, user.getPath());
                 //set [method]
                 userOperation.put(SCIMConstants.CommonSchemaConstants.METHOD, user.getMethod());
+                // encode the user
+                encodedUserRequest = this.getSCIMObjectAsJSONObject(user);
                 //set [data]
                 SimpleAttribute dataAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.DATA,
                                                                     encodedUserRequest);
+
                 this.encodeSimpleAttribute(dataAttribute, userOperation);
 
+                allRequestList[i] = userOperation;
 
-                userRequestList[i] = userOperation;
+                i = i + 1;
+            }
+
+
+            JSONObject encodedGroupRequest;
+            //encode the Group request and append to allRequestList.
+            for (Group group : bulkData.getGroupList()) {
+                JSONObject groupOperation = new JSONObject();
+                //set [bulkId]
+                groupOperation.put(SCIMConstants.CommonSchemaConstants.BULK_ID, group.getBulkID());
+                //set [path]
+                groupOperation.put(SCIMConstants.CommonSchemaConstants.PATH, group.getPath());
+                //set [method]
+                groupOperation.put(SCIMConstants.CommonSchemaConstants.METHOD, group.getMethod());
+                // encode the user
+                encodedGroupRequest = this.getSCIMObjectAsJSONObject(group);
+                //set [data]
+                SimpleAttribute dataAttribute = new SimpleAttribute(SCIMConstants.CommonSchemaConstants.DATA,
+                                                                    encodedGroupRequest);
+
+                this.encodeSimpleAttribute(dataAttribute, groupOperation);
+
+                allRequestList[i] = groupOperation;
 
                 i = i + 1;
             }
 
             //set to [Operations]
-            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.OPERATIONS, userRequestList, rootObject);
+            this.encodeArrayOfValues(SCIMConstants.CommonSchemaConstants.OPERATIONS, allRequestList, rootObject);
 
             encodedString = rootObject.toString();
 

@@ -22,6 +22,7 @@ import org.wso2.charon.core.objects.bulk.BulkRequestContent;
 import org.wso2.charon.core.objects.bulk.BulkRequestData;
 import org.wso2.charon.core.objects.bulk.BulkResponseContent;
 import org.wso2.charon.core.objects.bulk.BulkResponseData;
+import org.wso2.charon.core.protocol.endpoints.GroupResourceEndpoint;
 import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 
@@ -33,6 +34,7 @@ import java.util.List;
  */
 public class BulkRequestProcessor {
     private UserResourceEndpoint userResourceEndpoint;
+    private GroupResourceEndpoint groupResourceEndpoint;
     private String inputFormat;
     private String outputFormat;
     private int failOnError;
@@ -53,6 +55,14 @@ public class BulkRequestProcessor {
 
     public void setUserResourceEndpoint(UserResourceEndpoint userResourceEndpoint) {
         this.userResourceEndpoint = userResourceEndpoint;
+    }
+
+    public GroupResourceEndpoint getGroupResourceEndpoint() {
+        return groupResourceEndpoint;
+    }
+
+    public void setGroupResourceEndpoint(GroupResourceEndpoint groupResourceEndpoint) {
+        this.groupResourceEndpoint = groupResourceEndpoint;
     }
 
     public String getOutputFormat() {
@@ -89,6 +99,7 @@ public class BulkRequestProcessor {
 
     public BulkRequestProcessor() {
         userResourceEndpoint = new UserResourceEndpoint();
+        groupResourceEndpoint = new GroupResourceEndpoint();
         inputFormat = SCIMConstants.APPLICATION_JSON;
         outputFormat = SCIMConstants.APPLICATION_JSON;
         failOnError = 0;
@@ -103,9 +114,13 @@ public class BulkRequestProcessor {
         //collect the response from bulk user creating requests.
         List<BulkResponseContent> bulkUserResponse = this.processUserCreatingRequests(
                 bulkRequestData.getUserCreatingRequests());
-        //TODO: Have to collect response form Group operations
+        List<BulkResponseContent> bulkGroupResponse = this.processGroupCreatingRequests(
+                bulkRequestData.getGroupCreatingRequests());
+
+        //TODO: Have to collect response of Other operations in User and Group endpoints
 
         bulkResponseData.setUserCreatingResponse(bulkUserResponse);
+        bulkResponseData.setGroupCreatingResponse(bulkGroupResponse);
         bulkResponseData.setSchemas(bulkRequestData.getSchemas());
 
         return bulkResponseData;
@@ -135,4 +150,25 @@ public class BulkRequestProcessor {
         }
         return scimResponses;
     }
+
+    private List<BulkResponseContent> processGroupCreatingRequests(
+            List<BulkRequestContent> groupCreatingRequests) {
+        List<BulkResponseContent> scimResponses = new ArrayList<BulkResponseContent>();
+        for (BulkRequestContent groupRequest : groupCreatingRequests) {
+            BulkResponseContent bulkResponseContent = new BulkResponseContent();
+            //TODO: have to check the "failOnError" and "errors", if reached the failOnError limit we have to exit
+            SCIMResponse response = groupResourceEndpoint.create(
+                    groupRequest.getData(), inputFormat, outputFormat, userManager);
+            bulkResponseContent.setBulkID(groupRequest.getBulkID());
+            bulkResponseContent.setScimResponse(response);
+            bulkResponseContent.setDescription(response.getResponseMessage());
+            bulkResponseContent.setResponseCode(String.valueOf(response.getResponseCode()));
+            bulkResponseContent.setMethod(groupRequest.getMethod());
+
+            scimResponses.add(bulkResponseContent);
+        }
+        return scimResponses;
+    }
+
+
 }

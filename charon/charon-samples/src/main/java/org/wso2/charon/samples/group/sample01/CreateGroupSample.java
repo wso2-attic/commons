@@ -35,8 +35,8 @@ public class CreateGroupSample {
     //user details
     private static String displayName = "eng";
     private static final String externalID = "eng";
-    private static final String[] members = {"0e6e041f-1a17-4d87-ac11-f7b04e77fc71",
-                                            "0e6e041f-1a17-4d87-ac11-f7b04e77fc71"};
+    private static final String[] members = {"1c93ded4-a142-4872-9be3-be03a09918b9",
+                                             "1a0b742d-0f7e-4c86-b680-fd818553a87a"};
 
     public static void main(String[] args) {
 
@@ -55,6 +55,7 @@ public class CreateGroupSample {
             }
             //encode the group in JSON format
             String encodedGroup = scimClient.encodeSCIMObject(scimGroup, SCIMConstants.JSON);
+            System.out.println(encodedGroup);
             //create a apache wink ClientHandler to intercept and identify response messages
             CharonResponseHandler responseHandler = new CharonResponseHandler();
             responseHandler.setSCIMClient(scimClient);

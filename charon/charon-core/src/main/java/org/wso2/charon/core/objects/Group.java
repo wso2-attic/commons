@@ -23,6 +23,7 @@ import org.wso2.charon.core.attributes.DefaultAttributeFactory;
 import org.wso2.charon.core.attributes.MultiValuedAttribute;
 import org.wso2.charon.core.attributes.SimpleAttribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
@@ -39,6 +40,70 @@ public class Group extends AbstractSCIMObject {
     public Group() {
         super();
     }
+
+    /**
+     * Set bulkID when going to do the bulk operation
+     *
+     * @param bulkID
+     * @throws CharonException
+     */
+    public void setBulkID(String bulkID) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.BULK_ID, SCIMSchemaDefinitions.BULK_ID,
+                           bulkID, SCIMSchemaDefinitions.DataType.STRING);
+    }
+
+    /**
+     * Get bulkID
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getBulkID() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.BULK_ID);
+    }
+
+    /**
+     * Set path ex - /Users or /Groups
+     *
+     * @param path
+     * @throws CharonException
+     */
+    public void setPath(String path) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.PATH, SCIMSchemaDefinitions.PATH,
+                           path, SCIMSchemaDefinitions.DataType.STRING);
+    }
+
+    /**
+     * Get path
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getPath() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.PATH);
+    }
+
+    /**
+     * Set request method ex - POST
+     *
+     * @param method
+     * @throws CharonException
+     */
+    public void setMethod(String method) throws CharonException {
+        setSimpleAttribute(SCIMConstants.CommonSchemaConstants.METHOD, SCIMSchemaDefinitions.METHOD,
+                           method, SCIMSchemaDefinitions.DataType.STRING);
+    }
+
+    /**
+     * Get request method
+     *
+     * @return
+     * @throws CharonException
+     */
+    public String getMethod() throws CharonException {
+        return getSimpleAttributeStringVal(SCIMConstants.CommonSchemaConstants.METHOD);
+    }
+
 
     /**
      * *************Methods for manipulating Group attributes*******************
@@ -241,6 +306,37 @@ public class Group extends AbstractSCIMObject {
             displayAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
                     SCIMSchemaDefinitions.DISPLAY_NAME, displayAttribute);
             attributeList.put(SCIMConstants.GroupSchemaConstants.DISPLAY_NAME, displayAttribute);
+        }
+    }
+
+    private void setSimpleAttribute(String attributeName, AttributeSchema attributeSchema,
+                                    Object value, SCIMSchemaDefinitions.DataType dataType) throws CharonException {
+        if (isAttributeExist(attributeName)) {
+            //since we check read-only aspect in service provider side, no need to check it here.
+            //if (!attributeSchema.getReadOnly()) {
+            ((SimpleAttribute) attributeList.get(attributeName)).updateValue(value, dataType);
+            /*} else {
+                //log info level log that version already set and can't set again.
+                throw new CharonException(ResponseCodeConstants.ATTRIBUTE_READ_ONLY);
+            }*/
+        } else {
+            SimpleAttribute simpleAttribute = new SimpleAttribute(
+                    attributeName, value);
+            /*SimpleAttribute userNameAttribute = new SimpleAttribute(
+                    SCIMConstants.UserSchemaConstants.USER_NAME,
+                    SCIMConstants.CORE_SCHEMA_URI, userName, DataType.STRING,
+                    false, false);*/
+            simpleAttribute = (SimpleAttribute) DefaultAttributeFactory.createAttribute(
+                    attributeSchema, simpleAttribute);
+            attributeList.put(attributeName, simpleAttribute);
+        }
+    }
+
+    private String getSimpleAttributeStringVal(String attributeName) throws CharonException {
+        if (isAttributeExist(attributeName)) {
+            return ((SimpleAttribute) attributeList.get(attributeName)).getStringValue();
+        } else {
+            return null;
         }
     }
 }

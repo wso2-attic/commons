@@ -30,7 +30,7 @@ import org.wso2.charon.utils.authentication.BasicAuthHandler;
 import org.wso2.charon.utils.authentication.BasicAuthInfo;
 
 public class DeleteGroupSample {
-    private static String groupID = "0c8ba01f-8563-46cf-84a0-a7883cbfa6ac";
+    private static String groupID = "4c8dfb16-d88b-4bbb-945e-b3e75942a01a";
 
     public static void main(String[] args) {
 
