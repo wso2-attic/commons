@@ -119,6 +119,18 @@ public class SCIMConfigProcessor {
             Map<String, SCIMConsumer> consumers = buildSCIMConsumersMap(scimConsumersIterator);
             scimConfig.setConsumersMap(consumers);
         }
+        //read any additional properties defined.
+        Iterator<OMElement> propertiesIterator = rootElement.getChildrenWithName(
+                new QName(SCIMConfigConstants.ELEMENT_NAME_PROPERTY));
+        Map<String, String> properties = new HashMap<String, String>();
+        while (propertiesIterator.hasNext()) {
+            OMElement propertyElement = propertiesIterator.next();
+            String propertyName = propertyElement.getAttributeValue(
+                    new QName(SCIMConfigConstants.ATTRIBUTE_NAME_NAME));
+            String propertyValue = propertyElement.getText();
+            properties.put(propertyName, propertyValue);
+        }
+        scimConfig.setAdditionalProperties(properties);
 
         return scimConfig;
     }

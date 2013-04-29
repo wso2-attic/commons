@@ -22,14 +22,10 @@
                 <Property name="userEndpoint"></Property>
             </scim-provider>
             <includeAll>true</includeAll>
-            <!--exclude>
-                <scim-provider id=""/>
-            </exclude-->
-            <!--Implementer specific properties-->
             <Property name="isAppliedToPrivilegedActions">true</Property>
             <Property name="isAppliedToSCIMOperations">true</Property>
         </scim-consumer>
     </scim-consumers>
     <Property name="dumb-mode">false</Property>
-    <Property name="provisioning-handlers">org.wso2.charon.core.provisioning.SampleProvisioningHandler1,org.wso2.charon.core.provisioning.SampleProvisioningHandler2</Property>
+    <Property name="provisioning-handlers">org.wso2.charon.core.provisioning.SampleProvisioningHandler</Property>
 </provisioning-config>

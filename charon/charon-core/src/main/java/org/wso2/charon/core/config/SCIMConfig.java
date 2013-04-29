@@ -34,6 +34,9 @@ public class SCIMConfig {
     private Map<String, SCIMProvider> providersMap;
     private Map<String, SCIMConsumer> consumersMap;
 
+    /*any additional properties defined in provisioning-config could be read by providing the property name*/
+    private Map<String, String> additionalProperties;
+    
     public Map<String, SCIMProvider> getProvidersMap() {
         return providersMap;
     }
@@ -134,5 +137,25 @@ public class SCIMConfig {
         } else {
             return null;
         }
+    }
+
+    public String getAdditionalPropertyValue(String propertyName) {
+        if (additionalProperties != null && additionalProperties.size() != 0) {
+            return additionalProperties.get(propertyName);
+        }
+        return null;
+    }
+
+    public boolean isDumbMode() {
+        String dumbMode = this.getAdditionalPropertyValue(SCIMConfigConstants.PROPERTY_NAME_DUMB_MODE);
+        return Boolean.parseBoolean(dumbMode);
+    }
+
+    public String getProvisioningHandler() {
+        return this.getAdditionalPropertyValue(SCIMConfigConstants.PROPERTY_NAME_PROVISIONING_HANDLER);
+    }
+
+    void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }

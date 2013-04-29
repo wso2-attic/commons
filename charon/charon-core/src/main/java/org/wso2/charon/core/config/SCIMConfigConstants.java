@@ -39,4 +39,7 @@ public class SCIMConfigConstants {
     public static final String ATTRIBUTE_NAME_USERNAME = "username";
     public static final String ATTRIBUTE_NAME_PASSWORD = "password";
     public static final String ATTRIBUTE_NAME_NAME = "name";
+
+    public static final String PROPERTY_NAME_DUMB_MODE = "dumb-mode";
+    public static final String PROPERTY_NAME_PROVISIONING_HANDLER = "provisioning-handlers";
 }

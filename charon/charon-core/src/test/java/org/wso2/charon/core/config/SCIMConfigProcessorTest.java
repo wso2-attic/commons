@@ -118,4 +118,15 @@ public class SCIMConfigProcessorTest {
                 "provisioning-config-sample4.xml").openStream();
         SCIMConfig scimConfig = scimConfigProcessor.buildConfigFromInputStream(inStream);
     }
+
+    @Test
+    public void testBuildingSampleConfig5() throws IOException, CharonException {
+        SCIMConfigProcessor scimConfigProcessor = new SCIMConfigProcessor();
+        InputStream inStream = this.getClass().getClassLoader().getResource(
+                "provisioning-config-sample5.xml").openStream();
+        SCIMConfig scimConfig = scimConfigProcessor.buildConfigFromInputStream(inStream);
+        Assert.assertFalse(scimConfig.isDumbMode());
+        Assert.assertEquals("org.wso2.charon.core.provisioning.SampleProvisioningHandler",
+                            scimConfig.getProvisioningHandler());
+    }
 }
