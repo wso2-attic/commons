@@ -54,6 +54,9 @@ public class ResponseCodeConstants {
 
     public static final int CODE_UNAUTHORIZED = 401;
     public static final String DESC_UNAUTHORIZED = "Authorization failure";
+
+    public static final int CODE_DUPLICATED = 409;
+    public static final String DESC_DUPLICATED = "Duplicated Resource";
     
 
     //Other common error messages thrown by the API
