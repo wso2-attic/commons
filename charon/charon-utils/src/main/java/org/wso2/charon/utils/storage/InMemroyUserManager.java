@@ -19,6 +19,7 @@ package org.wso2.charon.utils.storage;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.DuplicateResourceException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
@@ -172,7 +173,7 @@ public class InMemroyUserManager implements UserManager {
      * @param user
      */
     @Override
-    public User createUser(User user) throws CharonException {
+    public User createUser(User user) throws CharonException, DuplicateResourceException {
 
         if (!inMemoryUserList.isEmpty()) {
             for (Map.Entry<String, User> userEntry : inMemoryUserList.entrySet()) {
@@ -240,7 +241,7 @@ public class InMemroyUserManager implements UserManager {
     }
 
     @Override
-    public Group createGroup(Group group) throws CharonException {
+    public Group createGroup(Group group) throws CharonException, DuplicateResourceException {
         if (!inMemoryGroupList.isEmpty()) {
             if (group.getExternalId() != null) {
                 for (Group group1 : inMemoryGroupList.values()) {

@@ -19,6 +19,7 @@ package org.wso2.charon.core.extensions;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.DuplicateResourceException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.objects.Group;
 import org.wso2.charon.core.objects.User;
@@ -39,7 +40,7 @@ public interface UserManager extends Storage {
      * @param user User resource to be created in the user store of service provider.
      * @return newly created SCIM User resource sent back to the client in the response.
      */
-    public User createUser(User user) throws CharonException;
+    public User createUser(User user) throws CharonException, DuplicateResourceException;
 
     /**
      * Obtains the user given the id.
@@ -87,7 +88,7 @@ public interface UserManager extends Storage {
 
     /* ****************Group manipulation operations********************/
 
-    public Group createGroup(Group group) throws CharonException;
+    public Group createGroup(Group group) throws CharonException, DuplicateResourceException;
 
     public Group getGroup(String groupId) throws CharonException;
 

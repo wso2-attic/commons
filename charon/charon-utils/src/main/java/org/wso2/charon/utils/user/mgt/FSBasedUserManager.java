@@ -19,6 +19,7 @@ package org.wso2.charon.utils.user.mgt;
 
 import org.wso2.charon.core.attributes.Attribute;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.DuplicateResourceException;
 import org.wso2.charon.core.exceptions.NotFoundException;
 import org.wso2.charon.core.extensions.UserManager;
 import org.wso2.charon.core.objects.Group;
@@ -105,7 +106,7 @@ public class FSBasedUserManager implements UserManager {
      *
      * @param user
      */
-    public User createUser(User user) {
+    public User createUser(User user) throws CharonException, DuplicateResourceException {
         //To change body of implemented methods use File | Settings | File Templates.
         return null;
     }
@@ -144,7 +145,7 @@ public class FSBasedUserManager implements UserManager {
     }
 
     @Override
-    public Group createGroup(Group group) throws CharonException {
+    public Group createGroup(Group group) throws CharonException, DuplicateResourceException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

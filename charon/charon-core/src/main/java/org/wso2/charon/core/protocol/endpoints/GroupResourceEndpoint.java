@@ -22,6 +22,7 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.DuplicateResourceException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.InternalServerException;
 import org.wso2.charon.core.exceptions.NotFoundException;
@@ -187,6 +188,10 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            e.printStackTrace();
+            logger.error(e.getDescription());
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (DuplicateResourceException e) {
             e.printStackTrace();
             logger.error(e.getDescription());
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);

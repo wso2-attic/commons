@@ -22,6 +22,7 @@ import org.wso2.charon.core.encoder.Decoder;
 import org.wso2.charon.core.encoder.Encoder;
 import org.wso2.charon.core.exceptions.BadRequestException;
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.exceptions.DuplicateResourceException;
 import org.wso2.charon.core.exceptions.FormatNotSupportedException;
 import org.wso2.charon.core.exceptions.InternalServerException;
 import org.wso2.charon.core.exceptions.NotFoundException;
@@ -184,6 +185,10 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
             e.printStackTrace();
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
         } catch (InternalServerException e) {
+            logger.error(e.getDescription());
+            e.printStackTrace();
+            return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
+        } catch (DuplicateResourceException e) {
             logger.error(e.getDescription());
             e.printStackTrace();
             return AbstractResourceEndpoint.encodeSCIMException(encoder, e);
