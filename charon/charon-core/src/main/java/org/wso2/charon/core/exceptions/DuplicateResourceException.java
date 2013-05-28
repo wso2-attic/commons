@@ -33,6 +33,6 @@ public class DuplicateResourceException extends AbstractCharonException{
 
     @Override
     public String getDescription() {
-        return this.getDescription();    //To change body of overridden methods use File | Settings | File Templates.
+        return this.description;
     }
 }
