@@ -225,18 +225,31 @@ public class JSONDecoder implements Decoder {
                                                            JSONArray attributeValues)
             throws CharonException {
         try {
-            if (attributeValues.get(0) instanceof String) {
-                //attribute is a simple multi-valued attribute. we assume the type of values of the
-                //multivalued attribute is String.
-                return buildSimpleMultiValuedAttribute(attributeSchema, attributeValues);
-            } else if (attributeValues.get(0) instanceof JSONObject) {
-                //attribute is a complex multi-valued attribute
-                return buildComplexMultiValuedAttribute(attributeSchema, attributeValues);
-            } else {
-                //TODO:log the error.
-                String error = "Unknown JSON representation for the MultiValued attribute Value..";
-                throw new CharonException(error);
+            MultiValuedAttribute multiValuedAttribute = new MultiValuedAttribute(attributeSchema.getName());
+            List<String> simpleAttributeValues = new ArrayList<String>();
+            List<Attribute> complexAttributeValues = new ArrayList<Attribute>();
+
+            //iterate through JSONArray and create the list of string values.
+            for (int i = 0; i < attributeValues.length(); i++) {
+                Object attributeValue = attributeValues.get(i);
+
+                if (attributeValue instanceof String) {
+                    simpleAttributeValues.add((String) attributeValues.get(i));
+                } else if (attributeValue instanceof JSONObject) {
+                    JSONObject complexAttributeValue = (JSONObject) attributeValue;
+                    complexAttributeValues.add(buildComplexValue(attributeSchema, complexAttributeValue));
+                } else {
+                    //TODO:log the error.
+                    String error = "Unknown JSON representation for the MultiValued attribute Value..";
+                    throw new CharonException(error);
+                }
+
             }
+            multiValuedAttribute.setValuesAsStrings(simpleAttributeValues);
+            multiValuedAttribute.setValuesAsSubAttributes(complexAttributeValues);
+
+            return (MultiValuedAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
+                                                                                  multiValuedAttribute);
         } catch (JSONException e) {
             //TODO:log the error
             String error = "Error in accessing JSON value of multivalues attribute";
