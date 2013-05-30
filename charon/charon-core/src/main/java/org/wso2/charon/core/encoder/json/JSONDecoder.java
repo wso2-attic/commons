@@ -84,6 +84,11 @@ public class JSONDecoder implements Decoder {
                     scimObject.setAttribute(buildSimpleAttribute(attributeSchema, attributeValObj));
 
 
+                } else if (attributeValObj instanceof Boolean) {
+                    //if the corresponding json value object is String, it is a SimpleAttribute.
+                    scimObject.setAttribute(buildSimpleAttribute(attributeSchema,
+                                                                 String.valueOf(attributeValObj)));
+                    
                 } else if (attributeValObj instanceof JSONArray) {
                     //if the corresponding json value object is JSONArray, it is a MultiValuedAttribute.
                     scimObject.setAttribute(

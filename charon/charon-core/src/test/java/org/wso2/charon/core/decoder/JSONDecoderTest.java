@@ -178,6 +178,7 @@ public class JSONDecoderTest {
             Assert.assertEquals("babs@jensen.org", decodedUser.getEmails()[1]);
             Assert.assertEquals("bjensen@example.com", decodedUser.getEmailByType("work"));
             Assert.assertEquals("babs@jensen.org", decodedUser.getEmailByType("home"));
+            Assert.assertTrue(decodedUser.getActive());
 
 
 //            try {

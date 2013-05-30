@@ -153,7 +153,6 @@ public class UserEndpointTest {
                                         "  \"preferredLanguage\":\"en_US\",\n" +
                                         "  \"locale\": \"en_US\",\n" +
                                         "  \"timezone\": \"America/Los_Angeles\",\n" +
-                                        "  \"active\":true,\n" +
                                         "  \"password\":\"t1meMa$heen\",\n" +
                                         "  \"groups\": [\n" +
                                         "    {\n" +
