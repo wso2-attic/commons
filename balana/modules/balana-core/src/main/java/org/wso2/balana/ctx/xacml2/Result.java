@@ -195,45 +195,35 @@ public class Result extends AbstractResult {
     }
 
     @Override
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        indenter.in();
-        String indentNext = indenter.makeString();
-
-        // encode the starting tag
-        if (resourceId == null)
-            out.println(indent + "<Result>");
-        else
-            out.println(indent + "<Result ResourceId=\"" + resourceId + "\">");
+        if (resourceId == null){
+            builder.append("<Result>");
+        } else {
+            builder.append("<Result ResourceId=\"").append(resourceId).append("\">");
+        }
 
         // encode the decision
-        out.println(indentNext + "<Decision>" + DECISIONS[decision] + "</Decision>");
+        builder.append("<Decision>").append(DECISIONS[decision]).append("</Decision>");
 
         // encode the status
-        if (status != null)
-            status.encode(output, indenter);
+        if (status != null){
+            status.encode(builder);
+        }
 
         // encode the obligations
         if (obligations != null && obligations.size() != 0) {
-            out.println(indentNext + "<Obligations>");
+            builder.append("<Obligations>");
 
             Iterator it = obligations.iterator();
-            indenter.in();
 
             while (it.hasNext()) {
                 ObligationResult obligation = (ObligationResult) (it.next());
-                obligation.encode(output, indenter);
+                obligation.encode(builder);
             }
-
-            indenter.out();
-            out.println(indentNext + "</Obligations>");
+            builder.append("</Obligations>");
         }
-
-        indenter.out();
-
         // finish it off
-        out.println(indent + "</Result>");
+        builder.append("</Result>");
     }
 }

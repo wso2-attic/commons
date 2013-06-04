@@ -101,39 +101,33 @@ public class Obligation implements ObligationResult{
 
     /**
      * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter){
-        // setup the formatting & outstream stuff
-        String indent = indenter.makeString();
-        PrintStream out = new PrintStream(output);
+    public void encode(StringBuilder builder){
 
-        out.println(indent + "<Obligation ObligationId=\"" + obligationId + "\">");
-
-        indenter.in();
+        builder.append("<Obligation ObligationId=\"").append(obligationId).append("\">");
 
         if(assignments != null && assignments.size() > 0){
             for(AttributeAssignment assignment : assignments){
-                assignment.encode(output, indenter);
+                assignment.encode(builder);
             }
         }
 
-        indenter.out();
-
-        out.println(indent + "</Obligation>");
+        builder.append("</Obligation>");
     }
 
     /**
-     * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with no indentation.
+     * Encodes this <code>Obligation</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output){
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
+
 
 }

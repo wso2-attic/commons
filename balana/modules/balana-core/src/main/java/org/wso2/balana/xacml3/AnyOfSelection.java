@@ -20,6 +20,7 @@ package org.wso2.balana.xacml3;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hamcrest.core.AllOf;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
@@ -137,38 +138,21 @@ public class AnyOfSelection {
     }
 
     /**
-     * Encodes this <code>AnyOfSelection</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with no indentation.
+     * Encodes this <code>AnyOfSelection</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
-    }
+    public void encode(StringBuilder builder) {
 
-    /**
-     * Encodes this <code>AnyOfSelection</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with indentation.
-     *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
-        Iterator it = allOfSelections.iterator();
-        String name = "Match";
+        builder.append("<AnyOf>\n");
 
-        out.println(indent + "<" + name + ">");
-        indenter.in();
-
-        while (it.hasNext()) {
-            TargetMatch tm = (TargetMatch) (it.next());
-            tm.encode(output, indenter);
+        if(allOfSelections != null){
+            for(AllOfSelection allOfSelection : allOfSelections){
+                allOfSelection.encode(builder);
+            }
         }
 
-        out.println(indent + "</" + name + ">");
-        indenter.out();
+        builder.append("</AnyOf>\n");
     }
-
 }

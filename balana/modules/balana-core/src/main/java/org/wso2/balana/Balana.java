@@ -18,6 +18,7 @@
 
 package org.wso2.balana;
 
+import org.w3c.dom.Document;
 import org.wso2.balana.attr.AttributeFactory;
 import org.wso2.balana.combine.CombiningAlgFactory;
 import org.wso2.balana.cond.FunctionFactory;
@@ -30,6 +31,9 @@ import org.wso2.balana.finder.impl.FileBasedPolicyFinderModule;
 import org.wso2.balana.finder.impl.SelectorModule;
 
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,6 +75,16 @@ public class Balana {
      * combining factory that supports in Balana engine instance
      */
     private CombiningAlgFactory combiningAlgFactory;
+
+    /**
+     * builders to build XACML request
+     */
+    private DocumentBuilderFactory builder;
+
+    /**
+     * lock
+     */
+    private final static Object lock = new Object();
 
     /**
      * One instance of Balana engine is created.
@@ -192,6 +206,11 @@ public class Balana {
         if(combiningAlgFactory == null){
             combiningAlgFactory = CombiningAlgFactory.getInstance();
         }
+
+        // init builder
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        this.builder = dbf;
     }
 
     /**
@@ -202,7 +221,11 @@ public class Balana {
     public static Balana getInstance(){
 
         if(balana == null){
-            balana = new Balana(null, null, null, null);
+            synchronized (lock){
+                if(balana == null){
+                    balana = new Balana(null, null, null, null);
+                }
+            }
         }
 
         return balana;
@@ -217,7 +240,11 @@ public class Balana {
     public Balana getInstance(String identifier){
 
         if(balana == null){
-            balana = new Balana(identifier, identifier, identifier, identifier);
+            synchronized (lock){
+                if(balana == null){
+                    balana = new Balana(identifier, identifier, identifier, identifier);
+                }
+            }
         }
 
         return balana;
@@ -235,8 +262,12 @@ public class Balana {
     public Balana getInstance(String pdpConfigName, String attributeFactoryName, String functionFactoryName,
                                                                 String combiningAlgFactoryName){
         if(balana == null){
-            balana = new Balana(pdpConfigName, attributeFactoryName, functionFactoryName,
+            synchronized (lock){
+                if(balana == null){
+                    balana = new Balana(pdpConfigName, attributeFactoryName, functionFactoryName,
                                                                         combiningAlgFactoryName);
+                }
+            }
         }
         return balana;
     }
@@ -290,4 +321,7 @@ public class Balana {
         this.combiningAlgFactory = combiningAlgFactory;
     }
 
+    public DocumentBuilderFactory getBuilder() {
+        return builder;
+    }
 }

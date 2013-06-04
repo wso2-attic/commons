@@ -66,7 +66,7 @@ public class Condition implements Evaluatable {
     private static URI booleanIdentifier;
 
     // regardless of version, this contains the Condition's children
-    private List children;
+    private List<Expression> children;
 
     // regardless of version, this is an expression that can be evaluated
     // directly
@@ -254,44 +254,37 @@ public class Condition implements Evaluatable {
     }
 
     /**
-     * Encodes this <code>Condition</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Condition</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
+
     /**
-     * Encodes this <code>Condition</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>Condition</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
         if (isVersionOne) {
-            out.println(indent + "<Condition FunctionId=\"" + function.getIdentifier() + "\">");
-            indenter.in();
+            builder.append("<Condition FunctionId=\"").append(function.getIdentifier()).append("\">\n");
 
-            Iterator it = children.iterator();
-            while (it.hasNext()) {
-                Expression xpr = (Expression) (it.next());
-                xpr.encode(output, indenter);
+            for (Expression aChildren : children) {
+                aChildren.encode(builder);
             }
         } else {
-            out.println(indent + "<Condition>");
-            indenter.in();
-
-            expression.encode(output, indenter);
+            builder.append("<Condition>\n");
+            expression.encode(builder);
         }
 
-        indenter.out();
-        out.println(indent + "</Condition>");
+        builder.append("</Condition>\n");
     }
 
 }

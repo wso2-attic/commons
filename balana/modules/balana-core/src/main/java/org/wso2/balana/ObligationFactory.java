@@ -32,14 +32,6 @@ public class ObligationFactory {
 
     private static volatile ObligationFactory factoryInstance;
 
-    private static void init(){
-        // TODO
-    }
-
-    public void registerObligation(){
-        // TODO
-    }
-
     public AbstractObligation getObligation(Node node, PolicyMetaData metaData) throws ParsingException {
 
         if(XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion()){

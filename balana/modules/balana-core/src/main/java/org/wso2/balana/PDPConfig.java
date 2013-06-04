@@ -57,7 +57,7 @@ public class PDPConfig {
     private PolicyFinder policyFinder;
 
     //
-    private ResourceFinder resourceFinder;
+    private ResourceFinder resourceFinder;    
 
     //
     private boolean multipleRequestHandle;

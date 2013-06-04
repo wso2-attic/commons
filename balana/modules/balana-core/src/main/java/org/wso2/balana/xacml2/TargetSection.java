@@ -197,27 +197,24 @@ public class TargetSection
     }
 
     /**
-     * Encodes this <code>TargetSection</code> into its XML representation
-     * and writes  this encoding to the given <code>OutputStream</code> with
-     * no indentation.
+     * Encodes this <code>TargetSection</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>TargetSection</code> into its XML representation and
-     * writes this encoding to the given <code>OutputStream</code> with
-     * indentation.
+     * Encodes this <code>TargetSection</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
+
         String name = TargetMatch.NAMES[matchType];
         
         // figure out if this section applies to any request
@@ -227,25 +224,20 @@ public class TargetSection
             // by simply omitting the element, so we'll only actually include
             // something if this is a 1.x policy
             if (xacmlVersion == XACMLConstants.XACML_VERSION_1_0) {
-                out.println(indent + "<" + name + "s>");
-                indenter.in();
-                out.println(indenter.makeString() + "<Any" + name + "/>");
-                indenter.out();
-                out.println(indent + "</" + name + "s>");
+                builder.append("<").append(name).append("s>\n");
+                builder.append("<Any").append(name).append("/>\n");
+                builder.append("</").append(name).append("s>\n");
             }
         } else {
             // this has specific rules, so we can now encode them
-            out.println(indent + "<" + name + "s>");
+            builder.append("<").append(name).append("s>\n");
 
             Iterator it = matchGroups.iterator();
-            indenter.in();
             while (it.hasNext()) {
                 TargetMatchGroup group = (TargetMatchGroup)(it.next());
-                group.encode(output, indenter);
+                group.encode(builder);
             }
-            indenter.out();
-
-            out.println(indent + "</" + name + "s>");
+            builder.append("</").append(name).append("s>\n");
         }
     }
     

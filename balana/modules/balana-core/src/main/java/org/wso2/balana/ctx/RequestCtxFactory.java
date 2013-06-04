@@ -23,10 +23,12 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.wso2.balana.Balana;
 import org.wso2.balana.ParsingException;
 import org.wso2.balana.XACMLConstants;
 import org.wso2.balana.ctx.xacml3.RequestCtx;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -165,17 +167,19 @@ public class RequestCtxFactory {
     public Element getXacmlRequest(String request) throws ParsingException {
 
         ByteArrayInputStream inputStream;
-        DocumentBuilderFactory dbf;
         Document doc;
 
         inputStream = new ByteArrayInputStream(request.getBytes());
-        dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
+        DocumentBuilderFactory  builder = Balana.getInstance().getBuilder();
+
+        if(builder == null){
+            throw  new ParsingException("DOM Builder can not be null");
+        }
 
         try {
-            doc = dbf.newDocumentBuilder().parse(inputStream);
+            doc = builder.newDocumentBuilder().parse(inputStream);
         } catch (Exception e) {
-            throw new ParsingException("DOM of request element can not be created from String");
+            throw new ParsingException("DOM of request element can not be created from String", e);
         } finally {
             try {
                 inputStream.close();

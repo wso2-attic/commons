@@ -251,7 +251,7 @@ public class RequestCtx extends AbstractRequestCtx {
         indenter.in();
 
         for(Attributes attributes : attributesSet){
-            attributes.encode(output, indenter);
+            out.println(attributes.encode());
         }
 
         if(defaults != null){

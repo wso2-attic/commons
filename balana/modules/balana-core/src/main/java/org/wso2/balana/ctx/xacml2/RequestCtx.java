@@ -428,11 +428,11 @@ public class RequestCtx extends AbstractRequestCtx {
      * Private helper function to encode the attribute sets
      */
     private void encodeAttributes(Set attributes, PrintStream out, Indenter indenter) {
-        Iterator it = attributes.iterator();
-        while (it.hasNext()) {
-            Attribute attr = (Attribute) (it.next());
-            attr.encode(out, indenter);
-        }
+//        Iterator it = attributes.iterator();
+//        while (it.hasNext()) {                       TODO
+//            Attribute attr = (Attribute) (it.next());
+//            attr.encode(out, indenter);
+//        }
     }
 
 }

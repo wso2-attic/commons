@@ -61,6 +61,7 @@ import java.util.*;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.wso2.balana.xacml3.ObligationExpression;
 
 /**
  * Represents the RuleType XACML type. This has a target for matching, and encapsulates the
@@ -192,8 +193,8 @@ public class Rule implements PolicyTreeElement {
      */
     public static Rule getInstance(Node root, PolicyMetaData metaData, VariableManager manager)
             throws ParsingException {
+
         URI id = null;
-        String name = null;
         int effect = 0;
         String description = null;
         AbstractTarget target = null;
@@ -465,53 +466,55 @@ public class Rule implements PolicyTreeElement {
         return null;
     }
 
-
-    /**
-     * Encodes this <code>Rule</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        return null; // TODO.
     }
 
-    /**
-     * Encodes this <code>Rule</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.print(indent + "<Rule RuleId=\"" + idAttr.toString() + "\" Effect=\""
-                + Result.DECISIONS[effectAttr] + "\"");
+        builder.append("<Rule RuleId=\"" + idAttr + "\"" + " Effect=\"" +
+                AbstractResult.DECISIONS[effectAttr] + "\"  >\n");
 
-        if ((description != null) || (target != null) || (condition != null)) {
-            // there is some content in the Rule
-            out.println(">");
 
-            indenter.in();
-            String nextIndent = indenter.makeString();
-
-            if (description != null)
-                out.println(nextIndent + "<Description>" + description + "</Description>");
-
-//            if (target != null)                //TODO
-//                target.encode(output, indenter);
-
-            if (condition != null)
-                condition.encode(output, indenter);
-
-            indenter.out();
-            out.println(indent + "</Rule>");
-        } else {
-            // the Rule is empty, so close the tag and we're done
-            out.println("/>");
+        if (description != null){
+            builder.append("<Description>").append(description).append("</Description>\n");
         }
-    }
 
+        if(target != null){
+            target.encode(builder);
+        }
+
+        if(condition != null){
+            condition.encode(builder);
+        }
+
+        if(obligationExpressions != null && obligationExpressions.size() > 0){
+
+            if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0){
+                builder.append("<Obligations>\n");
+            } else {
+                builder.append("<ObligationExpressions>\n");
+            }
+
+            for(AbstractObligation expression : obligationExpressions){
+                expression.encode(builder);
+            }
+
+            if(xacmlVersion == XACMLConstants.XACML_VERSION_3_0){
+                builder.append("</Obligations>\n");
+            } else {
+                builder.append("</ObligationExpressions>\n");
+            }
+        }
+
+        if(adviceExpressions != null && adviceExpressions.size() > 0){
+            builder.append("<AdviceExpressions>");
+            for(AdviceExpression expression : adviceExpressions){
+                expression.encode(builder);
+            }
+            builder.append("</AdviceExpressions>\n");
+        }
+
+        builder.append("</Rule>\n");
+    }
 }

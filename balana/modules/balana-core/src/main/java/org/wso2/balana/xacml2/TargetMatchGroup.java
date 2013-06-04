@@ -134,38 +134,35 @@ public class TargetMatchGroup {
     }
 
     /**
-     * Encodes this <code>TargetMatchGroup</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>TargetMatchGroup</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>TargetMatchGroup</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>TargetMatchGroup</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
+
         Iterator it = matches.iterator();
         String name = TargetMatch.NAMES[matchType];
 
-        out.println(indent + "<" + name + ">");
-        indenter.in();
+        builder.append("<").append(name).append(">\n");
 
         while (it.hasNext()) {
             TargetMatch tm = (TargetMatch) (it.next());
-            tm.encode(output, indenter);
+            tm.encode(builder);              
         }
 
-        out.println(indent + "</" + name + ">");
-        indenter.out();
+        builder.append("</").append(name).append(">\n");
     }
 
     

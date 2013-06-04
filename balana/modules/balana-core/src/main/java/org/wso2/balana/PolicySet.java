@@ -375,47 +375,42 @@ public class PolicySet extends AbstractPolicy {
     }
 
     /**
-     * Encodes this <code>PolicySet</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>PolicySet</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>PolicySet</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>PolicySet</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.println(indent + "<PolicySet PolicySetId=\"" + getId().toString()
-                + "\" PolicyCombiningAlgId=\"" + getCombiningAlg().getIdentifier().toString()
-                + "\">");
-
-        indenter.in();
-        String nextIndent = indenter.makeString();
+        builder.append("<PolicySet PolicySetId=\"").append(getId().toString()).
+                append("\" PolicyCombiningAlgId=\"").
+                append(getCombiningAlg().getIdentifier().toString()).append("\">\n");
 
         String description = getDescription();
-        if (description != null)
-            out.println(nextIndent + "<Description>" + description + "</Description>");
-
+        if (description != null){
+            builder.append("<Description>").append(description).append("</Description>\n");
+        }
+        
         String version = getDefaultVersion();
-        if (version != null)
-            out.println("<PolicySetDefaults><XPathVersion>" + version
-                    + "</XPathVersion></PolicySetDefaults>");
+        if (version != null){
+            builder.append("<PolicySetDefaults><XPathVersion>").append(version).
+                    append("</XPathVersion></PolicySetDefaults>\n");
+        }
+        getTarget().encode(builder);
+        encodeCommonElements(builder);
 
-        //getTarget().encode(output, indenter);   TODO
-        encodeCommonElements(output, indenter);
-
-        indenter.out();
-        out.println(indent + "</PolicySet>");
+        builder.append("</PolicySet>\n");
     }
 
 }

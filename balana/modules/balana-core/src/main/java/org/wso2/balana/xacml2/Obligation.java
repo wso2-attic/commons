@@ -152,40 +152,32 @@ public class Obligation extends AbstractObligation implements ObligationResult {
     }
 
     /**
-     * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with no indentation.
+     * Encodes this <code>Obligation</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
      * Encodes this <code>Obligation</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.println(indent + "<Obligation ObligationId=\"" + obligationId.toString() + "\" FulfillOn=\""
-                + Result.DECISIONS[fulfillOn] + "\">");
-
-        indenter.in();
-
+        builder.append("<Obligation ObligationId=\"").append(obligationId.toString()).
+                append("\" FulfillOn=\"").append(Result.DECISIONS[fulfillOn]).append("\">\n");
         for (Attribute assignment : assignments) {
-            out.println(indenter.makeString() + "<AttributeAssignment AttributeId=\""
-                    + assignment.getId().toString() + "\" DataType=\"" + assignment.getType().toString()
-                    + "\">" + assignment.getValue().encode() + "</AttributeAssignment>");
+            builder.append("<AttributeAssignment AttributeId=\"").
+                    append(assignment.getId().toString()).append("\" DataType=\"").
+                    append(assignment.getType().toString()).append("\">").
+                    append(assignment.getValue().encode()).append("</AttributeAssignment>\n");
         }
-
-        indenter.out();
-
-        out.println(indent + "</Obligation>");
+        builder.append("</Obligation>");
     }
 }

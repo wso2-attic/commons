@@ -187,10 +187,25 @@ public class AttributeAssignmentExpression {
     }
 
     /**
+     * Encodes this <code>AttributeAssignmentExpression</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter){
+    public void encode(StringBuilder builder){
 
+        builder.append("<AttributeAssignmentExpression AttributeId=\"" + attributeId + "\"");
 
+        if(category != null){
+            builder.append(" Category=\"" + category + "\"");
+        }
+        if(issuer != null){
+            builder.append(" Issuer=\"" + issuer + "\"");
+        }
+        builder.append(" >\n");
+
+        expression.encode(builder);
+
+        builder.append("</AttributeAssignmentExpression>\n");
     }
 }

@@ -49,6 +49,7 @@ import org.wso2.balana.ctx.xacml3.XACML3EvaluationCtx;
 import org.wso2.balana.xacml3.MultipleCtxResult;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -130,9 +131,7 @@ public class PDP {
             responseCtx = new ResponseCtx(new Result(AbstractResult.DECISION_INDETERMINATE, status));
         }
 
-        OutputStream stream = new ByteArrayOutputStream();
-        responseCtx.encode(stream);
-        return stream.toString();
+        return responseCtx.encode();
     }
 
 
@@ -299,13 +298,19 @@ public class PDP {
 
 		// if we didn't have a problem above, then we should go ahead
 		// with the evaluation
-		if (response == null)
+		if (response == null){
 			response = evaluate(request);
+        }
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		response.encode(out, new Indenter());
 
-		return out;
+        try {
+            out.write(response.encode().getBytes());
+        } catch (IOException e) {
+            logger.error("Error creating output stream of XACML response", e);    
+        }
+
+        return out;
 	}
 
     /**

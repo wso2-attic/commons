@@ -233,11 +233,8 @@ public class AttributeSelector extends AbstractAttributeSelector {
         return true;
     }
 
-    public void encode(OutputStream output) {
 
-    }
-
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
 
     }
 }

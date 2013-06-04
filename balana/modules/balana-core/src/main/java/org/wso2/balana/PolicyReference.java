@@ -459,38 +459,37 @@ public class PolicyReference extends AbstractPolicy {
     }
 
     /**
-     * Encodes this <code>PolicyReference</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>PolicyReference</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>PolicyReference</code> into its XML representation and writes this
-     * encoding to the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>PolicyReference</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String encoded = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
         if (policyType == POLICY_REFERENCE) {
-            out.println(encoded + "<PolicyIdReference" + encodeConstraints() + ">"
-                    + reference.toString() + "</PolicyIdReference>");
+            builder.append("<PolicyIdReference").append(encodeConstraints()).append(">").
+                            append(reference.toString()).append("</PolicyIdReference>");
         } else {
-            out.println(encoded + "<PolicySetIdReference" + encodeConstraints() + ">"
-                    + reference.toString() + "</PolicySetIdReference>");
+            builder.append("<PolicySetIdReference").append(encodeConstraints()).append(">").
+                    append(reference.toString()).append("</PolicySetIdReference>");
         }
     }
 
     /**
      * Private helper method that encodes the variable constraints info. Note that if this is a
      * pre-2.0 policy the constraints are always null, so nothing will be added here.
+     * @return
      */
     private String encodeConstraints() {
         String str = "";

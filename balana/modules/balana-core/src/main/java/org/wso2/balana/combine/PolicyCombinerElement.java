@@ -88,54 +88,52 @@ public class PolicyCombinerElement extends CombinerElement {
     }
 
     /**
-     * Encodes this element's <code>AbstractPolicy</code> and parameters into their XML
-     * representation and writes this encoding to the given <code>OutputStream</code> with
-     * indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>PolicyCombinerElement</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
         if (!getParameters().isEmpty()) {
             AbstractPolicy policy = getPolicy();
 
             // FIXME: This is ugly and happens in several places...maybe this
             // should get folded into the AbstractPolicy API?
             if (policy instanceof Policy) {
-                encodeParamaters(output, indenter, "Policy", policy.getId().toString());
+                encodeParamaters(builder, "Policy", policy.getId().toString());
             } else if (policy instanceof PolicySet) {
-                encodeParamaters(output, indenter, "PolicySet", policy.getId().toString());
+                encodeParamaters(builder, "PolicySet", policy.getId().toString());
             } else {
                 PolicyReference ref = (PolicyReference) policy;
                 if (ref.getReferenceType() == PolicyReference.POLICY_REFERENCE)
-                    encodeParamaters(output, indenter, "Policy", ref.getReference().toString());
+                    encodeParamaters(builder, "Policy", ref.getReference().toString());
                 else
-                    encodeParamaters(output, indenter, "PolicySet", ref.getReference().toString());
+                    encodeParamaters(builder, "PolicySet", ref.getReference().toString());
             }
         }
 
-        getPolicy().encode(output, indenter);
+        getPolicy().encode(builder);
     }
 
     /**
      * Private helper that encodes the parameters based on the type
+     * 
+     * @param builder
+     * @param prefix
+     * @param id
      */
-    private void encodeParamaters(OutputStream output, Indenter indenter, String prefix, String id) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    private void encodeParamaters(StringBuilder builder, String prefix, String id) {
+
         Iterator it = getParameters().iterator();
 
-        out.println(indent + "<" + prefix + "CombinerParameters " + prefix + "IdRef=\"" + id
-                + "\">");
-        indenter.in();
-
+        builder.append("<").append(prefix).append("CombinerParameters ").
+                append(prefix).append("IdRef=\"").append(id).append("\">\n");
         while (it.hasNext()) {
             CombinerParameter param = (CombinerParameter) (it.next());
-            param.encode(output, indenter);
+            param.encode(builder);
         }
 
-        out.println(indent + "</" + prefix + "CombinerParameters>");
-        indenter.out();
+        builder.append("</").append(prefix).append("CombinerParameters>\n");
     }
 
 }

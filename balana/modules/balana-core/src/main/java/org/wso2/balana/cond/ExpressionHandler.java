@@ -18,6 +18,8 @@ import org.wso2.balana.attr.AttributeSelector;
 import org.w3c.dom.Node;
 import org.wso2.balana.attr.AttributeSelectorFactory;
 
+import java.net.URI;
+
 /**
  * This is a package-private utility class that handles parsing all the possible expression types.
  * It was added becuase in 2.0 multiple classes needed this. Note that this could also be added to
@@ -82,8 +84,16 @@ public class ExpressionHandler {
      */
     public static Function getFunction(Node root, PolicyMetaData metaData, FunctionFactory factory)
             throws ParsingException {
-        Node functionNode = root.getAttributes().getNamedItem("FunctionId");
-        String functionName = functionNode.getNodeValue();
+
+        String functionName;
+
+        try {
+            Node functionNode = root.getAttributes().getNamedItem("FunctionId");
+            functionName = functionNode.getNodeValue();
+        } catch (Exception e) {
+            throw new ParsingException("Error parsing required FunctionId in " +
+                    "FunctionType", e);
+        }
 
         try {
             // try to get an instance of the given function

@@ -311,37 +311,34 @@ public class Apply implements Evaluatable {
     }
 
     /**
-     * Encodes this <code>Apply</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Apply</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
-    /**
-     * Encodes this <code>Apply</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
 
-        out.println(indent + "<Apply FunctionId=\"" + function.getIdentifier() + "\">");
-        indenter.in();
+    /**
+     * Encodes this <code>Apply</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
+     */
+    public void encode(StringBuilder builder) {
+
+        builder.append("<Apply FunctionId=\"").append(function.getIdentifier()).append("\">\n");
 
         Iterator it = xprs.iterator();
         while (it.hasNext()) {
             Expression xpr = (Expression) (it.next());
-            xpr.encode(output, indenter);
+            xpr.encode(builder);
         }
 
-        indenter.out();
-        out.println(indent + "</Apply>");
+        builder.append("</Apply>\n");
     }
 
 }

@@ -85,32 +85,25 @@ public class RuleCombinerElement extends CombinerElement {
     }
 
     /**
-     * Encodes this element's <code>Rule</code> and parameters into their XML representation and
-     * writes this encoding to the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>RuleCombinerElement</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
         Iterator it = getParameters().iterator();
 
         if (it.hasNext()) {
-            PrintStream out = new PrintStream(output);
-            String indent = indenter.makeString();
-
-            out.println(indent + "<RuleCombinerParameters RuleIdRef=\"" + getRule().getId() + "\">");
-            indenter.in();
-
+            builder.append("<RuleCombinerParameters RuleIdRef=\"").append(getRule().getId()).append("\">\n");
             while (it.hasNext()) {
                 CombinerParameter param = (CombinerParameter) (it.next());
-                param.encode(output, indenter);
+                param.encode(builder);
             }
 
-            out.println(indent + "</RuleCombinerParameters>");
-            indenter.out();
+            builder.append("</RuleCombinerParameters>\n");
         }
 
-        getRule().encode(output, indenter);
+        getRule().encode(builder);
     }
 
 }

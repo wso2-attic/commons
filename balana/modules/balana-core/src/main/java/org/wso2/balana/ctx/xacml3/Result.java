@@ -276,86 +276,72 @@ public class Result extends AbstractResult{
 
     /**
      * Encodes this <code>Result</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        indenter.in();
-        String indentNext = indenter.makeString();
-        out.println(indent + "<Result>");
+        builder.append("<Result>");
         // encode the decision
         //check whether decision is extended indeterminate values
         if(decision == 4 || decision == 5 || decision == 6){
             // if this is extended indeterminate values, we just return the "Indeterminate"
-            out.println(indentNext + "<Decision>" + DECISIONS[2] + "</Decision>");
+            builder.append("<Decision>").append(DECISIONS[2]).append("</Decision>");
         } else {
-            out.println(indentNext + "<Decision>" + DECISIONS[decision] + "</Decision>");
+            builder.append("<Decision>").append(DECISIONS[decision]).append("</Decision>");
         }
         // encode the status
-        if (status != null)
-            status.encode(output, indenter);
-
+        if (status != null){
+            status.encode(builder);
+        }
         // encode the obligations
         if (obligations != null  && obligations.size() != 0) {
-            out.println(indentNext + "<Obligations>");
+
+            builder.append("<Obligations>");
 
             Iterator it = obligations.iterator();
-            indenter.in();
-
             while (it.hasNext()) {
                 Obligation obligation = (Obligation) (it.next());
-                obligation.encode(out, indenter);
+                obligation.encode(builder);
             }
-
-            indenter.out();
-            out.println(indentNext + "</Obligations>");
+            builder.append("</Obligations>");
         }
 
         // encode the advices
         if (advices != null  && advices.size() != 0) {
-            out.println(indentNext + "<AssociatedAdvice>");
+
+            builder.append("<AssociatedAdvice>");
 
             Iterator it = advices.iterator();
-            indenter.in();
 
             while (it.hasNext()) {
                 Advice advice = (Advice) (it.next());
-                advice.encode(out, indenter);
+                advice.encode(builder);
             }
-
-            indenter.out();
-            out.println(indentNext + "</AssociatedAdvice>");
+            builder.append("</AssociatedAdvice>");
         }
 
         // encode the policy, policySet references
         if (policyReferences != null  && policyReferences.size() != 0) {
-            out.println(indentNext + "<PolicyIdentifierList>");
-            indenter.in();
+            builder.append("<PolicyIdentifierList>");
 
             for(PolicyReference reference : policyReferences){
-                reference.encode(out, indenter);
+                reference.encode(builder);
             }
 
-            indenter.out();
-            out.println(indentNext + "</PolicyIdentifierList>");
+            builder.append("</PolicyIdentifierList>");
         }
 
         // encode the attributes
         if (attributes != null  && attributes.size() != 0) {
             for(Attributes attribute : attributes){
-                attribute.encode(out, indenter);
+                attribute.encode(builder);
             }
         }
-        
-        indenter.out();
 
         // finish it off
-        out.println(indent + "</Result>");
+        builder.append("</Result>");
     }
 
 }

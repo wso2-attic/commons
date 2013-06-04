@@ -227,22 +227,22 @@ public abstract class AbstractResult {
     }
 
     /**
-     * Encodes this <code>AbstractResult</code> into its XML form and writes this
-     * out to the provided <code>OutputStream<code> with no indentation.
+     * Encodes this <code>AbstractResult</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>AbstractResult</code> into its XML form and writes this
-     * out to the provided <code>OutputStream<code> with indentation.
+     * Encodes this <code>AbstractResult</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public abstract void encode(OutputStream output, Indenter indenter);
+    public abstract void encode(StringBuilder builder);
 
 }

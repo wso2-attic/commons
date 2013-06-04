@@ -22,6 +22,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
+import org.wso2.balana.ctx.AbstractResult;
+import org.wso2.balana.ctx.Attribute;
 import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.EvaluationCtx;
 import org.wso2.balana.ctx.xacml2.Result;
@@ -132,11 +134,19 @@ public class ObligationExpression extends AbstractObligation {
     }
 
     /**
-     * TODO
-     * @return
+     * Encodes this <code>ObligationExpression</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public String encode(){
-        return null;    
+    public void encode(StringBuilder builder) {
+
+        builder.append("<ObligationExpression ObligationId=\"").append(obligationId.toString()).
+                append("\" FulfillOn=\"").append(AbstractResult.DECISIONS[fulfillOn]).append("\">\n");
+        for (AttributeAssignmentExpression assignment : expressions) {
+            assignment.encode(builder);
+        }
+        builder.append("</ObligationExpression>");
     }
 
 }

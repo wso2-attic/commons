@@ -302,36 +302,24 @@ public class AttributeSelector extends AbstractAttributeSelector {
         }
     }
 
-    /**
-     * Encodes this selector into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
-    }
 
     /**
-     * Encodes this selector into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>AttributeSelector</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
         String tag = "<AttributeSelector RequestContextPath=\"" + contextPath + "\" DataType=\""
                 + type.toString() + "\"";
 
-        if (mustBePresent)
+        if (mustBePresent){
             tag += " MustBePresent=\"true\"";
+        }
+        tag += "/>\n";
 
-        tag += "/>";
-
-        out.println(indent + tag);
+        builder.append(tag);
     }
 
 }

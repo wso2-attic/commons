@@ -115,8 +115,26 @@ public class Target extends AbstractTarget {
         }
     }
 
+    public List<AnyOfSelection> getAnyOfSelections() {
+        return anyOfSelections;
+    }
+
     @Override
-    public void encode(OutputStream output, Indenter indenter) {
-       
+    public String encode() {
+        return null; //TODO
+    }
+
+    @Override
+    public void encode(StringBuilder builder) {
+
+        builder.append("<Target>\n");
+
+        if(anyOfSelections != null){
+            for(AnyOfSelection anyOfSelection : anyOfSelections){
+                anyOfSelection.encode(builder);
+            }
+        }
+
+        builder.append("</Target>\n");
     }
 }

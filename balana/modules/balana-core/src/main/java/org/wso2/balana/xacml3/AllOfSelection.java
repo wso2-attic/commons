@@ -116,4 +116,24 @@ public class AllOfSelection {
                                    firstIndeterminateStatus);
 
     }
+
+
+    /**
+     * Encodes this <code>AnyOfSelection</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
+     */
+    public void encode(StringBuilder builder) {
+
+        builder.append("<AllOf>\n");
+
+        if(matches != null){
+            for(TargetMatch match : matches){
+                match.encode(builder);
+            }
+        }
+
+        builder.append("</AllOf>\n");
+    }
 }

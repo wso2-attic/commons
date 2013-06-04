@@ -107,20 +107,18 @@ public interface PolicyTreeElement {
     public AbstractResult evaluate(EvaluationCtx context);
 
     /**
-     * Encodes this element into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
+     * Encodes this <code>PolicyTreeElement</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output);
+    public String encode();
 
     /**
-     * Encodes this element into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
+     * Encodes this <code>PolicyTreeElement</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter);
+    public void encode(StringBuilder builder);
 
 }

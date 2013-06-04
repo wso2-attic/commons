@@ -172,45 +172,36 @@ public class Attributes {
     }
 
     /**
-     * Encodes this attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
+     * Encodes this <code>Attributes</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
+     * Encodes this <code>Attributes</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
 
-        String indent = indenter.makeString();
-        PrintStream out = new PrintStream(output);
-
-        out.println(indent + "<Attributes Category=\"" + category.toString() + "\">");
-
-        indenter.in();
+        builder.append("<Attributes Category=\"").append(category.toString()).append("\">");
 
         for(Attribute attribute : attributes){
             if(attribute.isIncludeInResult()){
-                attribute.encode(output, indenter);
+                attribute.encode(builder);
             }
         }
-
-        indenter.out();
-
-        indenter.in();
         if (content != null) {
         // TODO
         }
 
-        out.println(indent + "</Attributes>");
+        builder.append("</Attributes>");
     }
 
 //    /**

@@ -63,13 +63,14 @@ public class Advice {
     
 
     /**
-     * Encodes this <code>Advice</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with no indentation.
+     * Encodes this <code>Advice</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output){
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
@@ -120,27 +121,19 @@ public class Advice {
 
     /**
      * Encodes this <code>Advice</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter){
+    public void encode(StringBuilder builder){
 
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
-
-        out.println(indent + "<Advice AdviceId=\"" + adviceId + "\" >");
-
-        indenter.in();
+        builder.append("<Advice AdviceId=\"").append(adviceId).append("\" >");
 
         if(assignments != null && assignments.size() > 0){
             for(AttributeAssignment assignment : assignments){
-                assignment.encode(output, indenter);
+                assignment.encode(builder);
             }
         }
-        
-        indenter.out();        
-        out.println(indent + "</Advice>");
+        builder.append("</Advice>");
     }
 }

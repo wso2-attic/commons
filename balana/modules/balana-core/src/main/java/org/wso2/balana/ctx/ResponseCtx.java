@@ -155,66 +155,42 @@ public class ResponseCtx {
         return results;
     }
 
+
     /**
-     * Return encoded context of XML representation
+     * Encodes this <code>ResponseCtx</code> into its XML form
      *
-     * @return as String 
+     * @return <code>String</code>
      */
-    public String getEncoded() {
-
-        OutputStream output = new ByteArrayOutputStream();
-        encode(output, new Indenter(0));
-        return output.toString();
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this context into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>ResponseCtx</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
-    }
+    public void encode(StringBuilder builder) {
 
-    /**
-     * Encodes this context into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter) {
+        builder.append("<Response");
 
-        // Make a PrintStream for a nicer printing interface
-        PrintStream out = new PrintStream(output);
+       /* if(version == XACMLConstants.XACML_VERSION_3_0){
+            builder.append(" xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\"");
+        }*/
 
-        // Prepare the indentation string
-        String indent = indenter.makeString();
-
-        // Now write the XML...
-
-        out.print(indent + "<Response");
-
-        if(version == XACMLConstants.XACML_VERSION_3_0){
-            out.print(" xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\"");
-        }
-
-        out.println(">");
+        builder.append(">");
 
         // Go through all results
         Iterator it = results.iterator();
-        indenter.in();
-
         while (it.hasNext()) {
             AbstractResult result = (AbstractResult) (it.next());
-            result.encode(out, indenter);
+            result.encode(builder);
         }
-
-        indenter.out();
-
         // Finish the XML for a response
-        out.println(indent + "</Response>");
+        builder.append("</Response>");
 
     }
 

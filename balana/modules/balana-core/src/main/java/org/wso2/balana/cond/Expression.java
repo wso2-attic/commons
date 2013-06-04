@@ -66,20 +66,13 @@ public interface Expression {
     public boolean returnsBag();
 
     /**
-     * Encodes this <code>Expression</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>AttributeValue</code> into its XML representation and writes this encoding
+     * to the given <code>StringBuilder</code> This will always produce the version
+     * used in a policy rather than that used in a request, so this is equivalent to calling
+     * <code>encodeWithTags(true)</code> and then stuffing that into a stream.
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output);
-
-    /**
-     * Encodes this <code>Expression</code> into its XML representation and writes this encoding to
-     * the given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter);
+    public void encode(StringBuilder builder);
 
 }

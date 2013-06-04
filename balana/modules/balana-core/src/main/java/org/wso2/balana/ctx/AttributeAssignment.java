@@ -150,51 +150,42 @@ public class AttributeAssignment extends AttributeValue {
 
     /**
      * Encodes this <code>AttributeAssignment</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
 
-        PrintStream out = new PrintStream(output);
+        builder.append("<AttributeAssignment  AttributeId=\"").append(attributeId).append("\"");
 
-        out.print("<AttributeAssignment  AttributeId=\"" + attributeId + "\"");
-
-        out.print(" DataType=\"" + getType() + "\"");
+        builder.append(" DataType=\"").append(getType()).append("\"");
 
         if(category != null){
-            out.print(" Category=\"" + category + "\"");
+            builder.append(" Category=\"").append(category).append("\"");
         }
 
         if(issuer != null){
-            out.print("\" Issuer=\"" + issuer + "\"");
+            builder.append("\" Issuer=\"").append(issuer).append("\"");
         }
 
-        out.print(">");
+        builder.append(">\n");
 
         if(content != null){
-            out.print(content);
+            builder.append(content);
         }
 
-        out.println("</AttributeAssignment>");
+        builder.append("</AttributeAssignment>\n");
     }
 
     @Override
-    public String encode() {
-        OutputStream stream = new ByteArrayOutputStream();
-        encode(stream);
-        return stream.toString();
-    }
-
     /**
-     * Encodes this <code>AttributeAssignment</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with no indentation.
+     * Encodes this <code>AttributeAssignment</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output){
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
-
 }

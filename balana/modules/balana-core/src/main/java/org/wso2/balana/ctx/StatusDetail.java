@@ -35,6 +35,7 @@
 
 package org.wso2.balana.ctx;
 
+import org.wso2.balana.Balana;
 import org.wso2.balana.DOMHelper;
 import org.wso2.balana.ParsingException;
 
@@ -68,9 +69,6 @@ import org.xml.sax.SAXException;
  */
 public class StatusDetail {
 
-    // the root node
-    private Node detailRoot;
-
     // the text version, if it's avilable already
     private String detailText = null;
 
@@ -99,8 +97,7 @@ public class StatusDetail {
                 detailText += attribute.getEncoded() + "\n";
             }
 
-            detailText += "</StatusDetail>";                        
-            detailRoot = textToNode(detailText);
+            detailText += "</StatusDetail>";
         } catch (ParsingException pe) {
             // really, this should never happen, since we just made sure that
             // we're working with valid text, but it's possible that encoding
@@ -122,7 +119,6 @@ public class StatusDetail {
      */
     public StatusDetail(String encoded) throws ParsingException {
         detailText = "<StatusDetail>\n" + encoded + "\n</StatusDetail>";
-        detailRoot = textToNode(detailText);
     }
 
 
@@ -133,7 +129,6 @@ public class StatusDetail {
      * @param root  the DOM root of StatusDetail element
      */
     private StatusDetail(Node root) {
-        detailRoot = root;
         try{
             detailText = nodeToText(root);
         } catch (ParsingException e) {
@@ -152,9 +147,7 @@ public class StatusDetail {
         try {
             String text = "<?xml version=\"1.0\"?>\n";
             byte[] bytes = (text + encoded).getBytes();
-
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = factory.newDocumentBuilder();
+            DocumentBuilder db = Balana.getInstance().getBuilder().newDocumentBuilder();
             Document doc = db.parse(new ByteArrayInputStream(bytes));
 
             return doc.getDocumentElement();
@@ -207,20 +200,6 @@ public class StatusDetail {
         return new StatusDetail(root);
     }
 
-
-
-
-    /**
-     * Returns the StatusDetailType DOM root node. This may contain within it any type of valid XML
-     * data, and it is up to the application writer to handle the data accordingly. One common use
-     * of status data is to include <code>Attribute</code>s, which can be created from their root
-     * DOM nodes using their <code>getInstance</code> method.
-     * 
-     * @return the DOM root for the StatusDetailType XML type
-     */
-    public Node getDetail() {
-        return detailRoot;
-    }
 
     /**
      * Gets List of <code>MissingAttributeDetail</code> elements

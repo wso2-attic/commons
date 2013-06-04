@@ -105,13 +105,11 @@ public abstract class CombinerElement {
     }
 
     /**
-     * Encodes the element and parameters in this <code>CombinerElement</code> into their XML
-     * representation and writes this encoding to the given <code>OutputStream</code> with
-     * indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>CombinerElement</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public abstract void encode(OutputStream output, Indenter indenter);
+    public abstract void encode(StringBuilder builder);
 
 }

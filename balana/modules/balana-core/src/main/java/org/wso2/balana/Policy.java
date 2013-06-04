@@ -35,6 +35,7 @@
 
 package org.wso2.balana;
 
+import org.wso2.balana.combine.CombinerElement;
 import org.wso2.balana.combine.CombinerParameter;
 import org.wso2.balana.combine.RuleCombinerElement;
 import org.wso2.balana.combine.RuleCombiningAlgorithm;
@@ -42,16 +43,12 @@ import org.wso2.balana.combine.RuleCombiningAlgorithm;
 import org.wso2.balana.cond.VariableDefinition;
 import org.wso2.balana.cond.VariableManager;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-
 import java.net.URI;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -68,7 +65,7 @@ import org.w3c.dom.NodeList;
 public class Policy extends AbstractPolicy {
 
     // the set of variable definitions in this policy
-    private Set definitions;
+    private Set<VariableDefinition> definitions;
 
     /**
      * Creates a new <code>Policy</code> with only the required elements.
@@ -186,17 +183,13 @@ public class Policy extends AbstractPolicy {
                     Set<AbstractObligation> obligations, Set<VariableDefinition> definitions) {
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null, null);
 
-        List list = null;
+        List<CombinerElement> list = null;
 
         // check that the list contains only rules
         if (rules != null) {
-            list = new ArrayList();
-            Iterator it = rules.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (!(o instanceof Rule))
-                    throw new IllegalArgumentException("non-Rule in rules");
-                list.add(new RuleCombinerElement((Rule) o));
+            list = new ArrayList<CombinerElement>();
+            for (Rule rule : rules) {
+                list.add(new RuleCombinerElement(rule));
             }
         }
 
@@ -204,9 +197,9 @@ public class Policy extends AbstractPolicy {
 
         // save the definitions
         if (definitions == null)
-            this.definitions = Collections.EMPTY_SET;
+            this.definitions = new HashSet<VariableDefinition>();
         else
-            this.definitions = Collections.unmodifiableSet(new HashSet(definitions));
+            this.definitions = Collections.unmodifiableSet(new HashSet<VariableDefinition>(definitions));
     }
 
     /**
@@ -236,18 +229,19 @@ public class Policy extends AbstractPolicy {
      *             not a <code>RuleCombinerElement</code>
      */
     public Policy(URI id, String version, RuleCombiningAlgorithm combiningAlg, String description,
-            AbstractTarget target, String defaultVersion, List ruleElements, Set obligations,
-            Set definitions, List parameters) {
+            AbstractTarget target, String defaultVersion, List<CombinerElement> ruleElements,
+            Set<AbstractObligation> obligations, Set<VariableDefinition> definitions,
+            List<CombinerParameter> parameters) {
+
         super(id, version, combiningAlg, description, target, defaultVersion, obligations, null,
                 parameters);
 
         // check that the list contains only RuleCombinerElements
         if (ruleElements != null) {
-            Iterator it = ruleElements.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (!(o instanceof RuleCombinerElement))
+            for (Object o : ruleElements) {
+                if (!(o instanceof RuleCombinerElement)){
                     throw new IllegalArgumentException("non-Rule in rules");
+                }
             }
         }
 
@@ -255,9 +249,9 @@ public class Policy extends AbstractPolicy {
 
         // save the definitions
         if (definitions == null)
-            this.definitions = Collections.EMPTY_SET;
+            this.definitions = new HashSet<VariableDefinition>();
         else
-            this.definitions = Collections.unmodifiableSet(new HashSet(definitions));
+            this.definitions = Collections.unmodifiableSet(new HashSet<VariableDefinition>(definitions));
     }
 
     /**
@@ -272,9 +266,10 @@ public class Policy extends AbstractPolicy {
     private Policy(Node root) throws ParsingException {
         super(root, "Policy", "RuleCombiningAlgId");
 
-        List rules = new ArrayList();
-        HashMap parameters = new HashMap();
-        HashMap variableIds = new HashMap();
+        List<Rule> rules = new ArrayList<Rule>();
+        HashMap<String, List<CombinerParameter>> parameters =
+                                                new HashMap<String, List<CombinerParameter>>();
+        HashMap<String, Node> variableIds = new HashMap<String, Node>();
         PolicyMetaData metaData = getMetaData();
 
         // first off, go through and look for any definitions to get their
@@ -297,7 +292,7 @@ public class Policy extends AbstractPolicy {
 
         // now create a manager with the defined variable identifiers
         VariableManager manager = new VariableManager(variableIds, metaData);
-        definitions = new HashSet();
+        definitions = new HashSet<VariableDefinition>();
 
         // next, collect the Policy-specific elements
         for (int i = 0; i < children.getLength(); i++) {
@@ -312,10 +307,10 @@ public class Policy extends AbstractPolicy {
                 // if we found the parameter before than add it the end of
                 // the previous paramters, otherwise create a new entry
                 if (parameters.containsKey(ref)) {
-                    List list = (List) (parameters.get(ref));
+                    List<CombinerParameter> list = parameters.get(ref);
                     parseParameters(list, child);
                 } else {
-                    List list = new ArrayList();
+                    List<CombinerParameter> list = new ArrayList<CombinerParameter>();
                     parseParameters(list, child);
                     parameters.put(ref, list);
                 }
@@ -337,12 +332,10 @@ public class Policy extends AbstractPolicy {
         definitions = Collections.unmodifiableSet(definitions);
 
         // now make sure that we can match up any parameters we may have
-        // found to a cooresponding Rule...
-        List elements = new ArrayList();
-        Iterator it = rules.iterator();
+        // found to a corresponding Rule
+        List<CombinerElement> elements = new ArrayList<CombinerElement>();
 
-        while (it.hasNext()) {
-            Rule rule = (Rule) (it.next());
+        for (Rule rule : rules) {
             String id = rule.getId().toString();
             List list = (List) (parameters.remove(id));
 
@@ -360,7 +353,7 @@ public class Policy extends AbstractPolicy {
     /**
      * Helper method that parses out a collection of combiner parameters.
      */
-    private void parseParameters(List parameters, Node root) throws ParsingException {
+    private void parseParameters(List<CombinerParameter> parameters, Node root) throws ParsingException {
         NodeList nodes = root.getChildNodes();
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -399,51 +392,51 @@ public class Policy extends AbstractPolicy {
     }
 
     /**
-     * Encodes this <code>Policy</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Policy</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>Policy</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>Policy</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
+        
+        String xacmlVersionId = metaData.getXACMLIdentifier();
 
-        out.println(indent + "<Policy PolicyId=\"" + getId().toString()
-                + "\" RuleCombiningAlgId=\"" + getCombiningAlg().getIdentifier().toString() + "\">");
+        String version = getVersion();
 
-        indenter.in();
-        String nextIndent = indenter.makeString();
+        builder.append("<Policy xmlns=\"" + xacmlVersionId + "\""  + " PolicyId=\"" + getId() +
+                "\"" + " Version=\"" + version + "").
+                append("\" RuleCombiningAlgId=\"").append(getCombiningAlg().getIdentifier().toString()).append("\">\n");
 
         String description = getDescription();
-        if (description != null)
-            out.println(nextIndent + "<Description>" + description + "</Description>");
+        if (description != null){
+            builder.append("<Description>").append(description).append("</Description>\n");
+        }
 
-        String version = getDefaultVersion();
-        if (version != null)
-            out.println("<PolicyDefaults><XPathVersion>" + version
-                    + "</XPathVersion></PolicyDefaults>");
+        String xPathVersion = metaData.getXPathIdentifier();
+        if (xPathVersion != null){
+            builder.append("<PolicyDefaults><XPathVersion>").
+                    append(xPathVersion).append("</XPathVersion></PolicyDefaults>\n");
+        }
 
-//        getTarget().encode(output, indenter);                  TODO
+        getTarget().encode(builder);
 
-        Iterator it = definitions.iterator();
-        while (it.hasNext())
-            ((VariableDefinition) (it.next())).encode(output, indenter);
+        for (VariableDefinition definition : definitions) {
+            definition.encode(builder);
+        }
 
-        encodeCommonElements(output, indenter);
+        encodeCommonElements(builder);
 
-        indenter.out();
-        out.println(indent + "</Policy>");
+        builder.append("</Policy>\n");
     }
-
 }

@@ -250,58 +250,54 @@ public class Status {
     }
 
     /**
-     * Encodes this status data into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Status</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this status data into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>Status</code> into its XML form and writes this out to the provided                        
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.println(indent + "<Status>");
+        builder.append("<Status>");
 
-        indenter.in();
+        encodeStatusCode(code.iterator(), builder);
 
-        encodeStatusCode(out, indenter, code.iterator());
+        if (message != null){
+            builder.append("<StatusMessage>").append(message).append("</StatusMessage>");
+        }
 
-        if (message != null)
-            out.println(indenter.makeString() + "<StatusMessage>" + message + "</StatusMessage>");
-
-        if (detail != null)
-            out.println(detail.getEncoded());
-
-        indenter.out();
-
-        out.println(indent + "</Status>");
+        if (detail != null) {
+            builder.append(detail.getEncoded());
+        }
+        builder.append("</Status>");
     }
 
     /**
      * Encodes the object in XML
+     * 
+     * @param iterator
+     * @param builder
      */
-    private void encodeStatusCode(PrintStream out, Indenter indenter, Iterator iterator) {
-        String in = indenter.makeString();
+    private void encodeStatusCode(Iterator iterator, StringBuilder builder) {
+
         String code = (String) (iterator.next());
 
         if (iterator.hasNext()) {
-            indenter.in();
-            out.println(in + "<StatusCode Value=\"" + code + "\">");
-            encodeStatusCode(out, indenter, iterator);
-            out.println(in + "</StatusCode>");
-            indenter.out();
+            builder.append("<StatusCode Value=\"").append(code).append("\">");
+            encodeStatusCode(iterator, builder);
+            builder.append("</StatusCode>");
         } else {
-            out.println(in + "<StatusCode Value=\"" + code + "\"/>");
+            builder.append("<StatusCode Value=\"").append(code).append("\"/>");
         }
     }
 

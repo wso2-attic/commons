@@ -43,12 +43,18 @@ public abstract class AbstractTarget {
     public abstract MatchResult match(EvaluationCtx context);
 
     /**
-     * Encodes this <code>Target</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with indentation.
+     * Encodes this <code>AbstractTarget</code> into its XML form
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @return <code>String</code>
      */
-    public abstract void encode(OutputStream output, Indenter indenter);
+    public abstract String encode();
+
+    /**
+     * Encodes this <code>AbstractTarget</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
+     */
+    public abstract void encode(StringBuilder builder);
 
 }

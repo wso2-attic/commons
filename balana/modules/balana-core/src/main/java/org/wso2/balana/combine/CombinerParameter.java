@@ -119,23 +119,18 @@ public class CombinerParameter {
     }
 
     /**
-     * Encodes this parameter into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>CombinerParameter</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.println(indent + "<CombinerParameter ParameterName=\"" + getName() + "\">");
-        indenter.in();
+        builder.append("<CombinerParameter ParameterName=\"").append(getName()).append("\">\n");
 
-        getValue().encode(output, indenter);
+        getValue().encode(builder);
 
-        out.println(indent + "</CombinerParameter>");
-        indenter.out();
+        builder.append("</CombinerParameter>\n");
     }
 
 }

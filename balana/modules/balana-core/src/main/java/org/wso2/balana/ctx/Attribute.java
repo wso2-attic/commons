@@ -320,64 +320,49 @@ public class Attribute {
 
 
     /**
-     * Encodes this attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Attribute</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
 
     /**
-     * Encodes this attribute into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
+     * Encodes this <code>Attribute</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
+    public void encode(StringBuilder builder) {
 
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
-        out.println(indent + "<Attribute AttributeId=\"" + id.toString() + "\"" );
+        builder.append("<Attribute AttributeId=\"").append(id.toString()).append("\"");
 
         if((xacmlVersion == XACMLConstants.XACML_VERSION_3_0)){
-           out.print(" IncludeInResult=\"" + includeInResult + "\"" );
+            builder.append(" IncludeInResult=\"").append(includeInResult).append("\"");
         } else {
-            out.println(" DataType=\"" + type.toString()  + "\"" );
+            builder.append(" DataType=\"").append(type.toString()).append("\"");
             if (issueInstant != null){
-                out.print(" IssueInstant=\"" + issueInstant.encode() + "\"");
+                builder.append(" IssueInstant=\"").append(issueInstant.encode()).append("\"");
             }
         }
 
         if (issuer != null) {
-            out.print(" Issuer=\"" + issuer + "\"");
+            builder.append(" Issuer=\"").append(issuer).append("\"");
         }
 
-        out.print(">");
-        indenter.in();
+        builder.append(">\n");
 
         if(attributeValues != null && attributeValues.size() > 0){
             for(AttributeValue value : attributeValues){
-                out.println(value.encodeWithTags(true));
+                value.encode(builder);
             }
         }
 
-        indenter.out();
-
-        out.println( indent + "</Attribute>");
-    }
-
-    /**
-     * Simple encoding method that returns the text-encoded version of this attribute with no
-     * formatting.
-     *
-     * @return the text-encoded XML
-     */
-    public String encode(){
-        return null;
+        builder.append("</Attribute>\n");
     }
 
 }

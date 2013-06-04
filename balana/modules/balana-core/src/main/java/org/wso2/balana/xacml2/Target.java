@@ -317,26 +317,23 @@ public class Target extends AbstractTarget {
     }
 
     /**
-     * Encodes this <code>Target</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with no indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
+     * Encodes this <code>Target</code> into its XML form
+     *
+     * @return <code>String</code>
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
+    public String encode() {
+        StringBuilder builder = new StringBuilder();
+        encode(builder);
+        return builder.toString();
     }
 
     /**
-     * Encodes this <code>Target</code> into its XML representation and writes this encoding to the
-     * given <code>OutputStream</code> with indentation.
-     * 
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * Encodes this <code>Target</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
+     *
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
-
+    public void encode(StringBuilder builder) {
         // see if this Target matches anything
         boolean matchesAny = (subjectsSection.matchesAny() && resourcesSection.matchesAny()
                 && actionsSection.matchesAny() && environmentsSection.matchesAny());
@@ -344,21 +341,18 @@ public class Target extends AbstractTarget {
         if (matchesAny && (xacmlVersion == XACMLConstants.XACML_VERSION_2_0)) {
             // in 2.0, if all the sections match any request, then the Target
             // element is empty and should be encoded simply as en empty tag
-            out.println("<Target/>");
+            builder.append("<Target/>\n");
         } else {
-            out.println(indent + "<Target>");
-            indenter.in();
-
-            subjectsSection.encode(output, indenter);
-            resourcesSection.encode(output, indenter);
-            actionsSection.encode(output, indenter);
+            builder.append("<Target>\n");
+            subjectsSection.encode(builder);
+            resourcesSection.encode(builder);
+            actionsSection.encode(builder);
 
             // we should only do this if we're a 2.0 policy
-            if (xacmlVersion == XACMLConstants.XACML_VERSION_2_0)
-                environmentsSection.encode(output, indenter);
-
-            indenter.out();
-            out.println(indent + "</Target>");
+            if (xacmlVersion == XACMLConstants.XACML_VERSION_2_0){
+                environmentsSection.encode(builder);
+            }
+            builder.append("</Target>\n");
         }
     }
 

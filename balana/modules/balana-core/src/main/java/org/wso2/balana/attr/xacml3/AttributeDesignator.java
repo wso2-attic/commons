@@ -292,45 +292,30 @@ public class AttributeDesignator extends AbstractDesignator {
     }
 
     /**
-     * Encodes this designator into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with no indentation.
+     * Encodes this <code>AttributeDesignator</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
-    }
+    public void encode(StringBuilder builder) {
 
-    /**
-     * Encodes this designator into its XML representation and writes this encoding to the given
-     * <code>OutputStream</code> with indentation.
-     *
-     * @param output   a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
-     */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+        builder.append("<AttributeDesignator");
 
-        String tag = "<AttributeDesignator";
-
-        tag += " AttributeId=\"" + id.toString() + "\"";
-        tag += " DataType=\"" + type.toString() + "\"";
-        tag += " Category=\"" + category.toString() + "\"";
+        builder.append(" AttributeId=\"").append(id.toString()).append("\"");
+        builder.append(" DataType=\"").append(type.toString()).append("\"");
+        builder.append(" Category=\"").append(category.toString()).append("\"");
 
         if (issuer != null) {
-            tag += " Issuer=\"" + issuer + "\"";
+            builder.append(" Issuer=\"").append(issuer).append("\"");
         }
         
         if (mustBePresent) {
-            tag += " MustBePresent=\"true\"";
+            builder.append(" MustBePresent=\"true\"");
         } else {
-            tag += " MustBePresent=\"false\"";
+            builder.append(" MustBePresent=\"false\"");
         }
         
-        tag += "/>";
-
-        out.println(indent + tag);
+        builder.append("/>\n");
     }
 
 }

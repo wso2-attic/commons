@@ -25,6 +25,7 @@ import org.wso2.balana.*;
 import org.wso2.balana.ctx.AbstractResult;
 import org.wso2.balana.ctx.AttributeAssignment;
 import org.wso2.balana.ctx.EvaluationCtx;
+import org.wso2.balana.ctx.xacml2.Result;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -159,40 +160,20 @@ public class AdviceExpression {
         return new Advice(adviceId, assignments);
     }
 
-    /**
-     * Encodes this <code>AdviceExpression</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with no indentation.
-     *
-     * @param output a stream into which the XML-encoded data is written
-     */
-    public void encode(OutputStream output) {
-        encode(output, new Indenter(0));
-    }
 
     /**
-     * Encodes this <code>AdviceExpression</code> into its XML form and writes this out to the provided
-     * <code>OutputStream<code> with indentation.
+     * Encodes this <code>ObligationExpression</code> into its XML form and writes this out to the provided
+     * <code>StringBuilder<code>
      *
-     * @param output a stream into which the XML-encoded data is written
-     * @param indenter an object that creates indentation strings
+     * @param builder string stream into which the XML-encoded data is written
      */
-    public void encode(OutputStream output, Indenter indenter) {
-        PrintStream out = new PrintStream(output);
-        String indent = indenter.makeString();
+    public void encode(StringBuilder builder) {
 
-        out.println(indent + "<AdviceExpression AdviceId=\"" + adviceId.toString() + "\" AppliesTo=\""
-                + org.wso2.balana.ctx.xacml2.Result.DECISIONS[appliesTo] + "\">");
-
-        indenter.in();
-
-        if(attributeAssignmentExpressions != null && attributeAssignmentExpressions.size() > 0){
-            for(AttributeAssignmentExpression assignment : attributeAssignmentExpressions){
-                assignment.encode(output, indenter);
-            }
+        builder.append("<AdviceExpression AdviceId=\"" + adviceId + "\" AppliesTo=\""
+                + AbstractResult.DECISIONS[appliesTo] + "\">");
+        for (AttributeAssignmentExpression assignment : attributeAssignmentExpressions) {
+            assignment.encode(builder);
         }
-
-        indenter.out();
-
-        out.println(indent + "</AdviceExpression>");
+        builder.append("</AdviceExpression>");
     }
 }
