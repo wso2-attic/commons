@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+      <parameter name="cachableDuration">15000</parameter>
+   </registry>
+   <proxy name="SampleProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target endpoint="A">
+         <inSequence>
+            <log>
+               <property name="LOG"
+                         value="======================================================="/>
+            </log>
+         </inSequence>
+         <outSequence>
+            <log>
+               <property name="LOG" value="******************************************"/>
+            </log>
+         </outSequence>
+      </target>
+   </proxy>
+   <endpoint name="A">
+      <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+   </endpoint>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <in>
+         <log level="full"/>
+         <filter source="get-property('To')" regex="http://localhost:9000.*">
+            <send/>
+         </filter>
+      </in>
+      <out>
+         <send/>
+      </out>
+      <description>The main sequence for the message mediation</description>
+   </sequence>
+   <task name="SampleInjectToSequenceTask"
+         class="org.apache.synapse.startup.tasks.MessageInjector"
+         group="synapse.simple.quartz">
+      <trigger count="2" interval="5"/>
+      <property xmlns:task="http://www.wso2.org/products/wso2commons/tasks" name="message">
+         <m0:getQuote xmlns:m0="http://services.samples">
+            <m0:request>
+               <m0:symbol>IBM</m0:symbol>
+            </m0:request>
+         </m0:getQuote>
+      </property>
+      <property xmlns:task="http://www.wso2.org/products/wso2commons/tasks"
+                name="proxyName"
+                value="SampleProxy"/>
+      <property xmlns:task="http://www.wso2.org/products/wso2commons/tasks"
+                name="injectTo"
+                value="proxy"/>
+   </task>
+</definitions>

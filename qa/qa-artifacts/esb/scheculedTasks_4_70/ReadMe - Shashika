@@ -1,0 +1,10 @@
+Steps:
+
+1. Start "axis2Server" from samples and deploy "SimpleStockQuoteService"
+2. Use synapse configuration in ESB (update the main source view) 
+   a. syn1_main - injectTo main sequence
+   b. syn2_proxy - injectTo proxy
+   c. syn4_seq - injectTp sequence
+   d. syn5_proxy_cron & syn5_seq_cron - injectTo proxy and sequence using cron job
+3. Let the task execute and you will see the results at the backend service console as well as ESB console (turn on DEBUG logs)
+
