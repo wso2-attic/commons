@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="SimplePox"
+       transports="https"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <endpoint>
+         <address uri="http://localhost:9768/simplepox/POX"/>
+      </endpoint>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </target>
+</proxy>
