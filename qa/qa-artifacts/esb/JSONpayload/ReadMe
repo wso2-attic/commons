@@ -1,0 +1,48 @@
+1. Use the given given configuration and update ESB main source view:
+2. copy the proxy endpoint (ex: http://shashi-ThinkPad-T530:8280/services/Dummy) and Create REST service by extrating resouces from soapUI  
+3. Use the post method and copy the following xml request in the body
+<xml><id_str>84315710834212866</id_str>
+	<entities>
+		<hashtags>
+			<text>peterfalk</text>
+			<indices>35</indices>
+			<indices>45</indices>
+		</hashtags>
+	</entities>
+	<text>Maybe he'll finally find his keys. #peterfalk</text>
+	<user>
+		<id_str>819797</id_str>
+		<id>819797</id>
+	</user></xml>
+4. send the request
+
+5. Use the jason request and as follows and send the request. Note: you have to change the "Media Type" as "application/json" to send the request
+{
+    "id_str": "84315710834212866",
+    "entities": {
+        "urls": [
+
+        ],
+        "hashtags": [
+            {
+                "text": "peterfalk",
+                "indices": [
+                    35,
+                    45
+                ]
+            }
+        ],
+        "user_mentions": [
+
+        ]
+    },
+
+    "text": "Maybe he'll finally find his keys. #peterfalk",
+    "user": {
+        "id_str": "819797",
+        "id": 819797
+    }
+}
+
+
+<use can use the "Dummy-wsdl-soapui-project.xml" for REST request
