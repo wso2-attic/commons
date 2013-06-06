@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoint xmlns="http://ws.apache.org/ns/synapse" name="endpoint15">
+   <address uri="http://10.100.0.21:9768/jaxrs_basic/services/customers"/>
+</endpoint>

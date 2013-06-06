@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="seq11">
+   <in>
+      <clone id="hjhjj"/>
+   </in>
+</sequence>

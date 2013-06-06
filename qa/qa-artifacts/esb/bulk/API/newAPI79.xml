@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="newAPI79"
+     context="/apicontext79"
+     hostname="localhost"
+     port="8090">
+   <resource methods="POST GET" url-mapping="/goto/this"/>
+</api>
