@@ -71,7 +71,7 @@ public class ConformanceTestV2 extends TestCase {
 
         String policyNumber;
 
-        for(int i = 1; i < 22 ; i++){     
+        for(int i = 1; i < 22 ; i++){
 
             //Some test has been skipped due to errors
             if(i == 2 || i == 4 || i == 14){
@@ -100,7 +100,7 @@ public class ConformanceTestV2 extends TestCase {
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIA" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     if(expectedResponseCtx != null){
                         assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
@@ -150,7 +150,7 @@ public class ConformanceTestV2 extends TestCase {
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIB" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     if(expectedResponseCtx != null){
                         assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
@@ -201,7 +201,7 @@ public class ConformanceTestV2 extends TestCase {
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIC" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     if(expectedResponseCtx != null){
                         assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
@@ -222,7 +222,7 @@ public class ConformanceTestV2 extends TestCase {
     public void testConformanceTestD() throws Exception {
 
         String policyNumber;
-        
+
         for(int i = 1; i < 29 ; i++){
             if(i < 10){
                 policyNumber = "00" + i;
@@ -244,7 +244,7 @@ public class ConformanceTestV2 extends TestCase {
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IID" + policyNumber + "Response.xml");
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     if(expectedResponseCtx != null){
                         assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {
@@ -261,54 +261,54 @@ public class ConformanceTestV2 extends TestCase {
         }
     }
 
-//    public void testConformanceTestAA() throws Exception {
-//
-//        String policyNumber;
-//
-//        for(int i = 1; i < 29 ; i++){
-//            if(i < 10){
-//                policyNumber = "00" + i;
-//            } else if(9 < i && i < 100) {
-//                policyNumber = "0" + i;
-//            } else {
-//                policyNumber = Integer.toString(i);
-//            }
-//
-//            log.info("Conformance Test IIIA" + policyNumber + " is started");
-//
-//            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
-//                                                            "IIIA" + policyNumber + "Request.xml");
-//            if(request != null){
-//                log.info("Request that is sent to the PDP :  " + request);
-//                Set<String> policies = new HashSet<String>();
-//                policies.add("IIIA" + policyNumber + "Policy.xml");
-//                String response = getPDPNewInstance(policies).evaluate(request);
-//                if(response != null){
-//                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
-//                                        VERSION_DIRECTORY, "IIIA" + policyNumber + "Response.xml");
-//                    log.info("Response that is received from the PDP :  " + response);
-//                    if(expectedResponseCtx != null){
-//                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
-//                    } else {
-//                        assertTrue("Response read from file is Null",false);
-//                    }
-//                } else {
-//                    assertFalse("Response received PDP is Null",false);
-//                }
-//            } else {
-//                assertTrue("Request read from file is Null", false);
-//            }
-//
-//            log.info("Conformance Test IIIA" + policyNumber + " is finished");
-//        }
-//    }
+    public void testConformanceTestAA() throws Exception {
+
+        String policyNumber;
+
+        for(int i = 1; i < 29 ; i++){
+            if(i < 10){
+                policyNumber = "00" + i;
+            } else if(9 < i && i < 100) {
+                policyNumber = "0" + i;
+            } else {
+                policyNumber = Integer.toString(i);
+            }
+
+            log.info("Conformance Test IIIA" + policyNumber + " is started");
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                            "IIIA" + policyNumber + "Request.xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                Set<String> policies = new HashSet<String>();
+                policies.add("IIIA" + policyNumber + "Policy.xml");
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
+                if(response != null){
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                        VERSION_DIRECTORY, "IIIA" + policyNumber + "Response.xml");
+                    log.info("Response that is received from the PDP :  " + response);
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Conformance Test IIIA" + policyNumber + " is finished");
+        }
+    }
 
 
 //    public void testConformanceTest0005() throws Exception {
 //
 //        String policyNumber;
 //
-//        for(int i = 29; i < 31 ; i++){
+//        for(int i = 30; i < 31 ; i++){
 //            if(i == 0){
 //                log.info("Conformance Test IID00" + i + " does not started As required " +
 //                                                                "attribute finder is not defined");
@@ -332,12 +332,12 @@ public class ConformanceTestV2 extends TestCase {
 //                Set<String> policies = new HashSet<String>();
 //                policies.add("IID" + policyNumber + "Policy1.xml");
 //                policies.add("IID" + policyNumber + "Policy2.xml");
-//                String response = getPDPNewInstance(policies).evaluate(request);
+//                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
 //                if(response != null){
 //                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
 //                                        VERSION_DIRECTORY, "IID" + policyNumber + "Response.xml");
 //                    log.info("Response that is received from the PDP :  " + response);
-//                    assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
+//                    assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
 //                    assertTrue(true);
 //                }
 //            }
@@ -345,50 +345,50 @@ public class ConformanceTestV2 extends TestCase {
 //            log.info("Conformance Test IIC" + policyNumber + " is finished");
 //        }
 //    }
-//
-//
-//    public void testConformanceTest0006() throws Exception {
-//
-//        String policyNumber;
-//
-//        for(int i = 1; i < 4; i++){
-//            if(i == 0){
-//                log.info("Conformance Test IIE00" + i + " does not started As required " +
-//                                                                "attribute finder is not defined");
-//                continue;
-//            }
-//
-//            if(i < 10){
-//                policyNumber = "00" + i;
-//            } else if(9 < i && i < 100) {
-//                policyNumber = "0" + i;
-//            } else {
-//                policyNumber = Integer.toString(i);
-//            }
-//
-//            log.info("Conformance Test IIE" + policyNumber + " is started");
-//
-//            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
-//                                                            "IIE" + policyNumber + "Request.xml");
-//            if(request != null){
-//                log.info("Request that is sent to the PDP :  " + request);
-//                Set<String> policies = new HashSet<String>();
-//                policies.add("IIE" + policyNumber + "Policy.xml");
-//                policies.add("IIE" + policyNumber + "PolicyId1.xml");
-//                policies.add("IIE" + policyNumber + "PolicySetId1.xml");
-//                String response = getPDPNewInstance(policies).evaluate(request);
-//                if(response != null){
-//                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
-//                                        VERSION_DIRECTORY, "IIE" + policyNumber + "Response.xml");
-//                    log.info("Response that is received from the PDP :  " + response);
-//                    assertTrue(TestUtil.isMatching(response, expectedResponseCtx.getEncoded()));
-//                    assertTrue(true);
-//                }
-//            }
-//
-//            log.info("Conformance Test IIE" + policyNumber + " is finished");
-//        }
-//    }
+
+
+    public void testConformanceTest0006() throws Exception {
+
+        String policyNumber;
+
+        for(int i = 1; i < 4; i++){
+            if(i == 0){
+                log.info("Conformance Test IIE00" + i + " does not started As required " +
+                                                                "attribute finder is not defined");
+                continue;
+            }
+
+            if(i < 10){
+                policyNumber = "00" + i;
+            } else if(9 < i && i < 100) {
+                policyNumber = "0" + i;
+            } else {
+                policyNumber = Integer.toString(i);
+            }
+
+            log.info("Conformance Test IIE" + policyNumber + " is started");
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                                                            "IIE" + policyNumber + "Request.xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                Set<String> policies = new HashSet<String>();
+                policies.add("IIE" + policyNumber + "Policy.xml");
+                policies.add("IIE" + policyNumber + "PolicyId1.xml");
+                policies.add("IIE" + policyNumber + "PolicySetId1.xml");
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
+                if(response != null){
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                                        VERSION_DIRECTORY, "IIE" + policyNumber + "Response.xml");
+                    log.info("Response that is received from the PDP :  " + response);
+                    assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
+                    assertTrue(true);
+                }
+            }
+
+            log.info("Conformance Test IIE" + policyNumber + " is finished");
+        }
+    }
 
 
     /**

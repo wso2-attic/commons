@@ -73,22 +73,22 @@ public class TargetMatch {
     /**
      * An integer value indicating that this class represents a SubjectMatch
      */
-    public static final int SUBJECT = 1;
+    public static final int SUBJECT = 0;
 
     /**
      * An integer value indicating that this class represents a ResourceMatch
      */
-    public static final int RESOURCE = 2;
+    public static final int RESOURCE = 1;
 
     /**
      * An integer value indicating that this class represents an ActionMatch
      */
-    public static final int ACTION = 3;
+    public static final int ACTION = 2;
 
     /**
      * An integer value indicating that this class represents an EnvironmentMatch
      */
-    public static final int ENVIRONMENT = 4;
+    public static final int ENVIRONMENT = 3;
 
     /**
      * Mapping from the 4 match types to their string representations
@@ -265,7 +265,7 @@ public class TargetMatch {
         inputs.add(eval);
         function.checkInputsNoBag(inputs);
 
-        if(matchType == 0){
+        if(XACMLConstants.XACML_VERSION_3_0 == metaData.getXACMLVersion()){
             return new TargetMatch(function, eval, attrValue);
         } else {
             return new TargetMatch(matchType, function, eval, attrValue);

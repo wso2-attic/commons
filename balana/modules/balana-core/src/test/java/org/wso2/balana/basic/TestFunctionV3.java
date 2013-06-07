@@ -74,7 +74,7 @@ public class TestFunctionV3 extends TestCase {
                 log.info("Request that is sent to the PDP :  " + request);
                 ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
                 if(response != null){
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                     VERSION_DIRECTORY, "response_0006_" + reqResNo + ".xml");
                     if(expectedResponseCtx != null){

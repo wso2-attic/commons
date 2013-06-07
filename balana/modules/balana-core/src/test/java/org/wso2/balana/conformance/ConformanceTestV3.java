@@ -22,8 +22,6 @@ import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.balana.*;
-import org.wso2.balana.ctx.AbstractRequestCtx;
-import org.wso2.balana.ctx.RequestCtxFactory;
 import org.wso2.balana.ctx.ResponseCtx;
 import org.wso2.balana.finder.PolicyFinder;
 import org.wso2.balana.finder.PolicyFinderModule;
@@ -95,7 +93,7 @@ public class ConformanceTestV3 extends TestCase {
                 if(response != null){
                     ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
                                         VERSION_DIRECTORY, "IIIA" + policyNumber + "Response.xacml3.xml");
-                    log.info("Response that is received from the PDP :  " + response.getEncoded());
+                    log.info("Response that is received from the PDP :  " + response.encode());
                     if(expectedResponseCtx != null){
                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
                     } else {

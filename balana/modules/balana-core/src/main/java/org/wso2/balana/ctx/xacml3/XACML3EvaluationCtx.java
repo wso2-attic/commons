@@ -407,28 +407,35 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
     private MultipleCtxResult processMultipleAttributes(XACML3EvaluationCtx evaluationCtx) {
 
         Set<EvaluationCtx> children = new HashSet<EvaluationCtx>();
-        Set<RequestCtx> newRequestCtxSet = new HashSet<RequestCtx>();
 
         Map<String, Set<Attributes>> mapAttributes = evaluationCtx.getMapAttributes();
 
+        Set<Set<Attributes>> tempRequestAttributes =
+                    new HashSet<Set<Attributes>>(Arrays.asList(evaluationCtx.getAttributesSet()));
+
         for(Map.Entry<String, Set<Attributes>> mapAttributesEntry : mapAttributes.entrySet()){
             if(mapAttributesEntry.getValue().size() > 1){
+                Set<Set<Attributes>> temp = new HashSet<Set<Attributes>>();
                 for(Attributes attributesElement :  mapAttributesEntry.getValue()){
-                    Set<Attributes> newSet = new HashSet<Attributes>(evaluationCtx.getAttributesSet());
-                    newSet.removeAll(mapAttributesEntry.getValue());
-                    newSet.add(attributesElement);
-                    RequestCtx newRequestCtx = new RequestCtx(newSet, null);
-                    newRequestCtxSet.add(newRequestCtx);
+                    for(Set<Attributes> tempRequestAttribute : tempRequestAttributes){
+                        Set<Attributes> newSet = new HashSet<Attributes>(tempRequestAttribute);
+                        newSet.removeAll(mapAttributesEntry.getValue());
+                        newSet.add(attributesElement);
+                        temp.add(newSet);
+                    }
                 }
+                tempRequestAttributes = temp;
             }
         }
 
-        for(RequestCtx ctx : newRequestCtxSet){
-            children.add(new XACML3EvaluationCtx(ctx, pdpConfig));
+        for(Set<Attributes> ctx : tempRequestAttributes){
+            RequestCtx requestCtx = new RequestCtx(ctx, null);
+            children.add(new XACML3EvaluationCtx(requestCtx, pdpConfig));
         }
 
         return new MultipleCtxResult(children);
     }
+
 
     /**
      *
