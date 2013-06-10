@@ -51,7 +51,7 @@ import java.util.Map;
  * Any SCIM service provider can call this API perform relevant CRUD operations on USER ,
  * based on the HTTP requests received by SCIM Client.
  */
-public class UserResourceEndpoint extends AbstractResourceEndpoint implements ResourceEndpoint {
+public class UserResourceEndpoint extends AbstractResourceEndpoint {
     private Log logger = LogFactory.getLog(UserResourceEndpoint.class);
 
     /**
@@ -154,7 +154,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 encodedUser = encoder.encodeSCIMObject(copiedUser);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + File.separator + createdUser.getId());
+                        SCIMConstants.USER_ENDPOINT) + "/" + createdUser.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -490,7 +490,7 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint implements Re
                 encodedUser = encoder.encodeSCIMObject(copiedUser);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + File.separator + updatedUser.getId());
+                        SCIMConstants.USER_ENDPOINT) + "/" + updatedUser.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {

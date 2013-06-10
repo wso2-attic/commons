@@ -298,7 +298,7 @@ public class ServerSideValidator extends AbstractValidator {
     }
 
     private static String createLocationHeader(String location, String resourceID) {
-        String locationString = location + File.separator + resourceID;
+        String locationString = location + "/" + resourceID;
         return locationString;
     }
 

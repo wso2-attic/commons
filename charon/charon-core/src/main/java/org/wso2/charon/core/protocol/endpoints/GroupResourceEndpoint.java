@@ -157,7 +157,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                 encodedGroup = encoder.encodeSCIMObject(createdGroup);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.GROUP_ENDPOINT) + File.separator + createdGroup.getId());
+                        SCIMConstants.GROUP_ENDPOINT) + "/" + createdGroup.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
@@ -489,7 +489,7 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                 encodedGroup = encoder.encodeSCIMObject(updatedGroup);
                 //add location header
                 httpHeaders.put(SCIMConstants.LOCATION_HEADER, getResourceEndpointURL(
-                        SCIMConstants.USER_ENDPOINT) + File.separator + updatedGroup.getId());
+                        SCIMConstants.USER_ENDPOINT) + "/" + updatedGroup.getId());
                 httpHeaders.put(SCIMConstants.CONTENT_TYPE_HEADER, outputFormat);
 
             } else {
