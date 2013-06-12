@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="StockQuoteJMSConsumerProxy"
+       transports="jms"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="OUT_ONLY" value="true"/>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://10.200.3.111:9774/as/services/SimpleStockQuoteService"/>
+      </endpoint>
+   </target>
+   <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+   <parameter name="transport.jms.ContentType">
+      <rules>
+         <jmsProperty>contentType</jmsProperty>
+         <default>application/xml</default>
+      </rules>
+   </parameter>
+   <description/>
+</proxy>
