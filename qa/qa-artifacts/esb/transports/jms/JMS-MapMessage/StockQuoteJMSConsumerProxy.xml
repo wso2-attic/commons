@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <proxy xmlns="http://ws.apache.org/ns/synapse"
        name="StockQuoteJMSConsumerProxy"
-       transports="jms"
+       transports="https,http,jms"
        statistics="disable"
        trace="disable"
        startOnLoad="true">
    <target>
       <inSequence>
-         <property name="OUT_ONLY" value="true"/>
+         <log level="full">
+            <property name="JMSMessage" value="MapMessage is consumed"/>
+         </log>
       </inSequence>
-      <outSequence>
-         <send/>
-      </outSequence>
-      <endpoint>
-         <address uri="http://10.200.3.111:9774/as/services/SimpleStockQuoteService"/>
-      </endpoint>
    </target>
-   <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
    <parameter name="transport.jms.ContentType">
       <rules>
          <jmsProperty>contentType</jmsProperty>
@@ -24,4 +19,4 @@
       </rules>
    </parameter>
    <description/>
-</proxy>
+</proxy>                   

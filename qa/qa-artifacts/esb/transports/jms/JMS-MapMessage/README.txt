@@ -15,4 +15,7 @@ s
 
 {name3=value3, name1=value1, name2=value2}
 
+6. Activate the 'StockQuoteJMSConsumerProxy' so then you can see the message has been
+consumed by esb
+
 =====================================================================================
