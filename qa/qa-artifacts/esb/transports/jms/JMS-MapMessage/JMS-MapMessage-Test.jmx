@@ -86,9 +86,9 @@
                 <stringProp name="Argument.value">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&gt;&#xd;
 &lt;soapenv:Body&gt;&#xd;
 &lt;JMSMap xmlns=&quot;http://axis.apache.org/axis2/java/transports/jms/map-payload&quot;&gt;&#xd;
-    &lt;name1&gt;value1&lt;/name1&gt;&#xd;
-    &lt;name2&gt;value2&lt;/name2&gt;&#xd;
-    &lt;name3&gt;value3&lt;/name3&gt;&#xd;
+    &lt;price&gt;3.4566&lt;/price&gt;&#xd;
+    &lt;quantity&gt;15000&lt;/quantity&gt;&#xd;
+    &lt;symbol&gt;MSFT&lt;/symbol&gt;&#xd;
 &lt;/JMSMap&gt;&#xd;
 &lt;/soapenv:Body&gt;&#xd;
 &lt;/soapenv:Envelope&gt;</stringProp>
