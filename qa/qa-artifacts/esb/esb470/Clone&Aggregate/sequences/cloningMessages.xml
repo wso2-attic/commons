@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="cloningMessages">
+   <clone id="clone3" sequential="true">
+      <target sequence="anon">
+         <sequence>
+            <log>
+               <property name="Target" value="-===========CloneTarget1========================"/>
+            </log>
+            <send>
+               <endpoint>
+                  <address uri="http://10.200.1.1:9991/services/SimpleStockQuoteService/"/>
+               </endpoint>
+            </send>
+         </sequence>
+      </target>
+      <target sequence="anon">
+         <sequence>
+            <log>
+               <property name="Target"
+                         value="=======================CloneTarget2==========================="/>
+            </log>
+            <send>
+               <endpoint>
+                  <address uri="http://10.200.1.1:9992/services/SimpleStockQuoteService/"/>
+               </endpoint>
+            </send>
+         </sequence>
+      </target>
+   </clone>
+</sequence>
