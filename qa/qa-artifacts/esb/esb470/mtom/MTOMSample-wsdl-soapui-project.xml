@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="MTOMSample?wsdl" resourceRoot="" soapui-version="4.5.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="MTOMServiceSOAP12Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2/mtomsample/}MTOMServiceSOAP12Binding" soapVersion="1_2" anonymous="optional" definition="http://localhost:9000/services/MTOMSample?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP12port_http</con:endpoint></con:endpoints><con:operation isOneWay="false" action="attachment" name="attachment" bindingOperationName="attachment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP12port_http</con:endpoint><con:request><![CDATA[<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:mtom="http://ws.apache.org/axis2/mtomsample/" xmlns:xm="http://www.w3.org/2005/05/xmlmime">
+   <soap:Header/>
+   <soap:Body>
+      <mtom:AttachmentRequest>
+         <!--Optional:-->
+         <mtom:fileName>?</mtom:fileName>
+         <!--Optional:-->
+         <mtom:binaryData xm:contentType="application/?">cid:710303085921</mtom:binaryData>
+      </mtom:AttachmentRequest>
+   </soap:Body>
+</soap:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="{http://schemas.xmlsoap.org/wsdl/}attachment"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="MTOMServiceSOAP11Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2/mtomsample/}MTOMServiceSOAP11Binding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9000/services/MTOMSample?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9000/services/MTOMSample?wsdl"><con:part><con:url>http://localhost:9000/services/MTOMSample?wsdl</con:url><con:content><![CDATA[<definitions targetNamespace="http://ws.apache.org/axis2/mtomsample/" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.apache.org/axis2/mtomsample/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://ws.apache.org/axis2/mtomsample/">
+      <xsd:import namespace="http://www.w3.org/2005/05/xmlmime" schemaLocation="MTOMSample?xsd=xmime.xsd"/>
+      <xsd:complexType name="AttachmentType">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" name="fileName" type="xsd:string"/>
+          <xsd:element minOccurs="0" name="binaryData" type="xmime:base64Binary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="AttachmentRequest" type="tns:AttachmentType"/>
+      <xsd:element name="AttachmentResponse" type="xsd:string"/>
+    </xsd:schema>
+  </types>
+  <message name="AttachmentResponse">
+    <part name="part1" element="tns:AttachmentResponse"></part>
+  </message>
+  <message name="AttachmentRequest">
+    <part name="part1" element="tns:AttachmentRequest"></part>
+  </message>
+  <portType name="MTOMServicePortType">
+    <operation name="attachment">
+      <input message="tns:AttachmentRequest" wsaw:Action="attachment"></input>
+      <output message="tns:AttachmentResponse" wsaw:Action="http://schemas.xmlsoap.org/wsdl/MTOMServicePortType/AttachmentResponse"></output>
+    </operation>
+  </portType>
+  <binding name="MTOMServiceSOAP11Binding" type="tns:MTOMServicePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="attachment">
+      <soap:operation soapAction="attachment" style="document"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <binding name="MTOMServiceSOAP12Binding" type="tns:MTOMServicePortType">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="attachment">
+      <soap12:operation soapAction="attachment" style="document"/>
+      <input>
+        <soap12:body use="literal"/>
+      </input>
+      <output>
+        <soap12:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="MTOMSample">
+    <port name="MTOMSampleSOAP12port_http" binding="tns:MTOMServiceSOAP12Binding">
+      <soap12:address location="http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP12port_http"/>
+    </port>
+    <port name="MTOMSampleSOAP11port_http" binding="tns:MTOMServiceSOAP11Binding">
+      <soap:address location="http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP11port_http"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>http://localhost:9000/services/MTOMSample?xsd=xmime.xsd</con:url><con:content><![CDATA[<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xmime="http://www.w3.org/2005/05/xmlmime">
+  <xs:attribute name="contentType">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="3"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:attribute name="expectedContentTypes" type="xs:string"/>
+  <xs:complexType name="base64Binary">
+    <xs:simpleContent>
+      <xs:extension base="xs:base64Binary">
+        <xs:attribute ref="xmime:contentType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="hexBinary">
+    <xs:simpleContent>
+      <xs:extension base="xs:hexBinary">
+        <xs:attribute ref="xmime:contentType"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP11port_http</con:endpoint></con:endpoints><con:operation isOneWay="false" action="attachment" name="attachment" bindingOperationName="attachment" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting><con:setting id="WsdlSettings@enable-mtom">true</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@force_mtom">false</con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.217.1:9000/services/MTOMSample.MTOMSampleSOAP11port_http</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mtom="http://ws.apache.org/axis2/mtomsample/" xmlns:xm="http://www.w3.org/2005/05/xmlmime">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mtom:AttachmentRequest>
+         <!--Optional:-->
+         <mtom:fileName>LoadbalancerProxy-wsdl-soapui-project.xml</mtom:fileName>
+         <!--Optional:-->
+         <mtom:binaryData xm:contentType="application/?">cid:LoadbalancerProxy-wsdl-soapui-project.xml</mtom:binaryData>
+      </mtom:AttachmentRequest>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:attachment><con:name>LoadbalancerProxy-wsdl-soapui-project.xml</con:name><con:contentType>text/xml</con:contentType><con:size>30337</con:size><con:contentId>LoadbalancerProxy-wsdl-soapui-project.xml</con:contentId><con:url>/opt/software/soapui/soapui-4.5.1/bin/LoadbalancerProxy-wsdl-soapui-project.xml</con:url><con:data>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</con:data><con:id>115e9227-69a5-41f4-ae43-527e6ee4c088</con:id></con:attachment><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="attachment"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
