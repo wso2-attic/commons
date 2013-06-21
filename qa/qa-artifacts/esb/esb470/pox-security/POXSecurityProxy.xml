@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="POXSecurityProxy"
+       transports="https"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+      </endpoint>
+   </target>
+   <publishWSDL uri="http://localhost:9000/services/SimpleStockQuoteService?wsdl"/>
+   <enableSec/>
+   <policy key="conf:/repository/axis2/service-groups/POXSecurityProxy/services/POXSecurityProxy/policies/UTOverTransport"/>
+   <description/>
+</proxy>
+                                
