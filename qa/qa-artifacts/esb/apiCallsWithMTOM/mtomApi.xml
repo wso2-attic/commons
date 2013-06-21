@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="mtomApi"
+     context="/mtom"
+     hostname="10.200.0.74"
+     port="8280">
+   <resource methods="POST GET DELETE OPTIONS PUT">
+      <inSequence>
+         <send>
+            <endpoint>
+               <address uri="http://10.200.0.74:9773/services/MTOMSample" optimize="mtom"/>
+            </endpoint>
+         </send>
+      </inSequence>
+   </resource>
+</api>
