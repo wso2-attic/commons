@@ -9,6 +9,7 @@
             <address uri="http://192.168.217.1:9765/jaxrs_basic_44/services/customers"/>
          </endpoint>
          <inSequence>
+	    <property name="FORCE_POST_PUT_NOBODY" value="true" scope="axis2" type="BOOLEAN"/>
             <log level="full"/>
          </inSequence>
          <outSequence>
