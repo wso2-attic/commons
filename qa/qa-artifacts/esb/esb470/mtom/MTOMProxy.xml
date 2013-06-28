@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="MTOMProxy"
+       transports="http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://10.200.0.129:9765/services/MTOMSample"/>
+      </endpoint>
+   </target>
+   <publishWSDL uri="http://10.200.0.129:9765/services/MTOMSample?wsdl"/>
+   <description/>
+</proxy>
+                                
