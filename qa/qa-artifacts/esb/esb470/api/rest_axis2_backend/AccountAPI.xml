@@ -1,0 +1,14 @@
+<api xmlns="http://ws.apache.org/ns/synapse" name="AccountAPI" context="/accountapi1">
+   <resource methods="POST DELETE OPTIONS GET PUT" uri-template="/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <address uri="http://localhost:9765/services/AccountService"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </resource>
+</api>
