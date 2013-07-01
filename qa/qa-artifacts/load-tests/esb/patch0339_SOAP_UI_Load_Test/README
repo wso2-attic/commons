@@ -1,0 +1,26 @@
+Patch ID         : WSO2-CARBON-PATCH-4.0.0-0339
+Applies To       : ESB 4.6.0
+Associated Public JIRA  : https://wso2.org/jira/browse/ESBJAVA-2209
+Associated Private JIRA	:https://support.wso2.com/jira/browse/EBAYESBDEVSPRT-209
+
+
+DESCRIPTION
+-----------
+Error Handling for small thread pools Enqueue mediator.
+
+1) Start the ESB 4.6.0 using the sample configuration by following the instructions in [1].
+
+2) Change the synapse config to priority_executor_with_a_small_thread_pool.xml
+
+3) Open the SOAP UI and import Enqueue-mediator-with-a-small-thread-pool-soapui-project.xml project.
+
+4) Change the endpoint url to the endpoint of the StockQuoteProxy of the ESB that is going to be tested.
+
+4) Run the load test and see the ESB log for the corrected error handling message "ERROR - EnqueueMediator Unable to process message in priority executor exec with priority 10. Thread pool exhausted."
+
+-----------
+
+[1] http://docs.wso2.org/wiki/display/ESB460/Sample+652%3A+Priority+Based+Message+Mediation 
+
+
+

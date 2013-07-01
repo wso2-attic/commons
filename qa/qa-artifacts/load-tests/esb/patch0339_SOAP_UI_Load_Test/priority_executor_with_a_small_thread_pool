@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+    <proxy name="StockQuoteProxy" startOnLoad="true">
+        <target>
+            <inSequence>
+                <filter source="$trp:priority" regex="1">
+                    <then>
+                        <enqueue executor="exec" sequence="priority_sequence" priority="1"/>
+                    </then>
+                    <else>
+                        <enqueue executor="exec" sequence="priority_sequence" priority="10"/>
+                    </else>
+                </filter>
+            </inSequence>
+            <outSequence>
+                <send/>
+            </outSequence>
+        </target>
+        <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+    </proxy>
+    <sequence name="priority_sequence">
+        <log level="full"/>
+        <send>
+            <endpoint>
+                <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+            </endpoint>
+        </send>
+    </sequence>
+    <sequence name="fault">
+        <log level="full">
+            <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+            <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+            <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+        </log>
+        <drop/>
+    </sequence>
+    <sequence name="main">
+        <log/>
+        <drop/>
+    </sequence>
+    <priorityExecutor name="exec">
+        <queues>
+            <queue size="5" priority="10"/>
+            <queue size="5" priority="1"/>
+        </queues>
+        <threads max="2" core="2" keep-alive="5"/>
+    </priorityExecutor>
+</definitions>
