@@ -1,0 +1,15 @@
+   <api name="JaxRS44" context="/jaxrs44">
+      <resource methods="POST GET OPTIONS DELETE PUT" uri-template="/*">
+         <inSequence>
+            <send>
+               <endpoint>
+                  <http method="get"
+                        uri-template="http://10.200.0.129:9765/jaxrs_basic_44/services/customers"/>
+               </endpoint>
+            </send>
+         </inSequence>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </resource>
+   </api>
