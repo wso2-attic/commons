@@ -104,7 +104,7 @@ public class ListedResource implements SCIMObject {
                     new MultiValuedAttribute(SCIMConstants.ListedResourcesConstants.RESOURCES);
             resourcesAttribute.setComplexValueWithSetOfSubAttributes(valueWithAttributes);
             for (Attribute attribute : valueWithAttributes.values()) {
-                if (!schemaList.contains(attribute.getSchemaName())) {
+                if ((attribute.getSchemaName() != null) && (!schemaList.contains(attribute.getSchemaName()))) {
                     schemaList.add(attribute.getSchemaName());
                 }
             }
