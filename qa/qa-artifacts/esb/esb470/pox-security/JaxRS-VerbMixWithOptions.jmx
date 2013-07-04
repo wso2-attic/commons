@@ -36,7 +36,7 @@
             </elementProp>
             <elementProp name="port" elementType="Argument">
               <stringProp name="Argument.name">port</stringProp>
-              <stringProp name="Argument.value">8280</stringProp>
+              <stringProp name="Argument.value">8243</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
           </collectionProp>
@@ -84,7 +84,7 @@
                 </elementProp>
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/xml</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
                 </elementProp>
               </collectionProp>
             </HeaderManager>
@@ -128,7 +128,7 @@
                 </elementProp>
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/xml</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
                 </elementProp>
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Content-Type</stringProp>
@@ -176,7 +176,7 @@
                 </elementProp>
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/xml</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
                 </elementProp>
               </collectionProp>
             </HeaderManager>
@@ -220,7 +220,7 @@
                 </elementProp>
                 <elementProp name="" elementType="Header">
                   <stringProp name="Header.name">Accept</stringProp>
-                  <stringProp name="Header.value">text/xml</stringProp>
+                  <stringProp name="Header.value">application/xml</stringProp>
                 </elementProp>
               </collectionProp>
             </HeaderManager>
