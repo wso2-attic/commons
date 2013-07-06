@@ -323,45 +323,96 @@ public class JSONDecoder implements Decoder {
         }
     }
 
-    /**
-     * Decode the attribute, given that it is identified as a complex attribute.
-     *
-     * @param attributeSchema
-     * @param jsonObject
-     * @return
-     */
-    private ComplexAttribute buildComplexAttribute(AttributeSchema attributeSchema,
-                                                   JSONObject jsonObject) throws CharonException {
+	/**
+	 * Decode the attribute, given that it is identified as a complex attribute.
+	 * 
+	 * @param complexAttributeSchema
+	 * @param jsonObject
+	 * @return
+	 */
+	private ComplexAttribute buildComplexAttribute(AttributeSchema complexAttributeSchema, JSONObject jsonObject)
+	                                                                                                      throws CharonException {
 
-        ComplexAttribute complexAttribute = new ComplexAttribute(attributeSchema.getName());
-        Map<String, Attribute> subAttributesMap = new HashMap<String, Attribute>();
-        List<SCIMSubAttributeSchema> subAttributeSchemas =
-                ((SCIMAttributeSchema) attributeSchema).getSubAttributes();
+		ComplexAttribute complexAttribute = new ComplexAttribute(complexAttributeSchema.getName());
+		Map<String, Attribute> attributesMap = new HashMap<String, Attribute>();
 
-        for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
-            Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
-            if (subAttributeValue instanceof String) {
-                SimpleAttribute simpleAttribute =
-                        buildSimpleAttribute(subAttributeSchema, subAttributeValue);
-                //let the attribute factory to set the sub attribute of a complex attribute to detect schema violations.
-                //DefaultAttributeFactory.setSubAttribute(complexAttribute, simpleAttribute);
-                subAttributesMap.put(subAttributeSchema.getName(), simpleAttribute);
-            } else if (subAttributeValue instanceof JSONArray) {
-                //there can be sub attributes which are multivalued: such as: Meta->attributes
-                MultiValuedAttribute multivaluedAttribute =
-                        buildMultiValuedAttribute(subAttributeSchema, (JSONArray) subAttributeValue);
-/*
-                DefaultAttributeFactory.setSubAttribute(
-                        complexAttribute, buildMultiValuedAttribute(subAttributeSchema,
-                                                                    (JSONArray) subAttributeValue));
-*/
-                subAttributesMap.put(subAttributeSchema.getName(), multivaluedAttribute);
-            }
-        }
-        complexAttribute.setSubAttributes(subAttributesMap);
-        return (ComplexAttribute) DefaultAttributeFactory.createAttribute(attributeSchema,
-                                                                          complexAttribute);
-    }
+		// If complex attribute has only sub attributes
+		if (((SCIMAttributeSchema) complexAttributeSchema).getSubAttributes() != null) {
+			List<SCIMSubAttributeSchema> subAttributeSchemas =
+			                                                   ((SCIMAttributeSchema) complexAttributeSchema).getSubAttributes();
+
+			for (SCIMSubAttributeSchema subAttributeSchema : subAttributeSchemas) {
+				Object subAttributeValue = jsonObject.opt(subAttributeSchema.getName());
+				if (subAttributeValue instanceof Integer) {
+					SimpleAttribute simpleAttribute =
+					                                  buildSimpleAttribute(subAttributeSchema,
+					                                                       String.valueOf(subAttributeValue));
+					attributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+				}
+				if (subAttributeValue instanceof String) {
+					SimpleAttribute simpleAttribute =
+					                                  buildSimpleAttribute(subAttributeSchema,
+					                                                       subAttributeValue);
+					// let the attribute factory to set the sub attribute of a
+					// complex attribute to detect schema violations.
+					// DefaultAttributeFactory.setSubAttribute(complexAttribute,
+					// simpleAttribute);
+					attributesMap.put(subAttributeSchema.getName(), simpleAttribute);
+				} else if (subAttributeValue instanceof JSONArray) {
+					// there can be sub attributes which are multivalued: such
+					// as: Meta->attributes
+					MultiValuedAttribute multivaluedAttribute =
+					                                            buildMultiValuedAttribute(subAttributeSchema,
+					                                                                      (JSONArray) subAttributeValue);
+					/*
+					 * DefaultAttributeFactory.setSubAttribute(
+					 * complexAttribute,
+					 * buildMultiValuedAttribute(subAttributeSchema,
+					 * (JSONArray) subAttributeValue));
+					 */
+					attributesMap.put(subAttributeSchema.getName(), multivaluedAttribute);
+				}
+			}
+			complexAttribute.setSubAttributes(attributesMap);
+
+			// if complex attribute has only attributes
+		} else if (((SCIMAttributeSchema) complexAttributeSchema).getAttributes() != null) {
+
+			List<SCIMAttributeSchema> attributeSchemas =
+			                                             ((SCIMAttributeSchema) complexAttributeSchema).getAttributes();
+			for (SCIMAttributeSchema attribSchema : attributeSchemas) {
+				Object subAttributeValue = jsonObject.opt(attribSchema.getName());
+				if (subAttributeValue instanceof Integer) {
+					SimpleAttribute simpleAttribute =
+					                                  buildSimpleAttribute(attribSchema,
+					                                                       String.valueOf(subAttributeValue));
+					attributesMap.put(simpleAttribute.getName(), simpleAttribute);
+				}
+				if (subAttributeValue instanceof String) {
+					SimpleAttribute simpleAttribute =
+					                                  buildSimpleAttribute(attribSchema, subAttributeValue);
+					attributesMap.put(simpleAttribute.getName(), simpleAttribute);
+				} else if (subAttributeValue instanceof Boolean) {
+					SimpleAttribute simpleAttribute =
+					                                  buildSimpleAttribute(attribSchema,
+					                                                       String.valueOf(subAttributeValue));
+					attributesMap.put(simpleAttribute.getName(), simpleAttribute);
+				} else if (subAttributeValue instanceof JSONArray) {
+					MultiValuedAttribute multivaluedAttribute =
+					                                            buildMultiValuedAttribute(attribSchema,
+					                                                                      (JSONArray) subAttributeValue);
+					attributesMap.put(multivaluedAttribute.getName(), multivaluedAttribute);
+				} else if (subAttributeValue instanceof JSONObject) {
+					ComplexAttribute complexAttri =
+					                                buildComplexAttribute(attribSchema,
+					                                                      (JSONObject) subAttributeValue);
+					attributesMap.put(complexAttri.getName(), complexAttri);
+				}
+			}
+			complexAttribute.setAttributes(attributesMap);
+		}
+		return (ComplexAttribute) DefaultAttributeFactory.createAttribute(complexAttributeSchema, complexAttribute);
+	}
 
     /**
      * To build a complex type value of a Multi Valued Attribute.

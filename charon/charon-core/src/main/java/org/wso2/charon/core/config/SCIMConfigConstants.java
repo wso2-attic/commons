@@ -20,6 +20,7 @@ package org.wso2.charon.core.config;
 public class SCIMConfigConstants {
 
     public static final String PROVISIONING_CONFIG_NAME = "provisioning-config.xml";
+    public static final String SCIM_SCHEMA_EXTENSION_CONFIG = "scim-schema-extension.config";
     public static final String ELEMENT_NAME_SCIM_PROVIDERS = "scim-providers";
     public static final String ELEMENT_NAME_SCIM_CONSUMERS = "scim-consumers";
     public static final String ELEMENT_NAME_SCIM_PROVIDER = "scim-provider";

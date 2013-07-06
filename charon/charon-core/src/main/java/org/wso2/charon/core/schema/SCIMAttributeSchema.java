@@ -47,6 +47,8 @@ public class SCIMAttributeSchema implements AttributeSchema {
     private Boolean caseExact;
     //A list specifying the contained attributes. OPTIONAL.
     List<SCIMSubAttributeSchema> subAttributes;
+    // A list specifying the contained attributes
+    List<SCIMAttributeSchema> attributes;
 
     public static SCIMAttributeSchema createSCIMAttributeSchema(String uri,
                                                                 String name,
@@ -89,6 +91,17 @@ public class SCIMAttributeSchema implements AttributeSchema {
         }
 
     }
+    
+    public static SCIMAttributeSchema createSCIMAttributeSchema(String uri,
+                                                                String name,
+                                                                SCIMSchemaDefinitions.DataType type,
+                                                                String description,
+                                                                String schema,
+                                                                Boolean readOnly, Boolean required,
+                                                                Boolean caseExact,
+                                                                SCIMAttributeSchema... attributes) {
+    	return new SCIMAttributeSchema(uri, name, type, description, schema, readOnly, required, caseExact, attributes);
+    }
 
     private SCIMAttributeSchema(String uri, String name, SCIMSchemaDefinitions.DataType type,
                                 Boolean multiValued,
@@ -111,6 +124,24 @@ public class SCIMAttributeSchema implements AttributeSchema {
             this.subAttributes = Arrays.asList(subAttributes);
         }
     }
+    
+	private SCIMAttributeSchema(String uri, String name, SCIMSchemaDefinitions.DataType type,
+	                            String description, String schema, Boolean readOnly, Boolean required,
+	                            Boolean caseExact, SCIMAttributeSchema... attributes) {
+		this.attributeURI = uri;
+		this.name = name;
+		this.type = type;
+		this.multiValued = false;
+		this.multiValuedAttributeChildName = null;
+		this.description = description;
+		this.schema = schema;
+		this.readOnly = readOnly;
+		this.required = required;
+		this.caseExact = caseExact;
+		if (attributes != null) {
+			this.attributes = Arrays.asList(attributes);
+		}
+	}
 
     public String getName() {
         return name;
@@ -198,6 +229,14 @@ public class SCIMAttributeSchema implements AttributeSchema {
 
     public void setSubAttributes(List<SCIMSubAttributeSchema> subAttributes) {
         this.subAttributes = subAttributes;
+    }
+    
+    public List<SCIMAttributeSchema> getAttributes() {
+    	return attributes;
+    }
+    
+    public void setAttributes(List<SCIMAttributeSchema> attributes) {
+    	this.attributes = attributes;
     }
 
 }

@@ -17,7 +17,11 @@
 */
 package org.wso2.charon.core.endpoints;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
@@ -41,9 +45,6 @@ import org.wso2.charon.core.protocol.endpoints.UserResourceEndpoint;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.utils.InMemroyUserManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GroupEndpointTest {
     private static Log logger = LogFactory.getLog(UserEndpointTest.class);

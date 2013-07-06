@@ -33,6 +33,8 @@ import org.wso2.charon.core.objects.*;
 import org.wso2.charon.core.protocol.ResponseCodeConstants;
 import org.wso2.charon.core.protocol.SCIMResponse;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMResourceSchema;
+import org.wso2.charon.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 import org.wso2.charon.core.schema.ServerSideValidator;
 
@@ -132,12 +134,13 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint {
             //obtain the decoder matching the submitted format.
             Decoder decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
 
+            SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+            
             //decode the SCIM User object, encoded in the submitted payload.
-            User user = (User) decoder.decodeResource(scimObjectString,
-                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+            User user = (User) decoder.decodeResource(scimObjectString, schema, new User());
 
             //validate the created user
-            ServerSideValidator.validateCreatedSCIMObject(user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+            ServerSideValidator.validateCreatedSCIMObject(user, schema);
             /*handover the SCIM User object to the user storage provided by the SP.
             need to send back the newly created user in the response payload*/
             User createdUser = userManager.createUser(user);

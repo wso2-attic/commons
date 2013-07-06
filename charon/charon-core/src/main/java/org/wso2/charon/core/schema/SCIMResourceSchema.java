@@ -18,7 +18,6 @@
 package org.wso2.charon.core.schema;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

@@ -17,12 +17,10 @@
 */
 package org.wso2.charon.core.attributes;
 
-import org.wso2.charon.core.exceptions.CharonException;
-import org.wso2.charon.core.protocol.ResponseCodeConstants;
-import org.wso2.charon.core.schema.AttributeSchema;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.wso2.charon.core.exceptions.CharonException;
 
 
 /**
@@ -32,6 +30,9 @@ public class ComplexAttribute extends AbstractAttribute {
 
     /*If it is a complex attribute, has a list of sub attributes.*/
     protected Map<String, Attribute> subAttributes = new HashMap<String, Attribute>();
+    
+    /*Complex attribute can have a list of attributes */
+    protected Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
     /**
      * Retrieve the map of sub attributes.
@@ -50,6 +51,22 @@ public class ComplexAttribute extends AbstractAttribute {
     public void setSubAttributes(Map<String, Attribute> subAttributes) {
         this.subAttributes = subAttributes;
     }
+    
+    /**
+     * Returns the attributes of the attribute
+     * @return
+     */
+    public Map<String, Attribute> getAttributes() {
+    	return attributes;
+    }
+    
+    /**
+     * 
+     * @param attributes
+     */
+    public void setAttributes(Map<String, Attribute> attributes) {
+    	this.attributes = attributes;
+    }
 
     /**
      * Retrieve one attribute given the attribute name.
@@ -63,6 +80,20 @@ public class ComplexAttribute extends AbstractAttribute {
         } else {
             return null;
         }
+    }
+    
+    /**
+     * 
+     * @param attributeName
+     * @return
+     * @throws CharonException
+     */
+    public Attribute getAttribute(String attributeName) throws CharonException {
+    	if(attributes.containsKey(attributeName)) {
+    		return attributes.get(attributeName);
+    	} else {
+    		return null;
+    	}
     }
 
     /**
@@ -89,6 +120,14 @@ public class ComplexAttribute extends AbstractAttribute {
         subAttributes.put(subAttribute.getName(), subAttribute);
     }
 
+    /**
+     * 
+     * @param attribute
+     * @throws CharonException
+     */
+    public void setAttribute(Attribute attribute) throws CharonException {
+    	attributes.put(attribute.getName(), attribute);
+    }
 
     /**
      * Remove a sub attribute from the complex attribute given the sub attribute name.
@@ -100,9 +139,24 @@ public class ComplexAttribute extends AbstractAttribute {
             subAttributes.remove(attributeName);
         }
     }
+    
+    /**
+     * Remove a sub attribute from the complex attribute given the sub attribute name.
+     *
+     * @param attributeName
+     */
+    public void removeAttribute(String attributeName) {
+        if (attributes.containsKey(attributeName)) {
+            attributes.remove(attributeName);
+        }
+    }
 
     public boolean isSubAttributeExist(String attributeName) {
         return subAttributes.containsKey(attributeName);
+    }
+    
+    public boolean isAttributeExist(String attributeName) {
+        return attributes.containsKey(attributeName);
     }
 
     /**
@@ -158,12 +212,14 @@ public class ComplexAttribute extends AbstractAttribute {
      * @param schema        schema in which the attribute is defined
      * @param readOnly      whether attribute is readOnly
      * @param optional      whether attribute is required
+     * @param attributeMap  Attributes of the attribute
      */
     public ComplexAttribute(String attributeName, String schema, boolean readOnly,
                             Map<String, Attribute> subAttributeMap,
-                            boolean optional) {
+                            boolean optional, Map<String, Attribute> attributeMap) {
         super(attributeName, schema, readOnly, optional);
         subAttributes = subAttributeMap;
+        attributes = attributeMap;
     }
 
     /**
@@ -172,11 +228,13 @@ public class ComplexAttribute extends AbstractAttribute {
      * @param attributeName
      * @param attributeSchema
      * @param subAttributeMap
+     * @param attributeMap TODO
      */
     public ComplexAttribute(String attributeName, String attributeSchema,
-                            Map<String, Attribute> subAttributeMap) {
+                            Map<String, Attribute> subAttributeMap, Map<String, Attribute> attributeMap) {
         super(attributeName, attributeSchema);
         this.subAttributes = subAttributeMap;
+        this.attributes = attributeMap;
     }
 
     /**

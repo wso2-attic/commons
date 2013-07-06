@@ -205,7 +205,7 @@ public class SCIMSchemaDefinitions {
                                                           null, false, null, SCIMConstants.META_DESC,
                                                           SCIMConstants.CORE_SCHEMA_URI, false, false, false,
                                                           CREATED, LAST_MODIFIED, LOCATION, VERSION, ATTRIBUTES);
-
+    
 
     //attribute schemas of the attributes defined in user schema.
 
