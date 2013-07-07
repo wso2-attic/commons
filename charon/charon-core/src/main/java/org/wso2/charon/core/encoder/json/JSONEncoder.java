@@ -205,14 +205,17 @@ public class JSONEncoder implements Encoder {
     /**
      * Encode the complex attribute and include it in root json object to be returned.
      *
-     * @param attribute
+     * @param complexAttribute
      * @param rootObject
      */
-    public void encodeComplexAttribute(ComplexAttribute attribute, JSONObject rootObject)
+    public void encodeComplexAttribute(ComplexAttribute complexAttribute, JSONObject rootObject)
             throws JSONException {
         JSONObject subObject = new JSONObject();
-        Map<String, Attribute> subAttributes = attribute.getSubAttributes();
-        for (Attribute attributeValue : subAttributes.values()) {
+		Map<String, Attribute> attributes = complexAttribute.getSubAttributes();
+		if (attributes == null || attributes.size() < 1) {
+			attributes = complexAttribute.getAttributes();
+		}
+        for (Attribute attributeValue : attributes.values()) {
             //using instanceof instead of polymorphic way, in order to make encoder pluggable.
             if (attributeValue instanceof SimpleAttribute) {
                 //most of the time, this if condition is hit according to current SCIM spec.
@@ -224,7 +227,7 @@ public class JSONEncoder implements Encoder {
             } else if (attributeValue instanceof MultiValuedAttribute) {
                 encodeMultiValuedAttribute((MultiValuedAttribute) attributeValue, subObject);
             }
-            rootObject.put(attribute.getName(), subObject);
+            rootObject.put(complexAttribute.getName(), subObject);
         }
 
     }

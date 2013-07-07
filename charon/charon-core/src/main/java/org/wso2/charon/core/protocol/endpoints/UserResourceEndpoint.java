@@ -81,9 +81,10 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint {
                 //TODO:log the error.
                 throw new ResourceNotFoundException(error);
             }
+            
+            SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
             //perform service provider side validation.
-            ServerSideValidator.validateRetrievedSCIMObject(user,
-                                                            SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+            ServerSideValidator.validateRetrievedSCIMObject(user, schema);
             //convert the user into requested format.
             String encodedUser = encoder.encodeSCIMObject(user);
             //if there are any http headers to be added in the response header.

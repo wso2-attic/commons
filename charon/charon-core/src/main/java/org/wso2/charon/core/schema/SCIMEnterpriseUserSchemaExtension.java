@@ -25,39 +25,39 @@ public class SCIMEnterpriseUserSchemaExtension {
 	private static final String ENTERPRISE_EXTENSION_NAME = "wso2Extension";
 	private static final String ENTERPRISE_EXTENSION_DESC = "SCIM Enterprise User Schema Extension";
 	
-	private static final String MANAGER_URI = "urn:scim:schemas:extension:enterprise:1.0:manager";
+	private static final String MANAGER_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.manager";
 	private static final String MANAGER_NAME = "manager";
 	private static final String MANAGER_DESC = "The User's manager";
 	
-	private static final String EMPLOYEE_NUMBER_URI = "urn:scim:schemas:extension:enterprise:1.0:employeeNumber";
+	private static final String EMPLOYEE_NUMBER_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.employeeNumber";
 	private static final String EMPLOYEE_NUMBER_NAME = "employeeNumber";
 	private static final String EMPLOYEE_NUMBER_DESC = "Numeric or alphanumeric identifier assigned to a person, typically based on order of hire or association with an organization";
 
-	private static final String COST_CENTER_URI = "urn:scim:schemas:extension:enterprise:1.0:costCenter";
+	private static final String COST_CENTER_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.costCenter";
 	private static final String COST_CENTER_NAME = "costCenter";
 	private static final String COST_CENTER_DESC = "Identifies the name of a cost center";
 	
-	private static final String ORGANIZATION_URI = "urn:scim:schemas:extension:enterprise:1.0:organization";
+	private static final String ORGANIZATION_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.organization";
 	private static final String ORGANIZATION_NAME = "organization";
 	private static final String ORGANIZATION_DESC = "Identifies the name of an organization";
 	
-	private static final String DIVISION_URI = "urn:scim:schemas:extension:enterprise:1.0:division";
+	private static final String DIVISION_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.division";
 	private static final String DIVISION_NAME = "division";
 	private static final String DIVISION_DESC = "Identifies the name of a division";
 	
-	private static final String DEPARTMENT_URI = "urn:scim:schemas:extension:enterprise:1.0:department";
+	private static final String DEPARTMENT_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.department";
 	private static final String DEPARTMENT_NAME = "department";
 	private static final String DEPARTMENT_DESC = "Identifies the name of a department";
 	
-	private static final String MANAGER_ID_URI = "urn:scim:schemas:extension:enterprise:1.0:manager.managerId";
+	private static final String MANAGER_ID_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.manager.managerId";
 	private static final String MANAGER_ID_NAME = "managerId";
 	private static final String MANAGER_ID_DESC = "The id of the SCIM resource representing the User's manager";
 	
-	private static final String $REF_URI = "urn:scim:schemas:extension:enterprise:1.0:manager.$ref";
+	private static final String $REF_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.manager.$ref";
 	private static final String $REF_NAME = "$ref";
 	private static final String $REF_DESC = "The URI of the SCIM resource representing the User's manager";
 	
-	private static final String DISPLAY_NAME_URI = "urn:scim:schemas:extension:enterprise:1.0:manager.displayName";
+	private static final String DISPLAY_NAME_URI = "urn:scim:schemas:extension:enterprise:1.0:wso2Extension.manager.displayName";
 	private static final String DISPLAY_NAME_NAME = "displayName";
 	private static final String DISPLAY_NAME_DESC = "The displayName of the User's manager";
 
