@@ -457,17 +457,19 @@ public class UserResourceEndpoint extends AbstractResourceEndpoint {
             encoder = getEncoder(SCIMConstants.identifyFormat(outputFormat));
             //obtain the decoder matching the submitted format.
             decoder = getDecoder(SCIMConstants.identifyFormat(inputFormat));
+            
+            SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
 
             //decode the SCIM User object, encoded in the submitted payload.
-            User user = (User) decoder.decodeResource(scimObjectString,
-                                                      SCIMSchemaDefinitions.SCIM_USER_SCHEMA, new User());
+            User user = (User) decoder.decodeResource(scimObjectString, schema, new User());
             User updatedUser = null;
             if (userManager != null) {
                 //retrieve the old object
                 User oldUser = userManager.getUser(existingId);
                 if (oldUser != null) {
-                    User validatedUser = (User) ServerSideValidator.validateUpdatedSCIMObject(
-                            oldUser, user, SCIMSchemaDefinitions.SCIM_USER_SCHEMA);
+					User validatedUser =
+					                     (User) ServerSideValidator.validateUpdatedSCIMObject(oldUser, user,
+					                                                                          schema);
                     updatedUser = userManager.updateUser(validatedUser);
 
                 } else {
