@@ -10,7 +10,7 @@ Step 5: Invoke the Client request from the AXIS2CLIENT folder ($ESB_HOME/samples
 e.g. ant stockquote -Dsymbol=IBM -Dmode=quote -Daddurl=http://localhost:8281/services/TestProxy
 Step 6: The backend service resposnses can be monitored through TCPMon
 
-Note: This is for HTTP Method 'GET' only. If you want to configure for the rest of the methods such as POST|PUT, etc change the method value as apprpriate.
+Note: This is for HTTP Method 'POST' only as it is using a SOAP request. If you want to configure for the rest of the methods such as GET|PUT, etc change the method value as apprpriate.
 
 <http uri-template="https://localhost:9100/{uri.var.path}/{uri.var.name}" method="get">
 
