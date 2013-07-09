@@ -1,0 +1,22 @@
+<api xmlns="http://ws.apache.org/ns/synapse" name="test-api" context="/test"> 
+   <resource methods="POST PUT GET"> 
+      <inSequence> 
+         <log level="custom"> 
+            <property name="DIR" value="IN"/> 
+            <property name="REST_URL_POSTFIX" expression="$axis2:REST_URL_POSTFIX"/> 
+            <property name="to" expression="get-property('To')"/> 
+         </log> 
+         <send> 
+            <endpoint> 
+               <address uri="http://127.0.0.1:8280/services/echo"/> 
+            </endpoint> 
+         </send> 
+      </inSequence> 
+      <outSequence> 
+         <log level="custom"> 
+            <property name="DIR" value="OUT"/> 
+         </log> 
+         <send/> 
+      </outSequence> 
+   </resource> 
+</api> 

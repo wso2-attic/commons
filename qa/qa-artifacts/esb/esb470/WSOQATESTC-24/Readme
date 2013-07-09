@@ -1,0 +1,24 @@
+1. Add API as per the configuration.
+
+Send request as follows:
+1. curl -v http://127.0.0.1:8280/test/echoString?in=test 
+Response:  INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /echoString?in=test, to = /test/echoString?in=test
+
+2. curl -v http://127.0.0.1:8280/test/echoString?in=services 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /echoString?in=services, to = /test/echoString?in=services
+
+3. curl -v http://127.0.0.1:8280/test/echoString?in=XXXXservicesXXXX 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /echoString?in=XXXXservicesXXXX, to = /test/echoString?in=XXXXservicesXXXX
+
+4. curl -v http://127.0.0.1:8280/test/xxx/services/hello.html 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /xxx/services/hello.html, to = /test/xxx/services/hello.html
+
+5. curl -v http://127.0.0.1:8280/test/xxx/services/hello.html?test=123 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /xxx/services/hello.html?test=123, to = /test/xxx/services/hello.html?test=123
+
+6. curl -v http://127.0.0.1:8280/test/xxx/hello.html?services=123 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /xxx/hello.html?services=123, to = /test/xxx/hello.html?services=123
+
+7. curl -v http://127.0.0.1:8280/test/xxx/XXXservicesXXX/hello.html 
+Response: INFO - LogMediator DIR = IN, REST_URL_POSTFIX = /xxx/XXXservicesXXX/hello.html, to = /test/xxx/XXXservicesXXX/hello.html
+ 
