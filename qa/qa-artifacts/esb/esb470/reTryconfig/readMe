@@ -1,0 +1,25 @@
+1. Use the attached synapse configuration. (syn1)
+
+2. start 3 endpoints (Refer sample 52 for more details)
+
+./axis2server.sh -http 9001 -https 9005 -name MyServer1
+./axis2server.sh -http 9002 -https 9006 -name MyServer2
+./axis2server.sh -http 9003 -https 9007 -name MyServer3
+
+3. Run axis2Client 
+ant loadbalancefailover
+
+4. stop endpoint 1/2 and see the result at axis2Client console
+
+=================================================================
+
+1. use the synapse configuration syn2_proxy for proxy service
+
+2. same as step 2 above
+
+3.  Run axis2Client 
+ant loadbalancefailover -Dmode=session -Dtrpurl=http://localhost:8280/services/LBProxy
+
+4. same as step 4 abpve 
+
+
