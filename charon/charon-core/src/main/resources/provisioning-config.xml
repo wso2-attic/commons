@@ -31,5 +31,6 @@
         </scim-consumer>
     </scim-consumers>
     <Property name="dumb-mode">false</Property>
+    <Property name="user-schema-extension-enabled">false</Property>
     <Property name="provisioning-handlers">org.wso2.charon.core.provisioning.SampleProvisioningHandler1,org.wso2.charon.core.provisioning.SampleProvisioningHandler2</Property>
 </provisioning-config>
