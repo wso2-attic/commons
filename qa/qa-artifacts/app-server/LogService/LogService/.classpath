@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging.admin.stub_4.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging.admin.ui_4.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging.service_4.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging.view.stub_4.0.3.jar"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging.view.ui_4.0.5.jar"/>
+	<classpathentry kind="lib" path="/home/chamara/CarbonPacks/4.0.5/as2/repository/lib/org.wso2.carbon.logging_4.0.0.jar"/>
+	<classpathentry kind="output" path="target"/>
+</classpath>
