@@ -365,7 +365,7 @@ public class SCIMConstants {
     public static final String NAME_URI = "urn:scim:schemas:core:1.0:name";
     public static final String NAME_GIVEN_NAME_URI = "urn:scim:schemas:core:1.0:name.givenName";
     public static final String NAME_FAMILY_NAME_URI = "urn:scim:schemas:core:1.0:name.familyName";
-    public static final String NAME_FORMATTED_NAME_URI = "urn:scim:schemas:core:1.0:name.formattedName";
+    public static final String NAME_FORMATTED_NAME_URI = "urn:scim:schemas:core:1.0:name.formatted";
     public static final String NAME_MIDDLE_NAME_URI = "urn:scim:schemas:core:1.0:name.middleName";
     public static final String NAME_HONORIC_PREFIX_URI = "urn:scim:schemas:core:1.0:name.honorificPrefix";
     public static final String NAME_HONORIC_SUFFIX_URI = "urn:scim:schemas:core:1.0:name.honorificSuffix";
