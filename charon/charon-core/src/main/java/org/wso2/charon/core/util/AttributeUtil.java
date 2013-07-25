@@ -19,10 +19,12 @@ package org.wso2.charon.core.util;
 
 import org.wso2.charon.core.exceptions.CharonException;
 import org.wso2.charon.core.schema.AttributeSchema;
+import org.wso2.charon.core.schema.SCIMAttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
 import org.wso2.charon.core.schema.SCIMResourceSchema;
 import org.wso2.charon.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
+import org.wso2.charon.core.schema.SCIMSubAttributeSchema;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -110,31 +112,94 @@ public class AttributeUtil {
         return formattedDate;
     }
 
+	/**
+	 * Get fully qualified attribute URI, given the attribute name
+	 * 
+	 * @param attributeName
+	 * @return
+	 */
+	public static String getAttributeURI(String attributeName) {
+
+		SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+		Iterator<AttributeSchema> attributeSchemas = schema.getAttributesList().iterator();
+
+		while (attributeSchemas.hasNext()) {
+			AttributeSchema attributeSchema = attributeSchemas.next();
+			if (attributeSchema.getName().equals(attributeName)) {
+				return attributeSchema.getURI();
+			}
+			// check in sub attributes
+			String subAttributeURI =
+			                         checkSCIMSubAttributeURIs(((SCIMAttributeSchema) attributeSchema).getSubAttributes(),
+			                                                   attributeName);
+			if (subAttributeURI != null) {
+				return subAttributeURI;
+			}
+			// check in attributes
+			String attributeURI =
+			                      checkSCIMAttributeURIs(((SCIMAttributeSchema) attributeSchema).getAttributes(),
+			                                             attributeName);
+			if (attributeURI != null) {
+				return attributeURI;
+			}
+		}
+
+		return null;
+	}
+    
+	/**
+	 * Will iterate through <code>{@code SCIMAttributeSchema}</code> objects
+	 * 
+	 * @param attributeSchemas
+	 * @param attributeName
+	 * @return
+	 */
+	private static String checkSCIMAttributeURIs(List<SCIMAttributeSchema> attributeSchemas,
+	                                             String attributeName) {
+		if (attributeSchemas != null) {
+			Iterator<SCIMAttributeSchema> attribIterator = attributeSchemas.iterator();
+
+			while (attribIterator.hasNext()) {
+				SCIMAttributeSchema attributeSchema = attribIterator.next();
+				if (attributeSchema.getName().equals(attributeName)) {
+					return attributeSchema.getURI();
+				}
+				// check in sub attributes
+				String subAttributeURI =
+				                         checkSCIMSubAttributeURIs(((SCIMAttributeSchema) attributeSchema).getSubAttributes(),
+				                                                   attributeName);
+				if (subAttributeURI != null) {
+					return subAttributeURI;
+				}
+				// check in attributes
+				String attributeURI =
+				                      checkSCIMAttributeURIs(((SCIMAttributeSchema) attributeSchema).getAttributes(),
+				                                             attributeName);
+				if (attributeURI != null) {
+					return attributeURI;
+				}
+			}
+		}
+		return null;
+	}
+    
     /**
-     * Get fully qualified attribute URI, given the attribute name
-     *
+     * Will iterate through <code>{@code SCIMSubAttributeSchema}</code> objects
+     * @param subAttributes
      * @param attributeName
      * @return
      */
-    public static String getAttributeURI(String attributeName) {
-    	
-    	 SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
-    	 Iterator<AttributeSchema> attributeSchemas = schema.getAttributesList().iterator();
-    	 
-    	 while(attributeSchemas.hasNext()) {
-    		 AttributeSchema attributeSchema = attributeSchemas.next();
-    		 if(attributeSchema.getName().equals(attributeName)) {
-    			 return attributeSchema.getURI();
-    		 }
-    	 }
-
-    	 return null;
-        //this is implemented in a hurry to support listByFilter operation which is optional.
-        //hence, hard coding two expected attribute values and corresponding URIs for the moment..
-       /* if (SCIMConstants.GroupSchemaConstants.DISPLAY_NAME.equals(attributeName)) {
-            return SCIMConstants.DISPLAY_NAME_URI;
-        } else if (SCIMConstants.UserSchemaConstants.USER_NAME.equals(attributeName)) {
-            return SCIMConstants.USER_NAME_URI;
-        }*/
+    private static String checkSCIMSubAttributeURIs(List<SCIMSubAttributeSchema> subAttributes, String attributeName) {
+    	if (subAttributes != null) {
+    		Iterator<SCIMSubAttributeSchema> subsIterator = subAttributes.iterator();
+    		
+			while(subsIterator.hasNext()) {
+				SCIMSubAttributeSchema subAttribSchema = subsIterator.next();
+				if(subAttribSchema.getName().equals(attributeName)) {
+					return subAttribSchema.getURI();
+				}
+			}
+		}
+		return null;
     }
 }
