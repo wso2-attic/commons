@@ -18,12 +18,17 @@
 package org.wso2.charon.core.util;
 
 import org.wso2.charon.core.exceptions.CharonException;
+import org.wso2.charon.core.schema.AttributeSchema;
 import org.wso2.charon.core.schema.SCIMConstants;
+import org.wso2.charon.core.schema.SCIMResourceSchema;
+import org.wso2.charon.core.schema.SCIMResourceSchemaManager;
 import org.wso2.charon.core.schema.SCIMSchemaDefinitions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 public class AttributeUtil {
 
@@ -112,13 +117,24 @@ public class AttributeUtil {
      * @return
      */
     public static String getAttributeURI(String attributeName) {
+    	
+    	 SCIMResourceSchema schema = SCIMResourceSchemaManager.getInstance().getUserResourceSchema();
+    	 Iterator<AttributeSchema> attributeSchemas = schema.getAttributesList().iterator();
+    	 
+    	 while(attributeSchemas.hasNext()) {
+    		 AttributeSchema attributeSchema = attributeSchemas.next();
+    		 if(attributeSchema.getName().equals(attributeName)) {
+    			 return attributeSchema.getURI();
+    		 }
+    	 }
+
+    	 return null;
         //this is implemented in a hurry to support listByFilter operation which is optional.
         //hence, hard coding two expected attribute values and corresponding URIs for the moment..
-        if (SCIMConstants.GroupSchemaConstants.DISPLAY_NAME.equals(attributeName)) {
+       /* if (SCIMConstants.GroupSchemaConstants.DISPLAY_NAME.equals(attributeName)) {
             return SCIMConstants.DISPLAY_NAME_URI;
         } else if (SCIMConstants.UserSchemaConstants.USER_NAME.equals(attributeName)) {
             return SCIMConstants.USER_NAME_URI;
-        }
-        return null;
+        }*/
     }
 }

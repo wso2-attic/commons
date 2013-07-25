@@ -82,6 +82,9 @@ public class JSONDecoder implements Decoder {
                 if (attributeValObj instanceof String) {
                     //if the corresponding json value object is String, it is a SimpleAttribute.
                     scimObject.setAttribute(buildSimpleAttribute(attributeSchema, attributeValObj));
+                    
+                } else if(attributeValObj instanceof Integer) {
+                	scimObject.setAttribute(buildSimpleAttribute(attributeSchema, Integer.toString((Integer)attributeValObj)));
 
 
                 } else if (attributeValObj instanceof Boolean) {
