@@ -535,8 +535,10 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
         ListedResource listedResource = new ListedResource();
         listedResource.setTotalResults(groups.size());
         for (Group group : groups) {
-
-            Map<String, Attribute> attributesOfGroupResource = group.getAttributeList();
+			if (group != null) {
+				Map<String, Attribute> attributesOfGroupResource = group.getAttributeList();
+				listedResource.setResources(attributesOfGroupResource);
+			}
             //Map<String, Attribute> attributesOfGroupResource = new HashMap<String, Attribute>();
             /*attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.ID,
                                           group.getAttribute(SCIMConstants.CommonSchemaConstants.ID));
@@ -544,7 +546,6 @@ public class GroupResourceEndpoint extends AbstractResourceEndpoint implements R
                                           group.getAttribute(SCIMConstants.CommonSchemaConstants.EXTERNAL_ID));*//*
             attributesOfGroupResource.put(SCIMConstants.CommonSchemaConstants.META,
                                           group.getAttribute(SCIMConstants.CommonSchemaConstants.META));*/
-            listedResource.setResources(attributesOfGroupResource);
         }
         return listedResource;
     }
