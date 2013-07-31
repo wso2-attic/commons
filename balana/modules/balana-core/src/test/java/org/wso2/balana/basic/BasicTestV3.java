@@ -58,7 +58,6 @@ public class BasicTestV3 extends TestCase {
         String reqResNo;
         Set<String> policies = new HashSet<String>();
         policies.add("TestPolicy_0001.xml");
-        PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0001 is started");
 
         for(int i = 1; i < 8 ; i++){
@@ -100,7 +99,6 @@ public class BasicTestV3 extends TestCase {
         String reqResNo;
         Set<String> policies = new HashSet<String>();
         policies.add("TestPolicy_0002.xml");
-        PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0002 is started");
 
         for(int i = 1; i < 4 ; i++){
@@ -141,7 +139,6 @@ public class BasicTestV3 extends TestCase {
         String reqResNo;
         Set<String> policies = new HashSet<String>();
         policies.add("TestPolicy_0003.xml");
-        PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0003 is started");
 
         for(int i = 1; i < 4 ; i++){
@@ -182,7 +179,6 @@ public class BasicTestV3 extends TestCase {
         String reqResNo;
         Set<String> policies = new HashSet<String>();
         policies.add("TestPolicy_0004.xml");
-        PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0004 is started");
 
         for(int i = 1; i < 4 ; i++){
@@ -223,7 +219,6 @@ public class BasicTestV3 extends TestCase {
         String reqResNo;
         Set<String> policies = new HashSet<String>();
         policies.add("TestPolicy_0005.xml");
-        PDP pdp = getPDPNewInstance(policies);
         log.info("Basic Test 0005 is started");
 
         for(int i = 1; i < 4 ; i++){

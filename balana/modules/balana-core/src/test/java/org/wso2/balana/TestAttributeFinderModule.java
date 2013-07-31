@@ -109,7 +109,7 @@ public class TestAttributeFinderModule extends AttributeFinderModule
     public Set getSupportedDesignatorTypes() {
         Set set = new HashSet();
 
-        //set.add(new Integer(XACMLConstants.SUBJECT_TARGET));       TODO
+        //set.add(new Integer(XACMLConstants.SUBJECT_TARGET));
 
         return set;
     }

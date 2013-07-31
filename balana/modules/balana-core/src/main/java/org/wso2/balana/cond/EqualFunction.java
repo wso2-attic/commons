@@ -153,6 +153,14 @@ public class EqualFunction extends FunctionBase {
      */
     public static final String NAME_DNSNAME_EQUAL = FUNCTION_NS_2 + "dnsName-equal";
 
+    /**
+     * Standard identifier for the sting equal with ignore case
+     */
+    public static final String NAME_EQUAL_CASE_IGNORE = FUNCTION_NS_3 + "string-equal-ignore-case";
+
+    // internal identifiers for each of the supported functions   
+    private static final int ID_EQUAL_CASE_IGNORE = 1;
+
     // private mapping of standard functions to their argument types
     private static HashMap typeMap;
 
@@ -178,6 +186,7 @@ public class EqualFunction extends FunctionBase {
         typeMap.put(NAME_BASE64BINARY_EQUAL, Base64BinaryAttribute.identifier);
         typeMap.put(NAME_IPADDRESS_EQUAL, IPAddressAttribute.identifier);
         typeMap.put(NAME_DNSNAME_EQUAL, DNSNameAttribute.identifier);
+        typeMap.put(NAME_EQUAL_CASE_IGNORE, StringAttribute.identifier);
     }
 
     /**
@@ -222,7 +231,7 @@ public class EqualFunction extends FunctionBase {
      *            namespace
      */
     public EqualFunction(String functionName, String argumentType) {
-        super(functionName, 0, argumentType, false, 2, BooleanAttribute.identifier, false);
+        super(functionName, getId(functionName), argumentType, false, 2, BooleanAttribute.identifier, false);
     }
 
     /**
@@ -235,6 +244,21 @@ public class EqualFunction extends FunctionBase {
             throw new IllegalArgumentException("not a standard function: " + functionName);
 
         return datatype;
+    }
+
+    /**
+     * Private helper that returns the internal identifier used for the given standard function.
+     *
+     * @param functionName function name
+     * @return function id
+     */
+    private static int getId(String functionName) {
+
+        if (functionName.equals(NAME_EQUAL_CASE_IGNORE)){
+            return ID_EQUAL_CASE_IGNORE;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -269,7 +293,12 @@ public class EqualFunction extends FunctionBase {
         }
 
         // Now that we have real values, perform the equals operation
-        return EvaluationResult.getInstance(argValues[0].equals(argValues[1]));
+        if(getFunctionId() == ID_EQUAL_CASE_IGNORE){
+            return EvaluationResult.getInstance(argValues[0].encode().toLowerCase().
+                    equals(argValues[1].encode().toLowerCase()));            
+        }  else {
+            return EvaluationResult.getInstance(argValues[0].equals(argValues[1]));
+        }
     }
 
 }
