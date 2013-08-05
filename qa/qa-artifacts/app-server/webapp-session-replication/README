@@ -1,0 +1,20 @@
+How to test webapp session replication
+--------------------------------------
+
+1. Deploy the HelloWorldWebapp.war & let it sync to worker nodes (This webapp has a System out which will be printed when the webapp URL is accessed. So when testing this, do NOT start the server with nohup, start it by just giving the command ./wso2server.sh. Else it would not print the Sysout)
+
+2. Using the below curl commands to verify whether the session gets replicated
+
+storing cookie in  file when accessing - 
+$ curl --cookie-jar ./tempfile http://192.168.4.54:9763/HelloWorldWebapp/
+
+
+using that cookie to access second url
+$ curl --cookie ./tempfile http://192.168.4.54:9763/HelloWorldWebapp/
+
+
+
+References
+==========
+http://kishanthan.wordpress.com/2013/02/05/session-replication-of-applications-in-wso2-application-server/
+http://docs.wso2.org/wiki/display/AS520/Clustering+and+Http+Session+Replication
