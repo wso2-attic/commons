@@ -1,0 +1,20 @@
+1. Create database called 'test'
+sql>create database test;;
+
+2. create 'stock' table inside the 'test' database. 
+sql>use test
+
+DROP TABLE IF EXISTS `stock`;
+CREATE TABLE `stock` (
+  `STOCK_ID` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `STOCK_CODE` VARCHAR(10) NOT NULL,
+  `STOCK_NAME` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`STOCK_ID`) USING BTREE,
+  UNIQUE KEY `UNI_STOCK_NAME` (`STOCK_NAME`),
+  UNIQUE KEY `UNI_STOCK_ID` (`STOCK_CODE`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+3. Deploy 'HibernateExample-1.0-SNAPSHOT.war' file which is in "HibernateExample"
+
+
+
