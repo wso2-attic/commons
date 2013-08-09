@@ -16,7 +16,7 @@
           <boolProp name="LoopController.continue_forever">false</boolProp>
           <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">100</stringProp>
+        <stringProp name="ThreadGroup.num_threads">20</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
         <longProp name="ThreadGroup.start_time">1281132211000</longProp>
         <longProp name="ThreadGroup.end_time">1281132211000</longProp>
@@ -26,6 +26,15 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
+        <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+          <stringProp name="CounterConfig.start">1</stringProp>
+          <stringProp name="CounterConfig.end">20</stringProp>
+          <stringProp name="CounterConfig.incr">1</stringProp>
+          <stringProp name="CounterConfig.name">tenantid</stringProp>
+          <stringProp name="CounterConfig.format">#</stringProp>
+          <boolProp name="CounterConfig.per_user">false</boolProp>
+        </CounterConfig>
+        <hashTree/>
         <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
           <collectionProp name="CookieManager.cookies"/>
           <boolProp name="CookieManager.clearEachIteration">true</boolProp>
@@ -48,11 +57,13 @@
               <stringProp name="Argument.name">server.host</stringProp>
               <stringProp name="Argument.value">localhost</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">mgt.as.qa.420.com</stringProp>
             </elementProp>
             <elementProp name="port" elementType="Argument">
               <stringProp name="Argument.name">port</stringProp>
-              <stringProp name="Argument.value">10443</stringProp>
+              <stringProp name="Argument.value">9443</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
+              <stringProp name="Argument.desc">8243</stringProp>
             </elementProp>
           </collectionProp>
         </Arguments>
@@ -77,7 +88,7 @@
         <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
           <stringProp name="delimiter">,</stringProp>
           <stringProp name="fileEncoding"></stringProp>
-          <stringProp name="filename">/home/evanthika/RESOURCES/myservices/aarFileList.csv</stringProp>
+          <stringProp name="filename">/opt/svn_repos/qa_artifacts/qa-artifacts/app-server/as-5.0.0/jmeter/multiple_aar_upload/aarFileList.csv</stringProp>
           <boolProp name="quotedData">false</boolProp>
           <boolProp name="recycle">true</boolProp>
           <stringProp name="shareMode">All threads</stringProp>
@@ -115,14 +126,14 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="username" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">${username}</stringProp>
+                <stringProp name="Argument.value">admin@thika${tenantid}.com</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">username</stringProp>
               </elementProp>
               <elementProp name="password" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">${password}</stringProp>
+                <stringProp name="Argument.value">admin123</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">password</stringProp>
@@ -226,12 +237,7 @@
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <hashTree>
-          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
-            <stringProp name="ConstantTimer.delay">2000</stringProp>
-          </ConstantTimer>
-          <hashTree/>
-        </hashTree>
+        <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="signout" enabled="true">
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
@@ -252,7 +258,12 @@
           <boolProp name="HTTPSampler.monitor">false</boolProp>
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
-        <hashTree/>
+        <hashTree>
+          <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Constant Timer" enabled="true">
+            <stringProp name="ConstantTimer.delay">10000</stringProp>
+          </ConstantTimer>
+          <hashTree/>
+        </hashTree>
       </hashTree>
       <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
         <collectionProp name="UserParameters.names">
@@ -263,11 +274,11 @@
           <stringProp name="439122385">war.name</stringProp>
         </collectionProp>
         <collectionProp name="UserParameters.thread_values">
-          <collectionProp name="-1620423669">
-            <stringProp name="285409995">leo@hydra.com</stringProp>
+          <collectionProp name="-1868838665">
+            <stringProp name="2100729851">eve@eve.com</stringProp>
             <stringProp name="-658935714">evanthika123#</stringProp>
-            <stringProp name="-1054049343">/opt/svn_repos/qa_artifacts/qa-artifacts/app-server/as-5.0.0/jmeter/populate_services/axis2/bulk/${aafFileNames}</stringProp>
-            <stringProp name="-954188683">hydra.com</stringProp>
+            <stringProp name="1421778879">/opt/svn_repos/qa_artifacts/qa-artifacts/app-server/as-5.0.0/jmeter/multiple_aar_upload/populate_services/bulk2/${aafFileNames}</stringProp>
+            <stringProp name="1276836105">thika${tenantid}.com</stringProp>
             <stringProp name="-1642206144">${aafFileNames}</stringProp>
           </collectionProp>
         </collectionProp>
