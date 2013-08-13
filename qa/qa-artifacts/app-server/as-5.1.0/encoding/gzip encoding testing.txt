@@ -1,0 +1,81 @@
+
+How to test Compression (gzip encoding) in AS server side response/ During the deployment time.
+==================================================================================================
+
+1. First make sure echo service is deployed in your AS pack which you are going to test. (This will be available by deafult)
+2. Then give the echo service wsdl as the endpoint and create a soap project. E.g., http://192.168.94.1:9763/services/echo?wsdl
+3. Then Go to <AS_HOME>/repository/conf/tomcat and edit the catalina-server.xml.
+4. Use the document http://tomcat.apache.org/tomcat-7.0-doc/config/http.html as reference.
+
+ To enable gzip encoding, make sure you have configured the following properties.
+
+         compression="on"
+         compressionMinSize="2048" 
+         noCompressionUserAgents="gozilla, traviata"
+         compressableMimeType="text/html,text/xml,text/javascript,application/x-javascript,application/javascript,application/xml,text/css,application/xslt+xml,text/xsl,image/gif,image/jpg,image/jpeg"
+
+
+ If you want to disable gzip encoding, make compression="off". By default this will be on.
+ You have to ptovide the correct MimeType of your request. E.g., text/xml
+
+5. Now start the AS server.
+6. Open a tcp mon and open a port listening to 9764 and target point as 9763. Host name will be the host address of your AS, which is echo service is available. E.g., localhost/127.0.0.1
+7. Go to SOAP Project created and open the  echoString request editor.
+8. Change the endpoint as it goes to the listen port we set in tcpmon.  http://192.168.94.1:9764/services/echo.echoHttpSoap11Endpoint/
+9. Now send a request, (You can change this request by editing the "in" value as the string will be more than or lesser than compressionMinSize value and test more how these properties will work)
+
+Request:
+
+ <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:echo="http://echo.services.core.carbon.wso2.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <echo:echoString>
+         <!--Optional:-->
+         <in>abc</in>
+      </echo:echoString>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+Response:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <ns:echoStringResponse xmlns:ns="http://echo.services.core.carbon.wso2.org">
+         <return>abc</return>
+      </ns:echoStringResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+10. Now test the response headers via tcpmon or via soap raw values.
+ 
+ You should see the request and response headers as follows: 
+
+ Request Header :
+ 
+POST /services/echo.echoHttpSoap11Endpoint/ HTTP/1.1
+Accept-Encoding: gzip,deflate
+Content-Type: multipart/related; type="text/xml"; start="<rootpart@soapui.org>"; boundary="----=_Part_0_1020577184.1376370045484"
+SOAPAction: "urn:echoString"
+MIME-Version: 1.0
+Content-Length: 703
+Host: 127.0.0.1:9764
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
+
+
+ Response Header :
+
+HTTP/1.1 200 OK
+Content-Type: text/xml;charset=UTF-8
+Transfer-Encoding: chunked
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Date: Tue, 13 Aug 2013 05:00:45 GMT
+Server: WSO2 Carbon Server
+
+a
+�
+
+

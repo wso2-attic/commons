@@ -1,0 +1,26 @@
+Send HTTP multipart requests in soapUI/ SOAP with attachments or via a web form and test how they will be successfuly accepted and manipulate via AS
+=========================================================================================================================================
+
+1. For this follow the steps provided in this blogpost, if you use a windows machine.
+ 
+http://charithaka.blogspot.com/2013/07/working-with-http-multipart-requests-in.html
+
+2. If you are using Linux, use the war attached in this folder. fileUploadSample.war
+
+3. If you use linux and fileUploadSample.war, you can use the html web page or soap. 
+
+To use Soap enter, http://localhost:9763/fileUploadSample/UploadServlet
+
+To use via the form, Click go to URl, it will direct to the http://192.168.94.1:9763/fileUploadSample/ web form. If you use a web form, use a tcp mon to view the header values and change the ports in the index.jsp form action="http://localhost:9763/fileUploadSample/UploadServlet".
+
+3. Source code is also available if you need to do any changes in fileUploadSample folder.
+
+4. This war will be the backend which should be deployed in the AS you are going to test.
+
+   You can view the content type which you send via your request and which will be accepted by your backend using tcp mon or soap raw value
+
+5. You can edit the source code as you can manipulate the request data in the AS and build the source and create a war and deploy it again.
+
+
+
+
