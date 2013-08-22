@@ -1,5 +1,5 @@
 put to CARBON_HOME/repository/components/extensions
-
+===========================================================================================================
 <dbConfig name="derby">
         <url>jdbc:derby:D:\WSO2_Products\wso2as-4.1.2\repository\database\WSO2CARBON_DB;create=true</url>
         //<url>jdbc:derby://localhost:1527/db;create=true;LOCK_TIMEOUT=60000</url>
@@ -11,3 +11,4 @@ put to CARBON_HOME/repository/components/extensions
         <maxWait>60000</maxWait>
         <minIdle>5</minIdle>
     </dbConfig>
+============================================================================================================
