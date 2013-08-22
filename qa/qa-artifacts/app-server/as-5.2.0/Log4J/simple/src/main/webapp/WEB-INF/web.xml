@@ -1,0 +1,15 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http:/java.sun.com/dtd/web-app_2_3.dtd">
+	<servlet>
+		<servlet-name>hello</servlet-name>
+		<servlet-class>test.HelloServlet</servlet-class>
+	</servlet>
+ 
+	<listener>
+		<listener-class>test.ServletContextCleaner</listener-class>
+	</listener>
+
+	<servlet-mapping>
+		<servlet-name>hello</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+</web-app>

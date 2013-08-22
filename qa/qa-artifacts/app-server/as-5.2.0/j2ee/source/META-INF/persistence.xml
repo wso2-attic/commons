@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    version="1.0">
+
+    <persistence-unit name="testjpa" transaction-type="RESOURCE_LOCAL">
+        <provider>
+            org.apache.openjpa.persistence.PersistenceProviderImpl
+        </provider>
+        <class>entity.Customer</class>
+        <class>entity.Address</class>
+        <class>entity.CustomerJoined</class>
+        <class>entity.OnlineCustomer</class>
+        <class>entity.CustomerSingle</class>
+        <class>entity.OnlineCustomerJoined</class>
+        <class>entity.CustomerTable</class>
+        <class>entity.OnlineCustomerTable</class>
+          <properties>
+   		 	<property name="openjpa.ConnectionURL" 
+                value="jdbc:derby://localhost:1527/D:\OpenJPA\Derby\mydb;create=true"/>
+            <property name="openjpa.ConnectionDriverName" 
+                value="org.apache.derby.jdbc.ClientDriver"/>
+            <property name="openjpa.ConnectionUserName"  value="admin"/>
+            <property name="openjpa.ConnectionPassword" value="admin"/>
+            <property name="openjpa.Log" value="DefaultLevel=TRACE"/>
+        </properties>
+    </persistence-unit>
+    
+</persistence>
