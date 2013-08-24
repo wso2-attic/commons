@@ -559,7 +559,8 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                     for(Attribute attribute : newAttributes){
                         Set<Attribute> set = new HashSet<Attribute>(attributes.getAttributes());
                         set.add(attribute);
-                        Attributes attr = new Attributes(attributes.getCategory(), set);
+                        Attributes attr = new Attributes(attributes.getCategory(),
+                                                attributes.getContent(), set, attributes.getId());
                         newAttributesSet.add(attr);
                     }
                     evaluationCtx.getAttributesSet().remove(attributes);
@@ -634,14 +635,15 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
             NamedNodeMap namedNodeMap = root.getAttributes();
 
             Map<String, String> nsMap = new HashMap<String, String>();
-
-            for (int i = 0; i < namedNodeMap.getLength(); i++) {
-                Node n = namedNodeMap.item(i);
-                // we found the matching namespace, so get the prefix
-                // and then break out
-                String prefix = DOMHelper.getLocalName(n);
-                String nodeValue= n.getNodeValue();
-                nsMap.put(prefix, nodeValue);
+            if(namedNodeMap != null){
+                for (int i = 0; i < namedNodeMap.getLength(); i++) {
+                    Node n = namedNodeMap.item(i);
+                    // we found the matching namespace, so get the prefix
+                    // and then break out
+                    String prefix = DOMHelper.getLocalName(n);
+                    String nodeValue= n.getNodeValue();
+                    nsMap.put(prefix, nodeValue);
+                }
             }
 
             // if there is not any namespace is defined for content element, default XACML request
@@ -675,11 +677,12 @@ public class XACML3EvaluationCtx extends BasicEvaluationCtx {
                         // there is no child to this node
                         text = node.getNodeValue();
                     } else {
+
                         // the data is in a child node
                         text = "/" + DOMHelper.getLocalName(node);
                     }
-
-                    xPaths.add(text);
+                    String newXPath = '(' + xPath + ")[" + (i+1) + ']';
+                    xPaths.add(newXPath);
                 }
             }
         } catch (Exception e) {

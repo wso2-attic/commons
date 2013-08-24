@@ -1,8 +1,7 @@
-<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-        xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="TestPolicy0001"
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="TestPolicy0008"
         RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"
         Version="1.0">
-    <Description>Test policy 0007. XPath evaluation is done with respect to content element
+    <Description>Test policy 0008. XPath evaluation is done with respect to content element
         and check for a matching value. Here content element has been not bounded with custom namespace and prefix
         So default XACML namespace has been inherited to content element
     </Description>

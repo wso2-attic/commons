@@ -1,5 +1,4 @@
-<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-        xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="TestPolicy0001"
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="TestPolicy0007"
         RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"
         Version="1.0">
     <Description>Test policy 0007. XPath evaluation is done with respect to content element

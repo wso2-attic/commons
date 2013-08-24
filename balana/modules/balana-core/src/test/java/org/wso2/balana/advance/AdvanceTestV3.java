@@ -91,6 +91,45 @@ public class AdvanceTestV3 extends TestCase {
         }
     }
 
+    public void testAdvanceTest0003() throws Exception {
+
+        String reqResNo;
+        Set<String> policies = new HashSet<String>();
+        policies.add("TestPolicy_0003.xml");
+        log.info("Advance Test 0003 is started. This test is for Jira COMMONS-97");
+
+        for(int i = 1; i < 2 ; i++){
+
+            if(i < 10){
+                reqResNo = "0" + i;
+            } else {
+                reqResNo = Integer.toString(i);
+            }
+
+            String request = TestUtil.createRequest(ROOT_DIRECTORY, VERSION_DIRECTORY,
+                    "request_0003_" + reqResNo + ".xml");
+            if(request != null){
+                log.info("Request that is sent to the PDP :  " + request);
+                ResponseCtx response = TestUtil.evaluate(getPDPNewInstance(policies), request);
+                if(response != null){
+                    log.info("Response that is received from the PDP :  " + response.encode());
+                    ResponseCtx expectedResponseCtx = TestUtil.createResponse(ROOT_DIRECTORY,
+                            VERSION_DIRECTORY, "response_0003_" + reqResNo + ".xml");
+                    if(expectedResponseCtx != null){
+                        assertTrue(TestUtil.isMatching(response, expectedResponseCtx));
+                    } else {
+                        assertTrue("Response read from file is Null",false);
+                    }
+                } else {
+                    assertFalse("Response received PDP is Null",false);
+                }
+            } else {
+                assertTrue("Request read from file is Null", false);
+            }
+
+            log.info("Advance Test 0003 is finished");
+        }
+    }
 
     /**
      * Returns a new PDP instance with new XACML policies
@@ -123,7 +162,7 @@ public class AdvanceTestV3 extends TestCase {
         Balana balana = Balana.getInstance();
         PDPConfig pdpConfig = balana.getPdpConfig();
         pdpConfig = new PDPConfig(pdpConfig.getAttributeFinder(), finder,
-                                                            pdpConfig.getResourceFinder(), false);
+                                                            pdpConfig.getResourceFinder(), true);
         return new PDP(pdpConfig);
 
     }

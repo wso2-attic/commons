@@ -5,7 +5,7 @@
     PolicyId="http://axiomatics.com/alfa/identifier/test.medicalPolicy"
     RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"
     Version="1.0"> 
-    <xacml3:Description /> 
+    <xacml3:Description>This policy is to verify issue in jira IDENTITY-416</xacml3:Description>
     <xacml3:PolicyDefaults> 
         <xacml3:XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</xacml3:XPathVersion> 
     </xacml3:PolicyDefaults> 

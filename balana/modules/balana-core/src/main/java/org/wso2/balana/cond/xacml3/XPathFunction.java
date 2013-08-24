@@ -17,7 +17,6 @@
  */
 package org.wso2.balana.cond.xacml3;
 
-import com.sun.org.apache.xpath.internal.NodeSet;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

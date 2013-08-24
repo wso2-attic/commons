@@ -24,20 +24,28 @@
         <ak:patientDoB>1991-05-11</ak:patientDoB>
         <ak:patientGender>male</ak:patientGender>
       </ak:patient>
-      <ak:doctor>
-        <ak:id>p111</ak:id>
-        <ak:name>peter</ak:name>
-        <ak:email>peter@gmail.com</ak:email>
-        <ak:phone>94332189873</ak:phone>
-       </ak:doctor>
+       <ak:patient>
+            <ak:patientId>p222</ak:patientId>
+            <ak:patientName>
+                <ak:first>Alice</ak:first>
+                <ak:last>Allan</ak:last>
+            </ak:patientName>
+            <ak:patientContact>
+                <ak:street>51 Main road</ak:street>
+                <ak:city>Gampaha</ak:city>
+                <ak:state>Western</ak:state>
+                <ak:zip>11730</ak:zip>
+                <ak:phone>94332189873</ak:phone>
+                <ak:email>alice@gmail.com</ak:email>
+            </ak:patientContact>
+            <ak:patientDoB>1991-05-11</ak:patientDoB>
+            <ak:patientGender>male</ak:patientGender>
+        </ak:patient>
+        <ak:doctor>
+            <ak:doctorId>p111</ak:doctorId>
+        </ak:doctor>
     </ak:record>
   </Content>
-      <Attribute IncludeInResult="false"
-          AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" >
-        <AttributeValue
-          XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-          DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record/ak:patient/ak:patientContact</AttributeValue>
-      </Attribute>
   </Attributes>
   <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
     <Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">

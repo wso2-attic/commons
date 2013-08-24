@@ -15,12 +15,15 @@
  */
 package org.wso2.balana.xacml3;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.wso2.balana.*;
 import org.wso2.balana.ctx.Attribute;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
@@ -129,6 +132,21 @@ public class Attributes {
                 content = node.getFirstChild();
             } else if(DOMHelper.getLocalName(node).equals(XACMLConstants.ATTRIBUTE_ELEMENT)) {
                 attributes.add(Attribute.getInstance(node, XACMLConstants.XACML_VERSION_3_0));
+            }
+        }
+
+        if(content != null){
+            // make the node appear to be a direct child of the Document
+            try{
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                dbf.setNamespaceAware(true);
+                Document docRoot = builder.newDocument();
+                Node topRoot = docRoot.importNode(content, true);
+                docRoot.appendChild(topRoot);
+                content = docRoot.getDocumentElement();
+            } catch (Exception e){
+                //
             }
         }
 

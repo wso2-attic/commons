@@ -36,6 +36,7 @@
 package org.wso2.balana.finder.impl;
 
 
+import org.w3c.dom.Document;
 import org.wso2.balana.*;
 import org.wso2.balana.attr.AttributeValue;
 import org.wso2.balana.ctx.EvaluationCtx;
@@ -62,6 +63,8 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.*;
 
 /**
@@ -159,6 +162,20 @@ public class SelectorModule extends AttributeFinderModule {
                     throw new Exception("More than one node is found from context selector id evaluation");
                 }
                 contextNode = result.item(0);
+                if(contextNode != null){
+                    // make the node appear to be a direct child of the Document
+                    try{
+                        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder builder = dbf.newDocumentBuilder();
+                        dbf.setNamespaceAware(true);
+                        Document docRoot = builder.newDocument();
+                        Node topRoot = docRoot.importNode(contextNode, true);
+                        docRoot.appendChild(topRoot);
+                        contextNode = docRoot.getDocumentElement();
+                    } catch (Exception e){
+                        //
+                    }
+                }
             } catch (Exception e) {
                 List<String> codes = new ArrayList<String>();
                 codes.add(Status.STATUS_SYNTAX_ERROR);

@@ -185,12 +185,19 @@ public class XPathAttribute extends AttributeValue {
 
     @Override
     public String encodeWithTags(boolean includeType) {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("<AttributeValue");
         if (includeType && getType() != null) {
-            return "<AttributeValue DataType=\"" + getType().toString() +
-                    "XPathCategory=\"" + getXPathCategory() + "\">" + encode()
-                    + "</AttributeValue>";
-        } else {
-            return "<AttributeValue>" + encode() + "</AttributeValue>";
+            builder.append(" DataType=\"");
+            builder.append(getType().toString());
+            builder.append("\" XPathCategory=\"");
+            builder.append(getXPathCategory());
+            builder.append("\"");
         }
+        builder.append(">");
+        builder.append(encode());
+        builder.append("</AttributeValue>");
+        return builder.toString();
     }
 }

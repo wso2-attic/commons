@@ -24,19 +24,13 @@
         <ak:patientDoB>1991-05-11</ak:patientDoB>
         <ak:patientGender>male</ak:patientGender>
       </ak:patient>
-      <ak:doctor>
-        <ak:id>p111</ak:id>
-        <ak:name>peter</ak:name>
-        <ak:email>peter@gmail.com</ak:email>
-        <ak:phone>94332189873</ak:phone>
-       </ak:doctor>
     </ak:record>
   </Content>
       <Attribute IncludeInResult="false"
           AttributeId="urn:oasis:names:tc:xacml:3.0:content-selector" >
         <AttributeValue
           XPathCategory="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-          DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">//ak:record/ak:patient/ak:patientContact</AttributeValue>
+          DataType="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression">/ak:record/ak:patient/ak:patientDetails</AttributeValue>
       </Attribute>
   </Attributes>
   <Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
