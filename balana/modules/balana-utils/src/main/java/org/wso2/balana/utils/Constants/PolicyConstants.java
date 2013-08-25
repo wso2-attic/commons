@@ -27,6 +27,12 @@ public class PolicyConstants {
 
     public static final String POLICY_ELEMENT = "Policy";
 
+    public static final String POLICY_SET_ELEMENT = "PolicySet";
+
+    public static final String POLICY_ID_REFERENCE_ELEMENT = "PolicyIdReference";
+
+    public static final String POLICY_SET_ID_REFERENCE_ELEMENT = "PolicySetIdReference";
+
     public static final String APPLY_ELEMENT = "Apply";
 
     public static final String MATCH_ELEMENT = "Match";
@@ -41,7 +47,11 @@ public class PolicyConstants {
 
     public static final String POLICY_ID = "PolicyId";
 
+    public static final String POLICY_SET_ID = "PolicySetId";
+
     public static final String RULE_ALGORITHM = "RuleCombiningAlgId";
+
+    public static final String POLICY_ALGORITHM = "PolicyCombiningAlgId";
 
     public static final String POLICY_VERSION = "Version";
 
@@ -184,10 +194,14 @@ public class PolicyConstants {
 
         public static final String FUNCTION_EQUAL = "equal";
 
+        public static final String FUNCTION_EQUAL_IGNORE_CASE = "equal-ignore-case";
+
         public static final String FUNCTION_EQUAL_MATCH_REGEXP = "regexp-match";
 
         public static final String[] targetFunctions =
-                                        new String[] {FUNCTION_EQUAL, FUNCTION_EQUAL_MATCH_REGEXP};
+                                        new String[] {FUNCTION_EQUAL,
+                                                FUNCTION_EQUAL_IGNORE_CASE,
+                                                FUNCTION_EQUAL_MATCH_REGEXP};
 
         public static final String[] simpleRuleFunctions = new String[] {
                 FUNCTION_IS_IN, FUNCTION_IS_IN_MATCH_REGEXP};
@@ -239,10 +253,27 @@ public class PolicyConstants {
         public static final String DOUBLE = "http://www.w3.org/2001/XMLSchema#double";
 
         public static final String INT = "http://www.w3.org/2001/XMLSchema#integer";
-        
-        public static final String[] dataTypes = new String[]{
+
+        public static final String BOOLEAN = "http://www.w3.org/2001/XMLSchema#boolean";
+
+        public static final String ANY_URI = "http://www.w3.org/2001/XMLSchema#anyURI";
+
+        public static final String HEX = "http://www.w3.org/2001/XMLSchema#hexBinary";
+
+        public static final String BASE64 = "http://www.w3.org/2001/XMLSchema#base64Binary";
+
+        public static final String DNS = "urn:oasis:names:tc:xacml:2.0:data-type:dnsName";
+
+        public static final String RFC = "urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name";
+
+        public static final String XPATH = "urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression";
+
+        public static final String X500 = "urn:oasis:names:tc:xacml:1.0:data-type:x500Name";
+
+
+        public static final String[] dataTypes = new String[]{ BOOLEAN, ANY_URI, HEX, BASE64, DNS,
                 DAY_TIME_DURATION, YEAR_MONTH_DURATION, STRING, TIME, IP_ADDRESS, DATE_TIME,
-                DATE, DOUBLE, INT};
+                DATE, DOUBLE, INT, RFC, XPATH, X500};
 
     }
 
@@ -284,7 +315,7 @@ public class PolicyConstants {
 
         public static final String PERMIT_UNLESS_DENY_ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:permit-unless-deny";
 
-        public static final String ONLY_ONE_APPLICABLE_ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:only-one-applicable";
+        public static final String ONLY_ONE_APPLICABLE_ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:only-one-applicable";
 
         public static final String[] algorithms = new String[]{
                 DENY_OVERRIDE_ID, PERMIT_OVERRIDE_ID, FIRST_APPLICABLE_ID, ORDER_PERMIT_OVERRIDE_ID,

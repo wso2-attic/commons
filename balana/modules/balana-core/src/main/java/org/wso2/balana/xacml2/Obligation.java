@@ -133,15 +133,6 @@ public class Obligation extends AbstractObligation implements ObligationResult {
     }
 
     /**
-     * Returns the id of this obligation
-     *
-     * @return the id
-     */
-    public URI getId() {
-        return obligationId;
-    }
-
-    /**
      * Returns the attribute assignment data in this obligation. The <code>List</code> contains
      * objects of type <code>Attribute</code> with only the correct attribute fields being used.
      *

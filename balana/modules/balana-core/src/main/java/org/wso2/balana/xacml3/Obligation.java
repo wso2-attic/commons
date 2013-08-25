@@ -119,6 +119,17 @@ public class Obligation implements ObligationResult{
     }
 
     /**
+     * Returns the attribute assignment data in this obligation. The <code>List</code> contains
+     * objects of type <code>Attribute</code> with only the correct attribute fields being used.
+     *
+     * @return the assignments
+     */
+    public List<AttributeAssignment> getAssignments() {
+        return assignments;
+    }
+
+
+    /**
      * Encodes this <code>Obligation</code> into its XML form
      *
      * @return <code>String</code>
@@ -128,6 +139,5 @@ public class Obligation implements ObligationResult{
         encode(builder);
         return builder.toString();
     }
-
 
 }

@@ -58,6 +58,16 @@ public abstract class AbstractObligation {
     }
 
     /**
+     * Returns the id of this obligation
+     *
+     * @return the id
+     */
+    public URI getId() {
+        return obligationId;
+    }
+
+
+    /**
      * Encodes this <code>ObligationResult</code> into its XML form and writes this out to the provided
      * <code>StringBuilder<code>
      *

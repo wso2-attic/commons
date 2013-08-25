@@ -19,6 +19,8 @@
 package org.wso2.balana.utils;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,6 +30,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 /**
@@ -66,4 +69,17 @@ public class Utils {
         doc = docBuilder.newDocument();
         return doc;
     }
+    
+    
+//    public static Element createElement(String xmlInput) {
+//
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        org.w3c.dom.Document document = builder.parse(new InputSource(new StringReader(xmlInput)));
+//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//        Transformer transformer = transformerFactory.newTransformer();
+//        DOMSource source = new DOMSource(document);
+//        StreamResult result =  new StreamResult(new StringWriter());
+//        transformer.transform(source, result);
+//    }
 }

@@ -131,6 +131,116 @@ public class PolicyUtils {
     }
 
 
+    /**
+     * This method creates a policy set element of the XACML policy
+     * @param policyElementDTO  policy element data object
+     * @param doc XML document
+     * @return policyElement
+     * @throws PolicyBuilderException if
+     */
+
+    public static Element createPolicySetElement(PolicySetElementDTO policyElementDTO, Document doc)
+            throws PolicyBuilderException {
+
+        Element policyElement = doc.createElement(PolicyConstants.POLICY_SET_ELEMENT);
+
+        policyElement.setAttribute("xmlns", PolicyConstants.XACMLData.XACML3_POLICY_NAMESPACE);
+
+        if(policyElementDTO.getPolicySetId() != null &&
+                                    policyElementDTO.getPolicySetId().trim().length() > 0) {
+            policyElement.setAttribute(PolicyConstants.POLICY_SET_ID, policyElementDTO.
+                    getPolicySetId());
+        } else {
+            throw new PolicyBuilderException("Policy name can not be null");
+        }
+
+        if(policyElementDTO.getPolicyCombiningAlgId() != null && policyElementDTO.
+                getPolicyCombiningAlgId().trim().length() > 0) {
+            policyElement.setAttribute(PolicyConstants.POLICY_ALGORITHM, policyElementDTO.
+                    getPolicyCombiningAlgId());
+        } else {
+            policyElement.setAttribute(PolicyConstants.POLICY_ALGORITHM,
+                    PolicyConstants.PolicyCombiningAlog.DENY_OVERRIDE_ID); // TODO
+            log.warn("Rule combining algorithm is not defined. Use default algorithm; Deny Override");
+        }
+
+        if(policyElementDTO.getVersion() != null && policyElementDTO.getVersion().trim().length() > 0){
+            policyElement.setAttribute(PolicyConstants.POLICY_VERSION,
+                    policyElementDTO.getVersion());
+        } else {
+            // policy version is can be handled by policy registry.  therefore we can ignore it, although it
+            // is a required attribute
+            policyElement.setAttribute(PolicyConstants.POLICY_VERSION, "1.0");
+        }
+
+        if(policyElementDTO.getDescription() != null && policyElementDTO.
+                getDescription().trim().length() > 0) {
+
+            Element descriptionElement = doc.createElement(PolicyConstants.
+                    DESCRIPTION_ELEMENT);
+            descriptionElement.setTextContent(policyElementDTO.getDescription());
+            policyElement.appendChild(descriptionElement);
+        }
+
+        TargetElementDTO targetElementDTO = policyElementDTO.getTargetElementDTO();
+        List<ObligationElementDTO> obligationElementDTOs = policyElementDTO.getObligationElementDTOs();
+
+        if(targetElementDTO != null){
+            policyElement.appendChild(createTargetElement(targetElementDTO, doc));
+        } else {
+            policyElement.appendChild(doc.createElement(PolicyConstants.TARGET_ELEMENT));
+        }
+        
+        List<String> policySets = policyElementDTO.getPolicySets();
+        if(policySets != null && policySets.size() > 0){
+           // TODO 
+        }
+
+        List<String> policies = policyElementDTO.getPolicies();
+        if(policies != null && policies.size() > 0){
+            // TODO    
+        }
+        
+        List<String> policySetIds = policyElementDTO.getPolicySetIdReferences();
+        if(policySetIds != null && policySetIds.size() > 0){
+            for(String policySetId : policySetIds){
+                Element element = doc.createElement(PolicyConstants.POLICY_SET_ID_REFERENCE_ELEMENT);
+                element.setTextContent(policySetId);
+                policyElement.appendChild(element);
+            }
+        }
+
+        List<String> policyIds = policyElementDTO.getPolicyIdReferences();
+        if(policyIds != null && policyIds.size() > 0){
+            for(String policyId : policyIds){
+                Element element = doc.createElement(PolicyConstants.POLICY_ID_REFERENCE_ELEMENT);
+                element.setTextContent(policyId);
+                policyElement.appendChild(element);
+            }
+        }
+        
+        if(obligationElementDTOs != null && obligationElementDTOs.size() > 0){
+            List<ObligationElementDTO> obligations = new ArrayList<ObligationElementDTO>();
+            List<ObligationElementDTO> advices = new ArrayList<ObligationElementDTO>();
+            for(ObligationElementDTO obligationElementDTO : obligationElementDTOs){
+                if(obligationElementDTO.getType() == ObligationElementDTO.ADVICE){
+                    advices.add(obligationElementDTO);
+                } else {
+                    obligations.add(obligationElementDTO);
+                }
+            }
+            Element obligation = createObligationsElement(obligations, doc);
+            Element advice = createAdvicesElement(advices, doc);
+            if(obligation != null){
+                policyElement.appendChild(obligation);
+            }
+            if(advice != null){
+                policyElement.appendChild(advice);
+            }
+        }
+
+        return policyElement;
+    }
 
     public static Element createRequestElement(RequestElementDTO requestElementDTO, Document doc)
             throws PolicyBuilderException {

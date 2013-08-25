@@ -450,7 +450,7 @@ public class BasicPolicyHelper {
         String resourceDataType = basicTargetDTO.getResourceDataType();
         String subjectDataType = basicTargetDTO.getSubjectDataType();
         String actionDataType = basicTargetDTO.getActionDataType();
-        String environmentDataType = basicTargetDTO.getResourceDataType();
+        String environmentDataType = basicTargetDTO.getEnvironmentDataType();
 
         Element resourcesElement = null;
         Element actionsElement = null;
