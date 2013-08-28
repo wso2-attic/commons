@@ -1,0 +1,29 @@
+<data name="OraStoredProc">
+   <config id="oracle">
+      <property name="driverClassName">oracle.jdbc.driver.OracleDriver</property>
+      <property name="url">jdbc:oracle:thin:@192.168.18.8:1521:daniddb</property>
+      <property name="username">dss310</property>
+      <property name="password">dss310</property>
+   </config>
+   <query id="StoredPrc" useConfig="oracle">
+      <sql>call GETCUSTOMERID(:cid,:id,:name,:age,:address,:salary)</sql>
+      <result element="customers" rowName="customer">
+         <element column="ID" name="ID" xsdType="integer"/>
+         <element column="NAME" name="NAME" xsdType="string"/>
+         <element column="AGE" name="AGE" xsdType="integer"/>
+         <element column="ADDRESS" name="ADDRESS" xsdType="string"/>
+         <element column="SALARY" name="SALARY" xsdType="decimal"/>
+      </result>
+      <param name="cid" sqlType="INTEGER"/>
+      <param name="id" sqlType="INTEGER" type="OUT"/>
+      <param name="name" sqlType="STRING" type="OUT"/>
+      <param name="age" sqlType="INTEGER" type="OUT"/>
+      <param name="address" sqlType="STRING" type="OUT"/>
+      <param name="salary" sqlType="DOUBLE" type="OUT"/>
+   </query>
+   <operation name="StoredProc">
+      <call-query href="StoredPrc">
+         <with-param name="cid" query-param="cid"/>
+      </call-query>
+   </operation>
+</data>
