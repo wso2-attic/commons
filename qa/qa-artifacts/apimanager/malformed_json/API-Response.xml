@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="Response_API"
+     context="/response">
+   <resource methods="POST GET" url-mapping="/*">
+      <inSequence>
+         <log level="full"/>
+         <payloadFactory>
+            <format>
+               <response xmlns="">
+                  <value>Received Request</value>
+               </response>
+            </format>
+         </payloadFactory>
+         <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+         <header name="To" action="remove"/>
+         <send/>
+      </inSequence>
+   </resource>
+</api>
