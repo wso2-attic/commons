@@ -107,7 +107,7 @@ public class XACMLConstants {
     public static final String XACML_2_0_IDENTIFIER = "urn:oasis:names:tc:xacml:2.0:policy:schema:os";
 
     /**
-     * XACML 2.0 identifier
+     * XACML 3.0 identifier
      */
     public static final String XACML_3_0_IDENTIFIER = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
 
