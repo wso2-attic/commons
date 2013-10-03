@@ -1,0 +1,37 @@
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="ch_suva_wsx_v6ug_edossier_clientcert_leistung_v4" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target> 
+      <inSequence> 
+         <log level="full" separator="," /> 
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2" type="STRING" /> 
+         <callout serviceURL="https://v6ugintg.suvanet.ch:444/EDossierWebServiceHost/LeistungWebServices.svc" action="http://schemas.bbtsoftware.ch/BBTE/EDossierSchnittstelle/2012/IEDossierSchnittstelle/getEDossierData"> 
+            <source xmlns:ns1="http://schemas.bbtsoftware.ch/BBTE/WsData/2012" xmlns:ns="http://schemas.bbtsoftware.ch/BBTE/EDossierSchnittstelle/2012" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xpath="soapenv:Body/child::*[fn:position()=1] | soapenv:Body/child::*[fn:position()=1]" /> 
+            <target xmlns:ns1="http://schemas.bbtsoftware.ch/BBTE/WsData/2012" xmlns:ns="http://schemas.bbtsoftware.ch/BBTE/EDossierSchnittstelle/2012" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xpath="soapenv:Body/child::*[fn:position()=1] | soapenv:Body/child::*[fn:position()=1]" /> 
+         </callout> 
+         <property name="RESPONSE" value="true" scope="default" type="STRING" /> 
+         <header name="To" action="remove" /> 
+         <send /> 
+      </inSequence> 
+      <outSequence> 
+         <send /> 
+      </outSequence> 
+      <faultSequence> 
+         <log level="full" category="TRACE" separator="," /> 
+         <property name="RESPONSE" value="true" scope="default" type="STRING" /> 
+         <header name="To" action="remove" /> 
+         <makefault version="soap11"> 
+            <code xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/" value="soap11Env:Server" /> 
+            <reason expression="get-property('ERROR_MESSAGE')" /> 
+            <role /> 
+            <detail expression="get-property('ERROR_DETAIL')" /> 
+         </makefault> 
+         <send /> 
+      </faultSequence> 
+   </target> 
+   <publishWSDL key="conf:repository/wsx/v6ug/edossier/v1/LeistungWebServices.wsdl"> 
+      <resource location="xsd0.xsd" key="conf:repository/wsx/v6ug/edossier/v1/xsd0.xsd" /> 
+      <resource location="xsd1.xsd" key="conf:repository/wsx/v6ug/edossier/v1/xsd1.xsd" /> 
+      <resource location="xsd2.xsd" key="conf:repository/wsx/v6ug/edossier/v1/xsd2.xsd" /> 
+      <resource location="xsd3.xsd" key="conf:repository/wsx/v6ug/edossier/v1/xsd3.xsd" /> 
+      <resource location="xsd4.xsd" key="conf:repository/wsx/v6ug/edossier/v1/xsd4.xsd" /> 
+   </publishWSDL> 
+</proxy>

@@ -1,0 +1,4 @@
+1. Use the proxyService.xml
+2. Let the endpoint for the callout throws serveral faults in a row
+
+Actual Result: , the proxy shold not hang for subsequent requests. (Callout should properly closing the connection and returning it to the pool when the fault occurs) 
