@@ -1,0 +1,21 @@
+Samples tried out 1:
+InputEventAdaptor:  	jms
+EventBuilder:           map
+EventFormatter:         xml
+OutputEventAdaptor: ws-event-local
+
+Producers:purchase-info ($CEP_HOME/samples/producer/purchase-info)
+	ant -Dtopic=PurchaseOrders
+
+Consumer: log-service ($CEP_HOME/samples/consumer/log-service)
+	ant -DsampleN0=0102 (service has been cretaed on CEP as "LogService"
+	Navigate to CEP admin console and copy "Service --> List --> LogService endpoint URL 
+	ex: http://localhost:9763/services/LogService/
+	create a topic from event formatters destination name (http://docs.wso2.org/display/CEP300/Setting+up+CEP+Samples) 
+	(In this case topic is "PurchaseOrders")
+ 	Subscribe to "http://localhost:9763/services/LogService/log" and give expiration time 
+	Output can be on CEP logs
+
+
+
+

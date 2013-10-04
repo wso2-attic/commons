@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<executionPlan name="largePizzaOrders" statistics="disable"
+  trace="disable" xmlns="http://wso2.org/carbon/eventprocessor">
+  <description>Filters large pizza orders</description>
+  <siddhiConfiguration>
+    <property name="siddhi.persistence.snapshot.time.interval.minutes">0</property>
+    <property name="siddhi.enable.distributed.processing">disabled</property>
+  </siddhiConfiguration>
+  <importedStreams>
+    <stream as="orderStream" name="org.wso2.sample.pizza.order" version="1.0.0"/>
+  </importedStreams>
+  <queryExpressions><![CDATA[from orderStream[Size == 'L' and Quantity >= 1]
+select Contact, Address
+insert into largeOrders]]></queryExpressions>
+  <exportedStreams>
+    <stream name="largeOrders" valueOf="largeOrders" version="1.0.0"/>
+  </exportedStreams>
+</executionPlan>

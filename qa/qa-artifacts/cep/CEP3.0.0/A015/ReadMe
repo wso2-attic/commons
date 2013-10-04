@@ -1,0 +1,13 @@
+This sample uses 
+InputEventAdaptor:  jms
+EventBuilder:           json
+Execution Plan:         yes
+EventFormatter:         xml
+OutputEventAdaptor:  jms
+
+Producers:    stock-quote ($CEP_HOME/samples/producers/) 
+    	ant topicConsumer -Dtopic=AllStockQuotes
+
+Consumers:     jms ($CEP_HOME/samples/consumers/)
+ 	ant -Dtopic=BasicStockQuotes
+

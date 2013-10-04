@@ -1,0 +1,14 @@
+Samples tried out 1:
+InputEventAdaptor:  	jms - topic
+EventBuilder:           map
+EventFormatter:         xml
+OutputEventAdaptor:  jms - topic
+
+Producers:purchase-info ($CEP_HOME/samples/producer/purchase-info)
+	ant -Dtopic=PurchaseOrders
+
+Consumer: jms ($CEP_HOME/samples/consumer/jms)
+	ant topicConsumer -Dtopic=ServiceManagement
+
+
+

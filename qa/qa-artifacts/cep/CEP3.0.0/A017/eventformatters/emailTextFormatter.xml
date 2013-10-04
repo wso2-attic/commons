@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="emailTextFormatter" statistics="disable"
+  trace="disable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="largeOrders" version="1.0.0"/>
+  <mapping type="text">
+    <inline>Hi,
+
+Thank you for being a valuable customer for us. Would you like us to send promotional material to the following address?
+
+{{Contact}}
+{{Address}}
+
+Thanks,
+PizzaShop Team</inline>
+  </mapping>
+  <to eventAdaptorName="EmailAdaptor" eventAdaptorType="email">
+    <property name="email.address">wso2cep.demo@gmail.com</property>
+    <property name="email.subject">Request to send Promotional Materials</property>
+  </to>
+</eventFormatter>

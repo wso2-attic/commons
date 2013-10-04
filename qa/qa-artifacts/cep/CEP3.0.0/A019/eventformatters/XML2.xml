@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="XML2" statistics="disable" trace="disable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="org.wso2.sample.purchase.orders" version="1.0.0"/>
+  <mapping type="xml">
+    <inline>
+      <purchaseOrder xmlns="http://wso2.org/carbon/purchaseOrder">
+        <cardId countryCode="{{countryCode}}">{{cardId}}</cardId>
+        <amount>{{amount}}</amount>
+      </purchaseOrder>
+    </inline>
+  </mapping>
+  <to eventAdaptorName="ActiveMQJMSAdaptor" eventAdaptorType="jms">
+    <property name="transport.jms.Destination">ServiceManagement</property>
+  </to>
+</eventFormatter>
