@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="PurgeWorksheet"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.purgeWorksheet>
+            <spreadsheetName>Connector</spreadsheetName>
+	    <worksheetName>ConnectorWork1</worksheetName>
+         </googlespreadsheet.purgeWorksheet>
+         <log level="log"/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>
