@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="updateWorksheetMetadata"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet_3.0.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet_3.0.usernameLogin>
+         <googlespreadsheet_3.0.updateWorksheetMetadata>
+            <spreadsheetName>ConnectorSpreadsheet</spreadsheetName>
+            <worksheetOldName>ConnectorWorksheet</worksheetOldName>
+            <worksheetNewName>NewConnectorWorksheet</worksheetNewName>
+            <worksheetRows>20</worksheetRows>
+            <worksheetColumns>20</worksheetColumns>
+         </googlespreadsheet_3.0.updateWorksheetMetadata>
+         <log level="full"/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

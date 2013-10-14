@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="importCSV"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet_3.0.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet_3.0.usernameLogin>
+         <googlespreadsheet_3.0.importCSV>
+            <spreadsheetName>ConnectorSpreadsheet</spreadsheetName>
+            <worksheetName>ConnectorWorkheet</worksheetName>
+            <filePath>xxx</filePath>
+            <batchEnable>true</batchEnable>
+            <batchSize>5</batchSize>
+         </googlespreadsheet_3.0.importCSV>
+         <log level="full"/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

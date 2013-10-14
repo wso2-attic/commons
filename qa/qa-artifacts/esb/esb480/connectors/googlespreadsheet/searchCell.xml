@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="searchCell"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet_3.0.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet_3.0.usernameLogin>
+         <googlespreadsheet_3.0.searchCell>
+            <spreadsheetName>ConnectorSpreadsheet</spreadsheetName>
+            <worksheetName>ConnectorWorksheet</worksheetName>
+            <searchString>lanka</searchString>
+         </googlespreadsheet_3.0.searchCell>
+         <log level="full"/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

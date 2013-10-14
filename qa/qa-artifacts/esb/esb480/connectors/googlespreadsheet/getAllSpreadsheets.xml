@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getAllSpreadsheets"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet_3.0.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet_3.0.usernameLogin>
+         <googlespreadsheet_3.0.getAllSpreadsheets/>
+         <log level="full"/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>
