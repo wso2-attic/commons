@@ -26,6 +26,7 @@ import org.wso2.balana.basic.TestMultipleRequestV3;
 import org.wso2.balana.basic.TestXPathV3;
 import org.wso2.balana.conformance.ConformanceTestV2;
 import org.wso2.balana.conformance.ConformanceTestV3;
+import org.wso2.balana.finder.impl.TestInMemoryPolicyFinderModule;
 
 /**
  * Test suite for Balana 
@@ -51,6 +52,10 @@ public class BaseTestCase extends TestSuite {
         testSuite.addTestSuite(ConformanceTestV3.class);
         // test that has been written for jira issue
         testSuite.addTestSuite(AdvanceTestV3.class);
+
+        // test policy finders
+
+        testSuite.addTestSuite(TestInMemoryPolicyFinderModule.class);
         return testSuite;
     }
 }
