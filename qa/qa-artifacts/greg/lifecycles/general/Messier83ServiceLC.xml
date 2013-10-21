@@ -9,36 +9,36 @@
                         <data name="checkItems">
                             <item name="Requirements Gathered" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Document Requirements" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Architecture Diagram Finalized" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Design UML Diagrams" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="High Level Design Completed" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Completion of Commencement" forEvent="Promote,Abort">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                         </data>
-             <data name="transitionScripts">
+             <!--data name="transitionScripts">
 				<js forEvent="Promote">
 				<console function="show_alert">
 				<script type="text/javascript">
@@ -49,7 +49,7 @@
 				</script>
 				</console>
 				</js>                           
-                        </data>
+                        </data>-->
                     </datamodel>
                     <transition event="Promote" target="Creation"/>
                     <transition event="Abort" target="Halted"/>
@@ -59,32 +59,32 @@
                         <data name="checkItems">
                             <item name="Code Completed" forEvent="Promote">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="WSDL Created" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="QoS Created" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Schema Created" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Services Created" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Completion of Creation" forEvent="Promote,Abort">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                         </data>
@@ -101,7 +101,7 @@
 			<data name="transitionUI">
                             <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/trunk/"/>
                         </data>
-                        <data name="transitionScripts">
+                        <!--data name="transitionScripts">
                             <js forEvent="Promote">
                                 <console function="doPromote">
                                     <script type="text/javascript">
@@ -113,7 +113,7 @@
                                 </console>
                                                             </js> 
 				                   
-                        </data>
+                        </data>-->
                     </datamodel>
                     <transition event="Promote" target="Development"/>
                     <transition event="Demote" target="Commencement"/>
@@ -124,17 +124,17 @@
                         <data name="checkItems">
                             <item name="Effective Inspection Completed" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Test Cases Passed" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                             <item name="Smoke Test Passed" forEvent="">
                                 <permissions>
-                                    <permission/>
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                         </data>
@@ -158,7 +158,7 @@
                             <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/branches/development/"/>
                             <ui forEvent="Demote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/branches/development/"/>
                         </data>
-                        <data name="transitionScripts">
+                        <!--data name="transitionScripts">
                             <js forEvent="Promote">
                                 <console function="doPromote">
                                     <script type="text/javascript">
@@ -182,7 +182,7 @@
                                     </script>
                                 </console>				
 				</js>                          
-                        </data>
+                        </data>-->
                     </datamodel>
                     <transition event="Promote" target="QAed"/>
                     <transition event="Demote" target="Commencement"/>
@@ -193,7 +193,7 @@
                         <data name="checkItems">
                             <item name="Service Configuration" forEvent="">
                                 <permissions>
-                                    <permission />
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                         </data>
@@ -217,7 +217,7 @@
                             <ui forEvent="Promote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/branches/qa/"/>
                             <ui forEvent="Demote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/branches/qa/"/>
                         </data>
-                        <data name="transitionScripts">
+                        <!--data name="transitionScripts">
                             <js forEvent="Promote">
                                 <console function="doPromote">
                                     <script type="text/javascript">
@@ -240,7 +240,7 @@
                                     </script>
                                 </console>				
 				</js>                 
-                        </data>
+                        </data>-->
                     </datamodel>
                     <transition event="Promote" target="Launched"/>
                     <transition event="Demote" target="Development"/>
@@ -251,7 +251,7 @@
                         <data name="checkItems">
                             <item name="Service Configuration">
                                 <permissions>
-                                    <permission />
+                                    <permission roles=""/>
                                 </permissions>
                             </item>
                         </data>
@@ -267,7 +267,7 @@
 			<data name="transitionUI">
                             <ui forEvent="Demote" href="../lifecycles/pre_invoke_aspect_ajaxprocessor.jsp?preserveOriginal=false%26viewVersion=false%26currentEnvironment=/_system/governance/wso2/carbon/branches/production/"/>
                         </data>
-                        <data name="transitionScripts">
+                        <!--data name="transitionScripts">
 				<js forEvent="Demote">
                                 <console function="doDemote">
                                     <script type="text/javascript">
@@ -279,7 +279,7 @@
                                     </script>
                                 </console>				
 				</js>                 
-                        </data>
+                        </data>-->
                     </datamodel>
                     <transition event="Promote" target="Obsolete"/>
                     <transition event="Demote" target="Development"/>
