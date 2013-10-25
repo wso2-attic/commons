@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="email_to_sms" statistics="enable" trace="enable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="eventBuilderOut" version="1.0.0"/>
+  <mapping type="json">
+    <inline>{
+ "quotedata:StockQuoteDataEvent": {
+ "quotedata:LastTradeAmount": "{{price}}"
+ }
+}</inline>
+  </mapping>
+  <to eventAdaptorName="SMS" eventAdaptorType="sms">
+    <property name="sms.no">9477303030</property>
+  </to>
+</eventFormatter>

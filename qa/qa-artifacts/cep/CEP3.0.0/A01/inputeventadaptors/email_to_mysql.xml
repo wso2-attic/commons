@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputEventAdaptor name="email_to_mysql" statistics="enable"
+  trace="enable" type="email" xmlns="http://wso2.org/carbon/eventadaptormanager">
+  <property name="mail.protocol.socketFactory.fallback">false</property>
+  <property name="transport.mail.Address">wso2tester@gmail.com</property>
+  <property name="mail.protocol.password">welcome12!@</property>
+  <property name="mail.protocol.host">pop.gmail.com</property>
+  <property name="mail.protocol.port">995</property>
+  <property name="mail.protocol.user">wso2tester</property>
+  <property name="transport.PollInterval">10</property>
+  <property name="transport.mail.Protocol">pop3</property>
+  <property name="mail.protocol.socketFactory.class">javax.net.ssl.SSLSocketFactory</property>
+</inputEventAdaptor>

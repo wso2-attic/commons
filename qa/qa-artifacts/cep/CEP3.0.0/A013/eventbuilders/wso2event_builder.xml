@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="wso2event_builder" statistics="enable"
+    trace="disable" xmlns="http://wso2.org/carbon/eventbuilder">
+    <from eventAdaptorName="wso2_event" eventAdaptorType="wso2event">
+        <property name="stream">org.wso2.sample.service.data</property>
+        <property name="version">1.0.0</property>
+    </from>
+    <mapping customMapping="enable" type="wso2event">
+        <property>
+            <from dataType="payload" name="service_name"/>
+            <to name="service_name" type="string"/>
+        </property>
+        <property>
+            <from dataType="payload" name="timestamp"/>
+            <to name="timestamp" type="long"/>
+        </property>
+    </mapping>
+    <to streamName="org.wso2.sample.service.data" version="1.0.0"/>
+</eventBuilder>

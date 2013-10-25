@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="wso2_event" statistics="enable" trace="disable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="eventBuilderOutStream" version="1.0.0"/>
+  <mapping type="text">
+    <inline>{{service_name}}</inline>
+  </mapping>
+  <to eventAdaptorName="SMS" eventAdaptorType="sms">
+    <property name="sms.no">9477303030</property>
+  </to>
+</eventFormatter>

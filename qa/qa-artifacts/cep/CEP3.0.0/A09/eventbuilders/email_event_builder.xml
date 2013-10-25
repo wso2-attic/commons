@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="email_event_builder" statistics="enable"
+    trace="disable" xmlns="http://wso2.org/carbon/eventbuilder">
+    <from eventAdaptorName="email_input" eventAdaptorType="email">
+        <property name="email.in.subject">ServiceManagement</property>
+    </from>
+    <mapping customMapping="enable" type="json">
+        <property>
+            <from jsonPath="$.stockQuoteEvent.lastTradeAmount"/>
+            <to name="price" type="double"/>
+        </property>
+    </mapping>
+    <to streamName="eventBuilderOut" version="1.0.0"/>
+</eventBuilder>

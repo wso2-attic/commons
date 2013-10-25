@@ -1,0 +1,18 @@
+Preconditions
+1.ant must be installed
+2.SMSC should be configured and the SMSC started based on http://docs.wso2.org/display/CEP300/Output+SMS+Event+Adaptor
+
+
+1.Go to path wso2cep-3.0.0/repository/deployment/server
+
+2.copy the files into the relevant folder 
+eventbuilders/
+eventformatters/
+executionplans/
+inputeventadaptors/
+outputeventadapto
+
+3.Go to path /wso2cep-3.0.0/samples/producers/service-stats
+run ant
+
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="event_formatter" statistics="enable"
+  trace="enable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="wsEventStream" version="1.0.0"/>
+  <mapping type="map">
+    <property>
+      <from name="price"/>
+      <to name="price"/>
+    </property>
+  </mapping>
+  <to eventAdaptorName="mysql_output" eventAdaptorType="mysql">
+    <property name="database.name">database02</property>
+    <property name="table.name">tbl_mbevent</property>
+  </to>
+</eventFormatter>

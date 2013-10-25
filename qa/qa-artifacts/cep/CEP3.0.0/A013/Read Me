@@ -1,0 +1,19 @@
+Preconditions
+1.ant must be installed
+2.mysql myst be setup
+3.Data source should be configured
+
+
+1.Go to path wso2cep-3.0.0/repository/deployment/server
+
+2.copy the files into the relevant folder 
+eventbuilders/
+eventformatters/
+executionplans/
+inputeventadaptors/
+outputeventadapto
+
+3.Go to path /wso2cep-3.0.0/samples/producers/service-stats
+run ant
+
+

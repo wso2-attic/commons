@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="wso2_mb_event_builder" statistics="enable"
+    trace="enable" xmlns="http://wso2.org/carbon/eventbuilder">
+    <from eventAdaptorName="ws_event" eventAdaptorType="ws-event">
+        <property name="topic">wso2mb_inputService</property>
+    </from>
+    <mapping customMapping="enable" type="xml">
+        <xpathDefinition namespace="http://ws.cdyne.com/" prefix="quotedata"/>
+        <property>
+            <from xpath="//quotedata:StockQuoteEvent/quotedata:LastTradeAmount"/>
+            <to name="price" type="double"/>
+        </property>
+    </mapping>
+    <to streamName="wsEventStream" version="1.0.0"/>
+</eventBuilder>

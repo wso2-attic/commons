@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="event_formatter" statistics="enable"
+  trace="disable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="org.wso2.sample.purchase.orders" version="1.0.0"/>
+  <mapping type="text">
+    <inline>{{countryCode}}{{cardId}} {{amount}}</inline>
+  </mapping>
+  <to eventAdaptorName="jms_output_adapter" eventAdaptorType="jms">
+    <property name="transport.jms.Destination">jmsOutput</property>
+  </to>
+</eventFormatter>

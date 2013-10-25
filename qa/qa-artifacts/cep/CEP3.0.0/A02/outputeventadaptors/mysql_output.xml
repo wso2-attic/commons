@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<outputEventAdaptor name="mysql_output" statistics="enable"
+  trace="disable" type="mysql" xmlns="http://wso2.org/carbon/eventadaptormanager">
+  <property name="datasource.name">WSO2_CARBON_DB2</property>
+</outputEventAdaptor>

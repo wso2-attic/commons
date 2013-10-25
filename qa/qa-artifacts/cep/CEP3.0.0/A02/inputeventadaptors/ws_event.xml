@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inputEventAdaptor name="ws_event" statistics="enable" trace="enable"
+  type="ws-event" xmlns="http://wso2.org/carbon/eventadaptormanager">
+  <property name="username">admin</property>
+  <property name="password">admin</property>
+  <property name="uri">https://localhost:9444/services/EventBrokerService</property>
+</inputEventAdaptor>

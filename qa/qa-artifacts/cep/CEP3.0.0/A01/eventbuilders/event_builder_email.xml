@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="event_builder_email" statistics="enable"
+    trace="enable" xmlns="http://wso2.org/carbon/eventbuilder">
+    <from eventAdaptorName="email_to_mysql" eventAdaptorType="email">
+        <property name="email.in.subject">ServiceManagement</property>
+    </from>
+    <mapping customMapping="enable" type="text">
+        <property>
+            <from regex="StockSymbol:\s?(\w+)"/>
+            <to name="symbol" type="string"/>
+        </property>
+        <property>
+            <from regex="LastTradeAmount:\s?(\w+.\w+)"/>
+            <to name="price" type="double"/>
+        </property>
+    </mapping>
+    <to streamName="stockQuote" version="1.0.0"/>
+</eventBuilder>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="event_formatter" statistics="enable"
+  trace="enable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="symbolOutputStream" version="1.0.0"/>
+  <mapping type="map">
+    <property>
+      <from name="symbol"/>
+      <to name="symbol"/>
+    </property>
+    <property>
+      <from name="price"/>
+      <to name="price"/>
+    </property>
+    <property>
+      <from name="Average"/>
+      <to name="Average"/>
+    </property>
+  </mapping>
+  <to eventAdaptorName="mysql_output" eventAdaptorType="mysql">
+    <property name="database.name">database02</property>
+    <property name="table.name">tbl_symbol</property>
+  </to>
+</eventFormatter>

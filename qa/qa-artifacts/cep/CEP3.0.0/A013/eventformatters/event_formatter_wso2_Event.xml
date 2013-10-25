@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventFormatter name="event_formatter_wso2_Event" statistics="disable"
+  trace="disable" xmlns="http://wso2.org/carbon/eventformatter">
+  <from streamName="outputStream" version="1.0.0"/>
+  <mapping type="map">
+    <property>
+      <from name="service_name"/>
+      <to name="service_name"/>
+    </property>
+    <property>
+      <from name="timestamp"/>
+      <to name="timestamp"/>
+    </property>
+  </mapping>
+  <to eventAdaptorName="mysql" eventAdaptorType="mysql">
+    <property name="database.name">database02</property>
+    <property name="table.name">service_names</property>
+  </to>
+</eventFormatter>
