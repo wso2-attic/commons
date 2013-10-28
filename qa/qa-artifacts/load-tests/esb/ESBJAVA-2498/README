@@ -1,0 +1,32 @@
+Patch ID         : WSO2-CARBON-PATCH-4.1.0-0194
+Applies To       : ESB 4.7.0
+Associated JIRA  : https://wso2.org/jira/browse/ESBJAVA-2498
+
+
+DESCRIPTION
+-----------
+Fixes ConcurrentModificationException under high load for iterator/clone mediators with aggregate mediator
+
+1) Start the ESB 4.7.0
+
+2) Add the synapse configuration in ESB2498-synapse_config.xml to the ESB
+
+3) Deploy service.war webapp in Tomcat or other Application Server
+
+4) Change the endpoint address in the synapse API config accordingly
+
+5) Open SOAP UI and import REST-Project-ESB2498-soapui-project.xml
+
+6) Run the load test and see the ESB log. It should not show the following exception after applying the patch.
+
+	ERROR - NativeWorkerPool Uncaught exception
+	java.util.ConcurrentModificationException
+		at java.util.LinkedList$ListItr.checkForComodification(LinkedList.java:761)
+		at java.util.LinkedList$ListItr.next(LinkedList.java:696)
+		at org.apache.axis2.engine.AxisEngine.flowComplete(AxisEngine.java:293)
+		at org.apache.axis2.engine.AxisEngine.receive(AxisEngine.java:182)
+		at org.apache.synapse.transport.passthru.ClientWorker.run(ClientWorker.java:222)
+		at org.apache.axis2.transport.base.threads.NativeWorkerPool$1.run(NativeWorkerPool.java:172)
+		at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:895)
+		at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:918)
+		at java.lang.Thread.run(Thread.java:662)

@@ -1,0 +1,24 @@
+Patch ID         : WSO2-CARBON-PATCH-4.1.0-0168
+Applies To       : ESB 4.7.0
+Associated JIRA  : https://wso2.org/jira/browse/ESBJAVA-2486
+
+
+DESCRIPTION
+-----------
+Fix for getting exceptions during load test in enrich mediator with a local entry
+
+1) Start the ESB 4.7.0
+
+2) Add the synapse configuration in ESB2486-synapse_config.xml to the ESB.
+
+3) Run JMeter and open ESB2486-jmeter.jmx script.
+
+4) Change the server IP and port accordingly in JMeter
+
+5) Run the load test and see the ESB log. It should not show the following exceptions after applying the patch.
+
+	ERROR - NativeWorkerPool Uncaught exception
+	java.lang.NullPointerException
+
+	ERROR - NativeWorkerPool Uncaught exception
+	org.apache.axiom.om.OMException: Nodes that don't have a parent can not be detached 

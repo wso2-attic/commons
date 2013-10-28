@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+      <parameter name="cachableDuration">15000</parameter>
+   </registry>
+   
+   <localEntry key="FullQuoteResponse">
+      <ns:getFullQuoteResponse xmlns:ns="http://services.samples">
+         <ns:return xmlns:ax21="http://services.samples/xsd"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:type="ax21:GetFullQuoteResponse">
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>0</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.2695006260738</ax21:change>
+                  <ax21:earnings>-9.271207397655557</ax21:earnings>
+                  <ax21:high>-65.30661367830487</ax21:high>
+                  <ax21:last>66.27365403483263</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-65.68225335509413</ax21:low>
+                  <ax21:marketCap>7141398.453106206</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-65.77589217856121</ax21:open>
+                  <ax21:peRatio>25.324812796095404</ax21:peRatio>
+                  <ax21:percentageChange>5.845650264903519</ax21:percentageChange>
+                  <ax21:prevClose>73.03722310770617</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>9958</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>1</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.27007913655961</ax21:change>
+                  <ax21:earnings>-8.79634708850969</ax21:earnings>
+                  <ax21:high>-82.00264687254186</ax21:high>
+                  <ax21:last>82.55827150801723</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>85.11528535827233</ax21:low>
+                  <ax21:marketCap>4.267745353986333E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-82.1590743896922</ax21:open>
+                  <ax21:peRatio>25.553255716809765</ax21:peRatio>
+                  <ax21:percentageChange>-2.4792122692398593</ax21:percentageChange>
+                  <ax21:prevClose>91.564533006108</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>9230</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>2</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.420090730737767</ax21:change>
+                  <ax21:earnings>-9.668085206065559</ax21:earnings>
+                  <ax21:high>-71.96057167331449</ax21:high>
+                  <ax21:last>72.70666661686167</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>74.81826777281545</ax21:low>
+                  <ax21:marketCap>4.1325238080982916E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-72.39196689712354</ax21:open>
+                  <ax21:peRatio>-17.693607868428938</ax21:peRatio>
+                  <ax21:percentageChange>5.319439974236527</ax21:percentageChange>
+                  <ax21:prevClose>83.09315928265853</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>16187</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>3</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.759301831636754</ax21:change>
+                  <ax21:earnings>-8.007969630223977</ax21:earnings>
+                  <ax21:high>77.94948151118814</ax21:high>
+                  <ax21:last>74.29595114474338</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-73.42658884303131</ax21:low>
+                  <ax21:marketCap>-5336977.581226007</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>76.94446392168892</ax21:open>
+                  <ax21:peRatio>23.094168337105458</ax21:peRatio>
+                  <ax21:percentageChange>4.660147537729259</ax21:percentageChange>
+                  <ax21:prevClose>80.66915910281548</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>19422</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>4</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.356317035277366</ax21:change>
+                  <ax21:earnings>12.543378543268545</ax21:earnings>
+                  <ax21:high>179.88776527835714</ax21:high>
+                  <ax21:last>173.7191835114969</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>178.34794145326308</ax21:low>
+                  <ax21:marketCap>5.562340055856958E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>179.52647809268595</ax21:open>
+                  <ax21:peRatio>24.662777092557384</ax21:peRatio>
+                  <ax21:percentageChange>-2.6459026353411605</ax21:percentageChange>
+                  <ax21:prevClose>-164.64389040965847</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18115</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>5</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.4591190389187503</ax21:change>
+                  <ax21:earnings>12.243505804026062</ax21:earnings>
+                  <ax21:high>186.78010987037692</ax21:high>
+                  <ax21:last>181.59338529147374</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-178.6264285948374</ax21:low>
+                  <ax21:marketCap>3.569178062802876E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>189.05023216149786</ax21:open>
+                  <ax21:peRatio>25.183521463608475</ax21:peRatio>
+                  <ax21:percentageChange>-1.2016985729044336</ax21:percentageChange>
+                  <ax21:prevClose>204.63692762613562</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>7659</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>6</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.5380216989271926</ax21:change>
+                  <ax21:earnings>-9.388076994863203</ax21:earnings>
+                  <ax21:high>169.9220716046082</ax21:high>
+                  <ax21:last>165.62727132944076</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>172.50657056842783</ax21:low>
+                  <ax21:marketCap>1.3504767236017443E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-162.4113552202488</ax21:open>
+                  <ax21:peRatio>-18.637608040585214</ax21:peRatio>
+                  <ax21:percentageChange>-1.3510432579136038</ax21:percentageChange>
+                  <ax21:prevClose>187.8564349483985</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>15905</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>7</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.178417513353221</ax21:change>
+                  <ax21:earnings>13.14373750900929</ax21:earnings>
+                  <ax21:high>-154.94915709799616</ax21:high>
+                  <ax21:last>156.45478506158287</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-156.05248265113266</ax21:low>
+                  <ax21:marketCap>5.864882943872069E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-152.6489491138563</ax21:open>
+                  <ax21:peRatio>-19.920623637586502</ax21:peRatio>
+                  <ax21:percentageChange>-2.806630554614004</ax21:percentageChange>
+                  <ax21:prevClose>-148.876648780298</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>17168</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>8</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.8264429062048455</ax21:change>
+                  <ax21:earnings>-8.560620506938253</ax21:earnings>
+                  <ax21:high>-94.93328194204663</ax21:high>
+                  <ax21:last>95.65401817438357</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>98.94473117846873</ax21:low>
+                  <ax21:marketCap>-63726.60546959005</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-95.4369110995562</ax21:open>
+                  <ax21:peRatio>23.425578404861323</ax21:peRatio>
+                  <ax21:percentageChange>3.513539878521961</ax21:percentageChange>
+                  <ax21:prevClose>108.9056347302514</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>6999</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>9</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.361100162014134</ax21:change>
+                  <ax21:earnings>-8.618729700107536</ax21:earnings>
+                  <ax21:high>-146.2174015829092</ax21:high>
+                  <ax21:last>147.85728752797766</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-146.18445401488407</ax21:low>
+                  <ax21:marketCap>4.417241270972029E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>153.53066999293958</ax21:open>
+                  <ax21:peRatio>24.95656191995006</ax21:peRatio>
+                  <ax21:percentageChange>2.6705776312265845</ax21:percentageChange>
+                  <ax21:prevClose>163.30175580820318</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>19358</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>10</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.475875926191561</ax21:change>
+                  <ax21:earnings>12.64589178327143</ax21:earnings>
+                  <ax21:high>-178.5241454898939</ax21:high>
+                  <ax21:last>182.01357388826924</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>188.29029389853469</ax21:low>
+                  <ax21:marketCap>3536543.2701837365</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>191.0935314482893</ax21:open>
+                  <ax21:peRatio>25.768444427209587</ax21:peRatio>
+                  <ax21:percentageChange>2.196170991358438</ax21:percentageChange>
+                  <ax21:prevClose>203.803617468921</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>19115</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>11</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.356253174755619</ax21:change>
+                  <ax21:earnings>-9.905757521602869</ax21:earnings>
+                  <ax21:high>193.23550401079763</ax21:high>
+                  <ax21:last>186.85666153469884</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>192.88190468819818</ax21:low>
+                  <ax21:marketCap>-7302777.624436509</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>194.91021376452713</ax21:open>
+                  <ax21:peRatio>-19.005622378982736</ax21:peRatio>
+                  <ax21:percentageChange>-2.49043382486445</ax21:percentageChange>
+                  <ax21:prevClose>-174.91945103149737</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>5858</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>12</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.8445226448078853</ax21:change>
+                  <ax21:earnings>13.251534525086809</ax21:earnings>
+                  <ax21:high>90.84179793441156</ax21:high>
+                  <ax21:last>88.1126422923003</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-86.99415782956056</ax21:low>
+                  <ax21:marketCap>93406.62570187263</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-87.02785941322941</ax21:open>
+                  <ax21:peRatio>-17.402849635977617</ax21:peRatio>
+                  <ax21:percentageChange>-4.593543714604001</ax21:percentageChange>
+                  <ax21:prevClose>-83.69404720336513</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>15810</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>13</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.367396626807984</ax21:change>
+                  <ax21:earnings>-9.702922369339353</ax21:earnings>
+                  <ax21:high>-151.51977478969707</ax21:high>
+                  <ax21:last>153.9380268019118</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-152.582144501847</ax21:low>
+                  <ax21:marketCap>-2732751.9352231175</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-151.1253357142844</ax21:open>
+                  <ax21:peRatio>25.201470167588788</ax21:peRatio>
+                  <ax21:percentageChange>2.603091636460136</ax21:percentageChange>
+                  <ax21:prevClose>167.77729088120276</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>19481</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>14</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.98369323838876</ax21:change>
+                  <ax21:earnings>-8.820958495835505</ax21:earnings>
+                  <ax21:high>-176.21506491144578</ax21:high>
+                  <ax21:last>177.14671858956348</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-176.92193220486442</ax21:low>
+                  <ax21:marketCap>1.0468060151514731E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-176.1564955901173</ax21:open>
+                  <ax21:peRatio>-19.811492763163677</ax21:peRatio>
+                  <ax21:percentageChange>1.6919323641755604</ax21:percentageChange>
+                  <ax21:prevClose>-176.34825726870264</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>7737</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>15</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.810957961209735</ax21:change>
+                  <ax21:earnings>12.400075643867108</ax21:earnings>
+                  <ax21:high>159.0517951875699</ax21:high>
+                  <ax21:last>152.80007616043008</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>156.8948644769633</ax21:low>
+                  <ax21:marketCap>6102857.242659625</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>158.35823802013718</ax21:open>
+                  <ax21:peRatio>-19.394249004852085</ax21:peRatio>
+                  <ax21:percentageChange>-1.6657973165187454</ax21:percentageChange>
+                  <ax21:prevClose>168.74549702626462</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>5479</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>16</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.096591394257578</ax21:change>
+                  <ax21:earnings>12.755011144378976</ax21:earnings>
+                  <ax21:high>-158.89777783542868</ax21:high>
+                  <ax21:last>162.23944789892627</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-161.5702687902743</ax21:low>
+                  <ax21:marketCap>5.603558799893254E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>169.0110473070467</ax21:open>
+                  <ax21:peRatio>25.586122389013802</ax21:peRatio>
+                  <ax21:percentageChange>2.200704867339651</ax21:percentageChange>
+                  <ax21:prevClose>186.1490586518215</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18746</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>17</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.838618478619625</ax21:change>
+                  <ax21:earnings>12.21997425793913</ax21:earnings>
+                  <ax21:high>84.00957925358095</ax21:high>
+                  <ax21:last>81.81645531286426</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-80.67595581167508</ax21:low>
+                  <ax21:marketCap>5.668998464440354E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>83.95040300651289</ax21:open>
+                  <ax21:peRatio>-17.900665728725983</ax21:peRatio>
+                  <ax21:percentageChange>3.736552333808054</ax21:percentageChange>
+                  <ax21:prevClose>-75.96892067952619</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>8671</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>18</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.2629156214496415</ax21:change>
+                  <ax21:earnings>13.984615762206381</ax21:earnings>
+                  <ax21:high>-74.49911433834815</ax21:high>
+                  <ax21:last>76.35703270079692</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>80.01863194178418</ax21:low>
+                  <ax21:marketCap>4.2751025419534355E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-75.76790692055194</ax21:open>
+                  <ax21:peRatio>23.872190289287936</ax21:peRatio>
+                  <ax21:percentageChange>5.1598313054979945</ax21:percentageChange>
+                  <ax21:prevClose>82.6173448133342</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>5567</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>19</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.109182193973012</ax21:change>
+                  <ax21:earnings>-8.710291255981815</ax21:earnings>
+                  <ax21:high>-83.81353358675409</ax21:high>
+                  <ax21:last>84.94980982512534</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-83.34513373951575</ax21:low>
+                  <ax21:marketCap>3.875502339373274E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-83.60080462762878</ax21:open>
+                  <ax21:peRatio>-18.6719182289222</ax21:peRatio>
+                  <ax21:percentageChange>-5.216562911639214</ax21:percentageChange>
+                  <ax21:prevClose>-78.77183240337408</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>15101</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>20</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.091859245799974</ax21:change>
+                  <ax21:earnings>-9.40250785901711</ax21:earnings>
+                  <ax21:high>63.8808274942226</ax21:high>
+                  <ax21:last>61.203129498696526</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-60.414894810343945</ax21:low>
+                  <ax21:marketCap>4.068207894626878E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>63.67913466840001</ax21:open>
+                  <ax21:peRatio>-19.756619854999105</ax21:peRatio>
+                  <ax21:percentageChange>-7.0748159095935845</ax21:percentageChange>
+                  <ax21:prevClose>-57.83697128078392</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>5770</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>21</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.760276950137653</ax21:change>
+                  <ax21:earnings>13.31075381717916</ax21:earnings>
+                  <ax21:high>-168.77140553080437</ax21:high>
+                  <ax21:last>171.5844760070956</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>177.93495123102736</ax21:low>
+                  <ax21:marketCap>5.189720187561489E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>178.3394095920209</ax21:open>
+                  <ax21:peRatio>24.55245170360353</ax21:peRatio>
+                  <ax21:percentageChange>-1.4384974100560146</ax21:percentageChange>
+                  <ax21:prevClose>191.8861258172282</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>19395</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>22</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.3330965485022417</ax21:change>
+                  <ax21:earnings>13.710153164050856</ax21:earnings>
+                  <ax21:high>-75.44903119028895</ax21:high>
+                  <ax21:last>77.08953362320898</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-76.86009029867353</ax21:low>
+                  <ax21:marketCap>9414087.01464437</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>80.71529890942402</ax21:open>
+                  <ax21:peRatio>-17.874863729063822</ax21:peRatio>
+                  <ax21:percentageChange>3.218801960676052</ax21:percentageChange>
+                  <ax21:prevClose>-72.48338285503642</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>16605</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>23</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.6254840127854004</ax21:change>
+                  <ax21:earnings>-8.748413200919977</ax21:earnings>
+                  <ax21:high>-81.3916914192613</ax21:high>
+                  <ax21:last>82.2812729279827</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-81.71156567741535</ax21:low>
+                  <ax21:marketCap>1.4870942617345594E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-81.5960791249572</ax21:open>
+                  <ax21:peRatio>24.380957569250814</ax21:peRatio>
+                  <ax21:percentageChange>-2.9000963212435846</ax21:percentageChange>
+                  <ax21:prevClose>90.53092456113913</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18441</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>24</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.760755178780091</ax21:change>
+                  <ax21:earnings>-9.577087385655737</ax21:earnings>
+                  <ax21:high>69.61466234926279</ax21:high>
+                  <ax21:last>66.64124308902058</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-65.21943846447452</ax21:low>
+                  <ax21:marketCap>4.110975305680816E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>68.56321222988241</ax21:open>
+                  <ax21:peRatio>25.002063395360757</ax21:peRatio>
+                  <ax21:percentageChange>-3.635658829731805</ax21:percentageChange>
+                  <ax21:prevClose>75.93548537071467</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>9426</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>25</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.3988280312791534</ax21:change>
+                  <ax21:earnings>-9.119029930914177</ax21:earnings>
+                  <ax21:high>-93.63309562591567</ax21:high>
+                  <ax21:last>95.82650101303743</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-94.25829790675895</ax21:low>
+                  <ax21:marketCap>4.75438956225929E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-94.18142215039106</ax21:open>
+                  <ax21:peRatio>23.689652874604256</ax21:peRatio>
+                  <ax21:percentageChange>4.0355992196579145</ax21:percentageChange>
+                  <ax21:prevClose>109.00061655904543</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18130</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>26</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.839984648464443</ax21:change>
+                  <ax21:earnings>13.766971462865902</ax21:earnings>
+                  <ax21:high>-157.47798472134556</ax21:high>
+                  <ax21:last>160.45255124082107</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-160.214197722357</ax21:low>
+                  <ax21:marketCap>1.219563721947898E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>166.27494549363934</ax21:open>
+                  <ax21:peRatio>25.522931291317274</ax21:peRatio>
+                  <ax21:percentageChange>-2.5497024640106027</ax21:percentageChange>
+                  <ax21:prevClose>-150.60520600604772</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>15359</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>27</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.9316755949803204</ax21:change>
+                  <ax21:earnings>-9.565096391380475</ax21:earnings>
+                  <ax21:high>-171.92463624783778</ax21:high>
+                  <ax21:last>174.3584564119501</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>179.27195918066766</ax21:low>
+                  <ax21:marketCap>1.3402046364956107E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>180.04574978882542</ax21:open>
+                  <ax21:peRatio>23.890666140250246</ax21:peRatio>
+                  <ax21:percentageChange>-2.360666949958467</ax21:percentageChange>
+                  <ax21:prevClose>-166.5493556831256</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>9115</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>28</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>4.227955931808889</ax21:change>
+                  <ax21:earnings>-9.860026625879396</ax21:earnings>
+                  <ax21:high>-96.40401055245987</ax21:high>
+                  <ax21:last>98.49681315505647</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-96.82371949342509</ax21:low>
+                  <ax21:marketCap>1.164933805745662E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-97.9086604135024</ax21:open>
+                  <ax21:peRatio>-19.242812380925994</ax21:peRatio>
+                  <ax21:percentageChange>-4.350577055031865</ax21:percentageChange>
+                  <ax21:prevClose>-97.18149749626542</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>9358</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>29</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>3.946988240189266</ax21:change>
+                  <ax21:earnings>-9.348742887572042</ax21:earnings>
+                  <ax21:high>100.86628966170251</ax21:high>
+                  <ax21:last>97.10497270758556</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>-95.41311508923177</ax21:low>
+                  <ax21:marketCap>1.0131506060315184E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>101.53801390985215</ax21:open>
+                  <ax21:peRatio>-18.000079208584797</ax21:peRatio>
+                  <ax21:percentageChange>-4.393795496488292</ax21:percentageChange>
+                  <ax21:prevClose>-89.83095010552645</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>17244</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>30</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.5973351898517745</ax21:change>
+                  <ax21:earnings>-9.284010260688419</ax21:earnings>
+                  <ax21:high>-77.3411815863283</ax21:high>
+                  <ax21:last>77.7003884419078</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>81.10035567294841</ax21:low>
+                  <ax21:marketCap>8675766.855497707</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-76.49448076724526</ax21:open>
+                  <ax21:peRatio>25.235734592704297</ax21:peRatio>
+                  <ax21:percentageChange>3.3983783642034813</ax21:percentageChange>
+                  <ax21:prevClose>-76.42866424794177</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18717</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+            <ax21:tradeHistory xsi:type="ax21:TradingDay">
+               <ax21:day>31</ax21:day>
+               <ax21:quote xsi:type="ax21:GetQuoteResponse">
+                  <ax21:change>-2.585958261324751</ax21:change>
+                  <ax21:earnings>12.566247188645205</ax21:earnings>
+                  <ax21:high>-149.02563149408095</ax21:high>
+                  <ax21:last>150.00067155644928</ax21:last>
+                  <ax21:lastTradeTimestamp>Thu Oct 24 11:23:10 IST 2013</ax21:lastTradeTimestamp>
+                  <ax21:low>157.26825483969694</ax21:low>
+                  <ax21:marketCap>5.827728250944565E7</ax21:marketCap>
+                  <ax21:name>IBM Company</ax21:name>
+                  <ax21:open>-147.22537775180035</ax21:open>
+                  <ax21:peRatio>-18.321216819258165</ax21:peRatio>
+                  <ax21:percentageChange>-1.5875119810058191</ax21:percentageChange>
+                  <ax21:prevClose>162.89377921332817</ax21:prevClose>
+                  <ax21:symbol>IBM</ax21:symbol>
+                  <ax21:volume>18801</ax21:volume>
+               </ax21:quote>
+            </ax21:tradeHistory>
+         </ns:return>
+      </ns:getFullQuoteResponse>
+      <description/>
+   </localEntry>
+      
+   <sequence name="processReq">
+      <header name="To" action="remove"/>
+      <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+      <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+      <enrich>
+         <source type="inline" clone="true" key="FullQuoteResponse"/>
+         <target type="body"/>
+      </enrich>
+      <property name="messageType"
+                value="application/xml"
+                scope="axis2"
+                type="STRING"/>
+      <send/>
+   </sequence>
+
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default 'fault' sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <in>
+         <log level="full"/>
+         <filter source="get-property('To')" regex="http://localhost:9000.*">
+            <send/>
+         </filter>
+      </in>
+      <out>
+         <send/>
+      </out>
+      <description>The main sequence for the message mediation</description>
+   </sequence>
+   
+   <api name="testpoc" context="/testpoc">
+      <resource methods="GET" inSequence="processReq"/>
+   </api>
+   
+</definitions>
