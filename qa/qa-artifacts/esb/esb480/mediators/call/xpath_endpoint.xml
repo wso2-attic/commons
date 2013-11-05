@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
+      <parameter name="cachableDuration">15000</parameter>
+   </registry>
+   <proxy name="StockQuoteProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <call>
+               <endpoint key-expression="fn:concat('/testEP','/StockEP')"/>
+            </call>
+            <log>
+               <property name="In Call Mediator"
+                         value="Call Mediator!!!!!!!!!!!!After Call1!!!!!!!!!!!!!!!!"/>
+            </log>
+            <header name="Action" value="urn:getQuote"/>
+            <payloadFactory media-type="xml">
+               <format>
+                  <m0:getQuote xmlns:m0="http://services.samples">
+                     <m0:request>
+                        <m0:symbol>WSO2</m0:symbol>
+                     </m0:request>
+                  </m0:getQuote>
+               </format>
+               <args/>
+            </payloadFactory>
+            <call>
+               <endpoint key="StockQuoteService"/>
+            </call>
+            <log>
+               <property name="In Call Mediator"
+                         value="Call Mediator2!!!!!!!!!!!!Before Respond!!!!!!!!!!!!!!!!"/>
+            </log>
+            <respond/>
+            <log>
+               <property name="In Call Mediator"
+                         value="Call Mediator!!!!!!!!!!!!After Respond!!!!!!!!!!!!!!!!"/>
+            </log>
+            <call/>
+         </inSequence>
+      </target>
+   </proxy>
+   <localEntry key="/testEP/StockEP">
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService">
+            <suspendOnFailure>
+               <progressionFactor>1.0</progressionFactor>
+            </suspendOnFailure>
+            <markForSuspension>
+               <retriesBeforeSuspension>0</retriesBeforeSuspension>
+               <retryDelay>0</retryDelay>
+            </markForSuspension>
+         </address>
+      </endpoint>
+      <description/>
+   </localEntry>
+   <endpoint name="StockQuoteService">
+      <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+   </endpoint>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <log/>
+      <drop/>
+   </sequence>
+</definitions>
