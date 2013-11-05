@@ -60,3 +60,11 @@ ant stockquote -Dtrpurl=http://localhost:8280/services/StockQuoteProxy
       </ser:placeOrder>
    </soapenv:Body>
 </soapenv:Envelope>
+
+
+7) To Test Call Mediator with MTOM,
+
+1. Build MTOMSwASampleService in samples.
+2. Start axis2server.
+3. Use a tcpmon to view the messages which listens to 9001 and targets to 9000.
+4. Go to the axis2client and run "ant optimizeclient -Dopt_mode=mtom"

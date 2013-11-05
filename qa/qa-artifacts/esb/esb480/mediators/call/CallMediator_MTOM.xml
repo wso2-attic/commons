@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <in>
+         <filter source="get-property('Action')" regex="urn:uploadFileUsingMTOM">
+            <property name="example" value="mtom"/>
+            <property name="enableMTOM" value="true" scope="axis2"/>
+            <call>
+               <endpoint>
+                  <address uri="http://localhost:9001/services/MTOMSwASampleService"
+                           optimize="mtom"/>
+               </endpoint>
+            </call>
+         </filter>
+      </in>
+      <out>
+         <send/>
+      </out>
+   </sequence>
+</definitions>
