@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="proxy2"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <switch xmlns:ns="http://services.samples/xsd"
+                 xmlns:m0="http://services.samples"
+                 source="//m0:getQuote/m0:request/ns:symbol">
+            <case regex="WSO2">
+               <property name="symbol" value="Great stock - WSO2"/>
+               <send>
+                  <endpoint>
+                     <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                  </endpoint>
+               </send>
+            </case>
+            <case regex="CRF">
+               <loopback/>
+               <property name="symbol" value="Are you sure? - CRF"/>
+               <send>
+                  <endpoint>
+                     <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                  </endpoint>
+               </send>
+            </case>
+            <default>
+               <property name="symbol"
+                         expression="fn:concat('Normal Stock - ', //m0:getQuote/m0:request/m0:symbol)"/>
+            </default>
+         </switch>
+      </inSequence>
+      <outSequence>
+         <send/>
+         <log>
+            <property name="value1111" value="==============================="/>
+         </log>
+      </outSequence>
+   </target>
+   <description/>
+</proxy>
+                                
