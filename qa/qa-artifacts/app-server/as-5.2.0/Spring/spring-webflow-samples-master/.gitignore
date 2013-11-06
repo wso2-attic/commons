@@ -1,0 +1,19 @@
+*.java.hsp
+*.sonarj
+*.sw*
+.DS_Store
+
+target
+bin
+
+# Eclipse metadata
+.classpath
+.project
+.settings
+.springBeans
+
+# IDEA metadata and output dirs
+.idea
+*.iml
+*.ipr
+*.iws

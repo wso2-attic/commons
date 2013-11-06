@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example.CXFHelloWorld</groupId>
+  <artifactId>CXFHelloWorld</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+  <name>CXFHelloWorld</name>
+  <description>CXFHelloWorld</description>
+  
+  <properties>
+    <CApp.type>webapp/jaxws</CApp.type>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+	<build.timestamp>${maven.build.timestamp}</build.timestamp>
+	<repository.central.url>http://53.113.75.137:8082/nexus-2.1.1</repository.central.url>
+  </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
+          <!-- packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes-->
+          <warName>${project.artifactId}</warName>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <repositories>
+    <repository>
+      <id>daivb</id>
+      <name>DaiVB Project Repo</name>
+      <url>${repository.central.url}/content/groups/daivb_gen2/</url>
+      <layout>default</layout>
+	  <releases><enabled>true</enabled></releases>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+	<pluginRepository>
+	  <id>daivb</id>
+	  <url>${repository.central.url}/content/groups/daivb_gen2/</url>
+	  <releases><enabled>true</enabled>
+	  <!-- <updatePolicy>never</updatePolicy> -->
+	  </releases>
+	  <snapshots><enabled>false</enabled>
+	  <!-- <updatePolicy>weekly</updatePolicy> -->
+	  </snapshots>
+	</pluginRepository>
+  </pluginRepositories>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.cxf</groupId>
+  		<artifactId>apache-cxf</artifactId>
+  		<version>2.4.2</version>
+  		<type>pom</type>
+  	</dependency>
+  </dependencies>
+</project>
