@@ -33,27 +33,3 @@ Note: If you remove, loopbackmediator from the configuration response should be 
    </soapenv:Body>
 </soapenv:Envelope>
 
---------------------------------------------------------------------------------------------------------------------------------------------------------
-
-1. Deploy "stockquote" service
-2. create a proxy service as per configuration2.xml
-3. Request: 
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://services.samples" xmlns:xsd="http://services.samples/xsd">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <ser:getQuote>
-         <!--Optional:-->
-         <ser:request>
-            <!--Optional:-->
-            <xsd:symbol>CRF</xsd:symbol>
-         </ser:request>
-      </ser:getQuote>
-   </soapenv:Body>
-</soapenv:Envelope>
-
-Response: 
-Break the flow just after the request and returns the response similar to request. then call the out sequence and print the log. Verify logs:
-"value1111 = ==============================="
-
-
-
