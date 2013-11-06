@@ -1,0 +1,4 @@
+<Classloading xmlns="http://wso2.org/projects/as/classloading">
+<Environments>CXF</Environments>
+</Classloading>
+
