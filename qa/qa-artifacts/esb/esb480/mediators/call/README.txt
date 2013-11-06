@@ -68,3 +68,46 @@ ant stockquote -Dtrpurl=http://localhost:8280/services/StockQuoteProxy
 2. Start axis2server.
 3. Use a tcpmon to view the messages which listens to 9001 and targets to 9000.
 4. Go to the axis2client and run "ant optimizeclient -Dopt_mode=mtom"
+
+8) To test Fault Sequence,
+
+1. Up tcpmon which listens to 8281 and target 8280.
+2.  ant stockquote -Daddurl=http://localhost:9001/services/SimpleStockQuoteService -Dtrpurl=http://localhost:8281/ -Dsymbol=MSFT this will be a successfull request.
+3. ant stockquote -Daddurl=http://localhost:9001/services/SimpleStockQuoteService -Dtrpurl=http://localhost:8281/ -Dsymbol=SUN This will reproduces a soap fault.      
+
+    <soapenv:Body>
+         <soapenv:Fault>
+            <faultcode xmlns:tns="http://www.w3.org/2003/05/soap-envelope">tns:Receiver</faultcode>
+            <faultstring>Connection refused or failed for : bogus:9009, IO Exception occured : bogus</faultstring>
+         </soapenv:Fault>
+      </soapenv:Body>
+   </soapenv:Envelope>0
+
+9) To test Soap client rest service, (In this client sends a SOAP message to the ESB, which transforms it to a REST message and sends it to the back-end service)
+1. Download, install, and start the WSO2 Application Server. The application server ships with JAX-RS, which contains a set of pure RESTful services, so we will use this as our back-end service.
+2. Send a message to the back-end service through the ESB using SoapUI. The service used in this scenario is the getCustomer service, which requires the customer ID to complete its task. A sample SOAP message that is used to achieve this is as follows:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+     <getCustomer>
+        <id>123</id>
+     </getCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+3. This message simply represents the relevant method to be invoked and its associated value. Upon successful execution, SoapUI should display the following message in response.
+<Customer>
+   <id>123</id>
+   <name>John</name>
+</Customer>
+
+10) To Test Rest Client and Reat Service (In This ESB simply changes the message type of the client into XML and then passes it to the REST service. Once the ESB has received the XML message, it transforms it back into a JSON message and sends it to the client. )
+
+1. Download, install, and start the WSO2 Application Server. The application server ships with JAX-RS, which contains a set of pure RESTful services, so we will use this as our back-end service.
+2. Send curl -v -i -H "Accept: application/json" http://localhost:8280/services/CustomerServiceProxy/customers/123
+3. It will sends a reply as, 
+{"Customer":{"id":123,"name":"John"}}
+
+
+
