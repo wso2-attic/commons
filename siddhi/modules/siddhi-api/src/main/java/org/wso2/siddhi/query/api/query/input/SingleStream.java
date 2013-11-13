@@ -1,5 +1,5 @@
 /*
-*  Copyright (c) 2005-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*  Copyright (c) 2005-2012, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 *
 *  WSO2 Inc. licenses this file to you under the Apache License,
 *  Version 2.0 (the "License"); you may not use this file except
@@ -17,87 +17,19 @@
 */
 package org.wso2.siddhi.query.api.query.input;
 
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.condition.Condition;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.query.api.query.input.handler.Handler;
-import org.wso2.siddhi.query.api.query.input.pattern.element.PatternElement;
-import org.wso2.siddhi.query.api.query.input.sequence.element.SequenceElement;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+import org.wso2.siddhi.query.api.query.input.handler.Filter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+public interface SingleStream extends Stream {
 
-public class SingleStream implements Stream, SequenceElement, PatternElement {
+    public String getStreamId();
 
-    protected String streamId;
-    protected StreamDefinition streamDefinition;
-    protected String streamReferenceId;
-    protected List<Handler> handlerList = new ArrayList<Handler>();
-    protected boolean isCounterStream = false;
+    public String getStreamReferenceId();
 
-    protected SingleStream(String streamId) {
-        this(streamId, streamId);
-    }
+    public SingleStream setStreamReferenceId(String streamReferenceId);
 
-    public SingleStream(String streamReferenceId, String streamId) {
-        this.streamId = streamId;
-        this.streamReferenceId = streamReferenceId;
-    }
+    public Filter getFilter();
 
-    public SingleStream handler(Handler.Type type, String name, Object... parameters) {
-        handlerList.add(new Handler(name, type, parameters));
-        return this;
-    }
-
-    public SingleStream addHandler(Handler handler) {
-        handlerList.add(handler);
-        return this;
-    }
-
-    public String getStreamId() {
-        return streamId;
-    }
-
-    public String getStreamReferenceId() {
-        return streamReferenceId;
-    }
-
-    public SingleStream setStreamReferenceId(String streamReferenceId) {
-        this.streamReferenceId = streamReferenceId;
-        return this;
-    }
-
-    public List<Handler> getHandlerList() {
-        return handlerList;
-    }
-
-    public SingleStream handler(Condition filterCondition) {
-        handlerList.add(new Handler(null, Handler.Type.FILTER, new Object[]{filterCondition}));
-        return this;
-    }
-
-    @Override
-    public List<String> getStreamIds() {
-        List<String> list = new ArrayList<String>();
-        list.add(streamId);
-        return list;
-    }
-
-    public void setCounterStream(boolean counterStream) {
-        isCounterStream = counterStream;
-    }
-
-    @Override
-    public List<QueryEventStream> constructQueryEventStreamList(
-            Map<String, StreamDefinition> streamDefinitionMap,
-            List<QueryEventStream> queryEventStreams) {
-        streamDefinition = streamDefinitionMap.get(streamId);
-        QueryEventStream queryEventStream = new QueryEventStream(streamId, streamReferenceId, streamDefinition);
-        queryEventStream.setCounterStream(isCounterStream);
-        queryEventStreams.add(queryEventStream);
-        return queryEventStreams;
-    }
-
+    public QueryEventSource getQueryEventSource();
 
 }

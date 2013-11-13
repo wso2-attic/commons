@@ -17,7 +17,12 @@
 */
 package org.wso2.siddhi.query.api.expression;
 
-public class Add extends Expression{
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.List;
+import java.util.Set;
+
+public class Add extends Expression {
     private Expression leftValue;
     private Expression rightValue;
 
@@ -34,4 +39,52 @@ public class Add extends Expression{
         return rightValue;
     }
 
+    @Override
+    protected void validate(List<QueryEventSource> queryEventSources, String streamReferenceId,
+                            boolean processInStreamDefinition) {
+        leftValue.validate(queryEventSources, streamReferenceId, processInStreamDefinition);
+        rightValue.validate(queryEventSources, streamReferenceId, processInStreamDefinition);
+    }
+
+    @Override
+    public String toString() {
+        return "Add{" +
+               "leftValue=" + leftValue +
+               ", rightValue=" + rightValue +
+               '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Add add = (Add) o;
+
+        if (leftValue != null ? !leftValue.equals(add.leftValue) : add.leftValue != null) {
+            return false;
+        }
+        if (rightValue != null ? !rightValue.equals(add.rightValue) : add.rightValue != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = leftValue != null ? leftValue.hashCode() : 0;
+        result = 31 * result + (rightValue != null ? rightValue.hashCode() : 0);
+        return result;
+    }
+
+    protected Set<String> getDependencySet() {
+        Set<String> dependencySet = leftValue.getDependencySet();
+        dependencySet.addAll(rightValue.getDependencySet());
+        return dependencySet;
+    }
 }

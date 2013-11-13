@@ -18,13 +18,13 @@
 package org.wso2.siddhi.query.api.query.input;
 
 import org.wso2.siddhi.query.api.condition.Condition;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class JoinStream implements Stream {
 
@@ -90,11 +90,11 @@ public class JoinStream implements Stream {
     }
 
     @Override
-    public List<QueryEventStream> constructQueryEventStreamList(
-            Map<String, StreamDefinition> streamDefinitionMap,
-            List<QueryEventStream> queryEventStreams) {
-        List<QueryEventStream> queryEventStreamList = leftStream.constructQueryEventStreamList(streamDefinitionMap, queryEventStreams);
-        return rightStream.constructQueryEventStreamList(streamDefinitionMap, queryEventStreamList);
+    public List<QueryEventSource> constructQueryEventSourceList(
+            ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+            List<QueryEventSource> queryEventSources) {
+        List<QueryEventSource> queryEventSourceList = leftStream.constructQueryEventSourceList(streamTableDefinitionMap, queryEventSources);
+        return rightStream.constructQueryEventSourceList(streamTableDefinitionMap, queryEventSourceList);
     }
 
 

@@ -21,13 +21,15 @@ import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.util.Set;
+
 public class MinusExpressionExecutorFloat implements ExpressionExecutor {
     private ExpressionExecutor leftExpressionExecutor;
     private ExpressionExecutor rightExpressionExecutor;
 
 
     public MinusExpressionExecutorFloat(ExpressionExecutor leftExpressionExecutor,
-                                      ExpressionExecutor rightExpressionExecutor) {
+                                        ExpressionExecutor rightExpressionExecutor) {
         this.leftExpressionExecutor = leftExpressionExecutor;
         this.rightExpressionExecutor = rightExpressionExecutor;
     }
@@ -38,9 +40,8 @@ public class MinusExpressionExecutorFloat implements ExpressionExecutor {
 
     }
 
-    public Attribute.Type getType() {
+    public Attribute.Type getReturnType() {
         return Attribute.Type.FLOAT;
     }
-
 
 }

@@ -30,7 +30,7 @@ public class LessThanCompareConditionExecutorLongLong extends
 
     @Override
     protected boolean process(Object left, Object right) {
-        return (Long) left >= (Long) right;
+        return (Long) left < (Long) right;
 
     }
 

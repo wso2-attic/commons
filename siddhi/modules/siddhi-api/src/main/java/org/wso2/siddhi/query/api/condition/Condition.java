@@ -17,13 +17,24 @@
 */
 package org.wso2.siddhi.query.api.condition;
 
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 public abstract class Condition {
 
     public static Condition compare(Expression leftExpression, Operator operator,
                                     Expression rightExpression) {
         return new Compare(leftExpression, operator, rightExpression);
+    }
+
+    public static Condition in(Condition leftCondition, String streamId) {
+        return new InCondition(leftCondition, streamId);
     }
 
     public static Condition and(Condition leftCondition, Condition rightCondition) {
@@ -42,7 +53,22 @@ public abstract class Condition {
         return new BooleanCondition(expression);
     }
 
+    public static Condition extension(String extensionNamespace, String extensionFunctionName, Expression... expressions) {
+        return new ConditionExtension(extensionNamespace, extensionFunctionName, expressions);
+    }
+
+    public static Condition function(String extensionFunctionName, Expression... expressions) {
+        return new FunctionCondition(extensionFunctionName, expressions);
+    }
+
     public enum Operator {
-        LESS_THAN, GREATER_THAN, LESS_THAN_EQUAL, GREATER_THAN_EQUAL, EQUAL, NOT_EQUAL
+        LESS_THAN, GREATER_THAN, LESS_THAN_EQUAL, GREATER_THAN_EQUAL, EQUAL, NOT_EQUAL, CONTAINS, INSTANCE_OF
+    }
+
+    protected abstract void validate(List<QueryEventSource> queryEventSourceList,
+                                     ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap, String streamReferenceId, boolean processInStreamDefinition);
+
+    protected Set<String> getDependencySet() {
+        return new HashSet<String>();
     }
 }

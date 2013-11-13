@@ -17,6 +17,13 @@
 */
 package org.wso2.siddhi.query.api.condition;
 
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+
 public class NotCondition extends Condition {
 
     Condition condition;
@@ -27,5 +34,46 @@ public class NotCondition extends Condition {
 
     public Condition getCondition() {
         return condition;
+    }
+
+    @Override
+    protected void validate(List<QueryEventSource> queryEventSourceList, ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap, String streamReferenceId,
+                            boolean processInStreamDefinition) {
+        condition.validate(queryEventSourceList, streamTableDefinitionMap, streamReferenceId, processInStreamDefinition);
+    }
+
+    @Override
+    public String toString() {
+        return "NotCondition{" +
+               "condition='" + condition + '\'' +
+               '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        NotCondition that = (NotCondition) o;
+
+        if (condition != null ? !condition.equals(that.condition) : that.condition != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return condition != null ? condition.hashCode() : 0;
+    }
+
+
+    public Set<String> getDependencySet() {
+        return condition.getDependencySet();
     }
 }

@@ -18,6 +18,9 @@
 package org.wso2.siddhi.core.executor.conditon;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
+import org.wso2.siddhi.core.table.predicate.PredicateBuilder;
+import org.wso2.siddhi.core.table.predicate.PredicateTreeNode;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
 
 public class OrConditionExecutor implements ConditionExecutor {
 
@@ -33,4 +36,31 @@ public class OrConditionExecutor implements ConditionExecutor {
     public boolean execute(AtomicEvent event) {
         return leftConditionExecutor.execute(event) || rightConditionExecutor.execute(event);
     }
+
+    @Override
+    public String constructFilterQuery(AtomicEvent newEvent, int level) {
+        return constructQuery(newEvent, level, null, null);
+    }
+
+    @Override
+    public PredicateTreeNode constructPredicate(AtomicEvent newEvent, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+        PredicateTreeNode left = leftConditionExecutor.constructPredicate(newEvent, tableDefinition, predicateBuilder);
+        PredicateTreeNode right = rightConditionExecutor.constructPredicate(newEvent, tableDefinition, predicateBuilder);
+        return predicateBuilder.buildBinaryCondition(left, right, PredicateBuilder.BinaryOperator.OR);
+    }
+
+    public String constructQuery(AtomicEvent newEvent, int level, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+        String left, right;
+        left = leftConditionExecutor.constructFilterQuery(newEvent, 1);
+        right = rightConditionExecutor.constructFilterQuery(newEvent, 1);
+
+        if (left.equals("*") && right.equals("*")) {
+            return "*";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("(").append(left).append(") or (").append(right).append(")");
+            return sb.toString();
+        }
+    }
+
 }

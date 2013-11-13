@@ -17,11 +17,11 @@
 */
 package org.wso2.siddhi.query.api.query.input.pattern;
 
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
 import org.wso2.siddhi.query.api.query.input.Stream;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import org.wso2.siddhi.query.api.query.input.pattern.element.CountElement;
 import org.wso2.siddhi.query.api.query.input.pattern.element.FollowedByElement;
 import org.wso2.siddhi.query.api.query.input.pattern.element.LogicalElement;
@@ -30,7 +30,7 @@ import org.wso2.siddhi.query.api.query.input.pattern.element.PatternElement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class PatternStream implements Stream, PatternElement {
 
@@ -41,7 +41,7 @@ public class PatternStream implements Stream, PatternElement {
     public PatternStream(PatternElement patternElement, Constant within) {
         this.patternElement = patternElement;
         this.streamIdList = new ArrayList<String>(collectStreamIds(patternElement, new HashSet<String>()));
-        this.within= within;
+        this.within = within;
     }
 
     @Override
@@ -50,10 +50,10 @@ public class PatternStream implements Stream, PatternElement {
     }
 
     @Override
-    public List<QueryEventStream> constructQueryEventStreamList(
-            Map<String, StreamDefinition> streamDefinitionMap,
-            List<QueryEventStream> queryEventStreams) {
-        return constructEventStreamList(patternElement, streamDefinitionMap, queryEventStreams);
+    public List<QueryEventSource> constructQueryEventSourceList(
+            ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+            List<QueryEventSource> queryEventSources) {
+        return constructEventStreamList(patternElement, streamTableDefinitionMap, queryEventSources);
     }
 
     public Constant getWithin() {
@@ -68,13 +68,13 @@ public class PatternStream implements Stream, PatternElement {
                                              HashSet<String> streamIds) {
         if (patternElement instanceof PatternStream) {
             streamIds.addAll(((PatternStream) patternElement).getStreamIds());
-        } else if (patternElement instanceof SingleStream) {
-            streamIds.addAll(((SingleStream) patternElement).getStreamIds());
+        } else if (patternElement instanceof BasicStream) {
+            streamIds.addAll(((BasicStream) patternElement).getStreamIds());
         } else if (patternElement instanceof LogicalElement) {
-            collectStreamIds(((LogicalElement) patternElement).getSingleStream1(), streamIds);
-            collectStreamIds(((LogicalElement) patternElement).getSingleStream2(), streamIds);
+            collectStreamIds(((LogicalElement) patternElement).getTransformedStream1(), streamIds);
+            collectStreamIds(((LogicalElement) patternElement).getTransformedStream2(), streamIds);
         } else if (patternElement instanceof CountElement) {
-            collectStreamIds(((CountElement) patternElement).getSingleStream(), streamIds);
+            collectStreamIds(((CountElement) patternElement).getTransformedStream(), streamIds);
         } else if (patternElement instanceof FollowedByElement) {
             collectStreamIds(((FollowedByElement) patternElement).getPatternElement(), streamIds);
             collectStreamIds(((FollowedByElement) patternElement).getFollowedByPatternElement(), streamIds);
@@ -82,25 +82,25 @@ public class PatternStream implements Stream, PatternElement {
         return streamIds;
     }
 
-    public List<QueryEventStream> constructEventStreamList(PatternElement patternElement,
-                                                           Map<String, StreamDefinition> streamDefinitionMap,
-                                                           List<QueryEventStream> queryEventStreams) {
+    public List<QueryEventSource> constructEventStreamList(PatternElement patternElement,
+                                                           ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+                                                           List<QueryEventSource> queryEventSources) {
 
 
-        if (patternElement instanceof SingleStream) {
-            ((SingleStream) patternElement).constructQueryEventStreamList(streamDefinitionMap, queryEventStreams);
+        if (patternElement instanceof BasicStream) {
+            ((BasicStream) patternElement).constructQueryEventSourceList(streamTableDefinitionMap, queryEventSources);
         } else if (patternElement instanceof LogicalElement) {
-            constructEventStreamList(((LogicalElement) patternElement).getSingleStream1(), streamDefinitionMap, queryEventStreams);
-            constructEventStreamList(((LogicalElement) patternElement).getSingleStream2(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((LogicalElement) patternElement).getTransformedStream1(), streamTableDefinitionMap, queryEventSources);
+            constructEventStreamList(((LogicalElement) patternElement).getTransformedStream2(), streamTableDefinitionMap, queryEventSources);
         } else if (patternElement instanceof CountElement) {
-            constructEventStreamList(((CountElement) patternElement).getSingleStream(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((CountElement) patternElement).getTransformedStream(), streamTableDefinitionMap, queryEventSources);
         } else if (patternElement instanceof FollowedByElement) {
-            constructEventStreamList(((FollowedByElement) patternElement).getPatternElement(), streamDefinitionMap, queryEventStreams);
-            constructEventStreamList(((FollowedByElement) patternElement).getFollowedByPatternElement(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((FollowedByElement) patternElement).getPatternElement(), streamTableDefinitionMap, queryEventSources);
+            constructEventStreamList(((FollowedByElement) patternElement).getFollowedByPatternElement(), streamTableDefinitionMap, queryEventSources);
         } else if (patternElement instanceof PatternStream) {
-            ((PatternStream) patternElement).constructQueryEventStreamList(streamDefinitionMap, queryEventStreams);
+            ((PatternStream) patternElement).constructQueryEventSourceList(streamTableDefinitionMap, queryEventSources);
         }
 
-        return queryEventStreams;
+        return queryEventSources;
     }
 }

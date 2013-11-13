@@ -17,6 +17,13 @@
 */
 package org.wso2.siddhi.query.api.condition;
 
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+
 public class OrCondition extends Condition {
 
     Condition leftCondition;
@@ -33,5 +40,55 @@ public class OrCondition extends Condition {
 
     public Condition getRightCondition() {
         return rightCondition;
+    }
+
+    @Override
+    protected void validate(List<QueryEventSource> queryEventSourceList, ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap, String streamReferenceId,
+                            boolean processInStreamDefinition) {
+        leftCondition.validate(queryEventSourceList, streamTableDefinitionMap, streamReferenceId, processInStreamDefinition);
+        rightCondition.validate(queryEventSourceList, streamTableDefinitionMap, streamReferenceId, processInStreamDefinition);
+    }
+
+    @Override
+    public String toString() {
+        return "OrCondition{" +
+               "leftCondition='" + leftCondition + '\'' +
+               ", rightCondition=" + rightCondition +
+               '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OrCondition that = (OrCondition) o;
+
+        if (leftCondition != null ? !leftCondition.equals(that.leftCondition) : that.leftCondition != null) {
+            return false;
+        }
+        if (rightCondition != null ? !rightCondition.equals(that.rightCondition) : that.rightCondition != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = leftCondition != null ? leftCondition.hashCode() : 0;
+        result = 31 * result + (rightCondition != null ? rightCondition.hashCode() : 0);
+        return result;
+    }
+
+
+    public Set<String> getDependencySet() {
+        Set<String> dependencySet = leftCondition.getDependencySet();
+        dependencySet.addAll(rightCondition.getDependencySet());
+        return dependencySet;
     }
 }

@@ -17,9 +17,8 @@
 */
 package org.wso2.siddhi.core.event.management;
 
-import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.query.stream.StreamElement;
+public interface ManagementEvent  {
 
-public interface ManagementEvent extends AtomicEvent ,StreamElement{
+    public long getTimeStamp();
 
 }

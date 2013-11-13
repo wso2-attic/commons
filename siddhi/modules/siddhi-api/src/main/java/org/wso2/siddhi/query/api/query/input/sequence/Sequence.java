@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.query.api.query.input.sequence;
 
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.TransformedStream;
 import org.wso2.siddhi.query.api.query.input.sequence.element.NextElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.OrElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.RegexElement;
@@ -27,12 +27,12 @@ import org.wso2.siddhi.query.api.utils.SiddhiConstants;
 public class Sequence {
 
 
-    public static SequenceElement or(SingleStream singleStream1,
-                                     SingleStream singleStream2) {
-        return new OrElement(singleStream1, singleStream2);
+    public static SequenceElement or(TransformedStream transformedStream1,
+                                     TransformedStream transformedStream2) {
+        return new OrElement(transformedStream1, transformedStream2);
     }
 
-//    public static SequenceElement count(SingleStream singleStream, int min, int max) {
+//    public static SequenceElement count(BasicStream singleStream, int min, int max) {
 //        singleStream.setCounterStream(true);
 //        return new RegexElement(singleStream, min, max);
 //    }
@@ -42,17 +42,17 @@ public class Sequence {
         return new NextElement(sequenceElement, nextSequenceElement);
     }
 
-    public static SequenceElement zeroOrMany(SingleStream singleStream) {
-        return new RegexElement(singleStream, 0, SiddhiConstants.UNLIMITED);
+    public static SequenceElement zeroOrMany(TransformedStream  transformedStream) {
+        return new RegexElement(transformedStream, 0, SiddhiConstants.UNLIMITED);
     }
 
-    public static SequenceElement zeroOrOne(SingleStream singleStream) {
-        return new RegexElement(singleStream, 0, 1);
+    public static SequenceElement zeroOrOne(TransformedStream transformedStream) {
+        return new RegexElement(transformedStream, 0, 1);
 
     }
 
-    public static SequenceElement oneOrMany(SingleStream singleStream) {
-        return new RegexElement(singleStream, 1, SiddhiConstants.UNLIMITED);
+    public static SequenceElement oneOrMany(TransformedStream transformedStream) {
+        return new RegexElement(transformedStream, 1, SiddhiConstants.UNLIMITED);
 
     }
 }

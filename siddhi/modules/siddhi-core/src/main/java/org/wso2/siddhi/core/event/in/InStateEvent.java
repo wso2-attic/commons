@@ -30,12 +30,16 @@ public class InStateEvent extends StateEvent implements InStream {
         super(inEventstream);
     }
 
-    private InStateEvent(StreamEvent[] inEventstream, int eventState) {
-        super(eventState,inEventstream);
+    public InStateEvent(StreamEvent[] inEventstream,String eventId) {
+        super(inEventstream, eventId);
+    }
+
+    private InStateEvent(StreamEvent[] inEventstream, int eventState, String eventId) {
+        super(eventState,inEventstream,eventId);
     }
 
     @Override
-    protected StateEvent createCloneEvent(StreamEvent[] inEventstream, int eventState) {
-        return new InStateEvent(inEventstream,eventState);
+    protected StateEvent createCloneEvent(StreamEvent[] inEventstream, int eventState,String eventId) {
+        return new InStateEvent(inEventstream,eventState,eventId);
     }
 }

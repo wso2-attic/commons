@@ -18,7 +18,7 @@
 package org.wso2.siddhi.query.api;
 
 import org.junit.Test;
-import org.wso2.siddhi.query.api.exception.AttributeAlreadyExist;
+import org.wso2.siddhi.query.api.exception.AttributeAlreadyExistException;
 import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
 
@@ -33,7 +33,7 @@ public class DefineStreamTestCase {
 
     }
 
-    @Test(expected = AttributeAlreadyExist.class)
+    @Test(expected = AttributeAlreadyExistException.class)
     public void testCreatingStreamWithDuplicateAttribute() {
         StreamDefinition streamDefinition = QueryFactory.createStreamDefinition();
         streamDefinition.name("cseEventStream").attribute("symbol", Attribute.Type.STRING).attribute("symbol", Attribute.Type.INT).attribute("volume", Attribute.Type.FLOAT);

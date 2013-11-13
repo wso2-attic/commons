@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.core.exception;
 
-public class CannotLoadClassException extends RuntimeException {
+public class CannotLoadClassException extends Exception {
     public CannotLoadClassException() {
         super();
     }

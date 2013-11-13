@@ -5,72 +5,94 @@
 
 Features Supported
 
-   * Filter
+  
 
-      ** Uses stream handlers to filter events
+	* Filter
 
-   * Join
+		** Uses stream handlers to filter events
 
-      ** Supports only upto two streams at a time
+		** Supports Custom filters via the pluggable architecture
 
-      ** Match operation triggering can be configured (making "left" or "right" or both streams to trigger)
+	* Join
 
-   * Aggregation
+		** Joins two streams at a time
 
-      ** By default shipped with Avg, Sum , Min, Max
+		** Joining operation triggering can be configured (making "left" and/or "right" stream to start the join process on event arrival and expiry)
 
-      ** Supports Custom Aggregations via the plugable architecture
+	* Aggregation
 
-   * Group by
+		** By default shipped with Avg, Sum , Min, Max, Count
 
-      ** Supports Group by based on more than one attribute
+		** Supports Custom Aggregations via the pluggable architecture
 
-      ** Supported for all type if queries
+	* Group by
 
-   * Having
+		** Group results based on one or more attributes
 
-      ** Supported for all type if queries
+		** Supported for all type of queries
 
-   * Stream handlers
+	* Having
 
-      ** Supports multiple handlers in a row per stream
+		** Supported for all type of queries
 
-      ** By default shipped with  Filter and Window
+	* Window
 
-      ** Default implementations to windows are: Time window, Time Batch window, Length window
+		** Default implementations to windows are: Time window, Time Batch window, Length window
 
-      ** Supports Custom Stream handlers via the plugable architecture
+		** Supports Custom windows via the pluggable architecture
 
-   * Conditions and Expressions
+	* Conditions and Expressions
 
-      ** Implemented from scratch
+		** Conditions supported are: and, or, not, true/false, ==, !=, >, >=, <, <=
 
-      ** Mvel2 support removed
+		** Expressions supported are: boolean, string, int, long, float, double
 
-      ** Conditions supported are: and, or, not, true/false, \=\=, !\=, \>, \>\=, \<, \<\=
+		** special "within" Condition can be used with join, pattern and sequence
 
-      ** Expressions supported are: boolean, string, int, long, float, double
+	* Pattern processing
 
-   * Pattern processing
+		** Identifies pattern occurrences within streams
 
-      ** Identifies pattern occurrences within streams
+		** Supports "every" condition
 
-      ** Supports "every" conditions
+		** Can process two stream at a time via "and" and "or" conditions (currently only works on two simple streams)
 
-      ** Can process two stream at a time via "and" and "or" conditions (currently only works on two simple streams)
+		** Can collect events with min and max limit, using "collect" condition (currently only works on a simple stream)
 
-      ** Can collect events, with min and max limit, using "collect" condition (currently only works on a simple stream)
+	* Sequence processing
 
-   * Sequence processing
+		** Identifies continuous event sequences within streams
 
-      ** Identifies continuous sequences with in streams
+		** Supports "or" conditions on streams (currently only works on two simple streams)
 
-      ** Supports "or" conditions on streams (currently only works on two simple streams)
+		** Supports zero to many, one to many, and zero to one (currently only works on a simple stream)
 
-      ** Supports zero to many, one to many, and zero to one  (currently only works on a simple stream)
+	* Query Language
 
-   * Query Language
+		** Supports Queries and Stream Definitions
 
-      ** Implemented on Antlr
+		** Implemented using Antlr
 
-      ** Supports Query, Stream Definition and Query Plan compilation
+		** Supports runtime query compilation
+
+	* Snapshot State Persistence
+
+		** Supports periodic snapshots that can store all state information and windows to a persistence store
+
+		** Different persistence stores (e.g. Cassandra) can be plugged to store Snapshots
+
+	* Distributed Caching
+
+		** Uses Hazelcast in-memory distributed cache for storing events and states in the distributed mode
+
+        ** Provides single Siddhi node and multiple Siddhi node modes
+
+	* Sync and Async mode of processing
+
+		** Synchronous mode provides very low latency since its its single thread
+
+		** Asynchronous uses a pub sub approach
+
+	* Runtime Query update
+
+		** Supports query addition and removal at runtime

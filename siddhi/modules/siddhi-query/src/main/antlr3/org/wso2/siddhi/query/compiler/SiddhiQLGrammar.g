@@ -5,22 +5,30 @@ options {
   backtrack=true;
   output    = AST;
   ASTLabelType=CommonTree;
+
 }
 
 tokens {
   COLLECT;
   REGEX;
   HANDLERS;
-  CONDITION; 
+  CONDITION;
+  CONDITION_FUNCTION;
+  EXTENSION_FUNCTION;
+  INSERT_INTO_STREAM;
+  DELETE_STREAM;
+  UPDATE_STREAM;
   OUT_STREAM;
+  OUTPUT;
   OUT_ATTRIBUTES;
   OUT_ATTRIBUTE;
-  OUT_STREAM;
   SEQUENCE;
   PATTERN;
   JOIN; 
   STREAM;
-  DEFINITION;
+  STREAM_DEFINITION;
+  TABLE_DEFINITION;
+  TABLE;
   QUERY;
   FUNCTION;
   PARAMETERS;
@@ -32,100 +40,174 @@ tokens {
   PATTERN_FULL;
   SEQUENCE_FULL;
   WINDOW;
+  SIGNED_VAL;
+  TIME_EXP;
+  TRANSFORM;
+  EXTENSION;
+  FILTER;
+  EXTENSION_FUNCTION;
+  PARTITION_DEFINITION;
+  PARTITION;
+  PARTITION_TYPE;
+  LAST;
+  SNAPSHOT;
+  TABLE_PARAMETER;
+  YEAR;
+  MONTH;
+  WEEK;
+  DAY;
+  HOUR;
+  MIN;
+  SEC;
+  MILLI_SEC;
+
 }
 
 @header {
 	package org.wso2.siddhi.query.compiler;
 	import java.util.LinkedList;
+	import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
+
 }
 
-@lexer::header { 
+@lexer::header {
 	package org.wso2.siddhi.query.compiler;
+	import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
+
 }
 
+
+@parser::members {
+  @Override
+  public void emitErrorMessage(String errorMessage) {
+    throw new SiddhiPraserException(errorMessage);
+  }
+}
+
+@lexer::members {
+  @Override
+   public void emitErrorMessage(String errorMessage) {
+     throw new SiddhiPraserException(errorMessage);
+   }
+}
 
 executionPlan
-	:(definitionStream|query) (';' (definitionStream|query))* ';'?  ->  (^(DEFINITION definitionStream))*  ( query)*
+	:(definitionPartition|definitionStream|definitionTable|query) (';' (definitionPartition| definitionStream|definitionTable|query))* ';'? EOF  -> (^(PARTITION_DEFINITION definitionPartition))* (^(STREAM_DEFINITION definitionStream))*  (^(TABLE_DEFINITION definitionTable))*  ( query)*
 	; 
-   
+
+definitionStreamFinal
+    : definitionStream ';'? EOF -> definitionStream
+    ;
+
 definitionStream 
 	:'define' 'stream' streamId '(' attributeName type (',' attributeName type )* ')'  ->  ^(streamId (^(IN_ATTRIBUTE attributeName type))+)
 	;
 
+definitionPartitionFinal
+   	:definitionPartition ';'? EOF -> definitionPartition
+   	;
+
+
+definitionPartition
+	:'define' 'partition' partitionId 'by' partitionType (',' partitionType)*  -> ^(partitionId (^(PARTITION_TYPE partitionType))+)
+	;
+	
+partitionType
+        : streamAttributeName
+        | attributeName
+        | 'range' condition 'as' stringVal -> condition stringVal
+        ;
+
+definitionTableFinal
+    :definitionTable ';'? EOF -> definitionTable
+    ;
+
+definitionTable 
+	:'define' 'table' id '(' attributeName type (',' attributeName type )* ')' ('from' '(' tableParamName '=' tableParamValue (',' tableParamName '=' tableParamValue )* ')' )?  ->  ^(id (^(IN_ATTRIBUTE attributeName type))+ ^(TABLE (^(TABLE_PARAMETER tableParamName tableParamValue))+ )? )
+	;
+
+queryFinal
+    :query ';'? EOF -> query
+    ;
+
 query
-	:inputStream outputStream outputProjection  ->  ^(QUERY outputStream inputStream outputProjection )
+	:inputStream outputSelection output? outputStream partition? ->  ^(QUERY inputStream outputSelection outputStream output? partition?)
+	|inputStream outputSelection output? 'return'? partition? ->  ^(QUERY inputStream outputSelection output? partition? )
 	;
 
 outputStream
-	:'insert' outputType? 'into' streamId    ->   ^(OUT_STREAM streamId outputType?)
+	:'insert' 'into' streamId outputTypeCondition? -> ^(INSERT_INTO_STREAM streamId outputTypeCondition?)
+	|'delete' id outputTypeCondition? ('on' condition)?  -> ^(DELETE_STREAM id outputTypeCondition? condition?)
+	|'update' id outputTypeCondition? ('on' condition)?  -> ^(UPDATE_STREAM id outputTypeCondition? condition?)
 	;
 
-outputType
-	: 'expired-events' | 'current-events' | 'all-events'
+outputTypeCondition
+	: 'for'! 'expired-events' | 'for'! 'current-events' | 'for'! 'all-events'
 	;
 
 inputStream
-	:'from' ( sequenceFullStream ->^(SEQUENCE_FULL sequenceFullStream) 
-		| patternFullStream patternHandler? ->  ^(PATTERN_FULL  patternFullStream patternHandler?)
+	:'from' ( sequenceFullStream -> ^(SEQUENCE_FULL sequenceFullStream)
+		| patternFullStream ->  ^(PATTERN_FULL  patternFullStream )
 		| joinStream -> ^(JOIN joinStream) 
 		| windowStream -> windowStream
-		| stream  -> stream
+		| basicStream  -> basicStream
 		)
 	;  
-	
-	 
+
+output
+	: 'output' outputType? 'every' ( timeExpr   ->  ^(OUTPUT timeExpr outputType? )
+	                                | POSITIVE_INT_VAL 'events' ->  ^(OUTPUT POSITIVE_INT_VAL outputType? )
+	)
+	| 'output' 'snapshot' 'every' timeExpr   ->  ^(OUTPUT timeExpr SNAPSHOT)
+	;
+
+outputType
+	: 'all'
+	| 'last'
+	| 'first'
+	;
+
+partition
+	:'partition' 'by' partitionId -> ^(PARTITION partitionId)
+	;
+			 
 patternFullStream
 	:'(' patternStream ')' ('within' time)? ->  ^(PATTERN  patternStream  time? ) 
 	|patternStream  ('within' time)?  ->  ^(PATTERN  patternStream  time? ) 
 	;
-
-patternHandler
-	:  '['! common ']'!
-	;
-    
  
-stream 
-	: basicStream ('as' id)? -> ^(STREAM basicStream id?)
+basicStream
+	: rawStream transformHandler? ('as' id)? -> ^(STREAM rawStream transformHandler?  id?)
 	;
-	
-windowStream 
-	: basicStream'#'windowHandler ('as' id)? -> ^(STREAM basicStream windowHandler id?)
+
+windowStream
+	: streamId  filterHandler? transformHandler? windowHandler ('as' id)?-> ^(STREAM ^(streamId  filterHandler? transformHandler?  windowHandler) id?)
+	| '(' returnQuery ')'  filterHandler? transformHandler? windowHandler ('as' id)?  ->  ^(STREAM ^( ANONYMOUS returnQuery   filterHandler? transformHandler?  windowHandler) id?)
 	;
-	
-basicStream 
-	: streamId   handler+ -> ^(streamId ^( HANDLERS  handler+) )
-	| streamId    -> streamId 
-	|'(' returnQuery ')' handler+   ->  ^( ANONYMOUS returnQuery ^( HANDLERS  handler+) )  
-	|'(' returnQuery ')'   ->  ^(ANONYMOUS returnQuery )  
-	; 
-	 
-/**
-stream 
-	: streamId   handler+ ('as' id)? -> ^(streamId ^( HANDLERS  handler+) id?)
-	| streamId   ('as' id)? -> ^(streamId id?)
-	|'(' returnQuery ')'  handler+ ('as' id)?  ->  ^( ANONYMOUS returnQuery ^( HANDLERS  handler+) id?)  
-	|'(' returnQuery ')'  ('as' id)?  ->  ^(ANONYMOUS returnQuery  id?)  
-	; 
-**/	
-	
-joinStream 
-	:leftStream join rightStream ('on' condition)? ('within' time)? ->  leftStream  join rightStream condition? time? 
+
+rawStream
+	: streamId  filterHandler?   -> ^(streamId   filterHandler?  )
+	| '(' returnQuery ')'  filterHandler?  ->  ^( ANONYMOUS returnQuery filterHandler? )
+	;
+
+joinStream
+	:leftStream join rightStream 'unidirectional' ('on' condition)? ('within' time)? -> leftStream  join rightStream 'unidirectional' condition? time?
+	|leftStream join rightStream ('on' condition)? ('within' time)? ->  leftStream  join rightStream condition? time?
 	|leftStream 'unidirectional' join rightStream ('on' condition)? ('within' time)? -> leftStream 'unidirectional'  join  rightStream condition? time?
-	|leftStream join rightStream 'unidirectional' ('on' condition)? ('within' time)? -> leftStream  join STREAM rightStream 'unidirectional' condition? time?
 	;
 
 leftStream
     :  windowStream
-    | stream
+    | basicStream
     ;
 
 rightStream
     :  windowStream
-    |  stream
+    |  basicStream
     ;
- 
+
 returnQuery
-	: inputStream 'return' outputProjection	->	^(RETURN_QUERY  inputStream outputProjection)
+	: inputStream outputSelection 'return' -> ^(RETURN_QUERY  inputStream outputSelection)
 	;
 
 patternStream
@@ -139,17 +221,17 @@ nonEveryPatternStream
 	;
 
 sequenceFullStream
-	:sequenceStream ('within' time)? ->  ^(SEQUENCE  sequenceStream time? ) 
+	:sequenceStream ('within' time)? ->  ^(SEQUENCE  sequenceStream time? )
 	;
-	
+
 sequenceStream
 	: sequenceItem ',' sequenceItem  (',' sequenceItem )*   ->  sequenceItem+
-	; 
+	;
 
 FOLLOWED_BY
 	: '->'/*|'-['countEnd']>'*/
 	;
-	
+
 patternItem
 	: itemStream 'and'^ itemStream
 	| itemStream 'or'^ itemStream
@@ -164,31 +246,35 @@ sequenceItem
 	;
 
 itemStream
-	: attributeName'='basicStream  ->   ^(STREAM basicStream attributeName?)
+	: attributeName'='rawStream  ->   ^(STREAM rawStream attributeName?)
 	;
 
 regex
 	: ('*'|'+'|'?') '?'?
 	;
 
-outputProjection
-	: externalCall? outputAttributeList groupBy? having? ->  externalCall? ^(OUT_ATTRIBUTES outputAttributeList ) groupBy? having?
+outputSelection
+	:  outputAttributeList groupBy? having? ->  ^(OUT_ATTRIBUTES outputAttributeList ) groupBy? having?
 	;
 
 outputAttributeList
-	:'*'
-	| outputItem (',' outputItem)* ->( ^(OUT_ATTRIBUTE outputItem))+
+	: 'select' '*' -> '*'
+	| 'select' outputItem (',' outputItem)* ->( ^(OUT_ATTRIBUTE outputItem))+
 	|-> '*'
 	;
 
 outputItem
-	: outFuction 'as' id ->  outFuction id
-	| constant  'as' id  ->   constant id
-	|attributeVariable (-> attributeVariable|'as' id  ->   attributeVariable id)
+	: extensionOutFunction 'as' id ->   id extensionOutFunction
+	| outFunction 'as' id ->  outFunction id
+	| expression  'as' id  ->   expression id
+	| attributeVariable
 	;
 
+extensionOutFunction
+	: extensionId ':' functionId  '(' parameters? ')' -> ^( EXTENSION_FUNCTION extensionId functionId parameters?)
+	;
 
-outFuction
+outFunction
 	: ID '(' parameters? ')' -> ^( FUNCTION ID parameters?)
 	;
 
@@ -200,20 +286,21 @@ having
 	: 'having' condition  -> ^('having' condition)
 	;
 
-externalCall
-	: 'call' ID '(' parameters? ')'  ->  ^( 'call' ^(ID parameters?))
+filterHandler
+	: '[' condition ']'  ->    ^( FILTER condition)
 	;
 
-handler
-	: '['! (condition  |common  ) ']'!
+transformHandler
+	: '#' transform '.' extensibleId  ('(' parameters? ')')?  ->   ^( TRANSFORM extensibleId parameters?)
 	;
 
 windowHandler
-	: 'window' '.' id  ('(' parameters? ')')?  ->   ^( WINDOW id parameters?)
+	: '#' window  '.' extensibleId  ('(' parameters? ')')?  ->   ^( WINDOW extensibleId parameters?)
 	;
-	
-common
-	: handlerType '.' id  ('(' parameters? ')')?  ->   ^(handlerType id parameters?)
+
+extensibleId
+	: extensionId ':' functionId ->  ^( EXTENSION  extensionId functionId)
+	| id
 	;
 
 parameters
@@ -225,141 +312,228 @@ time
 	;
 	
 parameter
-	: modExpression
+	: expression
 	;
 
 collect
-	: countStart ':' countEnd 
-	| countStart ':' 
-	| ':' countEnd 
-	| countStartAndEnd 
+	: countStart ':' countEnd
+	| countStart ':'
+	| ':' countEnd
+	| countStartAndEnd
 	;
 
-countStart :POSITIVE_INT;
+countStart :POSITIVE_INT_VAL;
 
-countEnd :POSITIVE_INT;
+countEnd :POSITIVE_INT_VAL;
 
-countStartAndEnd :POSITIVE_INT;
+countStartAndEnd :POSITIVE_INT_VAL;
 
 //conditions start
 
-condition 
+condition
 	:conditionExpression  -> ^(CONDITION conditionExpression)
 	;
-    
+
 conditionExpression
    	: andCondition ('or'^ conditionExpression )?
 	;
-	
+
 andCondition
-	: compareCondition ('and'^ conditionExpression)?
+	: inCondition ('and'^ conditionExpression)?
 	;
-	
+
+inCondition	
+   	: compareCondition ('in'^ streamId )?
+	;
+
 compareCondition
-	:modExpression compareOperation^ modExpression
+	:expression compareOperation^ expression
 	|boolVal
     |'('conditionExpression ')' -> conditionExpression
     |notCondition
+    |extensionCondition
+    |functionCondition
 	;
-	
-modExpression
-   	:divisionExpression ('%'^ modExpression)?
+
+expression
+   	:minusExpression ('+'^ expression)?
    	;
-    
-divisionExpression
-   	:multiplyExpression ('/'^ modExpression)?
-   	;
-    
-multiplyExpression
-   	:minusExpression ('*'^ modExpression)?
-   	;
-    
+
 minusExpression
-   	:sumExpression ('-'^ modExpression)?
+   	:multiplyExpression ('-'^ minusExpression)?
    	;
-    
-sumExpression
-    :valueExpression ('+'^ modExpression)?
+
+multiplyExpression
+   	:divisionExpression ('*'^ multiplyExpression)?
+   	;
+
+divisionExpression
+   	:modExpression ('/'^ divisionExpression)?
+   	;
+
+modExpression
+    :valueExpression ('%'^ modExpression)?
     ;
-    
+
 valueExpression
-    :constant  | attributeVariable
+    : constant
+    | attributeVariable
+    | type
+    | '('expression ')' -> expression
+    | extensionExpression
+    | functionExpression
     ;
-    
+
 notCondition
-	:'not' '('conditionExpression')' ->  ^('not' conditionExpression) 
+	:'not' '('conditionExpression')' ->  ^('not' conditionExpression)
+	|'not' conditionExpression ->  ^('not' conditionExpression)
 	;
-	
 
+extensionCondition
+    :extensionId ':' functionId  ('(' parameters? ')')?  ->   ^( CONDITION_FUNCTION functionId extensionId parameters?)
+    ;
 
-//conditions end 
+functionCondition
+    :functionId  ('(' parameters? ')')?  ->   ^( CONDITION_FUNCTION functionId parameters?)
+    ;
+
+extensionExpression
+    :extensionId ':' functionId  ('(' parameters? ')')?  ->   ^( EXTENSION_FUNCTION functionId extensionId parameters?)
+    ;
+
+functionExpression
+    :functionId  ('(' parameters? ')')?  ->   ^( EXTENSION_FUNCTION functionId parameters?)
+    ;
+
+//conditions end
 
 constant
-	:intVal -> ^( CONSTANT intVal) 
+	:intVal -> ^( CONSTANT intVal)
 	|longVal -> ^( CONSTANT longVal)
 	|floatVal  -> ^( CONSTANT floatVal)
 	|doubleVal -> ^( CONSTANT doubleVal)
 	|boolVal -> ^( CONSTANT boolVal)
 	|stringVal -> ^( CONSTANT stringVal)
+	|timeExpr   -> ^( CONSTANT timeExpr)
 	;
-	  
+
+partitionId: id;
+
 streamId: id;
 
 attributeVariable
-	:streamPositionAttributeName|streamAttributeName|attributeName;	
+	:streamPositionAttributeName|streamAttributeName|attributeName;
 
 streamPositionAttributeName
-	:streamId '['POSITIVE_INT']''.' id ->  ^( ATTRIBUTE ^(streamId POSITIVE_INT) id)
-	; 	
+	:streamId '['POSITIVE_INT_VAL']''.' id ->  ^( ATTRIBUTE ^(streamId POSITIVE_INT_VAL) id)
+	|streamId '[' 'last' ']''.' id ->  ^( ATTRIBUTE ^(streamId LAST) id)
+	;
 
-streamAttributeName 
+streamAttributeName
 	: streamId '.' id  ->  ^( ATTRIBUTE streamId id)
 	;
-	
-attributeName 
+
+attributeName
 	: id  ->  ^( ATTRIBUTE id)
-	;	
- 
+	;
+
 join
 	: 'left''outer' 'join' ->  ^('join' ^('outer' 'left'))
 	| 'right' 'outer' 'join' -> ^('join' ^('outer' 'right'))
 	| 'full''outer' 'join' -> ^('join' ^('outer' 'full'))
 	| 'outer' 'join'  -> ^('join' ^('outer' 'full'))
 	| 'inner' 'join'  -> ^('join' 'inner')
-	|  'join' -> ^('join' 'inner')
+	| 'join' -> ^('join' 'inner')
 	;
+
+window
+    : 'window'
+    ;
+
+transform
+    : 'transform'
+    ;
 
 compareOperation
-	:'==' |'!=' |'<='|'>=' |'<' |'>'  |'contains'
+	:'==' |'!=' |'<='|'>=' |'<' |'>'  |'contains' | 'instanceof'
 	;
-	
+
 id: ID|ID_QUOTES ;
-	
-intVal: POSITIVE_INT| NEGATIVE_INT;
 
-longVal: LONG_VAL; 
+timeExpr
+    : (yearValue)? (monthValue)? (weekValue)? (dayValue)? (hourValue)? (minuteValue)? (secondValue)?  (milliSecondValue)?
+	-> ^(TIME_EXP yearValue? monthValue? weekValue? dayValue? hourValue? minuteValue? secondValue? milliSecondValue?  )
+	;
 
-floatVal: FLOAT_VAL;
+yearValue
+	: POSITIVE_INT_VAL ( years | year)  ->  ^(YEAR POSITIVE_INT_VAL)
+	;
 
-doubleVal: DOUBLE_VAL;
+monthValue
+	: POSITIVE_INT_VAL ( months | month)  ->   ^(MONTH POSITIVE_INT_VAL)
+	;
+
+weekValue
+	: POSITIVE_INT_VAL ( weeks | week) ->   ^(WEEK POSITIVE_INT_VAL)
+	;
+
+dayValue
+	: POSITIVE_INT_VAL ( days | day)  ->   ^(DAY POSITIVE_INT_VAL)
+	;
+
+hourValue
+	: POSITIVE_INT_VAL ( hours |   hour ) ->   ^(HOUR POSITIVE_INT_VAL)
+	;
+
+minuteValue
+	: POSITIVE_INT_VAL ( minutes |  min  | minute  ) ->   ^(MIN POSITIVE_INT_VAL)
+	;
+
+secondValue
+	: POSITIVE_INT_VAL (seconds | second | sec  )  ->   ^(SEC POSITIVE_INT_VAL)
+	;
+
+milliSecondValue
+	: POSITIVE_INT_VAL ( milliseconds |  millisecond  )  ->   ^(MILLI_SEC POSITIVE_INT_VAL)
+	;
+
+intVal: '-'? POSITIVE_INT_VAL -> ^(SIGNED_VAL  POSITIVE_INT_VAL '-'?);
+
+longVal: '-'? POSITIVE_LONG_VAL -> ^(SIGNED_VAL  POSITIVE_LONG_VAL '-'?);
+
+floatVal: '-'? POSITIVE_FLOAT_VAL -> ^(SIGNED_VAL POSITIVE_FLOAT_VAL  '-'?);
+
+doubleVal: '-'? POSITIVE_DOUBLE_VAL -> ^(SIGNED_VAL  POSITIVE_DOUBLE_VAL '-'?);
 
 boolVal: BOOL_VAL;
 
+extensionId: id;
+
+functionId: id;
+
+tableType: id;
+
+databaseName: id;
+
+tableName: id;
+
+dataSourceName : id;
+
 stringVal: STRING_VAL;
 
-type: 'string' |'int' |'long' |'float' |'double' |'bool'; 
+tableParamName : stringVal;
 
-handlerType: 'filter';
+tableParamValue : stringVal;
 
-POSITIVE_INT:  NUM('I'|'i')?;
+type: 'string' |'int' |'long' |'float' |'double' |'bool';
 
-NEGATIVE_INT: '-' NUM('I'|'i')?;
+POSITIVE_INT_VAL:  NUM('I'|'i')?;
 
-LONG_VAL: '-'? NUM ('L'|'l');
+POSITIVE_LONG_VAL:  NUM ('L'|'l');
 
-FLOAT_VAL: '-'? NUM ('.' NUM)? NUM_SCI? ('F'|'f');
+POSITIVE_FLOAT_VAL:  NUM ('.' NUM)? NUM_SCI? ('F'|'f');
 
-DOUBLE_VAL : '-'? NUM ('.' NUM NUM_SCI? ('D'|'d')?| NUM_SCI? ('D'|'d'));
+POSITIVE_DOUBLE_VAL : NUM ('.' NUM NUM_SCI? ('D'|'d')?| NUM_SCI? ('D'|'d'));
 
 BOOL_VAL: ('true'|'false');
 
@@ -368,7 +542,45 @@ ID_QUOTES : '`'('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*'`' {set
 
 ID : ('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')* ;
 
-//('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'-'|','|' '|'\t')* 
+//('a'..'z'|'A'..'Z'|'0'..'9'|'_'|'-'|','|' '|'\t')*
+
+years :  {input.LT(1).getText().equals("years")}? ID ;
+
+year :  {input.LT(1).getText().equals("year")}? ID ;
+
+months :  {input.LT(1).getText().equals("months")}? ID ;
+
+month :  {input.LT(1).getText().equals("month")}? ID ;
+
+weeks :  {input.LT(1).getText().equals("weeks")}? ID ;
+
+week :  {input.LT(1).getText().equals("week")}? ID ;
+
+days :  {input.LT(1).getText().equals("days")}? ID ;
+
+day :  {input.LT(1).getText().equals("day")}? ID ;
+
+hours :  {input.LT(1).getText().equals("hours")}? ID ;
+
+hour :  {input.LT(1).getText().equals("hour")}? ID ;
+
+minutes :  {input.LT(1).getText().equals("minutes")}? ID ;
+
+min :  {input.LT(1).getText().equals("min")}? ID ;
+
+minute :  {input.LT(1).getText().equals("minute")}? ID ;
+
+seconds :  {input.LT(1).getText().equals("seconds")}? ID ;
+
+second :  {input.LT(1).getText().equals("second")}? ID ;
+
+sec :  {input.LT(1).getText().equals("sec")}? ID ;
+
+milliseconds :  {input.LT(1).getText().equals("milliseconds")}? ID ;
+
+millisecond :  {input.LT(1).getText().equals("millisecond")}? ID ;
+
+
 
 STRING_VAL
 	:'\'' ( ~('\u0000'..'\u001f' | '\\' | '\''| '\"' ) )* '\'' {setText(getText().substring(1, getText().length()-1));}

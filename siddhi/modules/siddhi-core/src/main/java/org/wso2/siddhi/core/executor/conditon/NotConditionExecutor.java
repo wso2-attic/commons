@@ -18,6 +18,9 @@
 package org.wso2.siddhi.core.executor.conditon;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
+import org.wso2.siddhi.core.table.predicate.PredicateBuilder;
+import org.wso2.siddhi.core.table.predicate.PredicateTreeNode;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
 
 public class NotConditionExecutor implements ConditionExecutor {
 
@@ -28,6 +31,30 @@ public class NotConditionExecutor implements ConditionExecutor {
     }
 
     public boolean execute(AtomicEvent event) {
-        return !conditionExecutor.execute(event) ;
+        return !conditionExecutor.execute(event);
     }
+
+    @Override
+    public String constructFilterQuery(AtomicEvent newEvent, int level) {
+        String value = conditionExecutor.constructFilterQuery(newEvent, 1);
+        if (value.equals("*")) {
+            return "*";
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("(").append(" !(").append(value).append(")");
+            return sb.toString();
+        }
+    }
+
+
+    @Override
+    public PredicateTreeNode constructPredicate(AtomicEvent newEvent, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+        PredicateTreeNode value = conditionExecutor.constructPredicate(newEvent, tableDefinition, predicateBuilder);
+        if (value.toString().equals("*")) {
+            return predicateBuilder.buildVariableExpression("*");
+        } else {
+            return predicateBuilder.buildNotCondition(value);
+        }
+    }
+
 }

@@ -17,59 +17,150 @@
 */
 package org.wso2.siddhi.core.config;
 
+import java.util.List;
 import java.util.UUID;
 
 public class SiddhiConfiguration {
 
-    private int threads;
+    /**
+     * Core pool size of the Siddhi thread executor
+     */
+    private int threadExecutorCorePoolSize;
 
-    private boolean singleThreading;
+    /**
+     * Max pool size of the Siddhi thread executor
+     */
+    private int threadExecutorMaxPoolSize;
 
+    /**
+     * Core pool size of the Siddhi thread scheduler
+     */
+    private int threadSchedulerCorePoolSize;
+
+
+    /**
+     * To enable Async Processing that uses intermediate queues
+     */
+    private boolean asyncProcessing;
+
+    /**
+     * Number of max events bundled when event rates are high
+     */
     private int eventBatchSize;
 
-    private String executionPlanIdentifier;
+    /**
+     * Identifier to current Siddhi instance
+     */
+    private String instanceIdentifier;
 
+    /**
+     * To enable Hazelcast based distributed processing
+     */
+    private boolean distributedProcessing;
+
+    /**
+     * Query plan and Hazelcast Cluster Identifier
+     */
+    private String queryPlanIdentifier;
+
+    private List<Class> siddhiExtensions;
 
     public SiddhiConfiguration() {
 
-        threads = Runtime.getRuntime().availableProcessors();
+        threadExecutorCorePoolSize = Runtime.getRuntime().availableProcessors();
 
-        singleThreading = true;
+        threadExecutorMaxPoolSize = 50;
+
+        threadSchedulerCorePoolSize = 20;
+
+        asyncProcessing = false;
+
+        distributedProcessing = false;
 
         eventBatchSize = 50;
 
-        executionPlanIdentifier= UUID.randomUUID().toString();
+        instanceIdentifier = UUID.randomUUID().toString();
+
+        queryPlanIdentifier = UUID.randomUUID().toString();
     }
 
-    public int getThreads() {
-        return threads;
+    public int getThreadExecutorCorePoolSize() {
+        return threadExecutorCorePoolSize;
     }
 
-    public void setThreads(int threads) {
-        this.threads = threads;
+    public SiddhiConfiguration setThreadExecutorCorePoolSize(int threadExecutorCorePoolSize) {
+        this.threadExecutorCorePoolSize = threadExecutorCorePoolSize;
+        return this;
     }
 
-    public boolean isSingleThreading() {
-        return singleThreading;
+    public int getThreadExecutorMaxPoolSize() {
+        return threadExecutorMaxPoolSize;
     }
 
-    public void setSingleThreading(boolean singleThreading) {
-        this.singleThreading = singleThreading;
+    public SiddhiConfiguration setThreadExecutorMaxPoolSize(int threadExecutorMaxPoolSize) {
+        this.threadExecutorMaxPoolSize = threadExecutorMaxPoolSize;
+        return this;
+    }
+
+    public int getThreadSchedulerCorePoolSize() {
+        return threadSchedulerCorePoolSize;
+    }
+
+    public SiddhiConfiguration setThreadSchedulerCorePoolSize(int threadSchedulerCorePoolSize) {
+        this.threadSchedulerCorePoolSize = threadSchedulerCorePoolSize;
+        return this;
+    }
+
+    public boolean isAsyncProcessing() {
+        return asyncProcessing;
+    }
+
+    public SiddhiConfiguration setAsyncProcessing(boolean asyncProcessing) {
+        this.asyncProcessing = asyncProcessing;
+        return this;
     }
 
     public int getEventBatchSize() {
         return eventBatchSize;
     }
 
-    public void setEventBatchSize(int eventBatchSize) {
+    public SiddhiConfiguration setEventBatchSize(int eventBatchSize) {
         this.eventBatchSize = eventBatchSize;
+        return this;
     }
 
-    public String getExecutionPlanIdentifier() {
-        return executionPlanIdentifier;
+    public String getInstanceIdentifier() {
+        return instanceIdentifier;
     }
 
-    public void setExecutionPlanIdentifier(String executionPlanIdentifier) {
-        this.executionPlanIdentifier = executionPlanIdentifier;
+    public SiddhiConfiguration setInstanceIdentifier(String instanceIdentifier) {
+        this.instanceIdentifier = instanceIdentifier;
+        return this;
+    }
+
+    public boolean isDistributedProcessing() {
+        return distributedProcessing;
+    }
+
+    public SiddhiConfiguration setDistributedProcessing(boolean distributedProcessing) {
+        this.distributedProcessing = distributedProcessing;
+        return this;
+    }
+
+    public SiddhiConfiguration setQueryPlanIdentifier(String queryPlanIdentifier) {
+        this.queryPlanIdentifier = queryPlanIdentifier;
+        return this;
+    }
+
+    public String getQueryPlanIdentifier() {
+        return queryPlanIdentifier;
+    }
+
+    public List<Class> getSiddhiExtensions() {
+        return siddhiExtensions;
+    }
+
+    public void setSiddhiExtensions(List<Class> siddhiExtensions) {
+        this.siddhiExtensions = siddhiExtensions;
     }
 }

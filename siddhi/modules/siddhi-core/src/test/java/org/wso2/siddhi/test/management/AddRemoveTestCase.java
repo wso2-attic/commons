@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.stream.output.StreamCallback;
 import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
@@ -41,25 +41,25 @@ public class AddRemoveTestCase {
     }
 
     @Test
-    public void testRemoveQuery() throws InterruptedException, SiddhiPraserException {
-
+    public void testQuery1() throws InterruptedException, SiddhiPraserException {
         log.info("Remove Query test1");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         InputHandler inputHandler = siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
 
-        siddhiManager.addCallback("outStream", new Callback() {
+        siddhiManager.addCallback("outStream", new StreamCallback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents);
-                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
+                Assert.assertTrue("IBM".equals(events[0].getData(0)) || "WSO2".equals(events[0].getData(0)));
                 count++;
             }
         });
 
         String queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                       "insert into outStream symbol, price, volume " +
-                                                       " having price*12 >100;");
+                                                       "select symbol, price, volume " +
+                                                       " having price*12 >100 " +
+                                                       "insert into outStream ;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
@@ -77,24 +77,25 @@ public class AddRemoveTestCase {
     }
 
     @Test
-    public void testRemoveAddQuery() throws InterruptedException, SiddhiPraserException {
+    public void testQuery2() throws InterruptedException, SiddhiPraserException {
 
         log.info("Remove then Add Query test1");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         InputHandler inputHandler = siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
 
-        siddhiManager.addCallback("outStream", new Callback() {
+        siddhiManager.addCallback("outStream", new StreamCallback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents);
-                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
+                Assert.assertTrue("IBM".equals(events[0].getData(0)) || "WSO2".equals(events[0].getData(0)));
                 count++;
             }
         });
 
         String queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                       "insert into outStream symbol, price, volume ;");
+                                                       "select symbol, price, volume " +
+                                                       "insert into outStream;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
@@ -106,7 +107,8 @@ public class AddRemoveTestCase {
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
 
         queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                "insert into outStream symbol, price, volume ;");
+                                                "select symbol, price, volume " +
+                                                "insert into outStream;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
@@ -117,29 +119,30 @@ public class AddRemoveTestCase {
     }
 
     @Test
-    public void testRemoveAddQuery2() throws InterruptedException, SiddhiPraserException {
+    public void testQuery3() throws InterruptedException, SiddhiPraserException {
 
         log.info("Remove then Add different Query test1");
         SiddhiManager siddhiManager = new SiddhiManager();
 
         InputHandler inputHandler = siddhiManager.defineStream("define stream cseStream ( symbol string, price float, volume int )");
 
-        siddhiManager.addCallback("outStream", new Callback() {
+        siddhiManager.addCallback("outStream", new StreamCallback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents);
-                Assert.assertTrue((inEvents[0].getData().length == 2) || (inEvents[0].getData().length == 3));
-                if (inEvents[0].getData().length == 2) {
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
+                Assert.assertTrue((events[0].getData().length == 2) || (events[0].getData().length == 3));
+                if (events[0].getData().length == 2) {
                     count++;
-                } else if (inEvents[0].getData().length == 3) {
+                } else if (events[0].getData().length == 3) {
                     count--;
                 }
-                eventArrived=true;
+                eventArrived = true;
             }
         });
 
         String queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                       "insert into outStream symbol, price, volume ;");
+                                                       "select symbol, price, volume " +
+                                                       "insert into outStream;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
@@ -151,7 +154,8 @@ public class AddRemoveTestCase {
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
 
         queryReference = siddhiManager.addQuery("from cseStream[price>10] " +
-                                                "insert into outStream symbol, volume ;");
+                                                "select symbol, volume " +
+                                                "insert into outStream ;");
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
@@ -159,6 +163,55 @@ public class AddRemoveTestCase {
 
         Assert.assertEquals(0, count);
         Assert.assertEquals(true, eventArrived);
+
+    }
+
+    @Test
+    public void testQuery4() throws InterruptedException, SiddhiPraserException {
+
+        log.info("Remove Multiple Queries test1");
+
+
+        SiddhiManager siddhiManager = new SiddhiManager();
+
+        InputHandler allStockQuotesHandler = siddhiManager.defineStream("define stream allStockQuotes ( symbol string, price double )");
+        InputHandler twitterFeedHandler = siddhiManager.defineStream("define stream twitterFeed ( company string, wordCount int )");
+
+        siddhiManager.addCallback("outStream", new StreamCallback() {
+            @Override
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
+                Assert.assertTrue("IBM".equals(events[0].getData(0)) || "WSO2".equals(events[0].getData(0)));
+                count++;
+            }
+        });
+
+        String queryReference1 = siddhiManager.addQuery("                    from allStockQuotes#window.time(600000) \n" +
+                                                        "                    select symbol as symbol, price, avg(price) as averagePrice \n" +
+                                                        "                    group by symbol \n" +
+                                                        "                    having ( price >  averagePrice*1.02 ) or ( averagePrice*0.98 > price ) " +
+                                                        "                    insert into fastMovingStockQuotes \n" +
+                                                        "                    ");
+
+
+//        String queryReference2 = siddhiManager.addQuery("from twitterFeed#window.time(600000)\n" +
+//                                                        "                    insert into highFrequentTweets\n" +
+//                                                        "                    company as company, sum(wordCount) as words\n" +
+//                                                        "                    group by company\n" +
+//                                                        "                    having (words > 10);");
+//
+//        String queryReference3 = siddhiManager.addQuery(" from fastMovingStockQuotes#window.time(60000) as fastMovingStockQuotes join\n" +
+//                                                        "                    highFrequentTweets#window.time(60000) as highFrequentTweets\n" +
+//                                                        "\t\t    on fastMovingStockQuotes.symbol == highFrequentTweets.company\n" +
+//                                                        "                    insert into predictedStockQuotes\n" +
+//                                                        "                    fastMovingStockQuotes.symbol as company, fastMovingStockQuotes.averagePrice as amount, highFrequentTweets.words as words");
+//
+
+        siddhiManager.removeQuery(queryReference1);
+//        siddhiManager.removeQuery(queryReference2);
+//        siddhiManager.removeQuery(queryReference3);
+
+        siddhiManager.shutdown();
 
     }
 

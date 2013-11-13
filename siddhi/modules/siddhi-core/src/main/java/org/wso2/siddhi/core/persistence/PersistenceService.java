@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.core.persistence;
 
+import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 import org.wso2.siddhi.core.exception.NoPersistenceStoreAssignedException;
@@ -26,45 +27,62 @@ import java.util.List;
 
 public class PersistenceService {
 
-    long nodeCounter = 0;
-    String executionPlanIdentifier;
-    List<Persister> persisterList = new ArrayList<Persister>();
-    PersistenceStore persistenceStore;
-    PersistenceManagementEvent lastPersistEvent;
+    static final Logger log = Logger.getLogger(PersistenceService.class);
+    private String queryPlanIdentifier;
+    private List<Persister> persisterList = new ArrayList<Persister>();
+    private PersistenceStore persistenceStore;
+    private PersistenceManagementEvent lastPersistEvent;
+    private SiddhiContext siddhiContext;
 
     public PersistenceService(
             SiddhiContext siddhiContext) {
-        executionPlanIdentifier = siddhiContext.getExecutionPlanIdentifier();
+        this.queryPlanIdentifier = siddhiContext.getQueryPlanIdentifier();
+        this.siddhiContext = siddhiContext;
     }
 
     public void addPersister(Persister persister) {
-        persister.setNodeId(nodeCounter + "");
-        nodeCounter++;
         persister.setPersistenceStore(persistenceStore);
         persisterList.add(persister);
     }
 
     public String persist() {
-        if (persistenceStore != null) {
-            PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(System.currentTimeMillis(), executionPlanIdentifier);
-            for (Persister persister : persisterList) {
-                persister.save(persistEvent);
-            }
-            lastPersistEvent = persistEvent;
-            return persistEvent.getRevision();
-        } else {
-            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
+        if (log.isDebugEnabled()) {
+            log.debug("Persisting..");
         }
+        if (persistenceStore != null) {
+            try {
+                siddhiContext.getThreadBarrier().close();
+                PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(System.currentTimeMillis(), queryPlanIdentifier);
+                for (Persister persister : persisterList) {
+                    persister.save(persistEvent);
+                }
+                lastPersistEvent = persistEvent;
+            } finally {
+                siddhiContext.getThreadBarrier().open();
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Persisting.. finished");
+            }
+            return lastPersistEvent.getRevision();
+        } else {
+            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + queryPlanIdentifier);
+        }
+
     }
 
     public void restoreRevision(String revision) {
-        if (persistenceStore != null) {
-            PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(revision);
-            for (Persister persister : persisterList) {
-                persister.load(persistEvent);
+        try {
+            this.siddhiContext.getThreadBarrier().close();
+            if (persistenceStore != null) {
+                PersistenceManagementEvent persistEvent = new PersistenceManagementEvent(revision);
+                for (Persister persister : persisterList) {
+                    persister.load(persistEvent);
+                }
+            } else {
+                throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + queryPlanIdentifier);
             }
-        } else {
-            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
+        } finally {
+            siddhiContext.getThreadBarrier().open();
         }
     }
 
@@ -78,13 +96,18 @@ public class PersistenceService {
 
 
     public void restoreLastRevision() {
-        if (persistenceStore != null) {
-            String revision = persistenceStore.getLastRevision(executionPlanIdentifier);
-            if (revision != null) {
-                restoreRevision(revision);
+        try {
+            this.siddhiContext.getThreadBarrier().close();
+            if (persistenceStore != null) {
+                String revision = persistenceStore.getLastRevision(queryPlanIdentifier);
+                if (revision != null) {
+                    restoreRevision(revision);
+                }
+            } else {
+                throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + queryPlanIdentifier);
             }
-        } else {
-            throw new NoPersistenceStoreAssignedException("No persistence store assigned for execution plan " + executionPlanIdentifier);
+        } finally {
+            siddhiContext.getThreadBarrier().open();
         }
     }
 }

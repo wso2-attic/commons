@@ -17,6 +17,7 @@
 */
 package org.wso2.siddhi.test.management;
 
+import com.hazelcast.core.Hazelcast;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,8 +28,8 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.exception.NoPersistenceStoreAssignedException;
 import org.wso2.siddhi.core.persistence.InMemoryPersistenceStore;
 import org.wso2.siddhi.core.persistence.PersistenceStore;
+import org.wso2.siddhi.core.query.output.callback.QueryCallback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.api.QueryFactory;
 import org.wso2.siddhi.query.api.condition.Condition;
@@ -44,11 +45,13 @@ public class PersistenceTestCase {
 
     private int count;
     private long lastValue;
+    private long firstValue;
     private boolean eventArrived;
 
     @Before
     public void init() {
-        lastValue = 0;
+        lastValue = -1;
+        firstValue = -1;
         count = 0;
         eventArrived = false;
     }
@@ -62,8 +65,9 @@ public class PersistenceTestCase {
 
         String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
         String query = "from cseStream[price>10]#window.length(10) " +
-                       "insert into outStream symbol, price, sum(volume) as totalVol ";
-        Callback callback = new Callback() {
+                       "select symbol, price, sum(volume) as totalVol " +
+                       "insert into outStream ";
+        QueryCallback callback = new QueryCallback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
@@ -75,34 +79,37 @@ public class PersistenceTestCase {
         };
 
 
-        SiddhiConfiguration configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiConfiguration configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
+        configuration.setAsyncProcessing(false);
         SiddhiManager siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         InputHandler inputHandler = siddhiManager.defineStream(streamDefinition);
-        siddhiManager.addQuery(query);
-        siddhiManager.addCallback("outStream", callback);
+        String queryReference1 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference1, callback);
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
 
         //persisting
+        Thread.sleep(500);
         revision = siddhiManager.persist();
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
 
         //restarting Siddhi
+        Thread.sleep(500);
         siddhiManager.shutdown();
-        configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
         siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         inputHandler = siddhiManager.defineStream(streamDefinition);
-        siddhiManager.addQuery(query);
-        siddhiManager.addCallback("outStream", callback);
+        String queryReference2 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference2, callback);
 
         //loading
         siddhiManager.restoreLastRevision();
@@ -110,17 +117,21 @@ public class PersistenceTestCase {
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
 
+        Thread.sleep(500);
         siddhiManager.shutdown();
 
+        //Because of the use of in memory persistence store
+        Hazelcast.shutdownAll();
+
         Assert.assertEquals(6, count);
-        Assert.assertEquals(400, lastValue);
+        Assert.assertTrue(400 == lastValue);
         Assert.assertEquals(true, eventArrived);
 
     }
 
     @Test
-    public void testQuery2() throws InterruptedException {
-        log.info("test2 - OUT 1");
+    public void persistCountTestQuery() throws InterruptedException {
+        log.info("Persist Count Test ");
         PersistenceStore persistenceStore = new InMemoryPersistenceStore();
         String revision;
 
@@ -132,27 +143,27 @@ public class PersistenceTestCase {
                 QueryFactory.patternStream(
                         Pattern.followedBy(
                                 Pattern.count(
-                                        QueryFactory.inputStream("e1", "Stream1").handler(
+                                        QueryFactory.inputStream("e1", "Stream1").filter(
                                                 Condition.compare(Expression.variable("price"),
                                                                   Condition.Operator.GREATER_THAN,
                                                                   Expression.value(20))), 2, 5),
-                                QueryFactory.inputStream("e2", "Stream2").handler(
+                                QueryFactory.inputStream("e2", "Stream2").filter(
                                         Condition.compare(Expression.variable("price"),
                                                           Condition.Operator.GREATER_THAN,
                                                           Expression.value(20))))));
 
-        query.insertInto("OutStream");
-        query.project(
-                QueryFactory.outputProjector().
-                        project("price1.1", Expression.variable("e1", 0, "price")).
-                        project("price1.2", Expression.variable("e1", 1, "price")).
-                        project("price1.3", Expression.variable("e1", 2, "price")).
-                        project("price1.4", Expression.variable("e1", 3, "price")).
-                        project("price2", Expression.variable("e2", "price"))
+        query.select(
+                QueryFactory.outputSelector().
+                        select("price1.1", Expression.variable("e1", 0, "price")).
+                        select("price1.2", Expression.variable("e1", 1, "price")).
+                        select("price1.3", Expression.variable("e1", 2, "price")).
+                        select("price1.4", Expression.variable("e1", 3, "price")).
+                        select("price2", Expression.variable("e2", "price"))
 
         );
+        query.insertInto("OutStream");
 
-        Callback callback = new Callback() {
+        QueryCallback callback = new QueryCallback() {
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
                 org.junit.Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f}, inEvents[0].getData());
@@ -162,17 +173,17 @@ public class PersistenceTestCase {
 
         };
 
-        SiddhiConfiguration configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiConfiguration configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
         SiddhiManager siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         InputHandler stream1 = siddhiManager.defineStream(streamDefinition1);
         InputHandler stream2 = siddhiManager.defineStream(streamDefinition2);
 
-        siddhiManager.addQuery(query);
+        String queryReference1 = siddhiManager.addQuery(query);
 
-        siddhiManager.addCallback("OutStream", callback);
+        siddhiManager.addCallback(queryReference1, callback);
 
         stream1.send(new Object[]{"WSO2", 25.6f, 100});
         Thread.sleep(500);
@@ -187,15 +198,15 @@ public class PersistenceTestCase {
 
         //Restarting siddhi
         siddhiManager.shutdown();
-        configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
         siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         stream1 = siddhiManager.defineStream(streamDefinition1);
         stream2 = siddhiManager.defineStream(streamDefinition2);
-        siddhiManager.addQuery(query);
-        siddhiManager.addCallback("OutStream", callback);
+        String queryReference2 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference2, callback);
 
         //loading
         siddhiManager.restoreLastRevision();
@@ -209,6 +220,8 @@ public class PersistenceTestCase {
         Thread.sleep(500);
 
         siddhiManager.shutdown();
+        //Because of the use of in memory persistence store
+        Hazelcast.shutdownAll();
 
         Assert.assertEquals(1, count);
         Assert.assertEquals(true, eventArrived);
@@ -216,7 +229,7 @@ public class PersistenceTestCase {
     }
 
     @Test(expected = NoPersistenceStoreAssignedException.class)
-    public void testQuery3() throws InterruptedException {
+    public void persistPatternTQuery() throws InterruptedException {
         log.info("No store defined case ");
 //        PersistenceStore persistenceStore = new InMemoryPersistenceStore();
 //        String revision;
@@ -229,27 +242,27 @@ public class PersistenceTestCase {
                 QueryFactory.patternStream(
                         Pattern.followedBy(
                                 Pattern.count(
-                                        QueryFactory.inputStream("e1", "Stream1").handler(
+                                        QueryFactory.inputStream("e1", "Stream1").filter(
                                                 Condition.compare(Expression.variable("price"),
                                                                   Condition.Operator.GREATER_THAN,
                                                                   Expression.value(20))), 2, 5),
-                                QueryFactory.inputStream("e2", "Stream2").handler(
+                                QueryFactory.inputStream("e2", "Stream2").filter(
                                         Condition.compare(Expression.variable("price"),
                                                           Condition.Operator.GREATER_THAN,
                                                           Expression.value(20))))));
 
-        query.insertInto("OutStream");
-        query.project(
-                QueryFactory.outputProjector().
-                        project("price1.1", Expression.variable("e1", 0, "price")).
-                        project("price1.2", Expression.variable("e1", 1, "price")).
-                        project("price1.3", Expression.variable("e1", 2, "price")).
-                        project("price1.4", Expression.variable("e1", 3, "price")).
-                        project("price2", Expression.variable("e2", "price"))
+        query.select(
+                QueryFactory.outputSelector().
+                        select("price1.1", Expression.variable("e1", 0, "price")).
+                        select("price1.2", Expression.variable("e1", 1, "price")).
+                        select("price1.3", Expression.variable("e1", 2, "price")).
+                        select("price1.4", Expression.variable("e1", 3, "price")).
+                        select("price2", Expression.variable("e2", "price"))
 
         );
+        query.insertInto("OutStream");
 
-        Callback callback = new Callback() {
+        QueryCallback callback = new QueryCallback() {
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
                 org.junit.Assert.assertArrayEquals(new Object[]{25.6f, 47.6f, null, null, 45.7f}, inEvents[0].getData());
@@ -265,9 +278,9 @@ public class PersistenceTestCase {
         InputHandler stream1 = siddhiManager.defineStream(streamDefinition1);
         InputHandler stream2 = siddhiManager.defineStream(streamDefinition2);
 
-        siddhiManager.addQuery(query);
+        String queryReference = siddhiManager.addQuery(query);
 
-        siddhiManager.addCallback("OutStream", callback);
+        siddhiManager.addCallback(queryReference, callback);
 
         stream1.send(new Object[]{"WSO2", 25.6f, 100});
         Thread.sleep(500);
@@ -279,6 +292,10 @@ public class PersistenceTestCase {
         //persisting
         siddhiManager.persist();
         Thread.sleep(1000);
+
+        siddhiManager.shutdown();
+        //Because of the use of in memory persistence store
+        Hazelcast.shutdownAll();
 
     }
 
@@ -292,27 +309,28 @@ public class PersistenceTestCase {
 
         String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
         String query = "from cseStream[price>10]#window.time(10000) " +
-                       "insert into outStream symbol, price, sum(volume) as totalVol ";
-        Callback callback = new Callback() {
+                       "select symbol, price, sum(volume) as totalVol " +
+                       "insert into outStream";
+        QueryCallback callback = new QueryCallback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
                 EventPrinter.print(timeStamp, inEvents, removeEvents);
 //                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
-//                lastValue = (Long) inEvents[0].getData(2);
+                lastValue = (Long) inEvents[0].getData(2);
                 count++;
                 eventArrived = true;
             }
         };
 
 
-        SiddhiConfiguration configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        SiddhiConfiguration configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
         SiddhiManager siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         InputHandler inputHandler = siddhiManager.defineStream(streamDefinition);
-        siddhiManager.addQuery(query);
-        siddhiManager.addCallback("outStream", callback);
+        String queryReference1 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference1, callback);
 
         inputHandler.send(new Object[]{"IBM", 75.6f, 100});
         inputHandler.send(new Object[]{"WSO2", 76.6f, 100});
@@ -325,28 +343,104 @@ public class PersistenceTestCase {
 
         //restarting Siddhi
         siddhiManager.shutdown();
-        configuration=new SiddhiConfiguration();
-        configuration.setExecutionPlanIdentifier("Test");
+        configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
         siddhiManager = new SiddhiManager(configuration);
         siddhiManager.setPersistStore(persistenceStore);
 
         inputHandler = siddhiManager.defineStream(streamDefinition);
-        siddhiManager.addQuery(query);
-        siddhiManager.addCallback("outStream", callback);
+        String queryReference2 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference2, callback);
 
         //loading
         siddhiManager.restoreLastRevision();
 
 
-//        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
-//        inputHandler.send(new Object[]{"WSO2", 75.6f, 100});
-
         Thread.sleep(1000);
         siddhiManager.shutdown();
+        //Because of the use of in memory persistence store
+        Hazelcast.shutdownAll();
 
-//        Assert.assertEquals(6, count);
-//        Assert.assertEquals(400, lastValue);
-//        Assert.assertEquals(true, eventArrived);
+        Assert.assertEquals(4, count);
+        Assert.assertEquals(400, lastValue);
+        Assert.assertEquals(true, eventArrived);
+
+    }
+
+    @Test
+    public void persistDistributedWindowRestartTestQuery()
+            throws InterruptedException, SiddhiPraserException {
+        log.info("Persistence test on Restart of Window query");
+
+        PersistenceStore persistenceStore = new InMemoryPersistenceStore();
+        String revision;
+
+        String streamDefinition = "define stream cseStream ( symbol string, price float, volume int )";
+        String query = "from cseStream[price>10]#window.time(10000) " +
+                       "select symbol, price, sum(volume) as totalVol " +
+                       "insert into outStream for all-events ";
+        QueryCallback callback = new QueryCallback() {
+            @Override
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
+//                Assert.assertTrue("IBM".equals(inEvents[0].getData(0)) || "WSO2".equals(inEvents[0].getData(0)));
+                if (removeEvents != null) {
+                    lastValue = (Long) removeEvents[removeEvents.length - 1].getData(2);
+                } else {
+                    firstValue = (Long) inEvents[inEvents.length - 1].getData(2);
+                }
+                count++;
+                eventArrived = true;
+            }
+        };
+
+
+        SiddhiConfiguration configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
+        configuration.setDistributedProcessing(true);
+        SiddhiManager siddhiManager = new SiddhiManager(configuration);
+        siddhiManager.setPersistStore(persistenceStore);
+
+        InputHandler inputHandler = siddhiManager.defineStream(streamDefinition);
+        String queryReference1 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference1, callback);
+
+        inputHandler.send(new Object[]{"IBM", 75.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 76.6f, 100});
+
+        //persisting
+        Thread.sleep(1000);
+        revision = siddhiManager.persist();
+
+        inputHandler.send(new Object[]{"IBM", 77.6f, 100});
+        inputHandler.send(new Object[]{"WSO2", 78.6f, 100});
+
+        //restarting Siddhi
+        Thread.sleep(1000);
+        siddhiManager.shutdown();
+        configuration = new SiddhiConfiguration();
+        configuration.setQueryPlanIdentifier("Test");
+        configuration.setDistributedProcessing(true);
+        siddhiManager = new SiddhiManager(configuration);
+        siddhiManager.setPersistStore(persistenceStore);
+
+        inputHandler = siddhiManager.defineStream(streamDefinition);
+        String queryReference2 = siddhiManager.addQuery(query);
+        siddhiManager.addCallback(queryReference2, callback);
+
+        //loading
+        siddhiManager.restoreLastRevision();
+
+
+        Thread.sleep(15000);
+        siddhiManager.shutdown();
+        //Because of the use of in memory persistence store
+        Hazelcast.shutdownAll();
+
+        Assert.assertTrue(count >= 3);
+        Assert.assertEquals(0, lastValue);
+        Assert.assertEquals(400, firstValue);
+        Assert.assertEquals(true, eventArrived);
 
     }
 

@@ -17,9 +17,9 @@ package org.wso2.siddhi.sample;
 
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.stream.output.StreamCallback;
+import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
 /**
@@ -41,13 +41,12 @@ public class PatternProcessorSample {
                                "-> e3=CSEStream [price > e2.price  and symbol == e1.symbol] " +
                                "insert into StockQuote e1.symbol as symbol, e2.price as price1, e3.price as price2;");
 
-        siddhiManager.addCallback("StockQuote", new Callback() {
-            @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
-            }
+        siddhiManager.addCallback("StockQuote", new StreamCallback() {
 
+            @Override
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
+            }
         });
         InputHandler cseStream = siddhiManager.getInputHandler("CSEStream");
         InputHandler infoStock = siddhiManager.getInputHandler("InfoStock");
@@ -72,6 +71,9 @@ public class PatternProcessorSample {
         cseStream.send(new Object[]{"WSO2", 110});
         Thread.sleep(500);
 
-        siddhiManager.shutdown();
+        } finally {
+            siddhiManager.shutdown();
+        }
+
     }
 }

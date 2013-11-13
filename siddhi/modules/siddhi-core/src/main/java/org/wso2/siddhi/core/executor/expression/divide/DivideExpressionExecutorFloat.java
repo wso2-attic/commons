@@ -21,6 +21,8 @@ import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.util.Set;
+
 public class DivideExpressionExecutorFloat implements ExpressionExecutor {
     private ExpressionExecutor leftExpressionExecutor;
     private ExpressionExecutor rightExpressionExecutor;
@@ -34,13 +36,12 @@ public class DivideExpressionExecutorFloat implements ExpressionExecutor {
 
     @Override
     public Object execute(AtomicEvent event) {
-        return ((Number) leftExpressionExecutor.execute(event)).floatValue() / ((Number) rightExpressionExecutor.execute(event)).floatValue();
+        return ((Number) leftExpressionExecutor.execute(event)).doubleValue() / ((Number) rightExpressionExecutor.execute(event)).doubleValue();
 
     }
 
-    public Attribute.Type getType() {
+    public Attribute.Type getReturnType() {
         return Attribute.Type.FLOAT;
     }
-
 
 }

@@ -20,9 +20,13 @@ package org.wso2.siddhi.core.executor.expression;
 import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.query.api.definition.Attribute;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ConstantExpressionExecutor implements ExpressionExecutor {
     private Object value;
     private Attribute.Type type;
+
     public ConstantExpressionExecutor(Object value, Attribute.Type type) {
         this.value = value;
         this.type = type;
@@ -33,7 +37,7 @@ public class ConstantExpressionExecutor implements ExpressionExecutor {
         return value;
     }
 
-    public Attribute.Type getType() {
+    public Attribute.Type getReturnType() {
         return type;
     }
 

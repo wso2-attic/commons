@@ -18,10 +18,9 @@
 package org.wso2.siddhi.core.persistence;
 
 import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
+import org.wso2.siddhi.core.query.MarkedElement;
 
-public interface Persister {
-
-    public void setNodeId(String nodeId);
+public interface Persister extends MarkedElement {
 
     public void setPersistenceStore(PersistenceStore persistenceStore);
 

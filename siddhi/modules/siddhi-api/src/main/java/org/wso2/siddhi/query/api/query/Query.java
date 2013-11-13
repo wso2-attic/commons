@@ -18,41 +18,77 @@
 package org.wso2.siddhi.query.api.query;
 
 import org.wso2.siddhi.query.api.ExecutionPlan;
-import org.wso2.siddhi.query.api.query.output.OutStream;
-import org.wso2.siddhi.query.api.query.projection.Projector;
+import org.wso2.siddhi.query.api.condition.Condition;
 import org.wso2.siddhi.query.api.query.input.AnonymousStream;
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
 import org.wso2.siddhi.query.api.query.input.Stream;
+import org.wso2.siddhi.query.api.query.output.OutputRate;
+import org.wso2.siddhi.query.api.query.output.stream.DeleteStream;
+import org.wso2.siddhi.query.api.query.output.stream.InsertIntoStream;
+import org.wso2.siddhi.query.api.query.output.stream.OutStream;
+import org.wso2.siddhi.query.api.query.output.stream.UpdateStream;
+import org.wso2.siddhi.query.api.query.selection.Selector;
 
 public class Query implements ExecutionPlan {
 
     private Stream inputStream;
-    private Projector projector=new Projector();
+    private Selector selector = new Selector();
     private OutStream outStream;
+    private String partitionId;
+    private OutputRate outputRate;
 
     public Query from(Stream stream) {
         this.inputStream = stream;
         return this;
     }
 
-    public Query insertInto(String outputStreamId) {
-        this.outStream =new OutStream(outputStreamId);
+    public Query select(Selector selector) {
+        this.selector = selector;
         return this;
     }
 
     public Query outStream(OutStream outStream) {
-        this.outStream =outStream;
+        this.outStream = outStream;
         return this;
     }
 
-    public Query project(Projector projector) {
-        this.projector = projector;
+    public Query insertInto(String outputStreamId, OutStream.OutputEventsFor outputEventsFor) {
+        this.outStream = new InsertIntoStream(outputStreamId, outputEventsFor);
         return this;
     }
 
 
-    public SingleStream returnStream() {
-       return new AnonymousStream(this);
+    public Query insertInto(String outputStreamId) {
+        this.outStream = new InsertIntoStream(outputStreamId);
+        return this;
+    }
+    
+    public void partitionBy(String partitionId) {
+    	this.partitionId = partitionId;
+    }
+
+    public BasicStream returnStream() {
+        return new AnonymousStream(this);
+    }
+
+    public void deleteBy(String outputTableId, Condition deletingCondition) {
+        this.outStream = new DeleteStream(outputTableId, deletingCondition);
+    }
+
+    public void deleteBy(String outputTableId, OutStream.OutputEventsFor outputEventsFor, Condition deletingCondition) {
+        this.outStream = new DeleteStream(outputTableId, outputEventsFor, deletingCondition);
+    }
+
+    public void updateBy(String outputTableId, Condition deletingCondition) {
+        this.outStream = new UpdateStream(outputTableId, deletingCondition);
+    }
+
+    public void updateBy(String outputTableId, OutStream.OutputEventsFor outputEventsFor, Condition updatingCondition) {
+        this.outStream = new UpdateStream(outputTableId, outputEventsFor, updatingCondition);
+    }
+
+    public void output(OutputRate outputRate) {
+        this.outputRate = outputRate;
     }
 
     public Stream getInputStream() {
@@ -63,12 +99,15 @@ public class Query implements ExecutionPlan {
         return outStream;
     }
 
-    public Projector getProjector() {
-        return projector;
+    public Selector getSelector() {
+        return selector;
     }
 
-    public Query insertInto( String outputStreamId,OutStream.OutputEvents outputEvents) {
-        this.outStream= new OutStream(outputStreamId,outputEvents);
-        return this;
+	public String getPartitionId() {
+		return partitionId;
+	}
+
+    public OutputRate getOutputRate() {
+        return outputRate;
     }
 }

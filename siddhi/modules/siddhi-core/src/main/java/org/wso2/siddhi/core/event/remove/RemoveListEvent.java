@@ -17,36 +17,38 @@
 */
 package org.wso2.siddhi.core.event.remove;
 
+import org.wso2.siddhi.core.event.BundleEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
 
 public class RemoveListEvent extends ListEvent implements RemoveStream {
 
-    long expiryTime = 0L;
 
-    public RemoveListEvent(Event[] events, long expiryTime) {
+    public RemoveListEvent(RemoveEvent[] events) {
         super(events);
-        this.expiryTime = expiryTime;
     }
 
-    protected RemoveListEvent(Event[] events, int activeEvents, boolean unlimited,
-                              long expiryTime) {
-        super(events, activeEvents, unlimited);
-        this.expiryTime = expiryTime;
+    protected RemoveListEvent(RemoveEvent[] events, int activeEvents) {
+        super(events, activeEvents);
+    }
+
+    public RemoveListEvent(int initialSize) {
+        super();
+        events = new RemoveEvent[initialSize];
     }
 
     @Override
-    protected ListEvent createEventClone(Event[] inEvents, int activeEvents, boolean unlimited) {
-        return new RemoveListEvent(inEvents, activeEvents, unlimited, expiryTime);
+    protected RemoveListEvent createEventClone(Event[] inEvents, int activeEvents) {
+        return new RemoveListEvent((RemoveEvent[])inEvents, activeEvents);
     }
 
     @Override
     public long getExpiryTime() {
-        return expiryTime;
+        return ((RemoveEvent)events[0]).getExpiryTime();
     }
 
     @Override
-    public void setExpiryTime(long expiryTime) {
-        this.expiryTime=expiryTime;
+    public BundleEvent getNewInstance() {
+        return new RemoveListEvent(activeEvents);
     }
 }

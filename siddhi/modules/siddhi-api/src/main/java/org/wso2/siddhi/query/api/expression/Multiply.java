@@ -17,7 +17,12 @@
 */
 package org.wso2.siddhi.query.api.expression;
 
-public class Multiply extends Expression{
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.List;
+import java.util.Set;
+
+public class Multiply extends Expression {
     private Expression leftValue;
     private Expression rightValue;
 
@@ -32,5 +37,55 @@ public class Multiply extends Expression{
 
     public Expression getRightValue() {
         return rightValue;
+    }
+
+    @Override
+    protected void validate(List<QueryEventSource> queryEventSources, String streamReferenceId,
+                            boolean processInStreamDefinition) {
+        leftValue.validate(queryEventSources, streamReferenceId, processInStreamDefinition);
+        rightValue.validate(queryEventSources, streamReferenceId, processInStreamDefinition);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Multiply{" +
+               "leftValue=" + leftValue +
+               ", rightValue=" + rightValue +
+               '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Multiply multiply = (Multiply) o;
+
+        if (leftValue != null ? !leftValue.equals(multiply.leftValue) : multiply.leftValue != null) {
+            return false;
+        }
+        if (rightValue != null ? !rightValue.equals(multiply.rightValue) : multiply.rightValue != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = leftValue != null ? leftValue.hashCode() : 0;
+        result = 31 * result + (rightValue != null ? rightValue.hashCode() : 0);
+        return result;
+    }
+
+    public Set<String> getDependencySet() {
+        Set<String> dependencySet = leftValue.getDependencySet();
+        dependencySet.addAll(rightValue.getDependencySet());
+        return dependencySet;
     }
 }

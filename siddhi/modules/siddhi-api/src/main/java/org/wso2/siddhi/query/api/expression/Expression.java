@@ -18,12 +18,18 @@
 package org.wso2.siddhi.query.api.expression;
 
 
+import org.wso2.siddhi.query.api.definition.Attribute;
 import org.wso2.siddhi.query.api.expression.constant.BoolConstant;
 import org.wso2.siddhi.query.api.expression.constant.DoubleConstant;
 import org.wso2.siddhi.query.api.expression.constant.FloatConstant;
 import org.wso2.siddhi.query.api.expression.constant.IntConstant;
 import org.wso2.siddhi.query.api.expression.constant.LongConstant;
 import org.wso2.siddhi.query.api.expression.constant.StringConstant;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public abstract class Expression {
     public static StringConstant value(String value) {
@@ -78,11 +84,32 @@ public abstract class Expression {
         return new Variable(null, attributeName);
     }
 
-   //   public abstract Attribute.Type getType();
+    //   public abstract Attribute.Type getType();
 
-  //  public abstract void inferType(Map<String, StreamDefinition> streamDefinitionMap);
+    //  public abstract void inferType(Map<String, StreamDefinition> streamTableDefinitionMap);
 
-    public static Variable variable(String streamId,int position, String attributeName) {
-        return new Variable(streamId,position, attributeName);
+    public static Variable variable(String streamId, int position, String attributeName) {
+        return new Variable(streamId, position, attributeName);
+    }
+
+    public static Expression extension(String extensionNamespace, String extensionFunctionName,
+                                       Expression... expressions) {
+        return new ExpressionExtension(extensionNamespace, extensionFunctionName, expressions);
+    }
+
+    public static Expression function(String extensionFunctionName,
+                                      Expression... expressions) {
+        return new FunctionExpression(extensionFunctionName, expressions);
+    }
+
+    public static Type type(Attribute.Type type) {
+        return new Type(type);
+    }
+
+    protected abstract void validate(List<QueryEventSource> queryEventSources,
+                                     String streamReferenceId, boolean processInStreamDefinition);
+
+    protected Set<String> getDependencySet() {
+        return new HashSet<String>();
     }
 }

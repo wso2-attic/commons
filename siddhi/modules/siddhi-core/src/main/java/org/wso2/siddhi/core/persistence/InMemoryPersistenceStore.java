@@ -17,6 +17,10 @@
 */
 package org.wso2.siddhi.core.persistence;
 
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 import org.apache.log4j.Logger;
 import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 
@@ -24,21 +28,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class InMemoryPersistenceStore implements PersistenceStore {
 
     private static final Logger log = Logger.getLogger(InMemoryPersistenceStore.class);
-    Map<String, Map<String, Map<String, byte[]>>> persistenceMap = new HashMap<String, Map<String, Map<String, byte[]>>>();
-    Map<String, List<String>> revisionMap = new HashMap<String, List<String>>();
+    HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(new Config().setInstanceName(UUID.randomUUID().toString()));
+    IMap<String, Map<String, Map<String, byte[]>>> persistenceMap = hazelcastInstance.getMap("persistenceMap");
+    IMap<String, List<String>> revisionMap = hazelcastInstance.getMap("revisionMap");
 
 
     @Override
-    public void save(PersistenceManagementEvent persistenceManagementEvent, String nodeId,
+    public void save(PersistenceManagementEvent persistenceManagementEvent, String elementId,
                      PersistenceObject data) {
         Map<String, Map<String, byte[]>> executionPersistenceMap = persistenceMap.get(persistenceManagementEvent.getExecutionPlanIdentifier());
         if (executionPersistenceMap == null) {
             executionPersistenceMap = new HashMap<String, Map<String, byte[]>>();
-            persistenceMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(), executionPersistenceMap);
         }
         Map<String, byte[]> executionRevisionMap = executionPersistenceMap.get(persistenceManagementEvent.getRevision());
 
@@ -46,26 +51,29 @@ public class InMemoryPersistenceStore implements PersistenceStore {
             executionRevisionMap = new HashMap<String, byte[]>();
             executionPersistenceMap.put(persistenceManagementEvent.getRevision(), executionRevisionMap);
         }
-        data.setNodeId(nodeId);
-        executionRevisionMap.put(nodeId, ByteSerializer.OToB(data));
+        data.setElementId(elementId);
+        executionRevisionMap.put(elementId, ByteSerializer.OToB(data));
         if (log.isDebugEnabled()) {
-            log.debug(nodeId + " serialized");
+            log.debug(elementId + " serialized");
         }
 
         List<String> revisionList = revisionMap.get(persistenceManagementEvent.getExecutionPlanIdentifier());
         if (revisionList == null) {
             revisionList = new ArrayList<String>();
-            revisionMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(),revisionList);
+            revisionMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(), revisionList);
         }
         if (revisionList.size() == 0 || (revisionList.size() > 0 && !persistenceManagementEvent.getRevision().equals(revisionList.get(revisionList.size() - 1)))) {
             revisionList.add(persistenceManagementEvent.getRevision());
+            revisionMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(), revisionList);
         }
+        persistenceMap.put(persistenceManagementEvent.getExecutionPlanIdentifier(), executionPersistenceMap);
+
 
     }
 
     @Override
     public PersistenceObject load(PersistenceManagementEvent persistenceManagementEvent,
-                                  String nodeId) {
+                                  String elementId) {
 
 
         Map<String, Map<String, byte[]>> executionPersistenceMap = persistenceMap.get(persistenceManagementEvent.getExecutionPlanIdentifier());
@@ -80,9 +88,9 @@ public class InMemoryPersistenceStore implements PersistenceStore {
             return null;
         }
         if (log.isDebugEnabled()) {
-            log.debug("Deserializing " + nodeId);
+            log.debug("Deserializing " + elementId);
         }
-        return (PersistenceObject) ByteSerializer.BToO(executionRevisionMap.get(nodeId));
+        return (PersistenceObject) ByteSerializer.BToO(executionRevisionMap.get(elementId));
     }
 
     @Override
@@ -95,5 +103,9 @@ public class InMemoryPersistenceStore implements PersistenceStore {
             return revisionList.get(revisionList.size() - 1);
         }
         return null;
+    }
+
+    public void shutdown() {
+        hazelcastInstance.getLifecycleService().shutdown();
     }
 }

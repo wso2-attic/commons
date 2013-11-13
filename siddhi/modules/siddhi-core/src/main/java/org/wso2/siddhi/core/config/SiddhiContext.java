@@ -17,36 +17,55 @@
 */
 package org.wso2.siddhi.core.config;
 
+import com.hazelcast.core.HazelcastInstance;
+import org.wso2.siddhi.core.extension.EternalReferencedHolder;
 import org.wso2.siddhi.core.persistence.PersistenceService;
-import org.wso2.siddhi.core.query.stream.handler.RunnableHandler;
+import org.wso2.siddhi.core.persistence.ThreadBarrier;
+import org.wso2.siddhi.core.treaser.EventMonitorService;
+import org.wso2.siddhi.core.util.generator.ElementIdGenerator;
+import org.wso2.siddhi.core.util.generator.GlobalIndexGenerator;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SiddhiContext {
 
-    private int threads;
-    private boolean singleThreading;
+    private boolean asyncProcessing;
     private int eventBatchSize;
-    private List<RunnableHandler> runnableHandlerList = new ArrayList<RunnableHandler>();
     private PersistenceService persistenceService;
-    private String executionPlanIdentifier;
+    private ThreadBarrier threadBarrier;
+    private ThreadPoolExecutor threadPoolExecutor;
+    private ScheduledExecutorService scheduledExecutorService;
+    private ProcessingState distributedProcessingState;
+    private ElementIdGenerator elementIdGenerator;
+    private GlobalIndexGenerator globalIndexGenerator;
+    private HazelcastInstance hazelcastInstance;
+    private String queryPlanIdentifier;
+    private List<Class> siddhiExtensions;
+    private List<EternalReferencedHolder> eternalReferencedHolders;
+    private ConcurrentHashMap<String, DataSource> siddhiDataSources;
+    private EventMonitorService eventMonitorService;
 
+    public enum ProcessingState {ENABLE_INTERNAL,ENABLE_EXTERNAL,DISABLED}
 
-    public int getThreads() {
-        return threads;
+    public SiddhiContext(String queryPlanIdentifier, ProcessingState distributedProcessingState) {
+        this.queryPlanIdentifier = queryPlanIdentifier;
+        this.distributedProcessingState = distributedProcessingState;
+        this.elementIdGenerator = new ElementIdGenerator(queryPlanIdentifier);
+        this.siddhiDataSources = new ConcurrentHashMap<String, DataSource>();
+        this.eternalReferencedHolders = new ArrayList<EternalReferencedHolder>();
     }
 
-    public void setThreads(int threads) {
-        this.threads = threads;
+    public boolean isAsyncProcessing() {
+        return asyncProcessing;
     }
 
-    public boolean isSingleThreading() {
-        return singleThreading;
-    }
-
-    public void setSingleThreading(boolean singleThreading) {
-        this.singleThreading = singleThreading;
+    public void setAsyncProcessing(boolean asyncProcessing) {
+        this.asyncProcessing = asyncProcessing;
     }
 
     public int getEventBatchSize() {
@@ -57,14 +76,6 @@ public class SiddhiContext {
         this.eventBatchSize = eventBatchSize;
     }
 
-    public void addRunnableHandler(RunnableHandler runnableHandler) {
-        runnableHandlerList.add(runnableHandler);
-    }
-
-    public List<RunnableHandler> getRunnableHandlerList() {
-        return runnableHandlerList;
-    }
-
     public void setPersistenceService(PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
@@ -73,11 +84,92 @@ public class SiddhiContext {
         return persistenceService;
     }
 
-    public void setExecutionPlanIdentifier(String executionPlanIdentifier) {
-        this.executionPlanIdentifier = executionPlanIdentifier;
+    public void setThreadBarrier(ThreadBarrier threadBarrier) {
+        this.threadBarrier = threadBarrier;
     }
 
-    public String getExecutionPlanIdentifier() {
-        return executionPlanIdentifier;
+    public ThreadBarrier getThreadBarrier() {
+        return threadBarrier;
+    }
+
+    public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
+        this.threadPoolExecutor = threadPoolExecutor;
+    }
+
+    public void setScheduledExecutorService(ScheduledExecutorService scheduledExecutorService) {
+        this.scheduledExecutorService = scheduledExecutorService;
+    }
+
+    public ThreadPoolExecutor getThreadPoolExecutor() {
+        return threadPoolExecutor;
+    }
+
+    public ScheduledExecutorService getScheduledExecutorService() {
+        return scheduledExecutorService;
+    }
+
+    public boolean isDistributedProcessingEnabled() {
+        return distributedProcessingState != ProcessingState.DISABLED;
+    }
+
+    public ProcessingState getDistributedProcessingState() {
+        return distributedProcessingState;
+    }
+
+    public ElementIdGenerator getElementIdGenerator() {
+        return elementIdGenerator;
+    }
+
+    public GlobalIndexGenerator getGlobalIndexGenerator() {
+        return globalIndexGenerator;
+    }
+
+
+    public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
+        this.hazelcastInstance = hazelcastInstance;
+    }
+
+    public HazelcastInstance getHazelcastInstance() {
+        return hazelcastInstance;
+    }
+
+    public void setGlobalIndexGenerator(GlobalIndexGenerator globalIndexGenerator) {
+        this.globalIndexGenerator = globalIndexGenerator;
+    }
+
+    public String getQueryPlanIdentifier() {
+        return queryPlanIdentifier;
+    }
+
+    public void setSiddhiExtensions(List<Class> siddhiExtensions) {
+        this.siddhiExtensions = siddhiExtensions;
+    }
+
+    public List<Class> getSiddhiExtensions() {
+        return siddhiExtensions;
+    }
+
+    public DataSource getDataSource(String name) {
+        return siddhiDataSources.get(name);
+    }
+
+    public void addDataSource(String name, DataSource dataSource) {
+        siddhiDataSources.put(name, dataSource);
+    }
+
+    public EventMonitorService getEventMonitorService() {
+        return eventMonitorService;
+    }
+
+    public void setEventMonitorService(EventMonitorService eventMonitorService) {
+        this.eventMonitorService = eventMonitorService;
+    }
+
+    public void addEternalReferencedHolder(EternalReferencedHolder eternalReferencedHolder) {
+        eternalReferencedHolders.add(eternalReferencedHolder);
+    }
+
+    public List<EternalReferencedHolder> getEternalReferencedHolders() {
+        return eternalReferencedHolders;
     }
 }

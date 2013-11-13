@@ -2,6 +2,7 @@ package org.wso2.siddhi.core.util.parser;
 
 import org.wso2.siddhi.core.exception.OperationNotSupportedException;
 import org.wso2.siddhi.core.executor.conditon.ConditionExecutor;
+import org.wso2.siddhi.core.executor.conditon.compare.contains.ContainsCompareConditionExecutor;
 import org.wso2.siddhi.core.executor.conditon.compare.equal.EqualCompareConditionExecutorBoolBool;
 import org.wso2.siddhi.core.executor.conditon.compare.equal.EqualCompareConditionExecutorDoubleDouble;
 import org.wso2.siddhi.core.executor.conditon.compare.equal.EqualCompareConditionExecutorDoubleFloat;
@@ -52,6 +53,7 @@ import org.wso2.siddhi.core.executor.conditon.compare.greater_than_equal.Greater
 import org.wso2.siddhi.core.executor.conditon.compare.greater_than_equal.GreaterThanEqualCompareConditionExecutorLongFloat;
 import org.wso2.siddhi.core.executor.conditon.compare.greater_than_equal.GreaterThanEqualCompareConditionExecutorLongInt;
 import org.wso2.siddhi.core.executor.conditon.compare.greater_than_equal.GreaterThanEqualCompareConditionExecutorLongLong;
+import org.wso2.siddhi.core.executor.conditon.compare.instance_of.InstanceOfCompareConditionExecutor;
 import org.wso2.siddhi.core.executor.conditon.compare.less_than.LessThanCompareConditionExecutorDoubleDouble;
 import org.wso2.siddhi.core.executor.conditon.compare.less_than.LessThanCompareConditionExecutorDoubleFloat;
 import org.wso2.siddhi.core.executor.conditon.compare.less_than.LessThanCompareConditionExecutorDoubleInt;
@@ -107,11 +109,11 @@ import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
 public class ComparatorParser {
     public static ConditionExecutor parseGreaterThanCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
                 throw new OperationNotSupportedException("string cannot used in greater than comparisons");
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -126,7 +128,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -141,7 +143,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -156,7 +158,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -173,17 +175,17 @@ public class ComparatorParser {
             case BOOL:
                 throw new OperationNotSupportedException("bool cannot used in greater than comparisons");
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used in greater than comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in greater than comparisons");
     }
 
 
     public static ConditionExecutor parseGreaterThanEqualCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
                 throw new OperationNotSupportedException("string cannot used in greater than equal comparisons");
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -198,7 +200,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -213,7 +215,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -228,7 +230,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -245,16 +247,16 @@ public class ComparatorParser {
             case BOOL:
                 throw new OperationNotSupportedException("bool cannot used in greater than equal comparisons");
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used in greater than equal comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in greater than equal comparisons");
     }
 
     public static ConditionExecutor parseLessThanCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
                 throw new OperationNotSupportedException("string cannot used in less than comparisons");
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -269,7 +271,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -284,7 +286,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -299,7 +301,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -316,16 +318,16 @@ public class ComparatorParser {
             case BOOL:
                 throw new OperationNotSupportedException("bool cannot used in less than comparisons");
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used in less than comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in less than comparisons");
     }
 
     public static ConditionExecutor parseLessThanEqualCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
                 throw new OperationNotSupportedException("string cannot used in less than equal comparisons");
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -340,7 +342,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -355,7 +357,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -370,7 +372,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -387,21 +389,21 @@ public class ComparatorParser {
             case BOOL:
                 throw new OperationNotSupportedException("bool cannot used in less than equal comparisons");
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used in less than equal comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in less than equal comparisons");
     }
 
     public static ConditionExecutor parseEqualCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         return new EqualCompareConditionExecutorStringString(leftExpressionExecutor, rightExpressionExecutor);
                     default:
-                        throw new OperationNotSupportedException("sting cannot be compared with " + rightExpressionExecutor.getType());
+                        throw new OperationNotSupportedException("sting cannot be compared with " + rightExpressionExecutor.getReturnType());
                 }
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -416,7 +418,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -431,7 +433,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -446,7 +448,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -461,28 +463,28 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case BOOL:
-                switch (rightExpressionExecutor.getType()) {
-                    case STRING:
+                switch (rightExpressionExecutor.getReturnType()) {
+                    case BOOL:
                         return new EqualCompareConditionExecutorBoolBool(leftExpressionExecutor, rightExpressionExecutor);
                     default:
-                        throw new OperationNotSupportedException("bool cannot be compared with " + rightExpressionExecutor.getType());
+                        throw new OperationNotSupportedException("bool cannot be compared with " + rightExpressionExecutor.getReturnType());
                 }
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used  equal comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used  equal comparisons");
     }
 
     public static ConditionExecutor parseNotEqualCompare(
             ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
-        switch (leftExpressionExecutor.getType()) {
+        switch (leftExpressionExecutor.getReturnType()) {
             case STRING:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         return new NotEqualCompareConditionExecutorStringString(leftExpressionExecutor, rightExpressionExecutor);
                     default:
-                        throw new OperationNotSupportedException("sting cannot be compared with " + rightExpressionExecutor.getType());
+                        throw new OperationNotSupportedException("sting cannot be compared with " + rightExpressionExecutor.getReturnType());
                 }
             case INT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("int cannot be compared with string");
                     case INT:
@@ -497,7 +499,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case LONG:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("long cannot be compared with string");
                     case INT:
@@ -512,7 +514,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case FLOAT:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -527,7 +529,7 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case DOUBLE:
-                switch (rightExpressionExecutor.getType()) {
+                switch (rightExpressionExecutor.getReturnType()) {
                     case STRING:
                         throw new OperationNotSupportedException("float cannot be compared with string");
                     case INT:
@@ -542,14 +544,38 @@ public class ComparatorParser {
                         throw new OperationNotSupportedException("int cannot be compared with bool");
                 }
             case BOOL:
-                switch (rightExpressionExecutor.getType()) {
-                    case STRING:
+                switch (rightExpressionExecutor.getReturnType()) {
+                    case BOOL:
                         return new NotEqualCompareConditionExecutorBoolBool(leftExpressionExecutor, rightExpressionExecutor);
                     default:
-                        throw new OperationNotSupportedException("bool cannot be compared with " + rightExpressionExecutor.getType());
+                        throw new OperationNotSupportedException("bool cannot be compared with " + rightExpressionExecutor.getReturnType());
                 }
         }
-        throw new OperationNotSupportedException(leftExpressionExecutor.getType() + " cannot be used in not equal comparisons");
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in not equal comparisons");
+    }
+
+    public static ConditionExecutor parseContainsCompare(
+            ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
+        switch (leftExpressionExecutor.getReturnType()) {
+            case STRING:
+                switch (rightExpressionExecutor.getReturnType()) {
+                    case STRING:
+                        return new ContainsCompareConditionExecutor(leftExpressionExecutor, rightExpressionExecutor);
+                    default:
+                        throw new OperationNotSupportedException(rightExpressionExecutor.getReturnType() + " cannot be used in contains comparisons");
+                }
+        }
+        throw new OperationNotSupportedException(leftExpressionExecutor.getReturnType() + " cannot be used in contains comparisons");
+    }
+
+    public static ConditionExecutor parseInstanceOfCompare(
+            ExpressionExecutor leftExpressionExecutor, ExpressionExecutor rightExpressionExecutor) {
+
+        switch (rightExpressionExecutor.getReturnType()) {
+            case TYPE:
+                return new InstanceOfCompareConditionExecutor(leftExpressionExecutor, rightExpressionExecutor);
+        }
+        throw new OperationNotSupportedException(rightExpressionExecutor.getReturnType() + " cannot be used in right hand side of the instanceof comparisons");
     }
 
 

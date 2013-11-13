@@ -19,15 +19,20 @@ package org.wso2.siddhi.core.executor.conditon;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
 import org.wso2.siddhi.core.exception.OperationNotSupportedException;
+import org.wso2.siddhi.core.executor.expression.ConstantExpressionExecutor;
 import org.wso2.siddhi.core.executor.expression.ExpressionExecutor;
+import org.wso2.siddhi.core.executor.expression.VariableExpressionExecutor;
+import org.wso2.siddhi.core.table.predicate.PredicateBuilder;
+import org.wso2.siddhi.core.table.predicate.PredicateTreeNode;
 import org.wso2.siddhi.query.api.definition.Attribute;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
 
 public class BooleanConditionExecutor implements ConditionExecutor {
 
     public ExpressionExecutor expressionExecutor;
 
     public BooleanConditionExecutor(ExpressionExecutor expressionExecutor) {
-        if (expressionExecutor.getType() != Attribute.Type.BOOL) {
+        if (expressionExecutor.getReturnType() != Attribute.Type.BOOL) {
             throw new OperationNotSupportedException("Boolean condition cannot handle non boolean values");
         }
         this.expressionExecutor = expressionExecutor;
@@ -37,4 +42,36 @@ public class BooleanConditionExecutor implements ConditionExecutor {
         Object value = expressionExecutor.execute(event);
         return !(value == null) && (Boolean) value;
     }
+
+    @Override
+    public String constructFilterQuery(AtomicEvent newEvent, int level) {
+        return constructQuery(newEvent, level, null, null);
+    }
+
+    @Override
+    public PredicateTreeNode constructPredicate(AtomicEvent newEvent, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+        if (expressionExecutor instanceof ConstantExpressionExecutor) {
+            Object obj = expressionExecutor.execute(newEvent);
+            return predicateBuilder.buildValue(obj);
+        } else {
+            return ((VariableExpressionExecutor) expressionExecutor).constructPredicate(newEvent, tableDefinition, predicateBuilder);
+        }
+
+    }
+
+    public String constructQuery(AtomicEvent newEvent, int level, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+        if (expressionExecutor instanceof ConstantExpressionExecutor) {
+            Object obj = expressionExecutor.execute(newEvent);
+            if (obj instanceof Boolean) {
+                return obj.toString();
+            } else {
+                return "*";
+            }
+        } else if (expressionExecutor instanceof VariableExpressionExecutor) {
+            return ((VariableExpressionExecutor) expressionExecutor).constructFilterQuery(newEvent, level);
+        } else {
+            return "*";
+        }
+    }
+
 }

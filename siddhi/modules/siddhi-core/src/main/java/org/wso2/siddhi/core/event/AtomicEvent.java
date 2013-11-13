@@ -20,6 +20,6 @@ package org.wso2.siddhi.core.event;
 /**
  * Single event
  */
-public interface AtomicEvent {
-    long getTimeStamp();
+public interface AtomicEvent extends ComplexEvent{
+
 }

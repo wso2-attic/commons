@@ -32,7 +32,7 @@
 
             <item name="Downloads" href="https://sourceforge.net/projects/siddhi/files/" >
                 <!--<item name="Releases" href="http://sourceforge.net/projects/siddhi/files/"/>-->
-                <item name="Release" href="http://svn.wso2.org/repos/wso2/people/suho/siddhi/m1/siddhi-1.0.0-SNAPSHOT.zip"/>
+                <item name="Release" href="http://svn.wso2.org/repos/wso2/people/suho/siddhi/m1/siddhi-2.0.0.zip"/>
                 <item name="Source Code" href="source-repository.html"/>
             </item>
             <item name="Documentation" href="">

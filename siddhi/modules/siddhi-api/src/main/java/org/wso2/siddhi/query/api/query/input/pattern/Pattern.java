@@ -17,7 +17,7 @@
 */
 package org.wso2.siddhi.query.api.query.input.pattern;
 
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.TransformedStream;
 import org.wso2.siddhi.query.api.query.input.pattern.element.CountElement;
 import org.wso2.siddhi.query.api.query.input.pattern.element.FollowedByElement;
 import org.wso2.siddhi.query.api.query.input.pattern.element.LogicalElement;
@@ -30,9 +30,9 @@ public class Pattern {
         return new PatternStream(patternElement,null);
     }
 
-    public static PatternElement logical(SingleStream singleStream1, LogicalElement.Type type,
-                                         SingleStream singleStream2) {
-        return new LogicalElement(singleStream1, type, singleStream2);
+    public static PatternElement logical(TransformedStream transformedStream1, LogicalElement.Type type,
+                                         TransformedStream transformedStream2) {
+        return new LogicalElement(transformedStream1, type, transformedStream2);
     }
 
     public static PatternElement followedBy(PatternElement patternElement,
@@ -40,7 +40,7 @@ public class Pattern {
         return new FollowedByElement(patternElement, followedByPatternElement);
     }
 
-    public static PatternElement count(SingleStream singleStream, int min, int max) {
-        return new CountElement(singleStream, min, max);
+    public static PatternElement count(TransformedStream transformedStream, int min, int max) {
+        return new CountElement(transformedStream, min, max);
     }
 }

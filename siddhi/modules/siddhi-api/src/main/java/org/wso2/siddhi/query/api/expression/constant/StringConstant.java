@@ -18,6 +18,9 @@
 package org.wso2.siddhi.query.api.expression.constant;
 
 import org.wso2.siddhi.query.api.expression.Expression;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+
+import java.util.List;
 
 public class StringConstant extends Expression implements Constant {
     private String value;
@@ -30,4 +33,39 @@ public class StringConstant extends Expression implements Constant {
         return value;
     }
 
+    @Override
+    protected void validate(List<QueryEventSource> queryEventSources, String streamReferenceId,
+                            boolean processInStreamDefinition) {
+        //nothing to validate
+    }
+
+    @Override
+    public String toString() {
+        return "StringConstant{" +
+               "value='" + value + '\'' +
+               '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        StringConstant that = (StringConstant) o;
+
+        if (value != null ? !value.equals(that.value) : that.value != null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return value != null ? value.hashCode() : 0;
+    }
 }

@@ -17,8 +17,8 @@ package org.wso2.siddhi.sample;
 
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
+import org.wso2.siddhi.core.query.output.QueryCallback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.stream.output.Callback;
 import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
@@ -35,14 +35,13 @@ public class TimeWindowSample {
 
 
         siddhiManager.defineStream("define stream cseEventStream ( symbol string, price float )");
-        siddhiManager.addQuery("from  cseEventStream [ price >= 60 and symbol=='IBM'] [win.time(1000)] " +
-                               "insert into StockQuote symbol, avg(price) as avgPrice ;");
+        String queryReference = siddhiManager.addQuery("from  cseEventStream[ price >= 60 and symbol=='IBM']#window.time(1000) " +
+                                                       "insert all-events into StockQuote symbol, avg(price) as avgPrice ;");
 
-        siddhiManager.addCallback("StockQuote", new Callback() {
+        siddhiManager.addCallback(queryReference, new QueryCallback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
+                EventPrinter.print(timeStamp, inEvents, removeEvents);
             }
         });
         InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");

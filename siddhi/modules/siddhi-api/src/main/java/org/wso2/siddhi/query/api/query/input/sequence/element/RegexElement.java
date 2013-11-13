@@ -17,17 +17,18 @@
 */
 package org.wso2.siddhi.query.api.query.input.sequence.element;
 
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
+import org.wso2.siddhi.query.api.query.input.TransformedStream;
 
 public class RegexElement implements SequenceElement {
 
-    private SingleStream singleStream;
+    private TransformedStream transformedStream;
     private int minCount = -1;
     private int maxCount = -1;
 
-    public RegexElement(SingleStream singleStream, int minCount, int maxCount) {
-        this.singleStream = singleStream;
-        singleStream.setCounterStream(true);
+    public RegexElement(TransformedStream transformedStream, int minCount, int maxCount) {
+        this.transformedStream = transformedStream;
+        transformedStream.setCounterStream(true);
         this.minCount = minCount;
         this.maxCount = maxCount;
     }
@@ -40,7 +41,7 @@ public class RegexElement implements SequenceElement {
         return maxCount;
     }
 
-    public SingleStream getSingleStream() {
-        return singleStream;
+    public TransformedStream getTransformedStream() {
+        return transformedStream;
     }
 }

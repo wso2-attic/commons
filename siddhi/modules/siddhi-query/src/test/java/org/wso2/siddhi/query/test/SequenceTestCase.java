@@ -14,25 +14,20 @@ public class SequenceTestCase {
         Query query = SiddhiCompiler.parseQuery("from  a1 = infoStock[action == \"buy\"]*,\n" +
                                                 "          b1 = cseEventStream[price > 70]?,\n" +
                                                 "          b2 = cseEventStream[price > 75]\n" +
-                                                "insert into StockQuote\n" +
-                                                "a1[0].action as action, b1.price as priceA, b2.price as priceBJoin");
+                                                "select a1[0].action as action, b1.price as priceA, b2.price as priceBJoin " +
+                                                "insert into StockQuote");
         Assert.assertNotNull(query);
     }
-  @Test
+
+    @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
         Query query = SiddhiCompiler.parseQuery("from  a1 = infoStock[action == \"buy\"]*,\n" +
                                                 "          b1 = cseEventStream[price > 70]?,\n" +
                                                 "          b2 = cseEventStream[price > 75]\n" +
-                                                "within 2390 " +
-                                                "insert into StockQuote\n" +
-                                                "a1[0].action as action, b1.price as priceA, b2.price as priceBJoin");
+                                                "   within 2390 " +
+                                                "select a1[0].action as action, b1.price as priceA, b2.price as priceBJoin " +
+                                                "insert into StockQuote\n");
         Assert.assertNotNull(query);
     }
-
-//    from  a1 = infoStock[action == "buy"]*,
-//                      b1 = cseEventStream[price > 70]?,
-//                      b2 = cseEventStream[price > 75]
-//            insert into StockQuote
-//            a1[0].action as action, b1.price as priceA, b2.price as priceBJoin
 
 }

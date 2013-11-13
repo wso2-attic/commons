@@ -17,19 +17,10 @@
 */
 package org.wso2.siddhi.query.api.definition;
 
-import org.wso2.siddhi.query.api.ExecutionPlan;
-import org.wso2.siddhi.query.api.exception.AttributeAlreadyExist;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class StreamDefinition implements ExecutionPlan {
-
-    String streamId;
-    List<Attribute> attributeList = new ArrayList<Attribute>();
+public class StreamDefinition extends AbstractDefinition {
 
     public StreamDefinition name(String streamId) {
-        this.streamId = streamId;
+        id = streamId;
         return this;
     }
 
@@ -39,55 +30,16 @@ public class StreamDefinition implements ExecutionPlan {
         return this;
     }
 
-    private void checkAttribute(String attributeName) {
-        for (Attribute attribute : attributeList) {
-            if (attribute.getName().equals(attributeName)) {
-                throw new AttributeAlreadyExist(attributeName + " is already defined for with type " + attribute.getType() + " for " + streamId);
-            }
-        }
-    }
-
     public String getStreamId() {
-        return streamId;
-    }
-
-    public List<Attribute> getAttributeList() {
-        return attributeList;
-    }
-
-    public Attribute.Type getAttributeType(String attributeName) {
-        for (Attribute attribute : attributeList) {
-            if (attribute.getName().equals(attributeName)) {
-                return attribute.getType();
-            }
-        }
-        return null;   //todo through exception
-    }
-
-    public int getAttributePosition(String attributeName) {
-        for (int i = 0, attributeListSize = attributeList.size(); i < attributeListSize; i++) {
-            Attribute attribute = attributeList.get(i);
-            if (attribute.getName().equals(attributeName)) {
-                return i;
-            }
-        }
-        return 0;   //todo through exception
+        return id;
     }
 
     @Override
     public String toString() {
         return "StreamDefinition{" +
-               "streamId='" + streamId + '\'' +
+               "streamId='" + id + '\'' +
                ", attributeList=" + attributeList +
                '}';
     }
 
-    public String[] getAttributeNameArray(){
-        int attributeListSize = attributeList.size();
-       String[] attributeNameArray= new String[attributeListSize];
-        for (int i = 0; i < attributeListSize; i++) {
-            attributeNameArray[i]= attributeList.get(i).getName();
-        }
-        return attributeNameArray;
-    }
 }

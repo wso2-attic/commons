@@ -18,7 +18,17 @@
 package org.wso2.siddhi.core.executor.conditon;
 
 import org.wso2.siddhi.core.event.AtomicEvent;
+import org.wso2.siddhi.core.table.predicate.PredicateBuilder;
+import org.wso2.siddhi.core.table.predicate.PredicateTreeNode;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
 
 public interface ConditionExecutor {
+    int PREDICATE_LEVEL = -1;
+
     boolean execute(AtomicEvent event);
+
+    String constructFilterQuery(AtomicEvent newEvent, int level);
+
+    PredicateTreeNode constructPredicate(AtomicEvent newEvent, TableDefinition tableDefinition, PredicateBuilder predicateBuilder);
+
 }

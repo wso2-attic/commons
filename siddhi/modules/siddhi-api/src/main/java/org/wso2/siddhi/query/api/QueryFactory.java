@@ -18,10 +18,12 @@
 package org.wso2.siddhi.query.api;
 
 import org.wso2.siddhi.query.api.condition.Condition;
+import org.wso2.siddhi.query.api.definition.partition.PartitionDefinition;
 import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
 import org.wso2.siddhi.query.api.query.Query;
-import org.wso2.siddhi.query.api.query.projection.Projector;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
 import org.wso2.siddhi.query.api.query.input.JoinStream;
 import org.wso2.siddhi.query.api.query.input.SingleStream;
 import org.wso2.siddhi.query.api.query.input.Stream;
@@ -29,6 +31,7 @@ import org.wso2.siddhi.query.api.query.input.pattern.PatternStream;
 import org.wso2.siddhi.query.api.query.input.pattern.element.PatternElement;
 import org.wso2.siddhi.query.api.query.input.sequence.SequenceStream;
 import org.wso2.siddhi.query.api.query.input.sequence.element.SequenceElement;
+import org.wso2.siddhi.query.api.query.selection.Selector;
 
 public abstract class QueryFactory {
 
@@ -40,12 +43,12 @@ public abstract class QueryFactory {
         return new StreamDefinition();
     }
 
-    public static SingleStream inputStream(String streamId) {
-        return new SingleStream(streamId, streamId);
+    public static BasicStream inputStream(String streamId) {
+        return new BasicStream(streamId, streamId);
     }
 
-    public static Projector outputProjector() {
-        return new Projector();
+    public static Selector outputSelector() {
+        return new Selector();
     }
 
     public static Stream joinStream(SingleStream leftStream, JoinStream.Type type,
@@ -77,8 +80,8 @@ public abstract class QueryFactory {
         return new JoinStream(leftStream, type, rightStream, null, null, JoinStream.EventTrigger.ALL);
     }
 
-    public static SingleStream inputStream(String streamReferenceId, String streamId) {
-        return new SingleStream(streamReferenceId, streamId);
+    public static BasicStream inputStream(String streamReferenceId, String streamId) {
+        return new BasicStream(streamReferenceId, streamId);
 
     }
 
@@ -96,5 +99,13 @@ public abstract class QueryFactory {
 
     public static SequenceStream sequenceStream(SequenceElement sequenceElement, Constant within) {
         return new SequenceStream(sequenceElement,within);
+    }
+
+    public static TableDefinition createTableDefinition() {
+        return new TableDefinition();
+    }
+
+	public static PartitionDefinition createPartitionDefinition() {
+	    return new PartitionDefinition();
     }
 }

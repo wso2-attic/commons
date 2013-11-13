@@ -25,15 +25,22 @@ import java.util.Arrays;
 public abstract class StateEvent implements ComplexEvent, AtomicEvent {
 
     private int eventState = -1;
+    private String eventId=null;
     protected StreamEvent[] streamEvents;
 
     public StateEvent(StreamEvent[] streamEvents) {
         this.streamEvents = streamEvents;
     }
 
-    protected StateEvent(int eventState, StreamEvent[] streamEvents) {
+    public StateEvent(StreamEvent[] streamEvents, String eventId) {
+        this.streamEvents = streamEvents;
+        this.eventId=eventId;
+    }
+
+    protected StateEvent(int eventState, StreamEvent[] streamEvents,String eventId) {
         this.eventState = eventState;
         this.streamEvents = streamEvents;
+        this.eventId=eventId;
     }
 
     public StreamEvent[] getStreamEvents() {
@@ -70,6 +77,7 @@ public abstract class StateEvent implements ComplexEvent, AtomicEvent {
     public String toString() {
         return "StateEvent{" +
                "eventState=" + eventState +
+               ", eventId=" + eventId +
                ", streamEvents=" + (streamEvents == null ? null : Arrays.asList(streamEvents)) +
                '}';
     }
@@ -79,23 +87,24 @@ public abstract class StateEvent implements ComplexEvent, AtomicEvent {
     }
 
     protected abstract StateEvent createCloneEvent(StreamEvent[] inEventstream,
-                                          int eventState);
+                                          int eventState,
+                                          String eventId);
 
-    public StateEvent cloneEvent(int stateNumber) {
+    public StateEvent cloneEvent(int stateNumber,String newEventId) {
         int length = streamEvents.length;
         StreamEvent[] inEventstream = new StreamEvent[length];
         for (int i = 0; i < stateNumber; i++) {
             StreamEvent streamEvent = streamEvents[i];
             if (streamEvent != null) {
-                if (streamEvent instanceof ListEvent) {
-                    ((ListEvent) streamEvent).cloneEvent();
+                if (streamEvent instanceof ListAtomicEvent) {
+                    ((ListAtomicEvent) streamEvent).cloneEvent();
                 } else {
                     inEventstream[i] = streamEvent;
                 }
             }
         }
         System.arraycopy(streamEvents, 0, inEventstream, 0, stateNumber);
-        return createCloneEvent(inEventstream, eventState);
+        return createCloneEvent(inEventstream, eventState, newEventId);
     }
 
     public int getEventState() {
@@ -104,5 +113,53 @@ public abstract class StateEvent implements ComplexEvent, AtomicEvent {
 
     public void setEventState(int eventState) {
         this.eventState = eventState;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public Object getEvent0() {
+        return streamEvents[0];
+    }
+
+    public Object getEvent1() {
+        return streamEvents[1];
+    }
+
+    public Object getEvent2() {
+        return streamEvents[2];
+    }
+
+    public Object getEvent3() {
+        return streamEvents[3];
+    }
+
+    public Object getEvent4() {
+        return streamEvents[4];
+    }
+
+    public Object getEvent5() {
+        return streamEvents[5];
+    }
+
+    public Object getEvent6() {
+        return streamEvents[6];
+    }
+
+    public Object getEvent7() {
+        return streamEvents[7];
+    }
+
+    public Object getEvent8() {
+        return streamEvents[8];
+    }
+
+    public Object getEvent9() {
+        return streamEvents[9];
     }
 }

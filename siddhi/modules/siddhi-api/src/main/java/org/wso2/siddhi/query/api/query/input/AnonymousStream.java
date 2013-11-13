@@ -21,7 +21,7 @@ import org.wso2.siddhi.query.api.query.Query;
 
 import java.util.UUID;
 
-public class AnonymousStream extends SingleStream {
+public class AnonymousStream extends BasicStream {
     private Query query;
 
     public AnonymousStream(Query query) {

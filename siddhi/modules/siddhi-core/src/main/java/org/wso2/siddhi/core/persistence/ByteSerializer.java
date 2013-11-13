@@ -49,7 +49,7 @@ public class ByteSerializer {
         }
         long end = System.currentTimeMillis();
         if (log.isDebugEnabled()) {
-            System.out.println("Encoded in :" + (end - start) + " msec");
+            log.debug("Encoded in :" + (end - start) + " msec");
         }
         return out;
     }
@@ -74,7 +74,7 @@ public class ByteSerializer {
         }
         long end = System.currentTimeMillis();
         if (log.isDebugEnabled()) {
-            System.out.println("Decoded in :" + (end - start) + " msec");
+            log.debug("Decoded in :" + (end - start) + " msec");
         }
         return out;
     }

@@ -12,23 +12,19 @@ public class PatternTestCase {
     @Test
     public void Test1() throws RecognitionException, SiddhiPraserException {
         Query query = SiddhiCompiler.parseQuery("from e1=Stream1[price >= 20] -> e2=Stream2[ price >= e1.price]\n" +
-                                                "    insert into ABCStream e1.symbol, avg(e2.price ) as avgPrice\n" +
+                                                "select e1.symbol, avg(e2.price ) as avgPrice\n" +
                                                 "    group by e1.symbol\n" +
-                                                "    having avgPrice>50;");
+                                                "    having avgPrice>50\n" +
+                                                "insert into ABCStream;");
         Assert.assertNotNull(query);
     }
-
-//    from e1=Stream1[price >= 20] -> e2=Stream2[ price >= e1.price]
-//             insert into ABCStream e1.symbol, avg(e2.price ) as avgPrice
-//             group by e1.symbol
-//             having avgPrice>50;
 
 
     @Test
     public void Test2() throws RecognitionException, SiddhiPraserException {
         Query query = SiddhiCompiler.parseQuery("from every( a1 = infoStock0[action == 'buy'] or a2=infoStock1[action == 'buy'] ->  b1 = cseEventStream0[price > 70] )-> b2 = cseEventStream1[price > 75] " +
-                                                " insert into StockQuote " +
-                                                " a1.action as action, b1.price as priceA, b2.price as priceB ;"
+                                                "select a1.action as action, b1.price as priceA, b2.price as priceB " +
+                                                "insert into StockQuote ;"
         );
         Assert.assertNotNull(query);
     }
@@ -38,8 +34,8 @@ public class PatternTestCase {
         Query query = SiddhiCompiler.parseQuery("from every a1 = infoStock[action == \"buy\"]<2:> ->\n" +
                                                 "          b1 = cseEventStream[price > 70]<3> ->\n" +
                                                 "          b2 = cseEventStream[price > 75]<1:4>\n" +
-                                                " insert into StockQuote\n" +
-                                                " a1.action as action, b1.price as priceA, b2.price as priceB");
+                                                "select  a1.action as action, b1.price as priceA, b2.price as priceB\n" +
+                                                "insert into StockQuote\n");
         Assert.assertNotNull(query);
     }
 
@@ -55,10 +51,10 @@ public class PatternTestCase {
                                                 "    a2 = infoStock[action == \"buy\"] ->\n" +
                                                 "          b1 = cseEventStream[price > 70] ->\n" +
                                                 "          b2 = cseEventStream[price > 75]\n" +
-                                                "insert into StockQuote\n" +
-                                                "coalesce(a1.action, a2.action) as action,\n" +
-                                                "b1.price as priceA,\n" +
-                                                "b2.price as priceB");
+                                                "select coalesce(a1.action, a2.action) as action,\n" +
+                                                "   b1.price as priceA,\n" +
+                                                "   b2.price as priceB\n" +
+                                                "insert into StockQuote\n");
         Assert.assertNotNull(query);
     }
 
@@ -69,10 +65,10 @@ public class PatternTestCase {
                                                 "          b1 = cseEventStream[price > 70] ->\n" +
                                                 "          b2 = cseEventStream[price > 75]\n" +
                                                 " within 3000 " +
-                                                "insert into StockQuote\n" +
-                                                "coalesce(a1.action, a2.action) as action,\n" +
-                                                "b1.price as priceA,\n" +
-                                                "b2.price as priceB");
+                                                "select coalesce(a1.action, a2.action) as action,\n" +
+                                                "   b1.price as priceA,\n" +
+                                                "   b2.price as priceB\n" +
+                                                "insert into StockQuote");
         Assert.assertNotNull(query);
     }
 

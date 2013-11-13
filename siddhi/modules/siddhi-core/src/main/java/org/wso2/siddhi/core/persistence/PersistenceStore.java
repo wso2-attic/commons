@@ -21,10 +21,10 @@ import org.wso2.siddhi.core.event.management.PersistenceManagementEvent;
 
 public interface PersistenceStore {
 
-    public void save(PersistenceManagementEvent persistenceManagementEvent, String nodeId,
+    public void save(PersistenceManagementEvent persistenceManagementEvent, String elementId,
                      PersistenceObject data);
 
-    public PersistenceObject load(PersistenceManagementEvent persistenceManagementEvent, String nodeId);
+    public PersistenceObject load(PersistenceManagementEvent persistenceManagementEvent, String elementId);
 
     public String getLastRevision(String executionPlanIdentifier);
 }

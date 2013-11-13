@@ -17,26 +17,39 @@
 */
 package org.wso2.siddhi.core.event.in;
 
+import org.wso2.siddhi.core.event.BundleEvent;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.event.ListEvent;
+import org.wso2.siddhi.core.event.remove.RemoveListEvent;
 
-public  class InListEvent extends ListEvent implements InStream {
+public class InListEvent extends ListEvent implements InStream {
 
 
-    public InListEvent(Event[] events) {
+    public InListEvent(int initialSize) {
+        super();
+        events = new InEvent[initialSize];
+    }
+
+    public InListEvent(InEvent[] events) {
         super(events);
     }
 
-    public InListEvent(int maxEvents) {
-        super(maxEvents);
+    protected InListEvent(InEvent[] events, int activeEvents) {
+        super(events, activeEvents);
     }
 
-    protected InListEvent(Event[] events, int activeEvents, boolean unlimited) {
-        super(events, activeEvents, unlimited);
+    public InListEvent() {
+        this(10);
     }
 
     @Override
-    protected ListEvent createEventClone(Event[] inEvents, int activeEvents, boolean unlimited) {
-        return new InListEvent(inEvents, activeEvents, unlimited);
+    protected InListEvent createEventClone(Event[] inEvents, int activeEvents) {
+        return new InListEvent((InEvent[])inEvents, activeEvents);
+    }
+
+
+    @Override
+    public BundleEvent getNewInstance() {
+        return new InListEvent(activeEvents);
     }
 }

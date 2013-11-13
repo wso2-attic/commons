@@ -17,14 +17,14 @@
 */
 package org.wso2.siddhi.core.executor.expression;
 
-import org.wso2.siddhi.core.event.AtomicEvent;
-import org.wso2.siddhi.core.event.Event;
-import org.wso2.siddhi.core.event.ListEvent;
-import org.wso2.siddhi.core.event.StateEvent;
-import org.wso2.siddhi.core.event.StreamEvent;
+import org.wso2.siddhi.core.event.*;
+import org.wso2.siddhi.core.event.in.InEvent;
+import org.wso2.siddhi.core.table.predicate.PredicateBuilder;
+import org.wso2.siddhi.core.table.predicate.PredicateTreeNode;
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.definition.Attribute;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
+import org.wso2.siddhi.query.api.definition.TableDefinition;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
 import org.wso2.siddhi.query.api.utils.SiddhiConstants;
 
 import java.util.List;
@@ -34,44 +34,71 @@ public class VariableExpressionExecutor implements ExpressionExecutor {
     int streamPosition = -1;
     int attributePosition = -1;
     int innerStreamPosition = -1;  //Simple Event (Default)
-
+    String attributeName;
+    String streamReference;
 
     public VariableExpressionExecutor(String streamIdOfVariable, String attributeName, int position,
-                                      List<QueryEventStream> queryEventStreamList,
-                                      String currentStreamReference) {
-        String streamReference;
+                                      List<QueryEventSource> queryEventSourceList,
+                                      String currentStreamReference, boolean processInDefinition) {
+        this.attributeName = attributeName;
         if (streamIdOfVariable != null) {
             streamReference = streamIdOfVariable;
         } else {
             streamReference = currentStreamReference;
         }
-        StreamDefinition streamDefinition = null;
-        int queryEventStreamListSize = queryEventStreamList.size();
-//        if (queryEventStreamListSize == 1) {
-//            streamDefinition = queryEventStreamList.get(0).getStreamDefinition();
-//        } else {
+        AbstractDefinition definition = null;
+        int queryEventStreamListSize = queryEventSourceList.size();
+
         for (int i = 0; i < queryEventStreamListSize; i++) {
-            QueryEventStream queryEventStream = queryEventStreamList.get(i);
-            if (queryEventStream.getReferenceStreamId().equals(streamReference)) {
-                streamDefinition = queryEventStream.getStreamDefinition();
-                streamPosition = i;
-                if (position > -1) { //for known positions
-                    innerStreamPosition = position;
-                } else if (position == SiddhiConstants.PREV) {
-                    innerStreamPosition = SiddhiConstants.PREV;
-                } else if (queryEventStream.isCounterStream()) { //to get the last event
-                    innerStreamPosition = SiddhiConstants.LAST;
+            QueryEventSource queryEventSource = queryEventSourceList.get(i);
+            String referenceSourceId = queryEventSource.getReferenceSourceId();
+            if (referenceSourceId != null && referenceSourceId.equals(streamReference)) {
+                definition = updateAttributeData(position, processInDefinition, i, queryEventSource);
+                if (definition != null) {
+                    break;
                 }
             }
-
-//            }
         }
-        if (streamDefinition == null) {
-            streamDefinition = queryEventStreamList.get(0).getStreamDefinition();
+        if (definition == null) {
+            for (int i = 0; i < queryEventStreamListSize; i++) {
+                QueryEventSource queryEventSource = queryEventSourceList.get(i);
+                String sourceId = queryEventSource.getSourceId();
+                if (sourceId != null && sourceId.equals(streamReference)) {
+                    definition = updateAttributeData(position, processInDefinition, i, queryEventSource);
+                    if (definition != null) {
+                        break;
+                    }
+                }
+            }
         }
-        type = streamDefinition.getAttributeType(attributeName);
-        attributePosition = streamDefinition.getAttributePosition(attributeName);
+        if (definition == null) {
+            if (processInDefinition) {
+                definition = queryEventSourceList.get(0).getInDefinition();
+            } else {
+                definition = queryEventSourceList.get(0).getOutDefinition();
+            }
+        }
+        type = definition.getAttributeType(attributeName);
+        attributePosition = definition.getAttributePosition(attributeName);
 
+    }
+
+    private AbstractDefinition updateAttributeData(int position, boolean processInDefinition, int i, QueryEventSource queryEventSource) {
+        AbstractDefinition definition;
+        if (processInDefinition) {
+            definition = queryEventSource.getInDefinition();
+        } else {
+            definition = queryEventSource.getOutDefinition();
+        }
+        streamPosition = i;
+        if (position > -1) { //for known positions
+            innerStreamPosition = position;
+        } else if (position == SiddhiConstants.PREV) {
+            innerStreamPosition = SiddhiConstants.PREV;
+        } else if (queryEventSource.isCounterStream()) { //to get the last event
+            innerStreamPosition = SiddhiConstants.LAST;
+        }
+        return definition;
     }
 
     @Override
@@ -147,9 +174,54 @@ public class VariableExpressionExecutor implements ExpressionExecutor {
         }
     }
 
-    public Attribute.Type getType() {
+    public Attribute.Type getReturnType() {
         return type;
     }
 
 
+    public String constructFilterQuery(AtomicEvent newEvent, int level) {
+        Object obj = execute(newEvent);
+        if (obj == null) {
+            StringBuilder sb = new StringBuilder();
+            if (streamPosition >= 0 && level == 0) {
+                sb.append("event").append(streamPosition).append(".");
+            }
+            if (innerStreamPosition >= 0) {
+                sb.append("event").append(innerStreamPosition).append(".");
+            }
+            if (attributePosition >= 0) {
+                sb.append("data").append(attributePosition);
+            }
+            return sb.toString();
+        } else if (obj instanceof String) {
+            return "'" + obj.toString() + "'";
+        } else {
+            return obj.toString();
+        }
+    }
+
+    public PredicateTreeNode constructPredicate(AtomicEvent newEvent, TableDefinition tableDefinition, PredicateBuilder predicateBuilder) {
+//            if (!((Event) newEvent).getStreamId().equals(streamReference)) {
+        //TODO check what if user has given "as" reference for the table in Join
+        //TODO is only TableId used ?
+        if (tableDefinition.getTableId().equals(streamReference)) {
+            Object[] attributeArray = new Object[attributePosition + 1];
+            attributeArray[attributePosition] = attributeName;
+//                newEvent = new InEvent("dbEventStream", System.currentTimeMillis(), attributeArray);
+            newEvent = new InEvent(streamReference, System.currentTimeMillis(), attributeArray);
+            return predicateBuilder.buildVariableExpression(execute(newEvent).toString());
+        } else {
+            Object obj = execute(newEvent);
+            Object value = ((Event) newEvent).getData(attributePosition);
+            // wrap with quotes for string types.
+                /*if (value != null && value instanceof String) {
+                    return "'" + obj.toString() + "'";
+                }
+                return obj.toString();*/
+
+            // todo - check the validity of this line.
+            return predicateBuilder.buildValue(obj);
+        }
+
+    }
 }

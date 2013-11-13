@@ -17,9 +17,12 @@
 */
 package org.wso2.siddhi.core.event;
 
+import org.wso2.siddhi.core.event.in.InStream;
+import org.wso2.siddhi.core.event.remove.RemoveEvent;
+
 import java.util.Arrays;
 
-public abstract class Event implements StreamEvent,AtomicEvent {
+public abstract class Event implements StreamEvent, AtomicEvent {
 
     private String streamId;
     private long timeStamp;
@@ -50,9 +53,55 @@ public abstract class Event implements StreamEvent,AtomicEvent {
     @Override
     public String toString() {
         return "Event{" +
-               "streamId='" + streamId + '\'' +
-               ", timeStamp=" + timeStamp +
-               ", data=" + (data == null ? null : Arrays.asList(data)) +
-               '}';
+                "streamId='" + streamId + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", data=" + (data == null ? null : Arrays.asList(data)) +
+                ", type=" + ((this instanceof InStream) ? "new" : ((this instanceof RemoveEvent) ? "remove" : "other"))+
+                '}';
+    }
+
+    @Override
+    public Event[] toArray() {
+        return new Event[]{this};
+    }
+
+    public Object getData0() {
+        return data[0];
+    }
+
+    public Object getData1() {
+        return data[1];
+    }
+
+    public Object getData2() {
+        return data[2];
+    }
+
+    public Object getData3() {
+        return data[3];
+    }
+
+    public Object getData4() {
+        return data[4];
+    }
+
+    public Object getData5() {
+        return data[5];
+    }
+
+    public Object getData6() {
+        return data[6];
+    }
+
+    public Object getData7() {
+        return data[7];
+    }
+
+    public Object getData8() {
+        return data[8];
+    }
+
+    public Object getData9() {
+        return data[9];
     }
 }

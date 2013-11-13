@@ -18,7 +18,7 @@ package org.wso2.siddhi.sample;
 import org.wso2.siddhi.core.SiddhiManager;
 import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.stream.input.InputHandler;
-import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.stream.output.StreamCallback;
 import org.wso2.siddhi.core.util.EventPrinter;
 import org.wso2.siddhi.query.compiler.exception.SiddhiPraserException;
 
@@ -34,13 +34,12 @@ public class SimpleFilterSample {
 
         siddhiManager.defineStream("define stream cseEventStream ( symbol string, price float, volume int )");
         siddhiManager.addQuery("from  cseEventStream [ price >= 50 ] " +
-                               "insert into StockQuote symbol, price ;" );
+                               "insert into StockQuote symbol, price ;");
 
-        siddhiManager.addCallback("StockQuote", new Callback() {
+        siddhiManager.addCallback("StockQuote", new StreamCallback() {
             @Override
-            public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents,
-                                Event[] faultEvents) {
-                EventPrinter.print(timeStamp, inEvents, removeEvents, faultEvents);
+            public void receive(Event[] events) {
+                EventPrinter.print(events);
             }
         });
         InputHandler inputHandler = siddhiManager.getInputHandler("cseEventStream");

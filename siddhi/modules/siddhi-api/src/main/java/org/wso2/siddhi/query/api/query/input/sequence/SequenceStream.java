@@ -17,11 +17,11 @@
 */
 package org.wso2.siddhi.query.api.query.input.sequence;
 
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
 import org.wso2.siddhi.query.api.expression.constant.Constant;
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
 import org.wso2.siddhi.query.api.query.input.Stream;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
 import org.wso2.siddhi.query.api.query.input.sequence.element.RegexElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.NextElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.OrElement;
@@ -30,7 +30,7 @@ import org.wso2.siddhi.query.api.query.input.sequence.element.SequenceElement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public class SequenceStream implements Stream, SequenceElement {
     private SequenceElement sequenceElement;
@@ -40,7 +40,7 @@ public class SequenceStream implements Stream, SequenceElement {
     public SequenceStream(SequenceElement sequenceElement, Constant within) {
         this.sequenceElement = sequenceElement;
         this.streamIdList = new ArrayList<String>(collectStreamIds(sequenceElement, new HashSet<String>()));
-        this.within=within;
+        this.within = within;
     }
 
     public SequenceElement getSequenceElement() {
@@ -53,22 +53,23 @@ public class SequenceStream implements Stream, SequenceElement {
     }
 
     @Override
-    public List<QueryEventStream> constructQueryEventStreamList(
-            Map<String, StreamDefinition> streamDefinitionMap,
-            List<QueryEventStream> queryEventStreams) {
-        return constructEventStreamList(getSequenceElement(), streamDefinitionMap, queryEventStreams);
+    public List<QueryEventSource> constructQueryEventSourceList(
+            ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+            List<QueryEventSource> queryEventSources) {
+        return constructEventStreamList(getSequenceElement(), streamTableDefinitionMap, queryEventSources);
     }
+
     private HashSet<String> collectStreamIds(SequenceElement sequenceElement,
                                              HashSet<String> streamIds) {
         if (sequenceElement instanceof SequenceStream) {
             streamIds.addAll(((SequenceStream) sequenceElement).getStreamIds());
-        } else if (sequenceElement instanceof SingleStream) {
-            streamIds.addAll(((SingleStream) sequenceElement).getStreamIds());
+        } else if (sequenceElement instanceof BasicStream) {
+            streamIds.addAll(((BasicStream) sequenceElement).getStreamIds());
         } else if (sequenceElement instanceof OrElement) {
-            collectStreamIds(((OrElement) sequenceElement).getSingleStream1(), streamIds);
-            collectStreamIds(((OrElement) sequenceElement).getSingleStream2(), streamIds);
+            collectStreamIds(((OrElement) sequenceElement).getTransformedStream1(), streamIds);
+            collectStreamIds(((OrElement) sequenceElement).getTransformedStream2(), streamIds);
         } else if (sequenceElement instanceof RegexElement) {
-            collectStreamIds(((RegexElement) sequenceElement).getSingleStream(), streamIds);
+            collectStreamIds(((RegexElement) sequenceElement).getTransformedStream(), streamIds);
         } else if (sequenceElement instanceof NextElement) {
             collectStreamIds(((NextElement) sequenceElement).getSequenceElement(), streamIds);
             collectStreamIds(((NextElement) sequenceElement).getNextSequenceElement(), streamIds);
@@ -76,26 +77,26 @@ public class SequenceStream implements Stream, SequenceElement {
         return streamIds;
     }
 
-    public List<QueryEventStream> constructEventStreamList(SequenceElement sequenceElement,
-                                                           Map<String, StreamDefinition> streamDefinitionMap,
-                                                           List<QueryEventStream> queryEventStreams) {
+    public List<QueryEventSource> constructEventStreamList(SequenceElement sequenceElement,
+                                                           ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+                                                           List<QueryEventSource> queryEventSources) {
 
 
-        if (sequenceElement instanceof SingleStream) {
-            ((SingleStream) sequenceElement).constructQueryEventStreamList(streamDefinitionMap, queryEventStreams);
+        if (sequenceElement instanceof BasicStream) {
+            ((BasicStream) sequenceElement).constructQueryEventSourceList(streamTableDefinitionMap, queryEventSources);
         } else if (sequenceElement instanceof OrElement) {
-            constructEventStreamList(((OrElement) sequenceElement).getSingleStream1(), streamDefinitionMap, queryEventStreams);
-            constructEventStreamList(((OrElement) sequenceElement).getSingleStream2(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((OrElement) sequenceElement).getTransformedStream1(), streamTableDefinitionMap, queryEventSources);
+            constructEventStreamList(((OrElement) sequenceElement).getTransformedStream2(), streamTableDefinitionMap, queryEventSources);
         } else if (sequenceElement instanceof RegexElement) {
-            constructEventStreamList(((RegexElement) sequenceElement).getSingleStream(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((RegexElement) sequenceElement).getTransformedStream(), streamTableDefinitionMap, queryEventSources);
         } else if (sequenceElement instanceof NextElement) {
-            constructEventStreamList(((NextElement) sequenceElement).getSequenceElement(), streamDefinitionMap, queryEventStreams);
-            constructEventStreamList(((NextElement) sequenceElement).getNextSequenceElement(), streamDefinitionMap, queryEventStreams);
+            constructEventStreamList(((NextElement) sequenceElement).getSequenceElement(), streamTableDefinitionMap, queryEventSources);
+            constructEventStreamList(((NextElement) sequenceElement).getNextSequenceElement(), streamTableDefinitionMap, queryEventSources);
         } else if (sequenceElement instanceof SequenceStream) {
-            ((SequenceStream) sequenceElement).constructQueryEventStreamList(streamDefinitionMap, queryEventStreams);
+            ((SequenceStream) sequenceElement).constructQueryEventSourceList(streamTableDefinitionMap, queryEventSources);
         }
 
-        return queryEventStreams;
+        return queryEventSources;
     }
 
     public Constant getWithin() {

@@ -17,16 +17,16 @@
 */
 package org.wso2.siddhi.query.api.query.input;
 
-import org.wso2.siddhi.query.api.query.QueryEventStream;
-import org.wso2.siddhi.query.api.definition.StreamDefinition;
+import org.wso2.siddhi.query.api.definition.AbstractDefinition;
+import org.wso2.siddhi.query.api.query.QueryEventSource;
 
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 public interface Stream {
 
     List<String> getStreamIds();
 
-    List<QueryEventStream> constructQueryEventStreamList(Map<String, StreamDefinition> streamDefinitionMap,
-                                       List<QueryEventStream> queryEventStreams);
+    List<QueryEventSource> constructQueryEventSourceList(ConcurrentMap<String, AbstractDefinition> streamTableDefinitionMap,
+                                                         List<QueryEventSource> queryEventSources);
 }

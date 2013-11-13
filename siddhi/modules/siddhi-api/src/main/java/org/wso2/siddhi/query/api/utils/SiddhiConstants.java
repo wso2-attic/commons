@@ -22,4 +22,7 @@ public class SiddhiConstants {
     public static final int UNLIMITED = -2;
     public static final int LAST = -5;
     public static final int PREV = -7;
+
+    public static final String EVENT_TRACE_LOGGER = "EVENT_TRACE_LOGGER";
+
 }

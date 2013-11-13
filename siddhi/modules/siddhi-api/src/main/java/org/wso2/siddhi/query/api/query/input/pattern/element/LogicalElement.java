@@ -17,26 +17,26 @@
 */
 package org.wso2.siddhi.query.api.query.input.pattern.element;
 
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.TransformedStream;
 
 public class LogicalElement implements PatternElement {
-    SingleStream singleStream1;
+    TransformedStream transformedStream1;
     LogicalElement.Type type;
-    SingleStream singleStream2;
+    TransformedStream transformedStream2;
 
-    public LogicalElement(SingleStream singleStream1, LogicalElement.Type type,
-                          SingleStream singleStream2) {
-        this.singleStream1 = singleStream1;
+    public LogicalElement(TransformedStream transformedStream1, Type type,
+                          TransformedStream transformedStream2) {
+        this.transformedStream1 = transformedStream1;
         this.type = type;
-        this.singleStream2 = singleStream2;
+        this.transformedStream2 = transformedStream2;
     }
 
-    public SingleStream getSingleStream1() {
-        return singleStream1;
+    public TransformedStream getTransformedStream1() {
+        return transformedStream1;
     }
 
-    public SingleStream getSingleStream2() {
-        return singleStream2;
+    public TransformedStream getTransformedStream2() {
+        return transformedStream2;
     }
 
     public Type getType() {

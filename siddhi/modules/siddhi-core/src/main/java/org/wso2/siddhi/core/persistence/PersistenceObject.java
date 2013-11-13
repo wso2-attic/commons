@@ -21,19 +21,19 @@ import java.io.Serializable;
 
 public class PersistenceObject implements Serializable{
 
-    String nodeId;
+    String elementId;
     Object[] data;
 
     public PersistenceObject( Object... data) {
         this.data = data;
     }
 
-    public String getNodeId() {
-        return nodeId;
+    public String getElementId() {
+        return elementId;
     }
 
-    public void setNodeId(String nodeId) {
-        this.nodeId = nodeId;
+    public void setElementId(String elementId) {
+        this.elementId = elementId;
     }
 
     public Object[] getData() {

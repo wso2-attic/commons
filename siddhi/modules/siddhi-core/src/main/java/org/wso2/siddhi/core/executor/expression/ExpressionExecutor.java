@@ -23,6 +23,6 @@ import org.wso2.siddhi.query.api.definition.Attribute;
 public interface ExpressionExecutor {
     public Object execute(AtomicEvent event);
 
-    public Attribute.Type getType();
+    public Attribute.Type getReturnType();
 
 }

@@ -18,21 +18,28 @@
 package org.wso2.siddhi.core.util.parser;
 
 import org.apache.log4j.Logger;
-import org.wso2.siddhi.core.statemachine.pattern.AndPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.CountPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.LogicPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.OrPatternState;
-import org.wso2.siddhi.core.statemachine.pattern.PatternState;
-import org.wso2.siddhi.core.statemachine.sequence.CountSequenceState;
-import org.wso2.siddhi.core.statemachine.sequence.OrSequenceState;
-import org.wso2.siddhi.core.statemachine.sequence.SequenceState;
-import org.wso2.siddhi.core.util.statemachine.AndState;
-import org.wso2.siddhi.core.util.statemachine.CountState;
-import org.wso2.siddhi.core.util.statemachine.LogicState;
-import org.wso2.siddhi.core.util.statemachine.OrState;
-import org.wso2.siddhi.core.util.statemachine.State;
+import org.wso2.siddhi.core.query.processor.handler.HandlerProcessor;
+import org.wso2.siddhi.core.query.processor.handler.InnerHandlerProcessor;
+import org.wso2.siddhi.core.query.processor.handler.pattern.PatternHandlerProcessor;
+import org.wso2.siddhi.core.query.processor.handler.sequence.SequenceHandlerProcessor;
+import org.wso2.siddhi.core.query.statemachine.State;
+import org.wso2.siddhi.core.query.statemachine.pattern.AndPatternState;
+import org.wso2.siddhi.core.query.statemachine.pattern.CountPatternState;
+import org.wso2.siddhi.core.query.statemachine.pattern.LogicPatternState;
+import org.wso2.siddhi.core.query.statemachine.pattern.OrPatternState;
+import org.wso2.siddhi.core.query.statemachine.pattern.PatternState;
+import org.wso2.siddhi.core.query.statemachine.sequence.CountSequenceState;
+import org.wso2.siddhi.core.query.statemachine.sequence.OrSequenceState;
+import org.wso2.siddhi.core.query.statemachine.sequence.SequenceState;
+import org.wso2.siddhi.core.util.statemachine.AndUtilState;
+import org.wso2.siddhi.core.util.statemachine.CountUtilState;
+import org.wso2.siddhi.core.util.statemachine.LogicUtilState;
+import org.wso2.siddhi.core.util.statemachine.OrUtilState;
 import org.wso2.siddhi.core.util.statemachine.StateNumber;
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.core.util.statemachine.UtilState;
+import org.wso2.siddhi.query.api.condition.ConditionValidator;
+import org.wso2.siddhi.query.api.query.input.BasicStream;
+import org.wso2.siddhi.query.api.query.input.handler.Filter;
 import org.wso2.siddhi.query.api.query.input.pattern.PatternStream;
 import org.wso2.siddhi.query.api.query.input.pattern.element.CountElement;
 import org.wso2.siddhi.query.api.query.input.pattern.element.FollowedByElement;
@@ -42,28 +49,33 @@ import org.wso2.siddhi.query.api.query.input.sequence.element.NextElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.OrElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.RegexElement;
 import org.wso2.siddhi.query.api.query.input.sequence.element.SequenceElement;
+import org.wso2.siddhi.query.api.query.selection.Selector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class StateParser {
     static final Logger log = Logger.getLogger(StateParser.class);
 
     //Pattern
 
-    public static List<PatternState> convertToPatternStateList(List<State> stateList) {
+    public static List<PatternState> convertToPatternStateList(List<UtilState> stateList) {
         List<PatternState> patternStateList = new ArrayList<PatternState>(stateList.size());
         for (int i = 0, stateListSize = stateList.size(); i < stateListSize; i++) {
-            State state = stateList.get(i);
+            UtilState state = stateList.get(i);
             PatternState patternState;
-            if (state instanceof AndState) {
-                patternState = (new AndPatternState(state.getStateNumber(), state.getSingleStream()));
-            } else if (state instanceof OrState) {
-                patternState = (new OrPatternState(state.getStateNumber(), state.getSingleStream()));
-            } else if (state instanceof CountState) {
-                patternState = (new CountPatternState(state.getStateNumber(), state.getSingleStream(), ((CountState) state).getMin(), ((CountState) state).getMax()));
+            if (state instanceof AndUtilState) {
+                patternState = (new AndPatternState(state.getStateNumber(), state.getTransformedStream()));
+            } else if (state instanceof OrUtilState) {
+                patternState = (new OrPatternState(state.getStateNumber(), state.getTransformedStream()));
+            } else if (state instanceof CountUtilState) {
+                patternState = (new CountPatternState(state.getStateNumber(), state.getTransformedStream(), ((CountUtilState) state).getMin(), ((CountUtilState) state).getMax()));
             } else {
-                patternState = (new PatternState(state.getStateNumber(), state.getSingleStream()));
+                patternState = (new PatternState(state.getStateNumber(), state.getTransformedStream()));
             }
             patternState.setStateNumber(i);
             patternState.setFirst(state.isFirst());
@@ -71,7 +83,7 @@ public class StateParser {
             patternStateList.add(patternState);
         }
         for (int i = 0, stateListSize = stateList.size(); i < stateListSize; i++) {
-            State state = stateList.get(i);
+            UtilState state = stateList.get(i);
             PatternState patternState = patternStateList.get(i);
             if (state.getNext() != -1) {
                 patternState.setNextState(patternStateList.get(state.getNext()));
@@ -79,27 +91,27 @@ public class StateParser {
             if (state.getNextEvery() != -1) {
                 patternState.setNextEveryState(patternStateList.get(state.getNextEvery()));
             }
-            if (state instanceof LogicState) {
-                ((LogicPatternState) patternStateList.get(i)).setPartnerState(patternStateList.get(((LogicState) state).getPartnerNumber()));
+            if (state instanceof LogicUtilState) {
+                ((LogicPatternState) patternStateList.get(i)).setPartnerState(patternStateList.get(((LogicUtilState) state).getPartnerNumber()));
             }
         }
         return patternStateList;
     }
 
 
-    public static List<State> identifyStates(PatternElement patternElement) {
-        List<State> stateList = identifyStates(patternElement, new ArrayList<State>(), new StateNumber(0), new ArrayList<Integer>(), true);
+    public static List<UtilState> identifyStates(PatternElement patternElement) {
+        List<UtilState> stateList = identifyStates(patternElement, new ArrayList<UtilState>(), new StateNumber(0), new ArrayList<Integer>(), true);
         //setting first state
-        State firstState = stateList.get(0);
+        UtilState firstState = stateList.get(0);
         firstState.setFirst(true);
-        if (firstState instanceof LogicState) {
-            stateList.get(((LogicState) firstState).getPartnerNumber()).setFirst(true);
+        if (firstState instanceof LogicUtilState) {
+            stateList.get(((LogicUtilState) firstState).getPartnerNumber()).setFirst(true);
         }
         //setting last state
-        State lastState = stateList.get(stateList.size() - 1);
+        UtilState lastState = stateList.get(stateList.size() - 1);
         lastState.setLast(true);
-        if (lastState instanceof LogicState) {
-            stateList.get(((LogicState) lastState).getPartnerNumber()).setLast(true);
+        if (lastState instanceof LogicUtilState) {
+            stateList.get(((LogicUtilState) lastState).getPartnerNumber()).setLast(true);
         }
 
 
@@ -107,29 +119,29 @@ public class StateParser {
     }
 
 
-    private static List<State> identifyStates(PatternElement patternElement, List<State> stateList,
-                                              StateNumber stateNumber, List<Integer> perv,
-                                              boolean topLevel) {
+    private static List<UtilState> identifyStates(PatternElement patternElement, List<UtilState> stateList,
+                                                  StateNumber stateNumber, List<Integer> perv,
+                                                  boolean topLevel) {
 
-        if (patternElement instanceof SingleStream) {
-            stateList.add(new State(stateNumber.getNumber(), ((SingleStream) patternElement)));
+        if (patternElement instanceof BasicStream) {
+            stateList.add(new UtilState(stateNumber.getNumber(), ((BasicStream) patternElement)));
             addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
             perv.clear();
             perv.add(stateNumber.getNumber() - 1);
         } else if (patternElement instanceof LogicalElement) {
             if (((LogicalElement) patternElement).getType() == LogicalElement.Type.OR) {
-                stateList.add(new OrState(stateNumber.getNumber(), ((LogicalElement) patternElement).getSingleStream1(), stateNumber.getNumber() + 1));
+                stateList.add(new OrUtilState(stateNumber.getNumber(), ((LogicalElement) patternElement).getTransformedStream1(), stateNumber.getNumber() + 1));
                 addStateAsNext(stateList, stateNumber, perv);
                 stateNumber.increment();
-                stateList.add(new OrState(stateNumber.getNumber(), ((LogicalElement) patternElement).getSingleStream2(), stateNumber.getNumber() - 1));
+                stateList.add(new OrUtilState(stateNumber.getNumber(), ((LogicalElement) patternElement).getTransformedStream2(), stateNumber.getNumber() - 1));
                 //addStateAsNext(stateList, stateNumber, perv);
                 stateNumber.increment();
             } else {//AND
-                stateList.add(new AndState(stateNumber.getNumber(), ((LogicalElement) patternElement).getSingleStream1(), stateNumber.getNumber() + 1));
+                stateList.add(new AndUtilState(stateNumber.getNumber(), ((LogicalElement) patternElement).getTransformedStream1(), stateNumber.getNumber() + 1));
                 addStateAsNext(stateList, stateNumber, perv);
                 stateNumber.increment();
-                stateList.add(new AndState(stateNumber.getNumber(), ((LogicalElement) patternElement).getSingleStream2(), stateNumber.getNumber() - 1));
+                stateList.add(new AndUtilState(stateNumber.getNumber(), ((LogicalElement) patternElement).getTransformedStream2(), stateNumber.getNumber() - 1));
                 //addStateAsNext(stateList, stateNumber, perv);
                 stateNumber.increment();
             }
@@ -137,7 +149,7 @@ public class StateParser {
             perv.add(stateNumber.getNumber() - 1);
             perv.add(stateNumber.getNumber() - 2);
         } else if (patternElement instanceof CountElement) {
-            stateList.add(new CountState(stateNumber.getNumber(), ((CountElement) patternElement).getSingleStream(), ((CountElement) patternElement).getMinCount(), ((CountElement) patternElement).getMaxCount()));
+            stateList.add(new CountUtilState(stateNumber.getNumber(), ((CountElement) patternElement).getTransformedStream(), ((CountElement) patternElement).getMinCount(), ((CountElement) patternElement).getMaxCount()));
             addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
             perv.clear();
@@ -152,10 +164,10 @@ public class StateParser {
             }
             identifyStates(((PatternStream) patternElement).getPatternElement(), stateList, stateNumber, perv, false);
 
-            State lastState = stateList.get(stateList.size() - 1);
-            State lastStatePartner = null;
-            if (lastState instanceof LogicState) {
-                lastStatePartner = stateList.get(((LogicState) lastState).getPartnerNumber());
+            UtilState lastState = stateList.get(stateList.size() - 1);
+            UtilState lastStatePartner = null;
+            if (lastState instanceof LogicUtilState) {
+                lastStatePartner = stateList.get(((LogicUtilState) lastState).getPartnerNumber());
             }
 //            if (stateList.get(firstEveryStateNumber) instanceof LogicState) {
 //                lastState.setNextEvery(firstEveryStateNumber);
@@ -179,17 +191,17 @@ public class StateParser {
 
     //Sequence
 
-    public static List<SequenceState> convertToSequenceStateList(List<State> stateList) {
+    public static List<SequenceState> convertToSequenceStateList(List<UtilState> stateList) {
         List<SequenceState> sequenceStateList = new ArrayList<SequenceState>(stateList.size());
         for (int i = 0, stateListSize = stateList.size(); i < stateListSize; i++) {
-            State state = stateList.get(i);
+            UtilState state = stateList.get(i);
             SequenceState sequenceState;
-            if (state instanceof OrState) {
-                sequenceState = (new OrSequenceState(state.getStateNumber(), state.getSingleStream()));
-            } else if (state instanceof CountState) {
-                sequenceState = (new CountSequenceState(state.getStateNumber(), state.getSingleStream(), ((CountState) state).getMin(), ((CountState) state).getMax()));
+            if (state instanceof OrUtilState) {
+                sequenceState = (new OrSequenceState(state.getStateNumber(), state.getTransformedStream()));
+            } else if (state instanceof CountUtilState) {
+                sequenceState = (new CountSequenceState(state.getStateNumber(), state.getTransformedStream(), ((CountUtilState) state).getMin(), ((CountUtilState) state).getMax()));
             } else {
-                sequenceState = (new SequenceState(state.getStateNumber(), state.getSingleStream()));
+                sequenceState = (new SequenceState(state.getStateNumber(), state.getTransformedStream()));
             }
             sequenceState.setStateNumber(i);
             sequenceState.setFirst(state.isFirst());
@@ -197,55 +209,53 @@ public class StateParser {
             sequenceStateList.add(sequenceState);
         }
         for (int i = 0, stateListSize = stateList.size(); i < stateListSize; i++) {
-            State state = stateList.get(i);
+            UtilState state = stateList.get(i);
             SequenceState sequenceState = sequenceStateList.get(i);
             if (state.getNext() != -1) {
                 sequenceState.setNextState(sequenceStateList.get(state.getNext()));
             }
 
-            if (state instanceof OrState) {
-                ((OrSequenceState) sequenceStateList.get(i)).setPartnerState(sequenceStateList.get(((LogicState) state).getPartnerNumber()));
+            if (state instanceof OrUtilState) {
+                ((OrSequenceState) sequenceStateList.get(i)).setPartnerState(sequenceStateList.get(((LogicUtilState) state).getPartnerNumber()));
             }
         }
         return sequenceStateList;
     }
 
 
-    public static List<State> identifyStates(SequenceElement sequenceElement) {
-        List<State> stateList = identifyStates(sequenceElement, new ArrayList<State>(), new StateNumber(0), new ArrayList<Integer>());
+    public static List<UtilState> identifyStates(SequenceElement sequenceElement) {
+        List<UtilState> stateList = identifyStates(sequenceElement, new ArrayList<UtilState>(), new StateNumber(0), new ArrayList<Integer>());
         //setting first state
-        State firstState = stateList.get(0);
+        UtilState firstState = stateList.get(0);
         firstState.setFirst(true);
-        if (firstState instanceof LogicState) {
-            stateList.get(((LogicState) firstState).getPartnerNumber()).setFirst(true);
+        if (firstState instanceof LogicUtilState) {
+            stateList.get(((LogicUtilState) firstState).getPartnerNumber()).setFirst(true);
         }
         //setting last state
-        State lastState = stateList.get(stateList.size() - 1);
+        UtilState lastState = stateList.get(stateList.size() - 1);
         lastState.setLast(true);
-        if (lastState instanceof LogicState) {
-            stateList.get(((LogicState) lastState).getPartnerNumber()).setLast(true);
+        if (lastState instanceof LogicUtilState) {
+            stateList.get(((LogicUtilState) lastState).getPartnerNumber()).setLast(true);
         }
-
-
         return stateList;
     }
 
 
-    private static List<State> identifyStates(SequenceElement sequenceElement,
-                                              List<State> stateList,
-                                              StateNumber stateNumber, List<Integer> perv) {
+    private static List<UtilState> identifyStates(SequenceElement sequenceElement,
+                                                  List<UtilState> stateList,
+                                                  StateNumber stateNumber, List<Integer> perv) {
 
-        if (sequenceElement instanceof SingleStream) {
-            stateList.add(new State(stateNumber.getNumber(), ((SingleStream) sequenceElement)));
+        if (sequenceElement instanceof BasicStream) {
+            stateList.add(new UtilState(stateNumber.getNumber(), ((BasicStream) sequenceElement)));
             addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
             perv.clear();
             perv.add(stateNumber.getNumber() - 1);
         } else if (sequenceElement instanceof OrElement) {
-            stateList.add(new OrState(stateNumber.getNumber(), ((OrElement) sequenceElement).getSingleStream1(), stateNumber.getNumber() + 1));
+            stateList.add(new OrUtilState(stateNumber.getNumber(), ((OrElement) sequenceElement).getTransformedStream1(), stateNumber.getNumber() + 1));
             addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
-            stateList.add(new OrState(stateNumber.getNumber(), ((OrElement) sequenceElement).getSingleStream2(), stateNumber.getNumber() - 1));
+            stateList.add(new OrUtilState(stateNumber.getNumber(), ((OrElement) sequenceElement).getTransformedStream2(), stateNumber.getNumber() - 1));
             //addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
 
@@ -253,7 +263,7 @@ public class StateParser {
             perv.add(stateNumber.getNumber() - 1);
             perv.add(stateNumber.getNumber() - 2);
         } else if (sequenceElement instanceof RegexElement) {
-            stateList.add(new CountState(stateNumber.getNumber(), ((RegexElement) sequenceElement).getSingleStream(), ((RegexElement) sequenceElement).getMinCount(), ((RegexElement) sequenceElement).getMaxCount()));
+            stateList.add(new CountUtilState(stateNumber.getNumber(), ((RegexElement) sequenceElement).getTransformedStream(), ((RegexElement) sequenceElement).getMinCount(), ((RegexElement) sequenceElement).getMaxCount()));
             addStateAsNext(stateList, stateNumber, perv);
             stateNumber.increment();
             perv.clear();
@@ -268,9 +278,73 @@ public class StateParser {
         return stateList;
     }
 
-    //General
 
-    private static void addStateAsNext(List<State> stateList, StateNumber stateNumber,
+    public static void populateMemoryOptimizationParameters(List<? extends State> stateList, Selector selector,
+                                                            List<HandlerProcessor> handlerProcessorList) {
+
+        Set<String> dependencyVarSet = selector.getDependencySet();
+        Set<String> dropCandidateSet = new HashSet<String>();
+
+        Map<String, Integer> referenceSourceIdMap = new HashMap<String, Integer>();
+
+        for (int i = stateList.size() - 1; i >= 0; i--) {
+            referenceSourceIdMap.put(stateList.get(i).getTransformedStream().getStreamReferenceId(), i);
+        }
+
+        // setup the candidates to be dropped
+        dropCandidateSet.addAll(referenceSourceIdMap.keySet());
+        dropCandidateSet.removeAll(dependencyVarSet);
+
+        for (HandlerProcessor handlerProcessor : handlerProcessorList) {
+
+            // process input streams
+            for (int i = stateList.size() - 1; i >= 0; i--) {
+                InnerHandlerProcessor innerHandlerProcessor;
+                if (handlerProcessor instanceof SequenceHandlerProcessor) {
+                    innerHandlerProcessor = findInnerHandlerProcessorForState(((SequenceHandlerProcessor) handlerProcessor).getSequenceInnerHandlerProcessorList(), i);
+                } else {
+                    innerHandlerProcessor = findInnerHandlerProcessorForState(((PatternHandlerProcessor) handlerProcessor).getPatternInnerHandlerProcessorList(), i);
+
+                }
+                if (innerHandlerProcessor == null) {
+                    continue;
+                }
+
+                Filter filter = stateList.get(i).getTransformedStream().getFilter();
+                if (filter == null) {
+                    continue;
+                }
+                Set<String> filterDependencyVarSet = (ConditionValidator.getDependencySet(filter.getFilterCondition()));
+
+                filterDependencyVarSet.retainAll(dropCandidateSet);
+                int[] processedEventsToBeDropped = null;
+                if (!filterDependencyVarSet.isEmpty()) {
+                    processedEventsToBeDropped = new int[filterDependencyVarSet.size()];
+                    int j = 0;
+                    for (String var : filterDependencyVarSet) {
+                        processedEventsToBeDropped[j++] = (referenceSourceIdMap.get(var));
+                    }
+
+                    dependencyVarSet.addAll(filterDependencyVarSet);
+                    dropCandidateSet.removeAll(filterDependencyVarSet);
+                }
+                innerHandlerProcessor.setProcessedEventsToBeDropped(processedEventsToBeDropped);
+            }
+        }
+
+    }
+
+    private static InnerHandlerProcessor findInnerHandlerProcessorForState(List<? extends InnerHandlerProcessor> innerHandlerProcessorList,
+                                                                           int stateNo) {
+        for (InnerHandlerProcessor innerHandlerProcessor : innerHandlerProcessorList) {
+            if (innerHandlerProcessor.getCurrentStateNumber() == stateNo) {
+                return innerHandlerProcessor;
+            }
+        }
+        return null;
+    }
+
+    private static void addStateAsNext(List<UtilState> stateList, StateNumber stateNumber,
                                        List<Integer> perv) {
         for (int prevState : perv) {
             stateList.get(prevState).setNext(stateNumber.getNumber());

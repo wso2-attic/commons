@@ -17,23 +17,23 @@
 */
 package org.wso2.siddhi.query.api.query.input.sequence.element;
 
-import org.wso2.siddhi.query.api.query.input.SingleStream;
+import org.wso2.siddhi.query.api.query.input.TransformedStream;
 
 public class OrElement implements SequenceElement {
-    SingleStream singleStream1;
-    SingleStream singleStream2;
+    TransformedStream transformedStream1;
+    TransformedStream transformedStream2;
 
-    public OrElement(SingleStream singleStream1,
-                     SingleStream singleStream2) {
-        this.singleStream1 = singleStream1;
-        this.singleStream2 = singleStream2;
+    public OrElement(TransformedStream transformedStream1,
+                     TransformedStream transformedStream2) {
+        this.transformedStream1 = transformedStream1;
+        this.transformedStream2 = transformedStream2;
     }
 
-    public SingleStream getSingleStream1() {
-        return singleStream1;
+    public TransformedStream getTransformedStream1() {
+        return transformedStream1;
     }
 
-    public SingleStream getSingleStream2() {
-        return singleStream2;
+    public TransformedStream getTransformedStream2() {
+        return transformedStream2;
     }
 }

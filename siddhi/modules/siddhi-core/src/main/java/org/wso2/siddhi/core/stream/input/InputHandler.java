@@ -17,26 +17,41 @@
 */
 package org.wso2.siddhi.core.stream.input;
 
+import org.wso2.siddhi.core.config.SiddhiContext;
 import org.wso2.siddhi.core.event.StreamEvent;
 import org.wso2.siddhi.core.event.in.InEvent;
+import org.wso2.siddhi.core.persistence.ThreadBarrier;
 import org.wso2.siddhi.core.stream.StreamJunction;
 
 public class InputHandler {
-    String streamId;
-    StreamJunction streamJunction;
+    private String streamId;
+    private StreamJunction streamJunction;
+    private final ThreadBarrier threadBarrier;
 
-    public InputHandler(String streamId, StreamJunction streamJunction) {
+    public InputHandler(String streamId, StreamJunction streamJunction,SiddhiContext siddhiContext) {
         this.streamId = streamId;
         this.streamJunction = streamJunction;
+        this.threadBarrier =siddhiContext.getThreadBarrier();
     }
 
     public void send(Object[] data) throws InterruptedException {
         StreamEvent event = new InEvent(streamId, System.currentTimeMillis(), data);
-        streamJunction.send(event, null, event);
+        threadBarrier.pass();
+        streamJunction.send(event);
     }
 
     public void send(long timeStamp, Object[] data) throws InterruptedException {
         StreamEvent event = new InEvent(streamId, timeStamp, data);
-        streamJunction.send(event, null, event);
+        threadBarrier.pass();
+        streamJunction.send(event);
+    }
+
+    public void send(StreamEvent event) throws InterruptedException {
+        threadBarrier.pass();
+        streamJunction.send(event);
+    }
+
+    public String getStreamId() {
+        return streamId;
     }
 }

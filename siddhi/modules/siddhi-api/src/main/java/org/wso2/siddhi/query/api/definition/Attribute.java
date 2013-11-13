@@ -22,7 +22,7 @@ public class Attribute {
     private Type type;
 
     public enum Type {
-        STRING, INT, LONG, FLOAT, DOUBLE, BOOL
+        STRING, INT, LONG, FLOAT, DOUBLE, BOOL, TYPE
     }
 
     public Attribute(String name, Type type) {
@@ -44,5 +44,25 @@ public class Attribute {
                "name='" + name + '\'' +
                ", type=" + type +
                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Attribute attribute = (Attribute) o;
+
+        if (name != null ? !name.equals(attribute.name) : attribute.name != null) return false;
+        if (type != attribute.type) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }

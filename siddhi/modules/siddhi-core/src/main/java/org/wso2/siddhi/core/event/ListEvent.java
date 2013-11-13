@@ -17,38 +17,26 @@
 */
 package org.wso2.siddhi.core.event;
 
-import org.wso2.siddhi.query.api.utils.SiddhiConstants;
+import org.wso2.siddhi.core.event.in.InEvent;
 
 import java.util.Arrays;
 
-public abstract class ListEvent implements StreamEvent {
+public abstract class ListEvent implements StreamEvent, BundleEvent {
 
-    Event[] events;
-    private int activeEvents = 0;
-    private int currentMaxSize = 0;
-    private boolean unlimited = false;
+    protected Event[] events;
+    protected int activeEvents = 0;
 
-    public ListEvent(int maxEvents) {
-        if (maxEvents != SiddhiConstants.UNLIMITED) {
-            this.events = new Event[maxEvents];
-            currentMaxSize = maxEvents;
-        } else {
-            this.events = new Event[10];
-            currentMaxSize = 10;
-            this.unlimited = true;
-        }
-    }
-
-    protected ListEvent(Event[] events, int activeEvents, boolean unlimited) {
+    protected ListEvent(Event[] events, int activeEvents) {
         this.events = events;
         this.activeEvents = activeEvents;
-        this.unlimited = unlimited;
     }
 
     public ListEvent(Event[] events) {
         this.events = events;
         this.activeEvents = events.length;
-        this.unlimited = false;
+    }
+
+    protected ListEvent() {
     }
 
     public Event[] getEvents() {
@@ -62,25 +50,24 @@ public abstract class ListEvent implements StreamEvent {
     @Override
     public String toString() {
         return "SingleEventList{" +
-               "events=" + (events == null ? null : Arrays.asList(events)) +
-               '}';
+                "events=" + (events == null ? null : Arrays.asList(events)) +
+                '}';
     }
 
     @Override
     public long getTimeStamp() {
-        return events[activeEvents - 1].getTimeStamp();
+        if (activeEvents > 0) {
+            return events[activeEvents - 1].getTimeStamp();
+        } else {
+            return -1;
+        }
     }
 
     public boolean addEvent(Event event) {
-        if (currentMaxSize == activeEvents) {
-            if (unlimited) {
-                Event[] inEvents = new Event[activeEvents + 10];
-                currentMaxSize+=10;
-                System.arraycopy(events, 0, inEvents, 0, events.length);
-                events = inEvents;
-            } else {
-                return false;
-            }
+        if (events.length == activeEvents) {
+            Event[] inEvents = new Event[activeEvents + 10];
+            System.arraycopy(events, 0, inEvents, 0, events.length);
+            events = inEvents;
         }
         this.events[activeEvents] = event;
         activeEvents++;
@@ -97,21 +84,61 @@ public abstract class ListEvent implements StreamEvent {
         events[activeEvents] = null;
     }
 
-    public StreamEvent cloneEvent() {
-        int length = events.length;
-        Event[] inEvents = new Event[length];
+    public ListEvent cloneEvent() {
+        Event[] inEvents = new Event[events.length];
         System.arraycopy(inEvents, 0, inEvents, 0, activeEvents);
-        return createEventClone(inEvents,activeEvents,unlimited);
-
-
+        return createEventClone(inEvents, activeEvents);
     }
 
-    protected abstract ListEvent createEventClone(Event[] inEvents, int activeEvents,
-                                                  boolean unlimited) ;
+    protected abstract ListEvent createEventClone(Event[] inEvents, int activeEvents);
 
     public void setEvents(Event[] events) {
         this.events = events;
         this.activeEvents = events.length;
-        this.unlimited = false;
+    }
+
+    @Override
+    public Event[] toArray() {
+        return events;
+    }
+
+    public Event getEvent0() {
+        return events[0];
+    }
+
+    public Event getEvent1() {
+        return events[1];
+    }
+
+    public Event getEvent2() {
+        return events[2];
+    }
+
+    public Event getEvent3() {
+        return events[3];
+    }
+
+    public Event getEvent4() {
+        return events[4];
+    }
+
+    public Event getEvent5() {
+        return events[5];
+    }
+
+    public Event getEvent6() {
+        return events[6];
+    }
+
+    public Event getEvent7() {
+        return events[7];
+    }
+
+    public Event getEvent8() {
+        return events[8];
+    }
+
+    public Event getEvent9() {
+        return events[9];
     }
 }

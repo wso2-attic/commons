@@ -22,4 +22,6 @@ package org.wso2.siddhi.core.event;
  */
 public interface StreamEvent extends ComplexEvent {
 
+    Event[] toArray();
+
 }

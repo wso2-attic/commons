@@ -18,44 +18,41 @@
 package org.wso2.siddhi.core.stream;
 
 import org.wso2.siddhi.core.event.StreamEvent;
-import org.wso2.siddhi.core.query.stream.recevier.StreamReceiver;
-import org.wso2.siddhi.core.stream.output.Callback;
+import org.wso2.siddhi.core.query.processor.handler.HandlerProcessor;
+import org.wso2.siddhi.core.treaser.EventMonitorService;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StreamJunction {
     private List<StreamReceiver> streamReceivers = new CopyOnWriteArrayList<StreamReceiver>();
-    private List<Callback> callBacks = new CopyOnWriteArrayList<Callback>();
     private String streamId;
+    private EventMonitorService eventMonitorService;
 
-    public StreamJunction(String streamId) {
+    public StreamJunction(String streamId, EventMonitorService eventMonitorService) {
         this.streamId = streamId;
+        this.eventMonitorService = eventMonitorService;
     }
 
-    public void send(StreamEvent currentEvents, StreamEvent expiredEvents, StreamEvent allEvents) {
-
-        for (StreamReceiver receiver : streamReceivers) {
-            receiver.receive(allEvents);
+    public void send(StreamEvent allEvents) {
+        if (eventMonitorService.isEnableTrace()) {
+            eventMonitorService.trace(allEvents, " on Event Stream");
         }
-        //todo need to remove
-        for (Callback callback : callBacks) {
-            callback.receive(currentEvents, expiredEvents);
+        if (eventMonitorService.isEnableStats()) {
+            eventMonitorService.calculateStats(allEvents);
+        }
+        for (StreamReceiver handlerProcessor : streamReceivers) {
+            handlerProcessor.receive(allEvents);
         }
     }
 
     public synchronized void addEventFlow(StreamReceiver streamReceiver) {
         //in reverse order to execute the later states first to overcome to dependencies of count states
-        if (streamReceiver instanceof Callback) {
-            callBacks.add((Callback) streamReceiver);
-        } else {
-            streamReceivers.add(0, streamReceiver);
-        }
+        streamReceivers.add(0, streamReceiver);
     }
 
-    public synchronized void removeEventFlow(StreamReceiver streamReceiver) {
-        streamReceivers.remove(streamReceiver);
-        callBacks.remove(streamReceiver);
+    public synchronized void removeEventFlow(HandlerProcessor queryStreamProcessor) {
+        streamReceivers.remove(queryStreamProcessor);
     }
 
     public String getStreamId() {
