@@ -1,0 +1,43 @@
+
+JSON PATH TESTING 
+===================
+
+
+Scenario 19:
+=================
+
+Use FilterProxy.xml to test Json Path filter functionality. 
+
+curl -v -X POST -d @Filter.json -H "Content-Type: application/json"  http://localhost:8281/services/FilterProxy
+
+
+Scenario 20 :
+===================
+
+Use SwitchProxy.xml to test Json Path filter functionality. 
+
+curl -v -X POST -d @switch1.json -H "Content-Type: application/json"  http://localhost:8281/services/SwitchProxy
+
+curl -v -X POST -d @switch2.json -H "Content-Type: application/json"  http://localhost:8281/services/SwitchProxy
+
+
+Scenario 21 :
+==============
+
+Use PropertyTest.xml to test Json Path filter functionality. 
+
+curl -v -X POST -d @PropertyTest.json -H "Content-Type: application/json"  http://localhost:8281/services/PropertyTest
+
+For array of objects :
+
+curl -v -X POST -d @PropertyArrayTest.json -H "Content-Type: application/json"  http://localhost:8281/services/PropertyArrayTest
+
+
+Scenario 22 :
+=================
+
+Use TestProxy.xml to test payload factory with json path.
+
+
+curl -v -X POST -d @logTest.json -H "Content-Type: application/json"  http://localhost:8281/services/TestProxy
+

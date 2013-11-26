@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <proxy name="FilterProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <endpoint>
+            <address uri="http://localhost:9001/services/SimpleStockQuoteService"/>
+         </endpoint>
+         <inSequence>
+            <log level="full"/>
+            <log level="custom">
+               <property name="=== XPATH ===" value="xPath Evaluator Example"/>
+            </log>
+            <filter xmlns:m0="http://services.samples" source="//symbol" regex="IBM">
+               <then>
+                  <log level="custom">
+                     <property name="THEN" value="hit"/>
+                  </log>
+               </then>
+               <else>
+                  <log level="custom">
+                     <property name="ELSE" value="hit"/>
+                  </log>
+               </else>
+            </filter>
+            <filter xmlns:m0="http://services.samples" source="//symbol" regex="IBM">
+               <then>
+                  <log level="custom">
+                     <property name="THEN" value="hit"/>
+                  </log>
+               </then>
+               <else>
+                  <log level="custom">
+                     <property name="ELSE" value="hit"/>
+                  </log>
+               </else>
+            </filter>
+            <log level="custom">
+               <property name="=== JSON PATH ===" value="JSON Path Evaluator Example"/>
+            </log>
+            <filter xmlns:m0="http://services.samples"
+                    source="json-eval(getQuote.request.symbol)"
+                    regex="IBM">
+               <then>
+                  <log level="custom">
+                     <property name="THEN" value="hit"/>
+                  </log>
+               </then>
+               <else>
+                  <log level="custom">
+                     <property name="ELSE" value="hit"/>
+                  </log>
+               </else>
+            </filter>
+            <filter xmlns:m0="http://services.samples"
+                    source="json-eval(getQuote.request.symbol)"
+                    regex="IBM">
+               <then>
+                  <log level="custom">
+                     <property name="THEN" value="hit"/>
+                  </log>
+               </then>
+               <else>
+                  <log level="custom">
+                     <property name="ELSE" value="hit"/>
+                  </log>
+               </else>
+            </filter>
+            <drop/>
+         </inSequence>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </target>
+   </proxy>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <log/>
+      <drop/>
+   </sequence>
+</definitions>

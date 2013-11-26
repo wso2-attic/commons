@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="PropertyTest"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <endpoint>
+         <address uri="http://localhost:8888"/>
+      </endpoint>
+      <inSequence>
+         <property name="JSON_PATH" expression="json-eval(pizza.toppings)"/>
+         <log level="custom">
+            <property name="JSON_PRINT" expression="get-property('JSON_PATH')"/>
+         </log>
+         <property name="JSON_PATH2" expression="json-eval(pizza.toppings)"/>
+         <log level="custom">
+            <property name="JSON_PRINT2" expression="get-property('JSON_PATH2')"/>
+         </log>
+      </inSequence>
+      <outSequence>
+         <drop/>
+      </outSequence>
+   </target>
+</proxy>

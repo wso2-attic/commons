@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <proxy name="PropertyArrayTest"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <endpoint>
+            <address uri="http://localhost:8888"/>
+         </endpoint>
+         <inSequence>
+            <property name="JSON_PATH" expression="json-eval($root[0].pizza.toppings)"/>
+            <log level="custom">
+               <property name="JSON_PRINT" expression="get-property('JSON_PATH')"/>
+            </log>
+            <property name="JSON_PATH2" expression="json-eval($root[1].pizza1.toppings)"/>
+            <log level="custom">
+               <property name="JSON_PRINT2" expression="get-property('JSON_PATH2')"/>
+            </log>
+         </inSequence>
+         <outSequence>
+            <drop/>
+         </outSequence>
+      </target>
+   </proxy>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <log/>
+   </sequence>
+</definitions>

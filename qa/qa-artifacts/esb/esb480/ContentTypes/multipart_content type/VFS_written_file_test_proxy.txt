@@ -1,0 +1,17 @@
+<proxy name="HelloProxyService"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <endpoint>
+            <address uri="vfs:file:///home/ushani/Downloads/out"/>
+         </endpoint>
+         <inSequence>
+            <property name="OUT_ONLY" value="true"/>
+         </inSequence>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </target>
+   </proxy>

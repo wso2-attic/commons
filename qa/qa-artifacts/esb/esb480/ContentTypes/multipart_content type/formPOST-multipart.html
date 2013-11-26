@@ -1,0 +1,20 @@
+<html>
+ <head><title>multipart/form-data - Client</title></head>
+ <body>  
+<form action="http://localhost:8281/services/HelloProxyService" method="POST" enctype="multipart/form-data">
+<!--<form action="http://localhost:9765/services/HelloService/greet" method="POST" enctype="multipart/form-data">-->
+<!--form action="http://localhost:8281/services/HelloProxy" method="POST"-->
+<!--form action="http://localhost:8281/services/echo/echoString" method="POST"-->
+User Name: <input type="text" name="name">
+User id: <input type="text" name="id">
+User Address: <input type="text" name="add">
+AGE: <input type="text" name="age">
+ <br> 
+Upload : 
+<input type="file" name="datafile" size="40" multiple>
+</p>
+
+ <input type="submit" value="Submit">
+  </form>
+ </body>
+</html>

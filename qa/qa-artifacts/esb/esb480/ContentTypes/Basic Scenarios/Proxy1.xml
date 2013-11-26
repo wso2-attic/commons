@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <proxy name="Proxy1"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <target>
+         <inSequence>
+            <property name="FORCE_SC_ACCEPTED" value="true" scope="axis2"/>
+            <property name="messageType" value="application/json" scope="axis2"/>
+             <!-- To test for xml comment the above and un comment below property--> 
+            <!--property name="messageType" value="application/xml" scope="axis2"/-->
+            <property name="OUT_ONLY" value="true"/>
+            <log level="full"/>
+            <store messageStore="JMSMS"/>
+         </inSequence>
+      </target>
+   </proxy>
+   <endpoint name="CustomerService">
+      <address uri="http://localhost:9774/jaxrs_basic/services/customers/customerservice/"/>
+   </endpoint>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <log/>
+      <drop/>
+   </sequence>
+   <messageStore class="org.apache.synapse.message.store.impl.jms.JmsStore" name="JMSMS">
+      <parameter name="java.naming.factory.initial">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
+      <parameter name="java.naming.provider.url">tcp://localhost:61616</parameter>
+   </messageStore>
+   <messageProcessor class="org.apache.synapse.message.processor.impl.forwarder.ScheduledMessageForwardingProcessor"
+                     name="Processor1"
+                     targetEndpoint="CustomerService"
+                     messageStore="JMSMS">
+      <parameter name="max.delivery.attempts">1</parameter>
+      <parameter name="client.retry.interval">0</parameter>
+      <parameter name="interval">0</parameter>
+      <parameter name="is.active">false</parameter>
+   </messageProcessor>
+</definitions>

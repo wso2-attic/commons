@@ -24,9 +24,13 @@
       </endpoint>
    </send>
 </sequence>
+<?xml version="1.0" encoding="UTF-8"?>
 <proxy xmlns="http://ws.apache.org/ns/synapse"
        name="ProxyPF"
        transports="https,http"
        statistics="disable"
        trace="disable"
-       start
+       startOnLoad="true">
+   <target inSequence="PF"/>
+   <description/>
+</proxy>

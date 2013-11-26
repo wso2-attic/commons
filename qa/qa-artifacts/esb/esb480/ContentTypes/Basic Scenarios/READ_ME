@@ -1,0 +1,162 @@
+Prerequisite:
+---------
+1. Up the Jaxrs_Basic service in application server. If the service is up in 9773 port, I have used 9774 port in between for tcpmon.
+2. Use a tcp mon in between for all the scenarios to check the request goes fine.
+
+Scenario 1 :
+================== 
+To test  GET request,
+
+In Json :
+
+curl -v -i -H "Accept: application/json" http://wrk.esb.ush.wso2.com:8280/services/CustomerServiceProxy/customers/123
+
+Scenario 2 :
+================== 
+
+In application/xml :
+
+curl -v -i -H "Accept: application/xml" http://wrk.esb.ush.wso2.com:8280/services/CustomerServiceProxy/customers/123
+
+
+Scenario 3 :
+================== 
+To test POST request, Use create.xml
+
+In application/xml :
+
+curl -v -X POST -H "Content-type: application/xml" -d @create.xml http://wrk.esb.ush.wso2.com:8280/services/CustomerServiceProxy/customers
+
+
+Scenario 4 :
+================== 
+
+To test json POST request, Use create.xml
+
+
+XML to Json :
+
+curl -v -X POST -H "Content-type: application/xml" -H "Accept: application/json" -d @create.xml http://wrk.esb.ush.wso2.com:8280/services/CustomerServiceProxy/customers
+
+Json to Json :
+
+curl -v -X POST -H "Content-type: application/json" -H "Accept: application/json"  -d @json4.json http://wrk.esb.ush.wso2.com:8281/services/CustomerServiceProxy/customers
+
+
+Scenario 5 :
+================== 
+
+To Test plain/text, Use create.txt
+
+curl -v -X POST -H "Content-Type: text/plain" -d @create.txt http://wrk.esb.ush.wso2.com:8280/services/CustomerServiceProxy/customers/name/
+
+
+Scenario 6 :
+================== 
+
+PUT with application/xml:
+
+curl -v -X PUT -H "Content-type: application/xml" -d @update.xml http://wrk.esb.ush.wso2.com:8281/services/CustomerServiceProxy/customers
+
+
+Scenario 7: 
+==================
+PUT with application/json :
+curl -v -X PUT -H "Content-type: application/json" -d @json3.txt http://wrk.esb.ush.wso2.com:8281/services/CustomerServiceProxy/customers
+
+
+Scenario 8 :
+================== 
+
+To test different data types with json, This will verify arrays, string and integer behvaiour. Eventhpough the backend is not be supported, use a tcpmon in between to bverify whether the message goes correctly with the brackets and commas.
+
+
+curl -v -X POST -H "Content-type: application/json" -d @json.txt http://localhost:8281/services/CustomerServiceProxy/customers
+curl -v -X POST -H "Content-type: application/json" -d @json1.txt http://localhost:8281/services/CustomerServiceProxy/customers
+curl -v -X POST -H "Content-type: application/json" -d @json3.txt http://localhost:8281/services/CustomerServiceProxy/customers
+
+Scenario 9 :
+================== 
+
+To Test clone mediator with a json payload to make sure that the json payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
+
+curl -v -X POST -H "Content-type: application/json" -d @json.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers - Will be a bad request since the backend does not support the request
+curl -v -X POST -H "Content-type: application/json" -d @json3.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers
+
+Scenario 10 :
+===================
+To Test clone mediator with a json payload to make sure that the json payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
+
+curl -v -X POST -H "Content-type: application/json" -H "Accept: application/json"  -d @json3.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers
+
+
+Scenario 11 :
+==================
+
+To test Accept: application/xml
+
+curl -v -X POST -H "Content-type: application/json" -H "Accept: application/xml"  -d @json3.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers
+
+
+Scenario 12 :
+===============
+To Test clone mediator with a xml payload to make sure that the xml payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
+
+curl -v -X POST -H "Content-type: application/xml" -d @create.xml http://localhost:8281/services/CustomerServiceProxy_clone/customers
+
+
+Scenario 13 :
+===================
+To Test clone mediator with a plain text payload to make sure that the text payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
+
+curl -v -X POST -H "Content-Type: text/plain" -d @create.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers/name/
+
+
+Scenario 14 :
+==================
+
+Use Proxy1.xml to test message fwd processor and store scenario. To test different content types :
+
+curl -v -X POST -H "Content-type: application/json" -d @json3.txt http://localhost:8281/services/Proxy1/customers
+
+
+Scenario 15 :
+==================
+
+Use Proxy2.xml to test message sampler processor and store scenario. To test different content types :
+
+curl -v -X POST -H "Content-type: application/json" -d @json3.txt http://localhost:8281/services/Proxy2/customers
+
+
+Scenario 16:
+===============
+Use CustomerServiceProxy_xml.xml to test: Create.xml should be uploaded in to the registry and refered.
+
+curl -v -X POST -H "Content-type: application/xml" http://localhost:8281/services/CustomerServiceProxy_xml/customers
+
+
+Scenario 17:
+=================
+
+Use CustomerServiceProxy_json.xml to test: Json3.json file should be uploaded to the registry and refered. 
+
+curl -v -X POST -H "Content-type: application/json" http://localhost:8281/services/CustomerServiceProxy_json/customers
+
+
+Scenario 18:
+=================
+
+Use CustomerServiceProxy_txt.xml to test: Json3.json file should be uploaded to the registry and refered. 
+
+curl -v -X POST -H "Content-type: text/plain" http://localhost:8281/services/CustomerServiceProxy_txt/customers
+
+
+
+Scenario 19:
+=================
+
+Use FilterProxy.xml to test Json Path filter functionality. 
+
+curl -v -X POST -d @Filter.json -H "Content-Type: application/json"  http://localhost:8281/services/FilterProxy
+
+

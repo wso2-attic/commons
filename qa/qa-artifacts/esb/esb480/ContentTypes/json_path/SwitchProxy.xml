@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="SwitchProxy"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+      </endpoint>
+      <inSequence>
+         <switch xmlns:m0="http://services.samples"
+                 source="json-eval(getQuote.request.symbol)">
+            <case regex="IBM">
+               <property name="symbol" value="Great stock - IBM"/>
+            </case>
+            <case regex="MSFT">
+               <property name="symbol" value="Are you sure? - MSFT"/>
+            </case>
+            <default>
+               <property name="normalSymbol" expression="json-eval(getQuote.request.symbol)"/>
+               <property name="symbol"
+                         expression="fn:concat('Normal Stock - ',get-property('normalSymbol'))"/>
+            </default>
+         </switch>
+         <log level="custom">
+            <property name="symbol" expression="get-property('symbol')"/>
+            <property name="epr" expression="get-property('To')"/>
+         </log>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </target>
+</proxy>

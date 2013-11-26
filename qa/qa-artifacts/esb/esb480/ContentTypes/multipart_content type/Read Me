@@ -1,0 +1,64 @@
+Artifact to test different  content types - different types and multipart/form-data.
+==========================================================================================
+
+1. Proxy to test the multipart/form data through tcpmon - multipart_form_test_proxy.txt
+--------------------------------------------------------------------------
+
+<proxy name="HelloProxyService"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <endpoint>
+            <address uri="http://localhost:12765/services/HelloService"/>
+         </endpoint>
+         <outSequence>
+            <property name="OUT_ONLY" value="true"/>
+            <send>
+               <endpoint>
+                  <address uri="vfs:file:///home/ushani/Downloads/out"/>
+               </endpoint>
+            </send>
+         </outSequence>
+      </target>
+   </proxy>
+
+
+2. Proxy to check whether the form data saved correctly using VFS (Should enable VFS in axis2.xml) - VFS_written_file_test_proxy.txt
+----------------------------------------------------------------------------------------------------------------------------------------
+
+ <proxy name="HelloProxyService"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <endpoint>
+            <address uri="vfs:file:///home/ushani/Downloads/out"/>
+         </endpoint>
+         <inSequence>
+            <property name="OUT_ONLY" value="true"/>
+         </inSequence>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </target>
+   </proxy>
+
+3. Attachments are, the html form to submit form data and a file which has a json code which can be used to test multipart/form-data with json. Also can test multipart/form-data with attachments etc by uploading an image or a text file too. (formPOST-multipart.html and jsonfile)
+
+4. To test text/xml, text/plain, application/xml, application/json proxy would be, - proxy_to_test_other_data.txt
+---------------------------------------------------------------------------------------------------------------------
+
+<proxy xmlns="http://ws.apache.org/ns/synapse" name="jsonproxy" transports="https,http" statistics="disable" trace="disable" startOnLoad="true">
+   <target>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://localhost:9764/jaxrs_basic/services/customers/customerservice/customers"/>
+      </endpoint>
+   </target>
+   <description></description>
+</proxy>
