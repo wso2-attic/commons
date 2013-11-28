@@ -1,0 +1,20 @@
+#####################################################
+
+Sample for testing ESB Scheduled tasks
+
+
+#####################################################
+Steps to use:
+
+1. Copy this jar to the repository/components/lib folder and restart the server
+
+Follow the Doc http://docs.wso2.org/display/ESB470/Configure+with+WSO2+Message+Broker to configure wso2 MB with ESB
+a. Copy required MB client jars to repository/components/lib folder
+b. Add jndi.properties file to repository/conf folder   
+
+2. Go the Scheduled Tasks page on esb
+3. Add a task 
+4. Enter Task Implementation  as org.wso2.carbon.esb.task.SampleMessageRecieverTask
+5. Schedule the Trigger appropriately
+
+Now you should see subscriptions creating for queue "taskqueue"
