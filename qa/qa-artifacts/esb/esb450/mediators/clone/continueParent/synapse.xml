@@ -2,17 +2,17 @@
     <registry provider="org.wso2.carbon.mediation.registry.WSO2Registry">
         <parameter name="cachableDuration">15000</parameter>
     </registry>
-    <sequence name="aggregateMessages">
+    <sequence name="aggregateMessages_Niro">
         <aggregate id="clone3">
             <completeCondition>
-                <messageCount min="-1" max="-1"/>
+                <messageCount min="1" max="2"/>
             </completeCondition>
             <onComplete xmlns:ns="http://org.apache.synapse/xsd" xmlns:ns3="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples" expression="//m0:getQuoteResponse">
                 <send/>
             </onComplete>
         </aggregate>
     </sequence>
-    <sequence name="cloningMessages">
+    <sequence name="cloningMessages_Niro">
         <clone id="clone3" sequential="true">
             <target sequence="anon">
                 <sequence>
@@ -21,7 +21,7 @@
                     </log>
                     <send>
                         <endpoint>
-                            <address uri="http://localhost:9001/services/SimpleStockQuoteService"/>
+                            <address uri="http://192.168.4.54:9783/services/SimpleStockQuoteService/"/>
                         </endpoint>
                     </send>
                 </sequence>
@@ -33,7 +33,7 @@
                     </log>
                     <send>
                         <endpoint>
-                            <address uri="http://localhost:9771/services/SimpleStockQuoteService"/>
+                            <address uri="http://192.168.4.54:9783/services/SimpleStockQuoteService/"/>
                         </endpoint>
                     </send>
                 </sequence>
@@ -44,9 +44,10 @@
         </log>
                     <send>
                         <endpoint>
-                            <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+                            <address uri="http://192.168.4.54:9783/services/SimpleStockQuoteService/"/>
                         </endpoint>
                     </send>
+
     </sequence>
     <sequence name="fault">
         <log level="full">
@@ -58,10 +59,10 @@
     </sequence>
     <sequence name="main">
         <in>
-            <sequence key="cloningMessages"/>
+            <sequence key="cloningMessages_Niro"/>
         </in>
         <out>
-            <sequence key="aggregateMessages"/>
+            <sequence key="aggregateMessages_Niro"/>
         </out>
         <description>The main sequence for the message mediation</description>
     </sequence>
