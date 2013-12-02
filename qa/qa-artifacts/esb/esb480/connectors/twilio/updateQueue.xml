@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="updateQueue"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.updateQueue configKey="MyTwilioConfig">
+            <queueSid>QU74fba03e683149ac89502be458e35ff4</queueSid>
+            <friendlyName>persistent_queue</friendlyName>
+            <maxSize>30</maxSize>
+         </twilio.updateQueue>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="addUsageTrigger"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.addUsageTrigger configKey="MyTwilioConfig">
+            <usageCategory>sms</usageCategory>
+            <triggerValue>1000</triggerValue>
+            <callbackUrl>http://www.example.com/</callbackUrl>
+            <friendlyName>Trigger for sms at usage of 1000</friendlyName>
+            <triggerBy>usage</triggerBy>
+            <recurring>daily</recurring>
+            <callbackMethod>POST</callbackMethod>
+         </twilio.addUsageTrigger>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

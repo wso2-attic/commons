@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getMemberList"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.getMemberList configKey="MyTwilioConfig">
+            <queueSid>QU74fba03e683149ac89502be458e35ff4</queueSid>
+         </twilio.getMemberList>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

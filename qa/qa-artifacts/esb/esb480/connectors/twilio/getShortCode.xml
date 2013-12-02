@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getShortCode"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.getShortCode configKey="MyTwilioConfig">
+            <shortCodeSid>SC6b20cb705c1e8f00210049b20b70fce2</shortCodeSid>
+         </twilio.getShortCode>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

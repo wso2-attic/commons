@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getOutgoingPhoneNumber"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.getOutgoingPhoneNumber configKey="MyTwilioConfig">
+            <outgoingPhoneNumberSid>CAed00656a22f033dacfd6a213597eea90</outgoingPhoneNumberSid>
+         </twilio.getOutgoingPhoneNumber>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

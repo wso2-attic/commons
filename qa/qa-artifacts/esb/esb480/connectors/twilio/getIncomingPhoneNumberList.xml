@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getIncomingPhoneNumberList"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.getIncomingPhoneNumberList configKey="MyTwilioConfig">
+            <phoneNumber>+16465028090</phoneNumber>
+            <friendlyName>SHASHI</friendlyName>
+         </twilio.getIncomingPhoneNumberList>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

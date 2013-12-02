@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twiliotest1"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.updateAccount configKey="MyTwilioConfig">
+            <friendlyName>shashi123</friendlyName>
+            <subAccountSid>AC733261AA185228FB414C6B61A1075C9E</subAccountSid>
+            <status>active</status>
+         </twilio.updateAccount>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

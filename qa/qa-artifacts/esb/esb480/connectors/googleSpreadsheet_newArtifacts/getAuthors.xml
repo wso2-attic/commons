@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getAuthors"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.getAuthors>
+            <spreadsheetName>ConnectorSpreadsheet480_shashi1</spreadsheetName>
+         </googlespreadsheet.getAuthors>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

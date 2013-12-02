@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="purchasePhoneNumber"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.purchasePhoneNumber configKey="MyTwilioConfig">
+            <phoneNumber>15105555555</phoneNumber>
+            <friendlyName>(510) 555-5555</friendlyName>
+            <voiceUrl>http://demo.twilio.com/docs/voice.xml</voiceUrl>
+            <voiceMethod>POST</voiceMethod>
+            <voiceFallbackUrl>http://demo.twilio.com/docs/voicefallback.xml</voiceFallbackUrl>
+            <voiceFallbackMethod>POST</voiceFallbackMethod>
+            <statusCallback>http://demo.twilio.com/docs/statuscallback.xml</statusCallback>
+            <statusCallbackMethod>GET</statusCallbackMethod>
+            <voiceCallerIdLookup>false</voiceCallerIdLookup>
+            <smsApplicationSid>SM1d39048f054a85576071802933e18b72</smsApplicationSid>
+            <apiVersion>2010-04-01</apiVersion>
+         </twilio.purchasePhoneNumber>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

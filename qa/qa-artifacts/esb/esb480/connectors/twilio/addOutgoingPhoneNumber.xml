@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="addOutgoingPhoneNumber"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.addOutgoingPhoneNumber configKey="MyTwilioConfig">
+            <phoneNumber>+15105555555</phoneNumber>
+            <friendlyName>(510) 555-5555</friendlyName>
+            <callDelay>30</callDelay>
+            <extension>1234</extension>
+            <statusCallback>http://demo.twilio.com/docs/statuscallback.xml</statusCallback>
+            <statusCallbackMethod>POST</statusCallbackMethod>
+         </twilio.addOutgoingPhoneNumber>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="ImportCSV"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.importCSV>
+            <spreadsheetName>ConnectorSpreadsheet1</spreadsheetName>
+            <worksheetName>Sheet 1</worksheetName>
+            <filePath>/home/shashi/work_stuff/ESB/4.8.0/artifacts/test.csv</filePath>
+            <batchEnable>true</batchEnable>
+            <batchSize>7</batchSize>
+         </googlespreadsheet.importCSV>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

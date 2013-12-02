@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="googleInit"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.init>
+            <oauthConsumerKey>132903362624.apps.googleusercontent.com</oauthConsumerKey>
+            <oauthConsumerSecret>OYHKfzsOmOo-RJS1bNDqjj7T</oauthConsumerSecret>
+            <oauthAccessToken>1/kR6p8IhWpN085bpEB6x7o9XxSgOifSFjYVtwSqCPMe0</oauthAccessToken>
+            <oauthAccessTokenSecret>OxOLnMq8qWWP3zMn58qmhri8</oauthAccessTokenSecret>
+         </googlespreadsheet.init>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

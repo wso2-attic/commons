@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getAvailableLocalNumbers"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.getAvailableLocalNumbers configKey="MyTwilioConfig">
+            <country>US</country>
+            <areaCode>(415)</areaCode>
+            <contains>ACME</contains>
+            <inRegion>CA</inRegion>
+            <inPostalCode>94133</inPostalCode>
+            <nearNumber>(415) 555-1234</nearNumber>
+            <inRateCenter>SNFC CNTR</inRateCenter>
+            <distance>50</distance>
+         </twilio.getAvailableLocalNumbers>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

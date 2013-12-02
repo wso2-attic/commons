@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twilioCreateAccounts"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.init>
+            <accountSid>AC48a13e36b19a8c8a6f9baee7346bd9bf</accountSid>
+            <authToken>d28b4faf7d6fec33552bff3abb301685</authToken>
+         </twilio.init>
+         <twilio.createApplication>
+            <friendlyName>SR</friendlyName>
+            <apiVersion>2010-04-01</apiVersion>
+            <voiceUrl>http://demo.twilio.com/docs/voice.xml</voiceUrl>
+            <voiceMethod>POST</voiceMethod>
+            <voiceFallbackUrl>http://demo.twilio.com/docs/voicefallback.xml</voiceFallbackUrl>
+            <voiceFallbackMethod>POST</voiceFallbackMethod>
+            <statusCallback>http://demo.twilio.com/docs/statuscallback.xml</statusCallback>
+            <statusCallbackMethod>POST</statusCallbackMethod>
+            <voiceCallerIdLookup>false</voiceCallerIdLookup>
+            <smsUrl>http://demo.twilio.com/docs/sms.xml</smsUrl>
+            <smsMethod>POST</smsMethod>
+            <smsFallbackUrl>http://demo.twilio.com/docs/smsfallback.xml</smsFallbackUrl>
+            <smsFallbackMethod>POST</smsFallbackMethod>
+            <smsStatusCallback>http://demo.twilio.com/docs/smsstatuscallback.xml</smsStatusCallback>
+         </twilio.createApplication>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

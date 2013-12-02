@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twilioGetConfig"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.init>
+            <accountSid>AC733261aa185228fb414c6b61a1075c9e</accountSid>
+            <authToken>c7fcd6e24db66b2dc592ca678dc29a02</authToken>
+         </twilio.init>
+         <twilio.getAccountsList>
+            <friendlyName>Test123</friendlyName>
+         </twilio.getAccountsList>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

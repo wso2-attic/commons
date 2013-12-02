@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="AllinOne"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.getAllSpreadsheets/>
+         <googlespreadsheet.createSpreadsheet>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetCount>0</worksheetCount>
+         </googlespreadsheet.createSpreadsheet>
+         <googlespreadsheet.createWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>QAWorkSheet1</worksheetName>
+            <worksheetRows>10</worksheetRows>
+            <worksheetColumns>10</worksheetColumns>
+         </googlespreadsheet.createWorksheet>
+         <googlespreadsheet.createWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>QAWorkSheet2</worksheetName>
+            <worksheetRows>20</worksheetRows>
+            <worksheetColumns>20</worksheetColumns>
+         </googlespreadsheet.createWorksheet>
+         <googlespreadsheet.deleteWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>Sheet 1</worksheetName>
+         </googlespreadsheet.deleteWorksheet>
+         <googlespreadsheet.importCSV>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>QAWorkSheet1</worksheetName>
+            <filePath>/home/shashi/work_stuff/ESB/4.8.0/artifacts/test2.csv</filePath>
+            <batchEnable>true</batchEnable>
+            <batchSize>7</batchSize>
+         </googlespreadsheet.importCSV>
+         <googlespreadsheet.purgeWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>QAWorkSheet2</worksheetName>
+         </googlespreadsheet.purgeWorksheet>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

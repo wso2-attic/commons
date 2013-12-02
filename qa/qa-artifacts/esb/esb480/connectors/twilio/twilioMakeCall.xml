@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twilioMakeCall"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.makeCall configKey="MyTwilioConfig">
+            <to>+94773383831</to>
+            <from>+16465028090</from>
+            <url>http://demo.twilio.com/docs/voice.xml</url>
+            <method>POST</method>
+            <fallbackUrl>http://demo.twilio.com/docs/voicefallback.xml</fallbackUrl>
+            <fallbackMethod>POST</fallbackMethod>
+            <statusCallback>http://demo.twilio.com/docs/statuscallback.xml</statusCallback>
+            <statusCallbackMethod>GET</statusCallbackMethod>
+            <sendDigits>ww1234%23</sendDigits>
+            <ifMachine>Continue</ifMachine>
+            <timeout>60</timeout>
+            <record>false</record>
+         </twilio.makeCall>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="custom">
+            <property name="XXXXXXXXXXXXXXXXXX" value="Fault"/>
+         </log>
+      </faultSequence>
+   </target>
+</proxy>

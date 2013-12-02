@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="searchCell"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.searchCell>
+            <spreadsheetName>ConnectorSpreadsheet480_shashi1</spreadsheetName>
+            <worksheetName>QAWorkSheet1</worksheetName>
+            <searchString>Albert</searchString>
+         </googlespreadsheet.searchCell>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

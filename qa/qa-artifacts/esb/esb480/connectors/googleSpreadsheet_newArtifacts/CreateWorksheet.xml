@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="CreateWorksheet"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.getAllSpreadsheets/>
+         <googlespreadsheet.createSpreadsheet>
+            <spreadsheetName>ConnectorSpreadsheet480_7</spreadsheetName>
+            <worksheetCount>0</worksheetCount>
+         </googlespreadsheet.createSpreadsheet>
+         <googlespreadsheet.createWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480_7</spreadsheetName>
+            <worksheetName>QAWorkSheet</worksheetName>
+            <worksheetRows>10</worksheetRows>
+            <worksheetColumns>10</worksheetColumns>
+         </googlespreadsheet.createWorksheet>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

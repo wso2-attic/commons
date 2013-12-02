@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="DeleteWorksheet"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.getAllSpreadsheets/>
+         <googlespreadsheet.createSpreadsheet>
+            <spreadsheetName>ConnectorSpreadsheet480</spreadsheetName>
+            <worksheetCount>1</worksheetCount>
+         </googlespreadsheet.createSpreadsheet>
+         <googlespreadsheet.createWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480</spreadsheetName>
+            <worksheetName>QAWorkSheet1</worksheetName>
+            <worksheetRows>10</worksheetRows>
+            <worksheetColumns>2</worksheetColumns>
+         </googlespreadsheet.createWorksheet>
+         <googlespreadsheet.deleteWorksheet>
+            <spreadsheetName>ConnectorSpreadsheet480</spreadsheetName>
+            <worksheetName>Sheet 1</worksheetName>
+         </googlespreadsheet.deleteWorksheet>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

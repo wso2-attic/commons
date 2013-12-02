@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="getWorksheetsByTitle"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.getWorksheetsByTitle configKey="MyGSConfig">
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <title>QAWorkSheet1</title>
+         </googlespreadsheet.getWorksheetsByTitle>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

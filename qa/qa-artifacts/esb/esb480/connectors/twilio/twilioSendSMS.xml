@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twilioSendSMS"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <twilio.sendSms configKey="MyTwilioConfig">
+            <body>Jhhhhhhhhhhhhhhhh</body>
+            <to>+94773383831</to>
+            <from>+16465028090</from>
+            <statusCallBackUrl>http://demo.twilio.com/docs/statuscallback.xml</statusCallBackUrl>
+            <applicationSid>APa6ff02814bd147c8ad1d29b7c9bc0731</applicationSid>
+         </twilio.sendSms>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+      <faultSequence>
+         <log level="full"/>
+      </faultSequence>
+   </target>
+</proxy>

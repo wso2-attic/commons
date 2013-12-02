@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="setRow"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <googlespreadsheet.usernameLogin>
+            <username>connectoresb480@gmail.com</username>
+            <password>evanthika123#</password>
+         </googlespreadsheet.usernameLogin>
+         <googlespreadsheet.setRow>
+            <spreadsheetName>ConnectorSpreadsheet480_shashiR</spreadsheetName>
+            <worksheetName>QAWorkSheet2</worksheetName>
+            <rowId>2</rowId>
+            <rowData>"John Smith",jsmith@gmail.com,Colombo</rowData>
+         </googlespreadsheet.setRow>
+         <log level="full"/>
+         <respond/>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>
