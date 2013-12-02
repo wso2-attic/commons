@@ -1,0 +1,25 @@
+   <proxy name="CustomProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <makefault version="soap11">
+               <code xmlns:soap11Env="http://schemas.xmlsoap.org/soap/envelope/"
+                     value="soap11Env:VersionMismatch"/>
+               <reason value="fault"/>
+               <role/>
+            </makefault>
+            <property name="FAULTS_AS_HTTP_200"
+                      value="TRUE"
+                      scope="axis2"
+                      type="STRING"/>
+            <respond/>
+         </inSequence>
+         <outSequence>
+            <send/>
+         </outSequence>
+      </target>
+   </proxy>

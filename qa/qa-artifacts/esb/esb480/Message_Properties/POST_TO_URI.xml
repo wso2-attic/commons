@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://ws.apache.org/ns/synapse">
+   <proxy name="SecondProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <target>
+         <endpoint name="ep2">
+            <address uri="local://services/StockQuoteProxy"/>
+         </endpoint>
+         <inSequence>
+            <log level="full"/>
+            <log level="custom">
+               <property name="SecondProxy" value="In sequence of Second proxy invoked!"/>
+            </log>
+         </inSequence>
+         <outSequence>
+            <log level="custom">
+               <property name="SecondProxy" value="Out sequence of Second proxy invoked!"/>
+            </log>
+            <send/>
+         </outSequence>
+      </target>
+      <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+   </proxy>
+   <proxy name="StockQuoteProxy" startOnLoad="true">
+      <target>
+         <endpoint name="ep3">
+            <address uri="http://localhost:9001/services/SimpleStockQuoteService"/>
+            <property name="POST_TO_URI" value="true" scope="axis2"/>
+         </endpoint>
+         <outSequence>
+            <log level="custom">
+               <property name="StockQuoteProxy"
+                         value="Out sequence of StockQuote proxy invoked!"/>
+            </log>
+            <log level="full"/>
+            <send/>
+         </outSequence>
+      </target>
+      <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+   </proxy>
+   <proxy name="LocalTransportProxy"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <target>
+         <endpoint name="ep1">
+            <address uri="local://services/SecondProxy"/>
+         </endpoint>
+         <inSequence>
+            <log level="full"/>
+            <log level="custom">
+               <property name="LocalTransportProxy"
+                         value="In sequence of LocalTransportProxy invoked!"/>
+            </log>
+         </inSequence>
+         <outSequence>
+            <log level="custom">
+               <property name="LocalTransportProxy"
+                         value="Out sequence of LocalTransportProxy invoked!"/>
+            </log>
+            <send/>
+         </outSequence>
+      </target>
+      <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+   </proxy>
+   <sequence name="fault">
+      <log level="full">
+         <property name="MESSAGE" value="Executing default &#34;fault&#34; sequence"/>
+         <property name="ERROR_CODE" expression="get-property('ERROR_CODE')"/>
+         <property name="ERROR_MESSAGE" expression="get-property('ERROR_MESSAGE')"/>
+      </log>
+      <drop/>
+   </sequence>
+   <sequence name="main">
+      <log/>
+      <drop/>
+   </sequence>
+</definitions>

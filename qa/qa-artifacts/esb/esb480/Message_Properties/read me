@@ -1,0 +1,38 @@
+READ ME 
+========
+
+Scenario 1
+==============
+
+1. Refer http://docs.wso2.org/display/ESB480/Sample+268%3A+Proxy+Services+with+the+Local+Transport
+Configure as above and folow the steps given except copy and paste the POST_TO_URI.xml synapse. Use a tcpmon. 
+You will be able to see outgoing URL of the ESB a complete URL.
+
+
+2. To test FAULTS_AS_HTTP_200, via SOAP or CURL invoke, 
+http://localhost:8280/services/CustomProxy
+
+
+3. To Test HTTP_SC, 
+Deploy Axis2Service in App Server.
+
+http://localhost:8280/services/Axis2ProxyService
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.carbon.wso2.org">
+   <soapenv:Header>
+<h1>custom</h1>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:echoString>
+         <!--Optional:-->
+         <ser:s>test</ser:s>
+      </ser:echoString>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+
+4. To Test REQUEST_HOST_HEADER, enable wire logs to view it better.
+
+
+curl -v -i --header 'Host: www.example.com' http://localhost:8380/services/Axis2RestService/echoString?s=wso2
+
