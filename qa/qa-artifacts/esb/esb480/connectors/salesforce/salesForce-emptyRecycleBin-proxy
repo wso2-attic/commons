@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="CreateNew"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="FORCE_HTTP_1.0" value="true" scope="axis2"/>
+         <salesforce.init>
+            <username>sunethpubudu1@gmail.com</username>
+            <password>rabbit1984Wq1Ae5Lqfu4wkjUcnkPecuNw</password>
+            <loginUrl>https://login.salesforce.com/services/Soap/u/27.0</loginUrl>
+         </salesforce.init>
+         <payloadFactory media-type="xml">
+            <format>
+               <sfdc:sObjects xmlns:sfdc="sfdc" type="Lead">
+                  <sfdc:Id>00Q9000000LnM8I</sfdc:Id>
+                  <sfdc:Id>00Q9000000LnMQG</sfdc:Id>
+               </sfdc:sObjects>
+            </format>
+            <args/>
+         </payloadFactory>
+         <salesforce.emptyRecycleBin>
+            <allOrNone>0</allOrNone>
+            <sobjects xmlns:sfdc="sfdc">{//sfdc:sObjects}</sobjects>
+         </salesforce.emptyRecycleBin>
+         <log level="full"/>
+         <respond/>
+      </inSequence>
+   </target>
+   <description/>
+</proxy>
+                                

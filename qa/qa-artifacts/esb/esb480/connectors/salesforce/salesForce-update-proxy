@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="CreateNew"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="FORCE_HTTP_1.0" value="true" scope="axis2"/>
+         <salesforce.init>
+            <username>sunethpubudu1@gmail.com</username>
+            <password>rabbit1984Wq1Ae5Lqfu4wkjUcnkPecuNw</password>
+            <loginUrl>https://login.salesforce.com/services/Soap/u/27.0</loginUrl>
+         </salesforce.init>
+         <payloadFactory media-type="xml">
+            <format>
+               <sfdc:sObjects xmlns:sfdc="sfdc" type="Lead">
+                  <sfdc:sObject>
+                     <sfdc:Id>00Q9000000LnMQF</sfdc:Id>
+                     <sfdc:Email>sunnyupdate2020@email.com</sfdc:Email>
+                     <sfdc:LastName>Last Name11bcc20</sfdc:LastName>
+                     <sfdc:Company>WSO2-TwitterFeed111bcc20</sfdc:Company>
+                     <sfdc:Description>Leads done for Twitter11bcc20</sfdc:Description>
+                  </sfdc:sObject>
+                  <sfdc:sObject>
+                     <sfdc:Id>00Q9000000LnMQG</sfdc:Id>
+                     <sfdc:Email>sunny30update@email.com30</sfdc:Email>
+                     <sfdc:LastName>Last Name22bcc30</sfdc:LastName>
+                     <sfdc:Company>WSO2-TwitterFeed22bcc3030</sfdc:Company>
+                     <sfdc:Description>Leads done for Twitter22bcc30</sfdc:Description>
+                  </sfdc:sObject>
+               </sfdc:sObjects>
+            </format>
+            <args/>
+         </payloadFactory>
+         <salesforce.update>
+            <allOrNone>0</allOrNone>
+            <allowFieldTruncate>0</allowFieldTruncate>
+            <sobjects xmlns:sfdc="sfdc">{//sfdc:sObjects}</sobjects>
+         </salesforce.update>
+         <log level="full"/>
+         <respond/>
+      </inSequence>
+   </target>
+   <description/>
+</proxy>

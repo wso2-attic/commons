@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="CreateNew"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="FORCE_HTTP_1.0" value="true" scope="axis2"/>
+         <salesforce.init>
+            <username>sunethpubudu1@gmail.com</username>
+            <password>rabbit1984Wq1Ae5Lqfu4wkjUcnkPecuNw</password>
+            <loginUrl>https://login.salesforce.com/services/Soap/u/27.0</loginUrl>
+         </salesforce.init>
+         <payloadFactory media-type="xml">
+            <format>
+               <sfdc:emailWrapper xmlns:sfdc="sfdc">
+                  <sfdc:messages type="urn:SingleEmailMessage">
+                     <sfdc:bccSender>true</sfdc:bccSender>
+                     <sfdc:emailPriority>High</sfdc:emailPriority>
+                     <sfdc:replyTo>suneth@wso2.com</sfdc:replyTo>
+                     <sfdc:saveAsActivity>false</sfdc:saveAsActivity>
+                     <sfdc:senderDisplayName>wso2</sfdc:senderDisplayName>
+                     <sfdc:subject>test</sfdc:subject>
+                     <sfdc:useSignature>false</sfdc:useSignature>
+                     <sfdc:targetObjectId>0039000000j1CXr</sfdc:targetObjectId>
+                     <sfdc:plainTextBody>Hello, this is a holiday greeting!</sfdc:plainTextBody>
+                  </sfdc:messages>
+               </sfdc:emailWrapper>
+            </format>
+            <args/>
+         </payloadFactory>
+         <salesforce.sendEmail>
+            <sendEmail xmlns:sfdc="sfdc">{//sfdc:emailWrapper}</sendEmail>
+         </salesforce.sendEmail>
+         <log level="full"/>
+         <respond/>
+      </inSequence>
+   </target>
+   <description/>
+</proxy>
+                                

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="CreateSpreadSheet"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="FORCE_HTTP_1.0" value="true" scope="axis2"/>
+         salesforce.init>
+            <username>sunethpubudu1@gmail.com</username>
+            <password>rabbit1984Wq1Ae5Lqfu4wkjUcnkPecuNw</password>
+            <loginUrl>https://login.salesforce.com/services/Soap/u/27.0</loginUrl>
+         </salesforce.init>
+         <payloadFactory media-type="xml">
+            <format>
+               <sfdc:sObjects xmlns:sfdc="sfdc" type="Lead">
+                  <sfdc:sObject>
+                     <sfdc:Email>email@email.com</sfdc:Email>
+                     <sfdc:LastName>Last Name</sfdc:LastName>
+                     <sfdc:Company>WSO2-TwitterFeed</sfdc:Company>
+                     <sfdc:Description>Leads done for Twitter</sfdc:Description>
+                  </sfdc:sObject>
+               </sfdc:sObjects>
+            </format>
+            <args/>
+         </payloadFactory>
+         <salesforce.create>
+            <allOrNone>0</allOrNone>
+            <allowFieldTruncate>0</allowFieldTruncate>
+            <sobjects xmlns:sfdc="sfdc">{//sfdc:sObjects}</sobjects>
+         </salesforce.create>
+         <log level="full"/>
+         <respond/>
+      </inSequence>
+   </target>
+   <description/>
+</proxy>
+                                
+
+
