@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="StockQuoteProxy"
+       transports="jms"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full"/>
+         <dbreport>
+            <connection>
+               <pool>
+                  <password>dbuser_password</password>
+                  <user>dbuser_name</user>
+                  <url>jdbc:mysql://localhost:3306/esb480</url>
+                  <driver>com.mysql.jdbc.Driver</driver>
+               </pool>
+            </connection>
+            <statement>
+               <sql>call addmessage(?)</sql>
+               <parameter xmlns:m="http://services.samples"
+                          xmlns:m0="http:// schemas.xmlsoap.org/soap/envelope/"
+                          expression="//m0:Body/m:placeOrder/m:order/ m:symbol"
+                          type="VARCHAR"/>
+            </statement>
+         </dbreport>
+         <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+      </inSequence>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService"/>
+      </endpoint>
+   </target>
+   <publishWSDL uri="file:repository/samples/resources/proxy/sample_proxy_1.wsdl"/>
+   <parameter name="transport.jms.ContentType">
+      <rules>
+         <jmsProperty>contentType</jmsProperty>
+         <default>application/xml</default>
+      </rules>
+   </parameter>
+   <description/>
+</proxy>
