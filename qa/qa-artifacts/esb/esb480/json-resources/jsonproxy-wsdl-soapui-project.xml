@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="jsonproxy?wsdl" soapui-version="4.5.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="jsonproxySoap12Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2}jsonproxySoap12Binding" soapVersion="1_2" anonymous="optional" definition="http://shavantha-thinkpad-t530:8282/services/jsonproxy?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpSoap12Endpoint</con:endpoint><con:endpoint>https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsSoap12Endpoint</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:mediate" name="mediate" bindingOperationName="mediate" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpSoap12Endpoint</con:endpoint><con:request>&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+   &lt;soap:Header/>
+   &lt;soap:Body/>
+&lt;/soap:Envelope></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:mediate"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="jsonproxySoap11Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2}jsonproxySoap11Binding" soapVersion="1_1" anonymous="optional" definition="http://shavantha-thinkpad-t530:8282/services/jsonproxy?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://shavantha-thinkpad-t530:8282/services/jsonproxy?wsdl"><con:part><con:url>http://shavantha-thinkpad-t530:8282/services/jsonproxy?wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://ws.apache.org/axis2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://ws.apache.org/axis2" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsdl:types/>
+  <wsdl:message name="in"/>
+  <wsdl:message name="out"/>
+  <wsdl:portType name="jsonproxyPortType">
+    <wsdl:operation name="mediate">
+      <wsdl:input message="tns:in" wsaw:Action="urn:mediate"/>
+      <wsdl:output message="tns:out" wsaw:Action="urn:mediateResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="jsonproxySoap11Binding" type="tns:jsonproxyPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="mediate">
+      <soap:operation soapAction="urn:mediate" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="jsonproxySoap12Binding" type="tns:jsonproxyPortType">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="mediate">
+      <soap12:operation soapAction="urn:mediate" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="jsonproxyHttpBinding" type="tns:jsonproxyPortType">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="mediate">
+      <http:operation location="mediate"/>
+      <wsdl:input>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="jsonproxy">
+    <wsdl:port name="jsonproxyHttpsSoap11Endpoint" binding="tns:jsonproxySoap11Binding">
+      <soap:address location="https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsSoap11Endpoint"/>
+    </wsdl:port>
+    <wsdl:port name="jsonproxyHttpSoap11Endpoint" binding="tns:jsonproxySoap11Binding">
+      <soap:address location="http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpSoap11Endpoint"/>
+    </wsdl:port>
+    <wsdl:port name="jsonproxyHttpSoap12Endpoint" binding="tns:jsonproxySoap12Binding">
+      <soap12:address location="http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpSoap12Endpoint"/>
+    </wsdl:port>
+    <wsdl:port name="jsonproxyHttpsSoap12Endpoint" binding="tns:jsonproxySoap12Binding">
+      <soap12:address location="https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsSoap12Endpoint"/>
+    </wsdl:port>
+    <wsdl:port name="jsonproxyHttpEndpoint" binding="tns:jsonproxyHttpBinding">
+      <http:address location="http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpEndpoint"/>
+    </wsdl:port>
+    <wsdl:port name="jsonproxyHttpsEndpoint" binding="tns:jsonproxyHttpBinding">
+      <http:address location="https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsEndpoint"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsSoap11Endpoint</con:endpoint><con:endpoint>http://shavantha-ThinkPad-T530:8282/services/jsonproxy.jsonproxyHttpSoap11Endpoint</con:endpoint></con:endpoints><con:operation isOneWay="false" action="urn:mediate" name="mediate" bindingOperationName="mediate" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://shavantha-ThinkPad-T530:8245/services/jsonproxy.jsonproxyHttpsSoap11Endpoint</con:endpoint><con:request>&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   &lt;soapenv:Header/>
+   &lt;soapenv:Body/>
+&lt;/soapenv:Envelope></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="urn:mediate"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="httprequest" name="HTTP Test Request"><con:settings/><con:config method="POST" xsi:type="con:HttpRequest" name="HTTP Test Request" postQueryString="false" mediaType="application/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://10.100.0.94:8282/services/jsonproxy</con:endpoint><con:request>{
+  "Customer": { "name": "admin" }
+}</con:request><con:credentials><con:username>admin</con:username><con:password>admin</con:password><con:authType>Preemptive</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/></con:soapui-project>
