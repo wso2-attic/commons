@@ -24,7 +24,7 @@
               type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
               maxActive="100" maxIdle="30" maxWait="10000"
               url="jdbc:mysql://localhost:3306/TomcatCatalinaTestDB"
-              username="root" password="kalpana"/>
+              username="root" password="xxxxxxx"/>
 
 
 
@@ -32,7 +32,7 @@
               type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
               maxActive="100" maxIdle="30" maxWait="10000"
               url="jdbc:mysql://localhost:3306/CatalinaWebAppTestDB"
-              username="root" password="kalpana"/>
+              username="root" password="xxxxxxx"/>
 </GlobalNamingResources>
 
 
