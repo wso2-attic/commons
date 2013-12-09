@@ -1,0 +1,6 @@
+curl -v -X POST -H "Content-Type: text/xml" -H "SOAPAction:urn:buyStocks" -H "valid:true" -H "routing:xadmin;server1;community#1.0##" -H"Expect:" -d @requests/100K_buyStocks.xml http://localhost:8291/services/CBRProxy
+
+
+
+
+com.barclaycardus.esb.mediator.masklog.MaskLogMediator

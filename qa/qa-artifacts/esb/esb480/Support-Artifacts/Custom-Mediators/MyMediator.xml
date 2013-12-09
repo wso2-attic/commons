@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="MyMediator"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <log/>
+         <property name="Message"
+                   value="Default Message"
+                   scope="default"
+                   type="STRING"/>
+         <class name="org.wso2.sample.MyMediator"/>
+         <log separator=",">
+            <property name="===========Message Value=========="
+                      expression="get-property('Message')"/>
+         </log>
+         <drop/>
+      </inSequence>
+   </target>
+</proxy>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="JsonProxy"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <log/>
+         <property name="name"
+                   expression="json-eval(Customer.name)"
+                   scope="default"
+                   type="STRING"/>
+         <payloadFactory media-type="json">
+            <format>{
+  "Customer": { "name": "$1" }
+}</format>
+            <args>
+               <arg evaluator="xml" expression="get-property('name')"/>
+            </args>
+         </payloadFactory>
+         <send>
+            <endpoint>
+               <http method="post"
+                     uri-template="http://localhost:9773/jaxrs_basic/services/customers/customerservice/customers"/>
+            </endpoint>
+         </send>
+      </inSequence>
+   </target>
+   <description/>
+</proxy>
+                                

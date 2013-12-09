@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="UCSDev"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <endpoint>
+         <address uri="http://10.100.0.19:9773/java_first_jaxws/services/hello_world"/>
+      </endpoint>
+   </target>
+   <publishWSDL uri="http://10.100.0.19:9773/java_first_jaxws/services/hello_world?wsdl"/>
+   <parameter name="disableOperationValidation">true</parameter>
+</proxy>
