@@ -85,7 +85,7 @@ curl -v -X POST -H "Content-type: application/json" -d @json3.txt http://localho
 
 Scenario 10 :
 ===================
-To Test clone mediator with a json payload to make sure that the json payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
+To Test clone mediator with a json payload and a accept header to make sure that the json payload copies correctly, use CustomerServiceProxy_clone.xml. Put 3 tcpmons for 9774,9775,9776 and check the cloned messaged for all the endpoints.
 
 curl -v -X POST -H "Content-type: application/json" -H "Accept: application/json"  -d @json3.txt http://localhost:8281/services/CustomerServiceProxy_clone/customers
 
@@ -141,14 +141,6 @@ Scenario 17:
 Use CustomerServiceProxy_json.xml to test: Json3.json file should be uploaded to the registry and refered. 
 
 curl -v -X POST -H "Content-type: application/json" http://localhost:8281/services/CustomerServiceProxy_json/customers
-
-
-Scenario 18:
-=================
-
-Use CustomerServiceProxy_txt.xml to test: Json3.json file should be uploaded to the registry and refered. 
-
-curl -v -X POST -H "Content-type: text/plain" http://localhost:8281/services/CustomerServiceProxy_txt/customers
 
 
 
