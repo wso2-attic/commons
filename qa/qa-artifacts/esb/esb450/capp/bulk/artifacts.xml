@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifacts>
+    <artifact name="ESBproject" version="1.0.0" type="carbon/application">
+        <dependency artifact="endpoint" version="1.0.0" serverRole="EnterpriseServiceBus"/>
+    </artifact>
+</artifacts>
