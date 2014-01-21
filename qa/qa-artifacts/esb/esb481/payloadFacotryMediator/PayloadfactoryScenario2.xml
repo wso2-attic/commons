@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="jsonproxy"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>{  "Customer": { "name": "$1" }}</format>
+            <args>
+               <arg evaluator="json" expression="$.CheckUserRequest.name"/>
+            </args>
+         </payloadFactory>
+         <send>
+            <endpoint>
+               <address uri="http://10.100.0.33:9764/jaxrs_basic_json/services/customers/customerservice/customers"/>
+            </endpoint>
+         </send>
+         <log level="full">
+            <property name="LOG" value="==========================="/>
+         </log>
+      </inSequence>
+      <outSequence>
+         <payloadFactory media-type="json">
+            <format>{
+  	"CheckUserResponse": { 
+    		"name": "$1",
+    		"id": "$2"
+    }
+}</format>
+            <args>
+               <arg evaluator="json" expression="$.Customer.name"/>
+               <arg evaluator="json" expression="$.Customer.id"/>
+            </args>
+         </payloadFactory>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://10.100.0.33:9764/jaxrs_basic_json/services/customers/customerservice/customers"/>
+      </endpoint>
+   </target>
+   <description/>
+</proxy>

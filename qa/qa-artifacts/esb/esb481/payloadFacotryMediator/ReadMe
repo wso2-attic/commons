@@ -1,0 +1,23 @@
+scenario 1:
+1. Build SimpleStockQuote Service on "$ESB_HOME/samples/axis2Server/src/SimpleStockQuoteService"
+2. Start axis2Service "$ESB_HOME/samples/axis2Server"
+3. Create proxy service as per "PayloadfactoryScenario1.xml"
+4. Send following soap request:
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:m0="http://services.samples" xmlns:xsd="http://services.samples/xsd">
+   <soapenv:Header/>
+   <soapenv:Body>
+       <m0:CheckPriceRequest xmlns:m0="http://services.samples">
+            <m0:Code>ssss</m0:Code>
+         </m0:CheckPriceRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+scenario 2:
+1. Start App server and deploy "jaxrs_basic_44.war"
+2. Create proxy service as per "PayloadfactoryScenario2.xml"
+3. Send following soap request: (Media Type should be application/json)
+{
+  "CheckUserRequest": { "name": "ssss" }
+}
+
+
