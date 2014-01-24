@@ -1,0 +1,20 @@
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="multirootedJsonReqestProxy"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <property name="OUT_ONLY" value="true" scope="default" type="STRING"/>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="vfs:file:///home/shashi/work_stuff/ESB/4.8.1/artifacts/response.json"/>
+      </endpoint>
+   </target>
+   <description/>
+</proxy>
+

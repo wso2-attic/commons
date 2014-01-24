@@ -1,0 +1,53 @@
+When multirooted response comes to ESB
+1. Host "multirootedJson.json" file on apache2 
+sudo apt-get install apache2
+create a folder at "/var/www/" {ex:json}
+navigate to created folder. 
+place the file "multirootedJson.json" there
+Note: now this file can be accessed on brower "http://localhost/json/multirootedJson.json"
+
+2. create a proxy service with endpoint to above as "multiRootedResponse.xml"
+
+3. send curl request as follows:
+curl -v http://shashi-ThinkPad-T530:8281/services/multirootJsonProxy1
+
+Response:
+HTTP/1.1 200 OK
+ETag: "1006c9-9e1-4f0b6e29e2112"
+Last-Modified: Fri, 24 Jan 2014 12:56:23 GMT
+Content-Type: application/json
+Accept-Ranges: bytes
+Date: Fri, 24 Jan 2014 12:58:49 GMT
+Server: WSO2-PassThrough-HTTP
+Transfer-Encoding: chunked
+ 
+"getquoteresponse": [
+        {
+            "change": "4.090953902529174",
+            "earnings": "12.85037561648507",
+            "high": "82.1992668503766",
+            "last": "79.11591459453155",
+            "lasttradetimestamp": "Thu Jul 04 19:12:12 IST 2013",
+            "low": "82.07587397906588",
+            "marketcap": "-6710370.759280889",
+            "name": "IBM Company",
+            "open": "82.63216328626984",
+            "peratio": "-17.95776979490757",
+            "percentagechange": "-5.425366866770642",
+            "prevclose": "-75.40418930165814",
+            "symbol": "IBM",
+            "volume": "18847"
+        },
+...............................
+
+
+
+
+
+When multirooted response comes through ESB:
+1. create a proxy service as per "multiRootedRequest.xml"
+2. Request:
+curl -v -X POST -H "Content-type: application/json" -d @multirootedJson.json services/multirootedJsonReqestProxy
+
+Response:
+As per the vfs location given in proxy response.json file should be created.
