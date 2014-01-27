@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="transformproxyFastXSLT"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <fastXSLT key="transform_echo"/>
+         <send>
+            <endpoint>
+               <address uri="http://10.100.1.199:9773/services/Axis2Service/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <fastXSLT key="transformback_echo"/>
+         <send/>
+      </outSequence>
+   </target>
+   <publishWSDL uri="http://10.100.1.199:9773/services/Axis2Service?wsdl"/>
+</proxy>
