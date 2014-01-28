@@ -1,20 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<localEntry xmlns="http://ws.apache.org/ns/synapse" key="transformback_echo">
-   <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                   xmlns:ax21="http://services.samples/xsd"
-                   xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
-                   xmlns:m0="http://service.carbon.wso2.org"
-                   version="2.0"
-                   exclude-result-prefixes="m0 ax21 fn">
-      <xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
-      <xsl:template match="/">
-         <xsl:apply-templates select="//m0:return"/>
-      </xsl:template>
-      <xsl:template match="m0:return">
-         <m:echoStringResponse xmlns:m="http://service.carbon.wso2.org">
-            <m:return>Hi-Response</m:return>
-         </m:echoStringResponse>
-      </xsl:template>
-   </xsl:stylesheet>
-   <description/>
-</localEntry>
+   <localEntry key="transformback_echo">
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                      xmlns:ax21="http://services.samples/xsd"
+                      xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
+                      xmlns:m0="http://service.carbon.wso2.org"
+                      version="2.0"
+                      exclude-result-prefixes="m0 ax21 fn">
+         <xsl:output method="xml" omit-xml-declaration="no" indent="yes"/>
+         <xsl:template match="@* | node()">
+            <xsl:copy>
+               <xsl:apply-templates select="@* | node()"/>
+            </xsl:copy>
+         </xsl:template>
+         <xsl:template match="m0:echoStringResponse">
+            <m:echoStringResponse xmlns:m="http://service.carbon.wso2.org">
+               <m:return>Hi-Response</m:return>
+            </m:echoStringResponse>
+         </xsl:template>
+      </xsl:stylesheet>
+      <description/>
+   </localEntry>
