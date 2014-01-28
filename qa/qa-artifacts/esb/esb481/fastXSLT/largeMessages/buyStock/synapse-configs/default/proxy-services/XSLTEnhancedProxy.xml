@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="XSLTEnhancedProxy"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target endpoint="RealService">
+      <inSequence>
+         <fastXSLT key="xslt_transform_reverse"/>
+      </inSequence>
+      <outSequence>
+         <fastXSLT key="xslt_transform"/>
+         <send/>
+      </outSequence>
+   </target>
+   <publishWSDL key="proxy_wsdl"/>
+   <description/>
+</proxy>
+                                
