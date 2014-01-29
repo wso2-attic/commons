@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="cha"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <jira.config>
+            <username>xxxxxxx</username>
+            <password>xxxxxxx</password>
+            <uri>https://wso2.org/jira</uri>
+         </jira.config>
+         <jira.getIssue>
+            <issueIdOrKey>ESBJAVA-2701</issueIdOrKey>
+         </jira.getIssue>
+         <jira.getComments>
+            <issueIdOrKey>ESBJAVA-2701</issueIdOrKey>
+         </jira.getComments>
+         <log level="full"/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+   <description/>
+</proxy>

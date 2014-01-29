@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="cha"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <jira.config>
+            <username>xxxxxxx</username>
+            <password>xxxxxxx</password>
+            <uri>http://localhost:8080</uri>
+         </jira.config>
+         <jira.getProject>
+            <projectKey>QA</projectKey>
+         </jira.getProject>
+         <log level="full"/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+   <description/>
+</proxy>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="cha"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <jira.config>
+            <username>xxxxxx</username>
+            <password>xxxxxx</password>
+            <uri>http://localhost:8080</uri>
+         </jira.config>
+         <jira.getIssue>
+            <issueIdOrKey>QA-4</issueIdOrKey>
+         </jira.getIssue>
+         <jira.addAttachmentToIssueId>
+            <issueIdOrKey>QA-4</issueIdOrKey>
+            <file>/home/chathurika_m/Desktop/CEP/Selection_104.png</file>
+         </jira.addAttachmentToIssueId>
+         <log level="full"/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+   <description/>
+</proxy>

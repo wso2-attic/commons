@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="cha"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <jira.config>
+            <username>xxxxx</username>
+            <password>xxxxxx</password>
+            <uri>http://localhost:8080</uri>
+         </jira.config>
+         <jira.createIssue>
+            <projectKey>QA</projectKey>
+            <summary>Test Issue</summary>
+            <description>This is a test issue for  JIRA Connectors</description>
+            <issueType>Bug</issueType>
+         </jira.createIssue>
+         <log level="full"/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+   <description/>
+</proxy>
