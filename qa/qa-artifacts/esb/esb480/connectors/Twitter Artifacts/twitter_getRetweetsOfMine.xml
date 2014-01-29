@@ -1,0 +1,44 @@
+Steps
+prerequisite 
+- Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+- Have some retweets (tweets authored by the authenticating Account that have been retweeted by others) for the authenticating Account. Better to have as many as possible.
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Specify the <page>, <count> tags as needed. 
+	<page>		- Which page need to be return
+	<count>		- How many records per Page
+3. Invoke the proxy using soapui. Verify the listed result.
+4. Try out in both Super-tenant and Multi-Tenant
+5. Try out with enabling security, such as UsernameToken.
+6. Try out using Secure Vault .
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_getRetweetsOfMine"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+
+	<twitter.getRetweetsOfMine>
+		<page>1</page>
+		<count>10</count>
+	</twitter.getRetweetsOfMine>
+
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>

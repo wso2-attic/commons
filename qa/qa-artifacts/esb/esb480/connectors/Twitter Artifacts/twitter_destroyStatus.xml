@@ -1,0 +1,42 @@
+Steps
+prerequisite - Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Set the ID of the Status you are planing to destroy under <statusId> tag.
+3. Invoke the proxy using soapui. Verify the update in your Twitter Account.
+4. Tryout with specifying a statusId of a friend of yours.
+5. Try out in both Super-tenant and Multi-Tenant
+6. Try out with enabling security, such as UsernameToken.
+7. Try out using Secure Vault .
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_destroyStatus"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+
+		<twitter.destroyStatus>
+		   <statusId>xxxxx</statusId>
+		</twitter.destroyStatus>
+
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>

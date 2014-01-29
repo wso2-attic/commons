@@ -1,0 +1,63 @@
+Steps
+prerequisite 
+- Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+- Have data specific to different search tags.
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Specify the tag/tags and set the data that need to search. 
+		<search>	- The search query
+		<geocode>	- A String containing the latitude and longitude separated by ','. Used to get the tweets by users located within a given radius of the given latitude/longitude, where the user's location is taken from their Twitter profile
+		<radius>	- The radius to be used in the geocode -ONLY VALID IF A GEOCODE IS GIVEN
+		<unit>		- The unit of measurement of the given radius. Can be 'mi' or 'km'. Miles by default.-ONLY VALID IF A GEOCODE and RADIUS GIVEN
+		<lang>		- Restricts tweets to the given language, given by an ISO 639-1 code
+		<locale>	- Specify the language of the query you are sending (only ja is currently effective). 
+		<maxId>		- If specified, returns tweets with status ids less than the given id
+		<since>		- If specified, returns tweets since the given date. Date should be formatted as YYYY-MM-DD
+		<sinceId>	- Returns tweets with status ids greater than the given id.
+		<until>		- If specified, returns tweets with generated before the given date. Date should be formatted as YYYY-MM-DD
+		<count>		- Number of results in search result ( default 15, max 100 )
+3. Invoke the proxy using soapui. Verify the listed results.
+4. Try out in both Super-tenant and Multi-Tenant
+5. Try out with enabling security, such as UsernameToken.
+6. Try out using Secure Vault .
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_search"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+
+	<twitter.search>
+		<search>xxx</search>
+		<geocode>40.71435,-74.00597</geocode>
+		<radius>10</radius>
+		<unit>mi</unit>
+		<lang>xxx</lang>
+		<locale>xxx</locale>
+		<maxId>xxx</maxId>
+		<since>xxx</since>
+		<sinceId>xxx</sinceId>
+		<until>xxx</until>
+		<count>xxx</count>
+	</twitter.search>
+
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>

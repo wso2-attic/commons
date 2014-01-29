@@ -1,0 +1,45 @@
+Steps
+prerequisite 
+- Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+- Have WOEID for places which have trending topics. (Returns the top 10 trending topics for a specific WOEID)
+ex : 
+London - "woeid":44418
+Fresno - "woeid":2407517
+Chennai - "woeid":2295424
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Specify the <id> tag, with WOEID of place which need to list the trending topics. 
+	<id>	- WOEID of place which need to list the trending topics
+3. Invoke the proxy using soapui. Verify the listed result.
+4. Try out in both Super-tenant and Multi-Tenant
+5. Try out with enabling security, such as UsernameToken.
+6. Try out using Secure Vault .
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_getTopTrendPlaces"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+		<twitter.getTopTrendPlaces>
+		    <id>xxxxxxxxx</id>
+		</twitter.getTopTrendPlaces>
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>
+

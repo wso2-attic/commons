@@ -1,0 +1,44 @@
+Steps
+prerequisite 
+- Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+- Follow some dummy Accounts via the specified Account. 
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Set the screenName of the Account that you need to get the list of friends, under <screenName> tag. Else you can use <userID> tag with specifying the "userID" of the Account. 
+3. Invoke the proxy using soapui. Verify the listed result.
+4. Try out in both Super-tenant and Multi-Tenant
+5. Try out with enabling security, such as UsernameToken.
+6. Try out using Secure Vault .
+7. Try out the usage of cursor with specifying <cursor> tag. default value -1.
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_getFriends"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+
+	<twitter.getFriends>
+        	<screenName>xxxxxxxxx</screenName>
+  		<cursor>-1</cursor>
+	</twitter.getFriends>
+
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>

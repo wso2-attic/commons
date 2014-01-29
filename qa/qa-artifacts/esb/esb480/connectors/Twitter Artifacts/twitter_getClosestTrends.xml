@@ -1,0 +1,41 @@
+Steps
+prerequisite - Create your own twitter-dev account > Add New Application > Create <consumerSecret> , <accessTokenSecret> , <accessToken> , and <consumerKey> for your application. Use them in below Proxy.
+
+1. Create a custom proxy and copy below in the body, and save the proxy
+2. Set the coordinates of the location you you wish to get Closest Trends under <twitter.getClosestTrends> tag.
+3. Invoke the proxy using soapui. Verify the populated data.
+4. Try out with specifying different locations.
+5. Try out in both Super-tenant and Multi-Tenant
+6. Try out with enabling security, such as UsernameToken.
+7. Try out using Secure Vault .
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+   <proxy xmlns="http://ws.apache.org/ns/synapse"
+          name="twitter_getClosestTrends"
+          transports="https http"
+          startOnLoad="true"
+          trace="disable">
+      <description/>
+      <target>
+         <inSequence>
+            <log level="full"/>
+            <twitter.config>
+               <consumerSecret>xxxxxxxxx</consumerSecret>
+               <accessTokenSecret>xxxxxxxxx</accessTokenSecret>
+               <accessToken>xxxxxxxxx</accessToken>
+               <consumerKey>xxxxxxxxx</consumerKey>
+            </twitter.config>
+
+	<twitter.getClosestTrends>
+		<latitude>51.51121</latitude>
+		<longitude>-0.11982</longitude>
+	</twitter.getClosestTrends>
+
+            <header name="To" action="remove"/>
+            <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+            <property name="RESPONSE" value="true" scope="default" type="STRING"/>
+            <send/>
+         </inSequence>
+      </target>
+   </proxy>
