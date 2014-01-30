@@ -9,6 +9,7 @@
       <inSequence>
          <property name="messageType" value="application/json" scope="axis2"/>
          <log level="full"/>
+	 <respond/>
       </inSequence>
       <outSequence>
          <send/>
