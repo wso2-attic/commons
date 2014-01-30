@@ -1,0 +1,7 @@
+<p:Student xmlns:p="http://ws.wso2.org/dataservice">
+      <p:name>tharindu</p:name>
+      <p:email>tharindu@gmail.com</p:email>
+      <p:age>16</p:age>
+      <p:class>8B</p:class>
+      <p:average>83.45</p:average>
+</p:Student>

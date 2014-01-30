@@ -1,0 +1,19 @@
+1. Unzip "pizzashop-rs_1.0.zip" file and paste to App Server (5.2.1)  webapps folder (AS_HOME/repository/deployment/server/webapps)
+2. Create api as per "pizzashop.xml"
+3. Send following requests:
+
+Add Order: 
+curl -X POST -d @addOrder.json http://127.0.0.1:8280/pizzashop/api/order --header "Content-Type:application/json"
+
+View Order added by above step: (Copy the id from above response and use it here)
+curl -v "http://127.0.0.1:8280/pizzashop/api/order/1380820638568"
+
+Update Order:
+curl -X PUT -d @updateOrder.json http://127.0.0.1:8280/pizzashop/api/order/1380820638568 --header "Content-Type:application/json"
+
+
+Delete Order: (Copy the id from above response and use it here)
+curl -X DELETE http://127.0.0.1:8280/pizzashop/api/order/1380820638568
+
+Purchase Pizza
+curl -X POST -d @purchase.json "http://127.0.0.1:8280/pizzashop/api/purchase/1380821031513" --header "Content-Type:application/json"
