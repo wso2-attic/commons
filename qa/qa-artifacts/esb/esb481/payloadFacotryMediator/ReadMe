@@ -13,7 +13,7 @@ scenario 1:
 </soapenv:Envelope>
 
 scenario 2:
-1. Start App server and deploy "jaxrs_basic_44.war"
+1. Start App server and deploy "jaxrs_basic_json.war"
 2. Create proxy service as per "PayloadfactoryScenario2.xml"
 3. Send following soap request: (Media Type should be application/json)
 {
