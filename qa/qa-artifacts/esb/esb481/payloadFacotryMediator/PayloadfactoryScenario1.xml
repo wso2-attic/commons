@@ -19,7 +19,7 @@
       </send>
    </in>
    <out>
-      <payloadFactory media-type="json">
+      <payloadFactory media-type="xml">
          <format>&lt;m:CheckPriceResponse xmlns:m="http://services.samples/xsd"&gt;                  &lt;m:Code&gt;$1&lt;/m:Code&gt;                  &lt;m:Price&gt;$2&lt;/m:Price&gt;            &lt;/m:CheckPriceResponse&gt;</format>
          <args>
             <arg xmlns:ns="http://org.apache.synapse/xsd" xmlns:m0="http://services.samples/xsd" expression="//m0:symbol" evaluator="xml"></arg>
