@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="pizzashop"
+     context="/pizzashop">
+   <resource methods="GET" uri-template="/api/menu/pizza*">
+      <inSequence>
+         <log>
+            <property name="Message Flow" value="Pizza Info API - IN"/>
+            <property name="Type" expression="$ctx:query.param.type"/>
+            <property name="Val" expression="$ctx:query.param.val"/>
+         </log>
+         <filter xpath="$ctx:query.param.type and $ctx:query.param.val">
+            <then>
+               <send>
+                  <endpoint>
+                     <http method="get"
+                           uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/pizza?q={query.param.val}&amp;type={query.param.type}"/>
+                  </endpoint>
+               </send>
+            </then>
+            <else>
+               <send>
+                  <endpoint>
+                     <http method="get"
+                           uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/pizza/all"/>
+                  </endpoint>
+               </send>
+            </else>
+         </filter>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="POST" uri-template="/api/order*">
+      <inSequence>
+         <log>
+            <property name="Message Flow" value="Pizza Order API - IN"/>
+         </log>
+         <send>
+            <endpoint>
+               <http method="post"
+                     uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/order"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="POST GET DELETE PUT" uri-template="/api/order/{orderId}">
+      <inSequence>
+         <log>
+            <property name="Message Flow" value="Pizza Order API - IN"/>
+         </log>
+         <switch source="$axis2:HTTP_METHOD">
+            <case regex="GET">
+               <log level="custom">
+                  <property name="Message Flow" value="--- Order GET ---"/>
+               </log>
+               <send>
+                  <endpoint>
+                     <http method="GET"
+                           uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/order/{uri.var.orderId}"/>
+                  </endpoint>
+               </send>
+            </case>
+            <case regex="PUT">
+               <log level="custom">
+                  <property name="Message Flow" value="--- Order PUT ---"/>
+               </log>
+               <send>
+                  <endpoint>
+                     <http method="PUT"
+                           uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/order/{uri.var.orderId}"/>
+                  </endpoint>
+               </send>
+            </case>
+            <case regex="DELETE">
+               <log level="custom">
+                  <property name="Message Flow" value="--- Order DELETE ---"/>
+               </log>
+               <send>
+                  <endpoint>
+                     <http method="DELETE"
+                           uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/order/{uri.var.orderId}"/>
+                  </endpoint>
+               </send>
+            </case>
+         </switch>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="POST" uri-template="/api/purchase/{orderId}">
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>{"purchaseInformation": {"amount": "$1","cc": "$2"}}</format>
+            <args>
+               <arg evaluator="json" expression="$.payment.amount_lkr"/>
+               <arg evaluator="json" expression="$.payment.card_no"/>
+            </args>
+         </payloadFactory>
+         <send>
+            <endpoint>
+               <http method="post"
+                     uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/order/purchase/{uri.var.orderId}"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <send/>
+      </outSequence>
+   </resource>
+</api>

@@ -1,0 +1,10 @@
+<api xmlns="http://ws.apache.org/ns/synapse" name="test" context="/t/shashi.com/multi">
+   <resource methods="POST">
+      <inSequence>
+         <log level="custom">
+            <property name="value" expression="json-eval($)"></property>
+         </log>
+         <drop></drop>
+      </inSequence>
+   </resource>
+</api>

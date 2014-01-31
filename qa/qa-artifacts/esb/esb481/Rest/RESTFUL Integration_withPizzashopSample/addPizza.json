@@ -1,0 +1,36 @@
+{ pizza: {
+    name: "Meat Sizzler",
+    price: 500.0,
+    toppings: [
+        {
+            id: 9999,
+             name: "Steak", 
+             extraPrice: 4.00,
+             category: NONVEG
+        },
+        {
+            id: 9998,
+            name: "Sun Dried Tomato",
+            extraPrice: 4.00,
+            category: VEGETARIAN
+        },
+        {
+            id:9997,
+            name: "Mixed Peppers",
+            extraPrice: 3.00,
+            category: VEGETARIAN
+        },
+        {
+            id: 9996,
+            name: "Cajun Chicken",
+            extraPrice: 3.00,
+            category: NONVEG
+        },
+        {
+            id: 9995,
+            name: "Chorizo Sausage",
+            extraPrice: 4.00,
+            category: NONVEG
+        }
+    ]
+}}

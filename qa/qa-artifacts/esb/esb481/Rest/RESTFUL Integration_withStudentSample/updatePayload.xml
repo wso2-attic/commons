@@ -1,0 +1,7 @@
+<p:Student xmlns:p="http://ws.wso2.org/dataservice">
+      <p:name>amila</p:name>
+      <p:email>amila@wso2.com</p:email>
+      <p:age>16</p:age>
+      <p:class>8A</p:class>
+      <p:average>67.89</p:average>
+</p:Student>
