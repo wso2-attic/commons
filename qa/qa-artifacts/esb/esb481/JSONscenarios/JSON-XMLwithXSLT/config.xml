@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="JSONProxy440"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <log level="full"/>
+         <xslt key="in_transform"/>
+         <property name="messageType" value="text/xml" scope="axis2"/>
+         <header name="Action" scope="default" value="urn:getQuote"/>
+         <enrich>
+            <source xmlns:m0="http://services.samples" clone="true" xpath="//m0:getQuote"/>
+            <target type="body"/>
+         </enrich>
+      </inSequence>
+      <outSequence>
+         <log level="full"/>
+         <xslt key="out_transform"/>
+         <property name="messageType" value="application/json" scope="axis2"/>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://localhost:9001/services/SimpleStockQuoteService"
+                  format="soap11"/>
+      </endpoint>
+   </target>
+   <description/>
+</proxy>
+                                

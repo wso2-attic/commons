@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="JSONProxy441"
+       transports="https,http"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <inSequence>
+         <script language="js">var symbol = mc.getPayloadJSON().symbol.toString();
+                    mc.setPayloadXML(
+                        &lt;m:getQuote xmlns:m="http://services.samples"&gt;
+                            &lt;m:request&gt;
+                                &lt;m:symbol&gt;{symbol}&lt;/m:symbol&gt;
+                            &lt;/m:request&gt;
+                        &lt;/m:getQuote&gt;);</script>
+         <header name="Action" value="urn:getQuote"/>
+      </inSequence>
+      <outSequence>
+         <script language="js">var symbol = mc.getPayloadXML()..*::symbol.toString();
+                    var price = parseFloat(mc.getPayloadXML()..*::last);
+                    mc.setPayloadJSON(
+                                   {
+                                     "Quote" : {
+                                        "Code" : symbol,
+                                        "Price" : price,
+                                        "Current" : {
+                                           "High" : parseFloat(mc.getPayloadXML()..*::high),
+                                           "Last" : parseFloat(mc.getPayloadXML()..*::last)
+                                        } 
+                                     },
+                                     "Status" : (price &gt;= 100 ? "OK" : "NOT-OK")
+                                   });</script>
+         <property name="messageType" value="application/json" scope="axis2"/>
+         <send/>
+      </outSequence>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService"
+                  format="soap11"/>
+      </endpoint>
+   </target>
+   <description/>
+</proxy>
+                                

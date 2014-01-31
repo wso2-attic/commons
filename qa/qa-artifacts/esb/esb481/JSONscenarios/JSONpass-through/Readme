@@ -1,0 +1,19 @@
+1. Start App Server and copy the jaxrs_basic webapp url
+2. Create ESB proxy as per "config.xml"
+3. Send request as follows through soapUI.
+
+Request:
+Media-Type: application/json
+{
+  "Customer": { "name": "shashi1" }
+}
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+Date: Fri, 31 Jan 2014 05:07:24 GMT
+Server: WSO2-PassThrough-HTTP
+Transfer-Encoding: chunked
+Connection: Keep-Alive
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Customer><id>127</id><name>shashi1</name></Customer>

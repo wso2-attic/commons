@@ -1,0 +1,24 @@
+1. Start ESB_HOME/samples/axis2Server and built SimpleStockQuote Service
+2. Use the proxy service "config.xml"
+3. Request:
+
+POST http://shashi-ThinkPad-T530:8280/services/JSONProxy441 HTTP/1.1
+Accept-Encoding: gzip,deflate
+Content-Type: application/json
+Content-Length: 36
+Host: shashi-ThinkPad-T530:8280
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
+
+{"symbol":"WSO2", "ID":"StockQuote"}
+
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Fri, 31 Jan 2014 05:32:51 GMT
+Server: WSO2-PassThrough-HTTP
+Transfer-Encoding: chunked
+Connection: Keep-Alive
+
+{"Quote":{"Current":{"High":97.25414041555831, "Last":93.42600442073649}, "Code":"WSO2", "Price":93.42600442073649}, "Status":"NOT-OK"}
