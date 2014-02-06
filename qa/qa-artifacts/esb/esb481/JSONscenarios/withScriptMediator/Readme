@@ -1,0 +1,17 @@
+1. Unzip "pizzashop-rs_1.0.zip" file and paste to App Server (5.2.1)  webapps folder (AS_HOME/repository/deployment/server/webapps)
+2. Create api on ESB as per "config.xml"
+3. Send following requests:
+curl -v "http://10.100.0.33:8281/pizzashop/api/menu/pizza/all"
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Thu, 06 Feb 2014 05:03:08 GMT
+Server: WSO2-PassThrough-HTTP
+Transfer-Encoding: chunked
+
+80a
+[{"id":1.0, "crust":"PAN", "price":25, "extras":[], "size":"LARGE", "name":"Margherita", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":2, "crust":"PAN", "price":25, "extras":[], "size":"SMALL", "name":"Margherita", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":3, "crust":"THIN", "price":62.5, "extras":[], "size":"LARGE", "name":"Margherita", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":4, "crust":"THIN", "price":62.5, "extras":[], "size":"SMALL", "name":"Margherita", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":5, "crust":"PAN", "price":30, "extras":[], "size":"LARGE", "name":"Hawaiian", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":6, "crust":"PAN", "price":30, "extras":[], "size":"SMALL", "name":"Hawaiian", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":7, "crust":"THIN", "price":75, "extras":[], "size":"LARGE", "name":"Hawaiian", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}, {"id":8, "crust":"THIN", "price":75, "extras":[], "size":"SMALL", "name":"Hawaiian", "toppings":[{"id":3736, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Mozzarella Cheese"}, {"id":3018, "extraPrice":1.0, "category":"VEGETARIAN", "name":"Tomato"}]}]
+0
+
+

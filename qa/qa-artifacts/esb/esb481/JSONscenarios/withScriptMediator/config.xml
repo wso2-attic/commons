@@ -1,0 +1,33 @@
+<api xmlns="http://ws.apache.org/ns/synapse" name="pizzashop" context="/pizzashop">
+   <resource methods="GET" uri-template="/api/menu/pizza*">
+      <inSequence>
+         <log>
+            <property name="Message Flow" value="Pizza Info API - IN"></property>
+            <property name="Type" expression="$ctx:query.param.type"></property>
+            <property name="Val" expression="$ctx:query.param.val"></property>
+         </log>
+         <filter xpath="$ctx:query.param.type and $ctx:query.param.val">
+            <then>
+               <send>
+                  <endpoint>
+                     <http method="get" uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/pizza?q={query.param.val}&type={query.param.type}"></http>
+                  </endpoint>
+               </send>
+            </then>
+            <else>
+               <send>
+                  <endpoint>
+                     <http method="get" uri-template="http://localhost:9768/pizzashop-rs_1.0/services/menu/pizza/all"></http>
+                  </endpoint>
+               </send>
+            </else>
+         </filter>
+      </inSequence>
+      <outSequence>
+         <log level="full"></log>
+         <script language="js">var payload = mc.getPayloadJSON();mc.setPayloadJSON(payload);</script>
+         <send></send>
+      </outSequence>
+   </resource>
+</api>
+                        
