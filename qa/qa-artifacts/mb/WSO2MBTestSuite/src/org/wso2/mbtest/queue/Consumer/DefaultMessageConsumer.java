@@ -16,8 +16,8 @@ public class DefaultMessageConsumer {
     String password = "admin";
     private static String CARBON_CLIENT_ID = "carbon";
     private static String CARBON_VIRTUAL_HOST_NAME = "carbon";
-    private static String CARBON_DEFAULT_HOSTNAME = "localhost";
-    private static String CARBON_DEFAULT_PORT = "5672";
+    private static String CARBON_DEFAULT_HOSTNAME = "204.13.85.2";
+    private static String CARBON_DEFAULT_PORT = "5682";
     String queueName = "lanka";
  
     public static void main(String[] args) throws NamingException, JMSException {

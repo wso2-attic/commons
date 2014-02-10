@@ -22,8 +22,8 @@ public class DefaultMessageProducer {
     String password = "admin";
     private static String CARBON_CLIENT_ID = "carbon";
     private static String CARBON_VIRTUAL_HOST_NAME = "carbon";
-    private static String CARBON_DEFAULT_HOSTNAME = "localhost";
-    private static String CARBON_DEFAULT_PORT = "5673";
+    private static String CARBON_DEFAULT_HOSTNAME = "204.13.85.2";
+    private static String CARBON_DEFAULT_PORT = "5682";
     String queueName = "lanka";
 
 
@@ -61,7 +61,7 @@ public class DefaultMessageProducer {
 	
 	
 	//sending 100 messages to the above created queue here
-	for(int i=1;i<=10;i=i+1){
+	for(int i=1;i<=1000;i=i+1){
         		
 		TextMessage textMessage = queueSession.createTextMessage("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://services.samples\" xmlns:xsd=\"http://services.samples/xsd\"><soapenv:Header/><soapenv:Body><ser:getFullQuote><!--Optional:--><ser:request><!--Optional:--><xsd:symbol>WSO2</xsd:symbol></ser:request></ser:getFullQuote></soapenv:Body></soapenv:Envelope>");
          
