@@ -15,6 +15,7 @@
 <node CREATED="1392628562083" ID="Freemind_Link_710204367" MODIFIED="1392628572482" TEXT="http://dulanja.blogspot.com/2013/04/accessing-claim-aware-services-using_2.html"/>
 <node CREATED="1392628604986" ID="Freemind_Link_715021711" MODIFIED="1392714764076" TEXT="Invoking STS with kerberos security (http://wso2.com/library/articles/2012/08/securing-sts-security-token-service-kerberos/)"/>
 <node CREATED="1392628590330" ID="Freemind_Link_800196709" MODIFIED="1392634144388" TEXT="http://charithaka.blogspot.com/2013/07/broker-trust-relationships-with-wso2.html"/>
+<node CREATED="1392800742559" ID="Freemind_Link_1440476770" MODIFIED="1392800745071" TEXT="http://docs.wso2.org/display/IS460/Accessing+Claim+Aware+Services+using+STS+Secured+with+Non-repudiation"/>
 </node>
 </node>
 <node CREATED="1392187683433" ID="Freemind_Link_85458052" MODIFIED="1392785055831" TEXT="Issuance">
