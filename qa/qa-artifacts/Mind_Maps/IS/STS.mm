@@ -11,14 +11,16 @@
 </node>
 <node CREATED="1392187567192" ID="Freemind_Link_1682583319" MODIFIED="1392187587450" POSITION="left" TEXT="Security token service">
 <node CREATED="1392187593449" ID="Freemind_Link_641071760" MODIFIED="1392187593449" TEXT="">
-<node CREATED="1392187593596" ID="Freemind_Link_1926927562" MODIFIED="1392628559348" TEXT="Securing STS with different security scenarios">
+<node CREATED="1392187593596" ID="Freemind_Link_1926927562" MODIFIED="1392801080532" TEXT="Securing STS with different security scenarios">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1392628562083" ID="Freemind_Link_710204367" MODIFIED="1392628572482" TEXT="http://dulanja.blogspot.com/2013/04/accessing-claim-aware-services-using_2.html"/>
 <node CREATED="1392628604986" ID="Freemind_Link_715021711" MODIFIED="1392714764076" TEXT="Invoking STS with kerberos security (http://wso2.com/library/articles/2012/08/securing-sts-security-token-service-kerberos/)"/>
 <node CREATED="1392628590330" ID="Freemind_Link_800196709" MODIFIED="1392634144388" TEXT="http://charithaka.blogspot.com/2013/07/broker-trust-relationships-with-wso2.html"/>
 <node CREATED="1392800742559" ID="Freemind_Link_1440476770" MODIFIED="1392800745071" TEXT="http://docs.wso2.org/display/IS460/Accessing+Claim+Aware+Services+using+STS+Secured+with+Non-repudiation"/>
 </node>
 </node>
-<node CREATED="1392187683433" ID="Freemind_Link_85458052" MODIFIED="1392785055831" TEXT="Issuance">
+<node CREATED="1392187683433" ID="Freemind_Link_85458052" MODIFIED="1392801069744" TEXT="Issuance">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1392186922933" ID="Freemind_Link_913452264" MODIFIED="1392627899216" TEXT="Active STS">
 <node CREATED="1392186885023" ID="Freemind_Link_297462234" MODIFIED="1392186902859" TEXT="SAML versions">
 <node CREATED="1392186633938" ID="Freemind_Link_117213451" MODIFIED="1392635338010" TEXT="SAML 2.0">
@@ -87,7 +89,8 @@
 </node>
 </node>
 <node CREATED="1392187706039" ID="Freemind_Link_1828440449" MODIFIED="1392187707432" TEXT="Renewal"/>
-<node CREATED="1392187722689" ID="Freemind_Link_893466861" MODIFIED="1392187724282" TEXT="Validation">
+<node CREATED="1392187722689" ID="Freemind_Link_893466861" MODIFIED="1392801091671" TEXT="Validation">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1392722404393" ID="Freemind_Link_1327513736" MODIFIED="1392722432446" TEXT="Validation of the SAML token via STS- SPRT - WT-10">
 <node CREATED="1392790478397" ID="Freemind_Link_1308802875" MODIFIED="1392790482083" TEXT="SAML version"/>
 <node CREATED="1392790482927" ID="Freemind_Link_676805025" MODIFIED="1392790485308" TEXT="Timestamp"/>
@@ -108,7 +111,8 @@
 </node>
 </node>
 <node CREATED="1392791425107" ID="Freemind_Link_1991247266" MODIFIED="1392791433489" POSITION="left" TEXT="DisableTokenStore in carbon.xml"/>
-<node CREATED="1392618711593" ID="Freemind_Link_1358716491" MODIFIED="1392618718355" POSITION="right" TEXT="Integration scenarios">
+<node CREATED="1392618711593" ID="Freemind_Link_1358716491" MODIFIED="1392801048736" POSITION="right" TEXT="Integration scenarios">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1392631504866" ID="Freemind_Link_351719697" MODIFIED="1392634152156" TEXT="Use token issued by IS to authenticate to an app in app server - http://charithaka.blogspot.com/2013/07/broker-trust-relationships-with-wso2.html"/>
 <node CREATED="1392631679150" ID="Freemind_Link_1923073042" MODIFIED="1392717255583" TEXT="RESTful services - service and client unsecured, intermidate ESBs exchange SAML bearer token to OAuth bearer token and cache it to be used in every request"/>
 <node CREATED="1392717270535" ID="Freemind_Link_1895760037" MODIFIED="1392717451119" TEXT="SOAP services - service and client unsecured. Intermeidate ESB gets a SAML token (HoK) from STS and caches it and use it to secure all outgoing messages"/>
@@ -123,15 +127,24 @@
 <node CREATED="1392634481118" ID="Freemind_Link_1222485744" MODIFIED="1392714018678" TEXT="Indirect brokered trust relationship"/>
 <node CREATED="1392634504400" ID="Freemind_Link_1224435031" MODIFIED="1392713959483" TEXT="direct trust relationship"/>
 <node CREATED="1392713971891" ID="Freemind_Link_1550738706" MODIFIED="1392713977415" TEXT="direct brokered trust"/>
-<node CREATED="1392780114857" ID="Freemind_Link_1744380621" MODIFIED="1392780396865" TEXT="Federated identity ">
+<node CREATED="1392780114857" ID="Freemind_Link_1744380621" MODIFIED="1392801098656" TEXT="Federated identity ">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1392780399604" ID="Freemind_Link_327084980" MODIFIED="1392780410166" TEXT="SOAP services - Service and client unsecured. Intermediate ESB talks to its STS to get a SAML token (HoK and Bearer). This STS in return talks to resource STS and exchange its SAML token to a new SAML token signed by resource STS which is used to secure out going messages"/>
 <node CREATED="1392780434521" ID="Freemind_Link_589154357" MODIFIED="1392780769508" TEXT="RP authenticates with UT/kerberos, get a SAML token and send it to resource STS at service end. Resource STS give another type of SAML token (transform one token type into another) and sign it. This token is used to secure outgoing messages "/>
 <node CREATED="1392780556217" ID="Freemind_Link_303255276" MODIFIED="1392780734242" TEXT="RP gets a SAML token (with a set of claims) from the STS in its domain and sends it to resource STS. Resource STS accepts it and create another token with different set of claims (claim transformation) and this SAML token can be used to secure outgoing messages"/>
 </node>
 </node>
-<node CREATED="1392790080352" ID="Freemind_Link_1800795056" MODIFIED="1392790086124" POSITION="right" TEXT="Load and performance test">
+<node CREATED="1392790080352" ID="Freemind_Link_1800795056" MODIFIED="1392801112324" POSITION="right" TEXT="Load and performance test">
+<icon BUILTIN="desktop_new"/>
 <node CREATED="1392790804408" ID="Freemind_Link_3556278" MODIFIED="1392790833810" TEXT="With high number of concurrent threads (https://wso2.org/jira/browse/CARBON-11229)"/>
 <node CREATED="1392791398989" ID="Freemind_Link_703778986" MODIFIED="1392791412463" TEXT="DisableTokenStore in carbon.xml and observe the performance"/>
+</node>
+<node CREATED="1392800994864" ID="Freemind_Link_805669838" MODIFIED="1392802584284" POSITION="right" TEXT="Tenant and Secondary user stores">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1392802590963" ID="Freemind_Link_595067443" MODIFIED="1392802602081" TEXT="Super tenant"/>
+<node CREATED="1392802602672" ID="Freemind_Link_20803219" MODIFIED="1392802626478" TEXT="Tenant admin/tenant users"/>
+<node CREATED="1392802628472" ID="Freemind_Link_1936704160" MODIFIED="1392802635658" TEXT="Secondary user store users - super tenant"/>
+<node CREATED="1392802636327" ID="Freemind_Link_1407689375" MODIFIED="1392802645776" TEXT="Secondary use store users - tenant mode"/>
 </node>
 </node>
 </map>
