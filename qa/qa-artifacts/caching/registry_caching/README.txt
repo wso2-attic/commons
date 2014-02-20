@@ -34,4 +34,12 @@ I have commented two lines (jdbc URL & driver classname) & added two new lines.
 
 5. Boot up the server 
 
-6. 
+6. Access a resource and get the sqltiming.log. Lets call this sqltiming1.log. Query the database and see the resourceID of the particular registry resource. Lets assume the resourceID is RES001 (as an example).
+
+7. Access the same resource the second time and get another copy of the sqltiming.log. Let us call this sqltiming2.log
+
+8. Do a diff for these two files and go through the SELECT statements. 
+
+9. If registry caching is working propery, there should not be a SELECT done for the REG_RESOURCE table for the particular resourceID i.e.:- for RES001.
+
+10. In other words, if registry caching is broken, the diff should contain a SELECT for RES001.
