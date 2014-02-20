@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.3" jmeter="2.8 r1393162">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
+        <longProp name="ThreadGroup.start_time">1392262370000</longProp>
+        <longProp name="ThreadGroup.end_time">1392262370000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="pizza1 get - inseq" enabled="false">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/test/api/menu/pizza1/all</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="false">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="pizza1 get - inseq https" enabled="false">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/test/api/menu/pizza1/all</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="false">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="pizza get - outseq" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">localhost</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/test/api/menu/pizza/all</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="pizza get - outseq https" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/test/api/menu/pizza/all</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/g</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="g1 - no respbody" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/g1</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="post" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&quot;id&quot;:1,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:3,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:4,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:5,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:6,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:7,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:8,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/po/</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="put" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&quot;id&quot;:1,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:3,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:4,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:5,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:6,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:7,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:8,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/po/</stringProp>
+          <stringProp name="HTTPSampler.method">PUT</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete " enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/d</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="get https" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/g</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="g1 - no respbody https" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/g1</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="false">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="post-https" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&quot;id&quot;:1,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:3,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:4,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:5,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:6,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:7,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:8,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/po/</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="put-https" enabled="true">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">[{&quot;id&quot;:1,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:25.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:3,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:4,&quot;name&quot;:&quot;Margherita&quot;,&quot;price&quot;:62.5,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:5,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:6,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:30.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;PAN&quot;},{&quot;id&quot;:7,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;LARGE&quot;,&quot;crust&quot;:&quot;THIN&quot;},{&quot;id&quot;:8,&quot;name&quot;:&quot;Hawaiian&quot;,&quot;price&quot;:75.0,&quot;toppings&quot;:[{&quot;id&quot;:411,&quot;name&quot;:&quot;Mozzarella Cheese&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;},{&quot;id&quot;:3834,&quot;name&quot;:&quot;Tomato&quot;,&quot;extraPrice&quot;:1.0,&quot;category&quot;:&quot;VEGETARIAN&quot;}],&quot;extras&quot;:[],&quot;size&quot;:&quot;SMALL&quot;,&quot;crust&quot;:&quot;THIN&quot;}]</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/po/</stringProp>
+          <stringProp name="HTTPSampler.method">PUT</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/json</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Delete https" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8243</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/d</stringProp>
+          <stringProp name="HTTPSampler.method">DELETE</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="contenttype-api" enabled="false">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/ct</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers"/>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="contenttype-api-post" enabled="false">
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">&lt;html&gt;&#xd;
+&lt;h&gt;CHARITHA QA&lt;/h&gt;&#xd;
+&lt;/html&gt;</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">10.100.1.195</stringProp>
+          <stringProp name="HTTPSampler.port">8280</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">/temp/ct</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">multipart/form-data; boundary=2</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+            </value>
+          </objProp>
+          <stringProp name="filename">/home/nirodha/wso2/supportPatches/HMRC/HMRCtestresults.jtl</stringProp>
+        </ResultCollector>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse" name="PIzzaAPI" context="/test">
+   <resource methods="GET" uri-template="/api/menu/pizza/*">
+      <inSequence>
+         <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+         <send>
+            <endpoint>
+               <http method="get"
+                     uri-template="http://localhost:5050/pizzashop-rs_1.0/services/menu/pizza/all"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+      <faultSequence/>
+   </resource>
+   <resource methods="GET" uri-template="/api/menu/pizza1/*">
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>[{"id":1,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":2,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":3,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":4,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"},{"id":5,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":6,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":7,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":8,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"}]</format>
+            <args/>
+         </payloadFactory>
+         <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+         <respond/>
+      </inSequence>
+   </resource>
+</api>

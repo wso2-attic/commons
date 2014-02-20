@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse" name="CTGenAPI" context="/temp">
+   <resource methods="POST" url-mapping="/po/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="POST" uri-template="http://localhost:8280/json/po/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <property name="POST_TO_URI" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/ct/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="get" uri-template="http://localhost:5050/index.html"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+      <faultSequence/>
+   </resource>
+   <resource methods="POST" url-mapping="/ct/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="get" uri-template="http://localhost:5050/index.html"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+      <faultSequence/>
+   </resource>
+   <resource methods="PUT" url-mapping="/po/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="PUT" uri-template="http://localhost:8280/json/po/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="DELETE" url-mapping="/d/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="DELETE" uri-template="http://localhost:8280/json/d/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="GET" uri-template="http://localhost:8280/json/g/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g1/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="GET" uri-template="http://localhost:8280/json/g1/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g2/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="GET" uri-template="http://freegeoip.net/json/112.135.244.87"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g3/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="GET" uri-template="http://localhost:8280/json/g2/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <log level="full"/>
+         <class name="com.hmrc.sample.MyMediator"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g4/*">
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>[{"id":1,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":2,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":3,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":4,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"},{"id":5,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":6,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":7,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":8,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"}]</format>
+            <args/>
+         </payloadFactory>
+         <property name="RESPONSE" value="true"/>
+         <header name="To" action="remove"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </inSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g5/*">
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>{"test":[{"id":1,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":2,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":3,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":4,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"},{"id":5,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":6,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":7,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":8,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"}]}</format>
+            <args/>
+         </payloadFactory>
+         <property name="RESPONSE" value="true"/>
+         <header name="To" action="remove"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <property name="messageType" value="application/json" scope="axis2"/>
+         <property name="contentType" value="application/json" scope="axis2"/>
+         <send/>
+      </inSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/g6/*">
+      <inSequence>
+         <property name="NO_ENTITY_BODY" scope="axis2" action="remove"/>
+         <payloadFactory media-type="json">
+            <format>{"test":[{"id":1,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":2,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":3,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":4,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"},{"id":5,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":6,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":7,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":8,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"}]}</format>
+            <args/>
+         </payloadFactory>
+         <log level="full"/>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <property name="messageType" value="application/json" scope="axis2"/>
+         <property name="contentType" value="application/json" scope="axis2"/>
+         <respond/>
+      </inSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/gneb/*">
+      <inSequence>
+         <payloadFactory media-type="json">
+            <format>{"test":[{"id":1,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":2,"name":"Margherita","price":25.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":3,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":4,"name":"Margherita","price":62.5,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"},{"id":5,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"PAN"},{"id":6,"name":"Hawaiian","price":30.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"PAN"},{"id":7,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"LARGE","crust":"THIN"},{"id":8,"name":"Hawaiian","price":75.0,"toppings":[{"id":411,"name":"Mozzarella Cheese","extraPrice":1.0,"category":"VEGETARIAN"},{"id":3834,"name":"Tomato","extraPrice":1.0,"category":"VEGETARIAN"}],"extras":[],"size":"SMALL","crust":"THIN"}]}</format>
+            <args/>
+         </payloadFactory>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <respond/>
+      </inSequence>
+   </resource>
+   <resource methods="GET" url-mapping="/gneb1/*">
+      <inSequence>
+         <send>
+            <endpoint>
+               <http method="GET" uri-template="http://localhost:8280/json/gneb1/"/>
+            </endpoint>
+         </send>
+      </inSequence>
+      <outSequence>
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2"/>
+         <send/>
+      </outSequence>
+   </resource>
+</api>
