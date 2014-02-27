@@ -1,5 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+<con:soapui-project activeEnvironment="Default" name="sts" resourceRoot="" soapui-version="4.6.4" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="wso2carbon-stsSoap12Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2}wso2carbon-stsSoap12Binding" soapVersion="1_2" anonymous="optional" definition="http://localhost:9763/services/wso2carbon-sts?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache/><con:endpoints><con:endpoint>https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsSoap12Endpoint/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="IssueToken" bindingOperationName="IssueToken" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsSoap12Endpoint/</con:endpoint><con:request>&lt;soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+   &lt;soap:Header/>
+   &lt;soap:Body/>
+&lt;/soap:Envelope></con:request><con:credentials><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="{http://schemas.xmlsoap.org/wsdl/http/}//schemas.xmlsoap.org/ws/2005/02/trust/RST/SCT"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="wso2carbon-stsSoap11Binding" type="wsdl" bindingName="{http://ws.apache.org/axis2}wso2carbon-stsSoap11Binding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9763/services/wso2carbon-sts?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9763/services/wso2carbon-sts?wsdl"><con:part><con:url>http://localhost:9763/services/wso2carbon-sts?wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="http://ws.apache.org/axis2" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://ws.apache.org/axis2" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/">
+  <wsp:Policy wsu:Id="UTOverTransport" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Lax/>
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp/>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient"/>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:documentation>wso2carbon-sts</wsdl:documentation>
+  <wsdl:types/>
+  <wsdl:message name="IssueTokenRequest"/>
+  <wsdl:message name="IssueTokenResponse"/>
+  <wsdl:portType name="wso2carbon-stsPortType">
+    <wsdl:operation name="IssueToken">
+      <wsdl:input message="tns:IssueTokenRequest" wsaw:Action="http://schemas.xmlsoap.org/ws/2005/02/trust/RST/SCT"/>
+      <wsdl:output message="tns:IssueTokenResponse" wsaw:Action="urn:IssueTokenResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wso2carbon-stsSoap11Binding" type="tns:wso2carbon-stsPortType">
+    <wsp:PolicyReference URI="#UTOverTransport" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="IssueToken">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wso2carbon-stsSoap12Binding" type="tns:wso2carbon-stsPortType">
+    <wsp:PolicyReference URI="#UTOverTransport" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"/>
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <wsdl:operation name="IssueToken">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="wso2carbon-stsHttpBinding" type="tns:wso2carbon-stsPortType">
+    <http:binding verb="POST"/>
+    <wsdl:operation name="IssueToken">
+      <http:operation location="IssueToken"/>
+      <wsdl:input>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:input>
+      <wsdl:output>
+        <mime:content type="text/xml" part="parameters"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="wso2carbon-sts">
+    <wsdl:port name="wso2carbon-stsHttpsSoap11Endpoint" binding="tns:wso2carbon-stsSoap11Binding">
+      <soap:address location="https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsSoap11Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="wso2carbon-stsHttpsSoap12Endpoint" binding="tns:wso2carbon-stsSoap12Binding">
+      <soap12:address location="https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsSoap12Endpoint/"/>
+    </wsdl:port>
+    <wsdl:port name="wso2carbon-stsHttpsEndpoint" binding="tns:wso2carbon-stsHttpBinding">
+      <http:address location="https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsEndpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>https://localhost:9443/services/wso2carbon-sts.wso2carbon-stsHttpsSoap11Endpoint/</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="IssueToken" bindingOperationName="IssueToken" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Issue token" useWsAddressing="true"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9443/services/wso2carbon-sts</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+   <wst:RequestSecurityToken xmlns:wst="http://schemas.xmlsoap.org/ws/2005/02/trust">
+            <wst:RequestType>http://schemas.xmlsoap.org/ws/2005/02/trust/Issue</wst:RequestType>
+
+            <wst:TokenType>http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1</wst:TokenType>
+            <wst:KeyType>http://schemas.xmlsoap.org/ws/2005/02/trust/Bearer</wst:KeyType>
+            <wst:Claims xmlns:wsp="http://schemas.xmlsoap.org/ws/2005/02/trust"
+                        wsp:Dialect="http://wso2.org">
+                <wsid:ClaimType xmlns:wsid="http://schemas.xmlsoap.org/ws/2005/05/identity"
+                                Uri="http://wso2.org/claims/givenname"/>
+                <wsid:ClaimType xmlns:wsid="http://schemas.xmlsoap.org/ws/2005/05/identity"
+                                Uri="http://wso2.org/claims/emailaddress"/>
+            </wst:Claims>
+        </wst:RequestSecurityToken>
+        </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:username>admin</con:username><con:password>admin</con:password><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schemas.xmlsoap.org/ws/2005/02/trust/RST/SCT" addDefaultAction="false" addDefaultTo="true" generateMessageId="true"/><con:wsrmConfig version="1.2"/></con:call><con:call name="Validate token - SAML 1.1" useWsAddressing="true"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://localhost:9443/services/wso2carbon-sts</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header/>
    <soapenv:Body>
       <wst:RequestSecurityToken xmlns:wst="http://schemas.xmlsoap.org/ws/2005/02/trust">
@@ -12,4 +123,4 @@
          </wst:ValidateTarget>
       </wst:RequestSecurityToken>
         </soapenv:Body>
-</soapenv:Envelope>
+</soapenv:Envelope>]]></con:request><con:credentials><con:username>admin</con:username><con:password>admin</con:password><con:authType>Global HTTP Settings</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://schemas.xmlsoap.org/ws/2005/02/trust/RST/SCT" addDefaultAction="false" addDefaultTo="true" generateMessageId="true"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>
