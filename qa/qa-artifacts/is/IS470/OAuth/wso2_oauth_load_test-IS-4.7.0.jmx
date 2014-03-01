@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.5" jmeter="2.10 r1533061">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="wso2_oauth_load_test" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="is_server" elementType="Argument">
+            <stringProp name="Argument.name">is_server</stringProp>
+            <stringProp name="Argument.value">localhost</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="is_port" elementType="Argument">
+            <stringProp name="Argument.name">is_port</stringProp>
+            <stringProp name="Argument.value">9443</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="username" elementType="Argument">
+            <stringProp name="Argument.name">username</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="password" elementType="Argument">
+            <stringProp name="Argument.name">password</stringProp>
+            <stringProp name="Argument.value">admin</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <UserParameters guiclass="UserParametersGui" testclass="UserParameters" testname="User Parameters" enabled="true">
+        <collectionProp name="UserParameters.names">
+          <stringProp name="-1385570183">authorization</stringProp>
+          <stringProp name="-1013136619">accesstoken</stringProp>
+        </collectionProp>
+        <collectionProp name="UserParameters.thread_values">
+          <collectionProp name="-1803588932">
+            <stringProp name="925278068">d1VseU9LcXF4VGhTYjh6WEQ5NEFsWDV3OWlzYTp4dlVqMzVRcHZFZHZzWk1BcUJNNmRmdkMxVEVh</stringProp>
+            <stringProp name="111578566">user1</stringProp>
+          </collectionProp>
+          <collectionProp name="822635907">
+            <stringProp name="-1394569405">cExPRFYwYnp5MHg1YTV6MV8xY1RxTmswaktBYTpWcG0xdjJLbFFmYV9aWGFzRDJWYTBHUUhxSDRh</stringProp>
+            <stringProp name="111578567">user2</stringProp>
+          </collectionProp>
+          <collectionProp name="405902921">
+            <stringProp name="-1631956539">OWZBcm9BMUdZbjRrS0c3OUNjZmI0VEp2QjBJYTpPaF9FZXNucFlpV2lib1lwTkxRbnBhQ0VUZlFh</stringProp>
+            <stringProp name="111578568">user3</stringProp>
+          </collectionProp>
+          <collectionProp name="1581930899">
+            <stringProp name="-282984975">X05YRVJVakJEaW5DVzM3UTc0YWFFUmlqQnhZYTpqaFRXNXdtM2ZGeFQ1S05OOTlpZGFhZ0xhUEFh</stringProp>
+            <stringProp name="111578569">user4</stringProp>
+          </collectionProp>
+          <collectionProp name="204977500">
+            <stringProp name="-250298894">dFgxamJMck5vcGhqQm1NVkQ2eWZod3NPVEVJYTpuZllRZ3B3d3R3Z3NBN0dKeXpnX3VZeFJfRkFh</stringProp>
+            <stringProp name="111578570">user5</stringProp>
+          </collectionProp>
+          <collectionProp name="545724322">
+            <stringProp name="-772576743">VzRHYVg0VFdtdEhOZUpISzRndzFWM054VEFJYTprMDdGSUdkRVZDQjhDZTJlclVPX3dRUjJDMmdh</stringProp>
+            <stringProp name="111578571">user6</stringProp>
+          </collectionProp>
+          <collectionProp name="-699839438">
+            <stringProp name="993415254">UktKTThIaGE0SjNsdE56d2MxQWNVa3JFbWI0YTowSUdoOFo2WHNTSU9mYm5UejFYM0xqYlk4QlVh</stringProp>
+            <stringProp name="111578572">user7</stringProp>
+          </collectionProp>
+          <collectionProp name="-1528957628">
+            <stringProp name="-1454009176">T1N5OGxnQUdGOWx1cjZjbW5QX2RMRTZrWm5rYTpma25lUmhBcnlnQ00ySVROUE9qZlhxclljZW9h</stringProp>
+            <stringProp name="111578573">user8</stringProp>
+          </collectionProp>
+          <collectionProp name="246445986">
+            <stringProp name="2049018116">Yk45T0ljOVY2NVNvZmdKQ2V0WFlDb1dqcDN3YTpCT3BQek00d3FIWXZUb0lBRkFweENINXo5M3Nh</stringProp>
+            <stringProp name="111578574">user9</stringProp>
+          </collectionProp>
+          <collectionProp name="-477251942">
+            <stringProp name="1725124402">VTJhVENzUkFzRmRjWFpHOEFmX2xRbDZQM3pnYTp1aDljYkZCdElWQzR4MnZpNWJrSVJsU2xuTjRh</stringProp>
+            <stringProp name="-836031702">user10</stringProp>
+          </collectionProp>
+        </collectionProp>
+        <boolProp name="UserParameters.per_iteration">false</boolProp>
+      </UserParameters>
+      <hashTree/>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="oauth_get_access_token_thread_group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">10</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1352451199000</longProp>
+        <longProp name="ThreadGroup.end_time">1352451199000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </LoopController>
+        <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">2</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">usercount</stringProp>
+            <stringProp name="CounterConfig.format">#</stringProp>
+            <boolProp name="CounterConfig.per_user">true</boolProp>
+          </CounterConfig>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="oauth_token_headers" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">application/x-www-form-urlencoded</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic ${authorization}</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">SOAPAction</stringProp>
+                <stringProp name="Header.value">urn:validate</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="oauth_token_request" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="grant_type" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">password</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">grant_type</stringProp>
+                </elementProp>
+                <elementProp name="username" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">admin</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">username</stringProp>
+                </elementProp>
+                <elementProp name="password" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">admin</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                  <boolProp name="HTTPArgument.use_equals">true</boolProp>
+                  <stringProp name="Argument.name">password</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.domain">${is_server}</stringProp>
+            <stringProp name="HTTPSampler.port">${is_port}</stringProp>
+            <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+            <stringProp name="HTTPSampler.response_timeout"></stringProp>
+            <stringProp name="HTTPSampler.protocol">https</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+            <stringProp name="HTTPSampler.path">/oauth2/token</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <stringProp name="HTTPSampler.implementation">HttpClient4</stringProp>
+            <boolProp name="HTTPSampler.monitor">false</boolProp>
+            <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+          </HTTPSamplerProxy>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="access_token_extractor" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+            <stringProp name="RegexExtractor.refname">access_token</stringProp>
+            <stringProp name="RegexExtractor.regex">&quot;access_token&quot;:&quot;(.+?)&quot;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default"></stringProp>
+            <stringProp name="RegexExtractor.match_number">1</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+          <BSFPostProcessor guiclass="TestBeanGUI" testclass="BSFPostProcessor" testname="bsf_access_token_ post_processor" enabled="true">
+            <stringProp name="scriptLanguage"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <stringProp name="filename"></stringProp>
+            <stringProp name="script">${__setProperty(${accesstoken}, ${access_token})};</stringProp>
+          </BSFPostProcessor>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert_Tokentype" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="120641465">&quot;token_type&quot;:&quot;bearer&quot;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assert_Refresh_token" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1432035435">refresh_token</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assertion_ExpireIN" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-833810928">expires_in</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Assertion_access_token" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1938933922">access_token</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="user_defined_variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="access_token" elementType="Argument">
+                <stringProp name="Argument.name">access_token</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </Arguments>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="oauth_token_validation_request - Ultimate Thread Group" enabled="true">
+        <collectionProp name="ultimatethreadgroupdata">
+          <collectionProp name="-1650356799">
+            <stringProp name="1567">10</stringProp>
+            <stringProp name="53">5</stringProp>
+            <stringProp name="53">5</stringProp>
+            <stringProp name="49">1</stringProp>
+            <stringProp name="53">5</stringProp>
+          </collectionProp>
+        </collectionProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+      </kg.apc.jmeter.threads.UltimateThreadGroup>
+      <hashTree>
+        <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">true</boolProp>
+          <stringProp name="LoopController.loops">2</stringProp>
+        </LoopController>
+        <hashTree>
+          <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+            <stringProp name="CounterConfig.start">1</stringProp>
+            <stringProp name="CounterConfig.end">2</stringProp>
+            <stringProp name="CounterConfig.incr">1</stringProp>
+            <stringProp name="CounterConfig.name">usercount</stringProp>
+            <stringProp name="CounterConfig.format">#</stringProp>
+            <boolProp name="CounterConfig.per_user">false</boolProp>
+          </CounterConfig>
+          <hashTree/>
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="oauth_token_validation_service_headers" enabled="true">
+            <collectionProp name="HeaderManager.headers">
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Content-Type</stringProp>
+                <stringProp name="Header.value">text/xml</stringProp>
+              </elementProp>
+              <elementProp name="" elementType="Header">
+                <stringProp name="Header.name">Authorization</stringProp>
+                <stringProp name="Header.value">Basic YWRtaW46YWRtaW4=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </HeaderManager>
+          <hashTree/>
+          <SoapSampler guiclass="SoapSamplerGui" testclass="SoapSampler" testname="oauth_validation_request" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="SoapSampler.URL_DATA">https://${is_server}:${is_port}/services/OAuth2TokenValidationService/</stringProp>
+            <stringProp name="HTTPSamper.xml_data">&lt;soapenv:Envelope xmlns:soapenv=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:xsd=&quot;http://org.apache.axis2/xsd&quot; xmlns:xsd1=&quot;http://dto.oauth2.identity.carbon.wso2.org/xsd&quot;&gt;
+  &lt;soapenv:Header/&gt;
+  &lt;soapenv:Body&gt;
+      &lt;xsd:validate&gt;
+         &lt;xsd:validationReqDTO&gt;   
+            &lt;xsd1:accessToken&gt;      
+               &lt;xsd1:identifier&gt;${__property(${accesstoken})}&lt;/xsd1:identifier&gt;      
+               &lt;xsd1:tokenType&gt;bearer&lt;/xsd1:tokenType&gt;
+            &lt;/xsd1:accessToken&gt;
+            &lt;xsd1:context&gt;      
+               &lt;xsd1:key&gt;?&lt;/xsd1:key&gt;      
+               &lt;xsd1:value&gt;?&lt;/xsd1:value&gt;
+            &lt;/xsd1:context&gt;
+            &lt;xsd1:requiredClaimURIs&gt;?&lt;/xsd1:requiredClaimURIs&gt;
+         &lt;/xsd:validationReqDTO&gt;
+      &lt;/xsd:validate&gt;
+  &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</stringProp>
+            <stringProp name="SoapSampler.xml_data_file"></stringProp>
+            <stringProp name="SoapSampler.SOAP_ACTION">urn:validate</stringProp>
+            <stringProp name="SoapSampler.SEND_SOAP_ACTION">true</stringProp>
+            <boolProp name="HTTPSampler.use_keepalive">false</boolProp>
+          </SoapSampler>
+          <hashTree/>
+          <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="user_defined_variables" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="access_token" elementType="Argument">
+                <stringProp name="Argument.name">access_token</stringProp>
+                <stringProp name="Argument.value"></stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </Arguments>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="1942771180">valid&gt;true&lt;</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+        </hashTree>
+      </hashTree>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>true</xml>
+            <fieldNames>false</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>true</xml>
+            <fieldNames>false</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
