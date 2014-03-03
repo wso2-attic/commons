@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="StockQuoteProxy"
+       transports="https"
+       statistics="disable"
+       trace="disable"
+       startOnLoad="true">
+   <target>
+      <outSequence>
+         <property name="transport.vfs.ReplyFileName"
+                   expression="fn:concat(fn:substring-after(get-property('MessageID'), 'urn:uuid:'), '.xml')"
+                   scope="transport"/>
+         <property name="OUT_ONLY" value="true"/>
+         <send>
+            <endpoint>
+               <address uri="vfs:file://C:\VFS\out"/>
+            </endpoint>
+         </send>
+      </outSequence>
+      <endpoint>
+         <address uri="http://localhost:9000/services/SimpleStockQuoteService"
+                  format="soap12"/>
+      </endpoint>
+   </target>
+   <parameter name="transport.vfs.ActionAfterProcess">MOVE</parameter>
+   <parameter name="transport.PollInterval">5</parameter>
+   <parameter name="transport.vfs.MoveAfterProcess">file://C:\VFS\Pass</parameter>
+   <parameter name="transport.vfs.FileURI">file://C:\VFS\Original</parameter>
+   <parameter name="transport.vfs.MoveAfterFailure">file://C:\VFS\Failures</parameter>
+   <parameter name="transport.vfs.FileNamePattern">.*\.xml</parameter>
+   <parameter name="transport.vfs.Locking">enable</parameter>
+   <parameter name="transport.vfs.ContentType">text/xml</parameter>
+   <parameter name="transport.vfs.ActionAfterFailure">MOVE</parameter>
+   <enableSec/>
+   <policy key="conf:/repository/axis2/service-groups/StockQuoteProxy/services/StockQuoteProxy/policies/UTOverTransport"/>
+   <description/>
+</proxy>
+                                
