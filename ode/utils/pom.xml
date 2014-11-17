@@ -107,17 +107,17 @@
         <version>${axis2.transport.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.apache.axis2</groupId>
+        <groupId>org.apache.axis2.transport</groupId>
         <artifactId>axis2-transport-jms</artifactId>
         <version>${axis2.transport.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.apache.axis2</groupId>
+        <groupId>org.apache.axis2.transport</groupId>
         <artifactId>axis2-transport-mail</artifactId>
         <version>${axis2.transport.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.apache.axis2</groupId>
+        <groupId>org.apache.axis2.transport</groupId>
         <artifactId>axis2-transport-tcp</artifactId>
         <version>${axis2.transport.version}</version>
     </dependency>
